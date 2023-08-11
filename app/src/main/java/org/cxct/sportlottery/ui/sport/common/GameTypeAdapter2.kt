@@ -26,7 +26,7 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
         val wh = 40.dp
         val param = FrameLayout.LayoutParams(wh, wh)
         8.dp.let {
-            param.topMargin = it
+//            param.topMargin = it
             param.bottomMargin = it
         }
         10.dp.let {

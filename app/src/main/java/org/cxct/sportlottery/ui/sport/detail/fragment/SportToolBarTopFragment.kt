@@ -121,8 +121,10 @@ class SportToolBarTopFragment :
 
         //赛事进行中，就显示比分状态，否则就不显示左下角，并且显示开赛时间
         var isInPlay = TimeUtil.isTimeInPlay(matchInfo.startTime)
+        activity.tvToolbarNoStart.isVisible = !isInPlay
+        activity.tvToolbarHomeScore.isVisible = isInPlay
+        activity.tvToolbarAwayScore.isVisible = isInPlay
         if (isInPlay) {
-            lin_bottom.isVisible = true
             if (!fromApi) {
                 setStatusText(matchInfo)
                 setupMatchScore(matchInfo)

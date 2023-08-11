@@ -145,7 +145,7 @@ class FilterOutrightLeagueProvider(val adapter: OutrightLeagueSelectAdapter,
         ivArrow.setOnClickListener {
             adapter.expandOrCollapse(item)
             helper.itemView.isSelected = leagueOdd.isExpanded
-            ivArrow.setArrowSpin(leagueOdd.isExpanded, true) { setExpandArrow(ivArrow, leagueOdd.isExpanded) }
+            setExpandArrow(ivArrow, leagueOdd.isExpanded)
         }
         helper.itemView.setOnClickListener {
             league.isSelected = !league.isSelected

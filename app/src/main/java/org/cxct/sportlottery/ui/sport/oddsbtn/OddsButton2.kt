@@ -6,17 +6,23 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
+import kotlinx.android.synthetic.main.activity_maintenance.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.*
@@ -29,7 +35,7 @@ class OddsButton2 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : LinearLayout(context, attrs, defStyleAttr) {
+) : RelativeLayout(context, attrs, defStyleAttr) {
 
     companion object {
 
@@ -37,10 +43,10 @@ class OddsButton2 @JvmOverloads constructor(
         private val oddsValueCaches = mutableListOf<OddsValueView>()
         private val oddsLockedCaches = mutableListOf<ImageView>()
         private val oddsUnknownCaches = mutableListOf<TextView>()
-        private val params1 = LayoutParams(-2, -2).apply {
+        private val params1 = LinearLayout.LayoutParams(-2, -2).apply {
             gravity = Gravity.CENTER_HORIZONTAL
         }
-        private val params2 = LayoutParams(-2, -2)
+        private val params2 = LinearLayout.LayoutParams(-2, -2)
 
 
         fun clearOddsViewCaches() {
@@ -50,12 +56,12 @@ class OddsButton2 @JvmOverloads constructor(
             oddsUnknownCaches.clear()
         }
     }
+    private val rootLin: LinearLayout
 
     private var oddsName: TextView? = null
     private var oddsValue: OddsValueView? = null
     private var oddsLocked: ImageView? = null
     private var oddsUnknown: TextView? = null
-
     private val language: String by lazy { LanguageManager.getSelectLanguage(context).key }
     private var mOdd: Odd? = null
     private var mOddsType: OddsType = OddsType.EU
@@ -63,6 +69,10 @@ class OddsButton2 @JvmOverloads constructor(
     private var nameText: String? = null
     private var spreadText: String? = null
     private var oddsValueText: String = ""
+
+    private val buoyIcon: ImageView
+    private val upAnim by lazy { AlphaAnimation(0f, 1f) }
+    private val downAnim by lazy { AlphaAnimation(0f, 1f) }
 
     var betStatus: Int? = null
         set(value) {
@@ -83,9 +93,15 @@ class OddsButton2 @JvmOverloads constructor(
     init {
         foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
         setBackgroundResource(R.drawable.selector_button_radius_6_odds)
-        orientation = VERTICAL
-        gravity = Gravity.CENTER
+        rootLin= LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
+        }
         betStatus = BetStatus.DEACTIVATED.code
+        addView(rootLin,LinearLayout.LayoutParams(-1,-1))
+        buoyIcon = ImageView(context)
+        buoyIcon.adjustViewBounds = true
+        addView(buoyIcon, LayoutParams(12.dp, -2).apply {addRule(ALIGN_PARENT_RIGHT,TRUE)  })
     }
 
     private fun setBetStatus(status: Int) {
@@ -130,12 +146,27 @@ class OddsButton2 @JvmOverloads constructor(
         when (oddState) {
             OddState.LARGER.state -> {
                 oddView.onRise(oddsValueText)
+                (buoyIcon.layoutParams as RelativeLayout.LayoutParams).apply {
+                    removeRule(ALIGN_PARENT_BOTTOM)
+                    addRule(ALIGN_PARENT_TOP,TRUE)
+                    buoyIcon.layoutParams = this
+                }
+                playAnim(R.drawable.icon_odds_up, upAnim)
             }
             OddState.SMALLER.state -> {
                 oddView.onFall(oddsValueText)
+                (buoyIcon.layoutParams as RelativeLayout.LayoutParams).apply {
+                    removeRule(ALIGN_PARENT_TOP)
+                    addRule(ALIGN_PARENT_BOTTOM,TRUE)
+                    buoyIcon.layoutParams = this
+                }
+                playAnim(R.drawable.icon_odds_down, downAnim)
             }
             else -> {
                 oddView.setOdds(oddsValueText)
+                buoyIcon.gone()
+                buoyIcon.clearAnimation()
+                buoyIcon.tag = null
             }
         }
 
@@ -143,7 +174,7 @@ class OddsButton2 @JvmOverloads constructor(
 
     private fun recyclerNameView() {
         oddsName?.let {
-            removeView(it)
+            rootLin.removeView(it)
             oddsNameCaches.add(it)
             oddsName = null
         }
@@ -151,7 +182,7 @@ class OddsButton2 @JvmOverloads constructor(
 
     private fun recyclerValuesView() {
         oddsValue?.let {
-            removeView(it)
+            rootLin.removeView(it)
             oddsValueCaches.add(it)
             oddsValue = null
         }
@@ -159,7 +190,7 @@ class OddsButton2 @JvmOverloads constructor(
 
     private fun recyclerLockedView() {
         oddsLocked?.let {
-            removeView(it)
+            rootLin.removeView(it)
             oddsLockedCaches.add(it)
             oddsLocked = null
         }
@@ -167,7 +198,7 @@ class OddsButton2 @JvmOverloads constructor(
 
     private fun recyclerUnknownView() {
         oddsUnknown?.let {
-            removeView(it)
+            rootLin.removeView(it)
             oddsUnknownCaches.add(it)
             oddsUnknown = null
         }
@@ -251,8 +282,8 @@ class OddsButton2 @JvmOverloads constructor(
         return oddsUnknown!!
     }
 
-    private fun <T: View> addOddView(view: T, params: LayoutParams, index: Int = -1): T {
-        addView(view, index, params)
+    private fun <T: View> addOddView(view: T, params: LinearLayout.LayoutParams, index: Int = -1): T {
+        rootLin.addView(view, index, params)
         view.isSelected = isSelected
         return view
     }
@@ -402,5 +433,25 @@ class OddsButton2 @JvmOverloads constructor(
             else -> "${number}th"
         }
     }
+    private fun playAnim(icon: Int, animation: Animation) {
+        if (animation == buoyIcon.tag) {
+            return
+        }
+        animation.repeatCount = 3
+        animation.repeatMode = Animation.RESTART
+        animation.duration = 500
+        animation.setAnimationListener(object : Animation.AnimationListener {
 
+            override fun onAnimationStart(animation: Animation) { }
+            override fun onAnimationRepeat(animation: Animation) { }
+            override fun onAnimationEnd(animation: Animation) {
+               setupOddState(OddState.SAME.state)
+            }
+        })
+
+        buoyIcon.tag = animation
+        buoyIcon.visible()
+        buoyIcon.setImageResource(icon)
+        buoyIcon.startAnimation(animation)
+    }
 }

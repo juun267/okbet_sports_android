@@ -71,7 +71,7 @@
                 android:background="@drawable/bg_gary_radius_8_stroke_solid"
                 android:foreground="@drawable/fg_ripple"
                 android:text="@string/reverse_select"
-                android:textColor="@color/color_6D7693"
+                android:textColor="@color/color_0D2245"
                 android:textSize="@dimen/textSize14sp" />
 
             <Button
@@ -80,10 +80,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/margin_36"
                 android:layout_marginLeft="@dimen/margin_8"
-                android:background="@drawable/bg_gary_radius_8_stroke_solid"
+                android:background="@drawable/bg_blue_radius_8"
                 android:foreground="@drawable/fg_ripple"
                 android:text="@string/select_all"
-                android:textColor="@color/color_6D7693"
+                android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize14sp" />
         </LinearLayout>
        <FrameLayout
