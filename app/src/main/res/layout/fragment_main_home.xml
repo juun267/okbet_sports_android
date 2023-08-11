@@ -34,10 +34,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView
-                android:id="@+id/okGamesView"
+<!--            <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView-->
+<!--                android:id="@+id/okGamesView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
+
+
+            <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
+                android:id="@+id/gameViewOkGame"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:visibility="gone"
+                android:layout_height="wrap_content"/>
+
+
+            <org.cxct.sportlottery.ui.maintab.games.view.LivePageView
+                android:id="@+id/gameViewOkLive"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content"/>
             <!--part-2-end-->
 
             <include

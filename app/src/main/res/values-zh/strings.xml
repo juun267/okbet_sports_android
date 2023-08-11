@@ -1528,8 +1528,9 @@
     <string name="N417">已拒绝</string>
     <string name="P173">您的手机号码是什么？</string>
     <string name="P174">我们将把短信验证码发送到您的手机中</string>
+    <string name="agent_deposit">代理充值</string>
     <string name="P176">继续使用OKBET x Glife会员登陆</string>
     <string name="P175">成为新的OKBET会员</string>
     <string name="P181">使用验证码注册或登录</string>
-    <string name="agent_deposit">"代理充值 "</string>
+    <string name="P184">精选真人游戏</string>
 </resources>

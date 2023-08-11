@@ -51,9 +51,6 @@ open class SportListViewModel(
         get() = _oddsListGameHallResult
     private val _oddsListGameHallResult = SingleLiveEvent<Event<OddsListResult?>>()
 
-    var tempDatePosition: Int = 0 //早盤的日期選擇切頁後要記憶的問題，切換球種要清除記憶
-
-
     val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
 
     fun loadFavoriteGameList() {
@@ -107,17 +104,6 @@ open class SportListViewModel(
                                 TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
                             matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
 
-                            /* #1 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
-                            val mInfo = mFavorMatchOddList.value?.peekContent()?.find { lo ->
-                                lo.league.id == leagueOdd.league.id
-                            }?.matchOdds?.find { mo ->
-                                mo.matchInfo?.id == matchInfo.id
-                            }?.matchInfo
-
-                            matchInfo.socketMatchStatus = mInfo?.socketMatchStatus
-                            matchInfo.statusName18n = mInfo?.statusName18n
-                            matchInfo.homeScore = mInfo?.homeScore
-                            matchInfo.awayScore = mInfo?.awayScore
                         }
 
                         // 过滤掉赔率为空掉对象
@@ -555,5 +541,93 @@ open class SportListViewModel(
         sportMenuApiResult.value = sportMenuResult
     }
 
+    private fun SportMenuData.updateSportSelectState(
+        matchType: MatchType?,
+        gameTypeCode: String?,
+    ): SportMenuData {
+        when (matchType) {
+            MatchType.IN_PLAY -> this.menu.inPlay.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.inPlay.items.indexOf(sport) == 0
+                    }
+                }
+            }
+            MatchType.TODAY -> this.menu.today.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.today.items.indexOf(sport) == 0
+                    }
+                }
+            }
+            MatchType.EARLY -> this.menu.early.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.early.items.indexOf(sport) == 0
+                    }
+                }
+            }
+            MatchType.CS -> this.menu.cs.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.cs.items.indexOf(sport) == 0
+                    }
+                }
+            }
+            MatchType.PARLAY -> this.menu.parlay.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.parlay.items.indexOf(sport) == 0
+                    }
+                }
+            }
+            MatchType.OUTRIGHT -> this.menu.outright.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.outright.items.indexOf(sport) == 0
+                    }
+                }
+            }
+            MatchType.AT_START -> this.atStart.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.atStart.items.indexOf(sport) == 0
+                    }
+                }
+            }
+            MatchType.EPS -> this.menu.eps?.items?.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.eps.items.indexOf(sport) == 0
+                    }
+                }
+            }
+        }
+        return this
+    }
 
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.net.games.OKGamesRepository
@@ -248,11 +249,11 @@ class OKGamesViewModel(
         }
     }
 
-    fun getSportOKLive() = callApi({ OKGamesRepository.getOKLiveList(1, 3, "OK_LIVE") }) {
+    fun getSportOKLive() = callApi({ OKGamesRepository.getOKLiveList(1, 3, GameEntryType.OKLIVE.key) }) {
         it.getData()?.let { sportOKLives.value = it }
     }
 
-    fun getSportOKGames() = callApi({ OKGamesRepository.getOKLiveList(1, 12, "OK_GAMES") }) {
+    fun getSportOKGames() = callApi({ OKGamesRepository.getOKLiveList(1, 12,  GameEntryType.OKGAMES.key) }) {
         it.getData()?.let { sportOKGames.value = it }
     }
 

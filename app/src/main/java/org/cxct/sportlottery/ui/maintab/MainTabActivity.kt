@@ -218,6 +218,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
+                        ImmersionBar.with(this@MainTabActivity)
+                            .statusBarDarkFont(true)
+                            .init()
 
                         val itemPosition = getMenuItemPosition(menuItem)
                         if (checkMainPosition(itemPosition)) {

@@ -1472,8 +1472,9 @@
     <string name="Congratulations">Xin chúc mừng</string>
     <string name="P173">SĐT của bạn là bao nhiêu?</string>
     <string name="P174">Chúng tôi đang gửi mã OTP vào SĐT của bạn</string>
+    <string name="agent_deposit">Agent Deposit</string>
     <string name="P176">Đăng nhập với OKBET x Glife</string>
     <string name="P175">Trở thành hội viên mới của OKBET</string>
     <string name="P181">Dùng mã OTP đăng ký hoặc đăng nhập</string>
-    <string name="agent_deposit">Agent Deposit</string>
+    <string name="P184">OKLive phổ biến</string>
 </resources>

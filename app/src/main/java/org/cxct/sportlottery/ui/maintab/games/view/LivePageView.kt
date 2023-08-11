@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab.games.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
@@ -10,12 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewGamePageBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
@@ -24,7 +23,7 @@ import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
-class GamesPageView @JvmOverloads constructor(
+class LivePageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : LinearLayout(context, attrs, defStyle) {
     private val binding: ViewGamePageBinding
@@ -40,7 +39,7 @@ class GamesPageView @JvmOverloads constructor(
 
     //游戏列表数据
     private val dataList = arrayListOf<List<OKGameBean>>()
-    private val mAdapter = RecyclerGamePageAdapter()
+    private val mAdapter = RecyclerLivePageAdapter()
     private val pageSize = 6
 
     init {
@@ -89,24 +88,24 @@ class GamesPageView @JvmOverloads constructor(
     }
 
     //设置数据
-    fun setListData(data: List<OKGameBean>?,isNeedCut:Boolean=true): GamesPageView {
+    fun setListData(data: List<OKGameBean>?, isNeedCut:Boolean=true): LivePageView {
         dataList.clear()
         if (data == null) {
             return this
         }
         val cutData: List<OKGameBean> =
             if(isNeedCut){
-            //最多显示18个
-            if (data.size > 18) {
-                mAdapter.setIsMoreThan(true)
-                data.subList(0, 18)
-            } else {
-                mAdapter.setIsMoreThan(false)
+                //最多显示18个
+                if (data.size > 18) {
+                    mAdapter.setIsMoreThan(true)
+                    data.subList(0, 18)
+                } else {
+                    mAdapter.setIsMoreThan(false)
+                    data
+                }
+            }else{
                 data
             }
-        }else{
-            data
-        }
 
         //填充数据
         groupDataList(cutData)
@@ -149,47 +148,43 @@ class GamesPageView @JvmOverloads constructor(
     }
 
     //设置Icon
-    fun setIcon(resource: Int): GamesPageView {
+    fun setIcon(resource: Int): LivePageView {
         binding.ivIcon.setImageResource(resource)
         return this
     }
-    fun setIcon(resource: String?): GamesPageView {
+    fun setIcon(resource: String?): LivePageView {
         binding.ivIcon.load(resource)
         return this
     }
 
-    fun setIsShowCollect(flag:Boolean): GamesPageView {
+    fun setIsShowCollect(flag:Boolean): LivePageView {
         mAdapter.setIsShoeCollect(flag)
         return this
     }
     //模块名称
-    fun setCategoryName(name: Int): GamesPageView {
+    fun setCategoryName(name: Int): LivePageView {
         binding.tvName.setText(name)
         return this
     }
-    fun setCategoryName(name: String?): GamesPageView {
+    fun setCategoryName(name: String?): LivePageView {
         binding.tvName.text = name
         return this
     }
 
     //更多点击
-    fun setOnMoreClick(block: () -> Unit): GamesPageView {
+    fun setOnMoreClick(block: () -> Unit): LivePageView {
         onMoreClick = block
-        return this
-    }
-    fun setMoreGone(): GamesPageView{
-        binding.tvMore.gone()
         return this
     }
 
     //游戏点击
-    fun setOnGameClick(block: (data: OKGameBean) -> Unit): GamesPageView {
+    fun setOnGameClick(block: (data: OKGameBean) -> Unit): LivePageView {
         onGameClick = block
         return this
     }
 
     //点击收藏
-    fun setOnFavoriteClick(block: (item: OKGameBean) -> Unit): GamesPageView {
+    fun setOnFavoriteClick(block: (item: OKGameBean) -> Unit): LivePageView {
         onFavoriteClick = block
         return this
     }
@@ -252,7 +247,7 @@ class GamesPageView @JvmOverloads constructor(
                                 binding.ivForwardPage.alpha = 1f
                                 binding.ivForwardPage.isEnabled = true
                             }
-                        }     
+                        }
                     }
                 }
             })
@@ -260,16 +255,17 @@ class GamesPageView @JvmOverloads constructor(
     }
 
 
-    //首页okGames配置
-    fun initOkGames(fragment:MainHomeFragment){
+
+    //首页okLive配置
+    fun initOkLiveList(fragment:MainHomeFragment){
         initEnterGame(fragment)
         //请求games数据
-        fragment.viewModel.getHomeOKGamesList300()
-        setIcon(R.drawable.ic_home_okgames_title)
-        setCategoryName(R.string.N704)
+        fragment.viewModel.getHomeLiveGamesList300()
+        setIcon(R.drawable.ic_home_oklive_title)
+        setCategoryName(R.string.P184)
         //数据监听
-        fragment.viewModel.homeGamesList300.observe(fragment.viewLifecycleOwner) {
-            this.visible()
+        fragment.viewModel.homeLiveGamesList300.observe(fragment.viewLifecycleOwner) {
+            this.isVisible = !it.isNullOrEmpty()
             mAdapter.setIsShoeCollect(false)
             setListData(it,false)
             setOnGameClick {okGameBean->
@@ -287,7 +283,7 @@ class GamesPageView @JvmOverloads constructor(
                 }
             }
             setOnMoreClick {
-                fragment.jumpToOKGames()
+                fragment.jumpToOKLive()
             }
         }
     }
@@ -304,4 +300,5 @@ class GamesPageView @JvmOverloads constructor(
             }
         }
     }
+
 }

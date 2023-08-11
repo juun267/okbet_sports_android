@@ -31,8 +31,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.loading.Gloading
-import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.user.UserInfo
@@ -132,7 +130,6 @@ class MultiLanguagesApplication : Application() {
         initJpush()
         initXUpdate()
 
-        Gloading.initDefault(LoadingAdapter())
         initNetWorkListener()
     }
 
