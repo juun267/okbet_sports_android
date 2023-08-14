@@ -25,6 +25,7 @@ import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
@@ -45,6 +46,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
+    fun jumpToOKLive() = getMainTabActivity().jumpToOkLive()
 
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
@@ -80,7 +82,11 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     override fun onBindViewStatus(view: View) = binding.run {
         homeTopView.setup(this@MainHomeFragment)
         hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@MainHomeFragment)
-        okGamesView.setOkGamesData(this@MainHomeFragment)
+//        okGamesView.setOkGamesData(this@MainHomeFragment)
+        gameViewOkGame.initOkGames(this@MainHomeFragment)
+        if (StaticData.okLiveOpened()){
+            gameViewOkLive.initOkLiveList(this@MainHomeFragment)
+        }
         initBetWinsRecodeLayout()
         initObservable()
         binding.winsRankView.loadData()

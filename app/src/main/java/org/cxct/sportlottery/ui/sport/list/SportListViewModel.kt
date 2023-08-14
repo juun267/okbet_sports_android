@@ -21,9 +21,10 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
-import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.maintab.worldcup.FIBAItem
+import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMDE_FORMAT
@@ -49,8 +50,6 @@ open class SportListViewModel(
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
     private val _oddsListGameHallResult = SingleLiveEvent<Event<OddsListResult?>>()
-
-    private val _sportMenuResult = SingleLiveEvent<SportMenuResult?>()
 
     val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
 
@@ -253,17 +252,19 @@ open class SportListViewModel(
         }
     }
 
-    fun switchGameType(matchType: MatchType, item: Item,selectLeagueIdList: ArrayList<String>,selectMatchIdList: ArrayList<String>) {
+    fun switchGameType(matchType: MatchType, item: Item, selectLeagueIdList: ArrayList<String>,selectMatchIdList: ArrayList<String>) {
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
-        //視覺上需要優先跳轉 tab
-        _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
+
         jobSwitchGameType = viewModelScope.launch {
-            getGameHallList(matchType, item.code, selectLeagueIdList,selectMatchIdList)
+            if (item is FIBAItem) {
+                getOddsList(GameType.BK.key, item.code, null, selectLeagueIdList, selectMatchIdList)
+            } else {
+                getGameHallList(matchType, item.code, selectLeagueIdList, selectMatchIdList)
+            }
         }
     }
-
 
     private lateinit var oddsListRequestTag: Any
     private var jobSwitchGameType: Job? = null
@@ -509,7 +510,7 @@ open class SportListViewModel(
             return@callApi
         }
 
-        val itemList = when (matchType) {
+        var itemList = when (matchType) {
             MatchType.IN_PLAY ->  menuData.menu.inPlay.items
             MatchType.TODAY -> menuData.menu.today.items
             MatchType.EARLY -> menuData.menu.early.items
@@ -522,16 +523,22 @@ open class SportListViewModel(
             else -> listOf()
         }
 
+        if (StaticData.worldCupOpened()) {
+            if (matchType == MatchType.IN_PLAY
+                || matchType == MatchType.AT_START
+                || matchType == MatchType.TODAY
+                || matchType == MatchType.EARLY) {
+
+                FIBAUtil.takeFIBAItem()?.let {
+                    val list = itemList.toMutableList()
+                    list.add(0, it)
+                    itemList = list
+                }
+            }
+        }
+
         sportTypeMenuData.value = Triple(itemList, sportMenuResult.succeeded(), sportMenuResult.msg)
         sportMenuApiResult.value = sportMenuResult
-    }
-
-    private fun SportMenuResult.updateSportSelectState(
-        matchType: MatchType?,
-        gameTypeCode: String?,
-    ) {
-        this.sportMenuData?.updateSportSelectState(matchType, gameTypeCode)
-        _sportMenuResult.postValue(this)
     }
 
     private fun SportMenuData.updateSportSelectState(
@@ -622,4 +629,5 @@ open class SportListViewModel(
         }
         return this
     }
+
 }

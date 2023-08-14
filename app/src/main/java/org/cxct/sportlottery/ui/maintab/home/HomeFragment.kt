@@ -25,7 +25,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
             Param(MainHomeFragment::class.java),
             Param(OKGamesFragment::class.java),
             Param(NewsHomeFragment::class.java, needRemove = true),
-            Param(OKLiveFragment::class.java, needRemove = true),
+            Param(OKLiveFragment::class.java),
             Param(WorldCupFragment::class.java, needRemove = true),
             Param(WorldCupGameFragment::class.java, needRemove = true)
         ))
@@ -42,7 +42,6 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         switchTabByPosition(0)
-        EventBusUtil.targetLifecycle(this)
     }
 
     private fun switchTabByPosition(position: Int) {

@@ -18,6 +18,12 @@ import java.util.*
 
 object LanguageManager {
 
+    private val languageChangeListeners = mutableListOf<(Language, Language) -> Unit>()
+
+    fun addLanguageChangedListener(block: (Language, Language) -> Unit) {
+        languageChangeListeners.add(block)
+    }
+
     enum class Language(val key: String) {
         ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("ph")
     }
@@ -200,10 +206,14 @@ object LanguageManager {
     }
 
     fun saveSelectLanguage(context: Context, select: Language) {
+        val lastLanguage = getSelectLanguage(context)
         FirebaseLog.addLogInfo("currentLanguage", select.name) // 在崩溃日志中记录当前的语言类型
         selectedLocale = convert(select)
         SPUtil.getInstance(context).saveLanguage(select.key)
         setApplicationLanguage(context)
+        if (lastLanguage != select) {
+            languageChangeListeners.forEach { it.invoke(lastLanguage, select) }
+        }
     }
 
     private fun getSystemLocal(): Locale {

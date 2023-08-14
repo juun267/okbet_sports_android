@@ -12,4 +12,6 @@ object SportRepository {
     suspend fun getSportMenu(now: String, todayStart: String): ApiResult<SportMenuData> {
         return sportApi.getMenu(mapOf("now" to now, "todayStart" to todayStart))
     }
+
+    suspend fun getCouponMenu() = sportApi.getCouponMenu()
 }

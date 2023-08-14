@@ -52,11 +52,14 @@ class LoginViewModel(
         get() = _checkUserExist
     val selectAccount: LiveData<LoginResult>
         get() = _selectAccount
+    val loginGlifeOrRegist: LiveData<LoginResult>
+        get() = _loginGlifeOrRegist
 
     private val _isLoading = MutableLiveData<Boolean>()
     private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult>()
     private val _selectAccount= MutableLiveData<LoginResult>()
+    private val _loginGlifeOrRegist= MutableLiveData<LoginResult>()
     private val _loginSmsResult = MutableLiveData<NetResult>()
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _validResult = MutableLiveData<NetResult>()
@@ -158,6 +161,18 @@ class LoginViewModel(
             }
         }
     }
+    fun regPlatformUser(token: String,loginRequest: LoginRequest) {
+        loading()
+        viewModelScope.launch {
+            //通过glife账号，注册平台账号
+            doNetwork(androidContext) {
+                loginRepository.regPlatformUser(token,loginRequest)
+            }?.let { loginResult->
+                hideLoading()
+                dealWithLoginResult(loginResult)
+            }
+        }
+    }
     suspend fun dealWithLoginResult(loginResult: LoginResult) {
         if (loginResult.success) {
             //t不为空则t是登录账号，rows里面1个账号就直接登录，2个账号就选择账号
@@ -167,7 +182,12 @@ class LoginViewModel(
                 }
                 loginResult.rows?.size==1 -> {
                     val loginData = loginResult.rows[0]
-                    dealWithLoginData(loginResult, loginData)
+                    // 询问是否登录GLIFE账号，或注册一个 okbet平台账号
+                    if (loginData.isCreateAccount==1){
+                       _loginGlifeOrRegist.postValue(loginResult)
+                    }else{
+                        dealWithLoginData(loginResult, loginData)
+                    }
                 }
                 loginResult.rows?.size==2 -> {
                     _selectAccount.postValue(loginResult)

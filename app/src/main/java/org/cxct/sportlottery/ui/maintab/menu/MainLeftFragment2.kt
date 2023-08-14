@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -228,17 +229,18 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         ) { getMainTabActivity().jumpToESport() }
 
 //
-//        okLiveItem = addMenu(index1++,
-//            groupParams,
-//            iconParams,
-//            R.drawable.ic_main_menu_oklive_1,
-//            R.drawable.ic_main_menu_oklive_0,
-//            textParams,
-//            R.string.P160,
-//            true
-//        ) { getMainTabActivity().jumpToOKLive() }
-//
-//        okLiveItem.group.setVisibilityByMarketSwitch()
+        okLiveItem = addMenu(index1++,
+            groupParams,
+            iconParams,
+            R.drawable.ic_main_menu_oklive_1,
+            R.drawable.ic_main_menu_oklive_0,
+            textParams,
+            R.string.P160,
+            true
+        ) {
+            getMainTabActivity().jumpToOkLive() }
+
+        okLiveItem.group.isVisible = !getMarketSwitch() && StaticData.okLiveOpened()
 
         var index = binding.llMenuRoot.indexOfChild(divider1)
         promotionItem = addMenu(
@@ -382,14 +384,12 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             lastItem?.clearSelected()
             return
         }
-
         if (isSame || !::okGamesItem.isInitialized) {
             return
         }
 //        if (isSame || !::okLiveItem.isInitialized) {
 //            return
 //        }
-
         binSelected()
     }
 

@@ -46,6 +46,7 @@ import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
@@ -220,6 +221,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
+                        ImmersionBar.with(this@MainTabActivity)
+                            .statusBarDarkFont(true)
+                            .init()
 
                         val itemPosition = getMenuItemPosition(menuItem)
                         if (checkMainPosition(itemPosition)) {
@@ -594,6 +598,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment
 
     fun backMainHome() {
+        enableSelectBottomNav(true)
         homeFragment().backMainHome()
         navToPosition(0)
     }
@@ -602,6 +607,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             return
         }
         navToPosition(2)
+    }
+
+    fun jumpToOkLive(){
+        backMainHome()
+        homeFragment().jumpToOKLive()
+        enableSelectBottomNav(false)
     }
 
     private fun navToPosition(position: Int) {

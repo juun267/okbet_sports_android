@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,8 @@ import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerGameListAdapter
+import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerLiveListAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -29,18 +32,10 @@ import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
 // OkGames所有分类
 class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewModel::class) {
-
+    private val gameListAdapter= RecyclerLiveListAdapter()
     private fun getMainTabActivity() = activity as MainTabActivity
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
     private lateinit var binding: FragmentAllOkliveBinding
-    private val gameAllAdapter by lazy {
-        GameCategroyAdapter(
-            clickCollect = ::onCollectClick,
-            clickGame = ::enterGame, okLiveFragment().gameItemViewPool
-        )
-    }
-    private var collectGameAdapter: GameChildAdapter? = null
-    private var recentGameAdapter: GameChildAdapter? = null
     private val providersAdapter by lazy { OkGameProvidersAdapter() }
     private var categoryList = mutableListOf<OKGamesCategory>()
 
@@ -63,12 +58,11 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         onBindGamesView()
         onBindPart3View()
         onBindPart5View()
-        initRecent()
-        initCollectLayout()
         initSportObserve()
         //初始化热门赛事
         initHotMatchView()
-        binding.okLiveOkGamesView.setOkGamesData(this)
+//        binding.okLiveGameView.initOkLiveGames(this)
+        initRecommendLiveGame()
         viewModel.getRecommend()
     }
 
@@ -128,77 +122,100 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
 
     private fun initObserve() = okLiveFragment().viewModel.run {
         gameHall.observe(viewLifecycleOwner) {
-            categoryList = it.categoryList?.filter {
-                it.gameList?.let {
-                    //最多显示12个
-                    if (it.size > 12) it.subList(0, 12)
-                }
-                !it.gameList.isNullOrEmpty()
+            categoryList = it.categoryList?.filter {category->
+                !category.gameList.isNullOrEmpty()
             }?.toMutableList() ?: mutableListOf()
-            //设置游戏分类
-            gameAllAdapter.setList(categoryList)
+            gameListAdapter.setList(categoryList)
             viewModel.getRecentPlay()
         }
 
         collectList.observe(viewLifecycleOwner) {
-            if (!it.first && collectGameAdapter?.dataCount() ?: 0 > 0) { //如果当前收藏列表可见，切收藏列表不为空则走全部刷新逻辑（走单挑刷新逻辑）
-                return@observe
-            }
-
-            val list = it.second
-            if (list.isNotEmpty() && list.size > 12) {
-                setCollectList(list.subList(0, 12))
-            } else {
-                setCollectList(list)
+            if(viewModel.loginRepository.isLogined()){
+                if(it.second.isNullOrEmpty()){
+                    binding.gameViewCollect.gone()
+                    return@observe
+                }
+                binding.gameViewCollect.visible()
+                //初始化收藏数据
+                binding.gameViewCollect
+                    .setIcon(GameTab.TAB_FAVORITES.labelIcon)
+                    .setCategoryName(GameTab.TAB_FAVORITES.name)
+                    .setListData(it.second)
+                    .setOnFavoriteClick {gameBean->
+                        okLiveFragment().collectGame(gameBean)
+                    }
+                    .setOnGameClick {gameBean->
+                        enterGame(gameBean)
+                    }
+                    .setOnMoreClick {
+                        okLiveFragment().changeGameTable(GameTab.TAB_FAVORITES)
+                    }
+            }else{
+                binding.gameViewCollect.gone()
             }
         }
 
         collectOkGamesResult.observe(viewLifecycleOwner) { result ->
-
-            gameAllAdapter.updateMarkCollect(result.second)
-            //更新收藏列表
-            collectGameAdapter?.let { adapter ->
-                //添加收藏或者移除
-                adapter.removeOrAdd(result.second)
-                binding.includeLiveAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
-                setItemMoreVisiable(binding.includeLiveAll.inclueCollect, adapter.dataCount() > 3)
-            }
-            //更新最近列表
-            recentGameAdapter?.data?.forEachIndexed { index, okGameBean ->
-                if (okGameBean.id == result.first) {
-                    okGameBean.markCollect = result.second.markCollect
-                    recentGameAdapter?.notifyItemChanged(index, okGameBean)
+            //更新列表
+            gameListAdapter.data.forEachIndexed {index,it->
+                it.gameList?.forEach {
+                    if(result.second.id==it.id){
+                        it.markCollect=result.second.markCollect
+                        return@forEachIndexed
+                    }
                 }
             }
-        }
-
-        recentPlay.observe(viewLifecycleOwner) {
-            if (it.size > 12) {
-                setRecent(it.subList(0, 12))
-            } else {
-                setRecent(it)
+            gameListAdapter.notifyDataSetChanged()
+            //更新最近游戏
+            binding.gameViewRecent.getDataList().forEach {
+                it.forEach {
+                    if(result.second.id==it.id){
+                        it.markCollect=result.second.markCollect
+                        return@forEach
+                    }
+                }
             }
+            binding.gameViewRecent.notifyDataChange()
         }
 
-        newRecentPlay.observe(viewLifecycleOwner) { okgameBean ->
-
-            recentGameAdapter?.let { adapter ->
-                binding.includeLiveAll.inclueRecent.root.visible()
-                adapter.data.find { it.id == okgameBean.id }?.let { adapter.remove(it) }
-                adapter.addData(0, okgameBean)
-                setItemMoreVisiable(binding.includeLiveAll.inclueRecent, adapter.dataCount() > 3)
+        recentPlay.observe(viewLifecycleOwner) {list->
+            if(list.isNullOrEmpty()){
+                return@observe
+            }
+            if(viewModel.loginRepository.isLogined()){
+                binding.gameViewRecent.visible()
+                //初始化最近游戏数据
+                binding.gameViewRecent
+                    .setIcon(GameTab.TAB_RECENTLY.labelIcon)
+                    .setCategoryName(GameTab.TAB_RECENTLY.name)
+                    .setListData(list)
+                    .setOnFavoriteClick {
+                        okLiveFragment().collectGame(it)
+                    }
+                    .setOnGameClick {
+                        enterGame(it)
+                    }
+                    .setOnMoreClick {
+                        okLiveFragment().changeGameTable(GameTab.TAB_RECENTLY)
+                    }
+            }else{
+                binding.gameViewRecent.gone()
             }
         }
 
     }
 
-    private fun onBindGamesView() = binding.includeLiveAll.run {
-        rvLiveAll.setLinearLayoutManager()
-        rvLiveAll.adapter = gameAllAdapter
-        gameAllAdapter.setOnItemChildClickListener { _, _, position ->
-            gameAllAdapter.getItem(position).let {
-                okLiveFragment().changeGameTable(it)
-            }
+    private fun onBindGamesView() = binding.run {
+        rvGamesAll.setLinearLayoutManager()
+        rvGamesAll.adapter=gameListAdapter
+        gameListAdapter.setOnMoreClick {
+            okLiveFragment().changeGameTable(it)
+        }
+        gameListAdapter.setOnGameClick {
+            enterGame(it)
+        }
+        gameListAdapter.setOnFavoriteClick {
+            okLiveFragment().collectGame(it)
         }
     }
 
@@ -323,34 +340,6 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
     }
 
 
-    private fun initCollectLayout() {
-        collectGameAdapter =
-            bindGameCategroyLayout(GameTab.TAB_FAVORITES, binding.includeLiveAll.inclueCollect)
-    }
-
-    private fun initRecent() {
-        recentGameAdapter =
-            bindGameCategroyLayout(GameTab.TAB_RECENTLY, binding.includeLiveAll.inclueRecent)
-    }
-
-    private fun bindGameCategroyLayout(gameTab: GameTab, binding: ItemGameCategroyBinding) =
-        binding.run {
-            root.gone()
-            linCategroyName.setOnClickListener { okLiveFragment().changeGameTable(gameTab) }
-            gameTab.bindLabelIcon(ivIcon)
-            gameTab.bindLabelName(tvName)
-            rvGameItem.setRecycledViewPool(okLiveFragment().gameItemViewPool)
-            rvGameItem.layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
-            rvGameItem.addItemDecoration(SpaceItemDecoration(root.context, R.dimen.margin_10))
-            val gameAdapter = GameChildAdapter(onFavoriate = ::onCollectClick)
-            gameAdapter.setOnItemClickListener { _, _, position ->
-                enterGame(gameAdapter.getItem(position))
-            }
-
-            rvGameItem.adapter = gameAdapter
-            return@run gameAdapter
-        }
-
     private inline fun enterGame(bean: OKGameBean) {
         if (LoginRepository.isLogined()) {
             //已登录
@@ -362,40 +351,27 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         }
     }
 
-    /**
-     * 设置收藏游戏列表
-     */
-    private fun setCollectList(collectList: List<OKGameBean>) {
-        val emptyData = collectList.isNullOrEmpty()
-        setItemMoreVisiable(binding.includeLiveAll.inclueCollect, collectList.size > 3)
-        binding.includeLiveAll.inclueCollect.root.isGone = emptyData
-        if (!emptyData) {
-            collectGameAdapter?.setNewInstance(collectList?.toMutableList())
-        }
-    }
 
-
-    /**
-     * 设置最近游戏列表
-     */
-    private fun setRecent(recentList: List<OKGameBean>) {
-        setItemMoreVisiable(binding.includeLiveAll.inclueRecent, recentList.size > 3)
-        val emptyData = recentList.isNullOrEmpty()
-        binding.includeLiveAll.inclueRecent.root.isGone = emptyData
-        if (!emptyData) {
-            recentGameAdapter?.setNewInstance(recentList?.toMutableList())
-        }
-    }
-
-    private fun setItemMoreVisiable(binding: ItemGameCategroyBinding, visisable: Boolean) {
-//        binding.ivMore.isVisible = visisable
-        binding.tvMore.isVisible = visisable
-    }
-
-
-    private fun onCollectClick(view: View, gameData: OKGameBean) {
-        if (okLiveFragment().collectGame(gameData)) {
-            view.animDuang(1.3f)
+    private fun initRecommendLiveGame(){
+        viewModel.getHomeOKGamesList300()
+        viewModel.homeGamesList300.observe(this){
+            binding.okLiveGameView.visible()
+            //初始化最近游戏数据
+            binding.okLiveGameView
+                .setIcon(R.drawable.ic_home_okgames_title)
+                .setIsShowCollect(false)
+                .setMoreGone()
+                .setCategoryName(R.string.N704)
+                .setListData(it,false)
+                .setOnFavoriteClick {
+                    okLiveFragment().collectGame(it)
+                }
+                .setOnGameClick {
+                    enterGame(it)
+                }
+                .setOnMoreClick {
+                    okLiveFragment().mainTabActivity().jumpToOKGames()
+                }
         }
     }
 }

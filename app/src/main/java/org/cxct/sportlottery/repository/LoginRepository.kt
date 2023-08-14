@@ -279,6 +279,10 @@ object LoginRepository {
         return loginResponse
     }
 
+    suspend fun regPlatformUser(token: String,loginRequest: LoginRequest): Response<LoginResult> {
+        val loginResponse = OneBoSportApi.indexService.regPlatformUser(token,loginRequest)
+        return loginResponse
+    }
     suspend fun setUpLoginData(loginData: LoginData?) {
         updateLoginData(loginData)
         updateUserInfo(loginData)

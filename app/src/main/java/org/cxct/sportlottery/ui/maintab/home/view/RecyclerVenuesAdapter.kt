@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHomeVenuesBinding
 import org.cxct.sportlottery.network.index.config.HomeGameBean
@@ -45,8 +46,12 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                 //oklive
                 HomeTopView.OkLive->{
                     ivSportCover.setImageResource(R.drawable.img_oklive)
-                    tvSportClose.visible()
-                    tvSportClose.text=context.getString(R.string.N700)
+                    if(StaticData.okLiveOpened()){
+                        tvSportClose.gone()
+                    }else{
+                        tvSportClose.visible()
+                        tvSportClose.text=context.getString(R.string.N700)
+                    }
                 }
             }
         }

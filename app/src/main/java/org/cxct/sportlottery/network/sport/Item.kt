@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 
 @JsonClass(generateAdapter = true)
 @KeepMembers
-data class Item(
+open class Item(
     @Json(name = "code")
     val code: String,
     @Json(name = "name")
