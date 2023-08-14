@@ -3,6 +3,7 @@ package org.cxct.sportlottery.common.loading
 import android.animation.Animator
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.AnimationDrawable
 import android.net.ConnectivityManager
 import android.util.AttributeSet
 import android.view.Gravity
@@ -77,7 +78,11 @@ class GlobalLoadingView @JvmOverloads constructor(
             else -> {}
         }
         mTextView.text = str
-        mImageView.load(image)
+        val drawable =  context.getDrawable(image)
+        mImageView.setImageDrawable(drawable)
+        if (drawable is AnimationDrawable) {
+            drawable.start()
+        }
         setOnClickListener(onClickListener)
         if (show) {
             isVisible = true
