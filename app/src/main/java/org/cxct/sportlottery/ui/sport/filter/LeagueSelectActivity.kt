@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.common.SelectDate
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -78,7 +79,20 @@ class LeagueSelectActivity :
         } else {
             initLeagues()
             initObserve()
-            viewModel.getOddsList(gameType, matchType.postValue)
+            loadOddsList(gameType, matchType.postValue)
+        }
+    }
+
+    private fun loadOddsList(gameType: String,
+                             matchType: String,
+                             startTime: String? = null,
+                             endTime: String?=null,
+                             isDateSelected: Boolean = false) {
+
+        if (gameType == FIBAUtil.takeFIBAItem()?.code) {
+            viewModel.getOddsList(GameType.BK.key, gameType, startTime, endTime, isDateSelected)
+        } else {
+            viewModel.getOddsList(gameType, matchType, startTime, endTime, isDateSelected)
         }
     }
 
@@ -195,7 +209,7 @@ class LeagueSelectActivity :
                     selectStartTime = it.startTime
                     selectEndTime = it.endTime
                     loading.showLoading()
-                    viewModel.getOddsList(gameType,
+                    loadOddsList(gameType,
                         matchType.postValue,
                         selectStartTime,
                         selectEndTime,

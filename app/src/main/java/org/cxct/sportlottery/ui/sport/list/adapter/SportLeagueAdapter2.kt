@@ -222,4 +222,8 @@ class SportLeagueAdapter2(
     }
 
 
+    override fun toString(): String {
+        return " ==SportLeagueAdapter2 ${lifecycleOwner::class.java.simpleName} $matchType==  "
+    }
+
 }

@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.games.view
 
-import android.util.Log
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.animDuang
@@ -10,7 +9,6 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemGamePageBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
-import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.view.onClick
 
 class RecyclerGamePageAdapter:
@@ -20,6 +18,13 @@ class RecyclerGamePageAdapter:
     private var onJumpToMore:()->Unit={}
     var isSinglePage=false
     private var isMoreThan18:Boolean=false
+    //是否显示收藏
+    private var isShowCollect:Boolean=true
+
+    //是否显示收藏按钮
+    fun setIsShoeCollect(flag:Boolean){
+        isShowCollect=flag
+    }
     //点击收藏
     fun setOnFavoriteClick(block:(item:OKGameBean)->Unit){
         onFavoriteClick=block
@@ -146,6 +151,23 @@ class RecyclerGamePageAdapter:
         }
 
 
+        binding.run {
+            if(isShowCollect){
+                ivFav1.visible()
+                ivFav2.visible()
+                ivFav3.visible()
+                ivFav4.visible()
+                ivFav5.visible()
+                ivFav6.visible()
+            }else{
+                ivFav1.gone()
+                ivFav2.gone()
+                ivFav3.gone()
+                ivFav4.gone()
+                ivFav5.gone()
+                ivFav6.gone()
+            }
+        }
 
     }
 

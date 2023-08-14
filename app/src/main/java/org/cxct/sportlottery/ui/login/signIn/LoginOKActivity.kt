@@ -11,6 +11,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import cn.jpush.android.api.JPushInterface
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_login_ok.*
@@ -20,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.crash.FirebaseLog
+import org.cxct.sportlottery.common.event.LoginGlifeOrRegistEvent
 import org.cxct.sportlottery.common.event.LoginSelectAccountEvent
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -282,6 +284,36 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLoginGlifeOrRegist(event: LoginGlifeOrRegistEvent) {
+        val loginResult = viewModel.loginGlifeOrRegist.value
+        loginResult?.rows?.let {
+            it.firstOrNull()?.let {
+                lifecycleScope.launch {
+                    if (event.login){
+                        viewModel.dealWithLoginData(loginResult!!,it)
+                    }else{
+                        //新的注册接口
+                        val deviceSn = JPushInterface.getRegistrationID(this@LoginOKActivity)
+                        val deviceId = Settings.Secure.getString(
+                            applicationContext.contentResolver,
+                            Settings.Secure.ANDROID_ID
+                        )
+                        var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
+                        val loginRequest = LoginRequest(
+                            account = it.userName?:"",
+                            loginSrc = LOGIN_SRC,
+                            deviceSn = deviceSn,
+                            appVersion = appVersion,
+                            loginEnvInfo = deviceId,
+                        )
+                        viewModel.regPlatformUser(it.token?:"",loginRequest)
+                    }
+                }
+            }
+        }
+    }
+
     private fun googleLogin() {
         loading()
         AuthManager.authGoogle(this@LoginOKActivity)
@@ -409,6 +441,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
              start<SelectAccountActivity> {
                  putExtra(SelectAccountActivity.TYPE_SELECT,SelectAccountActivity.TYPE_LOGIN)
              }
+        })
+        viewModel.loginGlifeOrRegist.observe(this, Observer {
+            start<SelectAccountActivity> {
+                putExtra(SelectAccountActivity.TYPE_SELECT,SelectAccountActivity.TYPE_LOGINGLIFE_OR_REGIST)
+            }
         })
 
         //跳转至完善注册信息

@@ -399,10 +399,10 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                     context.getString((R.string.home_tab_today))
                 }
                 else -> {
-                    isVisible = false
                     ""
                 }
             }
+            isVisible = text.isNotEmpty()
         }
 
         if (isTimeInPlay) {

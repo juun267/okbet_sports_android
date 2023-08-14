@@ -44,6 +44,4 @@ class RecyclerGameListAdapter : BindingAdapter<OKGamesCategory, ItemGameViewList
             }
     }
 
-    fun notifyItem(position:Int){
-    }
 }

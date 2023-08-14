@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetInfoListData
+import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.list.adapter.*
 import org.cxct.sportlottery.util.*
@@ -60,7 +61,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
     fun reload(matchType: MatchType, gameType: String?) {
         this.matchType = matchType
-        this.gameType = gameType ?: GameType.BK.key
+        this.gameType = gameType ?: FIBAUtil?.takeFIBAItem()?.code ?: GameType.BK.key
         sportLeagueAdapter2.matchType = this.matchType
         reset()
         scrollBackTop()

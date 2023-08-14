@@ -58,6 +58,12 @@ class GameTab private constructor(@GameTabIds val id: Int,
             R.drawable.ic_okgame_label_search,
             R.drawable.ic_okgame_label_search,
             R.string.N882)
+
+        val TAB_OK_LIVE = GameTab(SEARCH,
+            R.drawable.ic_home_okgames_title,
+            R.drawable.ic_home_okgames_title,
+            R.drawable.ic_home_okgames_title,
+            R.string.N704)
     }
 
 }

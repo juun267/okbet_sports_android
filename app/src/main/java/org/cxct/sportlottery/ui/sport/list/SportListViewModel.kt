@@ -21,9 +21,10 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
-import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.maintab.worldcup.FIBAItem
+import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMDE_FORMAT
@@ -49,11 +50,6 @@ open class SportListViewModel(
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
     private val _oddsListGameHallResult = SingleLiveEvent<Event<OddsListResult?>>()
-
-    private val _sportMenuResult = SingleLiveEvent<SportMenuResult?>()
-
-    var tempDatePosition: Int = 0 //早盤的日期選擇切頁後要記憶的問題，切換球種要清除記憶
-
 
     val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
 
@@ -108,17 +104,6 @@ open class SportListViewModel(
                                 TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
                             matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
 
-                            /* #1 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
-                            val mInfo = mFavorMatchOddList.value?.peekContent()?.find { lo ->
-                                lo.league.id == leagueOdd.league.id
-                            }?.matchOdds?.find { mo ->
-                                mo.matchInfo?.id == matchInfo.id
-                            }?.matchInfo
-
-                            matchInfo.socketMatchStatus = mInfo?.socketMatchStatus
-                            matchInfo.statusName18n = mInfo?.statusName18n
-                            matchInfo.homeScore = mInfo?.homeScore
-                            matchInfo.awayScore = mInfo?.awayScore
                         }
 
                         // 过滤掉赔率为空掉对象
@@ -267,24 +252,18 @@ open class SportListViewModel(
         }
     }
 
-    fun switchGameType(matchType: MatchType, item: Item,selectLeagueIdList: ArrayList<String>,selectMatchIdList: ArrayList<String>) {
+    fun switchGameType(matchType: MatchType, item: Item, selectLeagueIdList: ArrayList<String>,selectMatchIdList: ArrayList<String>) {
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
-        //視覺上需要優先跳轉 tab
-        _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
+
         jobSwitchGameType = viewModelScope.launch {
-            getGameHallList(matchType, item.code, selectLeagueIdList,selectMatchIdList)
+            if (item is FIBAItem) {
+                getOddsList(GameType.BK.key, item.code, null, selectLeagueIdList, selectMatchIdList)
+            } else {
+                getGameHallList(matchType, item.code, selectLeagueIdList, selectMatchIdList)
+            }
         }
-    }
-
-
-    fun getEndScoreOddsList(gameType: String,
-                            matchType: MatchType,
-                            leagueIdList: List<String>? = null,
-                            matchIdList: List<String>? = null,) {
-
-        getOddsList(gameType, matchType.postValue)
     }
 
     private lateinit var oddsListRequestTag: Any
@@ -516,83 +495,6 @@ open class SportListViewModel(
         }
     }
 
-    private fun SportMenuData.sortSport(): SportMenuData {
-        this.menu.inPlay.items.sortedBy { sport ->
-            sport.sortNum
-        }
-        this.menu.today.items.sortedBy { sport ->
-            sport.sortNum
-        }
-        this.menu.early.items.sortedBy { sport ->
-            sport.sortNum
-        }
-        this.menu.cs.items.sortedBy { sport ->
-            sport.sortNum
-        }
-        this.menu.parlay.items.sortedBy { sport ->
-            sport.sortNum
-        }
-        this.menu.outright.items.sortedBy { sport ->
-            sport.sortNum
-        }
-        this.atStart.items.sortedBy { sport ->
-            sport.sortNum
-        }
-        this.menu.eps?.items?.sortedBy { sport ->
-            sport.sortNum
-        }
-
-        return this
-    }
-
-    fun getMatchCount(matchType: MatchType, sportMenuResult: SportMenuResult? = null): Int {
-        val sportMenuRes = sportMenuResult ?: _sportMenuResult.value
-        return when (matchType) {
-            MatchType.IN_PLAY -> {
-                sportMenuRes?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
-            }
-            MatchType.TODAY -> {
-                sportMenuRes?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
-            }
-            MatchType.EARLY -> {
-                sportMenuRes?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
-            }
-            MatchType.CS -> {
-                sportMenuRes?.sportMenuData?.menu?.cs?.items?.sumBy { it.num } ?: 0
-            }
-            MatchType.PARLAY -> {
-                sportMenuRes?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
-            }
-            MatchType.OUTRIGHT -> {
-                sportMenuRes?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
-            }
-            MatchType.AT_START -> {
-                sportMenuRes?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
-            }
-            MatchType.EPS -> {
-                sportMenuRes?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
-            }
-            else -> {
-                0
-            }
-        }
-    }
-
-    //滾球、今日、早盤、冠軍、串關、(即將跟menu同一層)
-    private suspend fun getSportMenuAll(): SportMenuResult? {
-        return doNetwork(androidContext) {
-            sportMenuRepository.getSportMenu(
-                TimeUtil.getNowTimeStamp().toString(),
-                TimeUtil.getTodayStartTimeStamp().toString()
-            ).apply {
-                if (isSuccessful && body()?.success == true) {
-                    // 每次執行必做
-                    body()?.sportMenuData?.sortSport()
-                }
-            }
-        }
-    }
-
     val sportTypeMenuData by lazy { SingleLiveEvent<Triple<List<Item>, Boolean, String>>() }
     val sportMenuApiResult = SingleLiveEvent<ApiResult<SportMenuData>>()
 
@@ -608,7 +510,7 @@ open class SportListViewModel(
             return@callApi
         }
 
-        val itemList = when (matchType) {
+        var itemList = when (matchType) {
             MatchType.IN_PLAY ->  menuData.menu.inPlay.items
             MatchType.TODAY -> menuData.menu.today.items
             MatchType.EARLY -> menuData.menu.early.items
@@ -621,30 +523,22 @@ open class SportListViewModel(
             else -> listOf()
         }
 
-        sportTypeMenuData.value = Triple(itemList, sportMenuResult.succeeded(), sportMenuResult.msg)
-        sportMenuApiResult.value = sportMenuResult
-    }
+        if (StaticData.worldCupOpened()) {
+            if (matchType == MatchType.IN_PLAY
+                || matchType == MatchType.AT_START
+                || matchType == MatchType.TODAY
+                || matchType == MatchType.EARLY) {
 
-    fun switchMatchType(matchType: MatchType) {
-
-        viewModelScope.launch {
-            val sportMenuResult = getSportMenuAll()
-            sportMenuResult?.let {
-                if (it.success) {
-                    _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
+                FIBAUtil.takeFIBAItem()?.let {
+                    val list = itemList.toMutableList()
+                    list.add(0, it)
+                    itemList = list
                 }
             }
         }
 
-    }
-
-
-    private fun SportMenuResult.updateSportSelectState(
-        matchType: MatchType?,
-        gameTypeCode: String?,
-    ) {
-        this.sportMenuData?.updateSportSelectState(matchType, gameTypeCode)
-        _sportMenuResult.postValue(this)
+        sportTypeMenuData.value = Triple(itemList, sportMenuResult.succeeded(), sportMenuResult.msg)
+        sportMenuApiResult.value = sportMenuResult
     }
 
     private fun SportMenuData.updateSportSelectState(
@@ -735,4 +629,5 @@ open class SportListViewModel(
         }
         return this
     }
+
 }

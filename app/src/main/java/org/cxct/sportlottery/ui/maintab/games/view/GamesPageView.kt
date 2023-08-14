@@ -9,10 +9,20 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewGamePageBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
+import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.enterThirdGame
+import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
+import org.cxct.sportlottery.view.transform.TransformInDialog
 
 class GamesPageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
@@ -79,13 +89,14 @@ class GamesPageView @JvmOverloads constructor(
     }
 
     //设置数据
-    fun setListData(data: List<OKGameBean>?): GamesPageView {
+    fun setListData(data: List<OKGameBean>?,isNeedCut:Boolean=true): GamesPageView {
         dataList.clear()
         if (data == null) {
             return this
         }
-        //最多显示18个
         val cutData: List<OKGameBean> =
+            if(isNeedCut){
+            //最多显示18个
             if (data.size > 18) {
                 mAdapter.setIsMoreThan(true)
                 data.subList(0, 18)
@@ -93,6 +104,10 @@ class GamesPageView @JvmOverloads constructor(
                 mAdapter.setIsMoreThan(false)
                 data
             }
+        }else{
+            data
+        }
+
         //填充数据
         groupDataList(cutData)
 
@@ -143,6 +158,10 @@ class GamesPageView @JvmOverloads constructor(
         return this
     }
 
+    fun setIsShowCollect(flag:Boolean): GamesPageView {
+        mAdapter.setIsShoeCollect(flag)
+        return this
+    }
     //模块名称
     fun setCategoryName(name: Int): GamesPageView {
         binding.tvName.setText(name)
@@ -156,6 +175,10 @@ class GamesPageView @JvmOverloads constructor(
     //更多点击
     fun setOnMoreClick(block: () -> Unit): GamesPageView {
         onMoreClick = block
+        return this
+    }
+    fun setMoreGone(): GamesPageView{
+        binding.tvMore.gone()
         return this
     }
 
@@ -233,6 +256,52 @@ class GamesPageView @JvmOverloads constructor(
                     }
                 }
             })
+        }
+    }
+
+
+    //首页okGames配置
+    fun initOkGames(fragment:MainHomeFragment){
+        initEnterGame(fragment)
+        //请求games数据
+        fragment.viewModel.getHomeOKGamesList300()
+        setIcon(R.drawable.ic_home_okgames_title)
+        setCategoryName(R.string.N704)
+        //数据监听
+        fragment.viewModel.homeGamesList300.observe(fragment.viewLifecycleOwner) {
+            this.visible()
+            mAdapter.setIsShoeCollect(false)
+            setListData(it,false)
+            setOnGameClick {okGameBean->
+                if(LoginRepository.isLogined()){
+                    loginedRun(fragment.requireContext()) {
+                        okGameBean.let {okGameBean->
+                            fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
+                            fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
+                        }
+                    }
+                }else{
+                    //请求试玩路线
+                    fragment.loading()
+                    fragment.viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
+                }
+            }
+            setOnMoreClick {
+                fragment.jumpToOKGames()
+            }
+        }
+    }
+
+    private fun <T : MainHomeViewModel> initEnterGame(fragment: BindingSocketFragment<T, *>) {
+        fragment.viewModel.enterThirdGameResult.observe(fragment.viewLifecycleOwner) {
+            if (fragment.isVisible) fragment.enterThirdGame(it.second, it.first)
+        }
+        fragment.viewModel.gameBalanceResult.observe(fragment.viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { event ->
+                TransformInDialog(event.first, event.second, event.third) { enterResult ->
+                    fragment.enterThirdGame(enterResult, event.first)
+                }.show(fragment.childFragmentManager, null)
+            }
         }
     }
 }

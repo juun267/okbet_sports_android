@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.ui.maintab.worldcup.FIBAItem
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 
@@ -51,11 +52,18 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val itemView = AppCompatImageView(parent.context)
         itemView.layoutParams = iconParams
+        itemView.scaleType = ImageView.ScaleType.CENTER_CROP
         return BaseViewHolder(itemView)
     }
 
     override fun convert(holder: BaseViewHolder, item: Item) = (holder.itemView as ImageView).run {
-        setImageResource(GameType.getGameTypeMenuIcon(item.code))
+        if (item is FIBAItem) {
+            7.dp.let { setPadding(it, it, it, it) }
+            setImageDrawable(item.icon)
+        } else {
+            setPadding(0, 0, 0, 0)
+            setImageResource(GameType.getGameTypeMenuIcon(item.code))
+        }
         background = if (item.isSelected) bgDrawable else null
     }
 
