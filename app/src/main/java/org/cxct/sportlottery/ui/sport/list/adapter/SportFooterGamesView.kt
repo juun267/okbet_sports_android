@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
@@ -29,6 +30,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.GameChildAdapter
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
+import org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.TrialGameDialog
@@ -41,10 +43,13 @@ class SportFooterGamesView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr), OnItemClickListener {
 
     private val okGamesAdapter by lazy { GameChildAdapter(::onFavoriteClick).apply { setOnItemClickListener(this@SportFooterGamesView) } }
+    private val okLiveAdapter by lazy { GameChildAdapter(::onFavoriteClick,gameEntryType = GameEntryType.OKLIVE).apply { setOnItemClickListener(this@SportFooterGamesView) } }
     private lateinit var fragment: BaseFragment<*>
     private lateinit var okGamesViewModel: OKGamesViewModel
     private lateinit var noMoreText: TextView
     private lateinit var moreLabelLayout: LinearLayout
+    private lateinit var okliveMoreLabelLayout: LinearLayout
+    private lateinit var homeButtomView: HomeButtomView
     private val gameItemViewPool by lazy {
         RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(0, 20) }
     }
@@ -55,7 +60,9 @@ class SportFooterGamesView @JvmOverloads constructor(
         setBackgroundResource(R.color.color_F8F9FD)
         addNomoreText()
         initOKGameList()
+        initOKLiveList()
 //        addOKBingo()
+        initBottomView()
     }
 
     private fun addNomoreText() {
@@ -67,7 +74,6 @@ class SportFooterGamesView @JvmOverloads constructor(
         noMoreText.text = "- ${resources.getString(R.string.N111)} -"
         addView(noMoreText, ViewGroup.LayoutParams(-1, -2))
     }
-
 
     private fun addOKBingo() {
 
@@ -149,13 +155,63 @@ class SportFooterGamesView @JvmOverloads constructor(
         recyclerView.setRecycledViewPool(gameItemViewPool)
         addView(recyclerView)
     }
+    private fun initOKLiveList() {
+        okliveMoreLabelLayout = LinearLayout(context)
+        val dp12 = 12.dp
+        okliveMoreLabelLayout.setPadding(dp12, 0, dp12, 0)
+        val params = LayoutParams(-1, -2)
+        params.gravity = Gravity.CENTER_VERTICAL
+        params.topMargin = 16.dp
+        params.bottomMargin = 8.dp
+        addView(okliveMoreLabelLayout, params)
 
+        val icon = AppCompatImageView(context)
+        icon.setImageResource(R.drawable.ic_okgame_label_oklive)
+        24.dp.let { okliveMoreLabelLayout.addView(icon, LayoutParams(it, it)) }
+
+        val text = AppCompatTextView(context)
+        text.setPadding(4.dp, 0, 0, 0)
+        text.setTextColor(ContextCompat.getColor(context, R.color.color_14366B))
+        text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
+        text.paint.style = Paint.Style.FILL_AND_STROKE
+        text.paint.strokeWidth = 0.9f
+        text.setText(R.string.P160)
+        okliveMoreLabelLayout.addView(text, LayoutParams(0, -2, 1f))
+
+        val moreText = AppCompatTextView(context)
+        moreText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13f)
+        moreText.setTextColor(ContextCompat.getColor(context, R.color.color_6D7693))
+        moreText.setText(R.string.N702)
+        moreText.setBackgroundResource(R.drawable.bg_more)
+        val dp7 = 7.dp
+        val dp3 = 3.dp
+        moreText.setPadding(dp7, dp3, dp3, dp3)
+        moreText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_game_gray_arrow_right, 0)
+        moreText.setOnClickListener { (fragment.activity as MainTabActivity?)?.jumpToOkLive() }
+        okliveMoreLabelLayout.addView(moreText, LayoutParams(-2, -2))
+        okliveMoreLabelLayout.gone()
+
+
+        val recyclerView = RecyclerView(context)
+        recyclerView.setPadding(dp12, 0, dp12, 0)
+        recyclerView.isNestedScrollingEnabled = false
+        recyclerView.setLinearLayoutManager(RecyclerView.HORIZONTAL)
+        recyclerView.adapter = okLiveAdapter
+        recyclerView.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+        recyclerView.setRecycledViewPool(gameItemViewPool)
+        addView(recyclerView)
+    }
+    private fun initBottomView() {
+        homeButtomView = HomeButtomView(context)
+        addView(homeButtomView)
+    }
     fun setUp(fragment: BaseFragment<*>, viewmodel: OKGamesViewModel) {
         this.fragment = fragment
         this.okGamesViewModel = viewmodel
         initObserver(fragment, viewmodel)
-//        viewmodel.getSportOKLive() // 没有数据暂时不开放 2023.06.21
         viewmodel.getSportOKGames()
+        viewmodel.getSportOKLive()
+        homeButtomView.setServiceClick(fragment.parentFragmentManager)
     }
 
     private fun initObserver(lifecycleOwner: BaseFragment<*>, viewmodel: OKGamesViewModel) = viewmodel.run {
@@ -168,10 +224,19 @@ class SportFooterGamesView @JvmOverloads constructor(
             moreLabelLayout.isVisible = it.isNotEmpty()
             okGamesAdapter.setNewInstance(it.toMutableList())
         }
-//        sportOKLives.observe(lifecycleOwner) { gameAdapter.setupOKLives(it, ::onMoreOKLives) }
+        sportOKLives.observe(lifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                return@observe
+            }
+            okliveMoreLabelLayout.isVisible = it.isNotEmpty()
+            okLiveAdapter.setNewInstance(it.toMutableList())
+        }
 
         collectOkGamesResult.observe(lifecycleOwner) {
-            onFavoriteStatus(okGamesAdapter, it.second)
+            onFavoriteStatus(when(it.second.gameEntryType){
+                GameEntryType.OKGAMES->okGamesAdapter
+                else->okLiveAdapter
+                 }, it.second)
         }
 
         enterThirdGameResult.observe(lifecycleOwner) {
@@ -231,13 +296,7 @@ class SportFooterGamesView @JvmOverloads constructor(
             fragment.loading()
             okGamesViewModel.requestEnterThirdGameNoLogin(gameBean.firmType, gameBean.gameCode, gameBean.thirdGameCategory)
         }
-
     }
-
-    private fun onMoreOKLives() {
-
-    }
-
     fun sportNoMoreEnable(enable: Boolean) {
         noMoreText.isVisible = enable
     }

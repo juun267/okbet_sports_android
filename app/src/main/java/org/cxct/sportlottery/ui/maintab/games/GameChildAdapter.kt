@@ -15,11 +15,13 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemGameChildBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.onClick
 
-class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
-                       val moreClick: (() -> Unit)? = null) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
+class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
+    val moreClick: (() -> Unit)? = null,
+    val gameEntryType: GameEntryType = GameEntryType.OKGAMES) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
 
     private var moreTextView: TextView? = null
     private var gameTotal: Int = 0
@@ -66,16 +68,20 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
 
     override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGameBean) {
         binding.apply {
+            ivCover.layoutParams.apply {
+                height = if (gameEntryType == GameEntryType.OKLIVE) 88.dp else 110.dp
+                ivCover.layoutParams = this
+            }
             ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
             tvName.text = item.gameName
             tvFirmName.text = item.firmName
             ivFav.isSelected = item.markCollect
             ivFav.setOnClickListener {
+                item.gameEntryType = gameEntryType
                 onFavoriate.invoke(ivFav, item)
                 onFavoriate2.invoke(ivFav, item)
             }
             root.setOnClickListener { getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position) }
-
 
             if(position==itemSize-1&&itemIndex==3){
                 if(isMoreThan18){
