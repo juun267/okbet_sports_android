@@ -10,5 +10,6 @@ data class SportCouponItem(
     val num: Int,
     val sort: Int,
     val pcPubImage: String?,
-    val h5PubImage: String?
+    val h5PubImage: String?,
+    val isFiba: Boolean = false
 )

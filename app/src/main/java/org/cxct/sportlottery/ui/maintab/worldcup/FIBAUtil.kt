@@ -46,7 +46,7 @@ object FIBAUtil {
 
                 list.find { fibaCode == it.couponCode }?.let {
                     if (!it.icon.isEmptyStr() && !it.couponCode.isEmptyStr() && !it.couponName.isEmptyStr()) {
-                        fibaItem = FIBAItem(it.icon!!, it.couponCode!!, it.couponName!!, it.num, it.sort)
+                        fibaItem = FIBAItem(it.isFiba, it.icon!!, it.couponCode!!, it.couponName!!, it.num, it.sort)
                     }
                 }
             }
@@ -56,8 +56,10 @@ object FIBAUtil {
     fun takeFIBAItem(): FIBAItem? {
         if (fibaItem == null) {
             preloadLoad()
+        } else if (fibaItem!!.enable) {
+            return fibaItem
         }
-        return fibaItem
+        return null
     }
 
 }
