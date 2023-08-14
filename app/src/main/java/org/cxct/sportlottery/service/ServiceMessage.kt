@@ -151,11 +151,15 @@ object ServiceMessage {
     }
 
     fun getRecondNew(messageStr: String): RecordNewEvent? {
-        return FastJsonUtils.jsonToObject(messageStr,RecordNewEvent::class.java)
+        val recode = FastJsonUtils.jsonToObject(messageStr,RecordNewEvent::class.java)
+        recode.isWS = true
+        return recode
     }
 
     fun getRecondResult(messageStr: String): RecordNewEvent? {
-        return FastJsonUtils.jsonToObject(messageStr,RecordNewEvent::class.java)
+        val recode = FastJsonUtils.jsonToObject(messageStr,RecordNewEvent::class.java)
+        recode.isWS = true
+        return recode
     }
 
 }
