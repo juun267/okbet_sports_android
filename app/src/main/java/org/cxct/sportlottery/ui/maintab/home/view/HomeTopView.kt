@@ -269,7 +269,9 @@ class HomeTopView @JvmOverloads constructor(
                     fragment.jumpToInplaySport()
                 }
                 OkLive->{
-                    (fragment.activity as MainTabActivity).jumpToOkLive()
+                    if (StaticData.okLiveOpened()) {
+                        (fragment.activity as MainTabActivity).jumpToOkLive()
+                    }
                 }
                 OkGame->{
                     (fragment.activity as MainTabActivity).jumpToOKGames()

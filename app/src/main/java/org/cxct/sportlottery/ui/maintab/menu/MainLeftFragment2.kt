@@ -240,7 +240,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         ) {
             getMainTabActivity().jumpToOkLive() }
 
-        okLiveItem.group.setVisibilityByMarketSwitch()
+        okLiveItem.group.isVisible = !getMarketSwitch() && StaticData.okLiveOpened()
 
         var index = binding.llMenuRoot.indexOfChild(divider1)
         promotionItem = addMenu(
