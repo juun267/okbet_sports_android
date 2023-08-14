@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.net.live
 
 import com.google.gson.JsonObject
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -15,7 +16,7 @@ object OKLiveRepository {
     private fun paramDevice(): JsonObject {
         val params = JsonObject()
         params.addProperty("device", 2)
-        params.addProperty("gameEntryType", "OK_LIVE")
+        params.addProperty("gameEntryType",  GameEntryType.OKLIVE.key)
         return params
     }
 
@@ -23,7 +24,7 @@ object OKLiveRepository {
         val params = JsonObject()
         params.addProperty("id", gameId)
         params.addProperty("markCollect", markCollect)
-        params.addProperty("gameEntryType", "OK_LIVE")
+        params.addProperty("gameEntryType", GameEntryType.OKLIVE.key)
         return okLiveApi.okLivecollect(params)
     }
 
@@ -51,7 +52,7 @@ object OKLiveRepository {
         val params = paramDevice()
         params.addProperty("page", page)
         params.addProperty("pageSize", pageSize)
-        params.addProperty("gameEntryType", "OK_LIVE")
+        params.addProperty("gameEntryType",  GameEntryType.OKLIVE.key)
         if (markCollect == null) {
             params.addProperty("gameName", gameName)
             params.addProperty("categoryId", categoryId)
@@ -77,7 +78,7 @@ object OKLiveRepository {
         params.addProperty("pageSize", pageSize)
         //首页推荐 1启用,2禁用
         params.addProperty("enableHome", 1)
-        params.addProperty("gameEntryType", "OK_LIVE")
+        params.addProperty("gameEntryType",  GameEntryType.OKLIVE.key)
         return okLiveApi.getOKLiveList(params)
     }
 }
