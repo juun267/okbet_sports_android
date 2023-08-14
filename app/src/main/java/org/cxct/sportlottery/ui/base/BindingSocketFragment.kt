@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
 import androidx.viewbinding.ViewBinding
-import org.cxct.sportlottery.ui.chat.LiveMsgEntity
 
 abstract class BindingSocketFragment<VM : BaseViewModel, VB: ViewBinding>: BindingFragment<VM, VB>() {
 
@@ -68,26 +67,6 @@ abstract class BindingSocketFragment<VM : BaseViewModel, VB: ViewBinding>: Bindi
     protected fun betListPageUnSubScribeEvent() {
         (activity as BaseSocketActivity<*>).betListPageUnSubScribeEvent()
     }
-
-    protected fun fastBetPageSubscribeHallEvent(gameType: String?, eventId: String?) {
-        (activity as BaseSocketActivity<*>).fastBetPageSubscribeHallEvent(gameType, eventId)
-    }
-
-    protected fun fastBetPageSubscribeEvent(eventId: String?) {
-        (activity as BaseSocketActivity<*>).fastBetPageSubscribeEvent(eventId)
-    }
-
-    protected fun fastBetPageUnSubscribeEvent() {
-        (activity as BaseSocketActivity<*>).fastBetPageUnSubscribeEvent()
-    }
-
-    protected fun getBetListPageVisible(): Boolean {
-        return when (val thisActivity = activity) {
-            is BaseBottomNavActivity<*> -> thisActivity.getBetListPageVisible()
-            else -> false
-        }
-    }
-
 
 
 }

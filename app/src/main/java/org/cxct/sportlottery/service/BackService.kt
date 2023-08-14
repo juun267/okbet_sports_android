@@ -62,7 +62,6 @@ class BackService : Service() {
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
     private val mSubscribedMap = mutableMapOf<String, Disposable?>() //Map<url, channel>
     private val mOriginalSubscribedMap = mutableMapOf<String, Disposable?>() //投注單頁面邏輯, 紀錄進入投注單前以訂閱的頻道, 離開投注單頁面時, 解除訂閱不解除此map中的頻道
-    private var mFastBetSubscribed: String? = null
     private val mSubscribeChannelPending = mutableListOf<String>()
     private var errorFlag = false // Stomp connect錯誤
     private var reconnectionNum = 0//重新連接次數
@@ -297,30 +296,6 @@ class BackService : Service() {
      */
     fun betListPageUnSubScribeEvent() {
         mOriginalSubscribedMap.clear()
-    }
-
-    fun fastBetPageSubscribeHallEvent(gameType: String?, eventId: String?) {
-        if (gameType == null || eventId == null) return
-        val url = "$URL_HALL/$mPlatformId/$gameType/$eventId/$WS_END_TYPE"
-
-        subscribeChannel(url)
-        mFastBetSubscribed = url
-    }
-
-    fun fastBetPageSubscribeEvent(eventId: String?) {
-        if (eventId == null) return
-
-        val url = "$URL_EVENT/$mPlatformId/$eventId/$WS_END_TYPE"
-
-        subscribeChannel(url)
-        mFastBetSubscribed = url
-    }
-
-    fun fastBetPageUnSubscribeEvent() {
-        mFastBetSubscribed?.let { fastBetSubscribeUrl ->
-            unsubscribeChannel(fastBetSubscribeUrl)
-            mFastBetSubscribed = null
-        }
     }
 
     fun subscribeEventChannel(eventId: String?) {

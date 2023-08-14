@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.base
 
-import org.cxct.sportlottery.ui.chat.LiveMsgEntity
 import kotlin.reflect.KClass
 
 abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
@@ -68,18 +67,6 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     protected fun betListPageUnSubScribeEvent() {
         (activity as BaseSocketActivity<*>).betListPageUnSubScribeEvent()
-    }
-
-    protected fun fastBetPageSubscribeHallEvent(gameType: String?, eventId: String?) {
-        (activity as BaseSocketActivity<*>).fastBetPageSubscribeHallEvent(gameType, eventId)
-    }
-
-    protected fun fastBetPageSubscribeEvent(eventId: String?) {
-        (activity as BaseSocketActivity<*>).fastBetPageSubscribeEvent(eventId)
-    }
-
-    protected fun fastBetPageUnSubscribeEvent() {
-        (activity as BaseSocketActivity<*>).fastBetPageUnSubscribeEvent()
     }
 
     protected fun getBetListPageVisible(): Boolean {

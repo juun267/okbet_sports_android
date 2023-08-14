@@ -218,18 +218,6 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         backService?.betListPageUnSubScribeEvent()
     }
 
-    fun fastBetPageSubscribeHallEvent(gameType: String?, eventId: String?) {
-        backService?.fastBetPageSubscribeHallEvent(gameType, eventId)
-    }
-
-    fun fastBetPageSubscribeEvent(eventId: String?) {
-        backService?.fastBetPageSubscribeEvent(eventId)
-    }
-
-    fun fastBetPageUnSubscribeEvent() {
-        backService?.fastBetPageUnSubscribeEvent()
-    }
-
     override fun onStart() {
         super.onStart()
         bindService()

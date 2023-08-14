@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.RCVDecoration
 import kotlin.random.Random
 
@@ -167,6 +169,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     fun onNewWSBetData(data: RecordNewEvent) {
+        Log.e("For Test", "=====>>> onNewWSBetData 333 ${JsonUtil.toJson(data)}")
         wsBetDataList.add(data)
     }
 
