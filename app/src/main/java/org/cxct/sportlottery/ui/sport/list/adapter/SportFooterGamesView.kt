@@ -42,8 +42,8 @@ class SportFooterGamesView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr), OnItemClickListener {
 
-    private val okGamesAdapter by lazy { GameChildAdapter(::onFavoriteClick).apply { setOnItemClickListener(this@SportFooterGamesView) } }
-    private val okLiveAdapter by lazy { GameChildAdapter(::onFavoriteClick,gameEntryType = GameEntryType.OKLIVE).apply { setOnItemClickListener(this@SportFooterGamesView) } }
+    private val okGamesAdapter by lazy { GameChildAdapter(::onFavoriteClick,gameEntryType = GameEntryType.OKGAMES, showFavorite = false).apply { setOnItemClickListener(this@SportFooterGamesView) } }
+    private val okLiveAdapter by lazy { GameChildAdapter(::onFavoriteClick,gameEntryType = GameEntryType.OKLIVE, showFavorite = false).apply { setOnItemClickListener(this@SportFooterGamesView) } }
     private lateinit var fragment: BaseFragment<*>
     private lateinit var okGamesViewModel: OKGamesViewModel
     private lateinit var noMoreText: TextView
@@ -282,7 +282,7 @@ class SportFooterGamesView @JvmOverloads constructor(
 
     private fun onFavoriteClick(view: View, gameBean: OKGameBean) {
         loginedRun(context) {
-            okGamesViewModel.collectGame(gameBean)
+            okGamesViewModel.collectGame(gameBean,gameBean.gameEntryType)
             view.animDuang(1.3f)
         }
 

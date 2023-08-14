@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -21,7 +22,8 @@ import org.cxct.sportlottery.view.onClick
 
 class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
     val moreClick: (() -> Unit)? = null,
-    val gameEntryType: GameEntryType = GameEntryType.OKGAMES) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
+    val gameEntryType: GameEntryType = GameEntryType.OKGAMES,
+    val showFavorite: Boolean = true) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
 
     private var moreTextView: TextView? = null
     private var gameTotal: Int = 0
@@ -75,6 +77,7 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
             ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
             tvName.text = item.gameName
             tvFirmName.text = item.firmName
+            ivFav.isVisible = showFavorite
             ivFav.isSelected = item.markCollect
             ivFav.setOnClickListener {
                 item.gameEntryType = gameEntryType
