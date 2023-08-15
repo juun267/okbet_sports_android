@@ -266,7 +266,9 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             ?: findESport(menu.early.items, MatchType.EARLY, gameType)
 
         if (matchType == null) {
-            showPromptDialog(getString(R.string.prompt), getString(R.string.P172)) { }
+            if (gameType == GameType.ES) { // 仅电竞的时候提示
+                showPromptDialog(getString(R.string.prompt), getString(R.string.P172)) { }
+            }
 //            ToastUtil.showToast(context(), R.string.P172)
             return MatchType.IN_PLAY
         }
