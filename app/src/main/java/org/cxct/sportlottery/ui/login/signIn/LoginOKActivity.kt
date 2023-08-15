@@ -109,12 +109,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         initObserve()
         viewModel.focusChangeCheckAllInputComplete()
         EventBusUtil.targetLifecycle(this)
-
+        binding.includeSubtitle.tvSubTitle1.isVisible = false
+        binding.includeSubtitle.tvSubTitle2.isVisible = false
         val loginType = intent.getIntExtra("login_type", LOGIN_TYPE_PWD)
-        if (LOGIN_TYPE_CODE == loginType) {
-            switchLoginType(LOGIN_TYPE_CODE)
-        } else if (loginType == LOGIN_TYPE_GOOGLE) {
+        if (loginType == LOGIN_TYPE_GOOGLE) {
             googleLogin()
+        }else{
+            switchLoginType(LOGIN_TYPE_CODE)
         }
     }
 
