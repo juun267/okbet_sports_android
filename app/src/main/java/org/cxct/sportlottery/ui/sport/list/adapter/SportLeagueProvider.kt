@@ -44,7 +44,7 @@ class SportLeagueProvider(
         val topDivider = View(context)
         topDivider.id = dividerId
         topDivider.layoutParams = ViewGroup.LayoutParams(-1, 0.5f.dp)
-        topDivider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_D4E1F1))
+        topDivider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_E1EDFF))
         root.addView(topDivider)
 
         val wh20 = 20.dp

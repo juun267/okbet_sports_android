@@ -41,11 +41,11 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
         root.orientation = LinearLayout.VERTICAL
         root.setBackgroundResource(R.color.color_FCFDFF)
         root.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
-        root.addView(context.dividerView(R.color.color_ebf1fc, 1.dp))
+        root.addView(context.dividerView(R.color.color_E1EDFF, 0.5f.dp))
 
         val lin = LinearLayout(context)
         lin.gravity = Gravity.CENTER_VERTICAL
-        lin.layoutParams = LinearLayout.LayoutParams(-1, 50.dp)
+        lin.layoutParams = LinearLayout.LayoutParams(-1, -2)
         root.addView(lin)
 
         val logo = AppCompatImageView(context)
