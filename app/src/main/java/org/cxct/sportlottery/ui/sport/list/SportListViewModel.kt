@@ -272,7 +272,7 @@ open class SportListViewModel(
         }
 
         jobSwitchGameType = viewModelScope.launch {
-            if (item is FIBAItem) {
+            if (matchType == MatchType.FIBA) {
                 getOddsList(GameType.BK.key, item.code, null, selectLeagueIdList, selectMatchIdList)
             } else {
                 getGameHallList(matchType, item.code, selectLeagueIdList, selectMatchIdList)
@@ -537,8 +537,9 @@ open class SportListViewModel(
             else -> listOf()
         }
 
-        if (StaticData.worldCupOpened()) {
-            if (matchType == MatchType.IN_PLAY
+        if (StaticData.worldCupOpened()&&FIBAUtil.takeFIBAItem()!=null) {
+            if (matchType == MatchType.FIBA
+                ||matchType == MatchType.IN_PLAY
                 || matchType == MatchType.AT_START
                 || matchType == MatchType.TODAY
                 || matchType == MatchType.EARLY) {
