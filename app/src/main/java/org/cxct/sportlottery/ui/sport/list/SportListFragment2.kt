@@ -61,7 +61,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
     fun reload(matchType: MatchType, gameType: String?) {
         this.matchType = matchType
-        this.gameType = gameType ?: FIBAUtil?.takeFIBAItem()?.code ?: GameType.BK.key
+        this.gameType = gameType ?: GameType.BK.key
         sportLeagueAdapter2.matchType = this.matchType
         reset()
         scrollBackTop()

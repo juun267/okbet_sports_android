@@ -11,14 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.chad.library.adapter.base.entity.node.BaseNode
+import com.didichuxing.doraemonkit.util.GsonUtils
 import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.SelectMatchEvent
-import org.cxct.sportlottery.common.extentions.getPlayCateName
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.rotationAnimation
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -34,6 +32,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
@@ -142,7 +141,12 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         gameType = targetGameType!!.code
         targetGameType!!.isSelected = true
         load(targetGameType!!)
-
+        //篮球世界杯界面
+        if (gameTypeList.size==1&&gameTypeList.first().code==FIBAUtil.fibaCode){
+            binding.sportTypeList.gone()
+        }else{
+            binding.sportTypeList.show()
+        }
         gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
         (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             binding.sportTypeList,
@@ -239,6 +243,11 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     protected open fun onGameTypeChanged(item: Item, position: Int) {
+        if (item.code == FIBAUtil.fibaCode){
+            (parentFragment as SportFragment2).setJumpSport(MatchType.FIBA)
+            return
+        }
+        //日期圖示選取狀態下，切換球種要重置UI狀態
         gameType = item.code
         clearData()
         val layoutManager = binding.sportTypeList.layoutManager as ScrollCenterLayoutManager
