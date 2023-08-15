@@ -5,7 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -169,7 +168,6 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     fun onNewWSBetData(data: RecordNewEvent) {
-        Log.e("For Test", "=====>>> onNewWSBetData 333 ${JsonUtil.toJson(data)}")
         wsBetDataList.add(data)
     }
 

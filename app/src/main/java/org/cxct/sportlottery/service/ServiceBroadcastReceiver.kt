@@ -126,7 +126,7 @@ object ServiceBroadcastReceiver {
     private val _lockMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
     private val _sysMaintenance = SingleLiveEvent<SysMaintenanceEvent?>()
-    private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
+    private val _serviceConnectStatus = SingleLiveEvent<ServiceConnectStatus>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
     private val _userDiscountChange = MutableLiveData<UserDiscountChangeEvent?>()

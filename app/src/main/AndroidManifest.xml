@@ -247,8 +247,6 @@
             android:name=".ui.promotion.PromotionDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <service android:name=".service.BackService" /> <!-- broadCast -->
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

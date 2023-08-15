@@ -1,11 +1,6 @@
 package org.cxct.sportlottery.service
 
-import android.app.Service
-import android.content.Intent
-import android.os.Binder
-import android.os.IBinder
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -24,85 +19,74 @@ import java.net.NoRouteToHostException
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
+ object BackService {
 
-class BackService : Service() {
-    companion object {
+    private const val WS_END_TYPE = "encrypted"
 
-        const val WS_END_TYPE = "encrypted"
+    private val URL_SOCKET_HOST_AND_PORT: String get() = "${Constants.getSocketUrl()}/api/ws/app/im" //app连接端点,无sockjs
 
-        private val URL_SOCKET_HOST_AND_PORT: String get() = "${Constants.getSocketUrl()}/api/ws/app/im" //app连接端点,无sockjs
+     private const val URL_ALL = "/ws/notify/all/$WS_END_TYPE" //全体公共频道
 
-        const val URL_ALL = "/ws/notify/all/$WS_END_TYPE" //全体公共频道
+    private const val SPORT_HALL_CHANNEL_LENGTH = 6
 
-        private const val SPORT_HALL_CHANNEL_LENGTH = 6
+    private var mUserId: Long? = null
+    private var mPlatformId: Long? = null
 
-        internal var mUserId: Long? = null
-        private var mPlatformId: Long? = null
+    private const val URL_USER = "/user/self/$WS_END_TYPE"
+    private val URL_USER_PRIVATE: String get() = "/ws/notify/user/$mUserId/$WS_END_TYPE"  //用户私人频道
+    private val URL_PLATFORM get() = "/ws/notify/platform/$mPlatformId/$WS_END_TYPE" //公共频道  这个通道会通知主站平台维护
 
-        const val URL_USER = "/user/self/$WS_END_TYPE"
-        val URL_USER_PRIVATE: String get() = "/ws/notify/user/$mUserId/$WS_END_TYPE"  //用户私人频道
-        val URL_PLATFORM get() = "/ws/notify/platform/$mPlatformId/$WS_END_TYPE" //公共频道  这个通道会通知主站平台维护
+    //const val URL_USER = "/user/self"
+    //val URL_USER_PRIVATE: String get() = "/ws/notify/user/$mUserId"  //用户私人频道
+    //val URL_PLATFORM get() = "/ws/notify/platform/$mPlatformId"
+    private const val URL_EVENT = "/ws/notify/event" //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id)
+     private const val URL_HALL = "/ws/notify/hall" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
 
-        //const val URL_USER = "/user/self"
-        //val URL_USER_PRIVATE: String get() = "/ws/notify/user/$mUserId"  //用户私人频道
-        //val URL_PLATFORM get() = "/ws/notify/platform/$mPlatformId"
-        const val URL_EVENT = "/ws/notify/event" //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id)
-        const val URL_HALL = "/ws/notify/hall" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
-
-        private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
-        private const val RECONNECT_LIMIT = 1 //斷線後重連次數限制
-        private const val LOADING_TIME_INTERVAL: Long = 500
-    }
+    private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
+    private const val RECONNECT_LIMIT = 1 //斷線後重連次數限制
+    private const val LOADING_TIME_INTERVAL: Long = 500
 
 
     private var mToken = ""
-    private val mBinder: IBinder = MyBinder()
     private var mStompClient: StompClient? = null
-    private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
-    private val mSubscribedMap = mutableMapOf<String, Disposable?>() //Map<url, channel>
+    private var lifecycleDisposable: Disposable? = null
+    private val mSubscribedMap = mutableMapOf<String, Disposable>() //Map<url, channel>
     private val mOriginalSubscribedMap = mutableMapOf<String, Disposable?>() //投注單頁面邏輯, 紀錄進入投注單前以訂閱的頻道, 離開投注單頁面時, 解除訂閱不解除此map中的頻道
     private val mSubscribeChannelPending = mutableListOf<String>()
     private var errorFlag = false // Stomp connect錯誤
     private var reconnectionNum = 0//重新連接次數
     private var delay: Boolean = false
-    //切换到后台，大约两分钟后，切换会前台，会导致这个频道被订阅两次，
-    private var firstSetNotifyAll: Boolean = true
 
-    inner class MyBinder : Binder() {
-        val service: BackService
-            get() = this@BackService
+    fun connect(token: String?, userId: Long, platformId: Long) {
+        val changed = mToken != token || mUserId != userId || mPlatformId != platformId
 
-        fun connect(token: String?, userId: Long, platformId: Long) {
-            //未連線 或者 連線參數有變 => 重新建立連線
-            if (mStompClient?.isConnected != true
-                || mToken != token || mUserId != userId || mPlatformId != platformId
-            ) {
-                mToken = token ?: ""
-                mUserId = userId
-                mPlatformId = platformId
+        if (!changed || isConnecting) { // 正在连接中
+            return
+        }
 
-                Timber.d("==建立新連線==")
-                reconnect()
-            } else {
-                Timber.d("==已建立連線==")
-                //connect()
-                sendConnectStatusToActivity(ServiceConnectStatus.CONNECTED) // TODO(測試) 不直接重新連線，改發送已連線訊號
-            }
+        //未連線 或者 連線參數有變 => 重新建立連線
+        if (mStompClient?.isConnected != true || changed) {
+
+            mToken = token ?: ""
+            mUserId = userId
+            mPlatformId = platformId
+            Timber.d("==建立新連線==")
+            reconnect()
+        } else {
+            Timber.d("==已建立連線==")
+            //connect()
+            sendConnectStatusToActivity(ServiceConnectStatus.CONNECTED) // TODO(測試) 不直接重新連線，改發送已連線訊號
         }
     }
 
-    override fun onDestroy() {
-        Timber.d("==已斷線==")
-        disconnect()
-        super.onDestroy()
-    }
-
-    override fun onBind(intent: Intent?): IBinder {
-        return mBinder
-    }
-
+    private var isConnecting = false
     private fun connect() {
+        if (isConnecting || mStompClient?.isConnected == true) {
+            return
+        }
+        isConnecting = true
+
         try {
             Timber.i(">>>token = ${mToken}, url = $URL_SOCKET_HOST_AND_PORT")
             resetSubscriptions()
@@ -112,68 +96,58 @@ class BackService : Service() {
                 .pingInterval(40, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .build()
+
             mStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, URL_SOCKET_HOST_AND_PORT, null, httpClient)
-            mStompClient?.let { stompClient ->
-                stompClient.withClientHeartbeat(HEART_BEAT_RATE).withServerHeartbeat(HEART_BEAT_RATE)
+            if (mStompClient == null) {
+                isConnecting = false
+                return
+            }
 
-                sendConnectStatusToActivity(ServiceConnectStatus.CONNECTING)
-
-                val lifecycleDisposable =
-                    stompClient.lifecycle()
-                        .subscribeOn(Schedulers.io())
-                        .delay(if (delay) LOADING_TIME_INTERVAL else 0, TimeUnit.MILLISECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { lifecycleEvent: LifecycleEvent ->
-                            when (lifecycleEvent.type) {
-                                LifecycleEvent.Type.OPENED -> {
-                                    Timber.d("Stomp connection opened")
-                                    sendConnectStatusToActivity(ServiceConnectStatus.CONNECTED)
+            val stompClient = mStompClient!!
+            stompClient.withClientHeartbeat(HEART_BEAT_RATE).withServerHeartbeat(HEART_BEAT_RATE)
+            sendConnectStatusToActivity(ServiceConnectStatus.CONNECTING)
+            lifecycleDisposable = stompClient.lifecycle()
+                    .subscribeOn(Schedulers.io())
+                    .delay(if (delay) LOADING_TIME_INTERVAL else 0, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { lifecycleEvent: LifecycleEvent ->
+                        isConnecting = false
+                        when (lifecycleEvent.type) {
+                            LifecycleEvent.Type.OPENED -> {
+                                Timber.d("Stomp connection opened")
+                                sendConnectStatusToActivity(ServiceConnectStatus.CONNECTED)
+                                delay = false
+                            }
+                            LifecycleEvent.Type.CLOSED -> {
+                                Timber.d("Stomp connection closed")
+                                reconnectionNum++
+                                if (errorFlag && reconnectionNum < RECONNECT_LIMIT) {
+                                    Timber.e("Stomp connection broken, the $reconnectionNum time reconnect.")
+                                    reconnect()
+                                } else {
+                                    sendConnectStatusToActivity(ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT)
                                     delay = false
                                 }
-                                LifecycleEvent.Type.CLOSED -> {
-                                    Timber.d("Stomp connection closed")
-                                    firstSetNotifyAll=true
-                                    reconnectionNum++
-                                    if (errorFlag && reconnectionNum < RECONNECT_LIMIT) {
-                                        Timber.e("Stomp connection broken, the $reconnectionNum time reconnect.")
-                                        reconnect()
-                                    } else {
-                                        sendConnectStatusToActivity(ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT)
-                                        delay = false
-                                    }
-                                }
-                                LifecycleEvent.Type.ERROR -> {
-                                    errorFlag = true
-                                    firstSetNotifyAll=true
-                                    Timber.e("Stomp connection error ==> ${lifecycleEvent.exception}")
-//                                    reconnect()
-                                }
-                                LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
-                                    Timber.d("Stomp connection failed server heartbeat")
-//                                    reconnect()
-                                }
-                                null -> Timber.e("Stomp connection failed")
                             }
+                            LifecycleEvent.Type.ERROR -> {
+                                errorFlag = true
+                                Timber.e("Stomp connection error ==> ${lifecycleEvent.exception}")
+//                                    reconnect()
+                            }
+                            LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
+                                Timber.d("Stomp connection failed server heartbeat")
+//                                    reconnect()
+                            }
+                            null -> Timber.e("Stomp connection failed")
                         }
-                mCompositeDisposable?.add(lifecycleDisposable)
+                    }
 
-                //訂閱用戶私人頻道
-                subscribeChannel(if (mToken.isEmpty()) URL_USER else URL_USER_PRIVATE)
-                //这个只让设置一次频道，避免出现数据重复订阅的情况
-                if (firstSetNotifyAll){
-                    firstSetNotifyAll=false
-                    //訂閱全體公共頻道
-                    subscribeChannel(URL_ALL)
-                }
-                subscribeChannel(URL_PLATFORM)
-
-                //建立連線
-                stompClient.connect(mHeader)
-            }
+            stompClient.connect(mHeader) //建立連線
+            subscribeSystemChannel()
 
         } catch (e: Exception) {
             e.printStackTrace()
-            firstSetNotifyAll=true
+            isConnecting = false
             when (e) {
                 is SocketTimeoutException -> {
                     Timber.e("連線超時，正在重連")
@@ -181,18 +155,37 @@ class BackService : Service() {
                 }
                 is NoRouteToHostException -> {
                     Timber.e("該地址不存在，請檢查")
-                    stopSelf()
+                    disconnect()
                 }
                 is ConnectException -> {
                     Timber.e("連線異常或被拒絕，請檢查")
-                    stopSelf()
+                    disconnect()
                 }
                 else -> {
                     e.printStackTrace()
-                    stopSelf()
+                    disconnect()
                 }
             }
         }
+    }
+
+    private fun subscribeSystemChannel() {
+        //訂閱用戶私人頻道
+        val userChannel = if (mToken.isEmpty()) URL_USER else URL_USER_PRIVATE
+        if(isNewChannel(userChannel)) {
+            subscribeChannel(userChannel)
+        }
+        //訂閱全體公共頻道
+        if(isNewChannel(URL_ALL)) {
+            subscribeChannel(URL_ALL)
+        }
+        if(isNewChannel(URL_PLATFORM)) {
+            subscribeChannel(URL_PLATFORM)
+        }
+    }
+
+    private fun isNewChannel(url: String): Boolean {
+        return !mSubscribedMap.contains(url) && !mSubscribeChannelPending.contains(url)
     }
 
 
@@ -211,10 +204,7 @@ class BackService : Service() {
 
     //關閉所有連線通道，釋放資源
     private fun disconnect() {
-        mCompositeDisposable?.dispose()
-        mCompositeDisposable = null
-        mSubscribedMap.clear()
-
+        resetSubscriptions()
         mStompClient?.disconnect()
         mStompClient = null
     }
@@ -228,8 +218,9 @@ class BackService : Service() {
     }
 
     private fun resetSubscriptions() {
-        mCompositeDisposable?.dispose()
-        mCompositeDisposable = CompositeDisposable()
+        lifecycleDisposable?.dispose()
+        lifecycleDisposable = null
+        mSubscribedMap.values.forEach { it.dispose() }
         mSubscribedMap.clear()
     }
 
@@ -239,45 +230,49 @@ class BackService : Service() {
      * @param firstSubscribeData 是否使用訂閱後第一筆資料作為新資料直接顯示, 而非更新
      * */
     private fun subscribeChannel(url: String) {
+
         if (mSubscribedMap.containsKey(url)) return
 
+        Timber.i(">>> subscribe channel: $url")
         if (mStompClient?.isConnected != true) {
+
             if (!mSubscribeChannelPending.contains(url)) {
                 mSubscribeChannelPending.add(url)
             }
         }
 
-        Timber.i(">>> subscribe channel: $url")
+        if (mStompClient == null) {
+            connect()
+            return
+        }
 
-        mStompClient?.run {
-            this.topic(url, mHeader)
-                .subscribeOn(Schedulers.io())
-                .subscribe({ topicMessage ->
-                    if (BuildConfig.DEBUG) { // 仅开发模式执行，该段代码会进行数据解密会对性能有所影响
-                        Timber.v("[$url] 訂閱接收訊息: ${EncryptUtil.uncompress(topicMessage.payload)}")
-                    }
-                    sendMessageToActivity(url, topicMessage.payload)
-                }, { throwable ->
-                    Timber.e("[$url] 訂閱通道失敗: $throwable")
-                })
-                .let { newDisposable ->
-                    mCompositeDisposable?.add(newDisposable)
-                    mSubscribedMap[url] = newDisposable
-
-                    //訂閱完成後檢查是否有訂閱失敗的頻道
-                    mSubscribeChannelPending.remove(url)
-                    if (!mSubscribeChannelPending.isNullOrEmpty()) {
-                        subscribeChannel(mSubscribeChannelPending.first())
-                    }
+        mStompClient!!.topic(url, mHeader)
+            .subscribeOn(Schedulers.io())
+            .subscribe({ topicMessage ->
+                if (BuildConfig.DEBUG) { // 仅开发模式执行，该段代码会进行数据解密会对性能有所影响
+                    Timber.v("[$url] 訂閱接收訊息: ${EncryptUtil.uncompress(topicMessage.payload)}")
                 }
-        } ?: reconnect()//背景中喚醒APP會有mStompClient=null的情況 導致停止訂閱賽事
+                sendMessageToActivity(url, topicMessage.payload)
+            }, { throwable ->
+                Timber.e("[$url] 訂閱通道失敗: $throwable")
+            })
+            .let { newDisposable ->
+
+                mSubscribedMap[url] = newDisposable
+
+                //訂閱完成後檢查是否有訂閱失敗的頻道
+                mSubscribeChannelPending.remove(url)
+                if (!mSubscribeChannelPending.isNullOrEmpty()) {
+                    subscribeChannel(mSubscribeChannelPending.first())
+                }
+            }
     }
 
     private fun unsubscribeChannel(url: String) {
         mSubscribedMap[url]?.let {
+            it.dispose()
             if (!mOriginalSubscribedMap.containsValue(it)) {
                 Timber.i("<<< unsubscribe channel: $url")
-                mCompositeDisposable?.remove(it)
                 mSubscribedMap.remove(url)
             }
         }
