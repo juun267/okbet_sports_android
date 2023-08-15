@@ -29,7 +29,7 @@
         android:gravity="center_vertical"
         android:textColor="@color/color_6D7693"
         android:textSize="@dimen/textSize16sp"
-        android:text="@string/I031"/>
+        android:text="@string/N211"/>
     
     <ImageView
         android:id="@+id/ivClose"
@@ -73,6 +73,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="20dp"
+        android:padding="4dp"
         android:includeFontPadding="false"
         android:maxLines="1"
         android:ellipsize="end"
@@ -87,7 +88,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/tvGameName"
         app:layout_constraintTop_toBottomOf="@+id/tvGameName"
-        android:layout_marginTop="2dp"
         android:textSize="@dimen/textSize13sp"
         android:textColor="@color/color_434C65"
         tools:text="player: nickname"/>
@@ -117,21 +117,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:includeFontPadding="false"
-            android:textSize="14sp"
+            android:layout_marginTop="11dp"
+            android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_BEC7DC"
-            android:text="@string/F011"/>
+            android:text="@string/N712"/>
 
         <TextView
             android:id="@+id/tvBet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:textStyle="bold"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_0D2245"
-            android:text="$700.00"/>
+            tools:text="$700.00"/>
 
     </LinearLayout>
 
@@ -150,8 +149,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:includeFontPadding="false"
+            android:layout_marginTop="11dp"
             android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_BEC7DC"
             android:text="@string/P120"/>
@@ -160,7 +158,7 @@
             android:id="@+id/tvPayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:textStyle="bold"
             android:textSize="@dimen/textSize14sp"
             tools:text="₱ 150,210.78"/>

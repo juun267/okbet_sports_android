@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.View.OnClickListener
-import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,12 +15,10 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseAlertDialog
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.NEWS_TIME_FORMAT2
-import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 
 class WinsDialog(private val betRecode: RecordNewEvent,
@@ -35,7 +32,7 @@ class WinsDialog(private val betRecode: RecordNewEvent,
         setContentView(R.layout.dialog_wins_betdetails)
         initStyle()
         bindInfo()
-        Log.e("For Test", "=====>>> betRecode ${JsonUtil.toJson(betRecode)}")
+        Log.e("For Test", "=====>>> betRecode $betRecode ${JsonUtil.toJson(betRecode)}")
     }
 
     private fun bindInfo() {
@@ -53,9 +50,7 @@ class WinsDialog(private val betRecode: RecordNewEvent,
         setText(R.id.tvGameName, betRecode.games)
         setText(R.id.tvPlayer, "${context.getString(R.string.N710)}: ${betRecode.player}")
 
-        if (betRecode.betTime != 0L) {
-            setText(R.id.tvBetTime, "${context.getString(R.string.J652)}: ${TimeUtil.timeFormat(betRecode.betTime, NEWS_TIME_FORMAT2)}")
-        }
+        betRecode.betTime?.let { setText(R.id.tvBetTime, "${context.getString(R.string.J652)}: ${TimeUtil.timeFormat(it, NEWS_TIME_FORMAT2)}") }
         showCurrencySign.let {
 
             setText(R.id.tvBet, "$it ${TextUtil.formatMoney(betRecode.betAmount, 2)}")

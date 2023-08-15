@@ -26,29 +26,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     val receiver = ServiceBroadcastReceiver
 
-    private var backService: BackService? = null
-    private var isServiceBound = false
-    private val serviceConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            Timber.e(">>> onServiceConnected")
-            val binder = service as BackService.MyBinder //透過Binder調用Service內的方法
-            backService = binder.service
-
-            binder.connect(
-                viewModel.loginRepository.token,
-                viewModel.loginRepository.userId,
-                viewModel.loginRepository.platformId
-            )
-
-            isServiceBound = true
-        }
-
-        override fun onServiceDisconnected(name: ComponentName) {
-            Timber.e(">>> onServiceDisconnected")
-            isServiceBound = false
-        }
-    }
-
+    private var backService: BackService = BackService
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -218,42 +196,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         backService?.betListPageUnSubScribeEvent()
     }
 
-    fun fastBetPageSubscribeHallEvent(gameType: String?, eventId: String?) {
-        backService?.fastBetPageSubscribeHallEvent(gameType, eventId)
-    }
-
-    fun fastBetPageSubscribeEvent(eventId: String?) {
-        backService?.fastBetPageSubscribeEvent(eventId)
-    }
-
-    fun fastBetPageUnSubscribeEvent() {
-        backService?.fastBetPageUnSubscribeEvent()
-    }
-
     override fun onStart() {
         super.onStart()
-        bindService()
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        unBindService()
-    }
-
-    private fun bindService() {
-        if (isServiceBound) return
-
-        val serviceIntent = Intent(this, BackService::class.java)
-        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
-        isServiceBound = true
-    }
-
-    private fun unBindService() {
-        if (!isServiceBound) return
-
-        unbindService(serviceConnection)
-        isServiceBound = false
+        backService.connect(
+            viewModel.loginRepository.token,
+            viewModel.loginRepository.userId,
+            viewModel.loginRepository.platformId
+        )
     }
 
     private fun checkServiceRunning(): Boolean {

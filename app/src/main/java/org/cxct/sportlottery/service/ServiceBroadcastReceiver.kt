@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -125,7 +126,7 @@ object ServiceBroadcastReceiver {
     private val _lockMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
     private val _sysMaintenance = SingleLiveEvent<SysMaintenanceEvent?>()
-    private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
+    private val _serviceConnectStatus = SingleLiveEvent<ServiceConnectStatus>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
     private val _userDiscountChange = MutableLiveData<UserDiscountChangeEvent?>()
@@ -133,12 +134,12 @@ object ServiceBroadcastReceiver {
     private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
     private val _closePlayCate = MutableLiveData<Event<ClosePlayCateEvent?>>()
-    private val _recordBetNew = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
-    private val _recordWinsResult = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
-    private val _recordNewOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
-    private val _recordResultOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
-    private val _recordNewOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
-    private val _recordResultOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
+    private val _recordBetNew = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    private val _recordWinsResult = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    private val _recordNewOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    private val _recordResultOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    private val _recordNewOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    private val _recordResultOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
     val sportMaintenance: LiveData<SportMaintenanceEvent?> = MutableLiveData()
     val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
