@@ -137,15 +137,16 @@
 
             <TextView
                 android:id="@+id/tvHomeName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_24"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/color_0D2245"
-                android:singleLine="true"
+                android:gravity="center"
                 android:ellipsize="end"
-                android:textStyle="bold"
+                android:maxLines="2"
+                android:textColor="@color/color_0D2245"
                 android:textSize="13sp"
-                android:maxLines="1" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -173,15 +174,16 @@
 
             <TextView
                 android:id="@+id/tvAwayName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_24"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/color_0D2245"
-                android:singleLine="true"
+                android:gravity="center"
                 android:ellipsize="end"
-                android:textStyle="bold"
+                android:maxLines="2"
+                android:textColor="@color/color_0D2245"
                 android:textSize="13sp"
-                android:maxLines="1" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 

@@ -41,8 +41,8 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
 
         val root = LinearLayout(context)
         root.orientation = LinearLayout.VERTICAL
-        root.setBackgroundResource(R.color.color_FFFFFF)
-        root.addView(context.dividerView(R.color.color_ebf1fc, 1.dp, margins = 12.dp))
+        root.setBackgroundResource(R.color.color_FCFDFF)
+        root.addView(context.dividerView(R.color.color_E1EDFF, 0.5f.dp, margins = 12.dp))
 
         val lin = LinearLayout(context)
         val p10 = 10.dp
@@ -56,7 +56,7 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
         name.maxLines = 2
         name.textSize = 12f
         name.typeface = Typeface.DEFAULT_BOLD
-        name.setPadding(0, p10, 0, p10)
+        name.setPadding(0, p12, 0, p12)
         name.setTextColor(ContextCompat.getColor(context, R.color.color_0D2245))
         val nameParam = LinearLayout.LayoutParams(0, -2, 1f)
         nameParam.rightMargin = p12
@@ -72,7 +72,7 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
         arrow.setPadding(p10, 0, p10, 0)
         arrow.setImageResource(R.drawable.ic_arrow_gray_up1)
         40.dp.let { lin.addView(arrow, LinearLayout.LayoutParams(it, -2)) }
-
+        root.addView(context.dividerView(R.color.color_E1EDFF, 0.5f.dp, margins = 12.dp))
         return MatchVH(name, time, arrow, root)
     }
 

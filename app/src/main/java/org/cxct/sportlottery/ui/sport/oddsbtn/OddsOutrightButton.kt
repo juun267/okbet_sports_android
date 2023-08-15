@@ -4,10 +4,13 @@ package org.cxct.sportlottery.ui.sport.oddsbtn
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.TranslateAnimation
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -176,6 +179,10 @@ open class OddsOutrightButton @JvmOverloads constructor(
                 )
                 iv_arrow.apply {
                     setImageResource(R.drawable.icon_odds_up)
+                    (layoutParams as LinearLayout.LayoutParams).apply {
+                        gravity = Gravity.TOP
+                        layoutParams = this
+                    }
                     visibility = View.VISIBLE
                 }
                 animation = upAnim
@@ -190,6 +197,10 @@ open class OddsOutrightButton @JvmOverloads constructor(
                 )
                 iv_arrow.apply {
                     setImageResource(R.drawable.icon_odds_down)
+                    (layoutParams as LinearLayout.LayoutParams).apply {
+                        gravity = Gravity.BOTTOM
+                        layoutParams = this
+                    }
                     visibility = View.VISIBLE
                 }
                 animation = downAnim
