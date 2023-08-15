@@ -514,12 +514,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun switchLoginType(loginType: Int) {
         viewModel.loginType = loginType
         hideSoftKeyboard(this)
-        (loginType == 0).let {
+        (loginType == LOGIN_TYPE_CODE).let {
             lin_login_pwd.isVisible = !it
             lin_login_code.isVisible = it
             tv_pwd_login.isVisible = it
             tv_code_login.isVisible = !it
             tv_forget_password.isVisible = !it
+            binding.includeSubtitle.tvSummary.isVisible = it
             if (it) {
                 binding.btnLogin.text =
                     "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
