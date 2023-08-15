@@ -61,7 +61,7 @@ import java.util.concurrent.TimeUnit
     fun connect(token: String?, userId: Long, platformId: Long) {
         val changed = mToken != token || mUserId != userId || mPlatformId != platformId
 
-        if (!changed || isConnecting) { // 正在连接中
+        if (!changed && isConnecting) { // 正在连接中
             return
         }
 
@@ -207,6 +207,7 @@ import java.util.concurrent.TimeUnit
         resetSubscriptions()
         mStompClient?.disconnect()
         mStompClient = null
+        isConnecting = false
     }
 
     private fun sendMessageToActivity(channel: String, message: String?) {

@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.base
 import android.app.ActivityManager
 import android.content.*
 import android.os.Bundle
-import android.os.IBinder
 import android.text.SpannableStringBuilder
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.R
@@ -14,7 +13,6 @@ import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.util.GameConfigManager
-import timber.log.Timber
 import kotlin.reflect.KClass
 
 abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
@@ -25,8 +23,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     }
 
     val receiver = ServiceBroadcastReceiver
-
-    private var backService: BackService = BackService
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,13 +45,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             when (status) {
                 ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT -> {
                     hideLoading()
-                    backService?.doReconnect()
+                    BackService.doReconnect()
                     //不需要弹窗提示，直接无限重连
 //                    showPromptDialog(
 //                        getString(R.string.prompt),
 //                        getString(R.string.message_socket_connect),
 //                        buttonText = null,
-//                        { backService?.doReconnect() },
+//                        { BackService.doReconnect() },
 //                        isError = true,
 //                        hasCancle = false
 //                    )
@@ -139,66 +136,66 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     }
 
     fun subscribeSportChannelHall() {
-        backService?.subscribeSportChannelHall()
+        BackService.subscribeSportChannelHall()
     }
 
     fun subscribeChannelHall(
         gameType: String?,
         eventId: String?
     ) {
-        backService?.subscribeHallChannel(gameType, eventId)
+        BackService.subscribeHallChannel(gameType, eventId)
     }
 
     fun subscribeChannelEvent(
         eventId: String?
     ) {
-        backService?.subscribeEventChannel(eventId)
+        BackService.subscribeEventChannel(eventId)
     }
 
     fun unSubscribeChannelHall(
         gameType: String?,
         eventId: String?,
     ) {
-        backService?.unsubscribeHallChannel(gameType, eventId)
+        BackService.unsubscribeHallChannel(gameType, eventId)
     }
 
     fun unSubscribeChannelHall(
         eventId: String?,
     ) {
-        backService?.unsubscribeHallChannel(eventId)
+        BackService.unsubscribeHallChannel(eventId)
     }
 
     fun unSubscribeChannelEvent(eventId: String?) {
-        backService?.unsubscribeEventChannel(eventId)
+        BackService.unsubscribeEventChannel(eventId)
     }
 
     fun unsubscribeHallChannel(eventId: String?) {
-        backService?.unsubscribeHallChannel(eventId)
+        BackService.unsubscribeHallChannel(eventId)
     }
 
     fun unSubscribeChannelHallAll() {
-        backService?.unsubscribeAllHallChannel()
+        BackService.unsubscribeAllHallChannel()
     }
 
     fun unSubscribeChannelHallSport() {
-        backService?.unsubscribeSportHallChannel()
+        BackService.unsubscribeSportHallChannel()
     }
 
     fun unSubscribeChannelEventAll() {
-        backService?.unsubscribeAllEventChannel()
+        BackService.unsubscribeAllEventChannel()
     }
 
     fun betListPageSubscribeEvent() {
-        backService?.betListPageSubscribeEvent()
+        BackService.betListPageSubscribeEvent()
     }
 
     fun betListPageUnSubScribeEvent() {
-        backService?.betListPageUnSubScribeEvent()
+        BackService.betListPageUnSubScribeEvent()
     }
 
     override fun onStart() {
         super.onStart()
-        backService.connect(
+        BackService.connect(
             viewModel.loginRepository.token,
             viewModel.loginRepository.userId,
             viewModel.loginRepository.platformId
