@@ -115,7 +115,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         if (loginType == LOGIN_TYPE_GOOGLE) {
             googleLogin()
         }else{
-            switchLoginType(LOGIN_TYPE_CODE)
+            switchLoginType(loginType)
         }
     }
 
