@@ -520,7 +520,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             tv_pwd_login.isVisible = it
             tv_code_login.isVisible = !it
             tv_forget_password.isVisible = !it
-            binding.includeSubtitle.tvSummary.isVisible = it
+            binding.includeSubtitle.tvSubTitle1.isVisible = it
+            binding.includeSubtitle.tvSubTitle2.isVisible = it
             if (it) {
                 binding.btnLogin.text =
                     "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
