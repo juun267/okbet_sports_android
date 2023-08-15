@@ -269,7 +269,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 showPromptDialog(getString(R.string.prompt), getString(R.string.P172)) { }
             }
 //            ToastUtil.showToast(context(), R.string.P172)
-            return MatchType.IN_PLAY
+            return MatchType.EARLY
         }
         return matchType
     }
