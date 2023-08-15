@@ -29,7 +29,7 @@
         android:gravity="center_vertical"
         android:textColor="@color/color_6D7693"
         android:textSize="@dimen/textSize16sp"
-        android:text="@string/I031"/>
+        android:text="@string/N211"/>
     
     <ImageView
         android:id="@+id/ivClose"
@@ -120,7 +120,7 @@
             android:layout_marginTop="11dp"
             android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_BEC7DC"
-            android:text="@string/F011"/>
+            android:text="@string/N712"/>
 
         <TextView
             android:id="@+id/tvBet"
