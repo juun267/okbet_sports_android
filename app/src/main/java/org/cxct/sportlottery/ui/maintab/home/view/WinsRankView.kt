@@ -20,12 +20,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.doOnDestory
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.RCVDecoration
 import kotlin.random.Random
 
@@ -182,7 +182,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         WinsDialog(adapter.getItem(position) as RecordNewEvent, context as AppCompatActivity) { betRecode ->
             if (!betRecode.isSportBet()) {
-                fragment.viewModel.requestEnterThirdGame("${betRecode.firmType}", "${betRecode.gameCode}", "${betRecode.firmType}", fragment)
+                enterGame("${betRecode.firmType}", "${betRecode.gameCode}")
                 return@WinsDialog
             }
             val activity = fragment.activity
@@ -191,6 +191,15 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
             }
 
         }.show()
+    }
+
+    private fun enterGame(firmType: String, gameCode: String) {
+        if (LoginRepository.isLogined()) {
+            fragment.viewModel.requestEnterThirdGame(firmType, gameCode, firmType, fragment)
+        } else {
+            fragment.loading()
+            fragment.viewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType)
+        }
     }
 
 }
