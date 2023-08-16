@@ -35,7 +35,7 @@ class EndScoreFirstProvider(val adapter: EndScoreAdapter,
         adapter.expandOrCollapse(item, parentPayload = this@EndScoreFirstProvider)
         val league = item as LeagueOdd
         val ivArrow = helper.getView<ImageView>(R.id.iv_league_arrow)
-        setExpandArrow(ivArrow, league.isExpanded)
+        ivArrow.setArrowSpin(league.isExpanded, true) { setExpandArrow(ivArrow, league.isExpanded) }
         onItemClick.invoke(position, view, league)
     }
 

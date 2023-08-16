@@ -94,7 +94,7 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
         matchVH.arrow.setOnClickListener {
             adapter.expandOrCollapse(bean, parentPayload = bean)
             onItemClick.invoke(adapter.getItemPosition(bean), it, bean)
-            setExpandArrow(matchVH.arrow, bean.isExpanded)
+            matchVH.arrow.setArrowSpin(bean.isExpanded, true) { setExpandArrow(matchVH.arrow, bean.isExpanded) }
         }
     }
 
