@@ -737,7 +737,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         }
 
         viewModel.isRechargeShowVerifyDialog.observe(this.viewLifecycleOwner){
-            this.hideLoading()
+//            this.hideLoading()
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     VerifyIdentityDialog().show(childFragmentManager, null)
