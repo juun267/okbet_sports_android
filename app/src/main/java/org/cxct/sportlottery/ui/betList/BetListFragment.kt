@@ -737,6 +737,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         }
 
         viewModel.isRechargeShowVerifyDialog.observe(this.viewLifecycleOwner){
+            this.hideLoading()
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     VerifyIdentityDialog().show(childFragmentManager, null)
@@ -1009,6 +1010,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             dialog.showDialog{
                 //跳转充值
                 ToGcashDialog.showByClick(this.viewModel){
+                    loading()
                     viewModel.checkRechargeKYCVerify()
                 }
             }
