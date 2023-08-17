@@ -156,6 +156,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         addTab(getString(R.string.home_tab_end_score), countBkEnd, position)
         if (StaticData.worldCupOpened()&&FIBAUtil.takeFIBAItem()!=null){
             addTab(getString(R.string.fiba_2023), FIBAUtil.takeFIBAItem()?.num?:0, ++position)
+        }else{
+            removeTab(getString(R.string.fiba_2023))
         }
         addTab(getString(R.string.home_tab_in_play), countInPlay, ++position)
         addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
@@ -191,6 +193,13 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
 
         return@run tab.customView!!
+    }
+    private fun removeTab(name: String) = binding.tabLayout.run {
+        for (index in 0 until tabCount){
+            if(getTabAt(index)?.customView?.tv_title?.text == name){
+                removeTabAt(index)
+            }
+        }
     }
 
     private var currentMatchType: MatchType? = null
