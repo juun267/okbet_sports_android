@@ -33,9 +33,7 @@ object JumpUtil {
         when{
             //是否世界杯主题活动页面
             href?.isNotEmpty() == true &&href?.contains("/BasketballWorldCupLottery")->{
-                AppManager.getActivity(MainTabActivity.javaClass)?.let {
-                    (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
-                }
+
                 when(AppManager.currentActivity()){
                      is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
                      else-> {

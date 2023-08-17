@@ -79,14 +79,12 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     override fun onBindViewStatus(view: View) {
-        initObserve()
         footView.setUp(this, mianViewModel)
         viewModel.getMatchData()
-        jumpMatchType?.let {
-            navGameFragment(it)
-        }
-
+        jumpMatchType?.let { navGameFragment(it) }
         favoriteDelayRunable.doOnDelay(0)
+
+        initObserve()
     }
 
     fun initToolBar() = binding.homeToolbar.run {
