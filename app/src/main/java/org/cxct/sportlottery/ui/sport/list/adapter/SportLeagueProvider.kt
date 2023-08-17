@@ -76,7 +76,6 @@ class SportLeagueProvider(
 
         val ivArrow = AppCompatImageView(context).apply {
             id = ivArrowId
-            setImageResource(R.drawable.selector_filter_arrow)
             layoutParams = FrameLayout.LayoutParams(wh20, wh20).apply {
                 gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
                 rightMargin = 12.dp
@@ -111,7 +110,7 @@ class SportLeagueProvider(
         adapter.nodeExpandOrCollapse(item, parentPayload = position)
         val league = item as LeagueOdd
         helper.getView<ImageView>(ivArrowId).apply {
-            setExpandArrow(this, league.isExpanded)
+            setArrowSpin(league.isExpanded, true) { setExpandArrow(this, league.isExpanded) }
         }
     }
 

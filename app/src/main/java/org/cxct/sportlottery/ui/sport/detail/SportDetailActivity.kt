@@ -177,6 +177,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         initToolBar()
         initUI()
         initBottomNavigation()
+        getData()
 
         /**
          * 在observer的回调中有直接通过id方式访问SportToolBarTopFragment中的view,
@@ -929,13 +930,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         setupSportStatusChange(this) {
             if (it) {
                 finish()
-            }
-        }
-        receiver.serviceConnectStatus.observe(this) {
-            it?.let {
-                if (it == ServiceConnectStatus.CONNECTED) {
-                    getData()
-                }
             }
         }
 
