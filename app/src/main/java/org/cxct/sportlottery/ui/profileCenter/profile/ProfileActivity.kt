@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -148,7 +149,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         sConfigData?.apply {
             ll_qq_number.isVisible = enableWithdrawQQ.isStatusOpen()
             ll_e_mail.isVisible = enableWithdrawEmail.isStatusOpen()
-            ll_phone_number.isVisible = enableWithdrawPhone.isStatusOpen()
+            ll_phone_number.isVisible = enableWithdrawPhone.isStatusOpen()&&viewModel.userInfo.value?.vipType!=1
             ll_wechat.isVisible = enableWithdrawWechat.isStatusOpen()
             ll_real_name.isVisible = enableWithdrawFullName.isStatusOpen()
         }
