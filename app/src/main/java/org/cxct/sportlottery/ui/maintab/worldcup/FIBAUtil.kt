@@ -61,5 +61,8 @@ object FIBAUtil {
         }
         return null
     }
+    fun enableFiba(): Boolean {
+        return StaticData.worldCupOpened()&&fibaItem!=null
+    }
 
 }
