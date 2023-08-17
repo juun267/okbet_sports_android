@@ -130,22 +130,26 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 targetGameType = it
             }
         }
-        if (targetGameType == null) {
-            targetGameType = gameTypeList.find { it.num > 0}
-        }
-        if (targetGameType == null) {
-            targetGameType = gameTypeList.first()
-        }
 
-        gameType = targetGameType!!.code
-        targetGameType!!.isSelected = true
-        load(targetGameType!!)
+
         //篮球世界杯界面
         if (gameTypeList.size==1&&gameTypeList.first().code==FIBAUtil.fibaCode){
             binding.sportTypeList.gone()
+            if (targetGameType == null) {
+                targetGameType = gameTypeList.first()
+            }
         }else{
             binding.sportTypeList.show()
+            if (targetGameType == null) {
+                targetGameType = gameTypeList.find { it.num > 0 && it.code!=FIBAUtil.fibaCode }
+            }
+            if (targetGameType == null) {
+                targetGameType = gameTypeList.first()
+            }
         }
+        gameType = targetGameType!!.code
+        targetGameType!!.isSelected = true
+        load(targetGameType!!)
         gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
         (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             binding.sportTypeList,
