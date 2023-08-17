@@ -23,7 +23,6 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAItem
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
@@ -537,7 +536,7 @@ open class SportListViewModel(
             else -> listOf()
         }
 
-        if (StaticData.worldCupOpened()&&FIBAUtil.takeFIBAItem()!=null) {
+        if (FIBAUtil.enableFiba()) {
             if (matchType == MatchType.FIBA
                 ||matchType == MatchType.IN_PLAY
                 || matchType == MatchType.AT_START

@@ -20,7 +20,6 @@ import org.cxct.sportlottery.network.sport.Menu
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -49,7 +48,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         MatchType.OUTRIGHT,
         MatchType.MY_EVENT
     ).apply {
-        if (StaticData.worldCupOpened()&&FIBAUtil.takeFIBAItem()!=null){
+        if (FIBAUtil.enableFiba()){
             add(1,MatchType.FIBA)
         }
     }
@@ -154,10 +153,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
         var position =0
         addTab(getString(R.string.home_tab_end_score), countBkEnd, position)
-        if (StaticData.worldCupOpened()&&FIBAUtil.takeFIBAItem()!=null){
+        if (FIBAUtil.enableFiba()){
             addTab(getString(R.string.fiba_2023), FIBAUtil.takeFIBAItem()?.num?:0, ++position)
-        }else{
-            removeTab(getString(R.string.fiba_2023))
         }
         addTab(getString(R.string.home_tab_in_play), countInPlay, ++position)
         addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
