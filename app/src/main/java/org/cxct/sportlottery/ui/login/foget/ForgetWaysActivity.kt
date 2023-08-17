@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_forget_ways.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.extentions.finishWithOK
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ActivityForgetWaysBinding
 import org.cxct.sportlottery.databinding.ActivitySelectAccountBinding
 import org.cxct.sportlottery.repository.ImageType
@@ -29,6 +30,8 @@ class ForgetWaysActivity:  BindingActivity<ForgetViewModel, ActivityForgetWaysBi
         setStatusBarDarkFont()
         bindFinish(btn_back)
         setupSummary(binding.includeSubtitle.tvSummary)
+        binding.includeSubtitle.tvSubTitle1.gone()
+        binding.includeSubtitle.tvSubTitle2.gone()
         cl_live_chat.setServiceClick(supportFragmentManager)
         btnPhoneWays.setOnClickListener { ForgetPasswordActivity.startByPhoneWays(this) }
         btnEmailWays.setOnClickListener { ForgetPasswordActivity.startByEmailWays(this) }
