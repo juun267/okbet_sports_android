@@ -103,7 +103,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             }
 
             setSportDataList(null)
-            dismissLoading()
+//            dismissLoading()
             if (!it.second) {
                 ToastUtil.showToast(activity, it.third)
                 return@observe
@@ -282,6 +282,9 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected fun setSportDataList(list: MutableList<BaseNode>?, sizeNumber: String? = null) {
         val adapter = getGameListAdapter()
+        if(list.isNullOrEmpty()){
+            showLoading()
+        }
         adapter.setNewInstance(list)
         if (sizeNumber == null) setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "") else setMatchNum(sizeNumber)
         if (!list.isNullOrEmpty()) {
