@@ -148,6 +148,7 @@ class RecyclerGamePageAdapter:
         tvName.text = item.gameName
         tvFirmName.text = item.firmName
         ivFav.isSelected = item.markCollect
+        ivFav.isEnabled = !item.isMaintain()
         //收藏点击
         ivFav.onClick {
             ivFav.animDuang(1.3f)
