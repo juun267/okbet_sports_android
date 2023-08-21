@@ -75,10 +75,9 @@
     <TextView
         android:id="@+id/tvCover"
         tools:text="@string/N702"
-        android:textSize="14sp"
+        android:textSize="@dimen/textSize14sp"
         android:gravity="center"
         android:textColor="@color/color_0D2245"
-        android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </androidx.cardview.widget.CardView>

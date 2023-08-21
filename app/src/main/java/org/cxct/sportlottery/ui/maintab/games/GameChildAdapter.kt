@@ -76,7 +76,11 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
                 onFavoriate2.invoke(ivFav, item)
             }
 
-            root.setOnClickListener { getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position) }
+            root.setOnClickListener {
+                if (!item.isMaintain()) {
+                    getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position)
+                }
+            }
 
             if(position == itemSize - 1 && itemIndex == 3 && isMoreThan18) {
                 blurCard.onClick { jumpMoreClick() }
@@ -93,9 +97,6 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
                     tvCover.setTextColor(Color.WHITE)
                     tvCover.setBackgroundColor(context.getColor(R.color.transparent_black_70))
                     tvCover.setText(R.string.N257)
-                    root.isEnabled = false
-                } else {
-                    root.isEnabled = true
                 }
             }
 
