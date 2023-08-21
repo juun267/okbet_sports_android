@@ -77,9 +77,8 @@
             android:background="@color/transparent_black_70"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:text="@string/N257"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
     </androidx.cardview.widget.CardView>
 
@@ -157,9 +156,8 @@
             android:background="@color/transparent_black_70"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:text="@string/N257"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
     </androidx.cardview.widget.CardView>
 
@@ -237,9 +235,8 @@
             android:background="@color/transparent_black_70"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:text="@string/N257"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
     </androidx.cardview.widget.CardView>
 
@@ -320,9 +317,8 @@
             android:background="@color/transparent_black_70"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:text="@string/N257"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
     </androidx.cardview.widget.CardView>
 
@@ -401,9 +397,8 @@
             android:background="@color/transparent_black_70"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:text="@string/N257"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
     </androidx.cardview.widget.CardView>
 
@@ -503,9 +498,8 @@
             android:background="@color/transparent_black_70"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:text="@string/N257"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
     </androidx.cardview.widget.CardView>
 </RelativeLayout>
