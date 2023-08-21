@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games.view
 
+import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -121,16 +122,7 @@ class RecyclerLivePageAdapter:
                 bindItem(item[2], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
                 bindItem(item[3], cardGame4, ivCover4, tvName4, tvFirmName4, ivFav4, tvCover4)
                 bindItem(item[4], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
-                bindItem(
-                    item[5],
-                    cardGame6,
-                    ivCover6,
-                    tvName6,
-                    tvFirmName6,
-                    ivFav6,
-                    tvCover6,
-                    isMoreItem
-                )
+                bindItem(item[5], cardGame6, ivCover6, tvName6, tvFirmName6, ivFav6, tvCover6, isMoreItem)
                 if (isMoreItem) {
                     blurCard6.visible()
                     blurCard6.setupWith(binding.root)
