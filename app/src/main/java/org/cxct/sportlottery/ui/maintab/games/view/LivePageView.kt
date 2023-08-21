@@ -44,7 +44,7 @@ class LivePageView @JvmOverloads constructor(
 
     init {
         orientation = VERTICAL
-        binding = ViewGamePageBinding.inflate(LayoutInflater.from(context), this, true)
+        binding = ViewGamePageBinding.inflate(LayoutInflater.from(context), this)
         initView()
     }
 
