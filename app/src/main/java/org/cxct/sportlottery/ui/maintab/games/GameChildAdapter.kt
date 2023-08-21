@@ -80,12 +80,11 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
             tvFirmName.text = item.firmName
             ivFav.isVisible = showFavorite
             ivFav.isSelected = item.markCollect
+            ivFav.isEnabled = !item.isMaintain()
             ivFav.setOnClickListener {
-                if (!item.isMaintain()) {
-                    item.gameEntryType = gameEntryType
-                    onFavoriate.invoke(ivFav, item)
-                    onFavoriate2.invoke(ivFav, item)
-                }
+                item.gameEntryType = gameEntryType
+                onFavoriate.invoke(ivFav, item)
+                onFavoriate2.invoke(ivFav, item)
             }
 
             root.setOnClickListener {
