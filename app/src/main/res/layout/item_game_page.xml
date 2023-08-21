@@ -11,7 +11,6 @@
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:elevation="0dp"
-        android:visibility="gone"
         android:foreground="@drawable/fg_ripple"
         app:cardCornerRadius="@dimen/margin_12"
         app:cardElevation="0dp">
@@ -71,41 +70,30 @@
                 tools:text="Game Name" />
         </LinearLayout>
 
-        <eightbitlab.com.blurview.BlurView
-            android:id="@+id/blurCard1"
-            android:visibility="gone"
+        <TextView
+            android:id="@+id/tvCover1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#90ffffff"
-                app:blurOverlayColor="@color/color_chat_toast_background" />
-            <TextView
-                android:text="@string/N702"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:textColor="@color/color_0D2245"
-                android:textStyle="bold"
-                android:layout_width="110dp"
-                android:layout_height="110dp"/>
-        </eightbitlab.com.blurview.BlurView>
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="@string/N257"
+            android:textSize="14sp" />
+
     </androidx.cardview.widget.CardView>
-
-
-
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGame2"
         android:layout_width="110dp"
-        android:layout_toRightOf="@+id/cardGame1"
+        android:layout_below="@+id/cardGame1"
         android:layout_height="wrap_content"
         android:elevation="0dp"
-        android:visibility="gone"
-        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:foreground="@drawable/fg_ripple"
         app:cardCornerRadius="@dimen/margin_12"
         app:cardElevation="0dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -162,43 +150,30 @@
                 tools:text="Game Name" />
         </LinearLayout>
 
-        <eightbitlab.com.blurview.BlurView
-            android:id="@+id/blurCard2"
-            android:visibility="gone"
+        <TextView
+            android:id="@+id/tvCover2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#90ffffff"
-                app:blurOverlayColor="@color/color_chat_toast_background" />
-            <TextView
-                android:text="@string/N702"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:textColor="@color/color_0D2245"
-                android:textStyle="bold"
-                android:layout_width="110dp"
-                android:layout_height="110dp"/>
-        </eightbitlab.com.blurview.BlurView>
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="@string/N257"
+            android:textSize="14sp" />
+
     </androidx.cardview.widget.CardView>
-
-
-
-
-
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGame3"
         android:layout_width="110dp"
-        android:layout_toRightOf="@+id/cardGame2"
-        android:visibility="gone"
+        android:layout_toRightOf="@+id/cardGame1"
         android:layout_height="wrap_content"
         android:elevation="0dp"
         android:layout_marginStart="10dp"
         android:foreground="@drawable/fg_ripple"
         app:cardCornerRadius="@dimen/margin_12"
         app:cardElevation="0dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -255,42 +230,33 @@
                 tools:text="Game Name" />
         </LinearLayout>
 
-        <eightbitlab.com.blurview.BlurView
-            android:id="@+id/blurCard3"
-            android:visibility="gone"
+        <TextView
+            android:id="@+id/tvCover3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#90ffffff"
-                app:blurOverlayColor="@color/color_chat_toast_background" />
-            <TextView
-                android:text="@string/N702"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:textColor="@color/color_0D2245"
-                android:textStyle="bold"
-                android:layout_width="110dp"
-                android:layout_height="110dp"/>
-        </eightbitlab.com.blurview.BlurView>
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="@string/N257"
+            android:textSize="14sp" />
+
     </androidx.cardview.widget.CardView>
-
-
-
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGame4"
         android:layout_width="110dp"
-        android:layout_below="@+id/cardGame1"
-        android:visibility="gone"
+        android:layout_below="@+id/cardGame3"
+        android:layout_toRightOf="@+id/cardGame1"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
         android:elevation="0dp"
         android:foreground="@drawable/fg_ripple"
         app:cardCornerRadius="@dimen/margin_12"
         app:cardElevation="0dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -347,44 +313,31 @@
                 tools:text="Game Name" />
         </LinearLayout>
 
-        <eightbitlab.com.blurview.BlurView
-            android:id="@+id/blurCard4"
-            android:visibility="gone"
+        <TextView
+            android:id="@+id/tvCover4"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#90ffffff"
-                app:blurOverlayColor="@color/color_chat_toast_background" />
-            <TextView
-                android:text="@string/N702"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:textColor="@color/color_0D2245"
-                android:textStyle="bold"
-                android:layout_width="110dp"
-                android:layout_height="110dp"/>
-        </eightbitlab.com.blurview.BlurView>
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="@string/N257"
+            android:textSize="14sp" />
+
     </androidx.cardview.widget.CardView>
-
-
-
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGame5"
         android:layout_width="110dp"
-        android:layout_below="@+id/cardGame1"
-        android:layout_toRightOf="@+id/cardGame4"
+        android:layout_toRightOf="@+id/cardGame3"
         android:layout_marginStart="10dp"
-        android:visibility="gone"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:elevation="0dp"
         android:foreground="@drawable/fg_ripple"
         app:cardCornerRadius="@dimen/margin_12"
         app:cardElevation="0dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -441,43 +394,32 @@
                 tools:text="Game Name" />
         </LinearLayout>
 
-        <eightbitlab.com.blurview.BlurView
-            android:id="@+id/blurCard5"
-            android:visibility="gone"
+        <TextView
+            android:id="@+id/tvCover5"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#90ffffff"
-                app:blurOverlayColor="@color/color_chat_toast_background" />
-            <TextView
-                android:text="@string/N702"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:textColor="@color/color_0D2245"
-                android:textStyle="bold"
-                android:layout_width="110dp"
-                android:layout_height="110dp"/>
-        </eightbitlab.com.blurview.BlurView>
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="@string/N257"
+            android:textSize="14sp" />
+
     </androidx.cardview.widget.CardView>
-
-
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGame6"
         android:layout_width="110dp"
-        android:layout_below="@+id/cardGame1"
-        android:layout_toRightOf="@+id/cardGame5"
+        android:layout_below="@+id/cardGame5"
+        android:layout_toRightOf="@+id/cardGame4"
         android:layout_marginStart="10dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:visibility="gone"
-        android:elevation="0dp"
         android:foreground="@drawable/fg_ripple"
         app:cardCornerRadius="@dimen/margin_12"
         app:cardElevation="0dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -553,5 +495,17 @@
                 android:layout_width="110dp"
                 android:layout_height="110dp"/>
         </eightbitlab.com.blurview.BlurView>
+
+        <TextView
+            android:id="@+id/tvCover6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="@string/N257"
+            android:textSize="14sp" />
+
     </androidx.cardview.widget.CardView>
 </RelativeLayout>
