@@ -474,7 +474,19 @@
             android:id="@+id/blurCard6"
             android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/color_0D2245"
+                android:textStyle="bold"
+                android:text="@string/N702" />
+
+        </eightbitlab.com.blurview.BlurView>
 
         <TextView
             android:id="@+id/tvCover6"
