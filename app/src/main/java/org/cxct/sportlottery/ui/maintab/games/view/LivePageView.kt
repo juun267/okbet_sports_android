@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
@@ -44,6 +45,7 @@ class LivePageView @JvmOverloads constructor(
 
     init {
         orientation = VERTICAL
+        setPadding(12.dp, 0, 2.dp, 0)
         binding = ViewGamePageBinding.inflate(LayoutInflater.from(context), this)
         initView()
     }

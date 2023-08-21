@@ -81,9 +81,11 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
             ivFav.isVisible = showFavorite
             ivFav.isSelected = item.markCollect
             ivFav.setOnClickListener {
-                item.gameEntryType = gameEntryType
-                onFavoriate.invoke(ivFav, item)
-                onFavoriate2.invoke(ivFav, item)
+                if (!item.isMaintain()) {
+                    item.gameEntryType = gameEntryType
+                    onFavoriate.invoke(ivFav, item)
+                    onFavoriate2.invoke(ivFav, item)
+                }
             }
 
             root.setOnClickListener {
@@ -94,6 +96,7 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
 
             if(position == itemSize - 1 && itemIndex == 3 && isMoreThan18) {
                 blurCard.onClick { jumpMoreClick() }
+                tvCover.visible()
                 tvCover.setTextColor(context.getColor(R.color.color_0D2245))
                 tvCover.setBackgroundColor(Color.TRANSPARENT)
                 tvCover.setText(R.string.N702)
@@ -104,9 +107,12 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
             } else {
                 blurCard.gone()
                 if (item.isMaintain()) {
+                    tvCover.visible()
                     tvCover.setTextColor(Color.WHITE)
                     tvCover.setBackgroundColor(context.getColor(R.color.transparent_black_70))
                     tvCover.setText(R.string.N257)
+                } else {
+                    tvCover.gone()
                 }
             }
 
