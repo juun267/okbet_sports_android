@@ -186,7 +186,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
         tab.customView?.run {
             tv_title.text = name
-            tv_number.text = num.toString()
+            tv_number.text = if(name==getString(R.string.fiba_2023)) "" else num.toString()
         }
 
         return@run tab.customView!!
