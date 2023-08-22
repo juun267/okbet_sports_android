@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="OKBet Awards"
+        android:text="@string/P199"
         android:textColor="@color/color_0D2245"
         android:textSize="16sp"
         android:textStyle="bold"
