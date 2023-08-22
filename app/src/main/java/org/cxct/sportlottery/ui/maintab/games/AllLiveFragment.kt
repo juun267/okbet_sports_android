@@ -59,7 +59,13 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
 //        binding.okLiveGameView.initOkLiveGames(this)
         initRecommendLiveGame()
         viewModel.getRecommend()
+        observerGameMaintain()
+    }
+
+    private fun observerGameMaintain() {
         gameListAdapter.bindLifecycleOwner(this)
+        binding.gameViewCollect.bindLifecycleOwner(this)
+        binding.gameViewRecent.bindLifecycleOwner(this)
     }
 
     private fun initHotMatchView() {

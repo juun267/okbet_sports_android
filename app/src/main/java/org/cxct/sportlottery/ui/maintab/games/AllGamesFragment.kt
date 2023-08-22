@@ -57,7 +57,13 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         //初始化热门赛事
         initHotMatchView()
         viewModel.getRecommend()
+        observerGameMaintain()
+    }
+
+    private fun observerGameMaintain() {
         gameListAdapter.bindLifecycleOwner(this)
+        binding.gameViewCollect.bindLifecycleOwner(this)
+        binding.gameViewRecent.bindLifecycleOwner(this)
     }
 
     private fun initHotMatchView() {
