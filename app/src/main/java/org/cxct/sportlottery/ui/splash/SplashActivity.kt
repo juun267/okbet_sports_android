@@ -21,6 +21,7 @@ import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
+import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -44,10 +45,11 @@ import kotlin.system.exitProcess
 class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
-
+    private var enterTime=0L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadSplash()
+
+
         ImmersionBar.with(this)
             .statusBarDarkFont(true)
             .transparentStatusBar()
@@ -56,7 +58,7 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
             .init()
         setContentView(R.layout.activity_splash)
         //加载缓存的启动图
-
+        loadSplash()
         loading()
         setupVersion()
 
@@ -74,8 +76,12 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
     }
 
     private fun checkLocalHost() {
+        enterTime=System.currentTimeMillis()
         viewModel.checkLocalHost()
     }
+
+
+
 
     private fun goHomePage() {
         startActivity(Intent(this@SplashActivity, MainTabActivity::class.java))
@@ -84,8 +90,26 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
 
 
     private fun goMaintenancePage() {
-        startActivity(Intent(this@SplashActivity, MaintenanceActivity::class.java))
-        finish()
+        ivSplash.postDelayed({
+            startActivity(Intent(this@SplashActivity, MaintenanceActivity::class.java))
+            finish()
+        },getSplashTime())
+    }
+
+    private  fun sendToLaunch(flag:Boolean,imageUrls:ArrayList<String>){
+        ivSplash.postDelayed({
+            LaunchActivity.start(this, flag, imageUrls =imageUrls)
+            finish()
+        },getSplashTime())
+    }
+
+    private fun getSplashTime():Long{
+        val nowTime=System.currentTimeMillis()
+        var countTime =2500-(nowTime-enterTime)
+        if(countTime<0){
+            countTime=0
+        }
+        return countTime
     }
 
     //過程中任一流程請求失敗，點擊確定按鈕重試
@@ -122,12 +146,6 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
             val systemLanStr: String =
                 LanguageManager.getSelectLanguage(applicationContext).key
 
-            //启动图
-            val splashImage=sConfigData?.imageList?.filter {it.imageType==21&& it.lang == systemLanStr}
-            if(!splashImage.isNullOrEmpty()){
-                //加载启动图
-                loadSplash("${sConfigData?.resServerHost}${splashImage[0].imageName1}")
-            }
 
             //1判断当前系统语言我们是否支持 如果支持使用系统语言
             if (languageArr != null && !(languageArr.contains(systemLanStr))) {
@@ -141,21 +159,17 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
                 viewModel.getConfig()
                 return@observe
             }
+
             KvUtils.put(KvUtils.MARKET_SWITCH,
                 isGooglePlayVersion() && BuildConfig.VERSION_NAME == it?.configData?.reviewedVersionUrl)
-            when {
-                it?.configData?.maintainStatus == FLAG_OPEN -> {
-                    goMaintenancePage()
-                }
-                it?.success == true -> checkAppMinVersion()
 
-                else -> showErrorRetryDialog(
-                    getString(R.string.error_config_title),
-                    getString(R.string.message_network_no_connect)
-                )
+            //启动图
+            val splashImage=sConfigData?.imageList?.filter {it.imageType==21&& it.lang == systemLanStr}?.sortedByDescending { it.imageSort }
+            if(!splashImage.isNullOrEmpty()){
+                //加载启动图
+                loadSplash("${sConfigData?.resServerHost}${splashImage[0].imageName1}")
             }
-
-
+            sendToMain(it)
         }
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
@@ -185,8 +199,7 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
                 }
 
             if (imageUrls?.isEmpty() == false && sConfigData?.androidCarouselStatus?.toIntS(0) == 1) {
-                LaunchActivity.start(this, it, imageUrls = ArrayList(imageUrls))
-                finish()
+                sendToLaunch(it,ArrayList(imageUrls))
             } else {
                 KvUtils.put("isFirstOpen", false)
                 goHomePage()
@@ -250,35 +263,32 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         }
     }
 
+    private fun sendToMain(config: ConfigResult?){
+        when {
+            config?.configData?.maintainStatus == FLAG_OPEN -> {
+                goMaintenancePage()
+            }
+            config?.success == true -> checkAppMinVersion()
+            else -> showErrorRetryDialog(
+                getString(R.string.error_config_title),
+                getString(R.string.message_network_no_connect)
+            )
+        }
+    }
 
     //加载启动图
     private val splashKeyStr="splashAd"
     private fun loadSplash(url:String=""){
-        if(url.isEmpty()){
-            val localUrl=SPUtils.getInstance().getString(splashKeyStr)
-            if(localUrl.isNullOrEmpty()){
-                return
+        ivSplash.visible()
+//        runWithCatch {
+            if(url.isEmpty()){
+                val localUrl=SPUtils.getInstance().getString(splashKeyStr)
+                ivSplash.load(localUrl)
+            }else{
+                ivSplash.load(url)
+                SPUtils.getInstance().put(splashKeyStr,url)
             }
-            val bitmap=FileUtil.fileToBitmap(File(localUrl))
-            window.setBackgroundDrawable(BitmapDrawable(bitmap))
-//            ivSplash.load(localUrl)
-        }else{
-            ivSplash.visible()
-            DownloadUtil.get().download(url,cacheDir.absolutePath,object : DownloadUtil.OnDownloadListener {
-                override fun onDownloadSuccess(filePath: String?) {
-                    filePath?.let {
-                        ivSplash.load(File(filePath))
-                        SPUtils.getInstance().put(splashKeyStr,filePath)
-                    }
-                }
-
-                override fun onDownloading(progress: Int) {
-                }
-                override fun onDownloadFailed() {
-                }
-            })
-
-        }
+//        }
     }
 
 }

@@ -16,7 +16,8 @@ object ConfigResource {
     private val SPORT_AD = 14               // 体育弹窗
     private val OKGAME_AD = 16              // okgame 弹窗
     private val PROMOTIONS_AD = 5           // 优惠活动
-    private val IMAGE_TYPE_SORT = arrayOf(BANNER_SPLASH, HOME_AD, BANNER_HOME, SPORT_AD, OKGAME_AD, PROMOTIONS_AD) // 图片缓存下载顺序
+    private val SPLASH_AD = 21           // 优惠活动
+    private val IMAGE_TYPE_SORT = arrayOf(BANNER_SPLASH, SPLASH_AD,HOME_AD, BANNER_HOME, SPORT_AD, OKGAME_AD, PROMOTIONS_AD) // 图片缓存下载顺序
 
     // 预下载图片资源
     fun preloadResource(config: ConfigData) {
@@ -49,6 +50,7 @@ object ConfigResource {
             || imgData.imageType == BANNER_HOME
             || imgData.imageType == HOME_AD
             || imgData.imageType == SPORT_AD
+            ||imgData.imageType == SPLASH_AD
             || imgData.imageType == OKGAME_AD) {
 
             return if (imgData.lang != lang || imgData.imageName1.isNullOrEmpty()) {
