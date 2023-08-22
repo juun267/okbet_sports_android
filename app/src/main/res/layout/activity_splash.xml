@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context="org.cxct.sportlottery.ui.splash.SplashActivity">
 
+    <ImageView
+        android:id="@+id/ivSplash"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/tv_version_info"
         android:layout_width="wrap_content"

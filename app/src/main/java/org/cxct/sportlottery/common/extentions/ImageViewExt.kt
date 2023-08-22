@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.util.GlideRoundTransform
+import java.io.File
 
 fun ImageView.load(@DrawableRes res: Int = 0) {
     runWithCatch { Glide.with(context).load(res).into(this) }
@@ -47,6 +48,10 @@ fun ImageView.loadByOverride(url: String?, width:Int,height:Int,@DrawableRes pla
 
 fun ImageView.load(url: Int?) {
     runWithCatch { Glide.with(context).load(url).into(this) }
+}
+
+fun ImageView.load(file: File?) {
+    runWithCatch { Glide.with(context).load(file).into(this) }
 }
 
 fun ImageView.circleOf(url: String?, @DrawableRes placeHolder: Int = 0) {
