@@ -158,4 +158,8 @@ object ServiceMessage {
         return FastJsonUtils.jsonToObject(messageStr,RecordNewEvent::class.java)
     }
 
+    fun <T> parseResult(messageStr: String, clazz: Class<T>): T? {
+        return FastJsonUtils.jsonToObject(messageStr, clazz)
+    }
+
 }
