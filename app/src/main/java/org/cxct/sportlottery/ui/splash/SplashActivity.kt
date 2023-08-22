@@ -1,15 +1,25 @@
 package org.cxct.sportlottery.ui.splash
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
+import com.luck.picture.lib.tools.SPUtils
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toIntS
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -23,6 +33,8 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import java.io.File
+import java.lang.Exception
 import kotlin.system.exitProcess
 
 
@@ -35,6 +47,7 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loadSplash()
         ImmersionBar.with(this)
             .statusBarDarkFont(true)
             .transparentStatusBar()
@@ -42,6 +55,8 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
             .fitsSystemWindows(false)
             .init()
         setContentView(R.layout.activity_splash)
+        //加载缓存的启动图
+
         loading()
         setupVersion()
 
@@ -101,11 +116,19 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         }
 
         viewModel.configResult.observe(this) {
-            //判断用户是否手动设置了语言
 
+            //判断用户是否手动设置了语言
             val languageArr = it?.configData?.supportLanguage?.split(",")
             val systemLanStr: String =
                 LanguageManager.getSelectLanguage(applicationContext).key
+
+            //启动图
+            val splashImage=sConfigData?.imageList?.filter {it.imageType==21&& it.lang == systemLanStr}
+            if(!splashImage.isNullOrEmpty()){
+                //加载启动图
+                loadSplash("${sConfigData?.resServerHost}${splashImage[0].imageName1}")
+            }
+
             //1判断当前系统语言我们是否支持 如果支持使用系统语言
             if (languageArr != null && !(languageArr.contains(systemLanStr))) {
                 //2如果不支持默认使用后台设置的第一种语言
@@ -131,6 +154,8 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
                     getString(R.string.message_network_no_connect)
                 )
             }
+
+
         }
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
@@ -222,6 +247,37 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         if (!isSkiped) {
             isSkiped = true
             super.startActivity(intent)
+        }
+    }
+
+
+    //加载启动图
+    private val splashKeyStr="splashAd"
+    private fun loadSplash(url:String=""){
+        if(url.isEmpty()){
+            val localUrl=SPUtils.getInstance().getString(splashKeyStr)
+            if(localUrl.isNullOrEmpty()){
+                return
+            }
+            val bitmap=FileUtil.fileToBitmap(File(localUrl))
+            window.setBackgroundDrawable(BitmapDrawable(bitmap))
+//            ivSplash.load(localUrl)
+        }else{
+            ivSplash.visible()
+            DownloadUtil.get().download(url,cacheDir.absolutePath,object : DownloadUtil.OnDownloadListener {
+                override fun onDownloadSuccess(filePath: String?) {
+                    filePath?.let {
+                        ivSplash.load(File(filePath))
+                        SPUtils.getInstance().put(splashKeyStr,filePath)
+                    }
+                }
+
+                override fun onDownloading(progress: Int) {
+                }
+                override fun onDownloadFailed() {
+                }
+            })
+
         }
     }
 
