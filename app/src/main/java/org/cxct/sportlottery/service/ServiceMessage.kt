@@ -162,4 +162,8 @@ object ServiceMessage {
         return recode
     }
 
+    fun <T> parseResult(messageStr: String, clazz: Class<T>): T? {
+        return FastJsonUtils.jsonToObject(messageStr, clazz)
+    }
+
 }
