@@ -18,7 +18,6 @@ import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.de
 class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
-//        ITEM, FOOTER, NO_DATA
         ITEM, NO_DATA
     }
 
@@ -50,22 +49,15 @@ class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolde
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> ItemViewHolder.from(parent)
-//            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
             else -> NoDataViewHolder.from(parent)
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is ItemViewHolder -> {
-                val item = getItem(position) as DataItem.Item
-                val isLastItem = position == itemCount -1
-                holder.bind(item.data, isLastItem)
-            }
-
-//            is FooterViewHolder -> {}
-
-            is NoDataViewHolder -> {}
+        if (holder is ItemViewHolder) {
+            val item = getItem(position) as DataItem.Item
+            val isLastItem = position == itemCount -1
+            holder.bind(item.data, isLastItem)
         }
     }
 
@@ -92,13 +84,6 @@ class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolde
             }
         }
 
-    }
-
-    class FooterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        companion object {
-            fun from(parent: ViewGroup) =
-                FooterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_footer_no_data, parent, false))
-        }
     }
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {

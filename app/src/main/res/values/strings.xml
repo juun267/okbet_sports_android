@@ -547,7 +547,7 @@
     <string name="visit_first">Explore the game</string>
     <string name="bet_number">Count</string>
     <string name="bet_money">Amount</string>
-    <string name="profit_and_loss">Result</string>
+    <string name="J267">Winnings</string>
     <string name="total_bet_number">Total bets：</string>
     <string name="total_profit_and_loss">Total Win：</string>
     <string name="game_name">Game name</string>
@@ -817,7 +817,7 @@
     <!--region 最新消息-->
     <string name="news_tab_game">Game</string>
     <string name="news_tab_system">System</string>
-    <string name="news_tab_plat">Platform</string>
+    <string name="J653">Platform</string>
     <string name="news_detail">Detail</string>
     <!--endregion 最新消息-->
 
@@ -1453,7 +1453,7 @@
     <string name="chat_has_been_received">This bonus has been received</string>
     <string name="chat_participate">Participate in the red packet conditions</string>
     <string name="chat_deposit_amount">Deposit amount</string>
-    <string name="chat_bet_amount">Bet amount</string>
+    <string name="chat_bet_amount">Bet Amount</string>
     <string name="chat_hint">Tips</string><!--要用KYC055-->
     <string name="chat_connection_error">Network connection error, please try again later</string>
     <string name="chat_win">Win</string>
@@ -1604,5 +1604,6 @@
     <string name="P175">Become a new OKBET member</string>
     <string name="P184">Featured OKLive</string>
     <string name="P183">Agent Deposit</string>
+    <string name="J653_1">Game Vendor</string>
 
 </resources>

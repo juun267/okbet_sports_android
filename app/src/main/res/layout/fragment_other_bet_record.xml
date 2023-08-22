@@ -104,7 +104,7 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="@string/profit_and_loss"
+                android:text="@string/J267"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>

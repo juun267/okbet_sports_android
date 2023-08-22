@@ -539,7 +539,7 @@
     <string name="visit_first">来去逛逛</string>
     <string name="bet_number">注数</string>
     <string name="bet_money">下注金额</string>
-    <string name="profit_and_loss">盈亏</string>
+    <string name="J267">盈亏</string>
     <string name="total_bet_number">总笔数：</string>
     <string name="total_profit_and_loss">总盈亏：</string>
     <string name="game_name">游戏名</string>
@@ -815,7 +815,7 @@
     <!--region 最新消息-->
     <string name="news_tab_game">游戏</string>
     <string name="news_tab_system">系统</string>
-    <string name="news_tab_plat">平台</string>
+    <string name="J653">平台</string>
     <string name="news_detail">详细</string>
     <!--endregion 最新消息-->
 
@@ -1530,4 +1530,5 @@
     <string name="P175">成为新的OKBET会员</string>
     <string name="P184">精选真人游戏</string>
     <string name="P183">代理充值</string>
+    <string name="J653_1">平台</string>
 </resources>
