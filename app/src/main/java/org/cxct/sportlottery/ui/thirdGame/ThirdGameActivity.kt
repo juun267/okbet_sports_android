@@ -3,10 +3,13 @@ package org.cxct.sportlottery.ui.thirdGame
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.webkit.WebView
+import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_third_game.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.collectWith
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
@@ -14,6 +17,7 @@ import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
@@ -34,12 +38,10 @@ open class ThirdGameActivity : WebActivity() {
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
-    //KYC驗證彈窗
-    private var kYCVerifyDialog: CustomSecurityDialog? = null
 
+    private val firmType by lazy { intent.getStringExtra(GAME_CATEGORY_CODE) }
     private val mGameCategoryCode: String? by lazy { intent?.getStringExtra(GAME_CATEGORY_CODE) }
 
-    private var isCashSave = false
 
     override fun init() {
         setupActivityOrientation()
@@ -50,6 +52,15 @@ open class ThirdGameActivity : WebActivity() {
         loadUrl(web_view)
         setupMenu()
         initObserve()
+
+        ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
+            if (it.isMaintain() && firmType == it.firmType) {
+                motion_menu.gone()
+                showErrorPromptDialog(getString(R.string.error), getString(R.string.hint_game_maintenance)) {
+                    finish()
+                }
+            }
+        }
     }
 
     override fun overrideUrlLoading(view: WebView, url: String): Boolean {
