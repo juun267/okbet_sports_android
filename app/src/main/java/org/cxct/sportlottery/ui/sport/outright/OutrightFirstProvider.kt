@@ -93,7 +93,7 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
         val leagueVH = helper as LeagueVH
         val position = adapter.getItemPosition(data)
         adapter.expandOrCollapse(data, parentPayload = this@OutrightFirstProvider)
-        setExpandArrow(leagueVH.arrow, matchOdd.isExpanded)
+        leagueVH.arrow.setArrowSpin(matchOdd.isExpanded, true) { setExpandArrow(leagueVH.arrow, matchOdd.isExpanded) }
         onItemClick.invoke(position, leagueVH.arrow, matchOdd)
     }
 

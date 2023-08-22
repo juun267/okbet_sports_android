@@ -31,7 +31,7 @@ class FilterLeagueProvider(val adapter: LeagueSelectAdapter,
         ivArrow.setOnClickListener {
             adapter.expandOrCollapse(item)
             helper.itemView.isSelected = leagueOdd.isExpanded
-            setExpandArrow(ivArrow, leagueOdd.isExpanded)
+            ivArrow.setArrowSpin(leagueOdd.isExpanded, true) { setExpandArrow(ivArrow, leagueOdd.isExpanded) }
         }
         helper.itemView.setOnClickListener {
             leagueOdd.league.isSelected = !leagueOdd.league.isSelected

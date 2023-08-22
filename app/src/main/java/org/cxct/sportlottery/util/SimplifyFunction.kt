@@ -1084,9 +1084,11 @@ fun String.formatHTML(): String {
 }
 fun setExpandArrow(ivArrow: ImageView, isExpanded: Boolean) {
     if (isExpanded) {
+        ivArrow.rotation = 0f
         ivArrow.setImageResource(R.drawable.ic_filter_arrow_up)
     } else {
-        ivArrow.setImageResource(R.drawable.ic_filter_arrow_down)
+        ivArrow.rotation = 180f
+        ivArrow.setImageResource(R.drawable.ic_filter_arrow_up2)
     }
 }
 
