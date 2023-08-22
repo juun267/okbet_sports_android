@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.LocaleList
 import android.util.DisplayMetrics
 import com.luck.picture.lib.PictureSelectorActivity
+import com.luck.picture.lib.tools.SPUtils
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.crash.FirebaseLog
@@ -210,6 +211,7 @@ object LanguageManager {
         FirebaseLog.addLogInfo("currentLanguage", select.name) // 在崩溃日志中记录当前的语言类型
         selectedLocale = convert(select)
         SPUtil.getInstance(context).saveLanguage(select.key)
+        SPUtils.getInstance().put("splashAd","")
         setApplicationLanguage(context)
         if (lastLanguage != select) {
             languageChangeListeners.forEach { it.invoke(lastLanguage, select) }
