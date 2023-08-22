@@ -1,15 +1,9 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
+ <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        style="@style/StyleOddButtonLL"
-        android:background="@drawable/bg_radius_10_fff">
+       android:background="@color/color_FFFFFF">
         <include layout="@layout/content_odds_detail_list_item" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_bet"
@@ -22,7 +16,6 @@
         <include layout="@layout/space_content_odds_detail_list"/>
 
     </LinearLayout>
-</FrameLayout>
 
 
 

@@ -59,7 +59,6 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
 
         val name = AppCompatTextView(context)
         name.textSize = 13f
-        name.typeface = Typeface.DEFAULT_BOLD
         name.setTextColor(ContextCompat.getColor(context, R.color.color_0D2245))
         lin.addView(name, LinearLayout.LayoutParams(0, -2, 1f))
 

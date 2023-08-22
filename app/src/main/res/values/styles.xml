@@ -89,7 +89,7 @@
         <item name="android:textSize">14sp</item>
     </style>
     <style name="StyleOddButtonLL">
-        <item name="android:clipChildren">false</item>
+<!--        <item name="android:clipChildren">false</item>-->
     </style>
 
     <style name="StyleOddButtonItem">
@@ -103,6 +103,8 @@
         <item name="android:background">@drawable/bg_radius_6_num_keyboard</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/color_FFFFFF_414655</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
         <item name="android:textSize">22sp</item>
     </style>
 
@@ -137,5 +139,9 @@
 
     <style name="lunchTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/bg_splash</item>
+    </style>
+    <style name="textBlackBold">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_FFFFFF</item>
     </style>
 </resources>

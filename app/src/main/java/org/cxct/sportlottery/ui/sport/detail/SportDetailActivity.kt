@@ -669,6 +669,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 sportCode = GameType.getGameType(matchInfo?.gameType)
             }
         rv_detail.apply {
+            if (itemDecorationCount==0)
             addItemDecoration(SpaceItemDecoration(context,R.dimen.margin_4))
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
@@ -821,8 +822,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     oddsDetailListAdapter?.removePreloadItem()
                     //如果是末位比分，小节比分就折叠起来
                     if (tabCode == MatchType.END_SCORE.postValue){
-                        list.filter { it.gameType.isEndScoreType()}?.forEach {
-                            it.isExpand = it.gameType==PlayCate.FS_LD_CS.value
+                        list.filter { it.gameType.isEndScoreType()}?.forEachIndexed { index, oddsDetailListData ->
+                            oddsDetailListData.isExpand = (index==0)
                         }
                     }
                     oddsDetailListAdapter?.oddsDetailDataList = list

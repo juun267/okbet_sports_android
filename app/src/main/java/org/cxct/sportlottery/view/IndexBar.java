@@ -78,12 +78,12 @@ public class IndexBar extends View {
         mPaintNormal.setAntiAlias(true);
         mPaintNormal.setColor(mTextColorNormal);
         mPaintNormal.setTextSize(mTextSizeNormal);
-        mPaintNormal.setFakeBoldText(true);
+//        mPaintNormal.setFakeBoldText(true);
         mPaintPressed = new Paint();
         mPaintPressed.setAntiAlias(true);
         mPaintPressed.setTextSize(mTextSizePressed);
         mPaintPressed.setColor(mTextColorPressed);
-        mPaintPressed.setFakeBoldText(true);
+//        mPaintPressed.setFakeBoldText(true);
 
         mPaintBgNormal = new Paint();
         mPaintBgNormal.setAntiAlias(true);

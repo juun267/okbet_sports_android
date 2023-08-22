@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="42dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/margin_12"
+    android:paddingVertical="@dimen/margin_7"
     android:gravity="center"
     android:background="@drawable/shape_date_item_bg_v4"
     android:foreground="@drawable/fg_ripple">
@@ -19,6 +20,8 @@
         android:id="@+id/tvDateWithMonth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_1"
+        android:textFontWeight="100"
         android:textSize="@dimen/textSize12sp"
         android:textColor="@color/color_date_gray_white"
         android:text="@string/date_row_all"/>
