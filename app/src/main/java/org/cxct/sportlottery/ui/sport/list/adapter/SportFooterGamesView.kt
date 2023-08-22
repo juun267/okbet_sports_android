@@ -211,7 +211,7 @@ class SportFooterGamesView @JvmOverloads constructor(
         initObserver(fragment, viewmodel)
         viewmodel.getSportOKGames()
         viewmodel.getSportOKLive()
-        homeButtomView.setServiceClick(fragment.parentFragmentManager)
+        homeButtomView.bindServiceClick(fragment.parentFragmentManager)
     }
 
     private fun initObserver(lifecycleOwner: BaseFragment<*>, viewmodel: OKGamesViewModel) = viewmodel.run {
