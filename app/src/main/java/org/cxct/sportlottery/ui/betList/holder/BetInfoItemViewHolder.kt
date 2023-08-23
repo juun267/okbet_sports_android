@@ -303,7 +303,7 @@ class BetInfoItemViewHolder(
         //單筆注單展開時，預設開啟輸入本金的鍵盤
         if (betListSize == 1) {
             etBet.requestFocus()
-            itemData.isInputBet = true
+            itemData.isInputBet = false
             layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
             if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) {
                 layoutKeyBoard.showKeyboard(

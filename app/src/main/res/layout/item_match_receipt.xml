@@ -249,7 +249,7 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:textColor="@color/color_9BB3D9_535D76"
+                    android:textColor="@color/color_000000"
                     android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     tools:text=":488754564545487" />

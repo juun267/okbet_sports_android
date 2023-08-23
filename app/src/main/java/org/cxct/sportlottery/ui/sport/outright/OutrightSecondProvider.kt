@@ -55,7 +55,6 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
         val name = AppCompatTextView(context)
         name.maxLines = 2
         name.textSize = 12f
-        name.typeface = Typeface.DEFAULT_BOLD
         name.setPadding(0, p12, 0, p12)
         name.setTextColor(ContextCompat.getColor(context, R.color.color_0D2245))
         val nameParam = LinearLayout.LayoutParams(0, -2, 1f)
@@ -65,7 +64,7 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
         val time = AppCompatTextView(context)
         time.textSize = 12f
         time.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_calendar, 0, 0, 0)
-        time.setTextColor(ContextCompat.getColor(context, R.color.color_6D7693))
+        time.setTextColor(ContextCompat.getColor(context, R.color.color_000000))
         lin.addView(time, LinearLayout.LayoutParams(-2, -2))
 
         val arrow = AppCompatImageView(context)

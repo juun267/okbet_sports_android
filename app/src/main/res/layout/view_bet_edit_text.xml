@@ -44,6 +44,7 @@
         android:layout_marginStart="10dp"
         android:text="PHP"
         android:textColor="@color/color_000000"
+        android:textSize="@dimen/textSize12sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/etBetParlay"
         app:layout_constraintStart_toStartOf="@+id/etBetParlay"

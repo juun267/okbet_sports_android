@@ -118,9 +118,10 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingEnd="14dp"
+            android:layout_marginRight="@dimen/margin_12"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_name_type">
+            app:layout_constraintTop_toTopOf="@+id/tv_name_type"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_name_type">
             <ImageView
                 android:id="@+id/ivOddsArrow"
                 android:layout_width="match_parent"
@@ -221,9 +222,9 @@
         <View
             android:id="@+id/viewDivider"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginHorizontal="14dp"
-            android:background="@color/color_e3e8ee"
+            android:layout_height="@dimen/margin_0.5"
+            android:layout_marginHorizontal="12dp"
+            android:background="@color/color_EEF3FC"
             android:layout_marginTop="10dp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
@@ -318,10 +319,10 @@
                 android:orientation="vertical"
                 android:visibility="visible">
                 <View
-                    android:layout_marginHorizontal="14dp"
-                    android:background="@color/color_dbdfea"
+                    android:layout_marginHorizontal="@dimen/margin_12"
+                    android:background="@color/color_EEF3FC"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_height="@dimen/margin_0.5"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_editText_container"
@@ -381,9 +382,9 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
-                    android:background="@color/color_dbdfea"
+                    android:background="@color/color_EEF3FC"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_height="@dimen/margin_0.5"/>
 
                 <org.cxct.sportlottery.util.KeyboardView
                     android:id="@+id/layoutKeyBoard"

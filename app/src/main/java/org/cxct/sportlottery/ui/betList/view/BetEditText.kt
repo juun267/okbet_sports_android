@@ -44,7 +44,8 @@ class BetEditText @JvmOverloads constructor(
         inputMaxMoney: Double,
         isParlay: Boolean = false,
         mHasBetClosed: Boolean = false,
-        itemData2: ParlayOdd? = null
+        itemData2: ParlayOdd? = null,
+        isEndScore: Boolean = false
     ) {
         val etParlayBg: (Int) -> Unit = {
             etBetParlay.setBackgroundResource(it)
@@ -55,9 +56,11 @@ class BetEditText @JvmOverloads constructor(
         if (isInputData) {
             tvSymbol.setTextColor(context.getColor(R.color.color_025BE8))
             etParlayBg(R.drawable.bg_radius_2_edittext_focus)
+            etBetParlay.setTextColor(context.getColor(R.color.color_025BE8))
         } else {
-            etParlayBg(R.drawable.bg_radius_2_edittext_unfocus)
             tvSymbol.setTextColor(context.getColor(R.color.color_000000))
+            etParlayBg(if (isEndScore) R.drawable.bg_radius_2_edittext_unfocus_black else R.drawable.bg_radius_2_edittext_unfocus)
+            etBetParlay.setTextColor(if (isEndScore) context.getColor(R.color.color_000000) else context.getColor(R.color.color_025BE8))
         }
         val betHint = tvSymbol.context.getString(
             R.string.hint_bet_limit_range,

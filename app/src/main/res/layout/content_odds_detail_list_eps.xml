@@ -9,8 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/StyleOddButtonLL"
-        android:background="@drawable/bg_radius_10_fff">
+        android:background="@color/color_FFFFFF">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_eps"

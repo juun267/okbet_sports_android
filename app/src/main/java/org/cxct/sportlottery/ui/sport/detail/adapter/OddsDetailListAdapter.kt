@@ -119,9 +119,9 @@ class OddsDetailListAdapter(
     var oddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            resetListData()
         }
-
+    var itemList: ArrayList<OddsDetailListData> = ArrayList()
 
     var homeName: String? = null
 
@@ -136,6 +136,9 @@ class OddsDetailListAdapter(
     var awayCornerKicks: Int? = null
 
     private var code: String? = null
+    set(value) {
+        field = value
+    }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
@@ -147,21 +150,32 @@ class OddsDetailListAdapter(
 
 
     fun setPreloadItem() {
-        oddsDetailDataList.clear()
+        itemList.clear()
         isPreload = true
         notifyDataSetChanged()
     }
 
     fun removePreloadItem() {
-        oddsDetailDataList = arrayListOf()
+        itemList = arrayListOf()
         isPreload=false
+        notifyDataSetChanged()
+    }
+    private fun resetListData(){
+        itemList.clear()
+        oddsDetailDataList.forEach {
+            when{
+                it.typeCodes.contains(code)-> itemList.add(it)
+                //当玩法为末位比分的时候不需要显示置顶
+                it.isPin && code != MatchType.END_SCORE.postValue-> itemList.add(it)
+            }
+        }
         notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
         return when {
             isPreload -> BaseItemType.PRELOAD_ITEM.type
-            oddsDetailDataList.isNullOrEmpty() -> BaseItemType.NO_DATA.type
+            itemList.isNullOrEmpty() -> BaseItemType.NO_DATA.type
             else -> {
                 val playCateCode = oddsDetailDataList[position].gameType
                 PlayCate.getPlayCate(playCateCode).let { playCate ->
@@ -481,10 +495,10 @@ class OddsDetailListAdapter(
 
     }
 
-    override fun getItemCount(): Int = if (oddsDetailDataList.isNullOrEmpty()) {
+    override fun getItemCount(): Int = if (itemList.isNullOrEmpty()) {
         1
     } else {
-        oddsDetailDataList.size
+        itemList.size
     }
 
 
@@ -492,8 +506,8 @@ class OddsDetailListAdapter(
         holder: RecyclerView.ViewHolder, position: Int,
     ) {
         if(holder is ViewHolder) {
-            if (oddsDetailDataList.isNotEmpty()) holder.bindModel(
-                oddsDetailDataList[position],
+            if (itemList.isNotEmpty()) holder.bindModel(
+                itemList[position],
             )
         }
     }
@@ -501,8 +515,8 @@ class OddsDetailListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         super.onBindViewHolder(holder, position, payloads)
         if(holder is ViewHolder) {
-            if (oddsDetailDataList.isNotEmpty()) holder.bindModel(
-                oddsDetailDataList[position], payloads
+            if (itemList.isNotEmpty()) holder.bindModel(
+                itemList[position], payloads
             )
         }
     }
@@ -510,7 +524,7 @@ class OddsDetailListAdapter(
     fun notifyDataSetChangedByCode(code: String) {
         this.code = code
         isFirstRefresh = true
-        notifyDataSetChanged()
+        resetListData()
     }
 
     private var isFirstRefresh = false
@@ -521,17 +535,17 @@ class OddsDetailListAdapter(
     ) : RecyclerView.ViewHolder(itemView) {
 
         private fun setVisibility(visible: Boolean) {
-            val param = itemView.layoutParams as RecyclerView.LayoutParams
-            if (visible) {
-                param.height = LinearLayout.LayoutParams.WRAP_CONTENT
-                param.width = LinearLayout.LayoutParams.MATCH_PARENT
-                itemView.visibility = View.VISIBLE
-            } else {
-                param.height = 0
-                param.width = 0
-                itemView.visibility = View.GONE
-            }
-            itemView.layoutParams = param
+//            val param = itemView.layoutParams as RecyclerView.LayoutParams
+//            if (visible) {
+//                param.height = LinearLayout.LayoutParams.WRAP_CONTENT
+//                param.width = LinearLayout.LayoutParams.MATCH_PARENT
+//                itemView.visibility = View.VISIBLE
+//            } else {
+//                param.height = 0
+//                param.width = 0
+//                itemView.visibility = View.GONE
+//            }
+            itemView.rootView.isVisible = visible
         }
 
         private fun controlExpandBottom(expand: Boolean) {
@@ -985,15 +999,7 @@ class OddsDetailListAdapter(
                 else -> oneList(oddsDetail)
             }
 
-            if(oddsDetail.typeCodes.contains(code)){
-                setVisibility(true)
-            }else{
-                setVisibility(false)
-            }
-            //当玩法为末位比分的时候不需要显示置顶
-            if (oddsDetail.isPin && code != MatchType.END_SCORE.postValue) {
-                setVisibility(true)
-            }
+
 
         }
 
@@ -1351,6 +1357,7 @@ class OddsDetailListAdapter(
                 //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
                 itemView.lin_match.isVisible = false
                 rvBet?.let { it1 ->
+                    it1.setBackgroundResource(R.color.color_F9FAFD)
                     if (it1.adapter == null) {
                         it1.layoutManager = GridLayoutManager(itemView.context, 4)
                         if (it1.itemDecorationCount==0) {
@@ -1360,6 +1367,12 @@ class OddsDetailListAdapter(
                         rvBet.tag = oddsDetail.gameType
                         isFirstRefresh = false
                     }else{
+                        it1.layoutManager = GridLayoutManager(itemView.context, 4)
+                        if (it1.itemDecorationCount==0) {
+                            it1.addItemDecoration(GridSpacingItemDecoration(4,4.dp,false))
+                        }
+                        it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
+                        rvBet.tag = oddsDetail.gameType
                         ((it1.adapter) as TypeSingleAdapter).apply {
                             if (rvBet.tag != oddsDetail.gameType){
                                 rvBet.tag = oddsDetail.gameType
@@ -1381,6 +1394,7 @@ class OddsDetailListAdapter(
             } else {
                 rvBet?.apply {
 //                    Timber.d("===洗刷刷4 else index:${12} payloads:${payloads?.size}")
+                    setBackgroundResource(R.color.color_FFFFFF)
                     val singleAdapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                     adapter = singleAdapter
                     layoutManager = GridLayoutManager(itemView.context, spanCount)

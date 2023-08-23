@@ -1,10 +1,16 @@
 package org.cxct.sportlottery.ui.betList.holder
 
 import android.annotation.SuppressLint
+import android.graphics.Typeface
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.toDoubleS
@@ -17,6 +23,7 @@ import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.KeyboardView
 import org.cxct.sportlottery.util.MoneyInputFilter
+import org.cxct.sportlottery.util.Spanny
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getMultipleOdds
 import org.cxct.sportlottery.view.boundsEditText.EditTextWatcher
@@ -55,7 +62,10 @@ class BatchParlayViewHolder(
 
         val multipleOdds = betList?.let { getMultipleOdds(it) }
         binding.tvParlayType.text = if (position == 0) {
-            getParlayName(itemData.parlayType).plus("*").plus(itemData.num.toString()) + multipleOdds
+//            setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_0D2245)),startIndex,endIndex,Spanny.SPAN_EXCLUSIVE_EXCLUSIVE)
+//            setSpan(StyleSpan(Typeface.BOLD),startIndex,endIndex,Spanny.SPAN_EXCLUSIVE_EXCLUSIVE)
+            Spanny(getParlayName(itemData.parlayType).plus("* ").plus(itemData.num.toString()))
+                .append(multipleOdds,ForegroundColorSpan(ContextCompat.getColor(itemView.context,R.color.color_000000)),StyleSpan(Typeface.BOLD))
         } else {
             getParlayName(itemData.parlayType).plus("*").plus(itemData.num.toString())
         }
