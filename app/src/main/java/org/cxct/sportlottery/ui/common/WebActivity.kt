@@ -37,7 +37,8 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         const val KEY_TITLE = "key-title"
         const val KEY_TOOLBAR_VISIBILITY = "key-toolbar-visibility"
         const val KEY_BACK_EVENT = "key-back-event"
-        const val GAME_CATEGORY_CODE = "game-category-code"
+        const val FIRM_CODE = "firm-code" // 厂商id
+        const val GAME_CATEGORY_CODE = "game-category-code" //OK_GAMES、OK_LIVE、OK_BINGO、OK_SPORT
         const val BET_STATION = "betstation"
     }
 

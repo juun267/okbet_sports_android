@@ -273,15 +273,13 @@ class LivePageView @JvmOverloads constructor(
             setOnGameClick {okGameBean->
                 if(LoginRepository.isLogined()){
                     loginedRun(fragment.requireContext()) {
-                        okGameBean.let {okGameBean->
-                            fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
-                            fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
-                        }
+                        fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
+                        fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
                     }
                 }else{
                     //请求试玩路线
                     fragment.loading()
-                    fragment.viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
+                    fragment.viewModel.requestEnterThirdGameNoLogin(okGameBean)
                 }
             }
             setOnMoreClick {

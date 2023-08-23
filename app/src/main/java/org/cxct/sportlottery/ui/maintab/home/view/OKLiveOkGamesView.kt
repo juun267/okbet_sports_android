@@ -95,7 +95,7 @@ class OKLiveOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(
             }else{
                 //请求试玩路线
                 fragment.loading()
-                fragment.viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
+                fragment.viewModel.requestEnterThirdGameNoLogin(okGameBean)
             }
 
         }

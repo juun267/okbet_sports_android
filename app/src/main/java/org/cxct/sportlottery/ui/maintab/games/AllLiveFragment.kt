@@ -339,7 +339,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         } else {
             //请求试玩路线
             loading()
-            viewModel.requestEnterThirdGameNoLogin(bean.firmType,bean.gameCode,bean.thirdGameCategory)
+            viewModel.requestEnterThirdGameNoLogin(bean)
         }
     }
 

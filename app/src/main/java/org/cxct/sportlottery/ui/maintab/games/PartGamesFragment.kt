@@ -89,11 +89,7 @@ class PartGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGames
             } else {
                 //请求试玩路线
                 loading()
-                viewModel.requestEnterThirdGameNoLogin(
-                    okGameBean.firmType,
-                    okGameBean.gameCode,
-                    okGameBean.thirdGameCategory
-                )
+                viewModel.requestEnterThirdGameNoLogin(okGameBean)
             }
 
         }

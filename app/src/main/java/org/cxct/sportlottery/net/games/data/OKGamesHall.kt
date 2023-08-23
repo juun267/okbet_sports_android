@@ -75,6 +75,7 @@ data class OKGameBean(
     val firmName: String?,
     val gameCode: String?,
     val gameName: String?,
+    val gameType: String?,
     val imgGame: String?,
     val gameEntryTagName: String?,
     val thirdGameCategory: String?,
