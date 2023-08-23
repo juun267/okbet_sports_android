@@ -387,6 +387,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun showProvinceDialog() {
+        if (viewModel.areaData == null) {
+            return
+        }
         showBottomDialog(
             viewModel.provincesList,
             resources.getString(R.string.J036),
@@ -411,6 +414,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun showProvincePDialog() {
+        if (viewModel.areaData == null) {
+            return
+        }
         showBottomDialog(
             viewModel.provincesPList,
             resources.getString(R.string.J036),

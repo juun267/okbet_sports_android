@@ -159,7 +159,8 @@ class OKLiveViewModel(
                     "${gameData.firmCode}", EnterThirdGameResult(
                         resultType = EnterThirdGameResult.ResultType.FAIL,
                         url = null,
-                        errorMsg = androidContext.getString(R.string.hint_game_maintenance)
+                        errorMsg = androidContext.getString(R.string.hint_game_maintenance),
+                        gameData.gameType
                     )
                 )
             )
@@ -169,6 +170,7 @@ class OKLiveViewModel(
             "${gameData.firmType}",
             "${gameData.gameCode}",
             "${gameData.gameCode}",
+            "${gameData.gameType}",
             baseFragment
         )
     }

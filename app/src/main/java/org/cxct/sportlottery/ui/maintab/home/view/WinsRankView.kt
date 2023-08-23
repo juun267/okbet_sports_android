@@ -117,6 +117,8 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     private fun initViews() {
+        // 暂时保持原样
+//        rvOkgameRecord.itemAnimator = null
         rvOkgameRecord.adapter = gameRecordAdapter
         rvOkgameRecord.addItemDecoration(RCVDecoration()
             .setDividerHeight(2f)

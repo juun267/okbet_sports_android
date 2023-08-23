@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_LOGIN_DEVICE_SMS
 import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG
 import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG_SEND_VALIDCODE
+import org.cxct.sportlottery.network.Constants.REG_PLATFORM_USER
 import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
 import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD_BY_EMAIL
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
@@ -163,5 +164,10 @@ interface IndexService {
 
     @POST(BIND_FACEBOOK)
     suspend fun bindFacebook(@Body loginTokenRequest: LoginTokenRequest): Response<AuthBindResult>
+
+    @POST(REG_PLATFORM_USER)
+    suspend fun regPlatformUser(
+        @Header("x-session-token") token: String,
+        @Body loginRequest: LoginRequest): Response<LoginResult>
 
 }

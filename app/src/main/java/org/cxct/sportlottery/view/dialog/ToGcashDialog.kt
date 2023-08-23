@@ -9,10 +9,14 @@ import android.view.*
 import androidx.core.view.isVisible
 import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogPromotionSuccessBinding
 import org.cxct.sportlottery.databinding.DialogToGcashBinding
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.KvUtils.GLIFE_TIP_FLAG
@@ -20,8 +24,11 @@ import org.cxct.sportlottery.util.KvUtils.GLIFE_TIP_FLAG
 /**
  * glife 用户点击存取款跳转gcash
  */
-class ToGcashDialog(context: Context, val visibleNoReminder: Boolean = true) : Dialog(context) {
-
+class ToGcashDialog(val visibleNoReminder: Boolean = true) : BaseDialog<BaseViewModel>(
+    BaseViewModel::class) {
+    init {
+        setStyle(R.style.FullScreen)
+    }
     companion object{
         /**
          * 登录后才需要显示，加全局状态值区分
@@ -35,13 +42,13 @@ class ToGcashDialog(context: Context, val visibleNoReminder: Boolean = true) : D
             if (viewModel.getLoginBoolean() && viewModel.userInfo.value?.vipType == 1) {
                 if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_TIP_FLAG, false)&&needShow) {
                     needShow=false
-                    ToGcashDialog(AppManager.currentActivity()).show()
+                    ToGcashDialog().show((AppManager.currentActivity() as BaseActivity<*>).supportFragmentManager,ToGcashDialog.javaClass.name)
                 }
             }
         }
         fun showByClick(viewModel: BaseSocketViewModel,next: () -> Unit){
             if (viewModel.getLoginBoolean() && viewModel.userInfo.value?.vipType == 1) {
-                ToGcashDialog(AppManager.currentActivity(),false).show()
+                ToGcashDialog(false).show((AppManager.currentActivity() as BaseActivity<*>).supportFragmentManager,ToGcashDialog.javaClass.name)
                 return
             }
             next.invoke()
@@ -53,16 +60,18 @@ class ToGcashDialog(context: Context, val visibleNoReminder: Boolean = true) : D
     private var mNegativeClickListener: OnNegativeListener? = null
     private lateinit var binding: DialogToGcashBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        window?.requestFeature(Window.FEATURE_NO_TITLE)
-        binding = DialogToGcashBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setCanceledOnTouchOutside(false)
-        window?.setBackgroundDrawableResource(android.R.color.transparent)
-        window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT
-        )
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        binding=DialogToGcashBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        isCancelable = false
         binding.btnGlifeCancel.setOnClickListener {
             if (visibleNoReminder) {
                 KvUtils.put(GLIFE_TIP_FLAG, binding.cbNoReminder.isChecked)
@@ -70,7 +79,7 @@ class ToGcashDialog(context: Context, val visibleNoReminder: Boolean = true) : D
             dismiss()
         }
         binding.cbNoReminder.isVisible = visibleNoReminder
-        binding.btnGlifeOpen.text = context.getString(R.string.LT028)+" "+context.getString(R.string.online_gcash)
+        binding.btnGlifeOpen.text = requireContext().getString(R.string.LT028)+" "+requireContext().getString(R.string.online_gcash)
         binding.btnGlifeOpen.setOnClickListener {
             if (visibleNoReminder) {
                 KvUtils.put(GLIFE_TIP_FLAG, binding.cbNoReminder.isChecked)
@@ -80,8 +89,6 @@ class ToGcashDialog(context: Context, val visibleNoReminder: Boolean = true) : D
             UpdateUtils.startActivity(intent)
             dismiss()
         }
-
-
     }
 
     fun setPositiveClickListener(positiveClickListener: OnPositiveListener) {

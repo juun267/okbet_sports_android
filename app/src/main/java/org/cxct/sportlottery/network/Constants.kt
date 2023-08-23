@@ -366,11 +366,13 @@ object Constants {
 
     const val ACTIVITY_IMAGELIST_H5 = "/api/front/index/activityImageListH5"
 
+    const val ACTIVITY_DETAIL_H5 = "/api/front/agentActivity/detailH5/{activityId}"
+
     const val ACTIVITY_APPLY = "/api/front/agentActivity/apply/{activityId}"
 
 
     //登录或注册(新版优化登录注册->使用)
-    const val LOGIN_OR_REG = "/api/front/index/loginOrRegV2"
+    const val LOGIN_OR_REG = "/api/front/index/loginOrRegV3"
 
     //登录或注册获取验证码(新版优化登录注册->使用)
     const val LOGIN_OR_REG_SEND_VALIDCODE = "/api/front/index/loginOrRegSendValidCode"
@@ -392,6 +394,9 @@ object Constants {
 
     //绑定facebook登录(绑定现有账户)
     const val BIND_FACEBOOK = "/api/front/index/bindFacebook"
+
+    //注册平台账号
+    const val REG_PLATFORM_USER = "/api/front/index/regPlatformUser"
 
     //parlay limit
     const val PLAYQUOTACOM_LIST = "/api/front/playQuotaCom/list" //获取所有体育玩法限额
@@ -418,6 +423,7 @@ object Constants {
     const val SPORT_SEARCH_ENGINE = "/api/front/sport/searchEngine"
     const val SPORT_PUBLICITY_RECOMMEND = "/api/front/sport/recommend"
     const val SPORT_MENU_FILTER = "/api/front/sport/menu/list"
+    const val SPORT_COUPON_MENU = "/api/front/sport/coupon/menu"
 
 
     const val MYFAVORITE_QUERY = "/api/front/myFavorite/query"
@@ -621,5 +627,5 @@ object Constants {
         "/api/front/chat/getSign" //---------------------------------------- 获取平台用户信息和签名信息
     const val CHAT_CHECK_TOKEN =
         "/api/chat/front/user/checktoken" //----------------------------- 验证token 是否过期。如果不过期返回token信息，过期返回success: false
-
+    const val CHAT_GET_STICKER="/api/chat/front/emoticons/queryList"
 }

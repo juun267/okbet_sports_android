@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.PageInfo
@@ -122,6 +122,10 @@ open class MainHomeViewModel(
         get() = _activityImageList
     private val _activityImageList = MutableLiveData<List<ActivityImageList>>()
 
+    val activityDetail: LiveData<ActivityImageList>
+        get() = _activityDetail
+    private val _activityDetail = MutableLiveData<ActivityImageList>()
+
     val activityApply: LiveData<String>
         get() = _activityApply
     private val _activityApply = MutableLiveData<String>()
@@ -214,6 +218,7 @@ open class MainHomeViewModel(
     fun getHomeOKGamesList(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
+            GameEntryType.OKGAMES.key,
             pageIndexLiveData.value ?: 1, pageSizeLiveData.value ?: 1
         )
     }) {
@@ -236,6 +241,7 @@ open class MainHomeViewModel(
     fun getOkLiveOKGamesList(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
+            GameEntryType.OKLIVE.key,
             pageIndexLiveData.value ?: 1, pageSizeOKLiveLD.value ?: 1
         )
     }) {
@@ -257,26 +263,54 @@ open class MainHomeViewModel(
     }
 
 
+    val homeGamesList300: LiveData< List<OKGameBean>>
+        get() = _homeGamesList300
+    private val _homeGamesList300 = MutableLiveData< List<OKGameBean>>()
+    fun getHomeOKGamesList300(
+    ) = callApi({
+        OKGamesRepository.getHomeOKGamesList(
+            GameEntryType.OKGAMES.key,
+             1,  300
+        )
+    }) {
+        if (it.getData() == null) {
+            //hide loading
+            _homeGamesList300.value = arrayListOf()
+        } else {
+            _homeGamesList300.value=it.getData()
+        }
+    }
+
+
+
+    val homeLiveGamesList300: LiveData< List<OKGameBean>>
+        get() = _homeLiveGamesList300
+    private val _homeLiveGamesList300 = MutableLiveData< List<OKGameBean>>()
+    fun getHomeLiveGamesList300(
+    ) = callApi({
+        OKGamesRepository.getHomeOKGamesList(
+            GameEntryType.OKLIVE.key,
+            1,  300
+        )
+    }) {
+        if (it.getData() == null) {
+            //hide loading
+            _homeLiveGamesList300.value = arrayListOf()
+        } else {
+            _homeLiveGamesList300.value=it.getData()
+        }
+    }
+
     /**
      * 进入OKgame游戏
      */
-    fun homeOkGamesEnterThirdGame(gameData: OKGameBean?, baseFragment: BaseFragment<*>) {
-        if (gameData == null) {
-            _enterThirdGameResult.postValue(
-                Pair(
-                    "${gameData?.firmCode}", EnterThirdGameResult(
-                        resultType = EnterThirdGameResult.ResultType.FAIL,
-                        url = null,
-                        errorMsg = androidContext.getString(R.string.hint_game_maintenance)
-                    )
-                )
-            )
-            return
-        }
+    fun homeOkGamesEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {
+
         requestEnterThirdGame(
             "${gameData.firmType}",
             "${gameData.gameCode}",
             "${gameData.gameCode}",
+            "${gameData.gameType}",
             baseFragment
         )
     }
@@ -349,10 +383,14 @@ open class MainHomeViewModel(
         }
     }
 
+    fun requestEnterThirdGameNoLogin(okGameBean: OKGameBean) {
+        requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory, okGameBean.gameType)
+    }
+
     /**
      * 未登录试玩
      */
-    fun requestEnterThirdGameNoLogin(  firmType: String?, gameCode: String?,gameCategory: String?){
+    private fun requestEnterThirdGameNoLogin(firmType: String?, gameCode: String?, gameCategory: String?, gameEntryTagName: String?){
         if(firmType==null){
             //不支持试玩
             _enterTrialPlayGameResult.postValue(null)
@@ -370,7 +408,7 @@ open class MainHomeViewModel(
             }else{
                 if(result.success&&result.msg.isNotEmpty()){
                     //获得了试玩路径
-                    val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, result.msg, gameCategory)
+                    val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, result.msg, gameCategory, gameEntryTagName)
                     _enterTrialPlayGameResult.postValue(Pair(firmType, thirdGameResult))
                 }else{
                     //不支持试玩
@@ -386,12 +424,13 @@ open class MainHomeViewModel(
         firmType: String,
         gameCode: String,
         gameCategory: String,
+        gameEntryTagName: String,
         baseFragment: BaseFragment<*>,
     ) {
 //        Timber.e("gameData: $gameData")
         if (loginRepository.isLogin.value != true) {
             _enterThirdGameResult.postValue(Pair(firmType,
-                EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER, null)))
+                EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER, null, "", gameEntryTagName)))
             return
         }
 
@@ -412,12 +451,12 @@ open class MainHomeViewModel(
 
             //先调用三方游戏的登入接口, 确认返回成功200之后再接著调用自动转换额度的接口, 如果没有登入成功, 后面就不做额度自动转换的调用了
             if (!thirdLoginResult.success) {
-                _enterThirdGameResult.postValue(Pair(firmType, EnterThirdGameResult(EnterThirdGameResult.ResultType.FAIL,  null, thirdLoginResult?.msg)))
+                _enterThirdGameResult.postValue(Pair(firmType, EnterThirdGameResult(EnterThirdGameResult.ResultType.FAIL,  null, thirdLoginResult?.msg, gameEntryTagName)))
                 baseFragment.hideLoading()
                 return@launch
             }
 
-            val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory)
+            val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory, gameEntryTagName)
             if (autoTransfer(firmType)) { //第三方自動轉換
                 _enterThirdGameResult.postValue(Pair(firmType, thirdGameResult))
                 baseFragment.hideLoading()
@@ -433,7 +472,8 @@ open class MainHomeViewModel(
         _enterThirdGameResult.postValue(Pair("", EnterThirdGameResult(
             resultType = EnterThirdGameResult.ResultType.NONE,
             url = null,
-            errorMsg = null
+            errorMsg = null,
+            ""
         )))
     }
 
@@ -595,6 +635,13 @@ open class MainHomeViewModel(
     fun getActivityImageListH5() = callApi({UserRepository.activityImageListH5()}){
         if (it.succeeded()){
             _activityImageList.postValue(it.getData()?.sortedByDescending { it.imageSort })
+        }else{
+            toast(it.msg)
+        }
+    }
+    fun activityDetailH5(activityId:String) = callApi({UserRepository.activityDetailH5(activityId)}){
+        if (it.succeeded()){
+            _activityDetail.postValue(it.getData())
         }else{
             toast(it.msg)
         }

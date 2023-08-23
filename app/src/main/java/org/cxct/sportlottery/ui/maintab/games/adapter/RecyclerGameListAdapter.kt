@@ -1,12 +1,11 @@
 package org.cxct.sportlottery.ui.maintab.games.adapter
 
-import org.cxct.sportlottery.R
+
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.databinding.ItemGameViewListBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
-import org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
-import org.cxct.sportlottery.util.ToastUtil
+
 
 class RecyclerGameListAdapter : BindingAdapter<OKGamesCategory, ItemGameViewListBinding>()  {
     //点击更多
@@ -44,6 +43,4 @@ class RecyclerGameListAdapter : BindingAdapter<OKGamesCategory, ItemGameViewList
             }
     }
 
-    fun notifyItem(position:Int){
-    }
 }

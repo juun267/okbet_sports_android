@@ -74,10 +74,14 @@ data class OKGameBean(
     val firmName: String?,
     val gameCode: String?,
     val gameName: String?,
+    val gameType: String?,
     val imgGame: String?,
     val gameEntryTagName: String?,
     val thirdGameCategory: String?,
     var markCollect: Boolean,
+    val maintain: Int?, // 0:游戏正常开启, 1: 维护状态
 ): BaseNode() {
     override val childNode: MutableList<BaseNode> = mutableListOf()
+
+    fun isMaintain() = maintain == 1
 }

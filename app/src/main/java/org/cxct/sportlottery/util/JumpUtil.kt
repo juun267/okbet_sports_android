@@ -5,19 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.webkit.URLUtil
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
-import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import splitties.activities.start
 import timber.log.Timber
 
@@ -35,13 +30,18 @@ object JumpUtil {
         when{
             //是否世界杯主题活动页面
             href?.isNotEmpty() == true &&href?.contains("/BasketballWorldCupLottery")->{
+                AppManager.getActivity(MainTabActivity.javaClass)?.let {
+                    (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
+                }
                 when(AppManager.currentActivity()){
                      is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
                      else-> {
-                         MainTabActivity.reStart(context)
+                         context.start<MainTabActivity>{}
                          GlobalScope.launch {
                              delay(1000)
-                             (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
+                             withContext(Dispatchers.Main){
+                                 (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
+                             }
                          }
                      }
                 }
@@ -51,10 +51,12 @@ object JumpUtil {
                 when(AppManager.currentActivity()){
                     is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCup()
                     else-> {
-                        MainTabActivity.reStart(context)
+                        context.start<MainTabActivity>{}
                         GlobalScope.launch {
                             delay(1000)
-                            (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCup()
+                            withContext(Dispatchers.Main){
+                                (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCup()
+                            }
                         }
                     }
                 }
@@ -93,8 +95,11 @@ object JumpUtil {
         }
     }
 
+    /**
+     * gameType: OK_GAMES、OK_LIVE、OK_BINGO、OK_SPORT
+     */
     //跳轉第三方遊戲網頁
-    fun toThirdGameWeb(context: Context, href: String, thirdGameCategoryCode: String) {
+    fun toThirdGameWeb(context: Context, href: String, firmType: String, gameType: String) {
 
 //        if ("CQ9"== thirdGameCategoryCode) {  // CQ9 有兼容问题特殊处理，用外部浏览器打开
 //            runWithCatch {
@@ -109,13 +114,11 @@ object JumpUtil {
         try {
             Timber.i("跳转到链接:$href")
             if (URLUtil.isValidUrl(href)) {
-                context.startActivity(
-                    Intent(context, ThirdGameActivity::class.java).putExtra(
-                        WebActivity.KEY_URL,
-                        href
-                    )
-                        .putExtra(WebActivity.GAME_CATEGORY_CODE, thirdGameCategoryCode)
-                )
+                val intent = Intent(context, ThirdGameActivity::class.java)
+                intent.putExtra(WebActivity.KEY_URL, href)
+                intent.putExtra(WebActivity.FIRM_CODE, firmType)
+                intent.putExtra(WebActivity.GAME_CATEGORY_CODE, gameType)
+                context.startActivity(intent)
             } else {
                 throw Exception(href) //20191022 記錄問題：當網址無效時，代表他回傳的 url 是錯誤訊息
             }

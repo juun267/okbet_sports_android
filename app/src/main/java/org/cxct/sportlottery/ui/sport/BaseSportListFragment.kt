@@ -237,9 +237,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     protected open fun onGameTypeChanged(item: Item, position: Int) {
-        //切換球種，清除日期記憶
-        viewModel.tempDatePosition = 0
-        //日期圖示選取狀態下，切換球種要重置UI狀態
         gameType = item.code
         clearData()
         val layoutManager = binding.sportTypeList.layoutManager as ScrollCenterLayoutManager

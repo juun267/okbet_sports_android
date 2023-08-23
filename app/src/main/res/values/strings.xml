@@ -1345,7 +1345,7 @@
     <string name="N898">Are you sure you want to delete all score options?</string>
 
     <string name="N969">Sports betting service is temporarily under maintenance!</string>
-    <string name="N257">Maintenance</string>
+    <string name="N257">Under Maintenance</string>
     <string name="N960">News Details</string>
     <string name="N915">Sponsorship</string>
 
@@ -1604,5 +1604,9 @@
     <string name="I031">Bets Details</string>
     <string name="B036">Play Now</string>
     <string name="N211">Bets Details</string>
+    <string name="P176">Continue as OKBET x Glife member</string>
+    <string name="P175">Become a new OKBET member</string>
+    <string name="P184">Featured OKLive</string>
+    <string name="P183">Agent Deposit</string>
 
 </resources>

@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardGame1"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:foreground="@drawable/fg_ripple"
+        app:cardCornerRadius="@dimen/margin_12"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1px">
+
+                <ImageView
+                    android:id="@+id/iv_cover1"
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
+
+                <TextView
+                    android:id="@+id/tv_firm_name1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="ARCADE" />
+
+                <ImageView
+                    android:id="@+id/iv_fav1"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="right"
+                    android:padding="4dp"
+                    android:src="@drawable/selector_game_fav" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_name1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_414655"
+                android:textFontWeight="700"
+                android:textSize="14sp"
+                tools:text="Game Name" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvCover1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="4dp"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/N257"
+            android:textSize="@dimen/textSize14sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardGame2"
+        android:layout_width="110dp"
+        android:layout_below="@+id/cardGame1"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:layout_marginTop="10dp"
+        android:foreground="@drawable/fg_ripple"
+        app:cardCornerRadius="@dimen/margin_12"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1px">
+
+                <ImageView
+                    android:id="@+id/iv_cover2"
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
+
+                <TextView
+                    android:id="@+id/tv_firm_name2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="ARCADE" />
+
+                <ImageView
+                    android:id="@+id/iv_fav2"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="right"
+                    android:padding="4dp"
+                    android:src="@drawable/selector_game_fav" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_name2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_414655"
+                android:textFontWeight="700"
+                android:textSize="14sp"
+                tools:text="Game Name" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvCover2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="4dp"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/N257"
+            android:textSize="@dimen/textSize14sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardGame3"
+        android:layout_width="110dp"
+        android:layout_toRightOf="@+id/cardGame1"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:layout_marginStart="10dp"
+        android:foreground="@drawable/fg_ripple"
+        app:cardCornerRadius="@dimen/margin_12"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1px">
+
+                <ImageView
+                    android:id="@+id/iv_cover3"
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
+
+                <TextView
+                    android:id="@+id/tv_firm_name3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="ARCADE" />
+
+                <ImageView
+                    android:id="@+id/iv_fav3"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="right"
+                    android:padding="4dp"
+                    android:src="@drawable/selector_game_fav" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_name3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_414655"
+                android:textFontWeight="700"
+                android:textSize="14sp"
+                tools:text="Game Name" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvCover3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="4dp"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/N257"
+            android:textSize="@dimen/textSize14sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardGame4"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardGame3"
+        android:layout_toRightOf="@+id/cardGame2"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:elevation="0dp"
+        android:foreground="@drawable/fg_ripple"
+        app:cardCornerRadius="@dimen/margin_12"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1px">
+
+                <ImageView
+                    android:id="@+id/iv_cover4"
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
+
+                <TextView
+                    android:id="@+id/tv_firm_name4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="ARCADE" />
+
+                <ImageView
+                    android:id="@+id/iv_fav4"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="right"
+                    android:padding="4dp"
+                    android:src="@drawable/selector_game_fav" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_name4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_414655"
+                android:textFontWeight="700"
+                android:textSize="14sp"
+                tools:text="Game Name" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvCover4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="4dp"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/N257"
+            android:textSize="@dimen/textSize14sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardGame5"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/cardGame3"
+        android:layout_marginStart="10dp"
+        android:elevation="0dp"
+        android:foreground="@drawable/fg_ripple"
+        app:cardCornerRadius="@dimen/margin_12"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1px">
+
+                <ImageView
+                    android:id="@+id/iv_cover5"
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
+
+                <TextView
+                    android:id="@+id/tv_firm_name5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="ARCADE" />
+
+                <ImageView
+                    android:id="@+id/iv_fav5"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="right"
+                    android:padding="4dp"
+                    android:src="@drawable/selector_game_fav" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_name5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_414655"
+                android:textFontWeight="700"
+                android:textSize="14sp"
+                tools:text="Game Name" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvCover5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="4dp"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/N257"
+            android:textSize="@dimen/textSize14sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardGame6"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardGame1"
+        android:layout_toRightOf="@+id/cardGame4"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:elevation="0dp"
+        android:foreground="@drawable/fg_ripple"
+        app:cardCornerRadius="@dimen/margin_12"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1px">
+
+                <ImageView
+                    android:id="@+id/iv_cover6"
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
+
+                <TextView
+                    android:id="@+id/tv_firm_name6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="ARCADE" />
+
+                <ImageView
+                    android:id="@+id/iv_fav6"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="right"
+                    android:padding="4dp"
+                    android:src="@drawable/selector_game_fav" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_name6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_414655"
+                android:textFontWeight="700"
+                android:textSize="14sp"
+                tools:text="Game Name" />
+        </LinearLayout>
+
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/blurCard6"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/color_0D2245"
+                android:textStyle="bold"
+                android:text="@string/N702" />
+
+        </eightbitlab.com.blurview.BlurView>
+
+        <TextView
+            android:id="@+id/tvCover6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="4dp"
+            android:background="@color/transparent_black_70"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/N257"
+            android:textSize="@dimen/textSize14sp" />
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

@@ -7,8 +7,10 @@ import android.text.method.LinkMovementMethod
 import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -21,6 +23,8 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
+import org.cxct.sportlottery.view.onClick
+import splitties.views.backgroundColor
 
 /**
  * @author kevin
@@ -36,13 +40,17 @@ class ChatActionView @JvmOverloads constructor(
     val ivSend: ImageView
     val ivUploadImage: ImageView
     val etInput: EditText
-
+    private val linearEdit:LinearLayout
+    val ivEmoji:ImageView
     init {
         LayoutInflater.from(context).inflate(R.layout.view_chat_action, this, true)
         ivSend = findViewById(R.id.ivSend)
         ivUploadImage = findViewById(R.id.ivUploadImage)
         etInput = findViewById(R.id.etInput)
+        linearEdit= findViewById(R.id.linearEdit)
+        ivEmoji= findViewById(R.id.ivEmoji)
         setLoginStatus()
+        backgroundColor=ContextCompat.getColor(context,R.color.color_chat_action_background)
     }
 
     private fun setLoginStatus() {
@@ -77,10 +85,15 @@ class ChatActionView @JvmOverloads constructor(
     }
 
     fun setInputStatus(isEnable: Boolean) = etInput.run  {
-        background = ContextCompat.getDrawable(
+        linearEdit.background = ContextCompat.getDrawable(
             context,
             if (isEnable) R.drawable.bg_chat_input else R.drawable.bg_chat_input_disable
         )
+//        ivEmoji.visibility=if(isEnable){
+//            View.VISIBLE
+//        }else{
+//            View.GONE
+//        }
         hint = if(isEnable) {
                 context.getString(R.string.chat_enter_chat_content)
             }  else {
@@ -100,4 +113,26 @@ class ChatActionView @JvmOverloads constructor(
         if (maxLength == 0) return //@Ying: maxLength 0 代表不限制
         etInput.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
     }
+
+
+    var expandEmoji=false
+    //表情按钮点击
+    fun setOnEmojiClick(block:()->Unit){
+        ivEmoji.visible()
+        ivEmoji.setImageResource(R.drawable.ic_chat_emoji_press)
+        ivEmoji.onClick {
+            //切换展开状态
+            expandEmoji = !expandEmoji
+            block()
+        }
+    }
+
+    //禁言 emoji置灰
+    fun setOnEmojiSilence(){
+        ivEmoji.visible()
+        ivEmoji.setImageResource(R.drawable.ic_chat_emoji_normal)
+        ivEmoji.onClick {
+        }
+    }
+
 }

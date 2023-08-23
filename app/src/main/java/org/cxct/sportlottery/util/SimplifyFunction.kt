@@ -864,26 +864,24 @@ fun getMarketSwitch() = KvUtils.decodeBoolean(KvUtils.MARKET_SWITCH)
 fun ImageView.setTeamLogo(icon: String?) {
     if (icon.isNullOrEmpty()) {
         setImageResource(R.drawable.ic_team_default)
+    } else if (icon.startsWith("<defs><path d=")) { //經測試 <defs> 標籤下 起始 path d 套件無法解析
+        setImageResource(R.drawable.ic_team_default)
+    } else if (icon.startsWith("http")) {
+        load(icon, R.drawable.ic_team_default)
     } else {
-        if (icon.startsWith("http")) {
-            load(icon, R.drawable.ic_team_default)
-        } else {
-            setSvgIcon(icon, R.drawable.ic_team_default)
-        }
+        setSvgIcon(icon, R.drawable.ic_team_default)
     }
 }
 
 fun ImageView.setLeagueLogo(icon: String?) {
     if (icon.isNullOrEmpty()) {
         setImageResource(R.drawable.ic_team_default)
-    } else if (icon.startsWith("<defs>")) { //經測試 <defs> 標籤下 起始 path d 套件無法解析
+    } else if (icon.startsWith("<defs><path d=")) { //經測試 <defs> 標籤下 起始 path d 套件無法解析
         setImageResource(R.drawable.ic_team_default)
+    } else if (icon.startsWith("http")) {
+        load(icon, R.drawable.ic_team_default)
     } else {
-        if (icon.startsWith("http")) {
-            load(icon, R.drawable.ic_team_default)
-        } else {
-            setSvgIcon(icon, R.drawable.ic_team_default)
-        }
+        setSvgIcon(icon, R.drawable.ic_team_default)
     }
 }
 
@@ -1040,7 +1038,7 @@ fun enterThirdGame(
     hideLoading()
     when (result.resultType) {
         EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
-            JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType)
+            JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.thirdGameCategoryCode ?: "")
         }
 
         EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(

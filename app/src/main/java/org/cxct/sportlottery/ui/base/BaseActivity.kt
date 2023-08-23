@@ -90,31 +90,22 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         viewModel.errorResultToken.observe(this) {
 
             if (this is MaintenanceActivity) return@observe
-            it.getContentIfNotHandled()?.let {
-                if (it.code == HttpError.BALANCE_IS_LOW.code) {
-                    ToastUtils.s(this, it.msg)
-                } else if (it.code != HttpError.KICK_OUT_USER.code) {
-                    toMaintenanceOrShowDialog(it)
-                }
+            val result = it.getContentIfNotHandled() ?: return@observe
+            if (result.code == HttpError.BALANCE_IS_LOW.code) {
+                ToastUtils.s(this, result.msg)
+            } else {
+                toMaintenanceOrShowDialog(result)
             }
         }
     }
 
     private fun toMaintenanceOrShowDialog(result: BaseResult) {
         when (result.code) {
-            HttpError.DO_NOT_HANDLE.code -> { // 鉴权失败、token过期
-                if (this is MaintenanceActivity
-                    || this is SplashActivity) {
-                    return
-                }
-                showTokenPromptDialog(result.msg) {
-                    viewModel.doLogoutCleanUser {
-                        if (isErrorTokenToMainActivity()) {
-                            MainTabActivity.reStart(this)
-                        }
-                    }
-                }
-            }
+//            HttpError.KICK_OUT_USER.code,
+//            HttpError.UNAUTHORIZED.code,
+//            HttpError.DO_NOT_HANDLE.code -> { // 鉴权失败、token过期
+//
+//            }
 
             HttpError.MAINTENANCE.code -> {
                 startActivity(Intent(this, MaintenanceActivity::class.java))
@@ -128,9 +119,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
                 }
                 showTokenPromptDialog(result.msg) {
                     viewModel.doLogoutCleanUser {
-//                        if (sConfigData?.thirdOpen == FLAG_OPEN)
-//                            MainActivity.reStart(this)
-//                        else
                         if (isErrorTokenToMainActivity()) {
                             MainTabActivity.reStart(this)
                         }
@@ -139,6 +127,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
             }
         }
     }
+
 
     private fun isErrorTokenToMainActivity(): Boolean {
         return this !is MaintenanceActivity && this !is SplashActivity && this !is LaunchActivity

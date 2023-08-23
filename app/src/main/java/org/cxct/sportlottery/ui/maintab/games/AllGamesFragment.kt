@@ -64,8 +64,15 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         onBindPart5View()
         initSportObserve()
         //初始化热门赛事
-        binding.hotMatchView.onCreate(viewModel.publicityRecommend,viewModel.oddsType,this)
+        initHotMatchView()
         viewModel.getRecommend()
+    }
+
+    private fun initHotMatchView() {
+        binding.hotMatchView.onCreate(viewModel.publicityRecommend,viewModel.oddsType,this)
+        binding.scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
+            binding.hotMatchView.resubscribe()
+        }
     }
 
     private fun initSportObserve(){
@@ -126,6 +133,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
             if(viewModel.loginRepository.isLogined()){
                 if(it.second.isNullOrEmpty()){
+                    binding.gameViewCollect.gone()
                     return@observe
                 }
                 binding.gameViewCollect.visible()
@@ -336,7 +344,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }else{
             //请求试玩路线
             loading()
-            viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
+            viewModel.requestEnterThirdGameNoLogin(okGameBean)
         }
     }
 

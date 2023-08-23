@@ -69,19 +69,16 @@
     <eightbitlab.com.blurview.BlurView
         android:id="@+id/blurCard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"/>
+
+
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#90ffffff"
-            app:blurOverlayColor="@color/color_chat_toast_background" />
-        <TextView
-            android:text="@string/N702"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:textColor="@color/color_0D2245"
-            android:textStyle="bold"
-            android:layout_width="110dp"
-            android:layout_height="110dp"/>
-    </eightbitlab.com.blurview.BlurView>
+        android:id="@+id/tvCover"
+        tools:text="@string/N702"
+        android:textSize="@dimen/textSize14sp"
+        android:gravity="center"
+        android:paddingHorizontal="4dp"
+        android:textColor="@color/color_0D2245"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </androidx.cardview.widget.CardView>

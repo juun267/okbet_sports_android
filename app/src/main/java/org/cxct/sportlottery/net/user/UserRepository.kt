@@ -51,6 +51,9 @@ object UserRepository {
     suspend fun activityImageListH5(): ApiResult<List<ActivityImageList>> {
         return userApi.activityImageListH5()
     }
+    suspend fun activityDetailH5(activityId: String): ApiResult<ActivityImageList> {
+        return userApi.activityDetailH5(activityId)
+    }
     suspend fun activityApply(activityId: String): ApiResult<String> {
         return userApi.activityApply(activityId)
     }

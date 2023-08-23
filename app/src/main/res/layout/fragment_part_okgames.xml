@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/margin_12">
+    android:paddingHorizontal="@dimen/margin_12"
+    android:nestedScrollingEnabled="true" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,15 +49,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_games_select"
-        android:nestedScrollingEnabled="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
         tools:itemCount="9"
-        tools:listitem="@layout/item_game_child">
+        tools:listitem="@layout/item_game_child" />
 
-    </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/tv_show_more"

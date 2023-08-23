@@ -43,7 +43,8 @@ class UserVH(parent: ViewGroup,
 
         if (UserMessageStyle.isAdmin(userType)) {
             binding.ivAvatar.apply {
-                load(iconUrl, R.drawable.ic_chat_admin)
+//                load(iconUrl, R.drawable.ic_chat_admin)
+                load(iconUrl, R.drawable.ic_person_avatar)
                 borderColor = ContextCompat.getColor(context,R.color.color_025BE8)
                 borderWidth = 2f
             }
@@ -57,8 +58,8 @@ class UserVH(parent: ViewGroup,
 
             //0游客、1会员、2管理员(特殊處理)、3訪客
             binding.messageBorder.setBackgroundResource(R.drawable.bg_chat_pop_user_custom_circle_border)
-            binding.messageBorder.backgroundTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(context, UserMessageStyle.getBorderColor(userType)))
+//            binding.messageBorder.backgroundTintList =
+//                ColorStateList.valueOf(ContextCompat.getColor(context, UserMessageStyle.getBorderColor(userType)))
         }
 
         //點擊用戶暱稱

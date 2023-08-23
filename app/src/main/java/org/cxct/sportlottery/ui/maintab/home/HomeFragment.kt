@@ -1,13 +1,10 @@
 package org.cxct.sportlottery.ui.maintab.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.toIntS
-import org.cxct.sportlottery.network.service.EventType
-import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
-import org.cxct.sportlottery.repository.StaticData
-import org.cxct.sportlottery.repository.sConfigData
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupFragment
@@ -17,32 +14,34 @@ import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupGameFragment
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
+import org.cxct.sportlottery.util.Param
 
 class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
+    private val rootId = View.generateViewId()
     private val fragmentHelper by lazy {
 
-        FragmentHelper(childFragmentManager, R.id.fl_content, mutableListOf(
-//
-            Pair(MainHomeFragment::class.java, null),
-            Pair(OKGamesFragment::class.java, null),
-            Pair(NewsHomeFragment::class.java, null),
-            Pair(OKLiveFragment::class.java, null)
-        ).apply {
-            if (StaticData.worldCupOpened()){
-                add(Pair(WorldCupFragment::class.java, null))
-                add(Pair(WorldCupGameFragment::class.java, null))
-            }
-        }.toTypedArray()
-        )
+        FragmentHelper(childFragmentManager, rootId, arrayOf(
+            Param(MainHomeFragment::class.java),
+            Param(OKGamesFragment::class.java),
+            Param(NewsHomeFragment::class.java, needRemove = true),
+            Param(OKLiveFragment::class.java),
+            Param(WorldCupFragment::class.java, needRemove = true),
+            Param(WorldCupGameFragment::class.java, needRemove = true)
+        ))
     }
 
-    override fun layoutId() = R.layout.fragment_home1
+    override fun createRootView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return FrameLayout(requireContext()).apply { id = rootId }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         switchTabByPosition(0)
-        EventBusUtil.targetLifecycle(this)
     }
 
     private fun switchTabByPosition(position: Int) {
