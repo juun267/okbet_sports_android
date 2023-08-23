@@ -39,12 +39,11 @@ open class ThirdGameActivity : WebActivity() {
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
 
-    private val firmType by lazy { intent.getStringExtra(GAME_CATEGORY_CODE) }
-    private val mGameCategoryCode: String? by lazy { intent?.getStringExtra(GAME_CATEGORY_CODE) }
+    private val firmCode by lazy { intent.getStringExtra(FIRM_CODE) }
+    private val gameType by lazy { intent.getStringExtra(GAME_CATEGORY_CODE) }
 
 
     override fun init() {
-        setupActivityOrientation()
         disableSystemUI()
         setContentView(R.layout.activity_third_game)
         setCookie()
@@ -54,7 +53,7 @@ open class ThirdGameActivity : WebActivity() {
         initObserve()
 
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
-            if (it.isMaintain() && firmType == it.firmType) {
+            if (it.isMaintain() && firmCode == it.firmType && gameType == it.gameType) {
                 motion_menu.gone()
                 showErrorPromptDialog(getString(R.string.error), getString(R.string.hint_game_maintenance)) {
                     finish()
@@ -96,14 +95,6 @@ open class ThirdGameActivity : WebActivity() {
         web_view.destroy()
         if (isThirdTransferOpen()) {
             LoginRepository.allTransferOut()
-        }
-    }
-
-    private fun setupActivityOrientation() {
-        when (mGameCategoryCode) {
-            ThirdGameCategory.QP.name -> {
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            }
         }
     }
 

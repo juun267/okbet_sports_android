@@ -10,6 +10,7 @@ data class GamesMaintain(
     val firmName: String?,
     val firmCode: String?,
     val firmType: String?,
+    val gameType: String?,
     val maintain: Int, // 1.维护
 ): ServiceEventType {
 

@@ -1038,7 +1038,7 @@ fun enterThirdGame(
     hideLoading()
     when (result.resultType) {
         EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
-            JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType)
+            JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.thirdGameCategoryCode ?: "")
         }
 
         EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
