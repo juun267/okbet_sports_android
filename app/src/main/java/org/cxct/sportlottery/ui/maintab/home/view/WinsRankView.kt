@@ -182,26 +182,26 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        WinsDialog(adapter.getItem(position) as RecordNewEvent, context as AppCompatActivity) { betRecode ->
-            if (!betRecode.isSportBet()) {
-                enterGame("${betRecode.firmType}", "${betRecode.gameCode}")
-                return@WinsDialog
-            }
-            val activity = fragment.activity
-            if (activity is MainTabActivity) {
-                GameType.getGameType(betRecode.firmType)?.let { activity.jumpToSport(it) }
-            }
-
-        }.show()
+//        WinsDialog(adapter.getItem(position) as RecordNewEvent, context as AppCompatActivity) { betRecode ->
+//            if (!betRecode.isSportBet()) {
+//                enterGame("${betRecode.firmType}", "${betRecode.gameCode}")
+//                return@WinsDialog
+//            }
+//            val activity = fragment.activity
+//            if (activity is MainTabActivity) {
+//                GameType.getGameType(betRecode.firmType)?.let { activity.jumpToSport(it) }
+//            }
+//
+//        }.show()
     }
 
-    private fun enterGame(firmType: String, gameCode: String) {
-        if (LoginRepository.isLogined()) {
-            fragment.viewModel.requestEnterThirdGame(firmType, gameCode, firmType, fragment)
-        } else {
-            fragment.loading()
-            fragment.viewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType)
-        }
-    }
+//    private fun enterGame(firmType: String, gameCode: String) {
+//        if (LoginRepository.isLogined()) {
+//            fragment.viewModel.requestEnterThirdGame(firmType, gameCode, firmType, fragment)
+//        } else {
+//            fragment.loading()
+//            fragment.viewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType)
+//        }
+//    }
 
 }
