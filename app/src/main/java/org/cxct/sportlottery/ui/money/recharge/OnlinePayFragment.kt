@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.show
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
@@ -235,14 +236,43 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 if (it.isEmpty() || it.isBlank()) {
                     if (includeQuickMoney.isVisible) (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(
                         -1)
-                    tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
+                    if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
+                        tv_fee_amount.text =
+                            String.format(getString(R.string.hint_feeback_amount),
+                                sConfigData?.systemCurrencySign,
+                                "0.00")
+                    } else {
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount),
+                            sConfigData?.systemCurrencySign,
+                            "0.00")
+                    }
                 } else {
-                    tv_fee_amount.text = TextUtil.formatMoney(
-                        ArithUtil.toMoneyFormat(
-                            it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0))
-                        ).toDouble()
-                    )
+                    //返利/手續費金額
+                    if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
+                        tv_fee_amount.text =
+                            String.format(getString(R.string.hint_feeback_amount),sConfigData?.systemCurrencySign,
+                                ArithUtil.toMoneyFormat((it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
+
+                            )
+                    } else {
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount),
+                            sConfigData?.systemCurrencySign,
+                            ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0).times(mSelectRechCfgs?.rebateFee?:0.0))))
+                    }
+                    if(mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
+                        tv_fee_rate.text =
+                            String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount),
+                            sConfigData?.systemCurrencySign,
+                            "0.00")
+                        tv_fee_rate.gone()
+                        tv_fee_amount.gone()
+                    }else{
+                        tv_fee_rate.show()
+                        tv_fee_amount.show()
+                    }
                 }
+
             }
 
             et_recharge_online_payer.afterTextChanged {
@@ -284,14 +314,14 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign, "0.00")
             }
             rebateFee > 0.0->{
-                tv_fee_rate.show()
-                tv_fee_amount.show()
+                tv_fee_rate.visible()
+                tv_fee_amount.visible()
                 tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), ArithUtil.toOddFormat(abs(rebateFee).times(100))) + "%"
                 tv_fee_amount.text = String.format(getString(R.string.hint_feeback_amount), sConfigData?.systemCurrencySign, TextUtil.formatMoney(ArithUtil.toOddFormat(0.0.times(100)).toDouble()))
             }
             else ->{
-                tv_fee_rate.show()
-                tv_fee_amount.show()
+                tv_fee_rate.visible()
+                tv_fee_amount.visible()
                 tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.toOddFormat(abs(rebateFee).times(100))) + "%"
                 tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign, TextUtil.formatMoney(ArithUtil.toOddFormat(0.0.times(100)).toDouble()))
             }
