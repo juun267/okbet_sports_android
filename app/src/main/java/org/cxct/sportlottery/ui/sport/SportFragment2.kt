@@ -206,19 +206,11 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         navGameFragment(matchType)
     }
 
-    private var lastMatchType: MatchType? = null
-    private var lastGameType: String? = null
+
     private fun navGameFragment(matchType: MatchType) {
         var gameType = navGameSport?.key ?: jumpGameType?.key
         jumpMatchType = null
         jumpGameType = null
-
-        if (lastMatchType == matchType && lastGameType == gameType) {
-            return
-        }
-
-        lastMatchType = matchType
-        lastGameType = gameType
 
         val args = Bundle()
         args.putSerializable("matchType", matchType)

@@ -17,6 +17,7 @@ class FragmentHelper2(
                            block: ((T, Boolean) -> Unit)? = null): T {
 
         if (current?.javaClass == fragment) {
+            bundle?.let { current!!.arguments?.putAll(it) }
             block?.invoke(current!! as T, false)
             return current as T
         }
@@ -26,9 +27,11 @@ class FragmentHelper2(
             fragmentInstance = fragment.newInstance()
             fragmentInstance!!.arguments = bundle
             fragmentHolder.put(fragmentInstance)
+            block?.invoke(fragmentInstance!!, true)
+        } else {
+            bundle?.let { fragmentInstance!!.arguments?.putAll(it) }
+            block?.invoke(fragmentInstance!!, false)
         }
-
-        block?.invoke(fragmentInstance!!, true)
 
         current = fragmentInstance!!
         val transaction = fragmentManager.beginTransaction()
