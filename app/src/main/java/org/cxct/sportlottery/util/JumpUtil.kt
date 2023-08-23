@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.webkit.URLUtil
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
@@ -35,13 +33,16 @@ object JumpUtil {
         when{
             //是否世界杯主题活动页面
             href?.isNotEmpty() == true &&href?.contains("/BasketballWorldCupLottery")->{
+
                 when(AppManager.currentActivity()){
                      is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
                      else-> {
-                         MainTabActivity.reStart(context)
+                         context.start<MainTabActivity>{}
                          GlobalScope.launch {
                              delay(1000)
-                             (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
+                             withContext(Dispatchers.Main){
+                                 (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
+                             }
                          }
                      }
                 }
@@ -51,10 +52,12 @@ object JumpUtil {
                 when(AppManager.currentActivity()){
                     is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCup()
                     else-> {
-                        MainTabActivity.reStart(context)
+                        context.start<MainTabActivity>{}
                         GlobalScope.launch {
                             delay(1000)
-                            (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCup()
+                            withContext(Dispatchers.Main){
+                                (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCup()
+                            }
                         }
                     }
                 }

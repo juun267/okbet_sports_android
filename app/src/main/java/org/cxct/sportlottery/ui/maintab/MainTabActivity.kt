@@ -46,6 +46,7 @@ import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
@@ -67,11 +68,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
-                Pair(HomeFragment::class.java, null),
-                Pair(SportFragment2::class.java, null),
-                Pair(OKGamesFragment::class.java, null),
-                Pair(OKGamesFragment::class.java, null), // 占坑
-                Pair(ProfileCenterFragment::class.java, null),
+                Param(HomeFragment::class.java),
+                Param(SportFragment2::class.java),
+                Param(OKGamesFragment::class.java),
+                Param(OKGamesFragment::class.java), // 占坑
+                Param(ProfileCenterFragment::class.java),
             )
         )
     }
@@ -220,31 +221,34 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
+                        ImmersionBar.with(this@MainTabActivity)
+                            .statusBarDarkFont(true)
+                            .init()
 
                         val itemPosition = getMenuItemPosition(menuItem)
                         if (checkMainPosition(itemPosition)) {
                             return@OnNavigationItemSelectedListener false
                         }
 
+                        when (menuItem.itemId) {
+                            R.id.i_user -> {
+                                if (viewModel.isLogin.value == false) {
+                                    startLogin()
+                                    return@OnNavigationItemSelectedListener false
+                                }
+                            }
 
-                    when (menuItem.itemId) {
-                        R.id.i_user -> {
-                            if (viewModel.isLogin.value == false) {
-                                startLogin()
+                            R.id.i_favorite -> {
+                                start<ChatActivity> {}
                                 return@OnNavigationItemSelectedListener false
                             }
                         }
-                        R.id.i_favorite -> {
-                            startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
-                            return@OnNavigationItemSelectedListener false
-                        }
-                    }
 
                         fragmentHelper.showFragment(itemPosition)
                         if (itemPosition == 0) {
                             enableSelectBottomNav(true)
-                            homeFragment().backMainHome()
                         }
+                        homeFragment().backMainHome()
                         setupBetBarVisiblity(itemPosition)
                         return@OnNavigationItemSelectedListener true
                     }
@@ -594,6 +598,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment
 
     fun backMainHome() {
+        enableSelectBottomNav(true)
         homeFragment().backMainHome()
         navToPosition(0)
     }
@@ -604,8 +609,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         navToPosition(2)
     }
 
+    fun jumpToOkLive(){
+        backMainHome()
+        homeFragment().jumpToOKLive()
+        enableSelectBottomNav(false)
+    }
+
     private fun navToPosition(position: Int) {
-        bottom_navigation_view.maxItemCount
         if (bottom_navigation_view.currentItem != position) {
             bottom_navigation_view.currentItem = position
         }

@@ -21,7 +21,7 @@ data class LeagueOdd(
     @Json(name = "unfold")
     var unfold: Int? = FoldState.UNFOLD.code, // 服务端字段，不读取该状态
     @Json(name = "matchOdds")
-    var matchOdds: MutableList<MatchOdd> = mutableListOf(),
+    val matchOdds: MutableList<MatchOdd> = mutableListOf(),
     @Json(name = "playCateNameMap")
     var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
 ): BaseExpandNode() {
@@ -33,14 +33,16 @@ data class LeagueOdd(
 
     @IgnoredOnParcel
     override val childNode by lazy {
+        val list = mutableListOf<BaseNode>()
         matchOdds.forEach {
+            list.add(it)
             it.matchInfo?.let { matchInfo ->
                 if (matchInfo.leagueName.isEmptyStr()) {
                     matchInfo.leagueName = league.name
                 }
             }
         }
-        return@lazy matchOdds as MutableList<BaseNode>?
+        return@lazy list
     }
 
 }

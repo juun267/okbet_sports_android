@@ -10,6 +10,7 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemBetListBinding
 import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.betRecord.ParlayType
 import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
 import org.cxct.sportlottery.util.TextUtil
@@ -105,14 +106,14 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             tvType.text=parlayString.toString()
 
             //投注金额
-            tvBetTotal.text = " ₱ ${TextUtil.formatMoney(item.totalAmount,2)}"
+            tvBetTotal.text = " $showCurrencySign ${TextUtil.formatMoney(item.totalAmount,2)}"
 
 
             //可赢金额
             when(item.status){
                 //未结单  可赢：xxx
                 0,1->{
-                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(item.winnable,2)}"
+                    tvBetWin.text = " $showCurrencySign ${TextUtil.formatMoney(item.winnable,2)}"
                     tvBetWin.setColors(R.color.color_ff0000)
                     when(item.parlayType){
                         //单注 描述用 可赢：
@@ -127,7 +128,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 }
                 //已中奖   赢：xxx
                 2,3->{
-                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(item.win?:0,2)}"
+                    tvBetWin.text = " $showCurrencySign ${TextUtil.formatMoney(item.win?:0,2)}"
                     tvBetWin.setColors(R.color.color_ff0000)
                     tvWinLabel.text="${context.getString(R.string.win)}："
                 }
@@ -135,13 +136,13 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 4,5->{
                     val tempRebate:Double=item.rebateAmount?:0.0
                     val totalMoney=(item.win?:0).toString().replace("-","").toDouble()+tempRebate
-                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(totalMoney,2)}"
+                    tvBetWin.text = " $showCurrencySign ${TextUtil.formatMoney(totalMoney,2)}"
                     tvBetWin.setColors(R.color.color_6D7693)
                     tvWinLabel.text="${context.getString(R.string.lose)}："
                 }
                 //其他  ₱ --
                 else->{
-                    tvBetWin.text = " ₱ --"
+                    tvBetWin.text = " $showCurrencySign --"
                     tvBetWin.setColors(R.color.color_6D7693)
 
                     tvWinLabel.text=""

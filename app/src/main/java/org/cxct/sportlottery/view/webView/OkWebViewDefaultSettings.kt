@@ -42,8 +42,6 @@ class OkWebViewDefaultSettings {
         mWebSettings.setNeedInitialFocus(true)
         mWebSettings.defaultTextEncodingName = "utf-8" //设置编码格式
         mWebSettings.setGeolocationEnabled(true)
-        // 用户可以自己设置useragent
-        WebView.setWebContentsDebuggingEnabled(true)
     }
 
 

@@ -10,6 +10,8 @@ import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.loading.Gloading
+import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
@@ -17,6 +19,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
+import org.cxct.sportlottery.view.loadMore
 
 // 指定类别的三方游戏
 class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewModel::class) {
@@ -42,16 +45,9 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
     private var pageIndx = 1
     private var labelName: String? = null
     private var isLoading = true
-    private val emptyView by lazy {
-        LayoutInflater.from(binding.root.context)
-            .inflate(R.layout.view_no_games, binding.root, false)
-    }
-    private val loadingView by lazy {
-        val view = LayoutInflater.from(binding.root.context)
-            .inflate(R.layout.layout_loading, binding.root, false)
-        view.setBackgroundColor(Color.TRANSPARENT)
-        view.minimumHeight = 300.dp
-        view
+
+    private val loadingHolder: Gloading.Holder by lazy {
+        Gloading.from(LoadingAdapter(emptyString = R.string.N883, emptyIcon = R.drawable.ic_no_data, bgColor = Color.TRANSPARENT)).wrap(View(context))
     }
 
     override fun createRootView(
@@ -77,10 +73,15 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
 
     private fun initGameList() = binding.rvGamesSelect.run {
 
+        if(loadingHolder.wrapper.parent == null) {
+            loadingHolder.wrapper.layoutParams = ViewGroup.LayoutParams(-1, 250.dp)
+            gameChildAdapter.setEmptyView(loadingHolder.wrapper)
+        }
         setRecycledViewPool(mOkLiveFragment().gameItemViewPool)
         layoutManager = GridLayoutManager(requireContext(), 3)
         addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
         adapter = gameChildAdapter
+        loadMore { onMoreClick() }
         gameChildAdapter.setOnItemClickListener { _, _, position ->
             val okGameBean = gameChildAdapter.getItem(position)
             if (LoginRepository.isLogined()) {
@@ -112,7 +113,7 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
         setTrialPlayGameDataObserve()
     }
 
-    fun onMoreClick() {
+    private fun onMoreClick() {
         if (gameTotal > gameChildAdapter.data.size && !loadingMoreFlag) {
             if (mOkLiveFragment().loadNextPage(pageIndx)) {
                 loadingMoreFlag = true
@@ -129,7 +130,11 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
             return
         }
 
-        gameChildAdapter.setEmptyView(if (isLoading) loadingView else emptyView)
+        if (isLoading) {
+            loadingHolder.showLoading()
+        } else {
+            loadingHolder.showEmpty()
+        }
         gameChildAdapter.disableMore()
         currentTab?.let {
             it.bindLabelIcon(binding.ivIcon)
@@ -160,7 +165,7 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
         }
         if (::binding.isInitialized) {
             if (gameChildAdapter.dataCount() == 0) {
-                gameChildAdapter.setEmptyView(emptyView)
+                loadingHolder.showEmpty()
             }
         }
         isLoading = false

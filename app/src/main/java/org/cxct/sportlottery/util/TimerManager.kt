@@ -18,6 +18,7 @@ interface TimerManager {
     }
 
     fun cancelTimer() {
+        timerHandler.removeCallbacksAndMessages(null)
         timer.apply {
             cancel()
             purge()

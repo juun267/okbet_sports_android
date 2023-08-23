@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.NestedScrollView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_all_okgames.*
+import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -20,12 +20,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.FragmentHelper
-import org.cxct.sportlottery.util.enterThirdGame
-import org.cxct.sportlottery.util.loginedRun
-import org.cxct.sportlottery.view.ObservableScrollView
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
@@ -37,13 +32,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     }
 
     private lateinit var binding: FragmentOkgamesBinding
-    private val fragmentHelper by lazy {
-        FragmentHelper(
-            childFragmentManager, R.id.fragmentContainer, arrayOf(
-                Pair(AllLiveFragment::class.java, null), Pair(PartLiveFragment::class.java, null)
-            )
-        )
-    }
+    private lateinit var fragmentHelper: FragmentHelper
 
     private fun isAllTba() = fragmentHelper.getCurrentFragment() is AllLiveFragment
 
@@ -53,35 +42,41 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
             if (!isAllTba()) {
                 backGameAll()
             }
-            binding.scrollView.smoothScrollTo(0, 0)
+            backTop()
         }
         fragmentHelper.getCurrentFragment().onHiddenChanged(hidden)
     }
 
-    private inline fun mainTabActivity() = activity as MainTabActivity
+    private fun backTop() {
+        val behavior = (binding.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior
+        if (behavior is AppBarLayout.Behavior) {
+            val topAndBottomOffset = behavior.topAndBottomOffset
+            if (topAndBottomOffset != 0) {
+                behavior.topAndBottomOffset = 0
+            }
+        }
+    }
+
+     inline fun mainTabActivity() = activity as MainTabActivity
 
     override fun createRootView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        return FragmentOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
+        binding = FragmentOkgamesBinding.inflate(layoutInflater)
+        fragmentHelper = FragmentHelper(childFragmentManager, R.id.fragmentContainer, arrayOf(
+                Param(AllLiveFragment::class.java), Param(PartLiveFragment::class.java)
+            )
+        )
+        return binding.root
     }
 
     override fun onBindView(view: View) {
         initToolBar()
         initTopView()
-        initScrollView()
         showGameAll()
         initObservable()
         viewModel.getOKGamesHall()
 //        showOkGameDialog()
-        binding.scrollView.setOnScrollChangeListener { v: NestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY >= (v.getChildAt(0).measuredHeight - v.measuredHeight - 50.dp)) {
-                if (getCurrentFragment() is PartLiveFragment) {
-                    (getCurrentFragment() as PartLiveFragment).onMoreClick()
-                }
-
-            }
-        }
     }
 
     private var requestTag: Any = Any()
@@ -137,18 +132,6 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
                 }
             }
         }
-    }
-    private fun initScrollView(){
-        binding.scrollView.setOnScrollStatusListener(object :
-            ObservableScrollView.OnScrollStatusListener{
-            override fun onScrollStop() {
-                if (isAllTba())
-                    hot_match_view.firstVisibleRange((fragmentHelper.getFragment(0) as AllLiveFragment))
-            }
-
-            override fun onScrolling() {
-            }
-        })
     }
 
     private fun onTabChange(tab: OKGameTab): Boolean {

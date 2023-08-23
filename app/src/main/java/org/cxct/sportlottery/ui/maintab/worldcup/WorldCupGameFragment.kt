@@ -52,9 +52,7 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
             .init()
         initToolBar()
         initWeb()
-        homeToolbar.post {
-            loadWebURL()
-        }
+        loadWebURL()
     }
     fun initToolBar() = binding.run {
         homeToolbar.attach(this@WorldCupGameFragment, mainTabActivity(), viewModel)
@@ -104,7 +102,7 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
     private fun loadWebURL() {
         WebStorage.getInstance().deleteAllData()
         binding.okWebView.clearCache(true)
-        val url = Constants.getWorldCupActivityH5Url(requireContext(),homeToolbar.height.pxToDp)
+        val url = Constants.getWorldCupActivityH5Url(binding.okWebView.context, homeToolbar.height.pxToDp)
         LogUtil.d("url="+url)
         binding.okWebView.loadUrl(url)
     }

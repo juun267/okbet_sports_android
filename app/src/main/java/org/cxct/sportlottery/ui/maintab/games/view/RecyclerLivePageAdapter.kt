@@ -8,13 +8,14 @@ import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemGamePageBinding
+import org.cxct.sportlottery.databinding.ItemLivePageBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.view.onClick
 
-class RecyclerGamePageAdapter:
-    BindingAdapter<List<OKGameBean>, ItemGamePageBinding>()  {
-    private var onFavoriteClick:(item:OKGameBean)->Unit={}
-    private var onGameClick:(item:OKGameBean)->Unit={}
+class RecyclerLivePageAdapter:
+    BindingAdapter<List<OKGameBean>, ItemLivePageBinding>()  {
+    private var onFavoriteClick:(item: OKGameBean)->Unit={}
+    private var onGameClick:(item: OKGameBean)->Unit={}
     private var onJumpToMore:()->Unit={}
     var isSinglePage=false
     private var isMoreThan18:Boolean=false
@@ -26,7 +27,7 @@ class RecyclerGamePageAdapter:
         isShowCollect=flag
     }
     //点击收藏
-    fun setOnFavoriteClick(block:(item:OKGameBean)->Unit){
+    fun setOnFavoriteClick(block:(item: OKGameBean)->Unit){
         onFavoriteClick=block
     }
     //点击更多
@@ -34,14 +35,14 @@ class RecyclerGamePageAdapter:
         onJumpToMore=block
     }
     //点击游戏
-    fun setOnGameClick(block:(item:OKGameBean)->Unit){
+    fun setOnGameClick(block:(item: OKGameBean)->Unit){
         onGameClick=block
     }
 
     fun setIsMoreThan(flag:Boolean){
         isMoreThan18=flag
     }
-    override fun onBinding(position: Int, binding: ItemGamePageBinding, item: List<OKGameBean>) {
+    override fun onBinding(position: Int, binding: ItemLivePageBinding, item: List<OKGameBean>) {
         if(isSinglePage){
             binding.run {
                 when(item.size){
@@ -172,7 +173,7 @@ class RecyclerGamePageAdapter:
     }
 
 
-    private fun initItem1(binding: ItemGamePageBinding,item:OKGameBean){
+    private fun initItem1(binding: ItemLivePageBinding, item: OKGameBean){
         binding.run {
             cardGame1.visible()
             cardGame1.onClick {
@@ -195,7 +196,7 @@ class RecyclerGamePageAdapter:
 
 
 
-    private fun initItem2(binding: ItemGamePageBinding,item:OKGameBean){
+    private fun initItem2(binding: ItemLivePageBinding, item: OKGameBean){
         binding.run {
             cardGame2.visible()
             cardGame2.onClick {
@@ -218,7 +219,7 @@ class RecyclerGamePageAdapter:
 
 
 
-    private fun initItem3(binding: ItemGamePageBinding,item:OKGameBean){
+    private fun initItem3(binding: ItemLivePageBinding, item: OKGameBean){
         binding.run {
             cardGame3.visible()
             cardGame3.onClick {
@@ -243,7 +244,7 @@ class RecyclerGamePageAdapter:
 
 
 
-    private fun initItem4(binding: ItemGamePageBinding,item:OKGameBean){
+    private fun initItem4(binding: ItemLivePageBinding, item: OKGameBean){
         binding.run {
             cardGame4.visible()
             cardGame4.onClick {
@@ -266,7 +267,7 @@ class RecyclerGamePageAdapter:
 
 
 
-    private fun initItem5(binding: ItemGamePageBinding,item:OKGameBean){
+    private fun initItem5(binding: ItemLivePageBinding, item: OKGameBean){
         binding.run {
             cardGame5.visible()
             cardGame5.onClick {
@@ -289,7 +290,7 @@ class RecyclerGamePageAdapter:
 
 
 
-    private fun initItem6(binding: ItemGamePageBinding,item:OKGameBean,position:Int){
+    private fun initItem6(binding: ItemLivePageBinding, item: OKGameBean, position:Int){
         binding.run {
             cardGame6.visible()
             cardGame6.onClick {
