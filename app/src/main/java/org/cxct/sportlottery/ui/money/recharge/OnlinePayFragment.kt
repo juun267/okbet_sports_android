@@ -27,6 +27,8 @@ import kotlinx.android.synthetic.main.online_pay_fragment.title_fee_rate
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_currency_type
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_fee_amount
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_fee_rate
+import kotlinx.android.synthetic.main.online_pay_fragment.ll_fee_rate
+import kotlinx.android.synthetic.main.online_pay_fragment.ll_fee_amount
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_hint
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_remark
 import kotlinx.android.synthetic.main.online_pay_fragment.txv_pay_bank
@@ -286,11 +288,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             title_fee_amount.text = getString(R.string.title_fee_amount)
             tv_fee_rate.text = "0.00"
             tv_fee_amount.text = "0.00"
-            tv_fee_rate.gone()
-            tv_fee_amount.gone()
+            ll_fee_rate.gone()
+            ll_fee_amount.gone()
         } else {
-            tv_fee_rate.show()
-            tv_fee_amount.show()
+            ll_fee_rate.show()
+            ll_fee_amount.show()
             if (rebateFee < 0.0) {
                 title_fee_rate.text = getString(R.string.title_fee_rate)
                 title_fee_amount.text = getString(R.string.title_fee_amount)
