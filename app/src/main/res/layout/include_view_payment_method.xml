@@ -121,7 +121,7 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
                 android:textColor="@color/color_6D7693"
-                android:text="the Sigma Asia Awards"/>
+                android:text="The Sigma Asia Awards"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                 android:textSize="@dimen/textSize16sp"
                 android:textColor="@color/color_000000"
                 android:textStyle="bold"
-                android:text="Sportsbook operator of the year"/>
+                android:text="Sportsbook Operator Of The Year"/>
         </LinearLayout>
     </LinearLayout>
 
