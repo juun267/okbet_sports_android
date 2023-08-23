@@ -212,6 +212,11 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         jumpMatchType = null
         jumpGameType = null
 
+        val currentFragment = fragmentHelper.currentFragment() as BaseSportListFragment<*, *>?
+        if (currentFragment?.currentMatchType() == matchType && gameType == currentFragment.currentGameType()) {
+            return
+        }
+
         val args = Bundle()
         args.putSerializable("matchType", matchType)
         args.putString("gameType", gameType)
