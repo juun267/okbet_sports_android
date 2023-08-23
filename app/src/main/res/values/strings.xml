@@ -1603,6 +1603,7 @@
     <string name="world_cup_2023">FIBA World Cup 2023</string>
     <string name="P173">What’s your mobile number？</string>
     <string name="P174">We’ll send a OTP code to your mobile number</string>
+    <string name="fiba_2023">FIBA WC 2023</string>
     <string name="P176">Continue as OKBET x Glife member</string>
     <string name="P175">Become a new OKBET member</string>
     <string name="P181">Register Or Login with Verification Code</string>
@@ -1613,7 +1614,6 @@
     <string name="B036">Play Now</string>
     <string name="P183">Agent Deposit</string>
     <string name="N211">Bets Details</string>
-    <string name="fiba_2023">FIBA WC 2023</string>
     <string name="P199">OKBET Awards</string>
     <string name="J653_1">Game Vendor</string>
 
