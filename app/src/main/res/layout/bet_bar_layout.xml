@@ -9,20 +9,6 @@
     android:focusable="true"
     tools:ignore="SpUsage">
 
-    <TextView
-        android:id="@+id/tvClose"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="2dp"
-        android:drawableStart="@drawable/icon_circle_close"
-        android:drawablePadding="5dp"
-        android:gravity="center"
-        android:paddingStart="5dp"
-        android:paddingEnd="10dp"
-        android:text="@string/bottom_sheet_close"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -96,18 +82,18 @@
         app:layout_constraintEnd_toStartOf="@+id/tvClose"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
-    <ImageView
-        android:id="@+id/ivBasHide"
-        android:layout_width="50dp"
+    <TextView
+        android:id="@+id/tvClose"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginEnd="10dp"
-        android:padding="11dp"
-        android:src="@drawable/icon_basketball_hide"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/tvClose"
+        android:layout_marginEnd="2dp"
+        android:drawableStart="@drawable/icon_circle_close"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"
+        android:text="@string/bottom_sheet_close"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvClose"
-        app:layout_constraintVertical_bias="0.564" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

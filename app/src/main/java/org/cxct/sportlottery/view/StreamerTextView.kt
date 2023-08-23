@@ -63,7 +63,7 @@ class StreamerTextView @JvmOverloads constructor(
                 addListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator) {}
                 override fun onAnimationEnd(animation: Animator) {
-                    postDelayed(runDelay,5000)
+                    postDelayed(runDelay,3500)
                 }
                 override fun onAnimationCancel(animation: Animator) {}
                 override fun onAnimationRepeat(animation: Animator) {}

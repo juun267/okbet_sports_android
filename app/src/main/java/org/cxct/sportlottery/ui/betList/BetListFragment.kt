@@ -50,6 +50,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.OkPopupWindow
 import org.cxct.sportlottery.view.dialog.BetBalanceDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import org.cxct.sportlottery.view.dialog.BasketballDelBetTipDialog
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import timber.log.Timber
 import java.math.BigDecimal
@@ -122,7 +123,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     private var needUpdateBetLimit = false //是否需要更新投注限額
 
     private var isOpen = false //记录注单框展开收起状态
-
 
     /**
      * 当前所选赔率
@@ -326,9 +326,11 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 betListRefactorAdapter?.adapterBetType =
                     BetListRefactorAdapter.BetRvType.BasketballEndingCard
                 refreshLlMoreOption()
-                binding.clTitle.tvClearAll.gone()
-                binding.clTitle.tvClose.gone()
-                binding.clTitle.ivBasHide.visible()
+                binding.clTitle.tvClearAll.visible()
+                binding.clTitle.tvClose.visible()
+                binding.clTitle.tvClose.text = getString(R.string.D039)
+                binding.clTitle.tvClose.setCompoundDrawablesWithIntrinsicBounds(ResourcesCompat.getDrawable(resources,R.drawable.ic_cart_collapse,null),null,null,null)
+                binding.lineShadow.visible()
                 binding.lineShadow.gone()
                 binding.btnParlaySingle.gone()
                 binding.btnBet.updateLayoutParams {
@@ -375,19 +377,34 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         val currentOddsChangeOp = userInfo?.oddsChangeOption ?: 0
         currentBetOption = currentOddsChangeOp
 
-
         setOnClickListeners(binding.clTitle.tvClearAll, binding.tvDeleteAll) {
-            exitAnimation(true)
+            if (BetInfoRepository.currentBetType == BASKETBALL_ENDING_CARD){
+                if (!KvUtils.decodeBooleanTure(KvUtils.BASKETBALL_DEL_TIP_FLAG, false)) {
+                    val dialog = BasketballDelBetTipDialog(requireContext())
+                    dialog.setNegativeClickListener(object :
+                        BasketballDelBetTipDialog.OnNegativeListener {
+                        override fun negativeClick(isCheck: Boolean) {
+                            KvUtils.put(KvUtils.BASKETBALL_DEL_TIP_FLAG, isCheck)
+                            adapterItemClickListener.clearCarts()
+                            dialog.dismiss()
+                        }
+                    })
+                    dialog.show()
+                } else {
+                    adapterItemClickListener.clearCarts()
+                }
+            }else{
+                exitAnimation(true)
+            }
         }
 
         binding.clTitle.tvClose.setOnClickListener {
-            onBackPressed()
+            if (BetInfoRepository.currentBetType == BASKETBALL_ENDING_CARD){
+                exitAnimation(false)
+            }else{
+                onBackPressed()
+            }
         }
-        binding.clTitle.ivBasHide.setOnClickListener {
-            exitAnimation(false)
-        }
-
-
         binding.btnParlaySingle.setOnClickListener {
             switchCurrentBetMode()
         }
@@ -408,111 +425,111 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 //            onBackPressed()
 //        }
     }
+    val adapterItemClickListener = object : OnItemClickListener {
 
-    private fun initAdapter() {
-        val adapterItemClickListener = object : OnItemClickListener {
+        override fun onOddChangeEndListener() {
+            if (context == null) return
+            binding.btnBet.setBtnText(getString(R.string.bet_info_list_bet))
+            binding.btnBet.resetButtonStyle()
+        }
 
-            override fun onOddChangeEndListener() {
-                if (context == null) return
-                binding.btnBet.setBtnText(getString(R.string.bet_info_list_bet))
-                binding.btnBet.resetButtonStyle()
-            }
+        override fun onOddChangeStartListener(isUp: Boolean) {
+            if (context == null) return
+            binding.btnBet.setBtnText(getString(R.string.P139))
+            binding.btnBet.setOddsButtonChangeStyle()
+        }
 
-            override fun onOddChangeStartListener(isUp: Boolean) {
-                if (context == null) return
-                binding.btnBet.setBtnText(getString(R.string.P139))
-                binding.btnBet.setOddsButtonChangeStyle()
-            }
-
-            override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
-                viewModel.removeBetInfoItem(oddsId)
-            }
+        override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
+            viewModel.removeBetInfoItem(oddsId)
+        }
 
 
-            override fun clearCarts() {
-                this@BetListFragment.exitAnimation(true)
-            }
+        override fun clearCarts() {
+            this@BetListFragment.exitAnimation(true)
+        }
 
-            override fun onRechargeClick() {
-                if (viewModel.getLoginBoolean()) {
-                    startActivity(Intent(context, MoneyRechargeActivity::class.java))
-                } else {
-                    requireActivity().startLogin()
-                }
-            }
-
-            override fun onShowKeyboard(position: Int) {
-                (binding.rvBetList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                    binding.rvBetList, RecyclerView.State(), position
-                )
-            }
-
-            override fun onHideKeyBoard() {
-                betListRefactorAdapter?.betList?.forEach {
-                    it.isInputBet = false; it.isInputWin = false
-                }
-            }
-
-            override fun saveOddsHasChanged(matchOdd: MatchOdd) {
-                viewModel.saveOddsHasChanged(matchOdd)
-            }
-
-            override fun refreshBetInfoTotal(isSingleAdapter: Boolean) {
-                if (isSingleAdapter) {
-                    betListRefactorAdapter?.notifyDataSetChanged()
-                }
-                checkAllAmountCanBet()
-                refreshAllAmount()
-            }
-
-            override fun showParlayRule(parlayType: String, parlayRule: String) {
-//                showParlayDescription(parlayType, parlayRule)
-            }
-
-            override fun onMoreOptionClick() {
-                betListRefactorAdapter?.itemCount?.let {
-                    binding.rvBetList?.scrollToPosition(it - 1)
-                }
-            }
-
-
-            override fun onOddsChangeAcceptSelect(tvTextSelect: TextView) {
-                try {
-                    tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
-                        null, null, ResourcesCompat.getDrawable(
-                            resources, R.drawable.ic_arrow_down_double, null
-                        ), null
-                    )
-                    val popupWindow = OkPopupWindow(
-                        requireContext(), tvTextSelect.text.toString()
-                    ) { text, position ->
-                        tvTextSelect.text = text
-                        currentBetOption = position
-                        viewModel.updateOddsChangeOption(currentBetOption)
-                    }
-
-                    popupWindow.setOnDismissListener {
-                        tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
-                            null, null, ResourcesCompat.getDrawable(
-                                resources, R.drawable.ic_arrow_down_blue, null
-                            ), null
-                        )
-                    }
-                    popupWindow.showUpCenter(tvTextSelect)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-
-
-            override fun onOddsChangesSetOptionListener(text: String) {
-                currentBetOption = OddsModeUtil.currentSelectModeIndexWithText(text)
-            }
-
-            override fun addMore() {
-                onBackPressed()
+        override fun onRechargeClick() {
+            if (viewModel.getLoginBoolean()) {
+                startActivity(Intent(context, MoneyRechargeActivity::class.java))
+            } else {
+                requireActivity().startLogin()
             }
         }
+
+        override fun onShowKeyboard(position: Int) {
+            (binding.rvBetList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                binding.rvBetList, RecyclerView.State(), position
+            )
+        }
+
+        override fun onHideKeyBoard() {
+            betListRefactorAdapter?.betList?.forEach {
+                it.isInputBet = false; it.isInputWin = false
+            }
+        }
+
+        override fun saveOddsHasChanged(matchOdd: MatchOdd) {
+            viewModel.saveOddsHasChanged(matchOdd)
+        }
+
+        override fun refreshBetInfoTotal(isSingleAdapter: Boolean) {
+            if (isSingleAdapter) {
+                betListRefactorAdapter?.notifyDataSetChanged()
+            }
+            checkAllAmountCanBet()
+            refreshAllAmount()
+        }
+
+        override fun showParlayRule(parlayType: String, parlayRule: String) {
+//                showParlayDescription(parlayType, parlayRule)
+        }
+
+        override fun onMoreOptionClick() {
+            betListRefactorAdapter?.itemCount?.let {
+                binding.rvBetList?.scrollToPosition(it - 1)
+            }
+        }
+
+
+        override fun onOddsChangeAcceptSelect(tvTextSelect: TextView) {
+            try {
+                tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
+                    null, null, ResourcesCompat.getDrawable(
+                        resources, R.drawable.ic_arrow_down_double, null
+                    ), null
+                )
+                val popupWindow = OkPopupWindow(
+                    requireContext(), tvTextSelect.text.toString()
+                ) { text, position ->
+                    tvTextSelect.text = text
+                    currentBetOption = position
+                    viewModel.updateOddsChangeOption(currentBetOption)
+                }
+
+                popupWindow.setOnDismissListener {
+                    tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
+                        null, null, ResourcesCompat.getDrawable(
+                            resources, R.drawable.ic_arrow_down_blue, null
+                        ), null
+                    )
+                }
+                popupWindow.showUpCenter(tvTextSelect)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+
+        override fun onOddsChangesSetOptionListener(text: String) {
+            currentBetOption = OddsModeUtil.currentSelectModeIndexWithText(text)
+        }
+
+        override fun addMore() {
+            onBackPressed()
+        }
+    }
+    private fun initAdapter() {
+
 
         betListRefactorAdapter = BetListRefactorAdapter(
             binding.layoutKeyBoard, adapterItemClickListener

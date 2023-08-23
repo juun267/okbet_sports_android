@@ -67,7 +67,7 @@
             android:layout_marginLeft="12dp"
             android:gravity="bottom"
             android:text="@string/text_search_history"
-            android:textColor="@color/color_535D76"
+            android:textColor="@color/color_000000"
             android:textSize="@dimen/margin_14"
             android:textStyle="bold" />
 

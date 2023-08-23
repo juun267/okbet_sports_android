@@ -132,8 +132,7 @@
                         android:id="@+id/clToolContent"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:layout_marginBottom="12dp"
-                        android:background="@color/color_EEF3FC"
+                        android:background="@color/color_F1F5FF"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="10dp">
 
@@ -229,6 +228,10 @@
                             app:layout_constraintEnd_toStartOf="@+id/tvLiveStream"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/margin_12"
+                        android:background="@color/color_F1F7FF"/>
                 </LinearLayout>
 
                 <!-- 这边必须使用ToolBar -->
@@ -265,7 +268,7 @@
                 <LinearLayout
                     android:id="@+id/lin_categroy"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
+                    android:layout_height="44dp"
                     android:background="@drawable/bg_sport_detail_categroy">
 
                     <androidx.recyclerview.widget.RecyclerView

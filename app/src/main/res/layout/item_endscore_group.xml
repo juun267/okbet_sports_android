@@ -21,8 +21,6 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginLeft="11dp"
-        android:background="@drawable/bg_circle_stroke_team_log"
-        android:padding="1dp"
         android:scaleType="centerCrop" />
 
     <TextView

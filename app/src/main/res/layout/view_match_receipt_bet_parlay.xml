@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:textColor="@color/color_FFFFFF_414655"
+                android:textColor="@color/color_000000"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_bet_amount_title"

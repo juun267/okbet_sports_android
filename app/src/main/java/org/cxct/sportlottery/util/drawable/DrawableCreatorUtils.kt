@@ -96,7 +96,7 @@ object DrawableCreatorUtils {
 
     fun getBasketballPlusMore(): Drawable {
         return getCommonBackgroundStyle(
-            cornerRadius = 5, strokeColor = R.color.color_025BE8, solidColor = R.color.color_FFFFFF
+            cornerRadius = 5, strokeColor = R.color.color_025BE8, solidColor = R.color.color_ecf2fe
         )
     }
 

@@ -163,7 +163,7 @@ class LeagueSelectActivity :
     private fun setupMatchListView(adapter: BaseNodeAdapter, updateIndexBar: (Int) -> Unit) {
         linearLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv_league.layoutManager = linearLayoutManager
-        rv_league.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(this, R.drawable.recycleview_decoration)))
+        rv_league.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(this, R.drawable.bg_decoration_filter)))
         rv_league.adapter = adapter
         rv_league.setOnScrollChangeListener { _, _, _, _, _ ->
             val firstCompletelyVisibleItemPosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition()
