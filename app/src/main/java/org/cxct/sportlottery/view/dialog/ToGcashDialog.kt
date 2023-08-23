@@ -39,7 +39,7 @@ class ToGcashDialog(val visibleNoReminder: Boolean = true) : BaseDialog<BaseView
          * 根据条件判断是否需要显示
          */
         fun showByLogin(viewModel: BaseSocketViewModel){
-            if (viewModel.getLoginBoolean() && viewModel.userInfo.value?.vipType == 1) {
+            if (viewModel.getLoginBoolean() && viewModel.userInfo.value?.isGlifeAccount()==true) {
                 if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_TIP_FLAG, false)&&needShow) {
                     needShow=false
                     ToGcashDialog().show((AppManager.currentActivity() as BaseActivity<*>).supportFragmentManager,ToGcashDialog.javaClass.name)
@@ -47,7 +47,7 @@ class ToGcashDialog(val visibleNoReminder: Boolean = true) : BaseDialog<BaseView
             }
         }
         fun showByClick(viewModel: BaseSocketViewModel,next: () -> Unit){
-            if (viewModel.getLoginBoolean() && viewModel.userInfo.value?.vipType == 1) {
+            if (viewModel.getLoginBoolean() && viewModel.userInfo.value?.isGlifeAccount()==true) {
                 ToGcashDialog(false).show((AppManager.currentActivity() as BaseActivity<*>).supportFragmentManager,ToGcashDialog.javaClass.name)
                 return
             }

@@ -45,4 +45,7 @@ data class UserInfo(
     var permanentAddress: String?="",
     var zipCode: String?="",
     var permanentZipCode: String?="",
-)
+){
+    fun isGlifeAccount():Boolean = vipType==1
+}
+
