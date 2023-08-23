@@ -17,6 +17,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.include_user_profile.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -149,7 +150,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         sConfigData?.apply {
             ll_qq_number.isVisible = enableWithdrawQQ.isStatusOpen()
             ll_e_mail.isVisible = enableWithdrawEmail.isStatusOpen()
-            ll_phone_number.isVisible = enableWithdrawPhone.isStatusOpen()&&viewModel.userInfo.value?.vipType!=1
+            ll_phone_number.isVisible = enableWithdrawPhone.isStatusOpen()
             ll_wechat.isVisible = enableWithdrawWechat.isStatusOpen()
             ll_real_name.isVisible = enableWithdrawFullName.isStatusOpen()
         }
@@ -669,6 +670,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         judgeImproveInfo(ll_e_mail, tv_e_mail, icon_e_mail, email, true)
         judgeImproveInfo(ll_phone_number, tv_phone_number, icon_phone_number, phone, true)
         judgeImproveInfo(ll_wechat, tv_we_chat, icon_wechat, wechat)
+        if (viewModel.userInfo.value?.isGlifeAccount()==true){
+            ll_phone_number.isEnabled = false
+            icon_phone_number.gone()
+        }
     }
 
     private fun judgeImproveInfo(
