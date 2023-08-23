@@ -184,7 +184,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         WinsDialog(adapter.getItem(position) as RecordNewEvent, context as AppCompatActivity) { betRecode ->
             if (!betRecode.isSportBet()) {
-                enterGame("${betRecode.firmType}", "${betRecode.gameCode}")
+                enterGame("${betRecode.firmType}", "${betRecode.gameCode}", "${betRecode.gameEntryType}")
                 return@WinsDialog
             }
             val activity = fragment.activity
@@ -195,12 +195,12 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
         }.show()
     }
 
-    private fun enterGame(firmType: String, gameCode: String) {
+    private fun enterGame(firmType: String, gameCode: String, gameEntryTagName: String) {
         if (LoginRepository.isLogined()) {
-            fragment.viewModel.requestEnterThirdGame(firmType, gameCode, firmType, fragment)
+            fragment.viewModel.requestEnterThirdGame(firmType, gameCode, firmType, gameEntryTagName, fragment)
         } else {
             fragment.loading()
-            fragment.viewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType)
+            fragment.viewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType, gameEntryTagName)
         }
     }
 
