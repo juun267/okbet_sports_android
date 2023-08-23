@@ -26,6 +26,7 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.GameChildAdapter
@@ -60,7 +61,9 @@ class SportFooterGamesView @JvmOverloads constructor(
         setBackgroundResource(R.color.color_F8F9FD)
         addNomoreText()
         initOKGameList()
-        initOKLiveList()
+        if (StaticData.okLiveOpened()){
+            initOKLiveList()
+        }
 //        addOKBingo()
         initBottomView()
     }
@@ -210,7 +213,9 @@ class SportFooterGamesView @JvmOverloads constructor(
         this.okGamesViewModel = viewmodel
         initObserver(fragment, viewmodel)
         viewmodel.getSportOKGames()
-        viewmodel.getSportOKLive()
+        if (StaticData.okLiveOpened()){
+            viewmodel.getSportOKLive()
+        }
         homeButtomView.bindServiceClick(fragment.parentFragmentManager)
     }
 
