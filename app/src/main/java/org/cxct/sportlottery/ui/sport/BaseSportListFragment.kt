@@ -65,6 +65,8 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected abstract fun onOddTypeChanged(oddsType: OddsType)
     protected abstract fun onBetInfoChanged(betInfoList: List<BetInfoListData>)
 
+    fun currentMatchType(): MatchType = matchType
+    fun currentGameType(): String = gameType
 
     protected fun scrollBackTop() = binding.appbarLayout.run {
         ((layoutParams as CoordinatorLayout.LayoutParams).behavior as AppBarLayout.Behavior?)?.setTopAndBottomOffset(0)
