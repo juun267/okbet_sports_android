@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.betList
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,10 +43,13 @@ import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.holder.MAX_BET_VALUE
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.OkPopupWindow
+import org.cxct.sportlottery.view.dialog.BetBalanceDialog
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import timber.log.Timber
 import java.math.BigDecimal
@@ -732,6 +736,30 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             betParlayListRefactorAdapter?.userLogin = it
         }
 
+        viewModel.isRechargeShowVerifyDialog.observe(this.viewLifecycleOwner){
+//            this.hideLoading()
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    VerifyIdentityDialog().show(childFragmentManager, null)
+                }else
+                    viewModel.checkRechargeSystem()
+            }
+        }
+
+        viewModel.rechargeSystemOperation.observe(this.viewLifecycleOwner) {
+            this.hideLoading()
+            val b = it.getContentIfNotHandled() ?: return@observe
+            if (b) {
+                requireContext().startActivity(Intent(context, MoneyRechargeActivity::class.java))
+                return@observe
+            }
+
+            showPromptDialog(
+                requireActivity().getString(R.string.prompt),
+                requireActivity().getString(R.string.message_recharge_maintain)
+            ) {}
+
+        }
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let { money ->
@@ -974,9 +1002,19 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             oddsType = it
         }
 
+        //投注余额不足
         val balanceInsufficient = {
             setBetLoadingVisibility(false)
-            ToastUtil.showToast(requireContext(), R.string.bet_info_bet_balance_insufficient)
+            //换成弹框提示 去充值
+            val dialog= BetBalanceDialog(requireContext())
+            dialog.showDialog{
+                //跳转充值
+                ToGcashDialog.showByClick(this.viewModel){
+                    loading()
+                    viewModel.checkRechargeKYCVerify()
+                }
+            }
+//            ToastUtil.showToast(requireContext(), R.string.bet_info_bet_balance_insufficient)
         }
         val overMax = {
             setBetLoadingVisibility(false)
