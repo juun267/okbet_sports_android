@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
+import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
 import org.cxct.sportlottery.ui.sport.list.SportListFragment2
@@ -37,17 +38,20 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
 
-    private val matchTypeTab = listOf(
+    private val matchTypeTab = mutableListOf(
         MatchType.END_SCORE,
         MatchType.IN_PLAY,
         MatchType.AT_START,
         MatchType.TODAY,
         MatchType.EARLY,
         MatchType.PARLAY,
-//        MatchType.CS,
         MatchType.OUTRIGHT,
         MatchType.MY_EVENT
-    )
+    ).apply {
+        if (FIBAUtil.enableFiba()){
+            add(1,MatchType.FIBA)
+        }
+    }
     private val favoriteIndex = matchTypeTab.indexOf(MatchType.MY_EVENT)
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper by lazy { FragmentHelper2(childFragmentManager, R.id.fl_content) }
@@ -145,15 +149,18 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             countToday > 0 -> MatchType.TODAY
             else -> MatchType.EARLY
         }
-        addTab(getString(R.string.home_tab_end_score), countBkEnd, 0)
-        addTab(getString(R.string.home_tab_in_play), countInPlay, 1)
-        addTab(getString(R.string.home_tab_at_start), countAtStart, 2)
-        addTab(getString(R.string.home_tab_today), countToday, 3)
-        addTab(getString(R.string.home_tab_early), countEarly, 4)
-        addTab(getString(R.string.home_tab_parlay), countParlay, 5)
-//        addTab(getString(R.string.home_tab_cs), countCS, 6)
-        addTab(getString(R.string.home_tab_outright), countOutright, 6)
-        val tabView = addTab(getString(R.string.N082), favoriteCount(favoriteItems), 7)
+        var position =0
+        addTab(getString(R.string.home_tab_end_score), countBkEnd, position)
+        if (FIBAUtil.enableFiba()){
+            addTab(getString(R.string.fiba_2023), FIBAUtil.takeFIBAItem()?.num?:0, ++position)
+        }
+        addTab(getString(R.string.home_tab_in_play), countInPlay, ++position)
+        addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
+        addTab(getString(R.string.home_tab_today), countToday, ++position)
+        addTab(getString(R.string.home_tab_early), countEarly, ++position)
+        addTab(getString(R.string.home_tab_parlay), countParlay, ++position)
+        addTab(getString(R.string.home_tab_outright), countOutright, ++position)
+        val tabView = addTab(getString(R.string.N082), favoriteCount(favoriteItems), ++position)
         if (!LoginRepository.isLogined()) {
             tabView.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -177,10 +184,17 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
         tab.customView?.run {
             tv_title.text = name
-            tv_number.text = num.toString()
+            tv_number.text = if(name==getString(R.string.fiba_2023)) "" else num.toString()
         }
 
         return@run tab.customView!!
+    }
+    private fun removeTab(name: String) = binding.tabLayout.run {
+        for (index in 0 until tabCount){
+            if(getTabAt(index)?.customView?.tv_title?.text == name){
+                removeTabAt(index)
+            }
+        }
     }
 
     private var currentMatchType: MatchType? = null

@@ -323,8 +323,8 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             worldCupItem = addMenu(0,
                 groupParams,
                 iconParams,
-                R.drawable.ic_main_menu_fifa_1,
-                R.drawable.ic_main_menu_fifa_1,
+                R.drawable.ic_main_menu_fiba,
+                R.drawable.ic_main_menu_fiba,
                 textParams,
                 R.string.world_cup_2023,
                 true

@@ -23,7 +23,6 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAItem
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
@@ -258,7 +257,7 @@ open class SportListViewModel(
         }
 
         jobSwitchGameType = viewModelScope.launch {
-            if (item is FIBAItem) {
+            if (matchType == MatchType.FIBA) {
                 getOddsList(GameType.BK.key, item.code, null, selectLeagueIdList, selectMatchIdList)
             } else {
                 getGameHallList(matchType, item.code, selectLeagueIdList, selectMatchIdList)
@@ -523,8 +522,9 @@ open class SportListViewModel(
             else -> listOf()
         }
 
-        if (StaticData.worldCupOpened()) {
-            if (matchType == MatchType.IN_PLAY
+        if (FIBAUtil.enableFiba()) {
+            if (matchType == MatchType.FIBA
+                ||matchType == MatchType.IN_PLAY
                 || matchType == MatchType.AT_START
                 || matchType == MatchType.TODAY
                 || matchType == MatchType.EARLY) {

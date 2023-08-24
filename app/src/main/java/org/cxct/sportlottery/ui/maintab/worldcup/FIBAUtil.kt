@@ -8,13 +8,12 @@ import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.net.sport.SportRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LogUtil
 
 object FIBAUtil {
-
-    private val fibaCode = "sc:fiba"
+    const val fibaCode = "sc:fiba"
     private var isLoading = false
     private var fibaItem: FIBAItem? = null
-
     init {
         LanguageManager.addLanguageChangedListener { _, _ ->
             isLoading = false
@@ -47,6 +46,7 @@ object FIBAUtil {
                 list.find { fibaCode == it.couponCode }?.let {
                     if (!it.icon.isEmptyStr() && !it.couponCode.isEmptyStr() && !it.couponName.isEmptyStr()) {
                         fibaItem = FIBAItem(it.icon!!, it.couponCode!!, it.couponName!!, it.num, it.sort)
+                        LogUtil.toJson(fibaItem)
                     }
                 }
             }
@@ -56,8 +56,13 @@ object FIBAUtil {
     fun takeFIBAItem(): FIBAItem? {
         if (fibaItem == null) {
             preloadLoad()
+        } else {
+            return fibaItem
         }
-        return fibaItem
+        return null
+    }
+    fun enableFiba(): Boolean {
+        return StaticData.worldCupOpened()&&fibaItem!=null
     }
 
 }

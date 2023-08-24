@@ -15,10 +15,7 @@ import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.SelectMatchEvent
-import org.cxct.sportlottery.common.extentions.getPlayCateName
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.rotationAnimation
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -34,6 +31,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
@@ -107,7 +105,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             }
 
             setSportDataList(null)
-            dismissLoading()
+//            dismissLoading()
             if (!it.second) {
                 ToastUtil.showToast(activity, it.third)
                 return@observe
@@ -134,17 +132,26 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 targetGameType = it
             }
         }
-        if (targetGameType == null) {
-            targetGameType = gameTypeList.find { it.num > 0}
-        }
-        if (targetGameType == null) {
-            targetGameType = gameTypeList.first()
-        }
 
+
+        //篮球世界杯界面
+        if (gameTypeList.size==1&&gameTypeList.first().code==FIBAUtil.fibaCode){
+            binding.sportTypeList.gone()
+            if (targetGameType == null) {
+                targetGameType = gameTypeList.first()
+            }
+        }else{
+            binding.sportTypeList.show()
+            if (targetGameType == null) {
+                targetGameType = gameTypeList.find { it.num > 0 && it.code!=FIBAUtil.fibaCode }
+            }
+            if (targetGameType == null) {
+                targetGameType = gameTypeList.first()
+            }
+        }
         gameType = targetGameType!!.code
         targetGameType!!.isSelected = true
         load(targetGameType!!)
-
         gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
         (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             binding.sportTypeList,
@@ -239,6 +246,11 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     protected open fun onGameTypeChanged(item: Item, position: Int) {
+        if (item.code == FIBAUtil.fibaCode){
+            (parentFragment as SportFragment2).setJumpSport(MatchType.FIBA)
+            return
+        }
+        //日期圖示選取狀態下，切換球種要重置UI狀態
         gameType = item.code
         clearData()
         val layoutManager = binding.sportTypeList.layoutManager as ScrollCenterLayoutManager
@@ -270,6 +282,9 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected fun setSportDataList(list: MutableList<BaseNode>?, sizeNumber: String? = null) {
         val adapter = getGameListAdapter()
+        if(list.isNullOrEmpty()){
+            showLoading()
+        }
         adapter.setNewInstance(list)
         if (sizeNumber == null) setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "") else setMatchNum(sizeNumber)
         if (!list.isNullOrEmpty()) {
