@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.util
 
 import android.content.res.AssetManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.text.TextUtils
+import android.util.Log
 import java.io.BufferedReader
 import java.io.Closeable
 import java.io.File
@@ -13,6 +15,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.text.DecimalFormat
+
 
 object FileUtil {
 
@@ -247,5 +250,31 @@ object FileUtil {
             }catch (e:java.lang.Exception){}
         }
 
+    }
+
+
+
+    fun fileToBitmap(file:File?):Bitmap?{
+        if(file==null){
+            Log.e("dachang","null")
+            return null
+        }
+//        if (!isFileExist(file) || !file.isDirectory) {
+//            Log.e("dachang","isFileExist")
+//            return null
+//        }
+
+        var bitmap: Bitmap? = null
+        val o = BitmapFactory.Options()
+        o.inJustDecodeBounds = true
+        var fis = FileInputStream(file)
+        BitmapFactory.decodeStream(fis, null, o)
+        fis.close()
+
+        val o2 = BitmapFactory.Options()
+        fis = FileInputStream(file)
+        bitmap = BitmapFactory.decodeStream(fis, null, o2)
+        fis.close()
+        return bitmap
     }
 }
