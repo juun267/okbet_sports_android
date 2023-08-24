@@ -15,14 +15,15 @@
        android:textSize="@dimen/textSize12sp"
        android:textColor="@color/color_date_black_white"
        android:textStyle="bold"
+       android:textFontWeight="700"
        android:text="@string/all_sport"/>
     <TextView
         android:id="@+id/tvDateWithMonth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_1"
-        android:textFontWeight="100"
         android:textSize="@dimen/textSize12sp"
+        android:textFontWeight="300"
         android:textColor="@color/color_date_gray_white"
         android:text="@string/date_row_all"/>
 </LinearLayout>

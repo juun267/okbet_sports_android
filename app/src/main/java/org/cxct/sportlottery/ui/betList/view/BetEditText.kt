@@ -86,12 +86,7 @@ class BetEditText @JvmOverloads constructor(
                 etBet.tvHintParlayDefault.isVisible = false
             }
         } else {
-            if (LoginRepository.isLogin.value == true) {
-                etBetParlay.hint = betHint
-            } else {
-                etBetParlay.hint = ""
-            }
-
+            etBetParlay.hint = betHint
         }
     }
 
