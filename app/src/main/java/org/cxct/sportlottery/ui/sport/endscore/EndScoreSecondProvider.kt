@@ -112,14 +112,12 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             linExpand.background = collapseDrawable
             (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 10.dp
             setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_up_blue, 0)
-            llMatchInfo.setBackgroundColor(ContextCompat.getColor(context, R.color.color_F8F9FD))
         } else {
             setText(R.string.N698)
             setTextColor(Color.WHITE)
             linExpand.background = expandedDrawable
             (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 20.dp
             setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_down_white, 0)
-            llMatchInfo.setBackgroundColor(Color.TRANSPARENT)
         }
 
 

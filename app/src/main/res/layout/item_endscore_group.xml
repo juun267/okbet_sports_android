@@ -33,7 +33,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
-        android:textColor="@color/color_0D2245"
+        android:textColor="@color/color_000000"
         android:textSize="12sp"
         android:textStyle="bold"
         tools:text="欧洲足球锦标赛2020" />

@@ -131,6 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
+                android:layout_marginBottom="@dimen/margin_8"
                 android:scrollbars="vertical"
                 android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -149,7 +150,7 @@
             android:id="@+id/llKeyboardContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/color_F8F9FD"
+            android:background="@color/color_F9FAFD"
             android:orientation="vertical"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
@@ -159,8 +160,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_0.5"
-                android:background="@color/color_F9FAFD"
-                android:layout_marginTop="@dimen/margin_8"/>
+                android:background="@color/color_E0E3EE"/>
             <include
                 android:id="@+id/includeControl"
                 android:layout_width="match_parent"
@@ -172,8 +172,7 @@
                 android:id="@+id/viewDivider2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_0.5"
-                android:layout_marginTop="8dp"
-                android:background="@color/color_F9FAFD" />
+                android:background="@color/color_E0E3EE" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

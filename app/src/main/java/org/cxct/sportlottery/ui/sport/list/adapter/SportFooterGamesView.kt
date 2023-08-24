@@ -123,7 +123,7 @@ class SportFooterGamesView @JvmOverloads constructor(
         addView(moreLabelLayout, params)
 
         val icon = AppCompatImageView(context)
-        icon.setImageResource(R.drawable.ic_okgame_label_games)
+        icon.setImageResource(R.drawable.ic_home_okgames_title)
         24.dp.let { moreLabelLayout.addView(icon, LayoutParams(it, it)) }
 
         val text = AppCompatTextView(context)
