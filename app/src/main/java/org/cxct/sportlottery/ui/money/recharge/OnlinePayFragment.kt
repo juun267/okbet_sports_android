@@ -15,22 +15,23 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bet_station.*
 import kotlinx.android.synthetic.main.include_quick_money.*
+import kotlinx.android.synthetic.main.online_crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.btn_submit
 import kotlinx.android.synthetic.main.online_pay_fragment.includeQuickMoney
 import kotlinx.android.synthetic.main.online_pay_fragment.iv_bank_icon
-import kotlinx.android.synthetic.main.online_pay_fragment.iv_btn_service
 import kotlinx.android.synthetic.main.online_pay_fragment.ll_remark
-import kotlinx.android.synthetic.main.online_pay_fragment.title_fee_amount
-import kotlinx.android.synthetic.main.online_pay_fragment.title_fee_rate
-import kotlinx.android.synthetic.main.online_pay_fragment.tv_currency_type
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_fee_amount
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_fee_rate
+import kotlinx.android.synthetic.main.online_pay_fragment.tv_hint
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_remark
 import kotlinx.android.synthetic.main.online_pay_fragment.txv_pay_bank
 import kotlinx.android.synthetic.main.online_pay_fragment.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.show
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
@@ -119,7 +120,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
 
     private fun initView() {
-        tv_currency_type.text = sConfigData?.systemCurrencySign
 
         et_recharge_online_amount.setHint(getAmountLimitHint())
 
@@ -236,14 +236,43 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 if (it.isEmpty() || it.isBlank()) {
                     if (includeQuickMoney.isVisible) (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(
                         -1)
-                    tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
+                    if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
+                        tv_fee_amount.text =
+                            String.format(getString(R.string.hint_feeback_amount),
+                                sConfigData?.systemCurrencySign,
+                                "0.00")
+                    } else {
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount),
+                            sConfigData?.systemCurrencySign,
+                            "0.00")
+                    }
                 } else {
-                    tv_fee_amount.text = TextUtil.formatMoney(
-                        ArithUtil.toMoneyFormat(
-                            it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0))
-                        ).toDouble()
-                    )
+                    //返利/手續費金額
+                    if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
+                        tv_fee_amount.text =
+                            String.format(getString(R.string.hint_feeback_amount),sConfigData?.systemCurrencySign,
+                                ArithUtil.toMoneyFormat((it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
+
+                            )
+                    } else {
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount),
+                            sConfigData?.systemCurrencySign,
+                            ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0).times(mSelectRechCfgs?.rebateFee?:0.0))))
+                    }
+                    if(mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
+                        tv_fee_rate.text =
+                            String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount),
+                            sConfigData?.systemCurrencySign,
+                            "0.00")
+                        tv_fee_rate.gone()
+                        tv_fee_amount.gone()
+                    }else{
+                        tv_fee_rate.show()
+                        tv_fee_amount.show()
+                    }
                 }
+
             }
 
             et_recharge_online_payer.afterTextChanged {
@@ -277,22 +306,25 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private fun setupRebateFee() {
         val rebateFee = mSelectRechCfgs?.rebateFee
-        if (rebateFee == null || rebateFee == 0.0) {
-            title_fee_rate.text = getString(R.string.title_fee_rate)
-            title_fee_amount.text = getString(R.string.title_fee_amount)
-            tv_fee_rate.text = "0.00"
-            tv_fee_amount.text = "0.00"
-        } else {
-            if (rebateFee < 0.0) {
-                title_fee_rate.text = getString(R.string.title_fee_rate)
-                title_fee_amount.text = getString(R.string.title_fee_amount)
-            } else {
-                title_fee_rate.text = getString(R.string.title_rebate_rate)
-                title_fee_amount.text = getString(R.string.title_rebate_amount)
+        when{
+            rebateFee == null || rebateFee == 0.0->{
+                tv_fee_rate.gone()
+                tv_fee_amount.gone()
+                tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
+                tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign, "0.00")
             }
-            tv_fee_rate.text = ArithUtil.toOddFormat(abs(rebateFee).times(100))
-            tv_fee_amount.text =
-                TextUtil.formatMoney(ArithUtil.toOddFormat(0.0.times(100)).toDouble())
+            rebateFee > 0.0->{
+                tv_fee_rate.visible()
+                tv_fee_amount.visible()
+                tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), ArithUtil.toOddFormat(abs(rebateFee).times(100))) + "%"
+                tv_fee_amount.text = String.format(getString(R.string.hint_feeback_amount), sConfigData?.systemCurrencySign, TextUtil.formatMoney(ArithUtil.toOddFormat(0.0.times(100)).toDouble()))
+            }
+            else ->{
+                tv_fee_rate.visible()
+                tv_fee_amount.visible()
+                tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.toOddFormat(abs(rebateFee).times(100))) + "%"
+                tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign, TextUtil.formatMoney(ArithUtil.toOddFormat(0.0.times(100)).toDouble()))
+            }
         }
     }
 
@@ -433,7 +465,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     //联系客服
     private fun setupServiceButton() {
-        iv_btn_service.setServiceClick(childFragmentManager)
         tv_service.setServiceClick(childFragmentManager)
     }
 
