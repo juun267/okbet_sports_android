@@ -120,6 +120,7 @@
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:layout_marginVertical="15dp"
+                   android:layout_marginBottom="@dimen/margin_8"
                    app:text_bg_normal="@color/color_FFFFFF"
                    app:text_bg_pressed="@color/color_FF2E00"
                    app:text_bg_radius="8dp"

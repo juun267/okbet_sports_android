@@ -329,7 +329,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_radius_12_f8f8f8"
-                    android:paddingHorizontal="@dimen/margin_14"
+                    android:paddingHorizontal="@dimen/margin_12"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:visibility="visible"

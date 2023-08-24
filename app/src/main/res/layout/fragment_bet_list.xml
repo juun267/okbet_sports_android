@@ -79,8 +79,8 @@
                 android:id="@+id/ll_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/color_FFFFFF"
                 android:layout_above="@+id/viewDivider1"
-                android:background="@drawable/bg_gradient_bet_top_corner"
                 android:orientation="vertical">
                 <!--串关投注-->
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -263,7 +263,6 @@
             <View
                 android:id="@+id/viewDivider1"
                 android:layout_above="@+id/parlayLayout"
-                app:layout_constraintTop_toTopOf="parent"
                 android:background="@color/color_E0E3EE"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_0.5"/>
