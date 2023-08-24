@@ -94,29 +94,29 @@ class RecyclerGamePageAdapter:
 
             4-> {
                 bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1)
-                bindItem(item[1], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2)
-                bindItem(item[2], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
-                bindItem(item[3], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
+                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
+                bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
+                bindItem(item[3], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2)
                 cardGame4.gone()
                 cardGame6.gone()
             }
 
             5-> {
                 bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1)
-                bindItem(item[1], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2)
-                bindItem(item[2], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
-                bindItem(item[3], cardGame4, ivCover4, tvName4, tvFirmName4, ivFav4, tvCover4)
-                bindItem(item[4], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
+                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
+                bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
+                bindItem(item[3], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2)
+                bindItem(item[4], cardGame4, ivCover4, tvName4, tvFirmName4, ivFav4, tvCover4)
                 cardGame6.gone()
             }
 
             6-> {
                 val isMoreItem = position == dataCount() - 1 && isMoreThan18
                 bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1)
-                bindItem(item[1], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2)
-                bindItem(item[2], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
-                bindItem(item[3], cardGame4, ivCover4, tvName4, tvFirmName4, ivFav4, tvCover4)
-                bindItem(item[4], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
+                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
+                bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
+                bindItem(item[3], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2)
+                bindItem(item[4], cardGame4, ivCover4, tvName4, tvFirmName4, ivFav4, tvCover4)
                 bindItem(item[5], cardGame6, ivCover6, tvName6, tvFirmName6, ivFav6, tvCover6, isMoreItem)
                 if(isMoreItem) {
                     blurCard6.visible()
