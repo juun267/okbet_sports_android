@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.StreamerTextView
 
 class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle) {
@@ -131,7 +132,7 @@ class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: Attr
         tvLogin = createBtnText(R.string.J134, R.drawable.bg_blue_radius_8)
         loginLayout.addView(tvLogin, params)
 
-        tvRegist = createBtnText(R.string.J151, R.drawable.bg_orange_radius_8)
+        tvRegist = createRegistBtnText(R.string.J151, R.drawable.bg_orange_radius_8)
         loginLayout.addView(tvRegist, params)
 
         addView(loginLayout, LayoutParams(0, -2, 1f))
@@ -156,7 +157,25 @@ class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: Attr
             setTextColor(resources.getColor(R.color.color_FFFFFF))
         }
     }
-
+    @SuppressLint("RestrictedApi")
+    private fun createRegistBtnText(text: Int, background: Int): TextView {
+        return StreamerTextView(context).apply {
+            minWidth = 74.dp
+            maxLines = 1
+            ellipsize = TextUtils.TruncateAt.END
+            gravity = Gravity.CENTER
+            elevation = 2.dp.toFloat()
+            textSize = 14f
+            setText(text)
+            //自动调整大小
+            setAutoSizeTextTypeWithDefaults(TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+            setAutoSizeTextTypeUniformWithConfiguration(10, 14, 1, TypedValue.COMPLEX_UNIT_SP)
+            val padding = 10.dp
+            setPadding(padding, 0, padding, 0)
+            setBackgroundResource(background)
+            setTextColor(resources.getColor(R.color.color_FFFFFF))
+        }
+    }
     private fun initObserver() = viewModel.run {
         if (userModelEnable) {
             isLogin.observe(fragment) { setupLogin() }
