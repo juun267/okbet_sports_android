@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.*
 import android.os.Environment
+import android.text.Html
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.util.Log
@@ -19,6 +20,7 @@ import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -1119,6 +1121,18 @@ fun Context.dividerView(
                 leftMargin = margins
                 rightMargin = margins
             }
+        }
+    }
+}
+ fun setupSummary(tvSummary: TextView) {
+    sConfigData?.imageList?.filter {
+                it.imageType == ImageType.LOGIN_SUMMARY.code
+                && it.lang == LanguageManager.getSelectLanguage(tvSummary.context).key
+                && !it.imageText1.isNullOrEmpty()
+                && !getMarketSwitch() }?.sortedByDescending { it.imageSort }?.firstOrNull()?.imageText1.let {
+        tvSummary.apply {
+            isVisible = !it.isNullOrEmpty()
+            text = Html.fromHtml(it?:"")
         }
     }
 }

@@ -8,7 +8,7 @@
         android:id="@+id/iv_license"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/margin_36"
-        android:src="@drawable/ic_pagcor_gray"
+        android:src="@drawable/ic_pagcor"
         android:layout_gravity="center_horizontal"
         android:visibility="visible"
         android:layout_centerInParent="true"/>
@@ -22,7 +22,7 @@
         android:layout_marginTop="8dp"
         android:lineSpacingExtra="3dp"
         android:text="Copyright © 2023 OKBET ALL RIGHTS RESERVED"
-        android:textColor="@color/color_A7B2C4"
+        android:textColor="@color/color_6D7693"
         android:textSize="@dimen/textSize10sp" />
 
 </LinearLayout>

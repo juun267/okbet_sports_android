@@ -1604,5 +1604,8 @@
     <string name="P175">Become a new OKBET member</string>
     <string name="P184">Featured OKLive</string>
     <string name="P183">Agent Deposit</string>
+    <string name="P173">What’s your mobile number？</string>
+    <string name="P174">We’ll send a OTP code to your mobile number</string>
+    <string name="P181">Register Or Login with Verification Code</string>
 
 </resources>

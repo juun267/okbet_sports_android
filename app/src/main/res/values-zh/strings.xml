@@ -1530,4 +1530,7 @@
     <string name="P175">成为新的OKBET会员</string>
     <string name="P184">精选真人游戏</string>
     <string name="P183">代理充值</string>
+    <string name="P173">您的手机号码是什么？</string>
+    <string name="P174">我们将把短信验证码发送到您的手机中</string>
+    <string name="P181">使用验证码注册或登录</string>
 </resources>

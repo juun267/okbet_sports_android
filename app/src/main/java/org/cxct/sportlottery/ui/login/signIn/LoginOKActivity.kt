@@ -4,11 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Html
 import android.text.InputType
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
+import androidx.core.view.marginRight
+import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
@@ -29,7 +35,6 @@ import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
-import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.repository.LOGIN_SRC
@@ -44,6 +49,7 @@ import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.boundsEditText.SimpleTextChangedWatcher
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -90,6 +96,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             .init()
         binding = ActivityLoginOkBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupSummary(binding.includeSubtitle.tvSummary)
         initOnClick()
         setupInvite()
         setupAccount()
@@ -102,12 +109,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         initObserve()
         viewModel.focusChangeCheckAllInputComplete()
         EventBusUtil.targetLifecycle(this)
-
+        binding.includeSubtitle.tvSubTitle1.isVisible = false
+        binding.includeSubtitle.tvSubTitle2.isVisible = false
         val loginType = intent.getIntExtra("login_type", LOGIN_TYPE_PWD)
-        if (LOGIN_TYPE_CODE == loginType) {
-            switchLoginType(LOGIN_TYPE_CODE)
-        } else if (loginType == LOGIN_TYPE_GOOGLE) {
+        if (loginType == LOGIN_TYPE_GOOGLE) {
             googleLogin()
+        }else{
+            switchLoginType(loginType)
         }
     }
 
@@ -326,9 +334,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupAuthLogin() {
         btn_google.setOnClickListener {
-            if (binding.cbPrivacy.isChecked) {
+//            if (binding.cbPrivacy.isChecked) {
                 googleLogin()
-            }
+//            }
 
         }
 
@@ -342,11 +350,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupPrivacy() {
-        binding.cbPrivacy.setVisibilityByMarketSwitch()
-        binding.cbPrivacy.setOnCheckedChangeListener { buttonView, isChecked ->
-            viewModel.agreeChecked = isChecked
-        }
-        binding.cbPrivacy.makeLinks(
+        binding.tvPrivacy.setVisibilityByMarketSwitch()
+//        binding.tvPrivacy.setOnCheckedChangeListener { buttonView, isChecked ->
+//            viewModel.agreeChecked = isChecked
+//        }
+        binding.tvPrivacy.makeLinks(
             Pair(
                 applicationContext.getString(R.string.login_privacy_policy),
                 View.OnClickListener {
@@ -357,7 +365,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     )
                 })
         )
-        binding.cbPrivacy.makeLinks(
+        binding.tvPrivacy.makeLinks(
             Pair(
                 applicationContext.getString(R.string.login_terms_conditions),
                 View.OnClickListener {
@@ -544,15 +552,21 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun switchLoginType(loginType: Int) {
         viewModel.loginType = loginType
         hideSoftKeyboard(this)
-        (loginType == 0).let {
+        (loginType == LOGIN_TYPE_CODE).let {
             lin_login_pwd.isVisible = !it
             lin_login_code.isVisible = it
             tv_pwd_login.isVisible = it
             tv_code_login.isVisible = !it
             tv_forget_password.isVisible = !it
+            binding.includeSubtitle.tvSubTitle1.isVisible = it
+            binding.includeSubtitle.tvSubTitle2.isVisible = it
             if (it) {
                 binding.btnLogin.text =
-                    "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
+                    "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
+                (binding.btnLogin.layoutParams as ConstraintLayout.LayoutParams).apply {
+                    this.topMargin = 24.dp
+                    binding.btnLogin.layoutParams = this
+                }
                 if (binding.eetAccount.text.isNullOrBlank()) {
                     binding.etAccount.setError(null, false)
                 }
@@ -561,6 +575,10 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 }
             } else {
                 binding.btnLogin.text = getString(R.string.btn_login)
+                (binding.btnLogin.layoutParams as ConstraintLayout.LayoutParams).apply {
+                    this.topMargin = 20.dp
+                    binding.btnLogin.layoutParams = this
+                }
                 if (binding.eetUsername.text.isNullOrBlank()) {
                     binding.etUsername.setError(null, false)
                 }

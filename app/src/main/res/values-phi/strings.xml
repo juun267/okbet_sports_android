@@ -1082,7 +1082,7 @@
     <string name="email_address">Email address</string>
     <string name="mobile">Mobile</string>
     <string name="login_again">Paki-login muli.</string>
-    <string name="change_password">Matagumpay na napalitan ang password sa pag-log in!</string>
+    <string name="change_password">Matagumpay na napalitan ang password sa pag-log in</string>
     <string name="login_hint_account">Mobile Number / Email</string>
     <string name="password_login">Login password</string>
     <string name="or">O</string>
@@ -1449,5 +1449,8 @@
     <string name="P175">Maging bagong miyembro ng OKBET</string>
     <string name="P184">Patok na OKLive</string>
     <string name="P183">Top-up ng ahente</string>
+    <string name="P173">Ano ang numero ng iyong mobile phone?</string>
+    <string name="P174">Magpapadala kami ng OTP code sa numero ng iyong mobile</string>
+    <string name="P181">Magrehistro o mag-log in gamit ang verification code</string>
 </resources>
 
