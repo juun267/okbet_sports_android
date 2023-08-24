@@ -229,7 +229,7 @@ class SportFooterGamesView @JvmOverloads constructor(
             okGamesViewModel.addRecentPlay(gameBean)
         } else {
             fragment.loading()
-            okGamesViewModel.requestEnterThirdGameNoLogin(gameBean.firmType, gameBean.gameCode, gameBean.thirdGameCategory)
+            okGamesViewModel.requestEnterThirdGameNoLogin(gameBean)
         }
 
     }

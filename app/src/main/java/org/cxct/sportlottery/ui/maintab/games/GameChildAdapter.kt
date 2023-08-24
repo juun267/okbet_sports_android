@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.content.Context
+import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -70,31 +71,39 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
             tvName.text = item.gameName
             tvFirmName.text = item.firmName
             ivFav.isSelected = item.markCollect
+            ivFav.isEnabled = !item.isMaintain()
             ivFav.setOnClickListener {
                 onFavoriate.invoke(ivFav, item)
                 onFavoriate2.invoke(ivFav, item)
             }
-            root.setOnClickListener { getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position) }
 
-
-            if(position==itemSize-1&&itemIndex==3){
-                if(isMoreThan18){
-                    blurCard.visible()
-                }else{
-                    blurCard.gone()
+            root.setOnClickListener {
+                if (!item.isMaintain()) {
+                    getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position)
                 }
-            }else{
+            }
+
+            if(position == itemSize - 1 && itemIndex == 3 && isMoreThan18) {
+                blurCard.onClick { jumpMoreClick() }
+                tvCover.visible()
+                tvCover.setTextColor(context.getColor(R.color.color_0D2245))
+                tvCover.setBackgroundColor(Color.TRANSPARENT)
+                tvCover.setText(R.string.N702)
+                blurCard.visible()
+                blurCard.setupWith(blurCard.parent as ViewGroup)
+                    .setFrameClearDrawable((blurCard.parent as View).background)
+                    .setBlurRadius(1.3f)
+            } else {
                 blurCard.gone()
+                if (item.isMaintain()) {
+                    tvCover.visible()
+                    tvCover.setTextColor(Color.WHITE)
+                    tvCover.setBackgroundColor(context.getColor(R.color.transparent_black_70))
+                    tvCover.setText(R.string.N257)
+                } else {
+                    tvCover.gone()
+                }
             }
-
-
-
-            blurCard.onClick {
-                jumpMoreClick()
-            }
-            blurCard.setupWith(binding.root)
-                .setFrameClearDrawable(binding.root.background)
-                .setBlurRadius(1.3f)
 
         }
     }

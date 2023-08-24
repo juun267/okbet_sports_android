@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.maintab.games
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
@@ -14,7 +13,6 @@ import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.ToastUtil
@@ -155,22 +153,11 @@ class OKGamesViewModel(
      * 进入OKgame游戏
      */
     fun requestEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {
-        if (gameData == null) {
-            _enterThirdGameResult.postValue(
-                Pair(
-                    "${gameData.firmCode}", EnterThirdGameResult(
-                        resultType = EnterThirdGameResult.ResultType.FAIL,
-                        url = null,
-                        errorMsg = androidContext.getString(R.string.hint_game_maintenance)
-                    )
-                )
-            )
-            return
-        }
         requestEnterThirdGame(
             "${gameData.firmType}",
             "${gameData.gameCode}",
             "${gameData.gameCode}",
+            "${gameData.gameType}",
             baseFragment
         )
     }

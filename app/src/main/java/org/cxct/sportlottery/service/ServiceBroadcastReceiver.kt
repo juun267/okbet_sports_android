@@ -31,6 +31,7 @@ import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
+import org.cxct.sportlottery.network.service.thirdgames.GamesMaintain
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.repository.*
@@ -142,6 +143,8 @@ object ServiceBroadcastReceiver {
 
     val sportMaintenance: LiveData<SportMaintenanceEvent?> = MutableLiveData()
     val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
+
+    val thirdGamesMaintain = MutableSharedFlow<GamesMaintain>()
 
 
     fun onConnectStatus(connectStatus: ServiceConnectStatus) {
@@ -344,7 +347,11 @@ object ServiceBroadcastReceiver {
                 _recordResultOkLive.emit(data)
             }
 
-            else -> {}
+            EventType.THIRD_GAME_STATU_CHANGED -> { // 三方游戏维护状态
+                ServiceMessage.parseResult(jObjStr, GamesMaintain::class.java)?.let { thirdGamesMaintain.emit(it) }
+            }
+
+            else -> {  }
 
         }
 

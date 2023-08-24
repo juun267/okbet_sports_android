@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
@@ -44,7 +45,8 @@ class LivePageView @JvmOverloads constructor(
 
     init {
         orientation = VERTICAL
-        binding = ViewGamePageBinding.inflate(LayoutInflater.from(context), this, true)
+        setPadding(12.dp, 0, 2.dp, 0)
+        binding = ViewGamePageBinding.inflate(LayoutInflater.from(context), this)
         initView()
     }
 
@@ -271,15 +273,13 @@ class LivePageView @JvmOverloads constructor(
             setOnGameClick {okGameBean->
                 if(LoginRepository.isLogined()){
                     loginedRun(fragment.requireContext()) {
-                        okGameBean.let {okGameBean->
-                            fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
-                            fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
-                        }
+                        fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
+                        fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
                     }
                 }else{
                     //请求试玩路线
                     fragment.loading()
-                    fragment.viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
+                    fragment.viewModel.requestEnterThirdGameNoLogin(okGameBean)
                 }
             }
             setOnMoreClick {
