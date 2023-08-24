@@ -1,11 +1,15 @@
 package org.cxct.sportlottery.ui.betList.holder
 
 import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -111,7 +115,7 @@ class BasketballEndingCardViewHolder(
         fun showTotalStakeWinAmount(bet: Double) {
             val totalBet = ArithUtil.toMoneyFormatFloor(bet * betListSize)
             val totalCanWin = ArithUtil.toMoneyFormatFloor(bet * itemData.matchOdd.odds)
-            includeControl.tvCanWinAmount.text = "${sConfigData?.systemCurrencySign}${totalCanWin}"
+            includeControl.tvCanWinAmount.text = "${totalCanWin}"
         }
         //移除TextChangedListener
         includeControl.etBet.etBetParlay.apply {
@@ -134,7 +138,10 @@ class BasketballEndingCardViewHolder(
         newList.add(newList[0])
         rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
-        includeControl.tvParlayType.text = "Orders*${betList?.size}"
+        includeControl.tvParlayType.text = Spanny("Orders*${betList?.size} ")
+            .append(tvOdds.text,
+                ForegroundColorSpan(ContextCompat.getColor(itemView.context,R.color.color_000000)),
+                StyleSpan(Typeface.BOLD))
         setOnClickListeners(rcvBasketballScore, clItemBackground) {
             rcvBasketballAdapter.data.forEach { itemD ->
                 itemD.isClickForBasketball = false
@@ -267,30 +274,13 @@ class BasketballEndingCardViewHolder(
             oddsId = itemData.matchOdd.oddsId
             oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
         }
-        val tvOdd = when (itemData.matchOdd.playCode) {
-            PlayCate.LCS.value -> {
-                "@ " + TextUtil.formatForOddPercentage(
-                    getOdds(
-                        itemData.matchOdd,
-                        currentOddsType,
-                        adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
-                    ) - 1
-                )
-            }
-
-            else -> {
-                "@ " + TextUtil.formatForOdd(
-                    getOdds(
-                        itemData.matchOdd,
-                        currentOddsType,
-                        adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
-                    )
-                )
-            }
-        }
-        tvOdds.text = if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) tvOdd else {
-            tvOdd
-        }
+        tvOdds.text  = "@" + TextUtil.formatForOdd(
+            getOdds(
+                itemData.matchOdd,
+                currentOddsType,
+                adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
+            )
+        )
         oddsContentContainer.setBackgroundResource(R.color.transparent)
         //設定隊伍名稱, 聯賽名稱, 開賽時間
         tvMatchHome.text = itemData.matchOdd.homeName

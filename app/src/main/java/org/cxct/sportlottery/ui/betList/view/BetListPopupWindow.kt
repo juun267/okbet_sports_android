@@ -87,11 +87,11 @@ class BetListPopupWindow @JvmOverloads constructor(
         }
 
         setOnDismissListener {
-            tvName?.setTextColor(context.getColor(R.color.color_9BB3D9_535D76))
-            tvLeagueName?.setTextColor(context.getColor(R.color.color_9BB3D9_535D76))
-            tvMatchHome?.setTextColor(context.getColor(R.color.color_A7B2C4))
-            tvMatchAway?.setTextColor(context.getColor(R.color.color_A7B2C4))
-            tvOddsContent?.setTextColor(context.getColor(R.color.color_FFFFFF_414655))
+            tvName?.setTextColor(context.getColor(R.color.color_000000))
+            tvLeagueName?.setTextColor(context.getColor(R.color.color_6D7693))
+            tvMatchHome?.setTextColor(context.getColor(R.color.color_6D7693))
+            tvMatchAway?.setTextColor(context.getColor(R.color.color_6D7693))
+            tvOddsContent?.setTextColor(context.getColor(R.color.color_000000))
         }
     }
 
