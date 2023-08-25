@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,18 +13,15 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkliveBinding
-import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerGameListAdapter
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerLiveListAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
 // OkGames所有分类
 class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewModel::class) {
@@ -58,10 +54,10 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         initSportObserve()
         //初始化热门赛事
         initHotMatchView()
-        binding.hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType, this)
 //        binding.okLiveGameView.initOkLiveGames(this)
         initRecommendLiveGame()
         viewModel.getRecommend()
+        gameListAdapter.bindLifecycleOwner(this)
     }
 
     private fun initHotMatchView() {

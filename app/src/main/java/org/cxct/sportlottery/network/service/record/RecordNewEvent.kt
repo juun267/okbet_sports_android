@@ -14,6 +14,7 @@ class RecordNewEvent(
     val h5ImgGame: String?= null,
     val betTime: Long? = null,
     val firmType: String = "",
+    val gameEntryType: String?,
     val gameCode: String? = null // 如果gameCode为空则是体育投注
     ) : ServiceEventType {
 

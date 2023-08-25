@@ -2,10 +2,10 @@ package org.cxct.sportlottery.ui.maintab.games.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -51,6 +51,13 @@ class GamesPageView @JvmOverloads constructor(
         initView()
     }
 
+    fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner) {
+        mAdapter.bindLifecycleOwner(lifecycleOwner)
+    }
+
+    fun notifyDataChanged() {
+        mAdapter.notifyDataSetChanged()
+    }
 
     private fun initView() {
         binding.run {
