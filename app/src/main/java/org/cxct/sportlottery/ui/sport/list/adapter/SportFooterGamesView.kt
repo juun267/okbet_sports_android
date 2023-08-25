@@ -194,13 +194,13 @@ class SportFooterGamesView @JvmOverloads constructor(
             } else {
                 //试玩弹框
                 val trialDialog = TrialGameDialog(context)
-                if (isVisible) {
+//                if (isVisible) {
                     //点击进入游戏
                     trialDialog.setEnterGameClick {
                         enterThirdGame(lifecycleOwner, viewmodel, it.second, it.first)
                     }
                     trialDialog.show()
-                }
+//                }
             }
         }
     }

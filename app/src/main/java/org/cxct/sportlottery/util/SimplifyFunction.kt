@@ -308,13 +308,13 @@ fun BaseFragment<out MainHomeViewModel>.setTrialPlayGameDataObserve() {
         } else {
             //试玩弹框
             val trialDialog = TrialGameDialog(requireContext())
-            if (isVisible) {
+//            if (isVisible) {
                 //点击进入游戏
                 trialDialog.setEnterGameClick {
                     enterThirdGame(it.second, it.first)
                 }
                 trialDialog.show()
-            }
+//            }
         }
     }
 
