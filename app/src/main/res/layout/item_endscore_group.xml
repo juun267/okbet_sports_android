@@ -34,8 +34,7 @@
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="@color/color_000000"
-        android:textSize="12sp"
-        android:textStyle="bold"
+        android:textSize="@dimen/textSize14sp"
         tools:text="欧洲足球锦标赛2020" />
 
     <ImageView

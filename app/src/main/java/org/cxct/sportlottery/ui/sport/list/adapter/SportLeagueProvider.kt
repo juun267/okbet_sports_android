@@ -63,8 +63,7 @@ class SportLeagueProvider(
             id = tvLeagueNameId
             lines = 1
             ellipsize = TextUtils.TruncateAt.END
-            typeface = AppFont.helvetica
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
+            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
             setTextColor(context.getColor(R.color.color_000000))
             layoutParams = FrameLayout.LayoutParams(-1, -2).apply {
                 gravity = Gravity.CENTER_VERTICAL

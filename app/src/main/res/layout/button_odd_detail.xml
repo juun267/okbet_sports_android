@@ -38,7 +38,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:paddingRight="5dp"
                     android:text="name"
                     tools:textColor="@color/color_6D7693" />
@@ -50,7 +50,7 @@
                     android:fontFamily="@font/helvetica_normal"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="-0.5/1"
                     tools:textColor="@color/color_6D7693" />
 
