@@ -7,9 +7,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
+import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.view.onClick
 
-class TrialGameDialog(mContext: Context) : Dialog(mContext)  {
+class TrialGameDialog(mContext: Context,
+                      private val firmType: String,
+                      private val thirdGameResult: EnterThirdGameResult,
+                      private val onConfirm:(String, EnterThirdGameResult) -> Unit) : Dialog(mContext)  {
 
     init {
         initDialog()
@@ -29,14 +33,9 @@ class TrialGameDialog(mContext: Context) : Dialog(mContext)  {
         tvLogin.text=context.resources.getString(R.string.F025)
         findViewById<TextView>(R.id.tvContent).text=context.resources.getString(R.string.N994)
         findViewById<TextView>(R.id.tvForward).text=context.resources.getString(R.string.N993)
-    }
 
-
-    fun setEnterGameClick(block:()->Unit){
         //进入游戏
-        findViewById<ImageView>(R.id.tvForward).onClick {
-            dismiss()
-            block()
-        }
+        findViewById<ImageView>(R.id.tvForward).onClick { onConfirm(firmType, thirdGameResult) }
     }
+
 }

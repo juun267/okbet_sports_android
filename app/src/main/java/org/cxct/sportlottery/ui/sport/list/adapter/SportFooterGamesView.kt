@@ -192,12 +192,10 @@ class SportFooterGamesView @JvmOverloads constructor(
                 //不支持试玩
                 context.startLogin()
             } else {
-                //试玩弹框
-                val trialDialog = TrialGameDialog(context)
                 if (isVisible) {
-                    //点击进入游戏
-                    trialDialog.setEnterGameClick {
-                        enterThirdGame(lifecycleOwner, viewmodel, it.second, it.first)
+                    //试玩弹框
+                    val trialDialog = TrialGameDialog(context, it.first, it.second) { firmType, thirdGameResult->
+                        enterThirdGame(lifecycleOwner, viewmodel, thirdGameResult, firmType)
                     }
                     trialDialog.show()
                 }
