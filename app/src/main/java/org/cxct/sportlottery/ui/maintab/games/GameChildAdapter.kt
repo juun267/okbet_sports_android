@@ -4,10 +4,11 @@ import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -17,30 +18,32 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemGameChildBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.extentions.collectWith
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.view.onClick
 
 class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
     val moreClick: (() -> Unit)? = null,
     val gameEntryType: GameEntryType = GameEntryType.OKGAMES,
     val showFavorite: Boolean = true) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
 
+    private val GAME_MAINTAIN = Any()
+
+    fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner) {
+        ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleOwner.lifecycleScope) { gamesMaintain ->
+            data.forEachIndexed { index, okGameBean ->
+                if (okGameBean.isMaintain() != gamesMaintain.isMaintain() && (okGameBean.firmType == gamesMaintain.firmType)) {
+                    okGameBean.maintain = gamesMaintain.maintain
+                    notifyItemChanged(index, GAME_MAINTAIN)
+                }
+            }
+        }
+    }
+
     private var moreTextView: TextView? = null
     private var gameTotal: Int = 0
-    var itemIndex=1
-    val itemSize=6
-    var totalPage = 0
-    var totalCount=0
-    var isMoreThan18=false
-    private var jumpMoreClick: () -> Unit = { }
-    private var onFavoriate2: (View, OKGameBean) -> Unit = {_,_-> }
-    fun setJumpMoreClick(block:() -> Unit){
-        jumpMoreClick=block
-    }
-    fun onFavoriate2(block:(View, OKGameBean) -> Unit){
-        onFavoriate2=block
-    }
+
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         if (moreClick != null) {
@@ -84,7 +87,6 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
             ivFav.setOnClickListener {
                 item.gameEntryType = gameEntryType
                 onFavoriate.invoke(ivFav, item)
-                onFavoriate2.invoke(ivFav, item)
             }
 
             root.setOnClickListener {
@@ -93,33 +95,29 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
                 }
             }
 
-            if(position == itemSize - 1 && itemIndex == 3 && isMoreThan18) {
-                blurCard.onClick { jumpMoreClick() }
-                tvCover.visible()
-                tvCover.setTextColor(context.getColor(R.color.color_0D2245))
-                tvCover.setBackgroundColor(Color.TRANSPARENT)
-                tvCover.setText(R.string.N702)
-                blurCard.visible()
-                blurCard.setupWith(blurCard.parent as ViewGroup)
-                    .setFrameClearDrawable((blurCard.parent as View).background)
-                    .setBlurRadius(1.3f)
-            } else {
-                blurCard.gone()
-                if (item.isMaintain()) {
-                    tvCover.visible()
-                    tvCover.setTextColor(Color.WHITE)
-                    tvCover.setBackgroundColor(context.getColor(R.color.transparent_black_70))
-                    tvCover.setText(R.string.N257)
-                } else {
-                    tvCover.gone()
-                }
-            }
+            setMaintain(tvCover, item.isMaintain())
+        }
+    }
 
+    private fun setMaintain(tvCover: TextView, isMaintain: Boolean) {
+        if (isMaintain) {
+            tvCover.visible()
+            tvCover.setTextColor(Color.WHITE)
+            tvCover.setBackgroundColor(context.getColor(R.color.transparent_black_70))
+            tvCover.setText(R.string.N257)
+        } else {
+            tvCover.gone()
         }
     }
 
     override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGameBean, payloads: List<Any>) {
-        binding.ivFav.isSelected = item.markCollect
+        payloads.forEach {
+            if (it == GAME_MAINTAIN) {
+                setMaintain(binding.tvCover, item.isMaintain())
+            } else {
+                binding.ivFav.isSelected = item.markCollect
+            }
+        }
     }
 
     private fun updateMoreText(total: Int, count: Int) {

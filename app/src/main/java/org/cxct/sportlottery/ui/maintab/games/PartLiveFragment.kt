@@ -63,6 +63,7 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
         initGameList()
         bindClick()
         bindLabels()
+        gameChildAdapter.bindLifecycleOwner(this)
     }
 
     private fun bindClick() {

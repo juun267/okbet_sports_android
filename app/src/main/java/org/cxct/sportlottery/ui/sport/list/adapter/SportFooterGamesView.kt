@@ -14,7 +14,6 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -217,6 +216,7 @@ class SportFooterGamesView @JvmOverloads constructor(
             viewmodel.getSportOKLive()
         }
         homeButtomView.bindServiceClick(fragment.parentFragmentManager)
+        okGamesAdapter.bindLifecycleOwner(fragment)
     }
 
     private fun initObserver(lifecycleOwner: BaseFragment<*>, viewmodel: OKGamesViewModel) = viewmodel.run {

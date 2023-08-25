@@ -1,20 +1,17 @@
 package org.cxct.sportlottery.ui.maintab.games.view
 
-import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
-import org.cxct.sportlottery.common.extentions.animDuang
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.inVisible
-import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.visible
-import org.cxct.sportlottery.databinding.ItemGamePageBinding
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ItemLivePageBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.view.onClick
 
 class RecyclerLivePageAdapter:
@@ -50,6 +47,66 @@ class RecyclerLivePageAdapter:
 
     fun setIsMoreThan(flag: Boolean) {
         isMoreThan18 = flag
+    }
+
+    fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner) {
+        ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleOwner.lifecycleScope) { gamesMaintain ->
+            data.forEachIndexed { index, okGameBeans ->
+                val changedPosition = mutableListOf<Pair<Int, OKGameBean>>()
+
+                okGameBeans.forEachIndexed { position, gameBean->
+                    if (gameBean.isMaintain() != gamesMaintain.isMaintain() && gameBean.firmType == gamesMaintain.firmType) {
+                        gameBean.maintain = gamesMaintain.maintain
+                        changedPosition.add(Pair(position, gameBean))
+                    }
+                }
+                if (changedPosition.isNotEmpty()) {
+                    notifyItemChanged(index, changedPosition)
+                }
+            }
+        }
+    }
+
+    override fun onBinding(
+        position: Int,
+        binding: ItemLivePageBinding,
+        item: List<OKGameBean>,
+        payloads: List<Any>
+    ) {
+        payloads.forEach {
+            if (it is MutableList<*>) {
+                it.forEach { pair->
+                    val index = (pair as Pair<Int, OKGameBean>).first
+                    val okGameBean = pair.second
+                    when(index) {
+                        0 -> {
+                            binding.tvCover1.isVisible = okGameBean.isMaintain()
+                        }
+
+                        1 -> {
+                            binding.tvCover3.isVisible = okGameBean.isMaintain()
+                        }
+
+                        2 -> {
+                            binding.tvCover5.isVisible = okGameBean.isMaintain()
+                        }
+
+                        3 -> {
+                            binding.tvCover2.isVisible = okGameBean.isMaintain()
+                        }
+
+                        4 -> {
+                            binding.tvCover4.isVisible = okGameBean.isMaintain()
+                        }
+
+                        5 -> {
+                            val isMoreItem = position == dataCount() - 1 && isMoreThan18
+                            binding.tvCover6.isVisible = !isMoreItem && okGameBean.isMaintain()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onBinding(position: Int, binding: ItemLivePageBinding, item: List<OKGameBean>) = binding.run {
