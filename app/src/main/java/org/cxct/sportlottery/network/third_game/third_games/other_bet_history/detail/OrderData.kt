@@ -20,6 +20,8 @@ data class OrderData(
     val firmCode: String?,
     @Json(name = "firmType")
     val firmType: String?,
+    @Json(name = "firmName")
+    val firmName: String?,
     @Json(name = "flag")
     val flag: Int?,
     @Json(name = "fullName")
