@@ -25,8 +25,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_weight="1.8"
+                android:layout_weight="1.5"
                 android:gravity="center"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize10sp"
@@ -36,12 +35,12 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.25"
+                android:layout_weight="1.5"
                 android:gravity="center"
-                android:maxLines="2"
+                android:maxLines="3"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize10sp"
-                android:text="@{data.firmType}"
+                android:text="@{data.firmName}"
                 tools:text="@string/game_name" />
 
             <TextView
@@ -49,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
                 android:gravity="center"
-                android:maxLines="2"
+                android:maxLines="3"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize10sp"
                 android:text="@{data.gameName}"
@@ -58,7 +57,6 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
                 android:layout_weight="1.5"
                 android:gravity="center"
                 android:textColor="@color/color_FFFFFF_414655"
