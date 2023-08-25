@@ -354,14 +354,14 @@ class BetInfoItemViewHolder(
                     ivArrow.setImageResource(R.drawable.icon_cart_odds_up)
                     tvOdds.setTextColor(
                         ContextCompat.getColor(
-                            tvOdds.context, R.color.color_00cc33
+                            tvOdds.context, R.color.color_1CD219
                         )
                     )
                 } else {
                     ivArrow.setImageResource(R.drawable.icon_cart_odds_down)
                     tvOdds.setTextColor(
                         ContextCompat.getColor(
-                            tvOdds.context, R.color.color_ff251e
+                            tvOdds.context, R.color.color_FF2E00
                         )
                     )
                 }
