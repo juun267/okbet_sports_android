@@ -42,26 +42,6 @@
         app:spanCount="4"
         tools:itemCount="4"
         tools:listitem="@layout/item_view_payment_method" />
-    <LinearLayout
-        android:id="@+id/linPayment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rcvPayment" >
-        <include
-            android:id="@+id/includePay1"
-            layout="@layout/item_view_payment_method"/>
-        <include
-            android:id="@+id/includePay2"
-            layout="@layout/item_view_payment_method"/>
-        <include
-            android:id="@+id/includePay3"
-            layout="@layout/item_view_payment_method"/>
-    </LinearLayout>
 
     <View
         android:id="@+id/dividePayment"
@@ -69,7 +49,7 @@
         android:layout_height="@dimen/margin_0.5"
         android:layout_marginTop="@dimen/margin_12"
         android:layout_marginHorizontal="@dimen/margin_12"
-        app:layout_constraintTop_toBottomOf="@id/linPayment"
+        app:layout_constraintTop_toBottomOf="@id/rcvPayment"
         android:background="@color/color_E0E3EE"/>
     <ImageView
         android:id="@+id/ivAward"
