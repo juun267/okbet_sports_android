@@ -138,7 +138,7 @@ class BasketballEndingCardViewHolder(
         newList.add(newList[0])
         rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
-        includeControl.tvParlayType.text = Spanny("Orders*${betList?.size} ")
+        includeControl.tvParlayType.text = Spanny("${root.context.getString(R.string.bets)}*${betList?.size} ")
             .append(tvOdds.text,
                 ForegroundColorSpan(ContextCompat.getColor(itemView.context,R.color.color_000000)),
                 StyleSpan(Typeface.BOLD))
