@@ -78,9 +78,9 @@ class HomeButtomView@JvmOverloads constructor(context: Context, attrs: Attribute
             R.drawable.icon_paymaya,
             R.drawable.icon_fortune_pay,
             R.drawable.icon_epon,
-//            R.drawable.icon_payloro,
-//            R.drawable.icon_unionbank,
-//            R.drawable.icon_aub
+            R.drawable.icon_payloro,
+            R.drawable.icon_unionbank,
+            R.drawable.icon_aub
         )
         rcvPayment.layoutManager = GridLayoutManager(context, 4)
         val paymentAdapter =
@@ -92,23 +92,6 @@ class HomeButtomView@JvmOverloads constructor(context: Context, attrs: Attribute
             }
         rcvPayment.adapter = paymentAdapter
         paymentAdapter.setNewInstance(list)
-        ((ScreenUtil.getScreenWidth(context)-16.dp)/4).let { itemWidth->
-            includePay1.layoutParams.apply {
-                width = itemWidth
-                includePay1.layoutParams = this
-            }
-            includePay2.layoutParams.apply {
-                width = itemWidth
-                includePay2.layoutParams = this
-            }
-            includePay3.layoutParams.apply {
-                width = itemWidth
-                includePay3.layoutParams = this
-            }
-        }
-        includePay1.findViewById<ImageView>(R.id.iv).setImageResource(R.drawable.icon_payloro)
-        includePay2.findViewById<ImageView>(R.id.iv).setImageResource(R.drawable.icon_unionbank)
-        includePay3.findViewById<ImageView>(R.id.iv).setImageResource(R.drawable.icon_aub)
     }
 
     fun bindServiceClick(fragmentManager: FragmentManager) {
