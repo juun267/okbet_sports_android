@@ -4,20 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="44dp"
-    android:maxHeight="56dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:background="@drawable/selector_filter_league"
     android:foreground="@drawable/fg_ripple"
     android:paddingLeft="@dimen/margin_12"
+    android:paddingVertical="@dimen/margin_10"
     android:paddingRight="@dimen/margin_30">
 
 <ImageView
     android:id="@+id/ivLogo"
     android:layout_width="@dimen/margin_20"
-    android:layout_height="@dimen/margin_20"
-    android:layout_marginTop="@dimen/margin_10"
-    android:layout_gravity="top"/>
+    android:layout_height="@dimen/margin_20"/>
     <TextView
         android:id="@+id/tvLeagueName"
         android:layout_width="match_parent"
