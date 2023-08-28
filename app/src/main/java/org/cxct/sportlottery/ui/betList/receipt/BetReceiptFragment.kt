@@ -314,7 +314,7 @@ class BetReceiptFragment :
             if (betFailed.second.isNullOrEmpty()){
                 tv_result_status.text = getString(R.string.N417)
                 btnLastStep.text = getString(R.string.commission_detail)
-                btnLastStep.setTextColor(resources.getColor(R.color.color_414655, null))
+                btnLastStep.setTextColor(resources.getColor(R.color.color_14366B, null))
                 btnLastStep.background =
                     ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_check_bet, null)
             }else{
@@ -336,7 +336,7 @@ class BetReceiptFragment :
             tv_result_status.text = getString(R.string.your_bet_order_success)
             btnLastStep.text = getString(R.string.commission_detail)
 
-            btnLastStep.setTextColor(resources.getColor(R.color.color_414655, null))
+            btnLastStep.setTextColor(resources.getColor(R.color.color_14366B, null))
             btnLastStep.background =
                 ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_check_bet, null)
 
