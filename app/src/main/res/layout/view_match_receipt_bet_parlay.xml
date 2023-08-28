@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bet_receipt_win_quota_with_sign_max"
-                android:textColor="@color/color_9BB3D9_535D76"
+                android:textColor="@color/color_6C7BA8"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bet_receipt_bet_quota_with_sign_money"
-                android:textColor="@color/color_9BB3D9_535D76"
+                android:textColor="@color/color_6C7BA8"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
