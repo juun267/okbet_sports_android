@@ -218,7 +218,7 @@ open class MainHomeViewModel(
     fun getHomeOKGamesList(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
-            GameEntryType.OKGAMES.key,
+            GameEntryType.OKGAMES,
             pageIndexLiveData.value ?: 1, pageSizeLiveData.value ?: 1
         )
     }) {
@@ -241,7 +241,7 @@ open class MainHomeViewModel(
     fun getOkLiveOKGamesList(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
-            GameEntryType.OKLIVE.key,
+            GameEntryType.OKLIVE,
             pageIndexLiveData.value ?: 1, pageSizeOKLiveLD.value ?: 1
         )
     }) {
@@ -269,7 +269,7 @@ open class MainHomeViewModel(
     fun getHomeOKGamesList300(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
-            GameEntryType.OKGAMES.key,
+            GameEntryType.OKGAMES,
              1,  300
         )
     }) {
@@ -289,7 +289,7 @@ open class MainHomeViewModel(
     fun getHomeLiveGamesList300(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
-            GameEntryType.OKLIVE.key,
+            GameEntryType.OKLIVE,
             1,  300
         )
     }) {

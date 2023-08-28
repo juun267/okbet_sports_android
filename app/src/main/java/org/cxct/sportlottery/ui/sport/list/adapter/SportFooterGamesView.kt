@@ -217,6 +217,7 @@ class SportFooterGamesView @JvmOverloads constructor(
         }
         homeButtomView.bindServiceClick(fragment.parentFragmentManager)
         okGamesAdapter.bindLifecycleOwner(fragment)
+        okLiveAdapter.bindLifecycleOwner(fragment)
     }
 
     private fun initObserver(lifecycleOwner: BaseFragment<*>, viewmodel: OKGamesViewModel) = viewmodel.run {
@@ -283,7 +284,7 @@ class SportFooterGamesView @JvmOverloads constructor(
 
     private fun onFavoriteClick(view: View, gameBean: OKGameBean) {
         loginedRun(context) {
-            okGamesViewModel.collectGame(gameBean,gameBean.gameEntryType)
+            okGamesViewModel.collectGame(gameBean,gameBean.gameEntryType ?: GameEntryType.OKGAMES)
             view.animDuang(1.3f)
         }
 

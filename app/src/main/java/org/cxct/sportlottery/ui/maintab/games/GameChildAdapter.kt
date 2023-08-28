@@ -25,7 +25,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
     val moreClick: (() -> Unit)? = null,
-    val gameEntryType: GameEntryType = GameEntryType.OKGAMES,
+    val gameEntryType: String = GameEntryType.OKGAMES,
     val showFavorite: Boolean = true) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
 
     private val GAME_MAINTAIN = Any()
