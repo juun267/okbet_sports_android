@@ -6,6 +6,7 @@ import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.HandicapType.NULL
 import org.cxct.sportlottery.repository.ImageType.PROMOTION
+import org.cxct.sportlottery.ui.maintab.home.view.HomeTopView
 import org.cxct.sportlottery.util.KvUtils
 
 const val FLAG_OPEN = "1"
@@ -88,7 +89,50 @@ class StaticData {
             return sConfigData?.fibaConfig?.fibaEnable == 1
         }
         fun okLiveOpened(): Boolean {
-            return true
+            sConfigData?.homeGamesList?.forEach {
+                if(it.uniqueName== HomeTopView.OkLive){
+                    //status==1  为开启
+                    return it.status==1
+                }
+            }
+            return false
         }
+
+
+        //获取okGame是否开启
+        fun okGameOpened(): Boolean{
+            sConfigData?.homeGamesList?.forEach {
+                if(it.uniqueName== HomeTopView.OkGame){
+                    //status==1  为开启
+                    return it.status==1
+                }
+            }
+            return false
+        }
+
+
+        //获取okSport菜单是否开启
+        fun okSportOpened():Boolean {
+            sConfigData?.homeGamesList?.forEach {
+                if(it.uniqueName== HomeTopView.OkSport){
+                    //status==1  为开启
+                    return it.status==1
+                }
+            }
+            return false
+        }
+
+        //获取okBingo是否开启
+        fun okBingoOpened():Boolean {
+            sConfigData?.homeGamesList?.forEach {
+                if(it.uniqueName== HomeTopView.OkBingo){
+                    //status==1  为开启
+                    return it.status==1
+                }
+            }
+            return false
+        }
+
     }
+
 }

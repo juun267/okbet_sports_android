@@ -23,13 +23,23 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                         tvSportClose.visible()
                         tvSportClose.text=context.getString(R.string.N257)
                     }else{
-                        tvSportClose.gone()
+                        if(StaticData.okSportOpened()){
+                            tvSportClose.gone()
+                        }else{
+                            tvSportClose.visible()
+                            tvSportClose.text=context.getString(R.string.N700)
+                        }
                     }
                 }
                 //okgame
                 HomeTopView.OkGame->{
                     ivSportCover.setImageResource(R.drawable.img_okgames)
-                    tvSportClose.gone()
+                    if(StaticData.okGameOpened()){
+                        tvSportClose.gone()
+                    }else{
+                        tvSportClose.visible()
+                        tvSportClose.text=context.getString(R.string.N700)
+                    }
                 }
                 //bingo
                 HomeTopView.OkBingo->{
@@ -39,8 +49,12 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                         tvSportClose.gone()
                     }else{
                         ivSportCover.setImageResource(R.drawable.img_okbingo)
-                        tvSportClose.visible()
-                        tvSportClose.text=context.getString(R.string.N700)
+                        if(StaticData.okBingoOpened()){
+                            tvSportClose.gone()
+                        }else{
+                            tvSportClose.visible()
+                            tvSportClose.text=context.getString(R.string.N700)
+                        }
                     }
                 }
                 //oklive
