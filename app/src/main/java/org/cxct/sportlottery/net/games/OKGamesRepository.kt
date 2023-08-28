@@ -13,14 +13,14 @@ object OKGamesRepository {
 
     val okGamesApi by lazy { RetrofitHolder.createApiService(OKGamesApi::class.java) }
 
-    private fun paramDevice(gameEntryType: String = GameEntryType.OKGAMES.key): JsonObject {
+    private fun paramDevice(gameEntryType: String = GameEntryType.OKGAMES): JsonObject {
         val params = JsonObject()
         params.addProperty("device", 2)
         params.addProperty("gameEntryType", gameEntryType)
         return params
     }
 
-    suspend fun collectOkGames(gameId: Int, markCollect: Boolean = true,gameEntryType: String = GameEntryType.OKGAMES.key): ApiResult<Any> {
+    suspend fun collectOkGames(gameId: Int, markCollect: Boolean = true,gameEntryType: String = GameEntryType.OKGAMES): ApiResult<Any> {
         val params = JsonObject()
         params.addProperty("id", gameId)
         params.addProperty("markCollect", markCollect)
@@ -55,7 +55,7 @@ object OKGamesRepository {
         categoryId: String?,
         firmId: String?,
         markCollect: Boolean? = null, // 获取收藏列表时为：true
-        gameEntryType: String = GameEntryType.OKGAMES.key
+        gameEntryType: String = GameEntryType.OKGAMES
     ): ApiResult<List<OKGameBean>> {
 
         val params = paramDevice()

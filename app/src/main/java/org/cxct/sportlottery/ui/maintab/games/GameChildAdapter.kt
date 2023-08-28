@@ -22,7 +22,7 @@ import org.cxct.sportlottery.view.onClick
 
 class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
     val moreClick: (() -> Unit)? = null,
-    val gameEntryType: GameEntryType = GameEntryType.OKGAMES,
+    val gameEntryType: String = GameEntryType.OKGAMES,
     val showFavorite: Boolean = true) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
 
     private var moreTextView: TextView? = null

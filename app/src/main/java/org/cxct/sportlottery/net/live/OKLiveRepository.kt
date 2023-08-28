@@ -16,7 +16,7 @@ object OKLiveRepository {
     private fun paramDevice(): JsonObject {
         val params = JsonObject()
         params.addProperty("device", 2)
-        params.addProperty("gameEntryType",  GameEntryType.OKLIVE.key)
+        params.addProperty("gameEntryType",  GameEntryType.OKLIVE)
         return params
     }
 
@@ -24,7 +24,7 @@ object OKLiveRepository {
         val params = JsonObject()
         params.addProperty("id", gameId)
         params.addProperty("markCollect", markCollect)
-        params.addProperty("gameEntryType", GameEntryType.OKLIVE.key)
+        params.addProperty("gameEntryType", GameEntryType.OKLIVE)
         return okLiveApi.okLivecollect(params)
     }
 
@@ -52,7 +52,7 @@ object OKLiveRepository {
         val params = paramDevice()
         params.addProperty("page", page)
         params.addProperty("pageSize", pageSize)
-        params.addProperty("gameEntryType",  GameEntryType.OKLIVE.key)
+        params.addProperty("gameEntryType",  GameEntryType.OKLIVE)
         if (markCollect == null) {
             params.addProperty("gameName", gameName)
             params.addProperty("categoryId", categoryId)
@@ -78,7 +78,7 @@ object OKLiveRepository {
         params.addProperty("pageSize", pageSize)
         //首页推荐 1启用,2禁用
         params.addProperty("enableHome", 1)
-        params.addProperty("gameEntryType",  GameEntryType.OKLIVE.key)
+        params.addProperty("gameEntryType",  GameEntryType.OKLIVE)
         return okLiveApi.getOKLiveList(params)
     }
 }
