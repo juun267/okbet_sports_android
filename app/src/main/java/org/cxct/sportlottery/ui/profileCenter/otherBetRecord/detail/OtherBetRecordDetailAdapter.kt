@@ -14,6 +14,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemOtherBetRecordDetailBinding
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OrderData
+import org.cxct.sportlottery.util.TimeUtil
 
 class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
@@ -72,6 +73,7 @@ class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolde
     class ItemViewHolder private constructor(val binding: ItemOtherBetRecordDetailBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: OrderData, isLastItem: Boolean) {
             binding.data = data
+            binding.tvTime.text = TimeUtil.timeFormatUTC4(data.betTime ?: 0, TimeUtil.YMD_HMS_FORMAT_CHANGE_LINE)
             binding.executePendingBindings()
             binding.divider.isVisible = !isLastItem
         }
