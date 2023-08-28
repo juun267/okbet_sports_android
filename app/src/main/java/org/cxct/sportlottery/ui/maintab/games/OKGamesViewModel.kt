@@ -173,7 +173,7 @@ class OKGamesViewModel(
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
-                recentList.add(it)
+                recentList.add(it.copy())
             }
         }
         recentList.reverse()
@@ -188,7 +188,7 @@ class OKGamesViewModel(
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
-                recentList.add(it)
+                recentList.add(it.copy())
             }
         }
 
