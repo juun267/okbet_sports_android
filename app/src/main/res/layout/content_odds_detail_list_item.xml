@@ -25,7 +25,7 @@
             android:layout_marginRight="@dimen/margin_10"
             android:gravity="center_vertical"
             android:minHeight="20dp"
-            android:textColor="@color/color_0D2245"
+            android:textColor="@color/color_000000"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/odd_detail_pin"
