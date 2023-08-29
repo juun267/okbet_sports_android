@@ -17,9 +17,7 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding as ItemBinding
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetBasketballListAdapter
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
@@ -28,9 +26,6 @@ import org.cxct.sportlottery.ui.betList.view.BetListPopupWindow
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScoreNameByTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.KvUtils.BASKETBALL_DEL_TIP_FLAG
-import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
-import org.cxct.sportlottery.view.dialog.BasketballDelBetTipDialog
 import timber.log.Timber
 
 class BasketballEndingCardViewHolder(
@@ -138,7 +133,7 @@ class BasketballEndingCardViewHolder(
         newList.add(newList[0])
         rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
-        includeControl.tvParlayType.text = Spanny("${root.context.getString(R.string.bets)}*${betList?.size} ")
+        includeControl.tvParlayType.text = Spanny("${root.context.getString(R.string.P204)}*${betList?.size} ")
             .append(tvOdds.text,
                 ForegroundColorSpan(ContextCompat.getColor(itemView.context,R.color.color_000000)),
                 StyleSpan(Typeface.BOLD))
