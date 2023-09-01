@@ -2,10 +2,9 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tvNumber"
     android:layout_width="wrap_content"
-    android:layout_height="30dp"
+    android:layout_height="match_parent"
     android:gravity="center"
     android:text="2"
-    android:background="@color/color_025BE8"
     android:textColor="@color/white"
     android:textSize="20dp" />
 

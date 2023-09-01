@@ -50,10 +50,10 @@ class JackpotView @JvmOverloads constructor(
                 recycler1.adapter=adapter1
             },100)
 
-//            tv1.postDelayed({
-//                mLayoutManager1?.setMillisecondsPerInch(adapter1!!.dataCount()*100f)
-//                recycler1.smoothScrollToPosition(adapter1!!.dataCount()-1)
-//            },3000)
+            tv1.postDelayed({
+                mLayoutManager1?.setMillisecondsPerInch(adapter1!!.dataCount()*100f)
+                recycler1.smoothScrollToPosition(adapter1!!.dataCount()-1)
+            },3000)
         }
     }
 }
