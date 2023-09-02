@@ -39,6 +39,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetListFragment
@@ -226,6 +227,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         val itemPosition = getMenuItemPosition(menuItem)
                         if (checkMainPosition(itemPosition)) {
                             return@OnNavigationItemSelectedListener false
+                        }
+                        if(itemPosition==1&&!StaticData.okSportOpened()){
+                            ToastUtil.showToast(this@MainTabActivity,getString(R.string.N700))
+                            return@OnNavigationItemSelectedListener  false
+                        }
+                        if(itemPosition==2&&!StaticData.okGameOpened()){
+                            ToastUtil.showToast(this@MainTabActivity,getString(R.string.N700))
+                            return@OnNavigationItemSelectedListener  false
                         }
 
 
