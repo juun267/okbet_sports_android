@@ -14,7 +14,6 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -156,6 +155,7 @@ class SportFooterGamesView @JvmOverloads constructor(
         initObserver(fragment, viewmodel)
 //        viewmodel.getSportOKLive() // 没有数据暂时不开放 2023.06.21
         viewmodel.getSportOKGames()
+        okGamesAdapter.bindLifecycleOwner(fragment)
     }
 
     private fun initObserver(lifecycleOwner: BaseFragment<*>, viewmodel: OKGamesViewModel) = viewmodel.run {
@@ -193,14 +193,10 @@ class SportFooterGamesView @JvmOverloads constructor(
                 context.startLogin()
             } else {
                 //试玩弹框
-                val trialDialog = TrialGameDialog(context)
-//                if (isVisible) {
-                    //点击进入游戏
-                    trialDialog.setEnterGameClick {
-                        enterThirdGame(lifecycleOwner, viewmodel, it.second, it.first)
-                    }
-                    trialDialog.show()
-//                }
+                val trialDialog = TrialGameDialog(context, it.first, it.second) { firmType, thirdGameResult->
+                    enterThirdGame(lifecycleOwner, viewmodel, thirdGameResult, firmType)
+                }
+                trialDialog.show()
             }
         }
     }

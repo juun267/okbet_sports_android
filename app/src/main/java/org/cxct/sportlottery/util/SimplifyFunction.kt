@@ -307,14 +307,11 @@ fun BaseFragment<out MainHomeViewModel>.setTrialPlayGameDataObserve() {
             loginedRun(requireContext()) {}
         } else {
             //试玩弹框
-            val trialDialog = TrialGameDialog(requireContext())
-//            if (isVisible) {
-                //点击进入游戏
-                trialDialog.setEnterGameClick {
-                    enterThirdGame(it.second, it.first)
-                }
-                trialDialog.show()
-//            }
+            val trialDialog = TrialGameDialog(requireContext(), it.first, it.second) { firmType, thirdGameResult->
+                enterThirdGame(thirdGameResult, firmType)
+            }
+
+            trialDialog.show()
         }
     }
 

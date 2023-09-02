@@ -1,10 +1,13 @@
 package org.cxct.sportlottery.ui.maintab.games.adapter
 
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.common.adapter.BindingAdapter
-import org.cxct.sportlottery.databinding.ItemGameViewListBinding
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.databinding.ItemLiveViewListBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 
 class RecyclerLiveListAdapter : BindingAdapter<OKGamesCategory, ItemLiveViewListBinding>()  {
     //点击更多
@@ -24,6 +27,31 @@ class RecyclerLiveListAdapter : BindingAdapter<OKGamesCategory, ItemLiveViewList
     //点击收藏
     fun setOnFavoriteClick(block: (item: OKGameBean) -> Unit) {
         onFavoriteClick = block
+    }
+
+
+    fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner) {
+        ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleOwner.lifecycleScope) { gamesMaintain ->
+            data.forEachIndexed { index, okGamesCategory ->
+
+                var changed = false
+                okGamesCategory.gameList?.forEachIndexed { position, okGameBean->
+                    if (okGameBean.isMaintain() != gamesMaintain.isMaintain() && okGameBean.firmType == gamesMaintain.firmType) {
+                        okGameBean.maintain = gamesMaintain.maintain
+                        changed = true
+                    }
+                }
+
+                if (changed) {
+                    notifyItemChanged(index, okGamesCategory)
+                }
+            }
+
+        }
+    }
+
+    override fun onBinding(position: Int, binding: ItemLiveViewListBinding, item: OKGamesCategory, payloads: List<Any>) {
+        binding.gameView.notifyDataChanged()
     }
 
     override fun onBinding(position: Int, binding: ItemLiveViewListBinding, item: OKGamesCategory) {

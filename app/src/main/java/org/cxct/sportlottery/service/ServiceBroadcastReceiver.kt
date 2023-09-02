@@ -144,7 +144,7 @@ object ServiceBroadcastReceiver {
     val sportMaintenance: LiveData<SportMaintenanceEvent?> = MutableLiveData()
     val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
 
-    val thirdGamesMaintain = MutableSharedFlow<GamesMaintain>()
+    val thirdGamesMaintain = MutableSharedFlow<GamesMaintain>(extraBufferCapacity= 3)
 
 
     fun onConnectStatus(connectStatus: ServiceConnectStatus) {

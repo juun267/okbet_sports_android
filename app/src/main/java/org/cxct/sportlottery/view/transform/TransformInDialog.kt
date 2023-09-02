@@ -5,17 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.dialog_transfer_money.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.commonCheckDialog
 import org.cxct.sportlottery.util.setBtnEnable
 
 class TransformInDialog(val firmType: String,
@@ -114,10 +118,33 @@ class TransformInDialog(val firmType: String,
 
             ToastUtil.showToast(context, result?.msg)
         }
+
+        ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
+            if (firmType == it.firmType && it.isMaintain()) {
+
+                if (context is BaseActivity<*>) {
+                    val act = context as BaseActivity<*>
+                    commonCheckDialog(
+                        context = act,
+                        fm = act.supportFragmentManager,
+                        isError = true,
+                        isShowDivider = false,
+                        title = act.getString(R.string.prompt),
+                        errorMessage = act.getString(R.string.hint_game_maintenance),
+                        buttonText = act.getString(R.string.btn_confirm),
+                        positiveClickListener = { },
+                        negativeText = null,
+                    )
+                }
+                dismiss()
+            }
+        }
     }
 
     private fun enter() {
-        dismiss()
-        callback.invoke(thirdGameResult)
+        if (dialog?.isShowing == true) {
+            dismiss()
+            callback.invoke(thirdGameResult)
+        }
     }
 }
