@@ -83,10 +83,10 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 //        okGamesView.setOkGamesData(this@MainHomeFragment)
         gameViewOkGame.initOkGames(this@MainHomeFragment)
         gameViewOkGame.bindLifecycleOwner(this@MainHomeFragment)
-        if (StaticData.okLiveOpened()){
+//        if (StaticData.okLiveOpened()){
             gameViewOkLive.initOkLiveList(this@MainHomeFragment)
             gameViewOkLive.bindLifecycleOwner(this@MainHomeFragment)
-        }
+//        }
         initBetWinsRecodeLayout()
         initObservable()
         binding.winsRankView.loadData()

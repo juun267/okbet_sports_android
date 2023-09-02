@@ -626,9 +626,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToOkLive(){
-        backMainHome()
-        homeFragment().jumpToOKLive()
-        enableSelectBottomNav(false)
+        if(StaticData.okLiveOpened()){
+            backMainHome()
+            homeFragment().jumpToOKLive()
+            enableSelectBottomNav(false)
+        }else{
+            ToastUtil.showToast(this,getString(R.string.N700))
+        }
+
     }
 
     private fun navToPosition(position: Int) {
