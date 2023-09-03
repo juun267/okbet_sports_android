@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home
 
 import android.os.Bundle
 import android.content.Intent
+import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -125,6 +126,10 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             getMainTabActivity().showMainLeftMenu(null)
+        }
+        homeToolbar.tvUserMoney.setOnClickListener {
+            EventBusUtil.post(MenuEvent(true,Gravity.RIGHT))
+            getMainTabActivity().showMainRightMenu(null)
         }
     }
 
