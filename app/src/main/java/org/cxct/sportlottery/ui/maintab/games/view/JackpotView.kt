@@ -93,25 +93,28 @@ class JackpotView @JvmOverloads constructor(
     }
 
     fun setJackPotNumber(number:Double){
+        //格式化金额  000,000,000.00
         val numberStr= TextUtil.format2(number)
         numberStr?.let {
+            //拆分成数组
             val numberArray=numberStr.toCharArray()
+            //循环初始化每个数字，开始滚动
             for (i in numberArray.indices){
-
                 when(i){
                     0->{
+                        //第一个数字  间距不一样
                         initRoller(i,textList[i],recyclerList[i],adapterList[i],managerList[i],numberArray[i].digitToInt(),true)
                     }
-                    3->{
-                        initRoller(i,textList[i],recyclerList[i],adapterList[i],managerList[i])
-                    }
-                    7->{
+                    3,7->{
+                        //逗号
                         initRoller(i,textList[i],recyclerList[i],adapterList[i],managerList[i])
                     }
                     11->{
+                        //小数点
                         initRoller(i,textList[i],recyclerList[i],adapterList[i],managerList[i],true)
                     }
                     else->{
+                        //普通数字
                         initRoller(i,textList[i],recyclerList[i],adapterList[i],managerList[i],numberArray[i].digitToInt())
                     }
                 }
@@ -121,17 +124,21 @@ class JackpotView @JvmOverloads constructor(
     }
 
     private fun initRoller(position:Int,textview: TextView, recycler:RecyclerView,adapter:RecyclerJackPotAdapter?, manager:AdjustLinearLayoutManager?,number:Int,isHead:Boolean=false){
+        //默认第一轮滚动 0-9
         val rollerList=arrayListOf("0","1","2","3","4","5","6","7","8","9")
         if(number==0){
             rollerList.add("0")
         }
+        //循环添加第二轮  0-X
         for(i in 0 .. number){
             rollerList.add(i.toString())
         }
+
+        //初始化间距，recycler数据
         textview.postDelayed({
             //头尾间距不一样
             if(isHead){
-                //头||尾
+                //第一个view间隔
                 textview.setPadding(rollerHeadWidth.toInt(),0,0,0)
             }else{
                 //普通间隔
@@ -140,16 +147,17 @@ class JackpotView @JvmOverloads constructor(
                 }else{
                     textview.setPadding(rollerLineWidth.toInt(),0,0,0)
                 }
-
             }
             adapter?.setList(rollerList)
             recycler.layoutManager=manager
             recycler.adapter=adapter
         },100)
+
         //随机启动时间
         val randomInt = (1000..3000).random()
         textview.postDelayed({
             manager?.setMillisecondsPerInch(adapter!!.dataCount()*100f)
+            //开启recycler滚动
             recycler.smoothScrollToPosition(adapter!!.dataCount()-1)
         },randomInt.toLong())
     }

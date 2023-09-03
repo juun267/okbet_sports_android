@@ -32,14 +32,7 @@ import org.cxct.sportlottery.view.onClick
 class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
     private lateinit var binding: FragmentAllOkgamesBinding
-//    private val gameAllAdapter by lazy {
-//        GameCategroyAdapter(
-//            clickCollect = ::onCollectClick,
-//            clickGame = ::enterGame, okGamesFragment().gameItemViewPool
-//        )
-//    }
     private val gameListAdapter= RecyclerGameListAdapter()
-//    private var collectGameAdapter: GameChildAdapter? = null
     private val providersAdapter by lazy { OkGameProvidersAdapter() }
     private var categoryList = mutableListOf<OKGamesCategory>()
 

@@ -1,9 +1,15 @@
 package org.cxct.sportlottery.ui.maintab.games.view
 
+import android.R.attr.endColor
+import android.R.attr.startColor
+import android.graphics.LinearGradient
+import android.graphics.Shader
+import android.opengl.ETC1.getHeight
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import eightbitlab.com.blurview.BlurView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.animDuang
@@ -13,6 +19,8 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemGamePageBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.view.onClick
+import org.cxct.sportlottery.view.setTextColorGradient
+
 
 class RecyclerGamePageAdapter:
     BindingAdapter<List<OKGameBean>, ItemGamePageBinding>()  {
@@ -47,7 +55,7 @@ class RecyclerGamePageAdapter:
     }
 
     override fun onBinding(position: Int, binding: ItemGamePageBinding, item: List<OKGameBean>) = binding.run {
-
+        setPotView(binding,item)
         if (isShowCollect) {
             ivFav1.visible()
             ivFav2.visible()
@@ -133,6 +141,8 @@ class RecyclerGamePageAdapter:
     }
 
 
+
+
     private fun bindItem(item: OKGameBean,
                          cardGame: View,
                          ivCover: ImageView,
@@ -157,4 +167,66 @@ class RecyclerGamePageAdapter:
         tvCover.isVisible = !moreItem && item.isMaintain()
     }
 
+
+
+    private fun setPotView(binding: ItemGamePageBinding,item: List<OKGameBean>){
+        binding.blurBottom1.visible()
+        binding.blurBottom2.visible()
+        binding.blurBottom3.visible()
+        binding.blurBottom4.visible()
+        binding.blurBottom5.visible()
+        binding.blurBottom6.visible()
+        binding.tvPot1.visible()
+        binding.tvPot2.visible()
+        binding.tvPot3.visible()
+        binding.tvPot4.visible()
+        binding.tvPot5.visible()
+        binding.tvPot6.visible()
+        when(item.size){
+            1->{
+                initPotData(binding.blurBottom1,binding.tvPot1,binding,"")
+            }
+            2->{
+                initPotData(binding.blurBottom1,binding.tvPot1,binding,"")
+                initPotData(binding.blurBottom2,binding.tvPot2,binding,"")
+            }
+            3->{
+                initPotData(binding.blurBottom1,binding.tvPot1,binding,"")
+                initPotData(binding.blurBottom2,binding.tvPot2,binding,"")
+                initPotData(binding.blurBottom3,binding.tvPot3,binding,"")
+            }
+            4->{
+                initPotData(binding.blurBottom1,binding.tvPot1,binding,"")
+                initPotData(binding.blurBottom2,binding.tvPot2,binding,"")
+                initPotData(binding.blurBottom3,binding.tvPot3,binding,"")
+                initPotData(binding.blurBottom4,binding.tvPot4,binding,"")
+            }
+            5->{
+                initPotData(binding.blurBottom1,binding.tvPot1,binding,"")
+                initPotData(binding.blurBottom2,binding.tvPot2,binding,"")
+                initPotData(binding.blurBottom3,binding.tvPot3,binding,"")
+                initPotData(binding.blurBottom4,binding.tvPot4,binding,"")
+                initPotData(binding.blurBottom5,binding.tvPot5,binding,"")
+            }
+            6->{
+                initPotData(binding.blurBottom1,binding.tvPot1,binding,"")
+                initPotData(binding.blurBottom2,binding.tvPot2,binding,"")
+                initPotData(binding.blurBottom3,binding.tvPot3,binding,"")
+                initPotData(binding.blurBottom4,binding.tvPot4,binding,"")
+                initPotData(binding.blurBottom5,binding.tvPot5,binding,"")
+                initPotData(binding.blurBottom6,binding.tvPot6,binding,"")
+            }
+        }
+
+    }
+
+    private  fun  initPotData(blur:BlurView,textView: TextView,binding: ItemGamePageBinding,money:String){
+        blur.visible()
+        textView.visible()
+        blur.setupWith(binding.root)
+            .setFrameClearDrawable(binding.root.background)
+            .setBlurRadius(1.3f)
+        textView.setTextColorGradient()
+        textView.text="p 123123123123123"
+    }
 }
