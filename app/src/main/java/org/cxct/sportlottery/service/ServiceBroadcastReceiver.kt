@@ -142,6 +142,7 @@ object ServiceBroadcastReceiver {
     private val _recordResultOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
 
     val sportMaintenance: LiveData<SportMaintenanceEvent?> = MutableLiveData()
+    val jackpotChange: LiveData<String?> = MutableLiveData()
     val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
 
     val thirdGamesMaintain = MutableSharedFlow<GamesMaintain>()
@@ -210,7 +211,11 @@ object ServiceBroadcastReceiver {
                 val data = ServiceMessage.getSportMaintenance(jObjStr)
                 (sportMaintenance as MutableLiveData<SportMaintenanceEvent?>).postValue(data)
             }
-
+            EventType.RECORD_RESULT_JACKPOT_OK_GAMES->{
+                Log.e("dachang","jackpotChange ${jObjStr}")
+                val data = ServiceMessage.getJackpotData(jObjStr)
+                (jackpotChange as MutableLiveData<String?>).postValue(data?.amount)
+            }
             //公共频道
             EventType.DATA_SOURCE_CHANGE -> {
                 _dataSourceChange.postValue(true)

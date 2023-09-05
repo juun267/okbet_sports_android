@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.layout_okgames_top.view.jackpotView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -78,6 +79,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         showGameAll()
         initObservable()
         viewModel.getOKGamesHall()
+        viewModel.getJackpotData()
         showOkGameDialog()
     }
 
@@ -100,6 +102,12 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             binding.topView.setTabsData(it?.categoryList?.toMutableList())
         }
 
+        jackpotData.observe(viewLifecycleOwner){
+            if(it.isNullOrEmpty()){
+                return@observe
+            }
+            binding.topView.jackpotView.setJackPotNumber(it.toDouble())
+        }
         gamesList.observe(viewLifecycleOwner) {
             if (it.first == requestTag) {
                 showPartGameList(it.third, it.second)

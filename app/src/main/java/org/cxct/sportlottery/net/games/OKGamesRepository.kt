@@ -29,6 +29,10 @@ object OKGamesRepository {
         return okGamesApi.getOKGamesHall(paramDevice())
     }
 
+    suspend fun okGamesJackpot(): ApiResult<String> {
+        return okGamesApi.getOKGamesJackpot()
+    }
+
     suspend fun getOKGamesRecordNew(): ApiResult<List<RecordNewEvent>> {
         return okGamesApi.getOKGamesRecordNew()
     }

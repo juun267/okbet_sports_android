@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -44,6 +45,11 @@ class OKGamesViewModel(
         get() = _collectOkGamesResult
     private val _collectOkGamesResult = MutableLiveData<Pair<Int, OKGameBean>>()
 
+
+    //jackpot数据
+    val jackpotData: LiveData<String>
+        get() = _jackpotData
+    private val _jackpotData = MutableLiveData<String>()
 
     //游戏大厅数据
     val gameHall: LiveData<OKGamesHall>
@@ -100,6 +106,17 @@ class OKGamesViewModel(
 
             if (data.firmList != null) {
                 _providerresult.postValue(data)
+            }
+        }
+    }
+
+    /**
+     * 获取jackpot奖池
+     */
+    fun getJackpotData(){
+        callApi({ OKGamesRepository.okGamesJackpot() }) {
+            it.getData()?.let {
+                _jackpotData.postValue(it)
             }
         }
     }

@@ -90,11 +90,16 @@ class JackpotView @JvmOverloads constructor(
         rollerItemWidth=rollerWidth*0.053
         initViewList()
         //设置数据，开始滚动
-        setJackPotNumber(5326.0)
+//        setJackPotNumber(5326.0)
     }
 
     //设置奖池数据
-    fun setJackPotNumber(number:Double){
+    fun setJackPotNumber(numberData:Double){
+        var number=numberData
+        //最多支持显示到亿
+        if(number>999999999.99){
+            number=999999.99
+        }
         //格式化金额  000,000,000.00
         val numberStr= TextUtil.format2(number)
         numberStr?.let {
