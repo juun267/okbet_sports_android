@@ -22,6 +22,8 @@ import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.view.setTextColorGradient
 
 class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
     val moreClick: (() -> Unit)? = null,
@@ -77,6 +79,20 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
             ivCover.layoutParams.apply {
                 height = if (gameEntryType == GameEntryType.OKLIVE) 88.dp else 110.dp
                 ivCover.layoutParams = this
+            }
+            // //关闭jackpot ==0
+            if(item.jackpotOpen==0){
+                tvPot.gone()
+                blurBottom.gone()
+            }else{
+                //==1 显示
+                tvPot.visible()
+                blurBottom.visible()
+                blurBottom.setupWith(binding.root)
+                    .setFrameClearDrawable(binding.root.background)
+                    .setBlurRadius(1.3f)
+                tvPot.setTextColorGradient()
+                tvPot.text="$showCurrencySign ${item.jackpotAmount}"
             }
             ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
             tvName.text = item.gameName

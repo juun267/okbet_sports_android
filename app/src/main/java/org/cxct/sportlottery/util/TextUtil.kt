@@ -39,6 +39,20 @@ object TextUtil : DecimalFormatUtil() {
         return null
     }
 
+
+    fun format2(any: Any): String? {
+        try {
+            var target = any
+
+            if (any !is Number) target = target.toString().toDouble()
+
+            return doNumberFormat(target, "000,000,000.00")
+        } catch (e: Exception) {
+            Timber.e("$e")
+        }
+        return null
+    }
+
     /**
      * numberAfterDot 保留小数点后几位
      */

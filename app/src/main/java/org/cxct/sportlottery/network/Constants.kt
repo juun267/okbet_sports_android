@@ -567,6 +567,9 @@ object Constants {
     // 游戏大厅
     const val OKGAMES_HALL = "/api/front/gameEntryGames/getHallOkGames"
 
+    // jackpot奖池总数
+    const val OKGAMES_JACKPOT = "/api/front/gameEntryGames/getFirstGameJackpot"
+
     // 游戏分页列表
     const val OKGAMES_GAME_LIST = "/api/front/gameEntryGames/getPageOkGames"
 

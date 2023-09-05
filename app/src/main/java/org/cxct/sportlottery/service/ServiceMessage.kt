@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEve
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.network.service.sys_maintenance.JackpotEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
@@ -49,6 +50,11 @@ object ServiceMessage {
     fun getSportMaintenance(messageStr: String): SportMaintenanceEvent? {
 //        val adapter = moshi.adapter(SysMaintenanceEvent::class.java)
         return FastJsonUtils.jsonToObject(messageStr,SportMaintenanceEvent::class.java)
+    }
+
+    fun getJackpotData(messageStr: String): JackpotEvent? {
+//        val adapter = moshi.adapter(SysMaintenanceEvent::class.java)
+        return FastJsonUtils.jsonToObject(messageStr,JackpotEvent::class.java)
     }
 
     fun getMatchClock(messageStr: String): MatchClockEvent? {
