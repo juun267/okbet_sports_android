@@ -1278,12 +1278,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         hideLoading()
         if (loginResult.success) {
             //finish()
-            RegisterSuccessDialog().apply {
-                setNegativeClickListener {
-                    viewModel.checkRechargeSystem()
-                }
-            }.show(supportFragmentManager, null)
-
+            RegisterSuccessDialog{
+                viewModel.checkRechargeSystem()
+            }.show(supportFragmentManager,null)
         } else {
             showErrorDialog(loginResult.msg)
         }

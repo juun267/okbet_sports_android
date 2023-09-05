@@ -567,5 +567,7 @@
     <color name="color_33FFFFFF">#33FFFFFF</color>
     <color name="color_F1F7FF">#F1F7FF</color>
     <color name="color_D9D9D9">#D9D9D9</color>
+    <color name="color_E9FFE9">#E9FFE9</color>
+    <color name="color_DDE8FF">#DDE8FF</color>
 
 </resources>
