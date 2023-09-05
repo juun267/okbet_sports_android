@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_margin="20dp"
-    app:cardBackgroundColor="@color/color_bbbbbb_ffffff"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="0dp"
-    tools:context="org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+<androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minWidth="350dp"
+        android:layout_margin="30dp"
+        android:background="@drawable/bg_dialog_register_success"
         android:gravity="center"
         android:orientation="vertical">
+    <ImageView
+        android:id="@+id/ivClose"
+        android:layout_width="@dimen/margin_24"
+        android:layout_height="@dimen/margin_24"
+        android:src="@drawable/ic_close_deduct"
+        android:layout_margin="@dimen/margin_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/ivSuccess"
+            android:layout_width="@dimen/margin_68"
+            android:layout_height="@dimen/margin_68"
+            android:src="@drawable/ic_icon_success"
+            android:layout_marginTop="@dimen/margin_30"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -30,81 +43,65 @@
             android:text="@string/register_success"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/ivSuccess" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tvSummary"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tvJump"
-            android:text="@string/register_jump"
-            android:textColor="@color/color_6C7BA8_A7B2C4"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            tools:text="Up to  P500  bonus for new user"
+            android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-            android:layout_marginTop="@dimen/margin_14" />
+            android:layout_marginTop="@dimen/margin_12" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvCount"
-            android:text="(5)"
-            android:textColor="@color/color_317FFF_0760D4"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintStart_toEndOf="@+id/tvJump"
-            app:layout_constraintTop_toTopOf="@+id/tvJump"
-            app:layout_constraintBottom_toBottomOf="@+id/tvJump" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:id="@+id/ivSuccess"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_icon_success"
-            android:layout_marginTop="@dimen/margin_24"
-            app:layout_constraintTop_toBottomOf="@+id/tvJump"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/margin_20"
-            android:layout_marginBottom="20dp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/ivSuccess"
+            android:layout_marginVertical="@dimen/margin_24"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            app:layout_constraintTop_toBottomOf="@+id/tvSummary"
             app:layout_constraintBottom_toBottomOf="parent">
-
 
             <Button
                 android:id="@+id/btnRecharge"
                 style="?android:attr/borderlessButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginHorizontal="20dp"
-                android:background="@drawable/button_radius_8_bet_button"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_blue_radius_8_stroke"
                 android:enabled="true"
-                android:text="@string/register_recharge_now"
-                android:textColor="@android:color/white"
+                android:text="@string/J285"
+                android:textColor="@color/color_025BE8"
                 android:textSize="@dimen/textSize17sp"
                 android:textAllCaps="false"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/clAgreement" />
 
-            <TextView
-                android:id="@+id/tvVisitFirst"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:padding="4dp"
-                android:visibility="visible"
-                android:layout_gravity="center"
-                android:text="@string/visit_first"
-                android:textColor="@color/color_FFFFFF_535D76"
-                app:layout_constraintBaseline_toBaselineOf="@+id/btn_visit_first"
-                android:textSize="@dimen/textSize12sp" />
+            <Button
+                android:id="@+id/btnConfirm"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/margin_12"
+                android:background="@drawable/button_radius_8_bet_button"
+                android:enabled="true"
+                android:text="@string/btn_confirm"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/textSize17sp"
+                android:textAllCaps="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clAgreement" />
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 
-</androidx.cardview.widget.CardView>
