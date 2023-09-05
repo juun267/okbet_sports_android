@@ -16,6 +16,7 @@ import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
@@ -108,6 +109,13 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             }
             binding.topView.jackpotView.setJackPotNumber(it.toDouble())
         }
+        ServiceBroadcastReceiver.jackpotChange.observe(viewLifecycleOwner){
+            if(it.isNullOrEmpty()){
+                return@observe
+            }
+            binding.topView.jackpotView.setJackPotNumber(it.toDouble())
+        }
+
         gamesList.observe(viewLifecycleOwner) {
             if (it.first == requestTag) {
                 showPartGameList(it.third, it.second)

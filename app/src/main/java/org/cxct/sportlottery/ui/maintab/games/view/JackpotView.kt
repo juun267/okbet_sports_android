@@ -98,7 +98,7 @@ class JackpotView @JvmOverloads constructor(
         var number=numberData
         //最多支持显示到亿
         if(number>999999999.99){
-            number=999999.99
+            number=999999999.99
         }
         //格式化金额  000,000,000.00
         val numberStr= TextUtil.format2(number)
