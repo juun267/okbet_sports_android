@@ -16,8 +16,10 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemGameChildBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.onClick
+import org.cxct.sportlottery.view.setTextColorGradient
 
 class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
                        val moreClick: (() -> Unit)? = null) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
@@ -67,6 +69,20 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
 
     override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGameBean) {
         binding.apply {
+            // //关闭jackpot ==0
+            if(item.jackpotOpen==0){
+                tvPot.gone()
+                blurBottom.gone()
+            }else{
+                //==1 显示
+                tvPot.visible()
+                blurBottom.visible()
+                blurBottom.setupWith(binding.root)
+                    .setFrameClearDrawable(binding.root.background)
+                    .setBlurRadius(1.3f)
+                tvPot.setTextColorGradient()
+                tvPot.text="$showCurrencySign ${item.jackpotAmount}"
+            }
             ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
             tvName.text = item.gameName
             tvFirmName.text = item.firmName

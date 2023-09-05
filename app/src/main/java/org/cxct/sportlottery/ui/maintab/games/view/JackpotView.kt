@@ -89,9 +89,11 @@ class JackpotView @JvmOverloads constructor(
         rollerLineWidth2=rollerWidth*0.008
         rollerItemWidth=rollerWidth*0.053
         initViewList()
+        //设置数据，开始滚动
         setJackPotNumber(5326.0)
     }
 
+    //设置奖池数据
     fun setJackPotNumber(number:Double){
         //格式化金额  000,000,000.00
         val numberStr= TextUtil.format2(number)
