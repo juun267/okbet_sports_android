@@ -185,7 +185,6 @@ object ServiceBroadcastReceiver {
 
     private suspend fun handleEvent(jObj: JSONObject, jObjStr: String, channelStr: String) {
         when (val eventType = jObj.optString("eventType")) {
-
             EventType.NOTICE -> {
                 val data = ServiceMessage.getNotice(jObjStr)
                 _notice.postValue(data)
@@ -193,7 +192,6 @@ object ServiceBroadcastReceiver {
             EventType.GLOBAL_STOP -> {
                 val data = ServiceMessage.getGlobalStop(jObjStr)
                 _globalStop.postValue(data)
-
             }
             EventType.PRODUCER_UP -> {
                 val data = ServiceMessage.getProducerUp(jObjStr)
@@ -212,7 +210,7 @@ object ServiceBroadcastReceiver {
                 (sportMaintenance as MutableLiveData<SportMaintenanceEvent?>).postValue(data)
             }
             EventType.RECORD_RESULT_JACKPOT_OK_GAMES->{
-                Log.e("dachang","jackpotChange ${jObjStr}")
+
                 val data = ServiceMessage.getJackpotData(jObjStr)
                 (jackpotChange as MutableLiveData<String?>).postValue(data?.amount)
             }

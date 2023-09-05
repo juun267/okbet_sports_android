@@ -12,6 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
@@ -107,6 +108,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             if(it.isNullOrEmpty()){
                 return@observe
             }
+            binding.topView.jackpotView.visible()
             binding.topView.jackpotView.setJackPotNumber(it.toDouble())
         }
         ServiceBroadcastReceiver.jackpotChange.observe(viewLifecycleOwner){
