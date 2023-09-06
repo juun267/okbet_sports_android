@@ -23,6 +23,8 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setTextColorGradient
 
 class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
@@ -92,7 +94,7 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
                     .setFrameClearDrawable(binding.root.background)
                     .setBlurRadius(1.3f)
                 tvPot.setTextColorGradient()
-                tvPot.text="$showCurrencySign ${item.jackpotAmount}"
+                tvPot.text="$showCurrencySign ${TextUtil.formatMoney(item.jackpotAmount)}"
             }
             ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
             tvName.text = item.gameName
