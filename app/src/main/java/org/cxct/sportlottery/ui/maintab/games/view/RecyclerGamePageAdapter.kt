@@ -233,7 +233,6 @@ class RecyclerGamePageAdapter:
            blur.gone()
            textView.gone()
        }else{
-           Log.e("dachang","initPotData ${item.gameName}   ${item.jackpotOpen} ${item.jackpotAmount}")
            //开启显示  ==1
            blur.visible()
            textView.visible()
