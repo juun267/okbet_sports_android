@@ -211,7 +211,6 @@ object ServiceBroadcastReceiver {
                 (sportMaintenance as MutableLiveData<SportMaintenanceEvent?>).postValue(data)
             }
             EventType.RECORD_RESULT_JACKPOT_OK_GAMES->{
-
                 val data = ServiceMessage.getJackpotData(jObjStr)
                 (jackpotChange as MutableLiveData<String?>).postValue(data?.amount)
             }

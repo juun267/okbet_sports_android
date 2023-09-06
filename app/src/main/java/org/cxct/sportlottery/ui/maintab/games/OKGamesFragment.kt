@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.layout_okgames_top.view.jackpotView
@@ -103,7 +104,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         gameHall.observe(viewLifecycleOwner) {
             binding.topView.setTabsData(it?.categoryList?.toMutableList())
         }
-
+        binding.topView.jackpotView.initBorder(viewModel.viewModelScope)
         jackpotData.observe(viewLifecycleOwner){
             if(it.isNullOrEmpty()){
                 return@observe
