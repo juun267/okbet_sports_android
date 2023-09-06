@@ -6,9 +6,17 @@
 
 
     <ImageView
-        android:src="@drawable/bg_jackpot"
+        android:src="@drawable/bg_jackpot2"
         android:layout_width="match_parent"
         android:scaleType="fitXY"
+        android:layout_alignParentBottom="true"
+        android:layout_height="80dp"/>
+
+    <ImageView
+        android:id="@+id/ivBorder"
+        android:src="@drawable/bg_jackpot_border1"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_height="80dp"/>
 
