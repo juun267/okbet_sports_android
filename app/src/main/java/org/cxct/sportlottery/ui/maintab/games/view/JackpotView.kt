@@ -125,7 +125,7 @@ class JackpotView @JvmOverloads constructor(
                     0->{
                         //数字与老数据相等   不滚动了
                         if(oldNumberArray.isNotEmpty()&&numberArray[i]==oldNumberArray[i]){
-                            return
+                            continue
                         }
                         //第一个数字  间距不一样
                         initRoller(i,textList[i],recyclerList[i],adapterList[i],managerList[i],numberArray[i].digitToInt(),true)
@@ -141,7 +141,7 @@ class JackpotView @JvmOverloads constructor(
                     else->{
                         //数字与老数据相等   不滚动了
                         if(oldNumberArray.isNotEmpty()&&numberArray[i]==oldNumberArray[i]){
-                            return
+                            continue
                         }
                         //普通数字
                         initRoller(i,textList[i],recyclerList[i],adapterList[i],managerList[i],numberArray[i].digitToInt())
