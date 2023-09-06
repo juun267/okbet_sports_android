@@ -5,6 +5,7 @@ import android.R.attr.startColor
 import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.opengl.ETC1.getHeight
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,6 +20,7 @@ import org.cxct.sportlottery.databinding.ItemGamePageBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setTextColorGradient
 
@@ -118,7 +120,6 @@ class RecyclerGamePageAdapter:
     override fun onBinding(position: Int, binding: ItemGamePageBinding, item: List<OKGameBean>) = binding.run {
 
         if (isShowCollect) {
-
             ivFav1.visible()
             ivFav2.visible()
             ivFav3.visible()
@@ -232,50 +233,54 @@ class RecyclerGamePageAdapter:
 
 
     private fun setPotView(binding: ItemGamePageBinding,item: List<OKGameBean>){
-        binding.blurBottom1.gone()
-        binding.blurBottom2.gone()
-        binding.blurBottom3.gone()
-        binding.blurBottom4.gone()
-        binding.blurBottom5.gone()
-        binding.blurBottom6.gone()
-        binding.tvPot1.gone()
-        binding.tvPot2.gone()
-        binding.tvPot3.gone()
-        binding.tvPot4.gone()
-        binding.tvPot5.gone()
-        binding.tvPot6.gone()
+//        binding.blurBottom1.gone()
+//        binding.blurBottom2.gone()
+//        binding.blurBottom3.gone()
+//        binding.blurBottom4.gone()
+//        binding.blurBottom5.gone()
+//        binding.blurBottom6.gone()
+//        binding.tvPot1.gone()
+//        binding.tvPot2.gone()
+//        binding.tvPot3.gone()
+//        binding.tvPot4.gone()
+//        binding.tvPot5.gone()
+//        binding.tvPot6.gone()
+//        bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
+//        bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
+//        bindItem(item[3], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2)
+//        bindItem(item[4], cardGame4, ivCover4, tvName4, tvFirmName4, ivFav4, tvCover4)
         when(item.size){
             1->{
                 initPotData(binding.blurBottom1,binding.tvPot1,binding,item[0])
             }
             2->{
                 initPotData(binding.blurBottom1,binding.tvPot1,binding,item[0])
-                initPotData(binding.blurBottom2,binding.tvPot2,binding,item[1])
+                initPotData(binding.blurBottom3,binding.tvPot3,binding,item[1])
             }
             3->{
                 initPotData(binding.blurBottom1,binding.tvPot1,binding,item[0])
-                initPotData(binding.blurBottom2,binding.tvPot2,binding,item[1])
-                initPotData(binding.blurBottom3,binding.tvPot3,binding,item[2])
+                initPotData(binding.blurBottom3,binding.tvPot3,binding,item[1])
+                initPotData(binding.blurBottom5,binding.tvPot5,binding,item[2])
             }
             4->{
                 initPotData(binding.blurBottom1,binding.tvPot1,binding,item[0])
-                initPotData(binding.blurBottom2,binding.tvPot2,binding,item[1])
-                initPotData(binding.blurBottom3,binding.tvPot3,binding,item[2])
-                initPotData(binding.blurBottom4,binding.tvPot4,binding,item[3])
+                initPotData(binding.blurBottom3,binding.tvPot3,binding,item[1])
+                initPotData(binding.blurBottom5,binding.tvPot5,binding,item[2])
+                initPotData(binding.blurBottom2,binding.tvPot2,binding,item[3])
             }
             5->{
                 initPotData(binding.blurBottom1,binding.tvPot1,binding,item[0])
-                initPotData(binding.blurBottom2,binding.tvPot2,binding,item[1])
-                initPotData(binding.blurBottom3,binding.tvPot3,binding,item[2])
-                initPotData(binding.blurBottom4,binding.tvPot4,binding,item[3])
-                initPotData(binding.blurBottom5,binding.tvPot5,binding,item[4])
+                initPotData(binding.blurBottom3,binding.tvPot3,binding,item[1])
+                initPotData(binding.blurBottom5,binding.tvPot5,binding,item[2])
+                initPotData(binding.blurBottom2,binding.tvPot2,binding,item[3])
+                initPotData(binding.blurBottom4,binding.tvPot4,binding,item[4])
             }
             6->{
                 initPotData(binding.blurBottom1,binding.tvPot1,binding,item[0])
-                initPotData(binding.blurBottom2,binding.tvPot2,binding,item[1])
-                initPotData(binding.blurBottom3,binding.tvPot3,binding,item[2])
-                initPotData(binding.blurBottom4,binding.tvPot4,binding,item[3])
-                initPotData(binding.blurBottom5,binding.tvPot5,binding,item[4])
+                initPotData(binding.blurBottom3,binding.tvPot3,binding,item[1])
+                initPotData(binding.blurBottom5,binding.tvPot5,binding,item[2])
+                initPotData(binding.blurBottom2,binding.tvPot2,binding,item[3])
+                initPotData(binding.blurBottom4,binding.tvPot4,binding,item[4])
                 initPotData(binding.blurBottom6,binding.tvPot6,binding,item[5])
             }
         }
@@ -297,6 +302,6 @@ class RecyclerGamePageAdapter:
             .setFrameClearDrawable(binding.root.background)
             .setBlurRadius(1.3f)
         textView.setTextColorGradient()
-        textView.text="$showCurrencySign ${item.jackpotAmount}"
+        textView.text="$showCurrencySign ${TextUtil.formatMoney(item.jackpotAmount)}"
     }
 }
