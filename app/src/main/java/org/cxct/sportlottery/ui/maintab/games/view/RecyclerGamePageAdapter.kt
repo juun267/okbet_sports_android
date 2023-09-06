@@ -58,7 +58,7 @@ class RecyclerGamePageAdapter:
     override fun onBinding(position: Int, binding: ItemGamePageBinding, item: List<OKGameBean>) = binding.run {
 
         if (isShowCollect) {
-            setPotView(binding,item)
+
             ivFav1.visible()
             ivFav2.visible()
             ivFav3.visible()
@@ -73,7 +73,7 @@ class RecyclerGamePageAdapter:
             ivFav5.gone()
             ivFav6.gone()
         }
-
+        setPotView(binding,item)
         when(item.size){
             1-> {
                 bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1)
