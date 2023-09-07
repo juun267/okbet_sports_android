@@ -8,12 +8,18 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ViewJacketPotBinding
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerJackPotAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.view.widget.AdjustLinearLayoutManager
+import splitties.views.imageResource
 
 class JackpotView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -93,8 +99,14 @@ class JackpotView @JvmOverloads constructor(
 //        setJackPotNumber(5326.0)
     }
 
+    private var oldNumber=0.0
+    private var oldNumberArray= charArrayOf()
     //设置奖池数据
-    fun setJackPotNumber(numberData:Double){
+    fun setJackPotNumber(numberData:Double,){
+        if(numberData==oldNumber){
+            return
+        }
+        oldNumber=numberData
         var number=numberData
         //最多支持显示到亿
         if(number>999999999.99){
@@ -103,12 +115,18 @@ class JackpotView @JvmOverloads constructor(
         //格式化金额  000,000,000.00
         val numberStr= TextUtil.format2(number)
         numberStr?.let {
+
             //拆分成数组
             val numberArray=numberStr.toCharArray()
+
             //循环初始化每个数字，开始滚动
             for (i in numberArray.indices){
                 when(i){
                     0->{
+                        //数字与老数据相等   不滚动了
+                        if(oldNumberArray.isNotEmpty()&&numberArray[i]==oldNumberArray[i]){
+                            continue
+                        }
                         //第一个数字  间距不一样
                         initRoller(i,textList[i],recyclerList[i],adapterList[i],managerList[i],numberArray[i].digitToInt(),true)
                     }
@@ -121,14 +139,21 @@ class JackpotView @JvmOverloads constructor(
                         initRoller(i,textList[i],recyclerList[i],adapterList[i],managerList[i],true)
                     }
                     else->{
+                        //数字与老数据相等   不滚动了
+                        if(oldNumberArray.isNotEmpty()&&numberArray[i]==oldNumberArray[i]){
+                            continue
+                        }
                         //普通数字
                         initRoller(i,textList[i],recyclerList[i],adapterList[i],managerList[i],numberArray[i].digitToInt())
                     }
                 }
             }
+
+            oldNumberArray=numberArray
         }
 
     }
+
 
     private fun initRoller(position:Int,textview: TextView, recycler:RecyclerView,adapter:RecyclerJackPotAdapter?, manager:AdjustLinearLayoutManager?,number:Int,isHead:Boolean=false){
         //默认第一轮滚动 0-9
@@ -233,5 +258,25 @@ class JackpotView @JvmOverloads constructor(
             managerList[i]=AdjustLinearLayoutManager(context)
             managerList[i]?.setScrollType(LinearSmoothScroller.SNAP_TO_START)
         }
+    }
+
+    private var bgBorder=false
+     fun initBorder(coroutine: CoroutineScope){
+        coroutine.launch {
+            delay(500)
+            launch(Dispatchers.Main) {
+                binding.run {
+                    if(bgBorder){
+                        bgBorder=false
+                        ivBorder.setImageResource(R.drawable.bg_jackpot_border1)
+                    }else{
+                        bgBorder=true
+                        ivBorder.setImageResource(R.drawable.bg_jackpot_border2)
+                    }
+                }
+            }
+            initBorder(coroutine)
+        }
+
     }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.layout_okgames_top.view.jackpotView
@@ -12,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
@@ -102,11 +104,12 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         gameHall.observe(viewLifecycleOwner) {
             binding.topView.setTabsData(it?.categoryList?.toMutableList())
         }
-
+        binding.topView.jackpotView.initBorder(viewModel.viewModelScope)
         jackpotData.observe(viewLifecycleOwner){
             if(it.isNullOrEmpty()){
                 return@observe
             }
+            binding.topView.jackpotView.visible()
             binding.topView.jackpotView.setJackPotNumber(it.toDouble())
         }
         ServiceBroadcastReceiver.jackpotChange.observe(viewLifecycleOwner){
