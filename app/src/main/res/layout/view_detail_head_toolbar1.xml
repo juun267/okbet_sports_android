@@ -50,6 +50,8 @@
                     android:id="@+id/img_home_logo"
                     android:layout_width="@dimen/margin_48"
                     android:layout_height="@dimen/margin_48"
+                    android:padding="@dimen/margin_4"
+                    android:background="@drawable/bg_detail_team_logo"
                     android:layout_marginBottom="@dimen/margin_25"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -121,7 +123,6 @@
                         android:singleLine="true"
                         android:text="@string/time_null"
                         android:textColor="@color/color_FFFFFF"
-                        android:textFontWeight="700"
                         android:textSize="@dimen/textSize14sp"
                         android:visibility="gone" />
 
@@ -161,9 +162,9 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize26sp"
-                    android:textStyle="bold"
+                    android:textSize="@dimen/textSize16sp"
                     android:visibility="gone"
+                    android:fontFamily="@font/inter_bold"
                     tools:text="5 - 5"
                     tools:visibility="visible" />
 
@@ -191,6 +192,8 @@
                     android:id="@+id/img_away_logo"
                     android:layout_width="@dimen/margin_48"
                     android:layout_height="@dimen/margin_48"
+                    android:padding="@dimen/margin_4"
+                    android:background="@drawable/bg_detail_team_logo"
                     android:layout_marginBottom="@dimen/margin_25"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -79,8 +79,8 @@
                 android:id="@+id/ll_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/color_FFFFFF"
                 android:layout_above="@+id/viewDivider1"
-                android:background="@drawable/bg_gradient_bet_top_corner"
                 android:orientation="vertical">
                 <!--串关投注-->
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -111,61 +111,17 @@
                             android:id="@+id/cl_total_info"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingHorizontal="15dp"
-                            android:paddingTop="5dp"
+                            android:paddingHorizontal="@dimen/margin_12"
+                            android:layout_marginTop="8dp"
                             android:visibility="gone"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:visibility="visible">
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/total_info_guide_line"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.5" />
-
                             <LinearLayout
-                                android:paddingBottom="5dp"
-                                android:id="@+id/ll_total_stake"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:id="@+id/title_all_bet"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/total_bet_money_colon"
-                                    android:textColor="@color/color_9BB3D9_535D76"
-                                    android:textSize="@dimen/textSize12sp"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <TextView
-                                    android:id="@+id/tv_total_bet_amount"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="start"
-                                    android:textColor="@color/color_FFFFFF_414655"
-                                    android:textSize="@dimen/textSize12sp"
-                                    app:layout_constraintBottom_toBottomOf="@+id/title_all_bet"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toEndOf="@+id/title_all_bet"
-                                    app:layout_constraintTop_toTopOf="@+id/title_all_bet"
-                                    tools:text="0.00" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:paddingBottom="5dp"
                                 android:id="@+id/ll_est_winning"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="right"
-                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
@@ -174,48 +130,68 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/total_all_win_amount"
-                                    android:textColor="@color/color_9BB3D9_535D76"
-                                    android:textSize="@dimen/textSize12sp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/title_all_bet" />
+                                    android:textColor="@color/color_000000"
+                                    android:textSize="@dimen/textSize12sp" />
 
                                 <TextView
                                     android:id="@+id/tv_total_winnable_amount"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="end"
-                                    android:textColor="@color/color_9BB3D9_535D76"
+                                    android:textColor="@color/color_ff0000"
                                     android:textSize="@dimen/textSize12sp"
-                                    app:layout_constraintBottom_toBottomOf="@+id/title_winnable_amount"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toEndOf="@+id/title_winnable_amount"
-                                    app:layout_constraintTop_toTopOf="@+id/title_winnable_amount"
+                                    android:textStyle="bold"
+                                    tools:text="0.00" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/ll_total_stake"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:id="@+id/title_all_bet"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/total_bet_money_colon"
+                                    android:textColor="@color/color_000000"
+                                    android:textSize="@dimen/textSize12sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_total_bet_amount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:textColor="@color/color_000000"
+                                    android:textSize="@dimen/textSize12sp"
+                                    android:textStyle="bold"
                                     tools:text="0.00" />
                             </LinearLayout>
 
+
+
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="@dimen/margin_0.5"
+                                android:layout_marginTop="@dimen/margin_6"
                                 android:background="@color/color_EEF3FC"
-                                app:layout_constraintBottom_toBottomOf="parent"
-
-                                tools:layout_editor_absoluteX="15dp" />
+                                app:layout_constraintTop_toBottomOf="@id/ll_total_stake"
+                                app:layout_constraintBottom_toBottomOf="parent" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <TextView
                             android:id="@+id/tvExpandOrStacked"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/margin_36"
                             android:layout_gravity="center_horizontal"
                             android:drawableEnd="@drawable/icon_show_more"
                             android:drawablePadding="10dp"
                             android:gravity="center"
-                            android:paddingVertical="10dp"
                             android:text="@string/expand_more_combinations"
                             android:textColor="@color/color_14366B"
-                            android:textSize="11sp"
+                            android:textSize="@dimen/textSize12sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -240,8 +216,8 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/color_E3E8EE"
+                            android:layout_height="@dimen/margin_0.5"
+                            android:background="@color/color_EEF3FC"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
@@ -262,10 +238,9 @@
             <View
                 android:id="@+id/viewDivider1"
                 android:layout_above="@+id/parlayLayout"
-                app:layout_constraintTop_toTopOf="parent"
-                android:background="@color/color_dbdfea"
+                android:background="@color/color_E0E3EE"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="@dimen/margin_0.5"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/parlayLayout"
@@ -283,7 +258,7 @@
                 <TextView
                     android:id="@+id/btnParlaySingle"
                     android:layout_width="78dp"
-                    android:layout_height="40dp"
+                    android:layout_height="44dp"
                     android:layout_marginRight="5dp"
                     android:background="@drawable/bg_radius_8_bet_parlay"
                     android:gravity="center"
@@ -297,7 +272,7 @@
                 <org.cxct.sportlottery.ui.betList.BetButton
                     android:id="@+id/btnBet"
                     android:layout_width="140dp"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -352,34 +327,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/text_account_history_balance"
-                    android:textColor="@color/color_0D2245"
+                    android:textColor="@color/color_6C7BA8"
                     android:textFontWeight="400"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-
-                <TextView
-                    android:id="@+id/tvBalance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/helvetica_bold"
-                    android:text="12.6445.45"
-                    android:textColor="@color/color_0D2245"
-                    android:textSize="@dimen/textSize12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/tvBalanceSign"
-                    app:layout_constraintTop_toBottomOf="@+id/tvBalanceSign" />
-
                 <TextView
                     android:id="@+id/tvCurrencySign"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="12sp"
+                    android:textColor="@color/color_6C7BA8"
                     app:layout_constraintBottom_toBottomOf="@+id/tvBalanceSign"
                     app:layout_constraintStart_toEndOf="@+id/tvBalanceSign"
                     app:layout_constraintTop_toTopOf="@+id/tvBalanceSign" />
+
+                <TextView
+                    android:id="@+id/tvBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12.6445.45"
+                    android:textColor="@color/color_000000"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/tvBalanceSign"
+                    app:layout_constraintTop_toBottomOf="@+id/tvBalanceSign" />
+
+
                 <!--endregion bet loading view-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>

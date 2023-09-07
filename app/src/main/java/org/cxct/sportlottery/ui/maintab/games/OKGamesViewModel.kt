@@ -129,8 +129,8 @@ class OKGamesViewModel(
     /**
      * 收藏游戏
      */
-    fun collectGame(gameData: OKGameBean) =
-        callApi({ OKGamesRepository.collectOkGames(gameData.id, !gameData.markCollect) }) {
+    fun collectGame(gameData: OKGameBean,gameEntryType: String =GameEntryType.OKGAMES) =
+        callApi({ OKGamesRepository.collectOkGames(gameData.id, !gameData.markCollect,gameEntryType) }) {
             if (!it.succeeded()) {
                 ToastUtil.showToast(MultiLanguagesApplication.appContext, it.msg)
                 return@callApi
@@ -236,11 +236,11 @@ class OKGamesViewModel(
         }
     }
 
-    fun getSportOKLive() = callApi({ OKGamesRepository.getOKLiveList(1, 3, GameEntryType.OKLIVE.key) }) {
+    fun getSportOKLive() = callApi({ OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKLIVE) }) {
         it.getData()?.let { sportOKLives.value = it }
     }
 
-    fun getSportOKGames() = callApi({ OKGamesRepository.getOKLiveList(1, 12,  GameEntryType.OKGAMES.key) }) {
+    fun getSportOKGames() = callApi({ OKGamesRepository.getOKLiveList(1, 12,  GameEntryType.OKGAMES) }) {
         it.getData()?.let { sportOKGames.value = it }
     }
 

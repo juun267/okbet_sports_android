@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -20,6 +21,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setArrowSpin
 import org.cxct.sportlottery.util.setExpandArrow
 import org.cxct.sportlottery.util.setLeagueLogo
+import splitties.views.lines
 
 
 class SportLeagueProvider(
@@ -35,14 +37,14 @@ class SportLeagueProvider(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
 
         val root = FrameLayout(context)
-        root.layoutParams = ViewGroup.LayoutParams(-1, 50.dp)
+        root.layoutParams = ViewGroup.LayoutParams(-1, 44.dp)
         root.setBackgroundResource(R.color.color_FCFDFF)
         root.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
 
         val topDivider = View(context)
         topDivider.id = dividerId
         topDivider.layoutParams = ViewGroup.LayoutParams(-1, 0.5f.dp)
-        topDivider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_D4E1F1))
+        topDivider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_E1EDFF))
         root.addView(topDivider)
 
         val wh20 = 20.dp
@@ -59,9 +61,9 @@ class SportLeagueProvider(
 
         val tvLeagueName = AppCompatTextView(context).apply {
             id = tvLeagueNameId
-            maxLines = 2
-            typeface = AppFont.helvetica
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
+            lines = 1
+            ellipsize = TextUtils.TruncateAt.END
+            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
             setTextColor(context.getColor(R.color.color_000000))
             layoutParams = FrameLayout.LayoutParams(-1, -2).apply {
                 gravity = Gravity.CENTER_VERTICAL
@@ -73,7 +75,6 @@ class SportLeagueProvider(
 
         val ivArrow = AppCompatImageView(context).apply {
             id = ivArrowId
-            setImageResource(R.drawable.selector_filter_arrow)
             layoutParams = FrameLayout.LayoutParams(wh20, wh20).apply {
                 gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
                 rightMargin = 12.dp

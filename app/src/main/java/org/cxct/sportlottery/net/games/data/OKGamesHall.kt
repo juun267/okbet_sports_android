@@ -4,6 +4,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
@@ -80,6 +81,7 @@ data class OKGameBean(
     val thirdGameCategory: String?,
     var markCollect: Boolean,
     val maintain: Int?, // 0:游戏正常开启, 1: 维护状态
+    var gameEntryType: String?,
 ): BaseNode() {
     override val childNode: MutableList<BaseNode> = mutableListOf()
 

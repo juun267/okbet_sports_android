@@ -111,12 +111,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         //重新设置赔率监听
         binding.hotMatchView.onResume(this)
         viewModel.getRecommend()
-        val noData = okGamesFragment().viewModel.gameHall.value == null
-        val time = System.currentTimeMillis()
-        if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
-            lastRequestTimeStamp = time
-            okGamesFragment().viewModel.getOKGamesHall()
-        }
+        okGamesFragment().viewModel.getOKGamesHall()
         binding.winsRankView.loadData()
     }
 

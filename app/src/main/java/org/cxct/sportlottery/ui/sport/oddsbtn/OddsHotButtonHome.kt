@@ -125,52 +125,6 @@ class OddsHotButtonHome @JvmOverloads constructor(
     fun lockOdds() {
         betStatus = BetStatus.LOCKED.code
     }
-
-    private fun setupOdd(
-        odd: Odd?,
-        oddsType: OddsType,
-        gameType: String? = null,
-        isOddPercentage: Boolean? = false,
-        matchInfo: MatchInfo?,
-    ) {
-        mOdd = odd
-        mOddsType = oddsType
-        this.matchInfo = matchInfo
-        tv_name.apply {
-            val extInfoStr =
-                odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
-            text =
-                if (extInfoStr.isNullOrEmpty())
-                    "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
-                else
-                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
-            requestLayout()
-
-            visibility =
-                if (odd?.name.isNullOrEmpty() || gameType == "disable" || hideName) View.GONE else View.VISIBLE
-        }
-
-        tv_spread.apply {
-            text = odd?.spread
-            requestLayout()
-            visibility =
-                if (odd?.spread.isNullOrEmpty() || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value) View.GONE else View.VISIBLE
-        }
-
-        if (isOddPercentage == true) //反波膽顯示 %
-            tv_odds?.text = TextUtil.formatForOddPercentage((getOdds(odd, oddsType) - 1))
-        else
-            tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-
-//        updateOddsTextColor()
-
-        isSelected = odd?.isSelected ?: false
-        //[Martin]馬來盤＆印尼盤會有負數的賠率
-        //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
-        betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
-
-    }
-
     fun setupOdd4hall(
         playCateCode: String,
         odds: Odd?,
@@ -319,67 +273,6 @@ class OddsHotButtonHome @JvmOverloads constructor(
     }
 
 
-    private fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
-        tv_name.apply {
-            text = odd?.extInfo?.toDoubleOrNull()?.let { TextUtil.formatForOdd(it) }
-                ?: odd?.extInfo //低賠率會返回在extInfo
-            paint?.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG //設置中間線
-        }
-
-        tv_spread.visibility = View.GONE
-
-        tv_odds.apply {
-            setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_eps
-                )
-            )
-            text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-        }
-        val diff = getOdds(odd, oddsType)
-        if (diff < 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_red
-                )
-            )
-//            iv_arrow.setImageResource(R.drawable.ic_match_red_down)
-            button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_lose)
-            iv_mark_bottom.visible()
-            iv_mark_top.gone()
-        } else if (diff > 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_green
-                )
-            )
-            iv_mark_top.visible()
-            iv_mark_bottom.gone()
-//            iv_arrow.setImageResource(R.drawable.ic_match_green_up)
-            button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_win)
-        } else {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_eps
-                )
-            )
-            iv_mark_top.gone()
-            iv_mark_bottom.gone()
-//            iv_arrow.setImageDrawable(null)
-            button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
-        }
-
-        isSelected = odd?.isSelected ?: false
-        //[Martin]馬來盤＆印尼盤會有負數的賠率
-        //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
-        betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
-
-    }
-
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
 //        button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
@@ -485,56 +378,6 @@ class OddsHotButtonHome @JvmOverloads constructor(
                 else R.color.selector_button_odd_bottom_text
             )
         )
-    }
-
-    /**
-     * 透過當前賠率更新賠率文字顏色
-     */
-    private fun updateOddsTextColor() {
-        //負盤
-        val diff = getOdds(mOdd, mOddsType)
-        if (diff < 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_red
-                )
-            )
-//            iv_arrow.apply {
-//                setImageResource(R.drawable.ic_match_red_down)
-//                visibility = View.VISIBLE
-//            }
-            iv_mark_bottom.visible()
-            button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_lose)
-        } else if (diff > 0.0) {//正盤
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_green
-                )
-            )
-//            iv_arrow.apply {
-//                setImageResource(R.drawable.ic_match_green_up)
-//                visibility = View.VISIBLE
-//            }
-            iv_mark_top.visible()
-            button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_win)
-        } else {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
-                    else R.color.selector_button_odd_bottom_text
-                )
-            )
-            iv_mark_top.gone()
-            iv_mark_bottom.gone()
-            button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
-//            iv_arrow.apply {
-//                setImageDrawable(null)
-//                visibility = GONE
-//            }
-        }
     }
 
     /**

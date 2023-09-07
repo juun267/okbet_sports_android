@@ -1609,5 +1609,7 @@
     <string name="P174">We’ll send a OTP code to your mobile number</string>
     <string name="P181">Register Or Login with Verification Code</string>
     <string name="P199">OKBET Awards</string>
+    <string name="N938">Not started</string>
+    <string name="P204">Bets</string>
 
 </resources>

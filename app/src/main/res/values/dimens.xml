@@ -5,7 +5,7 @@
     <dimen name="bet_list_bar_height">40dp</dimen>
     <dimen name="bottom_nav_bar_height">55dp</dimen>
 
-    <dimen name="textSize8sp">8dp</dimen>
+    <dimen name="textSize8sp">8sp</dimen>
     <dimen name="textSize10sp">10dp</dimen>
     <dimen name="textSize11sp">11dp</dimen>
     <dimen name="textSize12sp">12dp</dimen>
@@ -54,6 +54,7 @@
     <dimen name="margin_34">34dp</dimen>
     <dimen name="margin_36">36dp</dimen>
     <dimen name="margin_40">40dp</dimen>
+    <dimen name="margin_44">44dp</dimen>
     <dimen name="margin_45">45dp</dimen>
     <dimen name="margin_48">48dp</dimen>
     <dimen name="margin_50">50dp</dimen>

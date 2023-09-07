@@ -303,7 +303,7 @@ class BetInfoItemViewHolder(
         //單筆注單展開時，預設開啟輸入本金的鍵盤
         if (betListSize == 1) {
             etBet.requestFocus()
-            itemData.isInputBet = true
+            itemData.isInputBet = false
             layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
             if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) {
                 layoutKeyBoard.showKeyboard(
@@ -351,17 +351,17 @@ class BetInfoItemViewHolder(
             override fun onAnimationStart(animation: Animation?) {
                 onItemClickListener.onOddChangeStartListener(isUp)
                 if (isUp) {
-                    ivArrow.setImageResource(R.drawable.icon_odds_up)
+                    ivArrow.setImageResource(R.drawable.icon_cart_odds_up)
                     tvOdds.setTextColor(
                         ContextCompat.getColor(
-                            tvOdds.context, R.color.color_00cc33
+                            tvOdds.context, R.color.color_1CD219
                         )
                     )
                 } else {
-                    ivArrow.setImageResource(R.drawable.icon_odds_down)
+                    ivArrow.setImageResource(R.drawable.icon_cart_odds_down)
                     tvOdds.setTextColor(
                         ContextCompat.getColor(
-                            tvOdds.context, R.color.color_ff251e
+                            tvOdds.context, R.color.color_FF2E00
                         )
                     )
                 }
@@ -436,7 +436,7 @@ class BetInfoItemViewHolder(
         }
         val tvOdd = when (itemData.matchOdd.playCode) {
             PlayCate.LCS.value -> {
-                "@ " + TextUtil.formatForOddPercentage(
+                "@" + TextUtil.formatForOddPercentage(
                     getOdds(
                         itemData.matchOdd,
                         currentOddsType,
@@ -445,7 +445,7 @@ class BetInfoItemViewHolder(
                 )
             }
             else -> {
-                "@ " + TextUtil.formatForOdd(
+                "@" + TextUtil.formatForOdd(
                     getOdds(
                         itemData.matchOdd,
                         currentOddsType,

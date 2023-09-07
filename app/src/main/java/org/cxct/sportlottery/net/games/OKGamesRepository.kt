@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.net.games
 
 import com.google.gson.JsonObject
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.games.api.OKGamesApi
@@ -12,16 +13,18 @@ object OKGamesRepository {
 
     val okGamesApi by lazy { RetrofitHolder.createApiService(OKGamesApi::class.java) }
 
-    private fun paramDevice(): JsonObject {
+    private fun paramDevice(gameEntryType: String = GameEntryType.OKGAMES): JsonObject {
         val params = JsonObject()
         params.addProperty("device", 2)
+        params.addProperty("gameEntryType", gameEntryType)
         return params
     }
 
-    suspend fun collectOkGames(gameId: Int, markCollect: Boolean = true): ApiResult<Any> {
+    suspend fun collectOkGames(gameId: Int, markCollect: Boolean = true,gameEntryType: String = GameEntryType.OKGAMES): ApiResult<Any> {
         val params = JsonObject()
         params.addProperty("id", gameId)
         params.addProperty("markCollect", markCollect)
+        params.addProperty("gameEntryType", gameEntryType)
         return okGamesApi.okGamescollect(params)
     }
 
@@ -52,11 +55,13 @@ object OKGamesRepository {
         categoryId: String?,
         firmId: String?,
         markCollect: Boolean? = null, // 获取收藏列表时为：true
+        gameEntryType: String = GameEntryType.OKGAMES
     ): ApiResult<List<OKGameBean>> {
 
         val params = paramDevice()
         params.addProperty("page", page)
         params.addProperty("pageSize", pageSize)
+        params.addProperty("gameEntryType",  gameEntryType)
         if (markCollect == null) {
             params.addProperty("gameName", gameName)
             params.addProperty("categoryId", categoryId)

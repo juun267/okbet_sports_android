@@ -140,6 +140,7 @@ class SingleViewHolder private constructor(itemView: View) :
                 //篮球末位比分，细节显示
                 rvEndScoreInfo.isVisible =
                     itemData.matchOdds?.firstOrNull()?.playCateCode?.isEndScoreType()==true
+                viewDivider.isVisible = !rvEndScoreInfo.isVisible
                 if (rvEndScoreInfo.isVisible) {
                     (tv_name_type.layoutParams as ConstraintLayout.LayoutParams).apply {
                         topToTop = R.id.topContainer

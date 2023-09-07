@@ -7,7 +7,9 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -155,195 +157,6 @@ class OddsButtonDetail @JvmOverloads constructor(
         }
     }
 
-    fun setupOdd4hall(playCateCode: String, odds: Odd?, oddList: List<Odd?>?, oddsType: OddsType, isDrawBtn: Boolean? = false, isOtherBtn: Boolean? = false) {
-        mOdd = odds
-        mOddsType = oddsType
-
-        if (isDrawBtn == true) {
-            when {
-                (oddList?.size ?: 0 > 2) -> {
-                    visibility = View.VISIBLE
-                }
-                (oddList?.size ?: 0 < 3) -> {
-                    visibility = View.INVISIBLE
-                }
-            }
-        }
-
-        when {
-            (oddList == null || oddList.all { odd -> odd == null }) -> {
-                betStatus = BetStatus.DEACTIVATED.code
-                return
-            }
-            ((oddList.size < 2 || odds?.odds ?: 0.0 <= 0.0) && isOtherBtn == false) -> {
-                betStatus = BetStatus.LOCKED.code
-                return
-            }
-            else -> {
-                betStatus = odds?.status
-            }
-        }
-
-        tv_name.apply {
-            if(isDrawBtn == true){
-                visibility = View.VISIBLE
-
-                text = when {
-                    playCateCode.isNOGALType() -> getString(R.string.none)
-                    playCateCode.isCombination() -> {
-                        (odds?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(context).key
-                        ) ?: odds?.name)?.split("-")?.firstOrNull() ?: ""
-                    }
-                    !playCateCode.isCombination() -> {
-                        odds?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(context).key
-                        ) ?: odds?.name
-                    }
-                    else -> ""
-                }
-            } else {
-                visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() -> View.VISIBLE
-                    else -> View.GONE
-                }
-
-                text = when {
-                    playCateCode.isCSType() -> {
-                        odds?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(context).key
-                        ) ?: odds?.name
-                    }
-                    playCateCode.isOUType() -> {
-                        //越南語大小顯示又要特殊處理(用O/U)
-                        val language =
-                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        (odds?.nameMap?.get(
-                            language
-                        ) ?: odds?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isOEType() || playCateCode.isBTSType() -> {
-                        (odds?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        ) ?: odds?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isNOGALType() -> {
-                        when (LanguageManager.getSelectLanguage(this.context)) {
-                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                                "第" + odds?.nextScore.toString()
-                            }
-                            else -> {
-                                getOrdinalNumbers(odds?.nextScore.toString())
-                            }
-                        }
-                    }
-                    //篮球末尾比分，只显示最后空格后面的比分
-                    playCateCode.isEndScoreType() -> {
-                        (odds?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        ) ?: odds?.name)?.split(" ")?.last()
-                    }
-                    else -> ""
-                }
-            }
-            requestLayout()
-        }
-
-        tv_spread.apply {
-            visibility = when (!odds?.spread.isNullOrEmpty()) {
-                true -> View.VISIBLE
-                false -> {
-                    when {
-                        playCateCode.isOUType() -> View.INVISIBLE
-                        else -> View.GONE
-                    }
-                }
-            }
-            text = odds?.spread ?: ""
-            requestLayout()
-        }
-
-        tv_odds.apply {
-            text = TextUtil.formatForOdd(getOdds(odds, oddsType))
-        }
-
-//        updateOddsTextColor()
-
-//        isSelected = odds?.isSelected ?: false
-        isSelected = odds?.id?.let { QuickListManager.containOdd(it) } ?: false
-
-    }
-
-    //主頁精選oddsButton的判斷
-    fun setupOddName4Home(name: String?, gameType: String? = null) {
-        tv_name.apply {
-            if (gameType?.contains(PlayCate.SINGLE.value) == true) {
-                isVisible = true
-                text = name
-            } else isVisible = false
-        }
-    }
-
-
-    fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
-        tv_name.apply {
-            text = odd?.extInfo?.toDoubleOrNull()?.let { TextUtil.formatForOdd(it) }
-                ?: odd?.extInfo //低賠率會返回在extInfo
-            paint?.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG //設置中間線
-        }
-
-        tv_spread.visibility = View.GONE
-
-        tv_odds.apply {
-            setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_eps
-                )
-            )
-            text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-        }
-        val diff = getOdds(odd, oddsType)
-        if (diff < 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_red
-                )
-            )
-            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_down)
-
-        } else if (diff > 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_green
-                )
-            )
-            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_up)
-        } else {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_eps
-                )
-            )
-            iv_arrow.setImageDrawable(null)
-        }
-
-        isSelected = odd?.isSelected ?: false
-        //[Martin]馬來盤＆印尼盤會有負數的賠率
-        //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
-        betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
-
-    }
-
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
         img_odd_lock.apply {
@@ -381,7 +194,9 @@ class OddsButtonDetail @JvmOverloads constructor(
                 )
                 iv_arrow.apply {
                     setImageResource(R.drawable.icon_odds_up)
+                    (layoutParams as LinearLayout.LayoutParams).gravity = Gravity.TOP
                     visibility = View.VISIBLE
+
                 }
                 status = true
                 isActivated = false
@@ -395,6 +210,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                 )
                 iv_arrow.apply {
                     setImageResource(R.drawable.icon_odds_down)
+                    (layoutParams as LinearLayout.LayoutParams).gravity = Gravity.BOTTOM
                     visibility = View.VISIBLE
                 }
                 status = true
@@ -428,49 +244,6 @@ class OddsButtonDetail @JvmOverloads constructor(
             ll_odd_detail.tag = ll_odd_detail.flashAnimation(1000,2,0.3f)
         }
 //        updateOddsTextColor()
-    }
-
-    /**
-     * 透過當前賠率更新賠率文字顏色
-     */
-    private fun updateOddsTextColor() {
-        //負盤
-        val diff = getOdds(mOdd, mOddsType)
-        if (diff < 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_red
-                )
-            )
-            iv_arrow.apply {
-                setImageResource(R.drawable.selector_odds_arrow_down)
-                visibility = View.VISIBLE
-            }
-        } else if (diff > 0.0) {//正盤
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_green
-                )
-            )
-            iv_arrow.apply {
-                setImageResource(R.drawable.selector_odds_arrow_up)
-                visibility = View.VISIBLE
-            }
-        } else {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
-                    else R.color.selector_button_odd_bottom_text
-                )
-            )
-            iv_arrow.apply {
-                setImageDrawable(null)
-                visibility = GONE
-            }
-        }
     }
 
     /**

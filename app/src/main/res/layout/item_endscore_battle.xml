@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@color/color_FFFFFF"
     android:foreground="@drawable/fg_ripple">
 
     <LinearLayout
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/margin_5"
                 android:textFontWeight="700"
-                android:textColor="@color/color_0D2245"
+                android:textColor="@color/color_000000"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="00:43"
                 tools:visibility="visible" />
@@ -111,7 +111,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginHorizontal="12dp"
-        android:background="@color/color_261B3A98"/>
+        android:background="@color/color_EEF3FC"/>
 
     <LinearLayout
         android:id="@+id/llMatchInfo"
@@ -121,7 +121,7 @@
         android:orientation="horizontal"
         android:paddingTop="15dp"
         android:paddingBottom="6dp"
-        android:background="@color/color_F8F9FD">
+        android:background="@color/color_FFFFFF">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -133,19 +133,21 @@
             <ImageView
                 android:id="@+id/ivHomeLogo"
                 android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                android:padding="@dimen/margin_7"
+                android:background="@drawable/bg_circle_stroke_team_log"/>
 
             <TextView
                 android:id="@+id/tvHomeName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_24"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/color_0D2245"
-                android:singleLine="true"
+                android:gravity="center"
                 android:ellipsize="end"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:maxLines="1" />
+                android:maxLines="2"
+                android:textColor="@color/color_000000"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -169,19 +171,21 @@
             <ImageView
                 android:id="@+id/ivAwayLogo"
                 android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                android:padding="@dimen/margin_7"
+                android:background="@drawable/bg_circle_stroke_team_log"/>
 
             <TextView
                 android:id="@+id/tvAwayName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_24"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/color_0D2245"
-                android:singleLine="true"
+                android:gravity="center"
                 android:ellipsize="end"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:maxLines="1" />
+                android:maxLines="2"
+                android:textColor="@color/color_000000"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -219,8 +223,8 @@
         app:tabIndicatorFullWidth="false"
         app:tabMinWidth="52dp"
         app:tabMode="scrollable"
-        app:tabPaddingEnd="9dp"
-        app:tabPaddingStart="9dp"
+        app:tabPaddingEnd="8dp"
+        app:tabPaddingStart="8dp"
         app:tabRippleColor="@null"
         app:tabSelectedTextColor="@color/color_025BE8"
         app:tabTextColor="@color/color_6D7693"
@@ -228,6 +232,6 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/color_EEF3FC" />
+        android:layout_height="1dp"
+        android:background="@drawable/bg_dash_divide" />
 </LinearLayout>

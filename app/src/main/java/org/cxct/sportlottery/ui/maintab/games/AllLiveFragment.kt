@@ -24,10 +24,7 @@ import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerGameListAdapter
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerLiveListAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
-import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
-import org.cxct.sportlottery.util.goneWithSportSwitch
-import org.cxct.sportlottery.util.setupSportStatusChange
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
 // OkGames所有分类
@@ -110,13 +107,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         //重新设置赔率监听
         binding.hotMatchView.onResume(this)
         viewModel.getRecommend()
-        val noData = okLiveFragment().viewModel.gameHall.value == null
-        val time = System.currentTimeMillis()
-        if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
-            lastRequestTimeStamp = time
-            okLiveFragment().viewModel.getOKGamesHall()
-
-        }
+        okLiveFragment().viewModel.getOKGamesHall()
         binding.winsRankView.loadData()
     }
 

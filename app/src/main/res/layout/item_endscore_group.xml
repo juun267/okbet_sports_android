@@ -2,14 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:background="@color/color_0D025BE8"
+    android:layout_height="wrap_content"
+    android:background="@color/color_FCFDFF"
     android:foreground="@drawable/fg_ripple"
     android:orientation="vertical">
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_E1EDFF"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="49.5dp"
+        android:layout_height="44dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -18,8 +21,6 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginLeft="11dp"
-        android:background="@drawable/bg_circle_stroke_team_log"
-        android:padding="1dp"
         android:scaleType="centerCrop" />
 
     <TextView
@@ -32,9 +33,8 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
-        android:textColor="@color/color_0D2245"
-        android:textSize="12sp"
-        android:textStyle="bold"
+        android:textColor="@color/color_000000"
+        android:textSize="@dimen/textSize14sp"
         tools:text="欧洲足球锦标赛2020" />
 
     <ImageView
@@ -50,5 +50,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/color_261B3A98"/>
+        android:background="@color/color_E1EDFF"/>
 </LinearLayout>

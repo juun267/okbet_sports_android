@@ -37,7 +37,7 @@
                 android:textColor="@color/color_14366B"
                 android:fontFamily="@font/helvetica_normal"
                 android:textStyle="bold"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize15sp"
                 tools:text="欧洲足球锦标赛2020" />
         </LinearLayout>
 
@@ -132,8 +132,7 @@
                         android:id="@+id/clToolContent"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:layout_marginBottom="12dp"
-                        android:background="@color/color_EEF3FC"
+                        android:background="@color/color_F1F5FF"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="10dp">
 
@@ -229,13 +228,17 @@
                             app:layout_constraintEnd_toStartOf="@+id/tvLiveStream"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/margin_12"
+                        android:background="@color/color_F9FAFD"/>
                 </LinearLayout>
 
                 <!-- 这边必须使用ToolBar -->
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/collaps_toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/tool_bar_height"
+                    android:layout_height="44dp"
                     android:visibility="gone"
                     app:contentInsetStart="0dp"
                     app:contentScrim="@color/transparent"
@@ -265,7 +268,7 @@
                 <LinearLayout
                     android:id="@+id/lin_categroy"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
+                    android:layout_height="44dp"
                     android:background="@drawable/bg_sport_detail_categroy">
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -279,18 +282,23 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/tab_odds_detail" />
 
-
-                    <ImageView
-                        android:id="@+id/iv_arrow"
+                    <LinearLayout
+                        android:id="@+id/linArrow"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
                         android:layout_marginVertical="-6dp"
                         android:background="@drawable/bg_arrow_white_shadow"
-                        android:paddingVertical="@dimen/margin_15"
+                        android:gravity="center"
                         android:paddingLeft="@dimen/margin_20"
-                        android:paddingRight="@dimen/margin_15"
-                        android:src="@drawable/selector_arrow_dark_blue_double" />
+                        android:paddingRight="@dimen/margin_15">
+                        <ImageView
+                            android:id="@+id/iv_arrow"
+                            android:layout_width="@dimen/margin_20"
+                            android:layout_height="@dimen/margin_20"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_arrow_up" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <View
@@ -305,6 +313,7 @@
             android:id="@+id/rv_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/color_F1F5FF"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false"
             app:layout_behavior="org.cxct.sportlottery.util.FixScrollingFooterBehavior"
@@ -333,7 +342,7 @@
         android:id="@+id/parlayFloatWindow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

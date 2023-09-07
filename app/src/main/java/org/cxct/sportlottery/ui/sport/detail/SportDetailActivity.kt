@@ -24,8 +24,12 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_detail_sport.*
+import kotlinx.android.synthetic.main.activity_detail_sport.fl_bet_list
+import kotlinx.android.synthetic.main.activity_detail_sport.parlayFloatWindow
+import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
+import kotlinx.android.synthetic.main.fragment_sport_list2.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.*
@@ -130,6 +134,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     val ivToolbarAwayLogo by lazy { binding.collapsToolbar.ivToolbarAwayLogo }
     val tvToolbarHomeScore by lazy { binding.collapsToolbar.tv_toolbar_home_score }
     val tvToolbarAwayScore by lazy { binding.collapsToolbar.tv_toolbar_away_score }
+    val tvToolbarNoStart by lazy { binding.collapsToolbar.linNoStart }
 
     private val liveToolBarListener by lazy {
         object : DetailLiveViewToolbar.LiveToolBarListener {
@@ -516,7 +521,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun updateBetListCount(num: Int) {
         setUpBetBarVisible()
-        binding.parlayFloatWindow.tv_bet_list_count.text = num.toString()
+        binding.parlayFloatWindow.updateCount(num.toString())
         Timber.e("num: $num")
         if (num > 0) viewModel.getMoneyAndTransferOut()
     }
@@ -664,7 +669,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 sportCode = GameType.getGameType(matchInfo?.gameType)
             }
         rv_detail.apply {
-            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context,R.drawable.bg_divide_eef3fc)))
+            if (itemDecorationCount==0)
+            addItemDecoration(SpaceItemDecoration(context,R.dimen.margin_4))
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             setLinearLayoutManager()
@@ -678,10 +684,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             itemAnimator?.changeDuration = 0
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
         }
-        iv_arrow.apply {
+        linArrow.apply {
             isSelected = true
+            binding.ivArrow.rotationAnimation(0f)
             setOnClickListener {
                 isSelected = !isSelected
+                if (isSelected){
+                    binding.ivArrow.rotationAnimation(0f)
+                }else{
+                    binding.ivArrow.rotationAnimation(180f)
+                }
                 oddsDetailListAdapter?.oddsDetailDataList?.forEach {
                     it.isExpand = isSelected
                 }
@@ -810,8 +822,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     oddsDetailListAdapter?.removePreloadItem()
                     //如果是末位比分，小节比分就折叠起来
                     if (tabCode == MatchType.END_SCORE.postValue){
-                        list.filter { it.gameType.isEndScoreType()}?.forEach {
-                            it.isExpand = it.gameType==PlayCate.FS_LD_CS.value
+                        list.filter { it.gameType.isEndScoreType()}?.forEachIndexed { index, oddsDetailListData ->
+                            oddsDetailListData.isExpand = (index==0)
                         }
                     }
                     oddsDetailListAdapter?.oddsDetailDataList = list

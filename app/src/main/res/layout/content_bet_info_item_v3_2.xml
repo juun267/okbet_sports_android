@@ -47,7 +47,7 @@
                 android:gravity="center"
                 android:maxWidth="290dp"
                 android:maxLines="1"
-                android:textColor="@color/color_0D2245"
+                android:textColor="@color/color_000000"
                 android:textSize="14sp"
                 android:textFontWeight="600"
                 tools:text="Manchester United FC (Mad)" />
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:maxLines="1"
-                android:textColor="@color/color_0D2245"
+                android:textColor="@color/color_000000"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold"
                 tools:text="-0.5/2" />
@@ -78,20 +78,17 @@
         <!--玩法名稱:讓球,獨贏..-->
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:drawablePadding="8dp"
+            android:maxWidth="224dp"
             android:gravity="center_vertical"
-            android:paddingEnd="10dp"
-            android:textColor="@color/color_9BB3D9_535D76"
+            android:textColor="@color/color_000000"
             android:textSize="@dimen/textSize12sp"
             android:visibility="visible"
             android:ellipsize="end"
-            android:maxLines="1"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintHorizontal_chainStyle="packed"
+            android:lines="1"
             app:layout_constraintStart_toStartOf="@+id/odds_content_container"
             app:layout_constraintTop_toBottomOf="@+id/odds_content_container"
             app:layout_constraintEnd_toStartOf="@+id/tv_name_type"
@@ -105,9 +102,9 @@
             android:background="@drawable/bg_match_type_gray_circle"
             android:gravity="center_vertical"
             android:paddingHorizontal="4dp"
-            android:textColor="@color/color_9BB3D9_535D76"
+            android:textColor="@color/color_000000"
             android:textSize="@dimen/textSize12sp"
-            app:layout_constraintEnd_toStartOf="@id/odds_change_container"
+            app:layout_constraintStart_toEndOf="@+id/tv_name"
             app:layout_constraintTop_toTopOf="@+id/tv_name"
             tools:text="欧洲盘" />
 
@@ -118,16 +115,17 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingEnd="14dp"
+            android:layout_marginRight="@dimen/margin_12"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_name_type">
+            app:layout_constraintTop_toTopOf="@+id/tv_name_type"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_name_type">
             <ImageView
                 android:id="@+id/ivOddsArrow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="2dp"
                 android:visibility="gone"
-                tools:src="@drawable/icon_odds_down"
+                tools:src="@drawable/icon_cart_odds_down"
                 tools:visibility="visible" />
 
             <TextView
@@ -150,9 +148,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="@dimen/margin_12"
             android:maxLines="1"
-            android:textColor="@color/color_A7B2C4"
+            android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_league_name"
@@ -166,7 +164,7 @@
             android:layout_height="wrap_content"
             android:text="VS"
             android:layout_marginStart="10dp"
-            android:textColor="@color/color_A7B2C4"
+            android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvMatchHome"
             app:layout_constraintStart_toEndOf="@+id/tvMatchHome"
@@ -178,10 +176,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:layout_marginEnd="14dp"
+            android:layout_marginEnd="@dimen/margin_12"
             android:maxLines="1"
             android:layout_marginStart="10dp"
-            android:textColor="@color/color_A7B2C4"
+            android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintStart_toEndOf="@+id/tvVs"
             app:layout_constraintTop_toTopOf="@+id/tvVs"
@@ -195,7 +193,7 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/color_9BB3D9_535D76"
+            android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize12sp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
@@ -221,9 +219,9 @@
         <View
             android:id="@+id/viewDivider"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginHorizontal="14dp"
-            android:background="@color/color_e3e8ee"
+            android:layout_height="@dimen/margin_0.5"
+            android:layout_marginHorizontal="12dp"
+            android:background="@color/color_EEF3FC"
             android:layout_marginTop="10dp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
@@ -318,17 +316,17 @@
                 android:orientation="vertical"
                 android:visibility="visible">
                 <View
-                    android:layout_marginHorizontal="14dp"
-                    android:background="@color/color_dbdfea"
+                    android:layout_marginHorizontal="@dimen/margin_12"
+                    android:background="@color/color_EEF3FC"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_height="@dimen/margin_0.5"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_editText_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_radius_12_f8f8f8"
-                    android:paddingHorizontal="@dimen/margin_14"
+                    android:paddingHorizontal="@dimen/margin_12"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:visibility="visible"
@@ -381,9 +379,9 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
-                    android:background="@color/color_dbdfea"
+                    android:background="@color/color_EEF3FC"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_height="@dimen/margin_0.5"/>
 
                 <org.cxct.sportlottery.util.KeyboardView
                     android:id="@+id/layoutKeyBoard"

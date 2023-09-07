@@ -30,7 +30,7 @@ class PlayCateView @JvmOverloads constructor(
     private var oddBtnDraw: OddsButton2? = null
     private var oddBtnOther: OddsButton2? = null
 
-    private val oddHeight = 64.dp
+    private val oddHeight = 56.dp
     private val oddLayout = LinearLayout(context)
     private val oddMargins = 2.dp
 
@@ -51,10 +51,10 @@ class PlayCateView @JvmOverloads constructor(
 
         oddBtnHome = createOddBtn()
         oddBtnAway = createOddBtn()
-
+        oddLayout.gravity = Gravity.CENTER_VERTICAL
         oddLayout.addView(oddBtnHome, LayoutParams(-1, oddHeight, 1f).apply { rightMargin = oddMargins })
         oddLayout.addView(oddBtnAway, LayoutParams(-1, oddHeight, 1f).apply { leftMargin = oddMargins })
-        addView(oddLayout)
+        addView(oddLayout,LayoutParams(-1, -1))
     }
 
     private fun createNameTextView(): TextView {

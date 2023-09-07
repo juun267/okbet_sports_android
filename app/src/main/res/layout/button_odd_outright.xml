@@ -14,7 +14,6 @@
         android:background="@drawable/selector_button_radius_6_odds"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingHorizontal="10dp"
         tools:ignore="SpUsage">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,6 +27,7 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -61,17 +61,18 @@
                 tools:textColor="@color/color_6C7BA8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/ll_odd_outright"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/tv_odds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
                 android:includeFontPadding="false"
+                android:layout_gravity="center_vertical"
                 android:textColor="@color/selector_button_odd_top_text"
                 android:textSize="@dimen/textSize12sp"
                 android:textFontWeight="700"
@@ -79,13 +80,15 @@
 
             <ImageView
                 android:id="@+id/iv_arrow"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="12dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:adjustViewBounds="true"
                 tools:src="@drawable/icon_odds_up"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible" />
 
-        </LinearLayout>
+        </FrameLayout>
 
 
     </LinearLayout>
