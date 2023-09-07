@@ -20,7 +20,6 @@ import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 import org.cxct.sportlottery.view.loadMore
-import splitties.views.backgroundColor
 
 // 指定类别的三方游戏
 class PartGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
@@ -64,6 +63,7 @@ class PartGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGames
         initGameList()
         bindClick()
         bindLabels()
+        gameChildAdapter.bindLifecycleOwner(this)
     }
 
     private fun bindClick() {

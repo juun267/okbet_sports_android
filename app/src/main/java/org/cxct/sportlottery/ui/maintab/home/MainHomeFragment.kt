@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.layout_home_top.*
-import kotlinx.android.synthetic.main.fragment_main_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -84,9 +83,11 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@MainHomeFragment)
 //        okGamesView.setOkGamesData(this@MainHomeFragment)
         gameViewOkGame.initOkGames(this@MainHomeFragment)
-        if (StaticData.okLiveOpened()){
+        gameViewOkGame.bindLifecycleOwner(this@MainHomeFragment)
+//        if (StaticData.okLiveOpened()){
             gameViewOkLive.initOkLiveList(this@MainHomeFragment)
-        }
+            gameViewOkLive.bindLifecycleOwner(this@MainHomeFragment)
+//        }
         initBetWinsRecodeLayout()
         initObservable()
         binding.winsRankView.loadData()
