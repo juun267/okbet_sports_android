@@ -164,6 +164,10 @@ object TimeUtil {
         }
     }
 
+    fun timeFormatUTC4(time: Long, format: String): String {
+        return timeFormat(time, format, SimpleTimeZone(-4 * 3600_000, "UTC-4"))
+    }
+
     fun timeFormat(
         time: Long?,
         format: String,

@@ -13,82 +13,69 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_14"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:minHeight="49dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/tv_date_time"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:minHeight="49dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:layout_weight="1.8"
             android:gravity="center"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize12sp"
-            app:dateChangeLineTime="@{data.betTime}"
-            tools:text="2022/08/13\n08:03:250" />
-        <TextView
-            android:id="@+id/tv_game_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.25"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="@color/color_9BB3D9_535D76"
-            android:textSize="@dimen/textSize12sp"
-            android:textStyle="bold"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
-            android:text="@{data.gameName}"
-            tools:text="@string/game_name" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_bet_total_money"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:layout_weight="1.5"
-            android:gravity="center"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize12sp"
-            app:moneyFormat="@{data.betAmount}"
-            tools:text="999,999,999.000" />
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:textColor="@color/color_FFFFFF_414655"
+                android:textSize="@dimen/textSize10sp"
+                tools:text="2022/08/13\n08:03:250" />
 
-        <TextView
-            android:id="@+id/tv_win_lose_money"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:gravity="center"
-            android:textSize="@dimen/textSize12sp"
-            app:moneyColor="@{data.netAmount}"
-            app:profitFormat="@{data.netAmount}"
-            tools:text="+1,060,000.000"
-            tools:textColor="@color/color_08dc6e_08dc6e" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:maxLines="3"
+                android:textColor="@color/color_FFFFFF_414655"
+                android:textSize="@dimen/textSize10sp"
+                android:text="@{data.firmName}"
+                tools:text="@string/game_name" />
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:maxLines="3"
+                android:textColor="@color/color_FFFFFF_414655"
+                android:textSize="@dimen/textSize10sp"
+                android:text="@{data.gameName}"
+                tools:text="@string/game_name" />
 
-        <TextView
-            android:id="@+id/tv_play_cate_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:layout_weight="2"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:text="@{data.orderNo}"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize12sp"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
-            tools:text="12345678912345" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:textColor="@color/color_FFFFFF_414655"
+                android:textSize="@dimen/textSize10sp"
+                app:moneyFormat="@{data.betAmount}"
+                tools:text="999,999,999.000" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:textSize="@dimen/textSize10sp"
+                app:moneyColor="@{data.netAmount}"
+                app:profitFormat="@{data.netAmount}"
+                tools:text="+1,060,000.000"
+                tools:textColor="@color/color_08dc6e_08dc6e" />
+
+        </LinearLayout>
 
         <View
             android:id="@+id/divider"

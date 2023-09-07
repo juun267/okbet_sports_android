@@ -513,7 +513,7 @@
     <string name="visit_first">Welcome</string>
     <string name="bet_number">Count</string>
     <string name="bet_money">Amount</string>
-    <string name="profit_and_loss">Result</string>
+    <string name="J267">Kita at lugi</string>
     <string name="total_bet_number">Kabuuang taya：</string>
     <string name="total_profit_and_loss">Kabuuang Panalo：</string>
     <string name="game_name">Pangalan ng laro</string>
@@ -776,7 +776,7 @@
     <!--region 最新消息-->
     <string name="news_tab_game">Laro</string>
     <string name="news_tab_system">Sistema</string>
-    <string name="news_tab_plat">Platform</string>
+    <string name="J653">Platform</string>
     <string name="news_detail">Detalyado</string>
     <!--endregion 最新消息-->
 
@@ -1455,5 +1455,6 @@
     <string name="P199">Mga OKBET Award</string>
     <string name="N938">Hindi nasimulan</string>
     <string name="P204">Bets</string>
+    <string name="J653_1">Game Vendor</string>
 </resources>
 

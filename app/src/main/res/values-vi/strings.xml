@@ -538,7 +538,7 @@
     <string name="visit_first">Khám phá trò chơi</string>
     <string name="bet_number">Số lần cược</string>
     <string name="bet_money">Số tiền đặt cược</string>
-    <string name="profit_and_loss">Lãi lỗ</string>
+    <string name="J267">Lãi lỗ</string>
     <string name="total_bet_number">Tổng số bàn：</string>
     <string name="total_profit_and_loss">Tổng lãi và lỗ：</string>
     <string name="game_name">Tên trò chơi</string>
@@ -845,7 +845,7 @@
     <!--region 最新消息-->
     <string name="news_tab_game">Trò chơi</string>
     <string name="news_tab_system">Hệ thống</string>
-    <string name="news_tab_plat">Trang</string>
+    <string name="J653">Trang</string>
     <string name="news_detail">Chi tiết</string>
     <!--endregion 最新消息-->
 
@@ -1480,4 +1480,5 @@
     <string name="P199">Giải thưởng OKBET</string>
     <string name="N938">Chưa bắt đầu</string>
     <string name="P204">Đơn cược</string>
+    <string name="J653_1">Trang</string>
 </resources>
