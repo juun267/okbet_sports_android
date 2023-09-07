@@ -95,7 +95,7 @@ class StaticData {
                     return it.status==1
                 }
             }
-            return false
+            return true
         }
 
 
@@ -107,7 +107,7 @@ class StaticData {
                     return it.status==1
                 }
             }
-            return false
+            return true
         }
 
 
@@ -119,7 +119,7 @@ class StaticData {
                     return it.status==1
                 }
             }
-            return false
+            return true
         }
 
         //获取okBingo是否开启
@@ -130,7 +130,7 @@ class StaticData {
                     return it.status==1
                 }
             }
-            return false
+            return true
         }
 
     }
