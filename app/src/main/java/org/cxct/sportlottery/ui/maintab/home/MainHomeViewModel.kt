@@ -390,7 +390,7 @@ open class MainHomeViewModel(
     /**
      * 未登录试玩
      */
-    private fun requestEnterThirdGameNoLogin(firmType: String?, gameCode: String?, gameCategory: String?, gameEntryTagName: String?){
+    fun requestEnterThirdGameNoLogin(firmType: String?, gameCode: String?, gameCategory: String?, gameEntryTagName: String?){
         if(firmType==null){
             //不支持试玩
             _enterTrialPlayGameResult.postValue(null)

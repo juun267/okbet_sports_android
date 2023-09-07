@@ -65,8 +65,6 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         initObserve()
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
         checkLocalHost()
-        // 避免Not allowed to start service Intent异常
-        runWithCatch { startService(Intent(this,BackService::class.java)) }
     }
 
 

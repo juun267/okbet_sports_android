@@ -208,7 +208,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
 
     private fun navGameFragment(matchType: MatchType) {
-        var gameType = if (navESport) GameType.ES.key else jumpGameType?.key
+        var gameType = navGameSport?.key ?: jumpGameType?.key
         jumpMatchType = null
         jumpGameType = null
 
@@ -253,33 +253,39 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     }
 
-    private var navESport = false
+    private var navGameSport: GameType? = null
     fun setJumpESport() {
+        jumpToSport(GameType.ES)
+    }
+
+    fun jumpToSport(gameType: GameType) {
         if (sportMenu == null) {
-            navESport = true
+            navGameSport = gameType
             return
         }
 
         val menuData = sportMenu!!
-        val matchType = findESportMatchType(menuData)
-        setJumpSport(matchType, gameType = GameType.ES)
+        val matchType = findMatchType(menuData, gameType)
+        setJumpSport(matchType, gameType = gameType)
     }
 
-    private fun findESportMatchType(menu: Menu): MatchType {
-        val matchType = findESport(menu.inPlay.items, MatchType.IN_PLAY)
-            ?: findESport(menu.today.items, MatchType.TODAY)
-            ?: findESport(menu.early.items, MatchType.EARLY)
+    private fun findMatchType(menu: Menu, gameType: GameType): MatchType {
+        val matchType = findESport(menu.inPlay.items, MatchType.IN_PLAY, gameType)
+            ?: findESport(menu.today.items, MatchType.TODAY, gameType)
+            ?: findESport(menu.early.items, MatchType.EARLY, gameType)
 
         if (matchType == null) {
-            showPromptDialog(getString(R.string.prompt), getString(R.string.P172)) { }
+            if (gameType == GameType.ES) { // 仅电竞的时候提示
+                showPromptDialog(getString(R.string.prompt), getString(R.string.P172)) { }
+            }
 //            ToastUtil.showToast(context(), R.string.P172)
-            return MatchType.IN_PLAY
+            return MatchType.EARLY
         }
         return matchType
     }
-    private fun findESport(items: List<Item>, matchType: MatchType): MatchType? {
+    private fun findESport(items: List<Item>, matchType: MatchType, gameType: GameType): MatchType? {
         items.forEach {
-            if (GameType.ES.key == it.code) {
+            if (gameType.key == it.code) {
                 jumpMatchType = matchType
                 return matchType
             }
@@ -340,7 +346,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     private fun updateUiWithResult(sportMenuResult: ApiResult<SportMenuData>) {
         if (!sportMenuResult.succeeded() || sportMenuResult.getData() == null) {
-            navESport = false
+            navGameSport = null
             return
         }
 
@@ -348,12 +354,12 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         refreshTabLayout(sportMenuResult)
         EventBusUtil.post(sportMenuResult)
         if (!isFirstSwitch) {
-            navESport = false
+            navGameSport = null
             return
         }
         val menuData = sportMenuResult.getData()!!.menu
-        val matchType = if (navESport) {
-            findESportMatchType(menuData)
+        val matchType = if (navGameSport != null) {
+            findMatchType(menuData, navGameSport!!)
         } else {
             jumpMatchType ?: defaultMatchType
         }
@@ -361,7 +367,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             // 加post, 避免选中的tab不 能滚动到中间
             post{
                 binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
-                navESport = false
+                navGameSport = null
             }
         }
     }

@@ -37,6 +37,7 @@ object TimeUtil {
     const val D_NARROW_MONTH = "dd/MMM"
     const val DAY_MONTH_YEAR= "dd.MM.yyyy"
 
+    const val NEWS_TIME_FORMAT2 = "MMM dd, yyyy HH:MM:SS"
     //Feb 12, 2023 10:16AM 新闻时间格式
     const val NEWS_TIME_FORMAT = "MMM dd, yyyy h:mma"
     //Feb 12, 2023 10:16AM 新闻时间格式
