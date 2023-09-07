@@ -28,6 +28,15 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp" />
 
+    <org.cxct.sportlottery.ui.maintab.games.view.JackpotView
+        android:id="@+id/jackpotView"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_marginHorizontal="12dp"
+        app:layout_scrollFlags="scroll"
+        android:layout_height="92dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvGamesTab"
         android:layout_width="match_parent"

@@ -34,6 +34,7 @@ object EventType {
     const val SYS_MAINTENANCE = ("SYS_MAINTENANCE")  //系统维护状态
     const val PLAY_QUOTA_CHANGE = ("PLAY_QUOTA_CHANGE")  //所有体育玩法限额变更
     const val SPORT_MAINTAIN_STATUS=("SPORT_MAINTAIN_STATUS") //体育维护状态   1开启  0关闭
+    const val RECORD_RESULT_JACKPOT_OK_GAMES=("RECORD_RESULT_JACKPOT_OK_GAMES") //jackpot监听
 
     /* /ws/notify/all/encrypted*/
     const val CLOSE_PLAY_CATE = ("CLOSE_PLAY_CATE")  //關閉玩法

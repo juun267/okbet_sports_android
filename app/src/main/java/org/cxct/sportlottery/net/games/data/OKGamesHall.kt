@@ -82,6 +82,8 @@ data class OKGameBean(
     var markCollect: Boolean,
     var gameEntryType: String?,
     var maintain: Int?, // 0:游戏正常开启, 1: 维护状态
+    val jackpotAmount:Double, //0不显示1显示
+    val jackpotOpen:Int,
 ): BaseNode() {
     override val childNode: MutableList<BaseNode> = mutableListOf()
 

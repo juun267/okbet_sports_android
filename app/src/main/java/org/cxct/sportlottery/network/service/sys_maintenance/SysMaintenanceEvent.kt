@@ -21,3 +21,12 @@ data class SportMaintenanceEvent(
     @Json(name = "status")
     val status: Int? = null //1开启维护  0关闭
 ) : ServiceEventType
+
+@JsonClass(generateAdapter = true) @KeepMembers
+data class JackpotEvent(
+    @Json(name = "eventType")
+    override val eventType: String? = EventType.RECORD_RESULT_JACKPOT_OK_GAMES,
+    @Json(name = "amount")
+    var amount: String = "" //金额
+) : ServiceEventType
+
