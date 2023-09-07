@@ -1453,7 +1453,7 @@
     <string name="P172">Không có sự kiện E-sports nào!</string>
     <string name="N417">Đã từ chối</string>
     <string name="P150">Nhắc nhở về doanh thu không hợp lệ.</string>
-    <string name="P149">"Trước khi yêu cầu rút tiền, vui lòng hoàn thành tiền gửi %s(theo quy định của PAGCOR, mỗi giao dịch gửi tiền yêu cầu có gấp đôi doanh thu).  Vui lòng liên hệ CSKH để được hỗ trợ. "</string>
+    <string name="P149">Trước khi yêu cầu rút tiền, vui lòng hoàn thành tiền gửi %s(theo quy định của PAGCOR, mỗi giao dịch gửi tiền yêu cầu có gấp đôi doanh thu).  Vui lòng liên hệ CSKH để được hỗ trợ.</string>
     <string name="str_return_last_step">Trở về</string>
     <string name="viber">Viber</string>
     <string name="P161">Kết quả chung cuộc</string>
