@@ -1535,9 +1535,10 @@
     <string name="P120">派彩</string>
     <string name="I031">注单详情</string>
     <string name="B036">立即游戏</string>
-    <string name="P183">代理充值</string>
     <string name="N211">查看注单</string>
+    <string name="P183">代理充值</string>
     <string name="P199">OKBET荣誉</string>
     <string name="J653_1">平台</string>
     <string name="bets">注单</string>
+    <string name="P204">注单</string>
 </resources>

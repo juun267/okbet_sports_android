@@ -1447,16 +1447,16 @@
     <string name="P149">Mangyaring kumpletuhin ang wagering turnover %s sa pagtaya bago humiling ng withdrawal. (Alinsunod sa mga regulasyon ng PAGCOR, 1x turnover ang kailangan para sa bawat deposito na transaksyon) Para sa assistance, mangyaring makipag-ugnayan sa customer service.</string>
     <string name="P173">Ano ang numero ng iyong mobile phone?</string>
     <string name="P174">Magpapadala kami ng OTP code sa numero ng iyong mobile</string>
+    <string name="P120">Payout</string>
+    <string name="I031">Detalye ng taya</string>
+    <string name="B036">Maglaro</string>
+    <string name="N211">Tingnan bet slip</string>
     <string name="P176">Magpatuloy bilang OKBET x Glife member</string>
     <string name="P175">Maging bagong miyembro ng OKBET</string>
     <string name="P181">Magrehistro o mag-log in gamit ang verification code</string>
     <string name="P184">Patok na OKLive</string>
     <string name="N938">Hindi nasimulan</string>
-    <string name="P120">Payout</string>
-    <string name="I031">Detalye ng taya</string>
-    <string name="B036">Maglaro</string>
     <string name="P183">Top-up ng ahente</string>
-    <string name="N211">Tingnan bet slip</string>
     <string name="J653_1">Game Vendor</string>
-    <string name="P199">Mga OKBET Award</string>
+    <string name="P204">Bets</string>
 </resources>

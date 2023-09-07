@@ -1571,13 +1571,6 @@
     <string name="N142">Bet Slip No</string>
     <string name="N082">Favorite</string>
     <string name="J784">1X2</string>
-    <string name="P161">Basketball Ending Total Score</string>
-    <string name="P162">Basketball Ending 1st</string>
-    <string name="P163">Basketball Ending 2nd</string>
-    <string name="P164">Basketball Ending 3rd</string>
-    <string name="P165">Basketball Ending 4th</string>
-
-
     <string name="F011">Stake</string>
     <string name="J770">Home</string>
     <string name="J771">Away</string>
@@ -1604,18 +1597,19 @@
     <string name="P173">What’s your mobile number？</string>
     <string name="P174">We’ll send a OTP code to your mobile number</string>
     <string name="fiba_2023">FIBA WC 2023</string>
+    <string name="P120">Payout</string>
+    <string name="I031">Bets Details</string>
+    <string name="B036">Play Now</string>
+    <string name="N211">Bets Details</string>
     <string name="P176">Continue as OKBET x Glife member</string>
     <string name="P175">Become a new OKBET member</string>
     <string name="P181">Register Or Login with Verification Code</string>
     <string name="P184">Featured OKLive</string>
     <string name="N938">Not started</string>
-    <string name="P120">Payout</string>
-    <string name="I031">Bets Details</string>
-    <string name="B036">Play Now</string>
     <string name="P183">Agent Deposit</string>
-    <string name="N211">Bets Details</string>
     <string name="P199">OKBET Awards</string>
     <string name="J653_1">Game Vendor</string>
     <string name="bets">Bets</string>
+    <string name="P204">Bets</string>
 
 </resources>

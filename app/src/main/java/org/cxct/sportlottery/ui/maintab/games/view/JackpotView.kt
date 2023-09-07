@@ -99,10 +99,12 @@ class JackpotView @JvmOverloads constructor(
 //        setJackPotNumber(5326.0)
     }
 
-    private var oldNumber=0.0
+    //记录旧奖池数量
+    private var oldNumber=-1.0
     private var oldNumberArray= charArrayOf()
     //设置奖池数据
     fun setJackPotNumber(numberData:Double,){
+        //奖池金额不变 不滚动
         if(numberData==oldNumber){
             return
         }
