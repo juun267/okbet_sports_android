@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -12,12 +13,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import kotlinx.android.synthetic.main.include_view_payment_method.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.maintab.games.view.HomeFollowView
+import org.cxct.sportlottery.util.DisplayUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.setServiceClick
 
 class HomeButtomView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
@@ -73,7 +77,10 @@ class HomeButtomView@JvmOverloads constructor(context: Context, attrs: Attribute
             R.drawable.icon_gcash,
             R.drawable.icon_paymaya,
             R.drawable.icon_fortune_pay,
-            R.drawable.icon_epon
+            R.drawable.icon_epon,
+            R.drawable.icon_payloro,
+            R.drawable.icon_unionbank,
+            R.drawable.icon_aub
         )
         rcvPayment.layoutManager = GridLayoutManager(context, 4)
         val paymentAdapter =
