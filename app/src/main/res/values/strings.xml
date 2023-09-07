@@ -1591,6 +1591,13 @@
     <string name="N417">Rejected</string>
     <string name="P150">Reminder Of Turnover</string>
     <string name="P149">Please complete %s valid turnover before requesting a withdrawal. (as per PAGCOR regulations, 1x turnover is needed for every deposit transaction). For more assistance, kindly contact customer service.</string>
+    <string name="P161">Basketball Ending Total Score</string>
+    <string name="P162">Basketball Ending 1st</string>
+    <string name="P163">Basketball Ending 2nd</string>
+    <string name="P164">Basketball Ending 3rd</string>
+    <string name="P165">Basketball Ending 4th</string>
+
+
     <string name="P170">you got</string>
     <string name="Congratulations">Congratulations</string>
     <string name="world_cup_2023">FIBA World Cup 2023</string>
