@@ -1477,4 +1477,10 @@
     <string name="P173">SĐT của bạn là bao nhiêu?</string>
     <string name="P174">Chúng tôi đang gửi mã OTP vào SĐT của bạn</string>
     <string name="P181">Dùng mã OTP đăng ký hoặc đăng nhập</string>
+    <string name="P211">Thông tin bổ sung</string>
+    <string name="P207">Ảnh selfie</string>
+    <string name="P208">Tải ảnh selfie lên, dung lượng file phải nhỏ hơn 2MB.</string>
+    <string name="P209">Chứng minh thu nhập</string>
+    <string name="P210">Tải lên các tài liệu chứng minh thu nhập, kích thước tệp phải nhỏ hơn 2MB.</string>
+    <string name="P198">Bấm để tải ảnh lên</string>
 </resources>

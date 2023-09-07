@@ -6,18 +6,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.VerifyConfig
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.credential.CredentialCompleteRequest
-import org.cxct.sportlottery.network.credential.CredentialCompleteResult
-import org.cxct.sportlottery.network.credential.CredentialInitialRequest
-import org.cxct.sportlottery.network.credential.CredentialResult
 import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.profileCenter.versionUpdate.AppVersionState
 import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.isThirdTransferOpen
+import org.cxct.sportlottery.util.SingleLiveEvent
 import java.io.File
 
 class ProfileCenterViewModel(
@@ -52,22 +51,13 @@ class ProfileCenterViewModel(
         get() = _uploadVerifyPhotoResult
     private val _uploadVerifyPhotoResult = MutableLiveData<Event<UploadVerifyPhotoResult?>>()
 
-    val credentialInitialResult: LiveData<Event<CredentialResult?>>
-        get() = _credentialInitialResult
-    private val _credentialInitialResult = MutableLiveData<Event<CredentialResult?>>()
-
-    val credentialCompleteResult: LiveData<Event<CredentialCompleteResult?>>
-        get() = _credentialCompleteResult
-    private val _credentialCompleteResult = MutableLiveData<Event<CredentialCompleteResult?>>()
-
     val userVerifiedType: LiveData<Event<Int?>>
         get() = _userVerifiedType
     private val _userVerifiedType = MutableLiveData<Event<Int?>>()
 
-    //版本状态
-    private val _appVersionState = MutableLiveData<AppVersionState>()
-    val appVersionState: LiveData<AppVersionState>
-        get() = _appVersionState
+    val verifyConfig = SingleLiveEvent<ApiResult<VerifyConfig>>()
+    val imgUpdated = SingleLiveEvent<Pair<File, ImgData?>>()
+    val uploadReview = SingleLiveEvent<ApiResult<String>>()
 
     fun getUserInfo() {
         viewModelScope.launch {
@@ -77,59 +67,11 @@ class ProfileCenterViewModel(
         }
     }
 
-    fun getCredentialInitial(metaInfo: String, docType: String) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.credentialService.getCredentialInitial(
-                    CredentialInitialRequest(
-                        metaInfo,
-                        docType
-                    )
-                )
-            }?.let { result ->
-                _credentialInitialResult.postValue(Event(result))
-            }
-        }
-    }
-
-    fun getCredentialCompleteResult(transactionId: String?) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.credentialService.getCredentialComplete(
-                    CredentialCompleteRequest(transactionId)
-                )
-            }?.let { result ->
-                _credentialCompleteResult.postValue(Event(result))
-            }
-        }
-    }
-
-    //提款設置判斷權限
-    fun settingCheckPermissions() {
-        viewModelScope.launch {
-            try {
-                withdrawRepository.settingCheckPermissions()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
 
     fun uploadImage(uploadImgRequest: UploadImgRequest) {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 avatarRepository.uploadImage(uploadImgRequest)
-            }
-        }
-    }
-
-    fun allTransferOut() {
-        if (isThirdTransferOpen()) {
-            //若自動轉換功能開啟，離開遊戲要全額轉出
-            viewModelScope.launch {
-                doNetwork(androidContext) {
-                    OneBoSportApi.thirdGameService.allTransferOut()
-                }
             }
         }
     }
@@ -293,5 +235,32 @@ class ProfileCenterViewModel(
                 }
             }
         }
+    }
+
+
+    fun getVerifyConfig() {
+        callApi({ UserRepository.getVerifyConfig() }) { verifyConfig.value = it}
+    }
+
+
+    fun uploadImage(imgeFile: File) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.uploadImgService.uploadImg(
+                    UploadVerifyDocRequest(
+                        userInfo.value?.userId.toString(),
+                        imgeFile
+                    ).toPars()
+                )
+            }
+
+            imgUpdated.value = Pair(imgeFile, result?.imgData)
+        }
+
+
+    }
+
+    fun updateReverifyInfo(selfImgUrl: String?, proofImgUrl: String?) {
+        callApi({ UserRepository.uploadReviewPhoto(selfImgUrl, proofImgUrl) }) { uploadReview .value = it }
     }
 }

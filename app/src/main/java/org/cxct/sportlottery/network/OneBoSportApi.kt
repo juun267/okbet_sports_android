@@ -4,7 +4,6 @@ import org.cxct.sportlottery.network.appUpdate.AppUpdateService
 import org.cxct.sportlottery.network.bank.BankService
 import org.cxct.sportlottery.network.bet.BetService
 import org.cxct.sportlottery.network.bettingStation.BettingStationService
-import org.cxct.sportlottery.network.credential.CredentialService
 import org.cxct.sportlottery.network.feedback.FeedbackService
 import org.cxct.sportlottery.network.host.HostService
 import org.cxct.sportlottery.network.index.IndexService
@@ -154,11 +153,6 @@ object OneBoSportApi {
         get() = RequestManager.instance
             .retrofit
             .create(PlayQuotaComService::class.java)
-
-    val credentialService: CredentialService
-        get() = RequestManager.instance
-            .retrofit
-            .create(CredentialService::class.java)
 
     val newsService: NewsService
         get() = RequestManager.instance

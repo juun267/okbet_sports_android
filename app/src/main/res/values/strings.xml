@@ -1608,5 +1608,11 @@
     <string name="P173">What’s your mobile number？</string>
     <string name="P174">We’ll send a OTP code to your mobile number</string>
     <string name="P181">Register Or Login with Verification Code</string>
+    <string name="P211">Additional info</string>
+    <string name="P207">Selfie Picture</string>
+    <string name="P208">Upload Selfie Picture Documents，the file size should be under 2MB</string>
+    <string name="P209">Proof of income</string>
+    <string name="P210">Proof of income Documents，the file size should be under 2MB.</string>
+    <string name="P198">Click to upload the picture</string>
 
 </resources>
