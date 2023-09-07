@@ -263,10 +263,13 @@ class HomeTopView @JvmOverloads constructor(
     private fun initVenuesItemClick(fragment: MainHomeFragment){
         venuesAdapter.setOnItemClickListener{_,_,position->
             val item=venuesAdapter.data[position]
+
             when(item.uniqueName){
                 //体育
                 OkSport->{
-                    fragment.jumpToInplaySport()
+                    if(StaticData.okSportOpened()){
+                        fragment.jumpToInplaySport()
+                    }
                 }
                 OkLive->{
                     if (StaticData.okLiveOpened()) {
@@ -274,7 +277,9 @@ class HomeTopView @JvmOverloads constructor(
                     }
                 }
                 OkGame->{
-                    (fragment.activity as MainTabActivity).jumpToOKGames()
+                    if (StaticData.okGameOpened()) {
+                        (fragment.activity as MainTabActivity).jumpToOKGames()
+                    }
                 }
                 //bingo
                 OkBingo->{
