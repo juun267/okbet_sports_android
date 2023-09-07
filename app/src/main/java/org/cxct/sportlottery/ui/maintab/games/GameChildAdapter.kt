@@ -18,11 +18,19 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemGameChildBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.enums.GameEntryType
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setTextColorGradient
+
+class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
+                       val moreClick: (() -> Unit)? = null,
+                       val gameEntryType: String = GameEntryType.OKGAMES,
+                       val showFavorite: Boolean = true) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
 
     private val GAME_MAINTAIN = Any()
 
