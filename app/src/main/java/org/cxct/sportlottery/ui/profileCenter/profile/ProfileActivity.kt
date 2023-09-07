@@ -17,6 +17,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.include_user_profile.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -668,6 +670,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         judgeImproveInfo(ll_e_mail, tv_e_mail, icon_e_mail, email, true)
         judgeImproveInfo(ll_phone_number, tv_phone_number, icon_phone_number, phone, true)
         judgeImproveInfo(ll_wechat, tv_we_chat, icon_wechat, wechat)
+        if (viewModel.userInfo.value?.isGlifeAccount()==true){
+            ll_phone_number.isEnabled = false
+            icon_phone_number.gone()
+        }
     }
 
     private fun judgeImproveInfo(
