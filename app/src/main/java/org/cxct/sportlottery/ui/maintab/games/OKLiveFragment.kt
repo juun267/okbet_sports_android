@@ -94,7 +94,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         }
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
-            mainTabActivity().showMainRightMenu(null)
+            mainTabActivity().showMainRightMenu()
         }
     }
 

@@ -47,7 +47,7 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
         }
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
-            getMainTabActivity().showMainRightMenu(null)
+            getMainTabActivity().showMainRightMenu()
         }
     }
 

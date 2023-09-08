@@ -339,8 +339,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             fragment.openWithFragment(contentFragment)
         }
     }
-    fun showMainRightMenu(contentFragment: Class<BaseFragment<*>>?) {
-        fragmentHelperRight.show(MainRightFragment::class.java, Bundle())
+    fun showMainRightMenu() {
+        fragmentHelperRight.show(MainRightFragment::class.java, Bundle()){ fragment, _ ->
+            fragment.reloadData()
+        }
     }
 
     private val fragmentHelper2 by lazy { FragmentHelper2(supportFragmentManager, R.id.left_menu) }

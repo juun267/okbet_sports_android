@@ -4,16 +4,19 @@ import android.view.Gravity
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_money_transfer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.databinding.FragmentMainRightBinding
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.adapter.GameBalanceAdapter
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 
 class MainRightFragment : BindingFragment<MoneyTransferViewModel, FragmentMainRightBinding>() {
@@ -27,7 +30,7 @@ class MainRightFragment : BindingFragment<MoneyTransferViewModel, FragmentMainRi
 
     override fun onBindViewStatus(view: View) {
        initObserver()
-       viewModel.getAllBalance()
+        reloadData()
     }
 
     private fun initView() = binding.run {
@@ -66,8 +69,16 @@ class MainRightFragment : BindingFragment<MoneyTransferViewModel, FragmentMainRi
             }
         }
         viewModel.allBalanceResultList.observe(this) {
+            LogUtil.toJson(it.toMutableList().map { it.showName })
              adapter.setNewInstance(it.toMutableList())
+             binding.btnTransfer.isEnabled = it.any { data -> data.money != 0.0 }
         }
     }
-
+    fun reloadData() {
+        if (isAdded) {
+            viewModel.getMoneyAndTransferOut()
+            viewModel.getAllBalance()
+            viewModel.getThirdGames(false)
+        }
+    }
 }

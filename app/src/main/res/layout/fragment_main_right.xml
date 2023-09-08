@@ -84,7 +84,7 @@
         android:layout_marginTop="@dimen/margin_24"
         android:layout_marginHorizontal="@dimen/margin_24"
         android:layout_marginBottom="@dimen/margin_12"
-        android:background="@drawable/bg_blue_radius_8"
+        android:background="@drawable/selector_button_default"
         android:textSize="@dimen/textSize14sp"
         android:textColor="@color/color_FFFFFF"
         android:text="@string/P212"/>

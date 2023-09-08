@@ -102,7 +102,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
-            mainTabActivity().showMainRightMenu(null)
+            mainTabActivity().showMainRightMenu()
         }
     }
 
