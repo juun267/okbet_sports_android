@@ -10,7 +10,7 @@ class GameBalanceAdapter : BindingAdapter<GameData, ItemBalanceGameBinding>()  {
 
     override fun onBinding(position: Int, binding: ItemBalanceGameBinding, item: GameData) {
         binding.tvName.text = item.showName
-        binding.tvAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(item.money?:0)}"
+        binding.tvAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(item.money?:0.0)}"
     }
 
 }
