@@ -59,7 +59,7 @@
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/margin_12"
                 android:background="@drawable/bg_white_radius_15"
-                android:text="@string/txv_transfer_pay"
+                android:text="@string/P205"
                 android:textColor="@color/color_000000"
                 android:textSize="@dimen/textSize14sp" />
         </LinearLayout>
@@ -87,14 +87,14 @@
         android:background="@drawable/bg_blue_radius_8"
         android:textSize="@dimen/textSize14sp"
         android:textColor="@color/color_FFFFFF"
-        android:text="Transfer to account balance"/>
+        android:text="@string/P212"/>
     <TextView
         android:id="@+id/tvNotice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="75dp"
         android:layout_marginHorizontal="@dimen/margin_24"
-        android:text="* Transfers the balance of all other game accounts to the account balance."
+        android:text="@string/P206"
         android:textColor="@color/color_ff0000"
         android:textSize="@dimen/textSize12sp" />
 </LinearLayout>

@@ -1452,5 +1452,8 @@
     <string name="P173">Ano ang numero ng iyong mobile phone?</string>
     <string name="P174">Magpapadala kami ng OTP code sa numero ng iyong mobile</string>
     <string name="P181">Magrehistro o mag-log in gamit ang verification code</string>
+    <string name="P205">Paglipat</string>
+    <string name="P206">Inililipat Ang Balanse Ng Lahat ng Iba Pang Account ng Laro Sa Balanse ng Account.</string>
+    <string name="P212">Ilipat sa Balanse ng Account</string>
 </resources>
 

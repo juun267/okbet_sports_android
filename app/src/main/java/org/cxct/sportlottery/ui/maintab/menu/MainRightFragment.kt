@@ -39,6 +39,7 @@ class MainRightFragment : BindingFragment<MoneyTransferViewModel, FragmentMainRi
         }
         rvGame.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
         rvGame.adapter = adapter
+        tvNotice.text = "• *${getString(R.string.P206)}"
     }
     private fun initObserver() {
         viewModel.loading.observe(viewLifecycleOwner) {
