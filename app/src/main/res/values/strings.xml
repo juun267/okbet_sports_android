@@ -1618,5 +1618,8 @@
     <string name="J653_1">Game Vendor</string>
     <string name="bets">Bets</string>
     <string name="P204">Bets</string>
+    <string name="P205">Transfer</string>
+    <string name="P206">Transfers The Balance Of All Other Game Accounts To The Account Balance.</string>
+    <string name="P212">Transfer To Account Balance</string>
 
 </resources>
