@@ -21,6 +21,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity.Companion.LOGIN_TYPE_PWD
+import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.util.*
 
 
@@ -208,6 +209,7 @@ class LoginViewModel(
             if (loginData.deviceValidateStatus == 1)
                 runWithCatch { userInfoRepository.getUserInfo() }
             _loginResult.postValue(loginResult!!)
+            RegisterSuccessDialog.ifNew = loginData.ifnew==true
             if (loginData.ifnew != false) {
                 AFInAppEventUtil.register("username")
             } else {
