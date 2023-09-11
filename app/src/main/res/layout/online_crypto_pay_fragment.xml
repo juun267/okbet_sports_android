@@ -206,16 +206,24 @@
 
         <Button
             android:id="@+id/btn_submit"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="44dp"
+            android:layout_marginStart="@dimen/margin_20"
             android:layout_marginTop="20dp"
-            android:background="@drawable/bg_radius_20_button_dusk"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:background="@drawable/ic_submit"
             android:gravity="center"
+            android:textAllCaps="false"
             android:text="@string/btn_submit"
             android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:textStyle="bold" />
+        <include
+            android:id="@+id/linMaintenance"
+            layout="@layout/view_payment_maintenance"
+            tools:visibility="visible"
+            android:visibility="gone"/>
         <LinearLayout
             android:layout_marginBottom="@dimen/dp_40"
             android:layout_width="wrap_content"

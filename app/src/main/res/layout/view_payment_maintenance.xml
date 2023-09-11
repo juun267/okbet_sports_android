@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvMantance"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_44"
+        android:gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:textSize="@dimen/textSize16sp"
+        android:textColor="@color/color_FFFFFF"
+        android:text="mantance"
+        android:alpha="0.3"
+        android:background="@drawable/bg_blue_gradient_radius_8" />
+
+
+    <LinearLayout
+        android:id="@+id/linMaintenanceTip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_12"
+        android:layout_marginHorizontal="@dimen/margin_20">
+        <ImageView
+            android:layout_width="@dimen/margin_20"
+            android:layout_height="@dimen/margin_20"
+            android:src="@drawable/ic_tip_green"/>
+        <TextView
+            android:id="@+id/tvTipsContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:textColor="@color/color_5E6D78"
+            android:textSize="@dimen/textSize14sp"
+            tools:text="展示后台返回的提示语 展示后台返回的提示语 展示后台返回的提示语 "/>
+    </LinearLayout>
+
+
+
+</LinearLayout>
+
+
