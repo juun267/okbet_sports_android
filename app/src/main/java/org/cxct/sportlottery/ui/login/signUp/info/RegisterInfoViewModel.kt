@@ -51,6 +51,16 @@ class RegisterInfoViewModel(
     //城市
     var cityInput = ""
 
+    // 名
+    var firstName = ""
+
+    // 中间名
+    var middleName = ""
+    var noMiddleName = false
+
+    // 姓
+    var lastName = ""
+
     //是否完成信息提交
     private var isFinishComplete = false
 
@@ -282,7 +292,9 @@ class RegisterInfoViewModel(
      * 检查表单必选项
      */
     fun checkInput(): Boolean {
-        return realNameInput.isNotEmpty()
+        return firstName.isNotEmpty() //realNameInput.isNotEmpty()
+                && (noMiddleName || middleName.isNotEmpty())
+                && lastName.isNotEmpty()
                 && birthdayTimeInput.isNotEmpty()
                 && sourceInput > -1
                 && phoneEnable

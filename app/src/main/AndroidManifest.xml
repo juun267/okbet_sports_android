@@ -187,6 +187,9 @@
             android:name=".ui.profileCenter.nickname.ModifyProfileInfoActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.profileCenter.nickname.EditUserNameActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.profileCenter.modify.VerificationWaysActivity"
             android:screenOrientation="portrait" />
         <activity

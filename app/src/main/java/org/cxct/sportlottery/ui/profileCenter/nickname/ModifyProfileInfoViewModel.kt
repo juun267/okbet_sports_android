@@ -325,7 +325,7 @@ class ModifyProfileInfoViewModel(
 
     fun checkFullName(context: Context, fullName: String?) {
         _fullNameErrorMsg.value = when {
-            !VerifyConstUtil.verifyFullName(fullName) -> androidContext.getString(R.string.error_input_has_blank)
+            !VerifyConstUtil.verifyFullName(fullName) -> context.getString(R.string.error_input_has_blank)
             else -> ""
         }
     }
@@ -367,5 +367,18 @@ class ModifyProfileInfoViewModel(
 
     private fun hideLoading() {
         _loading.postValue(false)
+    }
+
+    fun editUserName(firstName: String, middelName: String?, lastName: String) {
+        loading()
+        val param = WithdrawInfoRequest(firstName = firstName, middelName = middelName, lastName = lastName, userId = LoginRepository.userId)
+        doRequest(androidContext, { OneBoSportApi.userService.setWithdrawUserInfo(param) }) {
+            hideLoading()
+            _withdrawInfoResult.value = it
+            if (it?.success == true) {
+                val fullName = "$firstName${if (middelName == null) "" else " $middelName"} $lastName"
+                userInfoRepository.updateFullName(LoginRepository.userId, fullName)
+            }
+        }
     }
 }

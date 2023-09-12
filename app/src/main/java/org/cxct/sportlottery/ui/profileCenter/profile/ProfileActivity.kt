@@ -37,6 +37,7 @@ import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.modify.ModifyBindInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.modify.VerificationWaysActivity
+import org.cxct.sportlottery.ui.profileCenter.nickname.EditUserNameActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
@@ -224,8 +225,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private fun setupToInfoSettingPage() {
         //真實姓名
         ll_real_name.setOnClickListener {
-            securityCodeEnter = SecurityCodeEnterType.REALNAME
-            viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
+            startActivity(EditUserNameActivity::class.java)
+//            securityCodeEnter = SecurityCodeEnterType.REALNAME
+//            viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
         }
         //暱稱
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
@@ -685,7 +687,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         } else {
             text = infoData
             iconModify.isVisible = editable
-            itemLayout.isEnabled = editable
+            itemLayout.isEnabled = true
         }
 
         setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_939393_999999))

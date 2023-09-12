@@ -9,6 +9,7 @@ import androidx.core.widget.addTextChangedListener
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.bigkoo.pickerview.view.TimePickerView
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.layout_username.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
@@ -56,7 +57,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
 
     @SuppressLint("SetTextI18n")
     private fun initData() {
-        loading()
+//        loading()
         viewModel.loginResult = intent.getSerializableExtra("data") as LoginResult?
         //请求地址列表
         viewModel.getAddressData()
@@ -95,15 +96,15 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             if(viewModel.emailInput.isNotEmpty()){
                 binding.eetEmail.setText(viewModel.emailInput)
             }
-            binding.etRealName.setText(viewModel.realNameInput)
+//            binding.etRealName.setText(viewModel.realNameInput)
 
             binding.etBirthday.setText(viewModel.birthdayTimeInput)
             binding.etSource.setText(viewModel.getSalaryNameById())
 
-            if (viewModel.filledName) {
-                binding.etRealName.isEnabled = false
-                binding.tvRealName.visible()
-            }
+//            if (viewModel.filledName) {
+//                binding.etRealName.isEnabled = false
+//                binding.tvRealName.visible()
+//            }
             if (viewModel.filledEmail) {
                 binding.eetEmail.isEnabled = false
                 binding.tvEmail.visible()
@@ -138,16 +139,40 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         viewModel.loginResult?.let { result ->
             //返回继续完成登录
             EventBusUtil.post(RegisterInfoEvent(result))
-            finish()
         }
+        finish()
     }
 
+    private fun initNameLayout() = binding.run {
+        eetFirstName.checkRegisterListener {
+            viewModel.firstName = it
+            checkStatus()
+        }
+        eedtMiddleName.checkRegisterListener {
+            viewModel.middleName = it
+            checkStatus()
+        }
+        eedtLastName.checkRegisterListener {
+            viewModel.lastName = it
+            checkStatus()
+        }
+        cbNoMiddleName.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.noMiddleName = isChecked
+            if (isChecked) {
+                eedtMiddleName.isEnabled = false
+                eedtMiddleName.setText("")
+            } else {
+                eedtMiddleName.isEnabled = true
+            }
+        }
+    }
 
     private fun initView() {
         initDateTimeView()
         initAddressPickerView()
         initCityPickerView()
         initSalaryPickerView()
+        initNameLayout()
 
         //选择生日点击
         binding.tvBirthday.setOnClickListener {
@@ -192,15 +217,15 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             salaryPicker?.show()
         }
 
-        //真实姓名输入
-        binding.etRealName.addTextChangedListener {
-            viewModel.realNameInput = binding.etRealName.text.toString()
-            checkStatus()
-        }
-
-        binding.tvRealName.setOnClickListener {
-            ToastUtil.showToastInCenter(this, getString(R.string.N887))
-        }
+//        //真实姓名输入
+//        binding.etRealName.addTextChangedListener {
+//            viewModel.realNameInput = binding.etRealName.text.toString()
+//            checkStatus()
+//        }
+//
+//        binding.tvRealName.setOnClickListener {
+//            ToastUtil.showToastInCenter(this, getString(R.string.N887))
+//        }
         binding.tvPhoneNumber.setOnClickListener {
             ToastUtil.showToastInCenter(this, getString(R.string.N887))
         }
