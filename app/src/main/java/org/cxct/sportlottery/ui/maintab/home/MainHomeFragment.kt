@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home
 
 import android.os.Bundle
 import android.content.Intent
+import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +27,7 @@ import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
@@ -83,10 +85,10 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 //        okGamesView.setOkGamesData(this@MainHomeFragment)
         gameViewOkGame.initOkGames(this@MainHomeFragment)
         gameViewOkGame.bindLifecycleOwner(this@MainHomeFragment)
-        if (StaticData.okLiveOpened()){
+//        if (StaticData.okLiveOpened()){
             gameViewOkLive.initOkLiveList(this@MainHomeFragment)
             gameViewOkLive.bindLifecycleOwner(this@MainHomeFragment)
-        }
+//        }
         initBetWinsRecodeLayout()
         initObservable()
         binding.winsRankView.loadData()
@@ -125,6 +127,10 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             getMainTabActivity().showMainLeftMenu(null)
+        }
+        homeToolbar.tvUserMoney.setOnClickListener {
+            EventBusUtil.post(MenuEvent(true,Gravity.RIGHT))
+            getMainTabActivity().showMainRightMenu()
         }
     }
 
@@ -171,6 +177,12 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                         putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_HOME.code)
                     }).show(childFragmentManager, PopImageDialog::class.simpleName)
                 }
+            }
+            if (viewModel.isLogin.value==true&&RegisterSuccessDialog.ifNew){
+                RegisterSuccessDialog.ifNew=false
+                RegisterSuccessDialog{
+                    viewModel.checkRechargeKYCVerify()
+                }.show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
             }
         }
         //体育服务开关监听

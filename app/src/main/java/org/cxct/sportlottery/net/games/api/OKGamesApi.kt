@@ -21,6 +21,9 @@ interface OKGamesApi {
     @POST(Constants.OKGAMES_HALL)
     suspend fun getOKGamesHall(@Body params: JsonObject): ApiResult<OKGamesHall>
 
+    @GET(Constants.OKGAMES_JACKPOT)
+    suspend fun getOKGamesJackpot(): ApiResult<String>
+
     @GET(Constants.OKGAMES_RECORD_NEW)
     suspend fun getOKGamesRecordNew(): ApiResult<List<RecordNewEvent>>
 

@@ -123,14 +123,17 @@ class MoneyTransferViewModel(
 
     private var thirdGameMap = mutableMapOf<String?, String?>()
 
-    fun getThirdGames() {
-        loading()
+    fun getThirdGames(showLoading: Boolean = true) {
+        if(showLoading){
+            loading()
+        }
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getThirdGames()
             }?.let { result ->
-                hideLoading()
-
+                if(showLoading){
+                    hideLoading()
+                }
                 val resultList = mutableListOf<GameData>()
                 var gameFirmList = result.t?.gameFirmMap?.entries?.toList()
 
@@ -181,7 +184,6 @@ class MoneyTransferViewModel(
                         }
                     }
                     _allBalanceResultList.postValue(resultList)
-
                     if (success) {
                         setSubInSheetDataList(resultList)
                         setSubOutSheetDataList(resultList)

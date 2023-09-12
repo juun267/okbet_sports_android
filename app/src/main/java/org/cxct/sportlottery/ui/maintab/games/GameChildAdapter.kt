@@ -7,9 +7,9 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -18,15 +18,19 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemGameChildBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.common.adapter.BindingAdapter
-import org.cxct.sportlottery.common.extentions.collectWith
-import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.common.enums.GameEntryType
+import org.cxct.sportlottery.common.extentions.collectWith
+import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.view.onClick
+import org.cxct.sportlottery.view.setTextColorGradient
 
 class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
-    val moreClick: (() -> Unit)? = null,
-    val gameEntryType: String = GameEntryType.OKGAMES,
-    val showFavorite: Boolean = true) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
+                       val moreClick: (() -> Unit)? = null,
+                       val gameEntryType: String = GameEntryType.OKGAMES,
+                       val showFavorite: Boolean = true) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
 
     private val GAME_MAINTAIN = Any()
 
@@ -74,9 +78,19 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
 
     override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGameBean) {
         binding.apply {
-            ivCover.layoutParams.apply {
-                height = if (gameEntryType == GameEntryType.OKLIVE) 88.dp else 110.dp
-                ivCover.layoutParams = this
+            // //关闭jackpot ==0
+            if(item.jackpotOpen==0){
+                tvPot.gone()
+                blurBottom.gone()
+            }else{
+                //==1 显示
+                tvPot.visible()
+                blurBottom.visible()
+                blurBottom.setupWith(binding.root)
+                    .setFrameClearDrawable(binding.root.background)
+                    .setBlurRadius(1.3f)
+                tvPot.setTextColorGradient()
+                tvPot.text="$showCurrencySign ${TextUtil.formatMoney(item.jackpotAmount)}"
             }
             ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
             tvName.text = item.gameName

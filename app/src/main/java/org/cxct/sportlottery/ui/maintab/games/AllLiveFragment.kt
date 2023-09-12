@@ -22,6 +22,10 @@ import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerLiveListAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
+import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
+import org.cxct.sportlottery.util.goneWithSportSwitch
+import org.cxct.sportlottery.util.setupSportStatusChange
 
 // OkGames所有分类
 class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewModel::class) {

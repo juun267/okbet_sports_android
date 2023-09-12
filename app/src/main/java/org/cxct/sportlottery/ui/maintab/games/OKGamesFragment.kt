@@ -1,20 +1,26 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.layout_okgames_top.view.jackpotView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
@@ -78,6 +84,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         showGameAll()
         initObservable()
         viewModel.getOKGamesHall()
+        viewModel.getJackpotData()
         showOkGameDialog()
     }
 
@@ -93,11 +100,34 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             EventBusUtil.post(MenuEvent(true))
             mainTabActivity().showMainLeftMenu(this@OKGamesFragment.javaClass)
         }
+        tvUserMoney.setOnClickListener {
+            EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
+            mainTabActivity().showMainRightMenu()
+        }
     }
 
     private fun initObservable() = viewModel.run {
         gameHall.observe(viewLifecycleOwner) {
             binding.topView.setTabsData(it?.categoryList?.toMutableList())
+        }
+        if (org.cxct.sportlottery.repository.sConfigData?.jackpotSwitch==1) {
+            binding.topView.jackpotView.visible()
+            binding.topView.jackpotView.initBorder(viewModel.viewModelScope)
+            jackpotData.observe(viewLifecycleOwner) {
+                if (it.isNullOrEmpty()) {
+                    return@observe
+                }
+                binding.topView.jackpotView.visible()
+                binding.topView.jackpotView.setJackPotNumber(it.toDouble())
+            }
+            ServiceBroadcastReceiver.jackpotChange.observe(viewLifecycleOwner) {
+                if (it.isNullOrEmpty()) {
+                    return@observe
+                }
+                binding.topView.jackpotView.setJackPotNumber(it.toDouble())
+            }
+        }else{
+            binding.topView.jackpotView.gone()
         }
 
         gamesList.observe(viewLifecycleOwner) {

@@ -143,6 +143,7 @@ object ServiceBroadcastReceiver {
     private val _recordResultOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
     val sportMaintenance: LiveData<SportMaintenanceEvent?> = MutableLiveData()
+    val jackpotChange: LiveData<String?> = MutableLiveData()
     val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
 
     val thirdGamesMaintain = MutableSharedFlow<GamesMaintain>(extraBufferCapacity= 3)
@@ -185,7 +186,6 @@ object ServiceBroadcastReceiver {
 
     private suspend fun handleEvent(jObj: JSONObject, jObjStr: String, channelStr: String) {
         when (val eventType = jObj.optString("eventType")) {
-
             EventType.NOTICE -> {
                 val data = ServiceMessage.getNotice(jObjStr)
                 _notice.postValue(data)
@@ -193,7 +193,6 @@ object ServiceBroadcastReceiver {
             EventType.GLOBAL_STOP -> {
                 val data = ServiceMessage.getGlobalStop(jObjStr)
                 _globalStop.postValue(data)
-
             }
             EventType.PRODUCER_UP -> {
                 val data = ServiceMessage.getProducerUp(jObjStr)
@@ -211,7 +210,11 @@ object ServiceBroadcastReceiver {
                 val data = ServiceMessage.getSportMaintenance(jObjStr)
                 (sportMaintenance as MutableLiveData<SportMaintenanceEvent?>).postValue(data)
             }
-
+            EventType.RECORD_RESULT_JACKPOT_OK_GAMES->{
+                Log.e("dachang","ws message: ${jObjStr}")
+                val data = ServiceMessage.getJackpotData(jObjStr)
+                (jackpotChange as MutableLiveData<String?>).postValue(data?.amount)
+            }
             //公共频道
             EventType.DATA_SOURCE_CHANGE -> {
                 _dataSourceChange.postValue(true)

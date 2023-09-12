@@ -39,6 +39,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetListFragment
@@ -49,11 +50,13 @@ import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
+import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
@@ -227,6 +230,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         if (checkMainPosition(itemPosition)) {
                             return@OnNavigationItemSelectedListener false
                         }
+                        if(itemPosition==1&&!StaticData.okSportOpened()){
+                            ToastUtil.showToast(this@MainTabActivity,getString(R.string.N700))
+                            return@OnNavigationItemSelectedListener  false
+                        }
+                        if(itemPosition==2&&!StaticData.okGameOpened()){
+                            ToastUtil.showToast(this@MainTabActivity,getString(R.string.N700))
+                            return@OnNavigationItemSelectedListener  false
+                        }
 
 
                     when (menuItem.itemId) {
@@ -327,10 +338,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         fragmentHelper2.show(MainLeftFragment2::class.java, Bundle()) { fragment, _ ->
             fragment.openWithFragment(contentFragment)
         }
-
+    }
+    fun showMainRightMenu() {
+        fragmentHelperRight.show(MainRightFragment::class.java, Bundle()){ fragment, _ ->
+            fragment.reloadData()
+        }
     }
 
     private val fragmentHelper2 by lazy { FragmentHelper2(supportFragmentManager, R.id.left_menu) }
+    private val fragmentHelperRight by lazy { FragmentHelper2(supportFragmentManager, R.id.right_menu) }
+
     fun showSportLeftMenu() {
         fragmentHelper2.show(SportLeftMenuFragment::class.java, Bundle()) { fragment, instance ->
             if(!instance){
@@ -353,6 +370,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             drawerLayout.setScrimColor(getColor(R.color.transparent_black_20))
 //            //選單選擇結束要收起選單
             left_menu.layoutParams.width = MetricsUtil.getScreenWidth() //動態調整側邊欄寬
+            right_menu.layoutParams.width = MetricsUtil.getScreenWidth()-30.dp //動態調整側邊欄寬
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -362,9 +380,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMenuEvent(event: MenuEvent) {
         if (event.open) {
-            drawerLayout.openDrawer(Gravity.LEFT)
+            drawerLayout.openDrawer(event.gravity)
         } else {
-            drawerLayout.closeDrawer(Gravity.LEFT)
+            drawerLayout.closeDrawer(event.gravity)
         }
     }
 
@@ -617,9 +635,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToOkLive(){
-        backMainHome()
-        homeFragment().jumpToOKLive()
-        enableSelectBottomNav(false)
+        if(StaticData.okLiveOpened()){
+            backMainHome()
+            homeFragment().jumpToOKLive()
+            enableSelectBottomNav(false)
+        }else{
+            ToastUtil.showToast(this,getString(R.string.N700))
+        }
+
     }
 
     private fun navToPosition(position: Int) {

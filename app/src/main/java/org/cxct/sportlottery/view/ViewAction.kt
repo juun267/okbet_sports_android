@@ -2,6 +2,9 @@ package org.cxct.sportlottery.view
 
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.util.Log
 import android.text.Editable
 import android.view.View
@@ -116,4 +119,22 @@ fun EditText.insertEmoji(emoji:String){
     val index=selectionStart
     val text:Editable=text
     text.insert(index,emoji)
+}
+
+
+
+/**
+ * @param tv         控件
+ * @param startColor 开始颜色 Color.WHITE
+ * @param endColor   结束颜色 Color.parseColor("#5A5A5A")
+ * @param start      开始位置 0.4f
+ * @param end        结束位置 0.9f
+ */
+fun TextView.setTextColorGradient( ) {
+    val mLinearGradient = LinearGradient(0f, 0f, 0f,
+        this.paint.textSize,
+        Color.parseColor("#F2FFA0"),
+        Color.parseColor("#FFC300"),
+        Shader.TileMode.CLAMP)
+    this.paint.shader = mLinearGradient
 }
