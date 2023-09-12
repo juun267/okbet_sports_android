@@ -54,4 +54,18 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/reverifyKYCFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.identity.ReverifyKYCFragment"
+        android:label="VerifyKYCFragment"
+        tools:layout="@layout/fragment_verify_identity_kyc">
+
+        <action
+            android:id="@+id/action_reverifyKYCFragment_to_verifyStatusFragment"
+            app:destination="@id/verifyStatusFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+
+    </fragment>
+
 </navigation>

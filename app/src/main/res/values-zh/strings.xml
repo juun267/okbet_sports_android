@@ -1540,6 +1540,12 @@
     <string name="P199">OKBET荣誉</string>
     <string name="J653_1">平台</string>
     <string name="bets">注单</string>
+    <string name="P211">补充信息</string>
+    <string name="P207">自拍照</string>
+    <string name="P208">上传自拍照文件，文件大小须小于2MB。</string>
+    <string name="P209">收入证明</string>
+    <string name="P210">上传收入证明文件，文件大小须小于2MB。</string>
+    <string name="P198">点击上传图片</string>
     <string name="P204">注单</string>
     <string name="P205">转账</string>
     <string name="P206">把所有其他游戏账户余额转账到账户余额。</string>

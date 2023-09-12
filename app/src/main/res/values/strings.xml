@@ -1621,5 +1621,11 @@
     <string name="P205">Transfer</string>
     <string name="P206">Transfers The Balance Of All Other Game Accounts To The Account Balance.</string>
     <string name="P212">Transfer To Account Balance</string>
+    <string name="P211">Additional info</string>
+    <string name="P207">Selfie Picture</string>
+    <string name="P208">Upload Selfie Picture Documents，the file size should be under 2MB</string>
+    <string name="P209">Proof of income</string>
+    <string name="P210">Proof of income Documents，the file size should be under 2MB.</string>
+    <string name="P198">Click to upload the picture</string>
 
 </resources>
