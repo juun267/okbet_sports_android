@@ -37,8 +37,11 @@ class ReverifyKYCFragment: BindingFragment<ProfileCenterViewModel, FragmentRever
         (activity as VerifyIdentityActivity).setToolBarTitleForReverify()
         binding.tvService.setServiceClick(childFragmentManager)
         binding.tvSubmit.setBtnEnable(false)
-        loadingHolder.showLoading()
-        viewModel.getVerifyConfig()
+        loadingHolder.withRetry {
+            loadingHolder.showLoading()
+            viewModel.getVerifyConfig()
+        }
+        loadingHolder.go()
         initObserver()
     }
 

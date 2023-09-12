@@ -3,9 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_F0F5FA"
     android:orientation="vertical"
     tools:context=".ui.profileCenter.identity.VerifyKYCFragment">
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_F0F5FA"/>
+
 
     <LinearLayout
         android:id="@+id/llContent"
@@ -16,7 +21,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
             android:paddingHorizontal="14dp"
             android:orientation="vertical"
             android:background="@color/white">
@@ -131,10 +135,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="5dp"
-            android:layout_marginStart="14dp"
+            android:paddingStart="14dp"
             android:layout_marginTop="@dimen/margin_4"
             android:drawableLeft="@drawable/bg_red_radius_2"
             android:drawablePadding="@dimen/margin_4"
+            android:background="@color/color_F2F9FF"
             android:text="@string/kyc_size_2_mb"
             android:textColor="@color/color_E23434"
             android:textSize="@dimen/textSize14sp"
@@ -145,7 +150,8 @@
             android:id="@+id/tvSubmit"
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:layout_margin="16dp"
+            android:layout_margin="20dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/selector_button_default"
             android:enabled="false"
             android:gravity="center"
@@ -157,7 +163,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_10"
             android:orientation="horizontal">
 
             <TextView
