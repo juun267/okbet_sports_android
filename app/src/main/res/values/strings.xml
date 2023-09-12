@@ -1617,5 +1617,11 @@
     <string name="P199">OKBET Awards</string>
     <string name="J653_1">Game Vendor</string>
     <string name="bets">Bets</string>
+    <string name="P211">Additional info</string>
+    <string name="P207">Selfie Picture</string>
+    <string name="P208">Upload Selfie Picture Documents，the file size should be under 2MB</string>
+    <string name="P209">Proof of income</string>
+    <string name="P210">Proof of income Documents，the file size should be under 2MB.</string>
+    <string name="P198">Click to upload the picture</string>
 
 </resources>

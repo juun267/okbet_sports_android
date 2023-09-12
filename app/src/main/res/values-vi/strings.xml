@@ -1484,4 +1484,10 @@
     <string name="N211">Chi tiết</string>
     <string name="P199">Giải thưởng OKBET</string>
     <string name="J653_1">Trang</string>
+    <string name="P211">Thông tin bổ sung</string>
+    <string name="P207">Ảnh selfie</string>
+    <string name="P208">Tải ảnh selfie lên, dung lượng file phải nhỏ hơn 2MB.</string>
+    <string name="P209">Chứng minh thu nhập</string>
+    <string name="P210">Tải lên các tài liệu chứng minh thu nhập, kích thước tệp phải nhỏ hơn 2MB.</string>
+    <string name="P198">Bấm để tải ảnh lên</string>
 </resources>

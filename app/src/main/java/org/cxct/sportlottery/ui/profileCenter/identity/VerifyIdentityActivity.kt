@@ -34,16 +34,19 @@ class VerifyIdentityActivity :
 //            ProfileActivity.VerifiedType.VERIFIED_FAILED.value,
             ProfileActivity.VerifiedType.PASSED.value,
             ProfileActivity.VerifiedType.VERIFIED_WAIT.value,
-            -> true
+            ProfileActivity.VerifiedType.REVERIFYING.value -> {
+                R.id.verifyStatusFragment
+            }
+            ProfileActivity.VerifiedType.REVERIFIED_NEED.value -> {
+                R.id.reverifyKYCFragment
+            }
             else -> {
-                false
+                R.id.verifyKYCFragment
             }
         }
 
-        val opt2 = mNavController.currentDestination?.id == R.id.verifyKYCFragment
-
-        if (opt1 and opt2) {
-            mNavController.navigate(R.id.action_verifyKYCFragment_to_verifyStatusFragment)
+        if (mNavController.currentDestination?.id != opt1) {
+            mNavController.navigate(opt1)
         }
     }
 
@@ -64,8 +67,8 @@ class VerifyIdentityActivity :
         tv_toolbar_title.text = getString(R.string.scan_tool_bar)
     }
 
-    fun setToolBarTitle() {
-        tv_toolbar_title.text = getString(R.string.select_id_type)
+    fun setToolBarTitleForReverify() {
+        tv_toolbar_title.text = getString(R.string.P211)
     }
 
     override fun onBackPressed() {
