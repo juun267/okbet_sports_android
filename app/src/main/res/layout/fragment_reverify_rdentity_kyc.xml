@@ -136,7 +136,6 @@
             android:layout_height="wrap_content"
             android:paddingVertical="5dp"
             android:paddingStart="14dp"
-            android:layout_marginTop="@dimen/margin_4"
             android:drawableLeft="@drawable/bg_red_radius_2"
             android:drawablePadding="@dimen/margin_4"
             android:background="@color/color_F2F9FF"

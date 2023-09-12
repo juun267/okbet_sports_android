@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
+import android.util.Log
 import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -67,14 +68,16 @@ class ReverifyKYCFragment: BindingFragment<ProfileCenterViewModel, FragmentRever
 
             if (it.first == binding.llSelf.tag) {
                 updatedSelfPictureURL = imgData!!.path
-                binding.tvSubmit.setBtnEnable(binding.ivProof.isGone || !updatedProofPictureURL.isEmptyStr())
+                Log.e("For Test", "======>>> 1111  ${binding.llProof.isGone}  ${!updatedProofPictureURL.isEmptyStr()}")
+                binding.tvSubmit.setBtnEnable(binding.llProof.isGone || !updatedProofPictureURL.isEmptyStr())
                 binding.ivSelf.load(it.first)
                 return@observe
             }
 
             if (it.first == binding.llProof.tag) {
                 updatedProofPictureURL = imgData!!.path
-                binding.tvSubmit.setBtnEnable(binding.ivSelf.isGone || !updatedSelfPictureURL.isEmptyStr())
+                Log.e("For Test", "======>>> 2222 ${binding.llSelf.isGone} ${!updatedSelfPictureURL.isEmptyStr()}")
+                binding.tvSubmit.setBtnEnable(binding.llSelf.isGone || !updatedSelfPictureURL.isEmptyStr())
                 binding.ivProof.load(it.first)
                 return@observe
             }
@@ -82,6 +85,7 @@ class ReverifyKYCFragment: BindingFragment<ProfileCenterViewModel, FragmentRever
         }
 
         uploadReview.observe(viewLifecycleOwner) {
+            hideLoading()
             if (it.succeeded()) {
                 findNavController().navigate(R.id.action_reverifyKYCFragment_to_verifyStatusFragment)
             } else {
