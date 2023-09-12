@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
-import android.util.Log
 import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -15,6 +14,7 @@ import org.cxct.sportlottery.databinding.FragmentReverifyRdentityKycBinding
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.io.File
@@ -68,7 +68,6 @@ class ReverifyKYCFragment: BindingFragment<ProfileCenterViewModel, FragmentRever
 
             if (it.first == binding.llSelf.tag) {
                 updatedSelfPictureURL = imgData!!.path
-                Log.e("For Test", "======>>> 1111  ${binding.llProof.isGone}  ${!updatedProofPictureURL.isEmptyStr()}")
                 binding.tvSubmit.setBtnEnable(binding.llProof.isGone || !updatedProofPictureURL.isEmptyStr())
                 binding.ivSelf.load(it.first)
                 return@observe
@@ -76,7 +75,6 @@ class ReverifyKYCFragment: BindingFragment<ProfileCenterViewModel, FragmentRever
 
             if (it.first == binding.llProof.tag) {
                 updatedProofPictureURL = imgData!!.path
-                Log.e("For Test", "======>>> 2222 ${binding.llSelf.isGone} ${!updatedSelfPictureURL.isEmptyStr()}")
                 binding.tvSubmit.setBtnEnable(binding.llSelf.isGone || !updatedSelfPictureURL.isEmptyStr())
                 binding.ivProof.load(it.first)
                 return@observe
@@ -87,6 +85,7 @@ class ReverifyKYCFragment: BindingFragment<ProfileCenterViewModel, FragmentRever
         uploadReview.observe(viewLifecycleOwner) {
             hideLoading()
             if (it.succeeded()) {
+                viewModel.userInfo?.value?.verified = ProfileActivity.VerifiedType.REVERIFYING.value
                 findNavController().navigate(R.id.action_reverifyKYCFragment_to_verifyStatusFragment)
             } else {
                 ToastUtil.showToast(context, it.msg)

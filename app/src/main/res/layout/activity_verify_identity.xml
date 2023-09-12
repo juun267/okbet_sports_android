@@ -9,14 +9,21 @@
     <include
         layout="@layout/view_base_tool_bar_no_drawer"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout">
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/identity_container"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+        android:layout_height="match_parent"
         app:navGraph="@navigation/identity_navigation"
         tools:layout="@layout/fragment_verify_identity_new"
         tools:layout_editor_absoluteX="0dp" />
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

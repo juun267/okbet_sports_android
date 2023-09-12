@@ -1453,10 +1453,9 @@
     <string name="P173">Ano ang numero ng iyong mobile phone?</string>
     <string name="P174">Magpapadala kami ng OTP code sa numero ng iyong mobile</string>
     <string name="P181">Magrehistro o mag-log in gamit ang verification code</string>
-    <string name="P211">karagdagang impormasyon</string>
+    <string name="P211">Karagdagang impormasyon</string>
     <string name="P207">Selfie Picture</string>
     <string name="P208">Upload Selfie Picture Documents，the file size should be under 2MB</string>
-    <string name="P209">Proof of income</string>
-    <string name="P210">Proof of income Documents，the file size should be under 2MB.</string>
+    <string name="P209">Katibayan ng kita</string>
 </resources>
 

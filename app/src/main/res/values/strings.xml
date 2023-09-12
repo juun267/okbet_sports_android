@@ -954,9 +954,9 @@
     <string name="current_version">Current version</string>
     <string name="cancel_account">Delete account</string>
     <string name="payment_method">Payment method</string>
-    <string name="kyc_type">ID Type [1]</string>
-    <string name="kyc_num">ID Number [1]</string>
-    <string name="kyc_type2">ID Type [2]</string>
+    <string name="kyc_type">ID Type</string>
+    <string name="kyc_num">ID Number</string>
+    <string name="kyc_type2">ID Type</string>
     <string name="kyc_num2">ID Number [2]</string>
     <string name="kyc_pick_upload_id">Upload Personal ID Documents</string>
     <string name="kyc_size_2_mb">The file size to under 2MB.</string>
@@ -1612,7 +1612,6 @@
     <string name="P207">Selfie Picture</string>
     <string name="P208">Upload Selfie Picture Documents，the file size should be under 2MB</string>
     <string name="P209">Proof of income</string>
-    <string name="P210">Proof of income Documents，the file size should be under 2MB.</string>
     <string name="P198">Click to upload the picture</string>
 
 </resources>
