@@ -942,7 +942,7 @@
     <string name="kyc_go_verify">Xác minh ngay</string>
     <string name="kyc_you_wait">"Tài liệu xác minh danh tính của quý khách đã gửi đi,hãy đợi xét duyệt trong chốc lát"</string>
     <string name="kyc_verify_successful">xác minh thành công</string>
-    <string name="kyc_unverified">Chưa xác minh</string>
+    <string name="kyc_unverified">Chưa được xác minh</string>
     <string name="kyc_passed">Đã thông qua</string>
     <string name="kyc_enter_id_num">Mời nhập mã số giấy tờ</string>
 
@@ -1492,6 +1492,5 @@
     <string name="P207">Ảnh selfie</string>
     <string name="P208">Tải ảnh selfie lên, dung lượng file phải nhỏ hơn 2MB.</string>
     <string name="P209">Chứng minh thu nhập</string>
-    <string name="P210">Tải lên các tài liệu chứng minh thu nhập, kích thước tệp phải nhỏ hơn 2MB.</string>
     <string name="P198">Bấm để tải ảnh lên</string>
 </resources>

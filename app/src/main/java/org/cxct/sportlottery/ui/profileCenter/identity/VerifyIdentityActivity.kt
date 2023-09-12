@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.post
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
@@ -14,18 +16,34 @@ class VerifyIdentityActivity :
 
     private val mNavController by lazy { findNavController(R.id.identity_container) }
 
+    private val loadingHolder by lazy { Gloading.wrapView(findViewById(R.id.identity_container)) }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verify_identity)
-
         initToolbar()
+        initObserver()
+
+        val verified = viewModel.userInfo.value?.verified
+        if (verified != ProfileActivity.VerifiedType.NOT_YET.value
+            && verified != ProfileActivity.VerifiedType.PASSED.value) {
+            loadingHolder.withRetry {
+                loadingHolder.showLoading()
+                viewModel.loadUserInfo()
+            }
+            loadingHolder.go()
+        } else {
+            post{ checkKYCStatus() }
+        }
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        checkKYCStatus()
+    private fun initObserver() {
+        viewModel.userInfoEvent.observe(this) {
+            checkKYCStatus()
+            loadingHolder.showLoadSuccess()
+        }
     }
 
     private fun checkKYCStatus() {
@@ -51,8 +69,8 @@ class VerifyIdentityActivity :
     }
 
     private fun initToolbar() {
+        setStatusbar(R.color.color_232C4F_FFFFFF, true)
         tv_toolbar_title.setTitleLetterSpacing()
-        tv_toolbar_title.text = getString(R.string.select_id_type)
         btn_toolbar_back.setOnClickListener {
             onBackPressed()
         }
