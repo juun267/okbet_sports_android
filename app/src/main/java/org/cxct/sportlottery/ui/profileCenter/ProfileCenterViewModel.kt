@@ -58,6 +58,7 @@ class ProfileCenterViewModel(
     val verifyConfig = SingleLiveEvent<ApiResult<VerifyConfig>>()
     val imgUpdated = SingleLiveEvent<Pair<File, ImgData?>>()
     val uploadReview = SingleLiveEvent<ApiResult<String>>()
+    val userInfoEvent = SingleLiveEvent<Any>()
 
     fun getUserInfo() {
         viewModelScope.launch {
@@ -240,6 +241,14 @@ class ProfileCenterViewModel(
 
     fun getVerifyConfig() {
         callApi({ UserRepository.getVerifyConfig() }) { verifyConfig.value = it}
+    }
+
+    fun loadUserInfo() {
+        viewModelScope.launch {
+            doRequest(androidContext, { userInfoRepository.getUserInfo()}) {
+                userInfoEvent.value = Any()
+            }
+        }
     }
 
 
