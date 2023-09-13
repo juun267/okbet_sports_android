@@ -19,7 +19,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.budiyev.android.codescanner.BarcodeUtils
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -520,7 +520,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     private fun selectAlbum() {
         PictureSelectUtil.pictureSelect(requireActivity(),
             object : OnResultCallbackListener<LocalMedia> {
-                override fun onResult(result: MutableList<LocalMedia>?) {
+                override fun onResult(result: ArrayList<LocalMedia>?) {
                     val firstImage = result?.firstOrNull()
                     val bitmap = BitmapFactory.decodeFile(firstImage?.compressPath)
                     val bitResult = BarcodeUtils.decodeBitmap(bitmap)

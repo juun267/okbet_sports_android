@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.content_verify_identity_kyc.view.*
 import kotlinx.android.synthetic.main.content_verify_identity_kyc_head.*
 import kotlinx.android.synthetic.main.fragment_verify_identity_kyc.*
@@ -43,7 +43,7 @@ class VerifyKYCFragment :
     }
 
     private val mfirstSelectDocMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
+        override fun onResult(result: ArrayList<LocalMedia>?) {
             if (activity == null) {
                 return
             }
@@ -80,7 +80,7 @@ class VerifyKYCFragment :
     }
 
     private val mSecondSelectPhotoMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
+        override fun onResult(result: ArrayList<LocalMedia>?) {
             if (activity == null) {
                 return
             }
@@ -117,7 +117,7 @@ class VerifyKYCFragment :
     }
 
     private val mHeadIdListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
+        override fun onResult(result: ArrayList<LocalMedia>?) {
             if (activity == null) {
                 return
             }

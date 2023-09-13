@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.luck.picture.lib.PictureSelector
-import com.luck.picture.lib.config.PictureConfig
-import com.luck.picture.lib.config.PictureMimeType
+import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.SelectMimeType
+import com.luck.picture.lib.config.SelectModeConfig
 import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.luck.picture.lib.language.LanguageConfig
-import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.dialog_avatar_selector.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.selectpicture.ImageCompressEngine
+import org.cxct.sportlottery.util.selectpicture.ImageFileCropEngine
 
 class AvatarSelectorDialog: BottomSheetDialogFragment() {
 
@@ -48,20 +50,13 @@ class AvatarSelectorDialog: BottomSheetDialogFragment() {
             return
         }
         PictureSelector.create(activity)
-            .openGallery(PictureMimeType.ofImage())
-            .imageEngine(GlideEngine.createGlideEngine())
+            .openGallery(SelectMimeType.ofImage())
+            .setImageEngine(GlideEngine.createGlideEngine())
             .setLanguage(getLanguage()) // 设置语言，默认中文
-            .isCamera(false) // 是否显示拍照按钮 true or false
-            .selectionMode(PictureConfig.SINGLE) // 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-            .isEnableCrop(true) // 是否裁剪 true or false
-            .isCompress(true) // 是否压缩 true or false
-            .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
-            .circleDimmedLayer(true) // 是否圆形裁剪 true or false
-            .showCropFrame(false) // 是否显示裁剪矩形边框 圆形裁剪时
-            // 建议设为false   true or false
-            .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-            .withAspectRatio(1, 1) // int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
-            .minimumCompressSize(100) // 小于100kb的图片不压缩
+            .isDisplayCamera(false) // 是否显示拍照按钮 true or false
+            .setSelectionMode(SelectModeConfig.SINGLE) // 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
+            .setCropEngine(ImageFileCropEngine(rotateEnabled = true, circleDimmedLayer = true,  ratio_x = 1, ratio_y = 1))
+            .setCompressEngine(ImageCompressEngine(100))
             .forResult(mSelectListener)
     }
 
@@ -71,17 +66,10 @@ class AvatarSelectorDialog: BottomSheetDialogFragment() {
             return
         }
         PictureSelector.create(activity)
-            .openCamera(PictureMimeType.ofImage())
-            .imageEngine(GlideEngine.createGlideEngine())
+            .openCamera(SelectMimeType.ofImage())
             .setLanguage(getLanguage()) // 设置语言，默认中文
-            .isEnableCrop(true) // 是否裁剪 true or false
-            .isCompress(true) // 是否压缩 true or false
-            .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
-            .circleDimmedLayer(true) // 是否圆形裁剪 true or false
-            .showCropFrame(false) // 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
-            .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-            .withAspectRatio(1, 1) // int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
-            .minimumCompressSize(100) // 小于100kb的图片不压缩
+            .setCropEngine(ImageFileCropEngine(rotateEnabled = true, circleDimmedLayer = true,  ratio_x = 1, ratio_y = 1))
+            .setCompressEngine(ImageCompressEngine(100))
             .forResult(mSelectListener)
     }
 

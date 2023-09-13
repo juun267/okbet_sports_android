@@ -9,14 +9,11 @@ import android.view.KeyEvent
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import androidx.core.view.forEach
 import androidx.core.view.get
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
-import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.custom_bottom_sheet_item.view.*
 import org.cxct.sportlottery.R
@@ -462,7 +459,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private fun exit() {
         if (System.currentTimeMillis() - exitTime > 2000) {
-            ToastUtils.s(this, getString(R.string.str_press_again_to_exit_the_program))
+            ToastUtil.showToast(this, getString(R.string.str_press_again_to_exit_the_program))
             exitTime = System.currentTimeMillis()
         } else {
             finish()

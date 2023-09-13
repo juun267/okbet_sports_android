@@ -4,7 +4,6 @@ package org.cxct.sportlottery.ui.chat
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
@@ -29,12 +28,14 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.chat.adapter.ChatMessageListAdapter3
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.selectpicture.PictureSelectorUtils
 import org.cxct.sportlottery.view.afterTextChanged
 import org.cxct.sportlottery.view.insertEmoji
 import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import timber.log.Timber
 import java.io.File
+import java.util.ArrayList
 
 /**
  * @author kevin
@@ -676,7 +677,7 @@ class ChatFragment : BindingSocketFragment<ChatViewModel, FragmentChatBinding>()
     }
 
     private val selectMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
+        override fun onResult(result: ArrayList<LocalMedia>?) {
 
             // 图片选择结果回调
             // LocalMedia 里面返回三种path
