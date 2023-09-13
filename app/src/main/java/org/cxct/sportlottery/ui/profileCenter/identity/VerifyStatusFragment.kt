@@ -27,7 +27,7 @@ class VerifyStatusFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (viewModel.userInfo.value?.verified == ProfileActivity.VerifiedType.REVERIFYING.value) {
-            (activity as VerifyIdentityActivity).setToolBar(getString(R.string.P211))
+            (activity as VerifyIdentityActivity).setToolBarTitleForReverify()
         } else {
             (activity as VerifyIdentityActivity).setToolBar(getString(R.string.identity))
         }
