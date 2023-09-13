@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -143,7 +143,7 @@ class ProfileCenterFragment :
     }
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
+        override fun onResult(result: ArrayList<LocalMedia>?) {
             try {
                 // 图片选择结果回调
                 // LocalMedia 里面返回三种path

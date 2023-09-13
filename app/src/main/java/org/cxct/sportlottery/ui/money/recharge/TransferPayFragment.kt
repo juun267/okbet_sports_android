@@ -20,7 +20,7 @@ import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
@@ -64,6 +64,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 /**
@@ -785,7 +786,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
     //选择图片回调监听
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
+        override fun onResult(result: ArrayList<LocalMedia>?) {
             try {
                 // 图片选择结果回调
                 // LocalMedia 里面返回三种path

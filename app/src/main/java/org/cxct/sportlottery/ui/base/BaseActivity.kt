@@ -17,13 +17,10 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.viewModelScope
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gyf.immersionbar.ImmersionBar
-import com.luck.picture.lib.tools.ToastUtils
-import kotlinx.android.synthetic.main.layout_loading.ivLoading
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import me.jessyan.autosize.AutoSizeCompat
@@ -32,7 +29,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.getKClass
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -41,10 +37,7 @@ import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
-import org.cxct.sportlottery.util.LotteryManager
-import org.cxct.sportlottery.util.RedEnvelopeManager
-import org.cxct.sportlottery.util.ResourceWrapper
-import org.cxct.sportlottery.util.commonCheckDialog
+import org.cxct.sportlottery.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -92,7 +85,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
             if (this is MaintenanceActivity) return@observe
             val result = it.getContentIfNotHandled() ?: return@observe
             if (result.code == HttpError.BALANCE_IS_LOW.code) {
-                ToastUtils.s(this, result.msg)
+                ToastUtil.showToast(this, result.msg)
             } else {
                 toMaintenanceOrShowDialog(result)
             }

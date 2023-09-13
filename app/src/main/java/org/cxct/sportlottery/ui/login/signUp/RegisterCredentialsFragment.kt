@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.fragment_register_credentials.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import kotlinx.android.synthetic.main.view_upload.view.*
@@ -45,7 +45,7 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
     private var photoFile: File? = null
 
     private val mSelectDocMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
+        override fun onResult(result: ArrayList<LocalMedia>?) {
             try {
                 // 图片选择结果回调
                 // LocalMedia 里面返回三种path
@@ -77,7 +77,7 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
         }
     }
     private val mSelectPhotoMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
+        override fun onResult(result: ArrayList<LocalMedia>?) {
             try {
                 // 图片选择结果回调
                 // LocalMedia 里面返回三种path

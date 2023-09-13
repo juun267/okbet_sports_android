@@ -9,8 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
 import android.util.DisplayMetrics
-import com.luck.picture.lib.PictureSelectorActivity
-import com.luck.picture.lib.tools.SPUtils
+import com.luck.picture.lib.basic.PictureSelectorSupporterActivity
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.crash.FirebaseLog
@@ -73,7 +72,7 @@ object LanguageManager {
         application.registerActivityLifecycleCallbacks(object :
             Application.ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                if (activity is PictureSelectorActivity) {
+                if (activity is PictureSelectorSupporterActivity) {
                     val resources: Resources = activity.resources
                     val config = resources.configuration
                     val locale = config.locale
@@ -211,7 +210,7 @@ object LanguageManager {
         FirebaseLog.addLogInfo("currentLanguage", select.name) // 在崩溃日志中记录当前的语言类型
         selectedLocale = convert(select)
         SPUtil.getInstance(context).saveLanguage(select.key)
-        SPUtils.getInstance().put("splashAd","")
+        KvUtils.removeKey("splashAd")
         setApplicationLanguage(context)
         if (lastLanguage != select) {
             languageChangeListeners.forEach { it.invoke(lastLanguage, select) }

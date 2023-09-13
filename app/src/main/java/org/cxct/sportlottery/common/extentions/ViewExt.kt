@@ -219,7 +219,7 @@ fun View.animDuang(scale: Float, duration: Long = 500) {
     animatorSet.interpolator = BounceInterpolator()
     animatorSet.duration = duration
     animatorSet.addListener(object : AnimatorListenerAdapter() {
-        override fun onAnimationEnd(animation: Animator?) {
+        override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
             isEnabled = true
         }
     })

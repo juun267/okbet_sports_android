@@ -28,7 +28,7 @@ import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_register_ok.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
@@ -53,6 +53,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * @app_destination 註冊
@@ -1626,7 +1627,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     }
 
     private val mfirstSelectDocMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
+        override fun onResult(result: ArrayList<LocalMedia>?) {
             try {
                 // 图片选择结果回调
                 // LocalMedia 里面返回三种path
@@ -1662,7 +1663,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     }
 
     private val mSecondSelectPhotoMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
+        override fun onResult(result: kotlin.collections.ArrayList<LocalMedia>?) {
             try {
                 // 图片选择结果回调
                 // LocalMedia 里面返回三种path

@@ -10,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
-import com.luck.picture.lib.tools.SPUtils
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -282,11 +281,11 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         ivSplash.visible()
 //        runWithCatch {
             if(url.isEmpty()){
-                val localUrl=SPUtils.getInstance().getString(splashKeyStr)
+                val localUrl = KvUtils.decodeString(splashKeyStr)
                 ivSplash.load(localUrl)
             }else{
                 ivSplash.load(url)
-                SPUtils.getInstance().put(splashKeyStr,url)
+                KvUtils.put(splashKeyStr,url)
             }
 //        }
     }

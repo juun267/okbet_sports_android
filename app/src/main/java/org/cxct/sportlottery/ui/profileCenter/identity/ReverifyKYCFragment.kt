@@ -5,7 +5,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
@@ -124,7 +124,7 @@ class ReverifyKYCFragment: BindingFragment<ProfileCenterViewModel, FragmentRever
 
     private fun getSelcetPitrueCallback(view: View): OnResultCallbackListener<LocalMedia> {
         return object : OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: MutableList<LocalMedia>?) {
+            override fun onResult(result: ArrayList<LocalMedia>?) {
                 if (activity == null) {
                     return
                 }
