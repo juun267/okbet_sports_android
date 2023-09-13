@@ -69,9 +69,7 @@ class MainRightFragment : BindingFragment<MoneyTransferViewModel, FragmentMainRi
             }
         }
         viewModel.allBalanceResultList.observe(this) {
-            LogUtil.toJson(it.toMutableList().map { it.showName })
              adapter.setNewInstance(it.toMutableList())
-             binding.btnTransfer.isEnabled = it.any { data -> data.money != 0.0 }
         }
     }
     fun reloadData() {
