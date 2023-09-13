@@ -86,7 +86,7 @@ class VerifyIdentityActivity :
     }
 
     fun setToolBarTitleForReverify() {
-        tv_toolbar_title.text = getString(R.string.P211)
+        tv_toolbar_title.text = getString(R.string.P211_1)
     }
 
     override fun onBackPressed() {
