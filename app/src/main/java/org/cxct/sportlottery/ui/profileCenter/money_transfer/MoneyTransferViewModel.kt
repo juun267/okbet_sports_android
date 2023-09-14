@@ -4,14 +4,17 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.third_game.money_transfer.GameData
+import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResult
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRequest
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
+import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
@@ -134,63 +137,92 @@ class MoneyTransferViewModel(
                 if(showLoading){
                     hideLoading()
                 }
-                val resultList = mutableListOf<GameData>()
-                var gameFirmList = result.t?.gameFirmMap?.entries?.toList()
-
-                if (!gameFirmList.isNullOrEmpty()) {
-
-                    gameFirmList = gameFirmList.sortedBy { it.value.sort }
-                    gameFirmList.forEach {
-                        val value = it.value
-                        thirdGameMap[value.firmType] = value.firmShowName
-                        if (value.open == 1) {
-                            resultList.add(GameData(null, null, null).apply {
-                                code = it.key
-                                showName = value.firmShowName ?: it.key
-                            })
-                        }
-                    }
-                }
-//                for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
-//                    thirdGameMap[value.firmType] = value.firmShowName
-//                    if (value.open == 1) {
-//                        resultList.add(GameData(null, null, null).apply {
-//                            code = key
-//                            showName = value.firmShowName ?: key
-//                        })
-//                    }
-//                }
-                setRecordInSheetDataList(resultList)
-                setRecordOutSheetDataList(resultList)
+                dealwithThirdGameResult(result)
             }
         }
     }
-    fun getAllBalance() {
-        loading()
+    fun getAllBalance(showLoading: Boolean = true) {
+        if(showLoading){
+            loading()
+        }
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getAllBalance()
-            }.let { result ->
-                hideLoading()
-                result?.apply {
-                    val resultList = mutableListOf<GameData>()
-                    for ((key, value) in result.resultMap ?: mapOf()) {
-                        value?.apply {
-                            val gameData = GameData(money, remark, transRemaining).apply {
-                                code = key
-                                showName = thirdGameMap[key] ?: key
-                            }
-                            resultList.add(gameData)
-                        }
-                    }
-                    _allBalanceResultList.postValue(resultList)
-                    if (success) {
-                        setSubInSheetDataList(resultList)
-                        setSubOutSheetDataList(resultList)
-                    }
+            }?.let { result ->
+                if(showLoading){
+                    loading()
+                }
+                dealwithGetAllBalanceResult(result)
+            }
+        }
+    }
+    private fun dealwithThirdGameResult(result: ThirdGamesResult){
+        val resultList = mutableListOf<GameData>()
+        var gameFirmList = result.t?.gameFirmMap?.entries?.toList()
+
+        if (!gameFirmList.isNullOrEmpty()) {
+
+            gameFirmList = gameFirmList.sortedBy { it.value.sort }
+            gameFirmList.forEach {
+                val value = it.value
+                thirdGameMap[value.firmType] = value.firmShowName
+                if (value.open == 1) {
+                    resultList.add(GameData(null, null, null).apply {
+                        code = it.key
+                        showName = value.firmShowName ?: it.key
+                    })
                 }
             }
         }
+        setRecordInSheetDataList(resultList)
+        setRecordOutSheetDataList(resultList)
+    }
+    private fun dealwithGetAllBalanceResult(result: GetAllBalanceResult){
+        val resultList = mutableListOf<GameData>()
+        for ((key, value) in result.resultMap ?: mapOf()) {
+            value?.apply {
+                val gameData = GameData(money, remark, transRemaining).apply {
+                    code = key
+                    showName = thirdGameMap[key] ?: key
+                }
+                resultList.add(gameData)
+            }
+        }
+        _allBalanceResultList.postValue(resultList)
+        if (result.success) {
+            setSubInSheetDataList(resultList)
+            setSubOutSheetDataList(resultList)
+        }
+    }
+
+    fun getThirdGamesWithMoney(showLoading:Boolean = true) {
+        if(showLoading){
+            loading()
+        }
+        viewModelScope.launch {
+            val task1 = async {
+                doNetwork(androidContext) {
+                    OneBoSportApi.thirdGameService.getThirdGames()
+                }
+            }
+            val task2 = async {
+                doNetwork(androidContext) {
+                    OneBoSportApi.thirdGameService.getAllBalance()
+                }
+            }
+            val result1 = task1.await()
+            val result2 = task2.await()
+            result1?.let {
+                dealwithThirdGameResult(it)
+            }
+            result2?.let {
+                dealwithGetAllBalanceResult(it)
+            }
+            if (showLoading) {
+                hideLoading()
+            }
+        }
+
     }
 
     private var defaultSubOutList = listOf<StatusSheetData>()
