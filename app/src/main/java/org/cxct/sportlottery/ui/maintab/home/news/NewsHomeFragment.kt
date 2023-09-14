@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.news
 
+import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
@@ -43,6 +44,10 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
         ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             getMainTabActivity().showMainLeftMenu(this@NewsHomeFragment.javaClass)
+        }
+        tvUserMoney.setOnClickListener {
+            EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
+            getMainTabActivity().showMainRightMenu()
         }
     }
 

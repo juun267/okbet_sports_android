@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -98,6 +99,10 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             mainTabActivity().showMainLeftMenu(this@OKGamesFragment.javaClass)
+        }
+        tvUserMoney.setOnClickListener {
+            EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
+            mainTabActivity().showMainRightMenu()
         }
     }
 

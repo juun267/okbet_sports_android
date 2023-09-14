@@ -1547,4 +1547,7 @@
     <string name="P209">收入证明</string>
     <string name="P198">点击上传图片</string>
     <string name="P211_1">补充信息</string>
+    <string name="P205">转账</string>
+    <string name="P206">把所有其他游戏账户余额转账到账户余额。</string>
+    <string name="P212">转账到账户余额</string>
 </resources>

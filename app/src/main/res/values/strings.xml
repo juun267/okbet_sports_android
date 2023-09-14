@@ -1622,5 +1622,8 @@
     <string name="P209">Proof of income</string>
     <string name="P198">Click to upload the picture</string>
     <string name="P211_1">Additional information</string>
+    <string name="P205">Transfer</string>
+    <string name="P206">Transfers The Balance Of All Other Game Accounts To The Account Balance.</string>
+    <string name="P212">Transfer To Account Balance</string>
 
 </resources>

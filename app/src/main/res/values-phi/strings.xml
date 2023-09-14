@@ -1466,5 +1466,8 @@
     <string name="P208">Upload Selfie Picture Documents，the file size should be under 2MB</string>
     <string name="P209">Katibayan ng kita</string>
     <string name="P211_1">Karagdagang impormasyon</string>
+    <string name="P205">Paglipat</string>
+    <string name="P206">Inililipat Ang Balanse Ng Lahat ng Iba Pang Account ng Laro Sa Balanse ng Account.</string>
+    <string name="P212">Ilipat sa Balanse ng Account</string>
 </resources>
 
