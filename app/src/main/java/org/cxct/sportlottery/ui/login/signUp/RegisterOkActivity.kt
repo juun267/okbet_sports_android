@@ -1456,14 +1456,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         hideLoading()
         if (loginResult.success) {
             //finish()
-            RegisterSuccessDialog().apply {
-                setNegativeClickListener {
-                    dismiss()
-                    //判斷要跳宣傳頁顯示驗證彈窗，還是檢查充值系統
-                    viewModel.checkRechargeKYCVerify()
-                }
-            }.show(supportFragmentManager, null)
-
+            RegisterSuccessDialog{
+                viewModel.checkRechargeKYCVerify()
+            }.show(supportFragmentManager,null)
         } else {
             updateValidCode()
             showErrorDialog(loginResult.msg)
