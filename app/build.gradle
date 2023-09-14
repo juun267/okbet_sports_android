@@ -281,7 +281,7 @@ dependencies {
     implementation 'io.github.lucksiege:pictureselector:v3.11.1'
     implementation 'io.github.lucksiege:compress:v3.11.1'
     implementation 'io.github.lucksiege:ucrop:v3.11.1'
-    implementation 'io.github.lucksiege:camerax:v3.11.1'
+//    implementation 'io.github.lucksiege:camerax:v3.11.1'
 
     //動態權限請求 https://github.com/tbruyelle/RxPermissions
     implementation 'com.github.tbruyelle:rxpermissions:0.11'
