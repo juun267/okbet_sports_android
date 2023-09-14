@@ -1330,6 +1330,7 @@
     <string name="C016">Ngayon</string>
     <string name="C016_small">Ngayon</string>
     <string name="N064">Remarks</string>
+    <string name="P198">I-click para mag-upload ng larawan</string>
     <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string>
     <string name="P066">Halimbawa</string>
     <string name="P068">Mag-upload ng selfie photo na may hawak na valid ID</string>
@@ -1460,5 +1461,10 @@
     <string name="N938">Hindi nasimulan</string>
     <string name="P204">Bets</string>
     <string name="J653_1">Game Vendor</string>
+    <string name="P211">Karagdagang impormasyon</string>
+    <string name="P207">Selfie Picture</string>
+    <string name="P208">Upload Selfie Picture Documents，the file size should be under 2MB</string>
+    <string name="P209">Katibayan ng kita</string>
+    <string name="P211_1">Karagdagang impormasyon</string>
 </resources>
 

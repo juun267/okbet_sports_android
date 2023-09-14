@@ -12,12 +12,12 @@ import android.widget.ListPopupWindow
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
-import com.luck.picture.lib.tools.ScreenUtils
 import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.ScreenUtil
 
 class StatusSpinnerView @JvmOverloads constructor(
     context: Context,
@@ -167,7 +167,7 @@ class StatusSpinnerView @JvmOverloads constructor(
         dataList.addAll(itemData)
         spinnerAdapter?.notifyDataSetChanged()
         if (dataList.size > 8) {
-            mListPop.height = ScreenUtils.getScreenHeight(context) / 2
+            mListPop.height = ScreenUtil.getScreenHeight(context) / 2
         } else {
             mListPop.height = ViewGroup.LayoutParams.WRAP_CONTENT
         }

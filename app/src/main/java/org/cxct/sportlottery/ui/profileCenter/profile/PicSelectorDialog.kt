@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.profileCenter.profile
 
-import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -8,27 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
-import com.luck.picture.lib.PictureSelector
-import com.luck.picture.lib.config.PictureConfig
-import com.luck.picture.lib.config.PictureMimeType
+import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.SelectMimeType
+import com.luck.picture.lib.config.SelectModeConfig
 import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.luck.picture.lib.language.LanguageConfig
-import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.dialog_selector_dialog.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialogFragment
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.selectpicture.ImageCompressEngine
+import org.cxct.sportlottery.util.selectpicture.ImageFileCropEngine
 
 class PicSelectorDialog : BaseDialogFragment() {
 
-    var cropType = CropType.RECTANGLE
     var mSelectListener: OnResultCallbackListener<LocalMedia>? = null
-
-    enum class CropType(val code: MutableList<Int>) {
-        SQUARE(mutableListOf<Int>(1, 1)),
-        RECTANGLE(mutableListOf<Int>(16, 9))
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -42,10 +36,10 @@ class PicSelectorDialog : BaseDialogFragment() {
     }
 
     private fun initView() {
-        tv_title.text = String.format(LocalUtils.getString(R.string.prompt))
-        tv_message.text = String.format(LocalUtils.getString(R.string.upload_dialog_content))
-        btn_negative.text = String.format(LocalUtils.getString(R.string.upload_dialog_camera))
-        btn_positive.text = String.format(LocalUtils.getString(R.string.upload_dialog_gallery))
+        tv_title.text = String.format(getString(R.string.prompt))
+        tv_message.text = String.format(getString(R.string.upload_dialog_content))
+        btn_negative.text = String.format(getString(R.string.upload_dialog_camera))
+        btn_positive.text = String.format(getString(R.string.upload_dialog_gallery))
     }
 
     private fun initEvent() {
@@ -66,19 +60,13 @@ class PicSelectorDialog : BaseDialogFragment() {
             return
         }
         PictureSelector.create(activity)
-            .openGallery(PictureMimeType.ofImage())
-            .imageEngine(GlideEngine.createGlideEngine())
+            .openGallery(SelectMimeType.ofImage())
+            .setImageEngine(GlideEngine.createGlideEngine())
             .setLanguage(getLanguage()) // 设置语言，默认中文
-            .isCamera(false) // 是否显示拍照按钮 true or false
-            .selectionMode(PictureConfig.SINGLE) // 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-            .isEnableCrop(true) // 是否裁剪 true or false
-            .withAspectRatio(cropType.code[0],cropType.code[1])
-            .isCompress(true) // 是否压缩 true or false
-            .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
-            .circleDimmedLayer(false) // 是否圆形裁剪 true or false
-            .showCropFrame(true) // 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
-            .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-            .minimumCompressSize(100) // 小于100kb的图片不压缩
+            .isDisplayCamera(false) // 是否显示拍照按钮 true or false
+            .setSelectionMode(SelectModeConfig.SINGLE) // 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
+//            .setCropEngine(ImageFileCropEngine(rotateEnabled = true, showCropFrame = true, ratio_x = 16, ratio_y = 9))
+            .setCompressEngine(ImageCompressEngine(200))
             .forResult(mSelectListener)
     }
 
@@ -88,17 +76,10 @@ class PicSelectorDialog : BaseDialogFragment() {
             return
         }
         PictureSelector.create(activity)
-            .openCamera(PictureMimeType.ofImage())
-            .imageEngine(GlideEngine.createGlideEngine())
+            .openCamera(SelectMimeType.ofImage())
             .setLanguage(getLanguage()) // 设置语言，默认中文
-            .isEnableCrop(true) // 是否裁剪 true or false
-            .isCompress(true) // 是否压缩 true or false
-            .withAspectRatio(cropType.code[0],cropType.code[1])
-            .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
-            .circleDimmedLayer(false) // 是否圆形裁剪 true or false
-            .showCropFrame(true) // 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
-            .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-            .minimumCompressSize(100) // 小于100kb的图片不压缩
+            .setCompressEngine(ImageCompressEngine(200))
+//            .setCropEngine(ImageFileCropEngine(rotateEnabled = true, showCropFrame = true, ratio_x = 16, ratio_y = 9))
             .forResult(mSelectListener)
     }
 

@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_verify_status.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.setServiceClick
 
 class VerifyStatusFragment :
     BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
@@ -26,7 +25,11 @@ class VerifyStatusFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as VerifyIdentityActivity).setToolBar(getString(R.string.identity))
+        if (viewModel.userInfo.value?.verified == ProfileActivity.VerifiedType.REVERIFYING.value) {
+            (activity as VerifyIdentityActivity).setToolBarTitleForReverify()
+        } else {
+            (activity as VerifyIdentityActivity).setToolBar(getString(R.string.identity))
+        }
         initObserve()
         initView()
         initData()
@@ -39,13 +42,9 @@ class VerifyStatusFragment :
                 when (verified) {
                     ProfileActivity.VerifiedType.PASSED.value -> {
                         img_status.setImageResource(R.drawable.ic_done)
-                        txv_status.text = LocalUtils.getString(R.string.kyc_verify_successful)
-                        btn_kyc_verify.setOnClickListener {
-                            openService()
-                        }
-                        tvContactUs.text =
-                            LocalUtils.getString(R.string.kyc_contact_service_hilight)
-                        tvCustomer.text = LocalUtils.getString(R.string.kyc_contact_service)
+                        txv_status.text = getString(R.string.kyc_verify_successful)
+                        tvContactUs.text = getString(R.string.kyc_contact_service_hilight)
+                        tvCustomer.text = getString(R.string.kyc_contact_service)
                         layout_verify_progress.visibility = View.GONE
                         layout_verify_success.visibility = View.VISIBLE
                     }
@@ -65,20 +64,23 @@ class VerifyStatusFragment :
     }
 
     private fun initView() {
-        btn_kyc_verify.setOnClickListener {
-            JumpUtil.toInternalWeb(
-                btn_kyc_verify.context,
-                Constants.getKYVUrl(btn_kyc_verify.context),
-                LocalUtils.getString(R.string.identity)
-            )
-        }
 
-        tvCustomer.setOnClickListener {
-            openService()
-        }
+        btn_kyc_verify.setServiceClick(childFragmentManager)
+        tvCustomer.setServiceClick(childFragmentManager)
+//        btn_kyc_verify.setOnClickListener {
+//            JumpUtil.toInternalWeb(
+//                btn_kyc_verify.context,
+//                Constants.getKYVUrl(btn_kyc_verify.context),
+//                LocalUtils.getString(R.string.identity)
+//            )
+//        }
+//
+//        tvCustomer.setOnClickListener {
+//            openService()
+//        }
     }
 
-    fun openService() {
+    private fun openService() {
         val serviceUrl = sConfigData?.customerServicveVideoUrl
         if (!serviceUrl.isNullOrBlank()) {
             activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }

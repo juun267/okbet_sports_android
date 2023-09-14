@@ -7,6 +7,7 @@ import org.cxct.sportlottery.net.user.api.UserApiService
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
 import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
+import org.cxct.sportlottery.net.user.data.VerifyConfig
 import org.cxct.sportlottery.network.index.config.ImageData
 
 object UserRepository {
@@ -56,6 +57,15 @@ object UserRepository {
     }
     suspend fun activityApply(activityId: String): ApiResult<String> {
         return userApi.activityApply(activityId)
+    }
+
+    suspend fun getVerifyConfig():ApiResult<VerifyConfig> = userApi.getVerifyConfig()
+
+    suspend fun uploadReviewPhoto(selfiePicture: String?, wealthProof: String?): ApiResult<String>{
+        val params = mutableMapOf<String, String>()
+        selfiePicture?.let { params["selfiePicture"] = it}
+        wealthProof?.let { params["wealthProof"] = it}
+        return userApi.uploadReviewPhoto(params.toMap())
     }
 
 }

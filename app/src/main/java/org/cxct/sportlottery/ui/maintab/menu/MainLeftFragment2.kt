@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.budiyev.android.codescanner.BarcodeUtils
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -476,8 +475,12 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
                     R.string.kyc_unverified,
                     resources.getColor(R.color.color_FF2E00))
             }
-            ProfileActivity.VerifiedType.VERIFYING.value,ProfileActivity.VerifiedType.VERIFIED_WAIT.value -> {
+            ProfileActivity.VerifiedType.VERIFYING.value,ProfileActivity.VerifiedType.VERIFIED_WAIT.value, ProfileActivity.VerifiedType.REVERIFYING.value -> {
                 setVerify(true, true, R.string.kyc_unverifing, resources.getColor(R.color.color_6D7693))
+
+            }
+            ProfileActivity.VerifiedType.REVERIFIED_NEED.value -> {
+                setVerify(true, true, R.string.P211, resources.getColor(R.color.color_6D7693))
 
             }
             else -> {
@@ -517,7 +520,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     private fun selectAlbum() {
         PictureSelectUtil.pictureSelect(requireActivity(),
             object : OnResultCallbackListener<LocalMedia> {
-                override fun onResult(result: MutableList<LocalMedia>?) {
+                override fun onResult(result: ArrayList<LocalMedia>?) {
                     val firstImage = result?.firstOrNull()
                     val bitmap = BitmapFactory.decodeFile(firstImage?.compressPath)
                     val bitResult = BarcodeUtils.decodeBitmap(bitmap)

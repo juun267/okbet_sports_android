@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.listener.CustomListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.include_user_profile.*
 import org.cxct.sportlottery.R
@@ -64,7 +64,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private var kYCVerifyDialog: CustomSecurityDialog? = null
 
     enum class VerifiedType(val value: Int) {
-        NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3), VERIFIED_WAIT(4)
+        NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3), VERIFIED_WAIT(4), REVERIFIED_NEED(5), REVERIFYING(6)
     }
 
     enum class SecurityCodeEnterType(val value: Int) {
@@ -82,7 +82,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private lateinit var btnDialogDone: Button
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
+        override fun onResult(result: ArrayList<LocalMedia>?) {
             try {
                 // 图片选择结果回调
                 // LocalMedia 里面返回三种path
@@ -551,7 +551,14 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
                 }
 
-                VerifiedType.VERIFYING.value, VerifiedType.VERIFIED_WAIT.value -> {
+                VerifiedType.REVERIFIED_NEED.value -> {
+                    ll_verified.isEnabled = true
+                    ll_verified.isClickable = true
+                    tv_verified.text = getString(R.string.P211)
+
+                }
+
+                VerifiedType.VERIFYING.value, VerifiedType.VERIFIED_WAIT.value, VerifiedType.REVERIFYING.value -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_unverifing)
