@@ -22,8 +22,7 @@ class MoneyTransferActivity :
         setContentView(R.layout.activity_money_transfer)
         setStatusbar(R.color.color_FFFFFF, true)
         viewModel.getMoneyAndTransferOut()
-        viewModel.getAllBalance()
-        viewModel.getThirdGames()
+        viewModel.getThirdGamesWithMoney()
 
         initToolbar()
         initObserver()
