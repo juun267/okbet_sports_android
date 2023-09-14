@@ -149,10 +149,10 @@ class MoneyTransferViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getAllBalance()
             }?.let { result ->
-                if(showLoading){
-                    loading()
-                }
                 dealwithGetAllBalanceResult(result)
+            }
+            if(showLoading){
+                hideLoading()
             }
         }
     }
@@ -302,7 +302,7 @@ class MoneyTransferViewModel(
                 hideLoading()
                 _recycleAllMoneyResult.value = Event(result)
 
-                getAllBalance()
+                getAllBalance(false)
                 getMoneyAndTransferOut()
             }
         }
