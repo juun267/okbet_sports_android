@@ -66,7 +66,7 @@ class PicSelectorDialog : BaseDialogFragment() {
             .isDisplayCamera(false) // 是否显示拍照按钮 true or false
             .setSelectionMode(SelectModeConfig.SINGLE) // 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
 //            .setCropEngine(ImageFileCropEngine(rotateEnabled = true, showCropFrame = true, ratio_x = 16, ratio_y = 9))
-            .setCompressEngine(ImageCompressEngine(100))
+            .setCompressEngine(ImageCompressEngine(200))
             .forResult(mSelectListener)
     }
 
@@ -78,7 +78,7 @@ class PicSelectorDialog : BaseDialogFragment() {
         PictureSelector.create(activity)
             .openCamera(SelectMimeType.ofImage())
             .setLanguage(getLanguage()) // 设置语言，默认中文
-            .setCompressEngine(ImageCompressEngine(100))
+            .setCompressEngine(ImageCompressEngine(200))
 //            .setCropEngine(ImageFileCropEngine(rotateEnabled = true, showCropFrame = true, ratio_x = 16, ratio_y = 9))
             .forResult(mSelectListener)
     }
