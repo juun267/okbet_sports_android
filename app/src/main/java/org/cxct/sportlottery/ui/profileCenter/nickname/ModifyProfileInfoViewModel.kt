@@ -372,7 +372,7 @@ class ModifyProfileInfoViewModel(
         _loading.postValue(false)
     }
 
-    fun editUserName(firstName: String, middelName: String?, lastName: String) {
+    fun editUserName(firstName: String, middelName: String, lastName: String) {
         loading()
         callApi({ UserRepository.changeUserName(firstName, middelName, lastName) }) {
             hideLoading()

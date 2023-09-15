@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.AreaAll
@@ -251,9 +252,8 @@ class RegisterInfoViewModel(
      */
     var commitMsg = ""
     fun commitUserBasicInfo() {
-        val fullName = "$firstName${if (middleName == null) "" else " $middleName"} $lastName"
         val request = UserBasicInfoRequest(
-            fullName,
+            "$firstName $middleName $lastName",
             firstName,
             middleName,
             lastName,
@@ -286,10 +286,7 @@ class RegisterInfoViewModel(
      * 检查表单必选项
      */
     fun checkInput(): Boolean {
-        return firstName.isNotEmpty() //realNameInput.isNotEmpty()
-                && (noMiddleName || middleName.isNotEmpty())
-                && lastName.isNotEmpty()
-                && birthdayTimeInput.isNotEmpty()
+        return birthdayTimeInput.isNotEmpty()
                 && sourceInput > -1
                 && phoneEnable
                 && emailEnable

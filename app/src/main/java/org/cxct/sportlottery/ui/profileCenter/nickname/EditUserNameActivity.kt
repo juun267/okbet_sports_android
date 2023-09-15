@@ -36,35 +36,44 @@ class EditUserNameActivity: BindingActivity<ModifyProfileInfoViewModel, Activity
         btnConfirm.setBtnEnable(false)
         btnConfirm.setOnClickListener { change() }
         cbNoMiddleName.setOnCheckedChangeListener { _, isChecked ->
+
             if (isChecked) {
+                eedtMiddleName.setText("N/A")
                 eedtMiddleName.isEnabled = false
-                eedtMiddleName.setText("")
+                edtMiddleName.isEnabled = false
             } else {
+                eedtMiddleName.setText("")
                 eedtMiddleName.isEnabled = true
+                edtMiddleName.isEnabled = true
             }
+            edtMiddleName.setError(null, true)
+            resetConfirmEnable()
         }
     }
 
+    private fun resetConfirmEnable() {
+        btnConfirm.setBtnEnable((eetFirstName.text.toString().isNotEmpty() && !etFirstName.isOnError)
+                && (eedtLastName.text.toString().isNotEmpty() && !edtLastName.isOnError)
+                && (eedtMiddleName.text.toString().isNotEmpty() && !edtMiddleName.isOnError))
+    }
+
     private fun checkInput(editText: ExtendedEditText, textFormFieldBoxes: TextFormFieldBoxes, needCheck: Boolean = true) {
-        btnConfirm.setBtnEnable(eetFirstName.text.toString().isNotEmpty()
-                && eedtLastName.text.toString().isNotEmpty()
-                && (cbNoMiddleName.isChecked || eedtMiddleName.text.toString().isNotEmpty()))
 
-        if (!needCheck) {
-            return
+        if (needCheck) {
+            val inputString = editText.text.toString()
+            if (inputString.isEmpty()) {
+                textFormFieldBoxes.setError(getString(R.string.error_input_empty), false)
+            } else {
+                textFormFieldBoxes.setError(if (VerifyConstUtil.verifyFullName(inputString)) "" else getString(R.string.error_input_has_blank), false)
+            }
         }
 
-        val inputString = editText.text.toString()
-        if (inputString.isEmpty()) {
-            textFormFieldBoxes.setError(getString(R.string.error_input_empty), false)
-        } else {
-            textFormFieldBoxes.setError(if (VerifyConstUtil.verifyFullName(inputString)) "" else getString(R.string.error_input_has_blank), false)
-        }
+        resetConfirmEnable()
     }
 
     private fun change() {
         val firstName = eetFirstName.text.toString()
-        val middelName = if (cbNoMiddleName.isChecked) null else eedtMiddleName.text.toString()
+        val middelName = eedtMiddleName.text.toString()
         val lastName = eedtLastName.text.toString()
         viewModel.editUserName(firstName, middelName, lastName)
     }
