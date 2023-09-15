@@ -97,8 +97,8 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
                 binding.eetFirstName.isEnabled = false
                 binding.eedtMiddleName.isEnabled = false
                 binding.cbNoMiddleName.isChecked = it.middleName.isEmptyStr()
-                binding.eedtMiddleName.setText(it.middleName)
                 binding.cbNoMiddleName.isEnabled = false
+                binding.eedtMiddleName.setText(it.middleName)
                 binding.eedtLastName.setText(it.lastName)
                 binding.eedtLastName.isEnabled = false
             }
@@ -162,10 +162,13 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             viewModel.noMiddleName = isChecked
             if (isChecked) {
                 eedtMiddleName.isEnabled = false
-                eedtMiddleName.setText("")
+                eedtMiddleName.setText("N/A")
             } else {
                 eedtMiddleName.isEnabled = true
+                eedtMiddleName.setText("")
+                checkStatus()
             }
+            edtMiddleName.setError(null, true)
         }
     }
 

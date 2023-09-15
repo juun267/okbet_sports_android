@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.net.user
 
 import com.google.gson.JsonObject
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.user.api.UserApiService
@@ -56,12 +57,12 @@ object UserRepository {
         return userApi.activityApply(activityId)
     }
 
-    suspend fun changeUserName(firstName: String, middelName: String?, lastName: String): ApiResult<String>  {
+    suspend fun changeUserName(firstName: String, middelName: String, lastName: String): ApiResult<String>  {
         val params = mutableMapOf<String, String>()
         params["firstName"] = firstName
-        middelName?.let { params["middleName"] = it }
+        params["middleName"] = middelName
         params["lastName"] = lastName
-        params["fullName"] = "$firstName${if (middelName == null) "" else " $middelName"} $lastName"
+        params["fullName"] = "$firstName $middelName $lastName"
         return userApi.changeUserName(params)
     }
 

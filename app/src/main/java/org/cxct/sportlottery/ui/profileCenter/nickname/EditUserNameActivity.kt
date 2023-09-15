@@ -36,19 +36,29 @@ class EditUserNameActivity: BindingActivity<ModifyProfileInfoViewModel, Activity
         btnConfirm.setBtnEnable(false)
         btnConfirm.setOnClickListener { change() }
         cbNoMiddleName.setOnCheckedChangeListener { _, isChecked ->
+
             if (isChecked) {
+                eedtMiddleName.setText("N/A")
                 eedtMiddleName.isEnabled = false
-                eedtMiddleName.setText("")
+                edtMiddleName.isEnabled = false
             } else {
+                eedtMiddleName.setText("")
                 eedtMiddleName.isEnabled = true
+                edtMiddleName.isEnabled = true
             }
+            edtMiddleName.setError(null, true)
+            resetConfirmEnable()
         }
     }
 
-    private fun checkInput(editText: ExtendedEditText, textFormFieldBoxes: TextFormFieldBoxes, needCheck: Boolean = true) {
+    private fun resetConfirmEnable() {
         btnConfirm.setBtnEnable(eetFirstName.text.toString().isNotEmpty()
                 && eedtLastName.text.toString().isNotEmpty()
                 && (cbNoMiddleName.isChecked || eedtMiddleName.text.toString().isNotEmpty()))
+    }
+
+    private fun checkInput(editText: ExtendedEditText, textFormFieldBoxes: TextFormFieldBoxes, needCheck: Boolean = true) {
+        resetConfirmEnable()
 
         if (!needCheck) {
             return
@@ -64,7 +74,7 @@ class EditUserNameActivity: BindingActivity<ModifyProfileInfoViewModel, Activity
 
     private fun change() {
         val firstName = eetFirstName.text.toString()
-        val middelName = if (cbNoMiddleName.isChecked) null else eedtMiddleName.text.toString()
+        val middelName = eedtMiddleName.text.toString()
         val lastName = eedtLastName.text.toString()
         viewModel.editUserName(firstName, middelName, lastName)
     }

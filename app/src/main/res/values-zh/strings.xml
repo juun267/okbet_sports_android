@@ -1536,4 +1536,6 @@
     <string name="P185">名</string>
     <string name="P186">中间名</string>
     <string name="P187">姓</string>
+    <string name="P188">无</string>
+    <string name="P189">温馨提示：真实姓名需要与提交的证件信息一致。</string>
 </resources>
