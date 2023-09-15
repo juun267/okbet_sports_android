@@ -52,24 +52,23 @@ class EditUserNameActivity: BindingActivity<ModifyProfileInfoViewModel, Activity
     }
 
     private fun resetConfirmEnable() {
-        btnConfirm.setBtnEnable(eetFirstName.text.toString().isNotEmpty()
-                && eedtLastName.text.toString().isNotEmpty()
-                && (cbNoMiddleName.isChecked || eedtMiddleName.text.toString().isNotEmpty()))
+        btnConfirm.setBtnEnable((eetFirstName.text.toString().isNotEmpty() && !etFirstName.isOnError)
+                && (eedtLastName.text.toString().isNotEmpty() && !edtLastName.isOnError)
+                && (eedtMiddleName.text.toString().isNotEmpty() && !edtMiddleName.isOnError))
     }
 
     private fun checkInput(editText: ExtendedEditText, textFormFieldBoxes: TextFormFieldBoxes, needCheck: Boolean = true) {
+
+        if (needCheck) {
+            val inputString = editText.text.toString()
+            if (inputString.isEmpty()) {
+                textFormFieldBoxes.setError(getString(R.string.error_input_empty), false)
+            } else {
+                textFormFieldBoxes.setError(if (VerifyConstUtil.verifyFullName(inputString)) "" else getString(R.string.error_input_has_blank), false)
+            }
+        }
+
         resetConfirmEnable()
-
-        if (!needCheck) {
-            return
-        }
-
-        val inputString = editText.text.toString()
-        if (inputString.isEmpty()) {
-            textFormFieldBoxes.setError(getString(R.string.error_input_empty), false)
-        } else {
-            textFormFieldBoxes.setError(if (VerifyConstUtil.verifyFullName(inputString)) "" else getString(R.string.error_input_has_blank), false)
-        }
     }
 
     private fun change() {
