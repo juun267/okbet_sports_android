@@ -687,7 +687,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         } else {
             text = infoData
             iconModify.isVisible = editable
-            itemLayout.isEnabled = true
+            itemLayout.isEnabled = editable
         }
 
         setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_939393_999999))

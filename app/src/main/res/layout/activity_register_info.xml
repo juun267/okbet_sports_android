@@ -142,7 +142,7 @@
                     android:layout_gravity="center_vertical|right"
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="hhhh" />
+                    android:text="@string/none" />
 
             </FrameLayout>
 

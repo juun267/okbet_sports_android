@@ -39,9 +39,6 @@ class RegisterInfoViewModel(
     var emailInput=""
     var emailEnable=false
 
-    //真实姓名
-    var realNameInput = ""
-
     //薪资来源
     var sourceInput = -1
 
@@ -123,7 +120,6 @@ class RegisterInfoViewModel(
     /**
      * 获取用户基本信息
      */
-    var filledName=false
     var filledBirthday=false
     var filledPhone=false
     var filledEmail=false
@@ -146,12 +142,6 @@ class RegisterInfoViewModel(
                     cityInput=it
                     if(it.isNotEmpty()){
 //                        filledCity=true
-                    }
-                }
-                data.t.fullName?.let {
-                    realNameInput=it
-                    if(it.isNotEmpty()){
-                        filledName=true
                     }
                 }
 
@@ -261,8 +251,12 @@ class RegisterInfoViewModel(
      */
     var commitMsg = ""
     fun commitUserBasicInfo() {
+        val fullName = "$firstName${if (middleName == null) "" else " $middleName"} $lastName"
         val request = UserBasicInfoRequest(
-            realNameInput,
+            fullName,
+            firstName,
+            middleName,
+            lastName,
             birthdayTimeInput,
             sourceInput,
             provinceInput,

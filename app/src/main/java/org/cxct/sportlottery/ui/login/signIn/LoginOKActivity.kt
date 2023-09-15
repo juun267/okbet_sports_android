@@ -118,8 +118,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             switchLoginType(loginType)
         }
 
-        val intent = Intent(this, RegisterInfoActivity::class.java)
-        startActivity(intent)
     }
 
     private fun initOnClick() {

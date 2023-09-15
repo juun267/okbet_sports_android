@@ -6,8 +6,6 @@ import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.user.api.UserApiService
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
-import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
-import org.cxct.sportlottery.network.index.config.ImageData
 
 object UserRepository {
 
@@ -56,6 +54,15 @@ object UserRepository {
     }
     suspend fun activityApply(activityId: String): ApiResult<String> {
         return userApi.activityApply(activityId)
+    }
+
+    suspend fun changeUserName(firstName: String, middelName: String?, lastName: String): ApiResult<String>  {
+        val params = mutableMapOf<String, String>()
+        params["firstName"] = firstName
+        middelName?.let { params["middleName"] = it }
+        params["lastName"] = lastName
+        params["fullName"] = "$firstName${if (middelName == null) "" else " $middelName"} $lastName"
+        return userApi.changeUserName(params)
     }
 
 }

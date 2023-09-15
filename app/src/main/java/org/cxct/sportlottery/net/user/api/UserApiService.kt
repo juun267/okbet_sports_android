@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
+import org.cxct.sportlottery.network.Constants.SET_USERNAME
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -35,6 +36,9 @@ interface UserApiService {
 
     @GET(ACTIVITY_APPLY)
     suspend fun activityApply(@Path("activityId") activityId: String): ApiResult<String>
+
+    @POST(SET_USERNAME)
+    suspend fun changeUserName(@Body params: Map<String, String>): ApiResult<String>
 
 
 }

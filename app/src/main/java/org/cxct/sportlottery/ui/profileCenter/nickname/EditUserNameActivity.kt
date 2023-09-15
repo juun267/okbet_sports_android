@@ -5,7 +5,6 @@ import kotlinx.android.synthetic.main.activity_edit_username.*
 import kotlinx.android.synthetic.main.layout_username.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityEditUsernameBinding
-import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.util.VerifyConstUtil
@@ -71,17 +70,12 @@ class EditUserNameActivity: BindingActivity<ModifyProfileInfoViewModel, Activity
     }
 
     private fun initObserver() {
-        viewModel.withdrawInfoResult.observe(this) {
-            updateUiWithResult(it)
-        }
-    }
-
-    private fun updateUiWithResult(result: BaseResult?) {
-        if (result?.success == true) {
-            finish()
-        } else {
-            val errorMsg = result?.msg ?: getString(R.string.unknown_error)
-            showErrorDialog(errorMsg)
+        viewModel.userNameChangeResult.observe(this) {
+            if (it.first) {
+                finish()
+            } else {
+                showErrorDialog(it.second)
+            }
         }
     }
 
