@@ -286,10 +286,7 @@ class RegisterInfoViewModel(
      * 检查表单必选项
      */
     fun checkInput(): Boolean {
-        return VerifyConstUtil.verifyFullName(firstName) //realNameInput.isNotEmpty()
-                && ("N/A" == middleName || VerifyConstUtil.verifyFullName(middleName))
-                && VerifyConstUtil.verifyFullName(lastName)
-                && birthdayTimeInput.isNotEmpty()
+        return birthdayTimeInput.isNotEmpty()
                 && sourceInput > -1
                 && phoneEnable
                 && emailEnable

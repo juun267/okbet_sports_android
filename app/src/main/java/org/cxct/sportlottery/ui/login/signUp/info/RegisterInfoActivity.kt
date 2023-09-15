@@ -16,6 +16,8 @@ import org.cxct.sportlottery.databinding.ActivityRegisterInfoBinding
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 import org.cxct.sportlottery.view.checkRegisterListener
 import java.util.*
 
@@ -148,15 +150,15 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
     private fun initNameLayout() = binding.run {
         eetFirstName.checkRegisterListener {
             viewModel.firstName = it
-            checkStatus()
+            checkInput(eetFirstName, etFirstName)
         }
         eedtMiddleName.checkRegisterListener {
             viewModel.middleName = it
-            checkStatus()
+            checkInput(eedtMiddleName, edtMiddleName, !cbNoMiddleName.isChecked)
         }
         eedtLastName.checkRegisterListener {
             viewModel.lastName = it
-            checkStatus()
+            checkInput(eedtLastName, edtLastName)
         }
         cbNoMiddleName.setOnCheckedChangeListener { _, isChecked ->
             viewModel.noMiddleName = isChecked
@@ -170,6 +172,20 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             }
             edtMiddleName.setError(null, true)
         }
+    }
+
+    private fun checkInput(editText: ExtendedEditText, textFormFieldBoxes: TextFormFieldBoxes, needCheck: Boolean = true) {
+
+        if (needCheck) {
+            val inputString = editText.text.toString()
+            if (inputString.isEmpty()) {
+                textFormFieldBoxes.setError(getString(R.string.error_input_empty), false)
+            } else {
+                textFormFieldBoxes.setError(if (VerifyConstUtil.verifyFullName(inputString)) "" else getString(R.string.error_input_has_blank), false)
+            }
+        }
+
+        checkStatus()
     }
 
     private fun initView() {
@@ -274,6 +290,10 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
      */
     private fun checkStatus() {
         val status = viewModel.checkInput()
+                && (viewModel.firstName.isNotEmpty() && !binding.etFirstName.isOnError)
+                && (viewModel.lastName.isNotEmpty() && !binding.edtLastName.isOnError)
+                && (viewModel.middleName.isNotEmpty() && !binding.edtMiddleName.isOnError)
+
         binding.btnCommit.isEnabled = status
         if (status) {
             binding.btnCommit.alpha = 1f
