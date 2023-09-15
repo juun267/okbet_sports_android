@@ -75,8 +75,7 @@ class MainRightFragment : BindingFragment<MoneyTransferViewModel, FragmentMainRi
     fun reloadData() {
         if (isAdded) {
             viewModel.getMoneyAndTransferOut()
-            viewModel.getAllBalance()
-            viewModel.getThirdGames(false)
+            viewModel.getThirdGamesWithMoney()
         }
     }
 }
