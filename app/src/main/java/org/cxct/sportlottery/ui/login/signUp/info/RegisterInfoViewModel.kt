@@ -39,9 +39,6 @@ class RegisterInfoViewModel(
     var emailInput=""
     var emailEnable=false
 
-    //真实姓名
-    var realNameInput = ""
-
     //薪资来源
     var sourceInput = -1
 
@@ -50,6 +47,16 @@ class RegisterInfoViewModel(
 
     //城市
     var cityInput = ""
+
+    // 名
+    var firstName = ""
+
+    // 中间名
+    var middleName = ""
+    var noMiddleName = false
+
+    // 姓
+    var lastName = ""
 
     //是否完成信息提交
     private var isFinishComplete = false
@@ -113,7 +120,6 @@ class RegisterInfoViewModel(
     /**
      * 获取用户基本信息
      */
-    var filledName=false
     var filledBirthday=false
     var filledPhone=false
     var filledEmail=false
@@ -136,12 +142,6 @@ class RegisterInfoViewModel(
                     cityInput=it
                     if(it.isNotEmpty()){
 //                        filledCity=true
-                    }
-                }
-                data.t.fullName?.let {
-                    realNameInput=it
-                    if(it.isNotEmpty()){
-                        filledName=true
                     }
                 }
 
@@ -251,8 +251,12 @@ class RegisterInfoViewModel(
      */
     var commitMsg = ""
     fun commitUserBasicInfo() {
+        val fullName = "$firstName${if (middleName == null) "" else " $middleName"} $lastName"
         val request = UserBasicInfoRequest(
-            realNameInput,
+            fullName,
+            firstName,
+            middleName,
+            lastName,
             birthdayTimeInput,
             sourceInput,
             provinceInput,
@@ -282,7 +286,9 @@ class RegisterInfoViewModel(
      * 检查表单必选项
      */
     fun checkInput(): Boolean {
-        return realNameInput.isNotEmpty()
+        return firstName.isNotEmpty() //realNameInput.isNotEmpty()
+                && (noMiddleName || middleName.isNotEmpty())
+                && lastName.isNotEmpty()
                 && birthdayTimeInput.isNotEmpty()
                 && sourceInput > -1
                 && phoneEnable

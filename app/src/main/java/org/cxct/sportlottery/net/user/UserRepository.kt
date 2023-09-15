@@ -68,4 +68,13 @@ object UserRepository {
         return userApi.uploadReviewPhoto(params.toMap())
     }
 
+    suspend fun changeUserName(firstName: String, middelName: String?, lastName: String): ApiResult<String>  {
+        val params = mutableMapOf<String, String>()
+        params["firstName"] = firstName
+        middelName?.let { params["middleName"] = it }
+        params["lastName"] = lastName
+        params["fullName"] = "$firstName${if (middelName == null) "" else " $middelName"} $lastName"
+        return userApi.changeUserName(params)
+    }
+
 }

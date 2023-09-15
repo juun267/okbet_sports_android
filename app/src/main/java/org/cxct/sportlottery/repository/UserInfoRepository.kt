@@ -137,7 +137,7 @@ object UserInfoRepository {
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
     }
 
-    suspend fun updateFullName(userId: Long, fullName: String) {
+    fun updateFullName(userId: Long, fullName: String) {
 //        withContext(Dispatchers.IO){
 //            userInfoDao.updateFullName(userId, fullName)
 //        }

@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
@@ -15,6 +17,7 @@ import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.Uide
+import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class ModifyProfileInfoViewModel(
@@ -63,7 +66,7 @@ class ModifyProfileInfoViewModel(
         get() = _nicknameResult
     val withdrawInfoResult: LiveData<WithdrawInfoResult?>
         get() = _withdrawInfoResult
-
+    val userNameChangeResult = SingleLiveEvent<Pair<Boolean, String>>()
 
     fun confirmProfileInfo(@ModifyType modifyType: Int, inputContent: String) {
         if (checkInput(modifyType, inputContent)) {
@@ -325,7 +328,7 @@ class ModifyProfileInfoViewModel(
 
     fun checkFullName(context: Context, fullName: String?) {
         _fullNameErrorMsg.value = when {
-            !VerifyConstUtil.verifyFullName(fullName) -> androidContext.getString(R.string.error_input_has_blank)
+            !VerifyConstUtil.verifyFullName(fullName) -> context.getString(R.string.error_input_has_blank)
             else -> ""
         }
     }
@@ -367,5 +370,17 @@ class ModifyProfileInfoViewModel(
 
     private fun hideLoading() {
         _loading.postValue(false)
+    }
+
+    fun editUserName(firstName: String, middelName: String?, lastName: String) {
+        loading()
+        callApi({ UserRepository.changeUserName(firstName, middelName, lastName) }) {
+            hideLoading()
+            if (it.succeeded()) {
+                val fullName = "$firstName${if (middelName == null) "" else " $middelName"} $lastName"
+                userInfoRepository.updateFullName(LoginRepository.userId, fullName)
+            }
+            userNameChangeResult.value = Pair(it.succeeded(), it.msg)
+        }
     }
 }

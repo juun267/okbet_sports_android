@@ -117,6 +117,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }else{
             switchLoginType(loginType)
         }
+
     }
 
     private fun initOnClick() {

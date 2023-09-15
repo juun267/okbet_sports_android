@@ -1,26 +1,22 @@
 package org.cxct.sportlottery.ui.login.signUp.info
 
 import android.annotation.SuppressLint
-import android.graphics.LinearGradient
-import android.graphics.Shader
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.bigkoo.pickerview.view.TimePickerView
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.layout_username.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityRegisterInfoBinding
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.checkRegisterListener
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.SPUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
 
 /**
@@ -47,7 +43,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        KeyboadrdHideUtil.init(this)
         initToolsBar()
         initView()
         initData()
@@ -65,7 +61,6 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
 
         //地址数据
         viewModel.areaAllList.observe(this) {
-            hideLoading()
             //请求到了空的行政区域
             if(it==null||it.provinces.isEmpty()||it.cities.isEmpty()){
                 finishPage()
@@ -82,6 +77,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
 
         //基本信息
         viewModel.userBasicInfoEvent.observe(this) {
+            hideLoading()
             if (viewModel.provinceInput.isNotEmpty()) {
                 binding.etAddress.setText(viewModel.provinceInput)
                 cityPicker?.setPicker(viewModel.getCityStringListByProvince())
@@ -95,15 +91,22 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             if(viewModel.emailInput.isNotEmpty()){
                 binding.eetEmail.setText(viewModel.emailInput)
             }
-            binding.etRealName.setText(viewModel.realNameInput)
+
+            if (!it.firstName.isEmptyStr()) { // 如果firstName不为空则认为设置过真实姓名，不让再编辑
+                binding.eetFirstName.setText(it.firstName)
+                binding.eetFirstName.isEnabled = false
+                binding.eedtMiddleName.isEnabled = false
+                binding.cbNoMiddleName.isChecked = it.middleName.isEmptyStr()
+                binding.eedtMiddleName.setText(it.middleName)
+                binding.cbNoMiddleName.isEnabled = false
+                binding.eedtLastName.setText(it.lastName)
+                binding.eedtLastName.isEnabled = false
+            }
 
             binding.etBirthday.setText(viewModel.birthdayTimeInput)
             binding.etSource.setText(viewModel.getSalaryNameById())
 
-            if (viewModel.filledName) {
-                binding.etRealName.isEnabled = false
-                binding.tvRealName.visible()
-            }
+
             if (viewModel.filledEmail) {
                 binding.eetEmail.isEnabled = false
                 binding.tvEmail.visible()
@@ -138,16 +141,40 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         viewModel.loginResult?.let { result ->
             //返回继续完成登录
             EventBusUtil.post(RegisterInfoEvent(result))
-            finish()
         }
+        finish()
     }
 
+    private fun initNameLayout() = binding.run {
+        eetFirstName.checkRegisterListener {
+            viewModel.firstName = it
+            checkStatus()
+        }
+        eedtMiddleName.checkRegisterListener {
+            viewModel.middleName = it
+            checkStatus()
+        }
+        eedtLastName.checkRegisterListener {
+            viewModel.lastName = it
+            checkStatus()
+        }
+        cbNoMiddleName.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.noMiddleName = isChecked
+            if (isChecked) {
+                eedtMiddleName.isEnabled = false
+                eedtMiddleName.setText("")
+            } else {
+                eedtMiddleName.isEnabled = true
+            }
+        }
+    }
 
     private fun initView() {
         initDateTimeView()
         initAddressPickerView()
         initCityPickerView()
         initSalaryPickerView()
+        initNameLayout()
 
         //选择生日点击
         binding.tvBirthday.setOnClickListener {
@@ -192,15 +219,6 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             salaryPicker?.show()
         }
 
-        //真实姓名输入
-        binding.etRealName.addTextChangedListener {
-            viewModel.realNameInput = binding.etRealName.text.toString()
-            checkStatus()
-        }
-
-        binding.tvRealName.setOnClickListener {
-            ToastUtil.showToastInCenter(this, getString(R.string.N887))
-        }
         binding.tvPhoneNumber.setOnClickListener {
             ToastUtil.showToastInCenter(this, getString(R.string.N887))
         }

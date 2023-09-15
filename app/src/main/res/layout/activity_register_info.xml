@@ -44,7 +44,7 @@
         android:layout_width="151dp"
         android:layout_height="60dp"
         android:layout_below="@+id/tv_title"
-        android:layout_marginBottom="23dp"
+        android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:src="@drawable/logo_okbet_color" />
@@ -71,39 +71,113 @@
             android:orientation="vertical">
 
             <FrameLayout
-                android:id="@+id/fl_real_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
-                    android:id="@+id/tb_real_name"
+                    android:id="@+id/etFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintText="@string/N847"
+                    android:background="@color/color_FFFFFF"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="3dp"
+                    app:hintText="@string/P185"
                     app:isResponsiveIconColor="false"
-                    app:labelText="@string/J055"
+                    app:labelText="@string/P185"
                     app:labelTextStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:primaryColor="@color/color_AFAFB1">
 
                     <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
-                        android:id="@+id/et_real_name"
+                        android:id="@+id/eetFirstName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
+                        android:imeOptions="actionNext"
                         android:inputType="text"
-                        android:maxLength="99"
                         android:maxLines="1"
+                        android:maxEms="30"
                         android:textColor="@color/color_FFFFFF_DE000000"
                         android:textSize="@dimen/textSize14sp" />
 
                 </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
 
-                <TextView
-                    android:id="@+id/tv_real_name"
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/edtMiddleName"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone" />
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_FFFFFF"
+                    android:paddingEnd="14dp"
+                    app:hintText="@string/P186"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/P186"
+                    app:labelTextStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eedtMiddleName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:maxEms="25"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+                <CheckBox
+                    android:id="@+id/cbNoMiddleName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/none" />
+
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/edtLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_FFFFFF"
+                    android:paddingEnd="14dp"
+                    app:hintText="@string/P187"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/P187"
+                    app:labelTextStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eedtLastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:maxEms="25"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
             </FrameLayout>
 
             <FrameLayout
@@ -322,7 +396,7 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_16"
                 android:alpha="0.5"
                 android:background="@drawable/ic_submit"
                 android:enabled="false"

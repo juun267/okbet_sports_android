@@ -469,6 +469,7 @@ object Constants {
     const val USER_GET_BASIC_INFO = "/api/front/user/queryUserBasicInfoV2" //获取用户基本信息
     const val USER_VERIFY_CONFIG = "/api/front/user/verifyConfig" //获取需要提交信息配置，为1的必填
     const val UPLOAD_REVIEW_PHOTO = "/api/front/user/uploadReviewPhoto" //上传复审资料
+    const val SET_USERNAME = "/api/front/user/fullname" // 修改用户名称
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
