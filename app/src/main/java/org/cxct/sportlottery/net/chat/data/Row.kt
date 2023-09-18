@@ -7,7 +7,7 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 data class Row(
     val basicAmount: Int,
     val betMoney: Double,
-    val constraintType: String,
+    val constraintType: Int,
     val createDate: String,
     val id: Int,
     val isOpen: String,
@@ -20,4 +20,5 @@ data class Row(
     val platName: String,
     val rechMoney: Double,
     val remark: String,
+    val dataStatisticsRange: Int,
 )

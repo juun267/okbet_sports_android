@@ -67,7 +67,9 @@ class AvatarRepository(private val androidContext: Context) {
                 _editIconUrlResult.postValue(Event(result))
 
                 //後續優化方向, _editIconUrlResult改為 flow 讓 ViewModel 和 View 能各自觀察執行後續業務邏輯
-                UserInfoRepository.getSign()
+                ChatRepository.chatRoom?.let {
+                    UserInfoRepository.getSign(it.constraintType,it.dataStatisticsRange)
+                }
             }
         }
     }

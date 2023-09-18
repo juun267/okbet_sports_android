@@ -629,7 +629,7 @@ object Constants {
     const val CHAT_REMOVE_MESSAGE =
         "/api/chat/front/chat/{roomId}/removeMessage/{messageId}" //-- 删除讯息
     const val CHAT_GET_SIGN =
-        "/api/front/chat/getSign" //---------------------------------------- 获取平台用户信息和签名信息
+        "/api/front/chat/getNewSign" //---------------------------------------- 获取平台用户信息和签名信息
     const val CHAT_CHECK_TOKEN =
         "/api/chat/front/user/checktoken" //----------------------------- 验证token 是否过期。如果不过期返回token信息，过期返回success: false
     const val CHAT_GET_STICKER="/api/chat/front/emoticons/queryList"
