@@ -201,7 +201,12 @@ import java.util.concurrent.TimeUnit
         reconnect()
     }
 
-
+     fun cleanUserChannel(){
+         unsubscribeChannel(URL_USER)
+         unsubscribeChannel(URL_USER_PRIVATE)
+         mToken = ""
+         mUserId = null
+     }
     //關閉所有連線通道，釋放資源
     private fun disconnect() {
         resetSubscriptions()
