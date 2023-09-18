@@ -20,7 +20,9 @@ data class SportMaintenanceEvent(
     override val eventType: String? = EventType.SPORT_MAINTAIN_STATUS,
     @Json(name = "status")
     val status: Int? = null //1开启维护  0关闭
-) : ServiceEventType
+) : ServiceEventType {
+    fun isMaintenance() = 1 == status
+}
 
 @JsonClass(generateAdapter = true) @KeepMembers
 data class JackpotEvent(

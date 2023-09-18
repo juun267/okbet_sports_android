@@ -178,6 +178,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         initUI()
         initBottomNavigation()
         getData()
+        bindSportMaintenance()
 
         /**
          * 在observer的回调中有直接通过id方式访问SportToolBarTopFragment中的view,

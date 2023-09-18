@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
-import android.util.Log
 import android.view.View
-import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.loading.Gloading
@@ -10,14 +8,10 @@ import org.cxct.sportlottery.databinding.FragmentLeftSportBetBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
-import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerLeftMatchesAdapter
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.loginedRun
-import org.cxct.sportlottery.util.startLogin
-import org.cxct.sportlottery.view.onClick
-import org.cxct.sportlottery.view.rumWithSlowRequest
 import org.cxct.sportlottery.view.updateLastRequestTime
 
 class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftSportBetBinding>() {
