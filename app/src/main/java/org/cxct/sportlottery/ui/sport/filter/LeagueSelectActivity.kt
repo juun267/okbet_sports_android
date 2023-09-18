@@ -72,6 +72,8 @@ class LeagueSelectActivity :
         bindFinish(btnCancel)
         loading.showLoading()
         setDateListView()
+        bindSportMaintenance()
+
         if (MatchType.OUTRIGHT == matchType) {
             initOutrightLeagues()
             initOutrightObserver()
