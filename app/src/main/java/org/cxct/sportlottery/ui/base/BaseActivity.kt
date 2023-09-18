@@ -110,6 +110,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
                     || this is SplashActivity) {
                     return
                 }
+                viewModel.doCleanToken()
                 showTokenPromptDialog(result.msg) {
                     viewModel.doLogoutCleanUser {
                         if (isErrorTokenToMainActivity()) {
@@ -151,6 +152,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
                 if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName ||
                     this.javaClass.simpleName == ThirdGameActivity::class.java.simpleName
                 ) return@observe
+                viewModel.doCleanToken()
                 showTokenPromptDialog(msg) {
                     viewModel.doLogoutCleanUser {
                         run {
