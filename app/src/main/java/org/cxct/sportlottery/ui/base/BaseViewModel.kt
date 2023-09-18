@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.NetworkUtil
 import org.cxct.sportlottery.util.updateDefaultHandicapType
@@ -154,6 +155,14 @@ abstract class BaseViewModel(
     fun doLogoutAPI() {
         viewModelScope.launch {
             runCatching { loginRepository.logoutAPI() }
+        }
+    }
+    fun doCleanToken() {
+        viewModelScope.launch {
+            betInfoRepository.clear()
+            infoCenterRepository.clear()
+            loginRepository.logout()
+            BackService.cleanUserChannel()
         }
     }
 
