@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.safeApi
 import org.cxct.sportlottery.net.ApiResult
@@ -268,6 +269,12 @@ object UserInfoRepository {
             permanentZipCode = userInfoData.permanentZipCode,
         )
 
-    suspend fun getSign(): ApiResult<JsonElement> = safeApi { signService.getSign() }
-
+    suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {
+        val params = JsonObject()
+        params.addProperty("constraintType", constraintType)
+        params.addProperty("dataStatisticsRange", dataStatisticsRange)
+        return safeApi {
+            signService.getSign(params)
+        }
+    }
 }
