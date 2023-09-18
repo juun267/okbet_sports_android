@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.BankCardChangeEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.toDoubleS
@@ -33,6 +34,8 @@ import org.cxct.sportlottery.ui.money.withdraw.BankActivity.Companion.TransferTy
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import kotlin.math.min
 
 /**
@@ -54,6 +57,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         initObserve(view)
         setupServiceButton()
         setupData()
+        EventBusUtil.targetLifecycle(this)
     }
 
     private fun setupData() = viewModel.run {
@@ -155,97 +159,16 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
     private fun setupClickEvent() {
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.text) {
-                    getString(R.string.bank_card) -> {
-                        selectBetStationTab(false)
-                        selectDealType(TransferType.BANK)
-                        dealType = TransferType.BANK
-                        transferTypeAddSwitch.apply {
-                            add_bank_group.visibility = if (bankTransfer)View.VISIBLE else View.GONE
-                        }
-                        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_bank))
-                        clearEvent()
-                    }
-                    getString(R.string.crypto) -> {
-                        selectBetStationTab(false)
-                        selectDealType(TransferType.CRYPTO)
-                        dealType = TransferType.CRYPTO
-                        transferTypeAddSwitch.apply {
-                            add_bank_group.visibility = if (cryptoTransfer)View.VISIBLE else View.GONE
-                        }
-                        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_crypto))
-                        clearEvent()
-                    }
-                    getString(R.string.ewallet) -> {
-                        selectBetStationTab(false)
-                        selectDealType(TransferType.E_WALLET)
-                        dealType = TransferType.E_WALLET
-                        transferTypeAddSwitch.apply {
-                            add_bank_group.visibility =
-                                if (walletTransfer) View.VISIBLE else View.GONE
-                        }
-                        tv_add_bank.text = context?.getString(R.string.bank_list_add,
-                            context?.getString(R.string.bank_list_e_wallet))
-                        clearEvent()
-                    }
-                    getString(R.string.online_maya) -> {
-                        selectBetStationTab(false)
-                        selectDealType(TransferType.PAYMAYA)
-                        dealType = TransferType.PAYMAYA
-                        transferTypeAddSwitch.apply {
-                            add_bank_group.visibility =
-                                if (paymataTransfer) View.VISIBLE else View.GONE
-                        }
-                        tv_add_bank.text = context?.getString(R.string.bank_list_add,
-                            context?.getString(R.string.online_maya))
-                        clearEvent()
-                    }
-                    getString(R.string.Outlets_Reserve) -> {
-                        selectBetStationTab(true)
-                        viewModel.setDealType(TransferType.STATION)
-                        dealType = TransferType.STATION
-                        clearEvent()
-                    }
-                }
-                tab?.let {
-                    if (TextUtils.equals(it.text, getString(R.string.Outlets_Reserve))) {
-                        viewModel.setVisibleView(false)
-                    } else {
-                        viewModel.setVisibleView(true)
-                    }
-                }
-
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                tabSelect(tab)
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            override fun onTabUnselected(tab: TabLayout.Tab) {
             }
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {
+            override fun onTabReselected(tab: TabLayout.Tab) {
             }
         })
-
-//            tab_bank_card.setOnClickListener {
-//            if (!it.isSelected) {
-//                selectDealType(TransferType.BANK)
-//                clearEvent()
-//            }
-//        }
-//
-//        tab_crypto.setOnClickListener {
-//            if (!it.isSelected) {
-//                selectDealType(TransferType.CRYPTO)
-//                clearEvent()
-//            }
-//        }
-//
-//        tab_wallet.setOnClickListener {
-//            if (!it.isSelected) {
-//                selectDealType(TransferType.E_WALLET)
-//                clearEvent()
-//            }
-//        }
-
 
         btn_withdraw.setOnClickListener {
             modifyFinish()
@@ -284,6 +207,65 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
             //提款密碼
             et_withdrawal_password.afterTextChanged { checkWithdrawPasswordByWithdrawPage(it) }
+        }
+    }
+    private fun tabSelect(tab:TabLayout.Tab){
+        when (tab.text) {
+            getString(R.string.bank_card) -> {
+                selectBetStationTab(false)
+                selectDealType(TransferType.BANK)
+                dealType = TransferType.BANK
+                transferTypeAddSwitch.apply {
+                    add_bank_group.visibility = if (bankTransfer)View.VISIBLE else View.GONE
+                }
+                tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_bank))
+                clearEvent()
+            }
+            getString(R.string.crypto) -> {
+                selectBetStationTab(false)
+                selectDealType(TransferType.CRYPTO)
+                dealType = TransferType.CRYPTO
+                transferTypeAddSwitch.apply {
+                    add_bank_group.visibility = if (cryptoTransfer)View.VISIBLE else View.GONE
+                }
+                tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_crypto))
+                clearEvent()
+            }
+            getString(R.string.ewallet) -> {
+                selectBetStationTab(false)
+                selectDealType(TransferType.E_WALLET)
+                dealType = TransferType.E_WALLET
+                transferTypeAddSwitch.apply {
+                    add_bank_group.visibility =
+                        if (walletTransfer) View.VISIBLE else View.GONE
+                }
+                tv_add_bank.text = context?.getString(R.string.bank_list_add,
+                    context?.getString(R.string.bank_list_e_wallet))
+                clearEvent()
+            }
+            getString(R.string.online_maya) -> {
+                selectBetStationTab(false)
+                selectDealType(TransferType.PAYMAYA)
+                dealType = TransferType.PAYMAYA
+                transferTypeAddSwitch.apply {
+                    add_bank_group.visibility =
+                        if (paymataTransfer) View.VISIBLE else View.GONE
+                }
+                tv_add_bank.text = context?.getString(R.string.bank_list_add,
+                    context?.getString(R.string.online_maya))
+                clearEvent()
+            }
+            getString(R.string.Outlets_Reserve) -> {
+                selectBetStationTab(true)
+                selectDealType(TransferType.STATION)
+                dealType = TransferType.STATION
+                clearEvent()
+            }
+        }
+        if (TextUtils.equals(tab.text, getString(R.string.Outlets_Reserve))) {
+            viewModel.setVisibleView(false)
+        } else {
+            viewModel.setVisibleView(true)
         }
     }
 
@@ -380,38 +362,12 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 moneyCardSet.find { it.transferType == TransferType.STATION }?.exist
             val paymayaExit =
                 moneyCardSet.find { it.transferType == TransferType.PAYMAYA }?.exist
-
-            val tabIndexList = viewModel.withdrawTabIsShow.value
             when {
-                bankCardExist == true -> {
-//                    tab_bank_card.isChecked = true
-                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.BANK.type) ?: 0)
-                        ?.select()
-                    viewModel.setDealType(TransferType.BANK)
-                }
-                cryptoCardExist == true -> {
-//                    tab_crypto.isChecked = true
-                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.CRYPTO.type)?:0)?.select()
-                    viewModel.setDealType(TransferType.CRYPTO)
-                }
-                eWalletCardExist == true -> {
-//                    tab_e_wallet.isChecked = true
-                    var aaaa = tabIndexList?.indexOf(TransferType.E_WALLET.type) ?: 0
-                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.E_WALLET.type) ?: 0)
-                        ?.select()
-                    viewModel.setDealType(TransferType.E_WALLET)
-                }
-                stationExit == true -> {
-//                    tab_e_wallet.isChecked = true
-                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.STATION.type) ?: 0)
-                        ?.select()
-                    viewModel.setDealType(TransferType.STATION)
-                }
-                paymayaExit == true -> {
-//                    tab_e_wallet.isChecked = true
-                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.PAYMAYA.type) ?: 0)
-                        ?.select()
-                    viewModel.setDealType(TransferType.PAYMAYA)
+                bankCardExist == true || cryptoCardExist == true || eWalletCardExist == true || stationExit == true || paymayaExit == true -> {
+                    tab_layout.getTabAt(0)?.let {
+                        it.select()
+                        tabSelect(it)
+                    }
                 }
                 else -> {
                     jumpToMoneyCardSetting()
@@ -420,30 +376,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         })
         //Tab 顯示判斷
         viewModel.withdrawTabIsShow.observe(this.viewLifecycleOwner) { list ->
-            if (list.isNullOrEmpty() || list.size == 1) {
-                tab_layout.visibility = View.GONE
-                ll_tab_layout.visibility = View.GONE
-            } else {
-                tab_layout.visibility = View.VISIBLE
-                ll_tab_layout.visibility = View.VISIBLE
-
-                tab_layout.getTabAt(0)?.view?.visibility =
-                    if (list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
-                tab_layout.getTabAt(1)?.view?.visibility =
-                    if (list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
-                tab_layout.getTabAt(2)?.view?.visibility =
-                    if (list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
-
-                if (list.contains(TransferType.STATION.type)) {
-                    betStationFragment = BetStationFragment()
-                    tab_layout.getTabAt(3)?.view?.visibility = View.VISIBLE
-                } else {
-                    tab_layout.getTabAt(3)?.view?.visibility = View.GONE
-                }
-                tab_layout.getTabAt(4)?.view?.visibility =
-                    if (list.contains(TransferType.PAYMAYA.type)) View.VISIBLE else View.GONE
-            }
-
             tab_layout.removeAllTabs()
             list.forEach { type->
                 when(type){
@@ -461,9 +393,14 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         .setText(R.string.online_maya))
                 }
             }
-
+            if (list.isNullOrEmpty() || list.size == 1) {
+                tab_layout.visibility = View.GONE
+                ll_tab_layout.visibility = View.GONE
+            } else {
+                tab_layout.visibility = View.VISIBLE
+                ll_tab_layout.visibility = View.VISIBLE
+            }
             setupClickEvent()
-
         }
 
         //資金設定
@@ -650,6 +587,10 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBankCardChange(event: BankCardChangeEvent){
+        setupData()
+    }
 }
 
 class WithdrawBankCardAdapter(
@@ -732,10 +673,10 @@ class WithdrawBankCardAdapter(
         dataList[bankPosition].isSelected = true
         notifyItemChanged(bankPosition)
     }
-
 }
 
 
 class BankCardAdapterListener(val listener: (bankCard: BankCardList) -> Unit) {
     fun onClick(bankCard: BankCardList) = listener(bankCard)
 }
+

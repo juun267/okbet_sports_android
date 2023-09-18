@@ -120,10 +120,17 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             tv_money_card_type.text = getString(R.string.my_bank_card, cardTypeTitle, it)
         })
         cv_add_bank.setOnClickListener{
-            val action =
-                org.cxct.sportlottery.ui.money.withdraw.BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
+            val addSwitch=viewModel.addMoneyCardSwitch.value
+            var transferType =when{
+                addSwitch?.bankTransfer==true-> TransferType.BANK
+                addSwitch?.cryptoTransfer==true-> TransferType.CRYPTO
+                addSwitch?.walletTransfer==true-> TransferType.E_WALLET
+                addSwitch?.paymataTransfer == true -> TransferType.PAYMAYA
+                else-> TransferType.BANK
+            }
+            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
                     null,
-                    TransferType.BANK)
+                    transferType)
             mNavController.navigate(action)
         }
     }
