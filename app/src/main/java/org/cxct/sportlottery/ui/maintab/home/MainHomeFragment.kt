@@ -97,25 +97,14 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     private fun initBetWinsRecodeLayout() {
         binding.winsRankView.setUp(
             this,
-            { viewModel.getRecordNew() },
-            { viewModel.getRecordResult() })
-        receiver.recordBetNew.collectWith(lifecycleScope) {
-            it?.let {
-                binding.winsRankView.onNewWSBetData(it)
-            }
-        }
-        //最新大奖
-        receiver.recordWinsResult.collectWith(lifecycleScope) {
-            it?.let {
-                binding.winsRankView.onNewWSWinsData(it)
-            }
-        }
-        viewModel.recordBetNewHttp.observe(viewLifecycleOwner) {
+            { viewModel.getBetRecord() },
+            { viewModel.getWinRecord() })
+        viewModel.recordBetHttp.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpBetData(it.reversed())
             }
         }
-        viewModel.recordWinsResultHttp.observe(viewLifecycleOwner) {
+        viewModel.recordWinHttp.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpWinsData(it.reversed())
             }

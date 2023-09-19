@@ -270,17 +270,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 binding.winsRankView.onNewHttpWinsData(it.reversed())
             }
         }
-        receiver.recordNewOkGame.collectWith(lifecycleScope) {
-            if (it != null) {
-                binding.winsRankView.onNewWSBetData(it)
-            }
-        }
-        receiver.recordResultOkGame.collectWith(lifecycleScope) {
-            if (it != null) {
-                binding.winsRankView.onNewWSWinsData(it)
-            }
-        }
-
         //供应商左滑按钮
         binding.ivProvidersLeft.setOnClickListener {
             if (p3ogProviderFirstPosi >= 3) {
