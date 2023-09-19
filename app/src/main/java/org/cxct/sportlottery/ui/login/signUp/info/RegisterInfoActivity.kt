@@ -181,7 +181,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             if (inputString.isEmpty()) {
                 textFormFieldBoxes.setError(getString(R.string.error_input_empty), false)
             } else {
-                textFormFieldBoxes.setError(if (VerifyConstUtil.verifyFullName(inputString)) "" else getString(R.string.error_input_has_blank), false)
+                textFormFieldBoxes.setError(if (VerifyConstUtil.verifyFullName2(inputString)) "" else getString(R.string.N280), false)
             }
         }
 
