@@ -87,6 +87,20 @@ object VerifyConstUtil {
         return Pattern.matches("[a-zA-Z\\s]{1,50}", fullName)
     }
 
+    //真實姓名 只允许英文数字和空格，不允许前后空格和连续空格
+    fun verifyFullName2(fullName: CharSequence?): Boolean {
+        if (fullName.isNullOrBlank()||fullName.startsWith(" ")||fullName.endsWith(" ")){
+            return false
+        }
+        if (fullName.startsWith(" ")||fullName.endsWith(" ")){
+            return false
+        }
+        if (fullName.contains("  ")){
+            return false
+        }
+        return Pattern.matches("[a-zA-Z0-9\\s]{1,50}", fullName)
+    }
+
     //提款密碼 //數字4
     fun verifyWithdrawPassword(withdrawPassword: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{4}", withdrawPassword)
