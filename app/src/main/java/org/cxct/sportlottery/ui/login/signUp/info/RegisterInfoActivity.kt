@@ -98,9 +98,12 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
                 binding.eetFirstName.setText(it.firstName)
                 binding.eetFirstName.isEnabled = false
                 binding.eedtMiddleName.isEnabled = false
-                binding.cbNoMiddleName.isChecked = it.middleName.isEmptyStr()
+                val noMiddle = it.middleName.isEmptyStr() || "N/A" == it.middleName?.toUpperCase()
+                binding.cbNoMiddleName.isChecked = noMiddle
                 binding.cbNoMiddleName.isEnabled = false
-                binding.eedtMiddleName.setText(it.middleName)
+                if (noMiddle) {
+                    binding.eedtMiddleName.setText(it.middleName)
+                }
                 binding.eedtLastName.setText(it.lastName)
                 binding.eedtLastName.isEnabled = false
             }
