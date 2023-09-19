@@ -26,7 +26,10 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.RCVDecoration
+import org.cxct.sportlottery.util.toJson
+import splitties.coroutines.repeatWhileActive
 import kotlin.random.Random
 
 class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
@@ -41,12 +44,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     private val gameRecordAdapter by lazy { OkGameRecordAdapter().apply { setOnItemClickListener(this@WinsRankView) } }
     private val httpBetDataList: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
-    private val wsBetDataList: MutableList<RecordNewEvent> = mutableListOf()//ws的最新投注
-    private val betShowingData: MutableList<RecordNewEvent> = mutableListOf()//最新投注显示在界面上的数据
-
     private val httpWinsDataList: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新大奖
-    private val wsWinsDataList: MutableList<RecordNewEvent> = mutableListOf()//ws的最新大奖
-    private val winsShowingData: MutableList<RecordNewEvent> = mutableListOf()//最新大奖显示在界面上的数据
     private lateinit var fragment: BaseFragment<out MainHomeViewModel>
 
     init {
@@ -58,19 +56,13 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     private var recordHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
-
             var newItem: RecordNewEvent? = null
             if (rbtnLb.isChecked) {
-                if (wsBetDataList.isNotEmpty()) {
-                    newItem = wsBetDataList.removeAt(0)//ws 最新投注
-                } else if (httpBetDataList.isNotEmpty()) {
+                if (httpBetDataList.isNotEmpty()) {
                     newItem = httpBetDataList.removeAt(0)
                 }
             } else if (rbtnLbw.isChecked) {
-                if (wsWinsDataList.isNotEmpty()) {
-                    newItem = wsWinsDataList.removeAt(0)//ws 最新大奖
-
-                } else if (httpWinsDataList.isNotEmpty()) {
+                 if (httpWinsDataList.isNotEmpty()) {
                     newItem = httpWinsDataList.removeAt(0)
                 }
             }
@@ -82,25 +74,44 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
             postLoop()
         }
     }
+    private var callApiHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            if (rbtnLb.isChecked) {
+                betRequest?.invoke()
+            } else if (rbtnLbw.isChecked) {
+                winsRequest?.invoke()
+            }
+            postCallApiLoop()
+        }
+    }
+    private fun postCallApiLoop() {
+        callApiHandler.sendEmptyMessageDelayed(0, 60*1000)
+    }
 
-    fun setUp(fragment: BaseFragment<out MainHomeViewModel>, blockWinsRequest: () -> Unit, blockBetRequest: () -> Unit) {
-        fragment.doOnDestory { stopPostLoop() }
+    private fun stopCallApiLoop() {
+        callApiHandler.removeCallbacksAndMessages(null)
+    }
+
+    fun setUp(fragment: BaseFragment<out MainHomeViewModel>,  blockBetRequest: () -> Unit, blockWinsRequest: () -> Unit) {
+        fragment.doOnDestory {
+            stopCallApiLoop()
+            stopPostLoop()
+        }
         this.fragment = fragment
-        winsRequest = blockWinsRequest
         betRequest = blockBetRequest
+        winsRequest = blockWinsRequest
         postLoop()
+        postCallApiLoop()
     }
 
     fun loadData() {
         clearAllData()
-        winsRequest?.invoke()
         betRequest?.invoke()
+        winsRequest?.invoke()
     }
     fun clearAllData(){
         httpBetDataList.clear()
         httpWinsDataList.clear()
-        wsBetDataList.clear()
-        wsWinsDataList.clear()
         gameRecordAdapter.setList(listOf())
     }
 
@@ -136,7 +147,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
                     betRequest!!.invoke()
                 }
                 if (gameRecordAdapter.data.isNotEmpty()) {
-                    resetData(winsShowingData, betShowingData)
+                    gameRecordAdapter.setNewInstance(null)
                 }
 
                 return@setOnCheckedChangeListener
@@ -147,7 +158,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
             }
 
             if (gameRecordAdapter.data.isNotEmpty()) {
-                resetData(betShowingData, winsShowingData)
+                gameRecordAdapter.setNewInstance(null)
             }
         }
     }
@@ -165,19 +176,13 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
         gameRecordAdapter.addData(0, it)
     }
 
-    fun onNewWSWinsData(data: RecordNewEvent) {
-        wsWinsDataList.add(data)
-    }
-
-    fun onNewWSBetData(data: RecordNewEvent) {
-        wsBetDataList.add(data)
-    }
-
     fun onNewHttpWinsData(dataList: List<RecordNewEvent>) {
+        httpWinsDataList.clear()
         httpWinsDataList.addAll(dataList)
     }
 
     fun onNewHttpBetData(dataList: List<RecordNewEvent>) {
+        httpBetDataList.clear()
         httpBetDataList.addAll(dataList)
     }
 
@@ -203,5 +208,6 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
             fragment.viewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType, gameEntryTagName)
         }
     }
+
 
 }

@@ -51,15 +51,6 @@ object EventType {
     /*/ws/notify/platform*/
     const val USER_LEVEL_CONFIG_CHANGE = ("USER_LEVEL_CONFIG_CHANGE")
 
-    const val RECORD_NEW = ("RECORD_NEW")//最新投注
-    const val RECORD_RESULT = ("RECORD_RESULT")//最新大奖
-
-    const val RECORD_NEW_OK_GAMES = ("RECORD_NEW_OK_GAMES")//最新投注
-    const val RECORD_RESULT_OK_GAMES = ("RECORD_RESULT_OK_GAMES")//最新大奖
-
-    const val RECORD_NEW_OK_LIVE = ("RECORD_NEW_OK_LIVE")//最新投注
-    const val RECORD_RESULT_OK_LIVE = ("RECORD_RESULT_OK_LIVE")//最新大奖
-
     const val THIRD_GAME_STATU_CHANGED = "GAME_FIRM_MAINTAIN_RESULT" //三方游戏维护状态变化
 
     /*未被定義的頻道*/
