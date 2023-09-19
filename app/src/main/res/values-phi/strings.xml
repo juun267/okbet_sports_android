@@ -1456,9 +1456,6 @@
     <string name="N938">Hindi nasimulan</string>
     <string name="P183">Top-up ng ahente</string>
     <string name="P204">Bets</string>
-    <string name="P205">Paglipat</string>
-    <string name="P206">Inililipat Ang Balanse Ng Lahat ng Iba Pang Account ng Laro Sa Balanse ng Account.</string>
-    <string name="P212">Ilipat sa Balanse ng Account</string>
     <string name="P199">Mga OKBET Award</string>
     <string name="J653_1">Game Vendor</string>
     <string name="P211">Karagdagang impormasyon</string>
@@ -1475,5 +1472,9 @@
     <string name="P188">Wala</string>
     <string name="P189">Mga Tip: Dapat tumugma ang iyong tunay na pangalan sa pangalan sa isinumiteng ID.</string>
     <string name="N280">Hindi tugma ang format</string>
+    <string name="P205">Paglipat</string>
+    <string name="P206">Inililipat Ang Balanse Ng Lahat ng Iba Pang Account ng Laro Sa Balanse ng Account.</string>
+    <string name="P212">Ilipat sa Balanse ng Account</string>
+    <string name="P215">Ang pangalan ng cardholder ay dapat tumugma sa iyong rehistradong buong pangalan. Kung mayroon kang anumang mga katanungan, mangyaring makipag-ugnayan sa aming Customer Service.</string>
 </resources>
 

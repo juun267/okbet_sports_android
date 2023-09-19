@@ -1485,9 +1485,6 @@
     <string name="P199">Giải thưởng OKBET</string>
     <string name="J653_1">Trang</string>
     <string name="P204">Đơn cược</string>
-    <string name="P205">Chuyển khoản</string>
-    <string name="P206">Chuyển tát cả số dư TK trò chơi vào sớ dư TK chính</string>
-    <string name="P212">CK vào số dư TK</string>
     <string name="P211">Thông tin bổ sung</string>
     <string name="P207">Ảnh selfie</string>
     <string name="P208">Tải ảnh selfie lên, dung lượng file phải nhỏ hơn 2MB.</string>
@@ -1501,4 +1498,8 @@
     <string name="P188">Không có</string>
     <string name="P189">Nhắc nhở: Họ và tên cần khớp với giấy tờ đã xác minh</string>
     <string name="N280">Định dạng không phù hợp</string>
+    <string name="P205">Chuyển khoản</string>
+    <string name="P206">Chuyển tát cả số dư TK trò chơi vào sớ dư TK chính</string>
+    <string name="P212">CK vào số dư TK</string>
+    <string name="P215">Tên chủ thẻ phải trùng với  họ và tên đã đăng ký. Nếu có thắc mắc, vui lòng liên hệ CSKH online.</string>
 </resources>
