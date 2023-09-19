@@ -288,16 +288,6 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
                 binding.winsRankView.onNewHttpWinsData(it.reversed())
             }
         }
-        receiver.recordNewOkLive.collectWith(lifecycleScope) {
-            if (it != null) {
-                binding.winsRankView.onNewWSBetData(it)
-            }
-        }
-        receiver.recordResultOkLive.collectWith(lifecycleScope) {
-            if (it != null) {
-                binding.winsRankView.onNewWSWinsData(it)
-            }
-        }
 
         //供应商左滑按钮
         binding.ivProvidersLeft.setOnClickListener {
