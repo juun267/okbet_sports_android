@@ -6,6 +6,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -22,7 +23,9 @@ import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.afterTextChanged
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
@@ -37,7 +40,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private var mBankSelectorBottomSheetDialog: BottomSheetDialog? = null
     private lateinit var mBankSelectorAdapter: BankSelectorAdapter
     private val mNavController by lazy { findNavController() }
-    private val args: org.cxct.sportlottery.ui.money.withdraw.BankCardFragmentArgs by navArgs()
+    private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
     private var bankCode: String? = null
 
@@ -116,9 +119,33 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun initView() {
         changeTransferType(transferType)
 
-        initEditTextStatus(eet_create_name)
-        initEditTextStatus(eet_bank_card_number)
-        initEditTextStatus(eet_network_point)
+        val ivQuestion = et_create_name.endIconImageButton
+        eet_create_name.setPadding(0, 0, 10.dp, 0)
+        ivQuestion.post {
+            val param = ivQuestion.layoutParams as MarginLayoutParams
+            param.bottomMargin = 4.dp
+            ivQuestion.layoutParams = param
+        }
+
+        ivQuestion.setOnClickListener {
+
+            val msg = getString(R.string.P215)
+            val cxt = it.context
+            CustomAlertDialog(cxt).apply {
+
+                setTitle(cxt.getString(R.string.prompt))
+                setMessage(msg)
+                setPositiveButtonText(cxt.getString(R.string.btn_confirm))
+                setNegativeButtonText(cxt.getString(R.string.live_service))
+                setNegativeClickListener(serviceClickListener(this@BankCardFragment.childFragmentManager){
+                    this.dismiss()
+                })
+
+                setCanceledOnTouchOutside(true)
+                isCancelable = true
+            }.show(childFragmentManager, msg)
+        }
+
 
         btn_delete_bank.text = when (transferType) {
             TransferType.BANK -> {
@@ -174,11 +201,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
-    private fun initEditTextStatus(setupView: ExtendedEditText) {
-//        setupView.apply {
-//            clearIsShow = text.isNotEmpty()
-//        }
-    }
 
     private fun setupBankSelector(rechCfgData: MoneyRechCfgData) {
         mBankSelectorBottomSheetDialog = BottomSheetDialog(requireContext()).apply {
@@ -248,14 +270,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
         setupView.afterTextChanged {
             checkFun.invoke(setupView.text.toString())
-        }
-    }
-
-
-    private fun setupEyeButtonVisibility(setupView: ExtendedEditText, checkFun: (String) -> Unit) {
-        setupView.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus)
-                checkFun(setupView.text.toString())
         }
     }
 
@@ -526,7 +540,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.userInfo.observe(this.viewLifecycleOwner) {
             it?.fullName?.let { fullName ->
                 if (fullName.isNotEmpty()) eet_create_name.setText(
-                    TextUtil.maskFullName(fullName)
+//                    TextUtil.maskFullName(fullName)
+                    fullName
                 ).also {
                     eet_create_name.isFocusable = false
                 }
