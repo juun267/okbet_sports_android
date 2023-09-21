@@ -87,7 +87,6 @@ class ProfileModel(
     }
 
     fun getUserInfo() {
-        LogUtil.d("queryUserInfoDetails onresume")
         viewModelScope.launch {
             runWithCatch { userInfoRepository.getUserInfo() }
         }

@@ -1401,7 +1401,7 @@ class OddsDetailListAdapter(
                     //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
                     if (spanCount == 3) {
                         //如果第三个标题不等于客队名，那么判断第三个为和局，迁移到第二个位置
-                        if (!TextUtils.equals(
+                        if (oddsDetail.oddArrayList.size > 2 && !TextUtils.equals(
                                 oddsDetail.matchInfo?.awayName, oddsDetail.oddArrayList[2]?.name
                             )
                         ) {

@@ -77,6 +77,10 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
     }
 
     fun reloadData(){
+        if (activity == null) {
+            return
+        }
+
         //初始化顶部登录状态
         initLoginData()
         //刷新订单数量
