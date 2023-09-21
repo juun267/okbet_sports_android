@@ -1631,5 +1631,6 @@
     <string name="P188">Don‘t Have</string>
     <string name="P189">Tips: Your real name should match the name on the submitted ID.</string>
     <string name="N280">Format doesn\'t match</string>
+    <string name="P215">The Cardholder\'s Name should match your registered full name. If you have any questions, please contact our Customer Service.</string>
 
 </resources>
