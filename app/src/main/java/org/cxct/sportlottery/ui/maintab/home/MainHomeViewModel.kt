@@ -99,10 +99,12 @@ open class MainHomeViewModel(
         get() = _newsDetail
     private val _newsDetail = MutableLiveData<Pair<Int, NewsDetail?>>()
 
-    val recordBetNewHttp: LiveData<List<RecordNewEvent>>
-        get() = _recordBetNewHttp
-    val recordWinsResultHttp: LiveData<List<RecordNewEvent>>
-        get() = _recordWinsResultHttp
+    //最新投注
+    val recordBetHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordBetHttp
+    //最新大奖
+    val recordWinHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordWinHttp
 
 
     //okgames游戏列表
@@ -111,8 +113,8 @@ open class MainHomeViewModel(
     private val _homeGamesList = MutableLiveData< List<OKGameBean>>()
 
 
-    private val _recordBetNewHttp = MutableLiveData<List<RecordNewEvent>>()
-    private val _recordWinsResultHttp = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordBetHttp = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordWinHttp = MutableLiveData<List<RecordNewEvent>>()
 
     val bettingStationList: LiveData<List<BettingStation>>
         get() = _bettingStationList
@@ -608,18 +610,18 @@ open class MainHomeViewModel(
         }
     }
 
-
-    fun getRecordNew() = callApi({ OKGamesRepository.getRecordNew() }) {
+    //首页最新投注
+    fun getBetRecord() = callApi({ OKGamesRepository.getRecordNew() }) {
         if (it.succeeded()) {
-            _recordBetNewHttp.postValue(it.getData())
+            _recordBetHttp.postValue(it.getData())
         } else {
             toast(it.msg)
         }
     }
-
-    fun getRecordResult() = callApi({ OKGamesRepository.getRecordResult() }) {
+    //首页最新大奖
+    fun getWinRecord() = callApi({ OKGamesRepository.getRecordResult() }) {
         if (it.succeeded()) {
-            _recordWinsResultHttp.postValue(it.getData())
+            _recordWinHttp.postValue(it.getData())
         } else {
             toast(it.msg)
         }
