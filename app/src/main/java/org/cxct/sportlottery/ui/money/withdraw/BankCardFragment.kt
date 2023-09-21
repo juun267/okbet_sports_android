@@ -120,7 +120,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         changeTransferType(transferType)
 
         val ivQuestion = et_create_name.endIconImageButton
-        eet_create_name.setPadding(0, 0, 10.dp, 0)
         ivQuestion.post {
             val param = ivQuestion.layoutParams as MarginLayoutParams
             param.bottomMargin = 4.dp
