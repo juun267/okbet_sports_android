@@ -3,8 +3,12 @@ package org.cxct.sportlottery.ui.login.signUp.info
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.AreaAll
@@ -14,6 +18,7 @@ import org.cxct.sportlottery.network.user.info.UserBasicInfoRequest
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
@@ -39,9 +44,6 @@ class RegisterInfoViewModel(
     var emailInput=""
     var emailEnable=false
 
-    //真实姓名
-    var realNameInput = ""
-
     //薪资来源
     var sourceInput = -1
 
@@ -50,6 +52,16 @@ class RegisterInfoViewModel(
 
     //城市
     var cityInput = ""
+
+    // 名
+    var firstName = ""
+
+    // 中间名
+    var middleName = ""
+    var noMiddleName = false
+
+    // 姓
+    var lastName = ""
 
     //是否完成信息提交
     private var isFinishComplete = false
@@ -113,7 +125,6 @@ class RegisterInfoViewModel(
     /**
      * 获取用户基本信息
      */
-    var filledName=false
     var filledBirthday=false
     var filledPhone=false
     var filledEmail=false
@@ -136,12 +147,6 @@ class RegisterInfoViewModel(
                     cityInput=it
                     if(it.isNotEmpty()){
 //                        filledCity=true
-                    }
-                }
-                data.t.fullName?.let {
-                    realNameInput=it
-                    if(it.isNotEmpty()){
-                        filledName=true
                     }
                 }
 
@@ -252,7 +257,10 @@ class RegisterInfoViewModel(
     var commitMsg = ""
     fun commitUserBasicInfo() {
         val request = UserBasicInfoRequest(
-            realNameInput,
+            "$firstName $middleName $lastName",
+            firstName,
+            middleName,
+            lastName,
             birthdayTimeInput,
             sourceInput,
             provinceInput,
@@ -268,6 +276,7 @@ class RegisterInfoViewModel(
             if (commitResult != null && commitResult.success) {
                 isFinishComplete=true
                 commitEvent.post(true)
+                GlobalScope.launch { runWithCatch { UserInfoRepository.getUserInfo() } }
             } else {
                 isFinishComplete=false
                 commitMsg = "${commitResult?.msg}"
@@ -282,8 +291,7 @@ class RegisterInfoViewModel(
      * 检查表单必选项
      */
     fun checkInput(): Boolean {
-        return realNameInput.isNotEmpty()
-                && birthdayTimeInput.isNotEmpty()
+        return birthdayTimeInput.isNotEmpty()
                 && sourceInput > -1
                 && phoneEnable
                 && emailEnable

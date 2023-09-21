@@ -14,6 +14,9 @@ class UserBasicInfoResponse(
 
     @KeepMembers
     class UserBasicData(
+        val firstName: String?,
+        val middleName: String?,
+        val lastName: String?,
         val fullName:String?,
         val birthday:String?,
         val salarySource:Int?,
