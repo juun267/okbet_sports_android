@@ -7,15 +7,17 @@ import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 
 
 /**
  * 检查是否关闭体育入口
  */
-fun checkSportStatus(context: Context, block: () -> Unit) {
+fun checkSportStatus(activity: BaseActivity<*>, block: () -> Unit) {
     if(getSportEnterIsClose()){
-        ToastUtil.showToast(context, context.getString(R.string.N969))
+        activity.showPromptDialogNoCancel(message = activity.getString(R.string.N969)) { }
+//        ToastUtil.showToast(context, context.getString(R.string.N969))
     }else{
         block()
     }
@@ -60,10 +62,19 @@ fun MainTabActivity.checkMainPosition(position:Int):Boolean{
     val result=checkSportFragment(position)
     //在体育页面&&维护开启
     val flag=result&&getSportEnterIsClose()
-    if(flag){
-        ToastUtil.showToast(this, getString(R.string.N969))
+    if(flag && lifecycle.currentState == androidx.lifecycle.Lifecycle.State.RESUMED){
+        showPromptDialogNoCancel(message = getString(R.string.N969)) { }
+//        ToastUtil.showToast(this, getString(R.string.N969))
     }
     return flag
+}
+
+fun BaseActivity<*>.bindSportMaintenance() {
+    ServiceBroadcastReceiver.sportMaintenance.observe(this){
+        if (it.isMaintenance()) {
+            showPromptDialogNoCancel(message = getString(R.string.N969)) { finish() }
+        }
+    }
 }
 
 /**

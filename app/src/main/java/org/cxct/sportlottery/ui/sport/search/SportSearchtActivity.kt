@@ -28,6 +28,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.chat.hideSoftInput
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.bindSportMaintenance
 import org.cxct.sportlottery.view.EmptyView
 
 class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::class) {
@@ -76,6 +77,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
         initSearchView()
         initObservable()
         viewModel.getSearchResult()
+        bindSportMaintenance()
     }
 
     private fun setHistoryLayoutVisible(visible: Boolean) {

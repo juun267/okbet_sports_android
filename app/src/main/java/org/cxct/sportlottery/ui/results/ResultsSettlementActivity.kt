@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.util.bindSportMaintenance
 import org.cxct.sportlottery.util.setupSportStatusChange
 import org.cxct.sportlottery.view.afterTextChanged
 import java.text.SimpleDateFormat
@@ -89,6 +90,7 @@ class ResultsSettlementActivity :
         setupSpinnerGameType() //設置體育種類列表
         observeData()
         initTimeSelector()
+        bindSportMaintenance()
 //        initServiceButton()
     }
 

@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
@@ -286,7 +287,7 @@ class ProfileCenterFragment :
         //赛果结算
         btn_game_settlement.setOnClickListener {
             //检查是否关闭入口
-            checkSportStatus(requireActivity()) {
+            checkSportStatus(requireActivity() as BaseActivity<*>) {
                 startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
             }
         }

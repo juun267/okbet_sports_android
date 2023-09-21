@@ -123,7 +123,7 @@ object ServiceBroadcastReceiver {
     private val _userInfoChange = MutableLiveData<Boolean?>()
     private val _closePlayCate = MutableLiveData<Event<ClosePlayCateEvent?>>()
 
-    val sportMaintenance: LiveData<SportMaintenanceEvent?> = MutableLiveData()
+    val sportMaintenance: LiveData<SportMaintenanceEvent> = MutableLiveData()
     val jackpotChange: LiveData<String?> = MutableLiveData()
     val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
 
@@ -188,8 +188,10 @@ object ServiceBroadcastReceiver {
             }
             //体育服务开关
             EventType.SPORT_MAINTAIN_STATUS -> {
-                val data = ServiceMessage.getSportMaintenance(jObjStr)
-                (sportMaintenance as MutableLiveData<SportMaintenanceEvent?>).postValue(data)
+                ServiceMessage.getSportMaintenance(jObjStr)?.let {
+                    (sportMaintenance as MutableLiveData<SportMaintenanceEvent>).postValue(it)
+                }
+
             }
             EventType.RECORD_RESULT_JACKPOT_OK_GAMES->{
                 Log.e("dachang","ws message: ${jObjStr}")
