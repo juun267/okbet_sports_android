@@ -444,7 +444,7 @@ fun TextView.setMoneyColorWhite(profit: Double = 0.0) {
 //31 半场状态不显示时间
 fun needCountStatus(status: Int?, leagueTime: Int?): Boolean {
     if (leagueTime != null) {
-        return status ?: 0 < 99 && status != 31 && leagueTime > 0
+        return (status ?: 0 < 99||listOf(106,107).contains(status)) && status != 31&& leagueTime > 0
     } else {
         return false
     }

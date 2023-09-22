@@ -8,6 +8,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import org.cxct.sportlottery.common.extentions.runWithCatch
 
 class StreamerTextView @JvmOverloads constructor(
     context: Context?,
@@ -82,7 +83,16 @@ class StreamerTextView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawPath(mPath, mPaint)
+
+//        会有异常
+//        Fatal Exception: java.lang.IllegalArgumentException:
+//        at android.graphics.LinearGradient.nativeCreate(LinearGradient.java)
+//        at android.graphics.LinearGradient.createNativeInstance(LinearGradient.java:164)
+//        at android.graphics.Shader.getNativeInstance(Shader.java:191)
+//        at android.graphics.Paint.getNativeInstance(Paint.java:726)
+//        at android.graphics.BaseRecordingCanvas.drawPath(BaseRecordingCanvas.java:547)
+//        at org.cxct.sportlottery.view.StreamerTextView.onDraw(StreamerTextView.java:30)
+        runWithCatch { canvas.drawPath(mPath, mPaint) }
     }
 
     override fun onDetachedFromWindow() {
