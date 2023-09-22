@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.include_quick_money.*
+import kotlinx.android.synthetic.main.online_crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
@@ -43,6 +44,7 @@ import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_amount
 import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_rate
 import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_remark
 import kotlinx.android.synthetic.main.transfer_pay_fragment.txv_pay_bank
+import kotlinx.android.synthetic.main.transfer_pay_fragment.linMaintenance
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.toIntS
@@ -126,6 +128,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 )
             }
         }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
 
         //選取日曆
        /* cv_recharge_time.setOnClickListener {
@@ -554,7 +557,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         //存款時間
         txv_transfer_time.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
         txv_transfer_time2.text = TimeUtil.dateToStringFormatHMS(Date())
-
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
     }
 
     private fun hideEditText() {

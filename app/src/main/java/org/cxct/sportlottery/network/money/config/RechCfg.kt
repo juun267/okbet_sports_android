@@ -44,5 +44,9 @@ data class RechCfg(
     @Json(name = "rechType")
     val rechType: String?,
     @Json(name = "remark")
-    val remark: String?
+    val remark: String?,
+    @Json(name = "open")
+    val open: Int?,
+    @Json(name = "frontDeskRemark")
+    val frontDeskRemark: String?,
 )
