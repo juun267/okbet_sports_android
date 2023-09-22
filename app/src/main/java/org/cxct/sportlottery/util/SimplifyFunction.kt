@@ -11,7 +11,6 @@ import android.os.Environment
 import android.text.Html
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -30,7 +29,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
+import kotlinx.android.synthetic.main.view_payment_maintenance.view.*
 import kotlinx.coroutines.flow.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -40,6 +41,8 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.QuickPlayCate
+import org.cxct.sportlottery.network.money.config.MoneyRechCfg
+import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
@@ -1132,5 +1135,20 @@ fun Context.dividerView(
             isVisible = !it.isNullOrEmpty()
             text = Html.fromHtml(it?:"")
         }
+    }
+}
+
+/**
+ * 设置充值提款渠道的维护状态
+ */
+fun setupMoneyCfgMaintanince(rechfg: RechCfg, submitBtn: Button, linMaintaince: View) {
+    if (rechfg?.open== MoneyRechCfg.Switch.OPEN.code){
+        submitBtn.visible()
+        linMaintaince.gone()
+    }else if(rechfg?.open== MoneyRechCfg.Switch.MAINTAINCE.code){
+        submitBtn.gone()
+        linMaintaince.visible()
+        linMaintaince.linMaintenanceTip.isVisible = !rechfg?.frontDeskRemark.isNullOrEmpty()
+        linMaintaince.tvTipsContent.text = rechfg.frontDeskRemark
     }
 }

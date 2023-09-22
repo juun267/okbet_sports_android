@@ -375,11 +375,6 @@
                         android:textColor="@color/color_FFFFFF_FFFFFF"
                         android:textSize="@dimen/textSize16sp"
                         android:textStyle="bold" />
-                    <include
-                        android:id="@+id/linMaintenance"
-                        layout="@layout/view_payment_maintenance"
-                        tools:visibility="visible"
-                        android:visibility="gone"/>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"

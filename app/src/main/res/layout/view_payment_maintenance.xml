@@ -14,7 +14,7 @@
         android:layout_marginHorizontal="@dimen/margin_20"
         android:textSize="@dimen/textSize16sp"
         android:textColor="@color/color_FFFFFF"
-        android:text="mantance"
+        android:text="@string/N257"
         android:alpha="0.3"
         android:background="@drawable/bg_blue_gradient_radius_8" />
 

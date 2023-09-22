@@ -507,27 +507,27 @@ class WithdrawViewModel(
                     withdrawConfig.forEach { uwType ->
                         when(uwType.type){
                             UWType.BANK_TRANSFER.type -> {
-                                if (withdrawConfig.find { type -> type.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                if (withdrawConfig.find { type -> type.type == TransferType.BANK.type }?.open!= MoneyRechCfg.Switch.CLOSE.code) tabList.add(
                                     TransferType.BANK.type
                                 )
                             }
                             UWType.CRYPTO.type -> {
-                                if (withdrawConfig.find { type -> type.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                if (withdrawConfig.find { type -> type.type == TransferType.CRYPTO.type }?.open!= MoneyRechCfg.Switch.CLOSE.code) tabList.add(
                                     TransferType.CRYPTO.type
                                 )
                             }
                             UWType.E_WALLET.type -> {
-                                if (withdrawConfig.find { type -> type.type == TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                if (withdrawConfig.find { type -> type.type == TransferType.E_WALLET.type }?.open!= MoneyRechCfg.Switch.CLOSE.code) tabList.add(
                                     TransferType.E_WALLET.type
                                 )
                             }
                             UWType.BETTING_STATION.type -> {
-                                if (withdrawConfig.find { it.type == TransferType.STATION.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                if (withdrawConfig.find { it.type == TransferType.STATION.type }?.open!= MoneyRechCfg.Switch.CLOSE.code) tabList.add(
                                     TransferType.STATION.type
                                 )
                             }
                             UWType.PAY_MAYA.type -> {
-                                if (withdrawConfig.find { it.type == TransferType.PAYMAYA.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                if (withdrawConfig.find { it.type == TransferType.PAYMAYA.type }?.open!= MoneyRechCfg.Switch.CLOSE.code) tabList.add(
                                     TransferType.PAYMAYA.type
                                 )
                             }
@@ -939,22 +939,22 @@ class WithdrawViewModel(
         val bankCardExistence =
             result.bankCardList?.any { card -> card.uwType == TransferType.BANK.type } == true
         val bankWithdrawSwitch =
-            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type }?.open == MoneyRechCfg.Switch.ON.code
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type }?.open != MoneyRechCfg.Switch.CLOSE.code
 
         val cryptoCardExistence =
             result.bankCardList?.any { card -> card.uwType == TransferType.CRYPTO.type } == true
         val cryptoWithdrawSwitch =
-            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open != MoneyRechCfg.Switch.CLOSE.code
 
         val eWalletCardExistence =
             result.bankCardList?.any { card -> card.uwType == TransferType.E_WALLET.type } == true
         val eWalletWithdrawSwitch =
-            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.open != MoneyRechCfg.Switch.CLOSE.code
 
         val paymayaExistence =
             result.bankCardList?.any { card -> card.uwType == TransferType.PAYMAYA.type } == true
         val paymayaWithdrawSwitch =
-            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.open == MoneyRechCfg.Switch.ON.code
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.open != MoneyRechCfg.Switch.CLOSE.code
 
 
         val bankCardExist = bankCardExistence && bankWithdrawSwitch
@@ -983,7 +983,7 @@ class WithdrawViewModel(
 
         //虛擬幣是否可以被提款或新增卡片
         val cryptoOpen =
-            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open != MoneyRechCfg.Switch.CLOSE.code
         val cryptoCardLimitList = checkCryptoCanBind()
         run breaking@{
             if (!cryptoOpen) {
@@ -1004,7 +1004,7 @@ class WithdrawViewModel(
         val bankCardCountLimit = uwBankType?.detailList?.first()?.countLimit
         val bankCardCount = bankCardList.value?.count { it.transferType == TransferType.BANK }
         val bankOpen =
-            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type }?.open == MoneyRechCfg.Switch.ON.code
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type }?.open != MoneyRechCfg.Switch.CLOSE.code
         showAddBankCard = when {
             !bankOpen -> false
             bankCardCountLimit == null -> true
@@ -1014,7 +1014,7 @@ class WithdrawViewModel(
 
         //E-wallet是否可以被提款或新增卡片
         val eWalletOpen =
-            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.open != MoneyRechCfg.Switch.CLOSE.code
         val eWalletCardCountLimit =
             rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.detailList?.first()?.countLimit
         val eWalletCardCount =
@@ -1028,7 +1028,7 @@ class WithdrawViewModel(
 
         //paymaya是否可以被提款或新增卡片
         val paymayaOpen =
-            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.open == MoneyRechCfg.Switch.ON.code
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.open != MoneyRechCfg.Switch.CLOSE.code
         val paymayaCardCountLimit =
             rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.detailList?.first()?.countLimit
         val paymayaCardCount =
