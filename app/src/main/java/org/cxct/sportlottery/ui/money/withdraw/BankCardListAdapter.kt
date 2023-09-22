@@ -67,8 +67,8 @@ class BankCardListAdapter(private val mBankCardListClickListener: BankCardListCl
 
     class BankItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(data: BankCardList, moneyConfig: MoneyRechCfgData?, mBankCardListClickListener: BankCardListClickListener) {
-            val bankOpen = moneyConfig?.uwTypes?.find { it.type == TransferType.BANK.type }?.open != MoneyRechCfg.Switch.CLOSE.code
-            val cryptoOpen = moneyConfig?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open != MoneyRechCfg.Switch.CLOSE.code
+            val bankOpen = moneyConfig?.uwTypes?.find { it.type == TransferType.BANK.type }?.open == MoneyRechCfg.Switch.OPEN.code
+            val cryptoOpen = moneyConfig?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.OPEN.code
             itemView.apply {
                 if (data.transferType == TransferType.CRYPTO) {
                     iv_bank_icon.setImageResource(MoneyManager.getCryptoIconByCryptoName(data.bankName))//虚拟币图标
