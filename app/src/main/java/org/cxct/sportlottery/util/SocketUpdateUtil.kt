@@ -89,9 +89,6 @@ object SocketUpdateUtil {
                 }
             }
 
-            matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
-            matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
-
             if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
                 matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
                 isNeedRefresh = true
@@ -111,7 +108,14 @@ object SocketUpdateUtil {
                 matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
                 isNeedRefresh = true
             }
-
+            if (gameType == GameType.FT.key && matchStatusCO.homeCornerKicks != null && matchStatusCO.homeCornerKicks != matchOdd.matchInfo?.homeCornerKicks) {
+                matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
+                isNeedRefresh = true
+            }
+            if (gameType == GameType.FT.key && matchStatusCO.awayCornerKicks != null && matchStatusCO.awayCornerKicks != matchOdd.matchInfo?.awayCornerKicks) {
+                matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
+                isNeedRefresh = true
+            }
             if (gameType == GameType.FT.key && matchStatusCO.homeCards != null && matchStatusCO.homeCards != matchOdd.matchInfo?.homeCards) {
                 matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
                 isNeedRefresh = true
@@ -246,9 +250,10 @@ object SocketUpdateUtil {
             }
         }
 
-        matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
-        matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
-
+        if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
+            matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
+            isNeedRefresh = true
+        }
         if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
             matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
             isNeedRefresh = true
@@ -268,7 +273,14 @@ object SocketUpdateUtil {
             matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
             isNeedRefresh = true
         }
-
+        if (gameType == GameType.FT.key && matchStatusCO.homeCornerKicks != null && matchStatusCO.homeCornerKicks != matchOdd.matchInfo?.homeCornerKicks) {
+            matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
+            isNeedRefresh = true
+        }
+        if (gameType == GameType.FT.key && matchStatusCO.awayCornerKicks != null && matchStatusCO.awayCornerKicks != matchOdd.matchInfo?.awayCornerKicks) {
+            matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
+            isNeedRefresh = true
+        }
         if (gameType == GameType.FT.key && matchStatusCO.homeCards != null && matchStatusCO.homeCards != matchOdd.matchInfo?.homeCards) {
             matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
             isNeedRefresh = true
@@ -392,9 +404,6 @@ object SocketUpdateUtil {
                     }
                 }
 
-                matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
-                matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
-
                 if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
                     matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
                     isNeedRefresh = true
@@ -414,7 +423,14 @@ object SocketUpdateUtil {
                     matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
                     isNeedRefresh = true
                 }
-
+                if (gameType == GameType.FT.key && matchStatusCO.homeCornerKicks != null && matchStatusCO.homeCornerKicks != matchOdd.matchInfo?.homeCornerKicks) {
+                    matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
+                    isNeedRefresh = true
+                }
+                if (gameType == GameType.FT.key && matchStatusCO.awayCornerKicks != null && matchStatusCO.awayCornerKicks != matchOdd.matchInfo?.awayCornerKicks) {
+                    matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
+                    isNeedRefresh = true
+                }
                 if (gameType == GameType.FT.key && matchStatusCO.homeCards != null && matchStatusCO.homeCards != matchOdd.matchInfo?.homeCards) {
                     matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
                     isNeedRefresh = true

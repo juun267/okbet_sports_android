@@ -553,6 +553,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         intoLive = intent.getBooleanExtra("intoLive", false)
         matchInfo?.let {
             tv_game_title.text = it.leagueName
+            startTime = (it.leagueTime?:0).toLong()
             updateMenu(it)
         }
         tabCode?.let {
@@ -570,7 +571,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             return@Handler false
         }
 
-        if (!isGamePause) {
+        if (!isGamePause&&startTime>0) {
             when (matchInfo?.gameType) {
                 GameType.FT.key -> {
                     timeMillis += 1000
@@ -596,8 +597,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             cancelTimer()
             return@Handler false
         }
-
-        if (needCountStatus(matchOdd?.matchInfo?.socketMatchStatus, matchOdd?.matchInfo?.leagueTime)) {
+       val needCount= needCountStatus(matchInfo?.socketMatchStatus, matchInfo?.leagueTime)
+        LogUtil.d("needCount="+needCount+",socketMatchStatus="+matchInfo?.socketMatchStatus+",leagueTime="+matchInfo?.leagueTime+",startTime="+startTime+",timeMillis="+TimeUtil.longToMmSs(timeMillis))
+        if (needCount) {
             if (timeMillis >= 1000) {
                 sportToolBarTopFragment.updateMatchTime(TimeUtil.longToMmSs(timeMillis))
                 sportToolBarTopFragment.setMatchTimeEnable(true)
@@ -617,6 +619,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun onResume() {
         super.onResume()
+        matchInfo?.let {
+            subscribeChannelEvent(it.id)
+        }
         startTimer()
     }
 
@@ -791,7 +796,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             matchOdd = result.oddsDetailData?.matchOdd
 
             result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
-                this.matchInfo = matchInfo
+                if (this.matchInfo==null){
+                    this.matchInfo = matchInfo
+                }
                 //region 配置主客隊名稱給內部Item使用
                 matchInfo.homeName?.let { home ->
                     oddsDetailListAdapter?.homeName = home
@@ -924,7 +931,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private fun initSocketObserver() {
         unSubscribeChannelHallAll()
-        unSubscribeChannelEventAll()
+//        unSubscribeChannelEventAll()
         setupSportStatusChange(this) {
             if (it) {
                 finish()
