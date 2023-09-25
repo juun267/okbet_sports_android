@@ -298,7 +298,6 @@ class MultiLanguagesApplication : Application() {
 
         //確認年齡彈窗
         fun showAgeVerifyDialog(activity: AppCompatActivity) {
-            if (isCreditSystem()) return //信用盤不顯示彈窗
             if (getInstance()?.isAgeVerifyNeedShow() == false) return
             AgeVerifyDialog(activity, object : AgeVerifyDialog.OnAgeVerifyCallBack {
                 override fun onConfirm() {
@@ -317,7 +316,6 @@ class MultiLanguagesApplication : Application() {
 
         open fun showPromotionPopupDialog(activity: AppCompatActivity, onDismiss: ()->Unit) {
             if (activity.isDestroyed
-                || isCreditSystem()
                 || sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden) } != true) {
                 return
             }

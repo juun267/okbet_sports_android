@@ -14,7 +14,6 @@ import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.view.afterTextChanged
 import org.cxct.sportlottery.util.setTitleLetterSpacing
-import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
 
@@ -134,7 +133,6 @@ class SettingPasswordActivity :
             else -> custom_tab_layout.selectTab(0)
         }
 
-        custom_tab_layout.setVisibilityByCreditSystem()
     }
 
     private fun setupEditText() {
