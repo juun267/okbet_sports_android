@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.os.Bundle
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.post
@@ -14,7 +14,7 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
 class VerifyIdentityActivity :
     BaseSocketActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
-    private val mNavController by lazy { findNavController(R.id.identity_container) }
+    private val mNavController by lazy { (supportFragmentManager.findFragmentById(R.id.identity_container) as NavHostFragment).navController }
 
     private val loadingHolder by lazy { Gloading.wrapView(findViewById(R.id.identity_container)) }
 
