@@ -375,13 +375,6 @@ fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?)
         "$homeName  VS  $awayName"
 }
 
-/**
- * 依 config -> creditSystem 參數顯示
- */
-fun View.setVisibilityByCreditSystem() {
-    visibility = if (isCreditSystem()) View.GONE else View.VISIBLE
-}
-
 fun View.setVisibilityByMarketSwitch() {
     visibility = if (getMarketSwitch()) View.GONE else View.VISIBLE
 }
@@ -400,15 +393,6 @@ fun isKYCVerifyWithdrawOpen(): Boolean {
  */
 fun isKYCVerifyRechargeOpen(): Boolean {
     return sConfigData?.realNameRechargeVerified.isStatusOpen()
-}
-
-/**
- * 判斷當前是否為信用系統
- * @return true: 是, false: 否
- */
-fun isCreditSystem(): Boolean {
-    return sConfigData?.creditSystem == FLAG_CREDIT_OPEN
-//    return true // for test
 }
 
 /**

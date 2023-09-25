@@ -90,8 +90,6 @@ class ProfileCenterFragment :
         tv_currency_type.text = sConfigData?.systemCurrencySign
         //信用盤打開，隱藏提款設置
         // btn_withdrawal_setting.setVisibilityByCreditSystem()
-        //優惠活動
-        btn_promotion.setVisibilityByCreditSystem()
         //默认显示代理入口
         btn_affiliate.isVisible = (sConfigData?.frontEntranceStatus != "0")
         //   btn_affiliate.setVisibilityByCreditSystem()
@@ -628,7 +626,6 @@ class ProfileCenterFragment :
     }
 
     private fun updateCreditAccountUI() {
-        lin_wallet_operation.setVisibilityByCreditSystem()
         lin_wallet_operation.setVisibilityByMarketSwitch()
     }
 
