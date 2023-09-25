@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.UPLOAD_REVIEW_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_VERIFY_CONFIG
+import org.cxct.sportlottery.network.Constants.SET_USERNAME
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -44,6 +45,9 @@ interface UserApiService {
 
     @POST(UPLOAD_REVIEW_PHOTO)
     suspend fun uploadReviewPhoto(@Body params: Map<String, String>): ApiResult<String>
+
+    @POST(SET_USERNAME)
+    suspend fun changeUserName(@Body params: Map<String, String>): ApiResult<String>
 
 
 }

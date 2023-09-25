@@ -4,8 +4,12 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.JsonElement
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -67,6 +71,8 @@ class ChatViewModel(
     val connStatus = ChatRepository.chatConnStatus
 
     private var chatSign: JsonElement? = null
+
+
 
     object ChatErrorCode {
         const val NOT_ENOUGH_BET_AND_RECH_MONEY = 10019
@@ -333,12 +339,19 @@ class ChatViewModel(
 
 
     override fun checkLoginStatus(): Boolean {
-        if (loginRepository.isLogin.value == true) {
-            Timber.i("[Chat] 已登入(一般用户,游客) 執行chatInit")
-            chatInit()
-        } else {
-            Timber.i("[Chat] 未登入(訪客) 執行guestChatInit")
-            guestChatInit()
+        viewModelScope.launch {
+           queryList().join()
+            if (loginRepository.isLogin.value == true) {
+                Timber.i("[Chat] 已登入(一般用户,游客) 執行chatInit")
+                chatInit()
+            } else {
+                Timber.i("[Chat] 未登入(訪客) 執行guestChatInit")
+                guestChatInit()
+            }
+        }
+        viewModelScope.launch {
+
+
         }
         return super.checkLoginStatus()
     }
@@ -376,11 +389,8 @@ class ChatViewModel(
     //标记表情包是否初始化
     private var isInitEmoji=false
     /* 游客、一般用户 */
-    private fun chatInit() = launch {
-
-
+    private fun chatInit() = viewModelScope.launch {
         var sign = chatSign
-
         repeat(maxInitRetry) {
             Timber.i("[Chat] init, 次數 -> $it")
 
@@ -389,24 +399,24 @@ class ChatViewModel(
 
             if (sign == null) {
                 Timber.i("[Chat] 執行 getSign")
-                val signResult = userInfoRepository.getSign()
-                sign = signResult.getData()
-                errorMsg = signResult.msg
+                ChatRepository.chatRoom?.let {
+                    val signResult = userInfoRepository.getSign(it.constraintType,it.dataStatisticsRange)
+                    sign = signResult.getData()
+                    errorMsg = signResult.msg
+                }
             }
 
             if (sign != null) {
                 val result = ChatRepository.chatInit(sign!!)
                 errorMsg = result.msg
                 if (result.succeeded()) {
-                    chatSign = sign
                     Timber.i("[Chat] 初始化成功 用戶遊客獲取房間列表")
+                    enterRoom()
                     userIsSpeak = result?.getData()?.state == 0 //state（0正常、1禁言、2禁止登录)
-                    queryList()
                     if(!isInitEmoji){
                         isInitEmoji=true
                         getChatSticker()
                     }
-
                     return@launch
                 } else {
                     sign = null // 置空下次循环从新获取
@@ -422,13 +432,13 @@ class ChatViewModel(
     }
 
     /* 访客 */
-    private fun guestChatInit() = launch {
+    private fun guestChatInit() = viewModelScope.launch {
         repeat(maxInitRetry) {
             Timber.i("[Chat] guest init 失敗 重新 init, 次數 -> $it")
             var result = ChatRepository.chatGuestInit()
             if (result.succeeded()) {
                 Timber.i("[Chat] 初始化成功 訪客獲取房間列表")
-                queryList()
+                enterRoom()
                 return@launch
             }
 
@@ -450,30 +460,29 @@ class ChatViewModel(
             chatStickerEvent.postValue(arrayListOf())
         }
     }
-
-
-    private suspend fun queryList() = launch {
+    private suspend fun queryList() = viewModelScope.launch {
         val queryListResult = ChatRepository.queryList()
 
         if (!queryListResult.succeeded()) {
             _chatEvent.emit(ChatEvent.InitFail(queryListResult.msg))
             return@launch
         }
-
         val language = LanguageManager.getLanguageString2(androidContext)
-        val chatRoom = queryListResult.getData()?.find { it.language == language && it.isOpen.isStatusOpen() }
-        if (chatRoom == null) {
+        ChatRepository.chatRoom = queryListResult.getData()?.find { it.language == language && it.isOpen.isStatusOpen() }
+        if (ChatRepository.chatRoom == null) {
             _chatEvent.emit(ChatEvent.NoMatchRoom)
-            return@launch
+        }else {
+            _chatEvent.emit(ChatEvent.IsAdminType(checkIsAdminType()))
         }
-
+        return@launch
+    }
+    private suspend fun enterRoom(){
         ChatService.connect() // 链接聊天室
-        _chatEvent.emit(ChatEvent.IsAdminType(checkIsAdminType()))
-        if (ChatRepository.chatRoomID != chatRoom.id) {
+        if (ChatRepository.chatRoomID != ChatRepository.chatRoom!!.id) {
             //背景返回之後，比較既有roomId，如果不同才重新joinRoom
-            joinRoom(chatRoom)
+            joinRoom(ChatRepository.chatRoom!!)
         } else {
-            subscribeRoomAndUser(chatRoom)
+            subscribeRoomAndUser(ChatRepository.chatRoom!!)
         }
     }
 

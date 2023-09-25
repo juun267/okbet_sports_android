@@ -933,9 +933,12 @@ fun View.refreshMoneyLoading() {
 }
 
 // 绑定'联系客服'点击事件
-fun View.setServiceClick(fragmentManager: FragmentManager, block: (() -> Unit)? = null) =
-    setOnClickListener {
+fun View.setServiceClick(fragmentManager: FragmentManager, block: (() -> Unit)? = null) {
+    setOnClickListener (serviceClickListener(fragmentManager, block))
+}
 
+fun serviceClickListener(fragmentManager: FragmentManager, block: (() -> Unit)? = null) : View.OnClickListener {
+    return View.OnClickListener {
         block?.invoke()
 
         val serviceUrl = sConfigData?.customerServiceUrl
@@ -946,14 +949,15 @@ fun View.setServiceClick(fragmentManager: FragmentManager, block: (() -> Unit)? 
             }
 
             serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                JumpUtil.toExternalWeb(context, serviceUrl2)
+                JumpUtil.toExternalWeb(it.context, serviceUrl2)
             }
 
             !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                JumpUtil.toExternalWeb(context, serviceUrl)
+                JumpUtil.toExternalWeb(it.context, serviceUrl)
             }
         }
     }
+}
 
 
 fun View.setBtnEnable(enable: Boolean) {
