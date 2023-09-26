@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.money
 
+import com.google.gson.JsonObject
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.REDEEM_CODE
 import org.cxct.sportlottery.network.Constants.REDEEM_CODE_HISTORY
@@ -52,4 +55,7 @@ interface MoneyService {
     @POST(REDEEM_CODE_HISTORY)
     suspend fun redeemCodeHistory(@Body code: SportBillListRequest?): Response<RedeemCodeHistoryResponse>
 
+    @POST(Constants.RECH_CHECK_STATUS)
+    @FormUrlEncoded
+    suspend fun rechCheckStauts(@FieldMap map:Map<String,String>): ApiResult<String>
 }

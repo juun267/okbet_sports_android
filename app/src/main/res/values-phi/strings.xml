@@ -1476,5 +1476,6 @@
     <string name="P206">Inililipat Ang Balanse Ng Lahat ng Iba Pang Account ng Laro Sa Balanse ng Account.</string>
     <string name="P212">Ilipat sa Balanse ng Account</string>
     <string name="P215">Ang pangalan ng cardholder ay dapat tumugma sa iyong rehistradong buong pangalan. Kung mayroon kang anumang mga katanungan, mangyaring makipag-ugnayan sa aming Customer Service.</string>
+    <string name="text_account_history_activity">Presyo ng actividad</string>
 </resources>
 
