@@ -7,13 +7,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
@@ -29,7 +27,6 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
-import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.thirdgames.GamesMaintain
@@ -260,7 +257,6 @@ object ServiceBroadcastReceiver {
                 }
                 data.oddsListToOddsMap()
                 data.updateOddsSelectedState()
-                data.filterMenuPlayCate()
                 data.sortOddsMap()
                 onOddsEvent(data)
 
@@ -417,20 +413,6 @@ object ServiceBroadcastReceiver {
         }
 
         return this
-    }
-
-    /**
-     * 只有有下拉篩選玩法的才需要過濾odds
-     */
-    private fun OddsChangeEvent.filterMenuPlayCate() {
-        val playSelected = PlayRepository.playList.value?.peekContent()?.find { it.isSelected }
-
-        when (playSelected?.selectionType) {
-            SelectionType.SELECTABLE.code -> {
-                val playCateMenuCode = playSelected.playCateList?.find { it.isSelected }?.code
-                this.odds.entries.retainAll { oddMap -> oddMap.key == playCateMenuCode }
-            }
-        }
     }
 
     private fun MatchOddsChangeEvent.updateOddsSelectedState(): MatchOddsChangeEvent {

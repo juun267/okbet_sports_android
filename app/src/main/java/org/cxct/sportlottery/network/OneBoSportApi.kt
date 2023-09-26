@@ -7,9 +7,7 @@ import org.cxct.sportlottery.network.bettingStation.BettingStationService
 import org.cxct.sportlottery.network.feedback.FeedbackService
 import org.cxct.sportlottery.network.host.HostService
 import org.cxct.sportlottery.network.index.IndexService
-import org.cxct.sportlottery.network.index.PlayQuotaComService
 import org.cxct.sportlottery.network.infoCenter.InfoCenterService
-import org.cxct.sportlottery.network.league.LeagueService
 import org.cxct.sportlottery.network.lottery.LotteryService
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.match.MatchService
@@ -70,13 +68,6 @@ object OneBoSportApi {
         get() = RequestManager.instance
             .retrofit
             .create(BetService::class.java)
-
-
-    val leagueService: LeagueService
-        get() = RequestManager.instance
-            .retrofit
-            .create(LeagueService::class.java)
-
 
     val matchResultService: MatchResultService
         get() = RequestManager.instance
@@ -148,11 +139,6 @@ object OneBoSportApi {
         get() = RequestManager.instance
             .retrofit
             .create(HostService::class.java)
-
-    val playQuotaComService: PlayQuotaComService
-        get() = RequestManager.instance
-            .retrofit
-            .create(PlayQuotaComService::class.java)
 
     val newsService: NewsService
         get() = RequestManager.instance

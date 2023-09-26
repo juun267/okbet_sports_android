@@ -30,7 +30,5 @@ data class SportMenuFilter(
         @Json(name = "playCateNameMap")
         var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf()
     )
-    data class NameMap(
-        val mapKey: String
-    )
+
 }

@@ -341,8 +341,6 @@ object Constants {
     const val MATCH_BET_REMARK_BET = "/api/front/match/bet/reMarkBet"
     const val MATCH_BET_ADD = "/api/front/match/bet/add"
     const val MATCH_BET_LIST = "/api/front/match/bet/list"
-    const val MATCH_BET_SETTLED_LIST = "/api/front/match/bet/settled/list"
-    const val MATCH_BET_SETTLED_DETAIL_LIST = "/api/front/match/bet/settled/detail/list"
 
     //index
     const val INDEX_LOGIN = "/api/front/index/loginV2"
@@ -398,14 +396,7 @@ object Constants {
     //注册平台账号
     const val REG_PLATFORM_USER = "/api/front/index/regPlatformUser"
 
-    //parlay limit
-    const val PLAYQUOTACOM_LIST = "/api/front/playQuotaCom/list" //获取所有体育玩法限额
-
-    //league
-    const val LEAGUE_LIST = "/api/front/match/league/list"
-
     //match
-    const val MATCH_LIVE_URL = "/api/front/match/live/url"
     const val MATCH_LIVE_ROUND = "/api/front/liveRound"
 
     //match result
@@ -554,7 +545,6 @@ object Constants {
     const val CANCEL_ACCOUNT = "/api/front/user/remove"
 
     //忘记密码 发送短信
-    const val VALIDATE_USER = "/api/front/index/validateUser" //用户校验
     const val FORGET_PASSWORD_SMS = "/api/front/index/validateForgotPasswordSMS"
     const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
     const val RESET_FORGET_PASSWORD_BY_EMAIL =

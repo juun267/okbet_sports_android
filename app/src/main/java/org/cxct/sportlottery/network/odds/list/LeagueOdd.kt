@@ -7,7 +7,6 @@ import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.IgnoredOnParcel
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.proguards.KeepMembers
-import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.League
 
@@ -18,8 +17,6 @@ data class LeagueOdd(
     val league: League,
     @Json(name = "sort")
     val sort: Int?,
-    @Json(name = "unfold")
-    var unfold: Int? = FoldState.UNFOLD.code, // 服务端字段，不读取该状态
     @Json(name = "matchOdds")
     val matchOdds: MutableList<MatchOdd> = mutableListOf(),
     @Json(name = "playCateNameMap")
@@ -28,7 +25,6 @@ data class LeagueOdd(
     init {
         matchOdds.forEach { it.parentNode = this }
     }
-    var unfoldStatus: Int = FoldState.UNFOLD.code
     var gameType: GameType? = null
 
     @IgnoredOnParcel
