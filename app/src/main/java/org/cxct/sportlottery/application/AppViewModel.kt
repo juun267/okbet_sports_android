@@ -13,7 +13,6 @@ import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
-import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
@@ -54,7 +53,6 @@ object AppViewModel {
         viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
-        viewModel { RegisterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HelpCenterViewModel(get(), get(), get(), get(), get(), get()) }
