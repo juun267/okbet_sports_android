@@ -10,6 +10,7 @@ import com.appsflyer.AppsFlyerLib
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.common.MoneyType
@@ -295,16 +296,20 @@ class MoneyRechViewModel(
                 }
 
             }
+            callApi({MoneyRepository.rechCheckStauts(queryMap)}){
+                if (it.succeeded()){
+                    url += toUrlParamsFormat(queryMap)
+                    toExternalWeb(context, url)
+                    AFInAppEventUtil.deposit(depositMoney ?: "",
+                        sConfigData?.systemCurrency ?: "")
 
-            url += toUrlParamsFormat(queryMap)
-            toExternalWeb(context, url)
-            AFInAppEventUtil.deposit(depositMoney ?: "",
-                sConfigData?.systemCurrency ?: "")
-
-            _onlinePayResult.value = depositMoney.toLong() //金額帶入result
+                    _onlinePayResult.value = depositMoney.toLong() //金額帶入result
+                }else{
+                    ToastUtil.showToast(context,it.msg)
+                }
+            }
         }
     }
-
     //在線支付 - 虛擬幣充值
     fun rechargeOnlinePay(
         context: Context,
@@ -330,12 +335,18 @@ class MoneyRechViewModel(
                     put("appsFlyerPkgName",BuildConfig.APPLICATION_ID)
                 }
             }
-            url += toUrlParamsFormat(queryMap)
-            toExternalWeb(context, url)
-            AFInAppEventUtil.deposit(depositMoney ?: "",
-                sConfigData?.systemCurrency ?: "")
-            _onlinePayCryptoResult.value = ArithUtil.mul(depositMoney.toDouble(),
-                (mSelectRechCfgs?.exchangeRate ?: 0.0)) //金額帶入result
+            callApi({MoneyRepository.rechCheckStauts(queryMap)}){
+                if (it.succeeded()){
+                    url += toUrlParamsFormat(queryMap)
+                    toExternalWeb(context, url)
+                    AFInAppEventUtil.deposit(depositMoney ?: "",
+                        sConfigData?.systemCurrency ?: "")
+                    _onlinePayCryptoResult.value = ArithUtil.mul(depositMoney.toDouble(),
+                        (mSelectRechCfgs?.exchangeRate ?: 0.0)) //金額帶入result
+                }else{
+                    ToastUtil.showToast(context,it.msg)
+                }
+            }
         }
     }
 
