@@ -27,7 +27,6 @@ import org.cxct.sportlottery.network.Constants.INDEX_PROMOTENOTICE
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
-import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG
 import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG_SEND_VALIDCODE
@@ -35,8 +34,6 @@ import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_REMARK_BET
-import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_DETAIL_LIST
-import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.ODDS_CHANGE_OPTION
@@ -72,7 +69,6 @@ import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.network.Constants.USER_WITHDRAW_INFO
 import org.cxct.sportlottery.network.Constants.VALIDATE_TWO_FACTOR
-import org.cxct.sportlottery.network.Constants.VALIDATE_USER
 import org.cxct.sportlottery.network.Constants.WITHDRAW_ADD
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -80,8 +76,6 @@ import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetInfoResult
-import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
-import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
 import org.cxct.sportlottery.network.bet.settledList.RemarkBetResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
@@ -89,11 +83,9 @@ import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
-import org.cxct.sportlottery.network.index.forgetPassword.ValidateUserResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
-import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.money.MoneyAddResult
@@ -157,10 +149,6 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return NetResult(it.code,it.msg,it.success) as T
                     }
-                    (url.contains(VALIDATE_USER))->{
-                        @Suppress("UNCHECKED_CAST")
-                        return ValidateUserResult(it.code,it.msg,it.success,null) as T
-                    }
                     (url.contains(Constants.SEND_SMS_FORGET) or url.contains(Constants.SEND_EMAIL_FORGET)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return SendSmsResult(it.code, it.msg, it.success, null) as T
@@ -217,28 +205,7 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return BetListResult(it.code, it.msg, null, it.success, null, null) as T
                     }
-                    (url.contains(MATCH_BET_SETTLED_LIST)) -> {
-                        @Suppress("UNCHECKED_CAST")
-                        return BetSettledListResult(
-                            it.code,
-                            it.msg,
-                            it.success,
-                            null,
-                            null,
-                            null
-                        ) as T
-                    }
-                    (url.contains(MATCH_BET_SETTLED_DETAIL_LIST)) -> {
-                        @Suppress("UNCHECKED_CAST")
-                        return BetSettledDetailListResult(
-                            it.code,
-                            it.msg,
-                            it.success,
-                            null,
-                            null,
-                            null
-                        ) as T
-                    }
+
 
                     (url.contains(MATCH_ODDS_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -271,10 +238,6 @@ object ErrorUtils {
                     (url.contains(Constants.MYFAVORITE_SAVE)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return MyFavoriteBaseResult(it.code, it.msg, it.success, null) as T
-                    }
-                    (url.contains(LEAGUE_LIST)) -> {
-                        @Suppress("UNCHECKED_CAST")
-                        return LeagueListResult(it.code, it.msg, null, it.success, null) as T
                     }
                     (url.contains(OUTRIGHT_RESULT_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")

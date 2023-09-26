@@ -23,7 +23,6 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.sport.SportMenuFilter
@@ -75,12 +74,6 @@ open class MainHomeViewModel(
     private val _enterTrialPlayGameResult = SingleLiveEvent<Pair<String, EnterThirdGameResult>?>()
     val enterTrialPlayGameResult: LiveData<Pair<String, EnterThirdGameResult>?>
         get() = _enterTrialPlayGameResult
-
-    //賽事列表直播網址
-    private val _matchLiveInfo = MutableLiveData<Event<MatchRound>?>()
-    val matchLiveInfo: LiveData<Event<MatchRound>?>
-        get() = _matchLiveInfo
-
 
     val gameBalanceResult: LiveData<Event<Triple<String, EnterThirdGameResult, Double>>>
         get() = _gameBalanceResult

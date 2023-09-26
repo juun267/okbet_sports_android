@@ -75,7 +75,7 @@ object AppViewModel {
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { SportViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { SportViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { LeagueSelectViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SportListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { SportTabViewModel(get(), get(), get(), get(), get(), get(), get()) }
@@ -105,7 +105,6 @@ object AppViewModel {
         single { FeedbackRepository() }
         single { HostRepository(get()) }
         single { WithdrawRepository }
-        single { PlayQuotaComRepository() }
         single { MyFavoriteRepository() }
         single { SelfLimitRepository() }
     }
