@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.view.dialog
 
-import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,10 +7,7 @@ import android.view.*
 import androidx.core.view.isVisible
 import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.DialogPromotionSuccessBinding
 import org.cxct.sportlottery.databinding.DialogToGcashBinding
-import org.cxct.sportlottery.net.user.UserRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
