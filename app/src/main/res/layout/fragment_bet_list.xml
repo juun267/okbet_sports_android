@@ -96,9 +96,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:overScrollMode="never"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/item_bet_list_batch_control_connect_v3" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/clExpandOrStacked"
