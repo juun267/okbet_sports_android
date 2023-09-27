@@ -176,6 +176,8 @@ class CustomAlertDialog(private val mContext: Context? = null) : BaseDialogFragm
         mPositiveClickListener = positiveClickListener
     }
 
+    fun getPositivebtn(): View = btn_positive
+
     fun setNegativeClickListener(negativeClickListener: View.OnClickListener) {
         mNegativeClickListener = negativeClickListener
     }

@@ -6,26 +6,26 @@ import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.layout_home_top.*
+import kotlinx.android.synthetic.main.include_home_bettingstation.*
+import kotlinx.android.synthetic.main.include_home_news.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
-import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentMainHomeBinding
+import org.cxct.sportlottery.databinding.IncludeHomeBettingstationBinding
+import org.cxct.sportlottery.databinding.IncludeHomeNewsBinding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.repository.ImageType
-import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -98,25 +98,14 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     private fun initBetWinsRecodeLayout() {
         binding.winsRankView.setUp(
             this,
-            { viewModel.getRecordNew() },
-            { viewModel.getRecordResult() })
-        receiver.recordBetNew.collectWith(lifecycleScope) {
-            it?.let {
-                binding.winsRankView.onNewWSBetData(it)
-            }
-        }
-        //最新大奖
-        receiver.recordWinsResult.collectWith(lifecycleScope) {
-            it?.let {
-                binding.winsRankView.onNewWSWinsData(it)
-            }
-        }
-        viewModel.recordBetNewHttp.observe(viewLifecycleOwner) {
+            { viewModel.getBetRecord() },
+            { viewModel.getWinRecord() })
+        viewModel.recordBetHttp.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpBetData(it.reversed())
             }
         }
-        viewModel.recordWinsResultHttp.observe(viewLifecycleOwner) {
+        viewModel.recordWinHttp.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpWinsData(it.reversed())
             }
@@ -234,74 +223,69 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     //hot match end
     private fun initNews() {
-        binding.includeNews.apply {
-            tabNews.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab?) {
-                    val categoryId =
-                        if (tab?.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
-                    viewModel.getHomeNews(1, 5, listOf(categoryId))
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab?) {
-                }
-
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-                }
-            })
-            linTab.setOnClickListener {
-                getHomeFragment().jumpToNews()
+        tabNews.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val categoryId =
+                    if (tab?.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
+                viewModel.getHomeNews(1, 5, listOf(categoryId))
             }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+        linTab.setOnClickListener {
+            getHomeFragment().jumpToNews()
         }
     }
 
     private fun setupNews(newsList: List<NewsItem>) {
-        binding.includeNews.apply {
-            if (rvNews.adapter == null) {
-                rvNews.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-                rvNews.adapter = HomeNewsAdapter().apply {
-                    setList(newsList)
-                    setOnItemClickListener(listener = OnItemClickListener { adapter, view, position ->
-                        NewsDetailActivity.start(
-                            requireContext(),
-                            (adapter.data[position] as NewsItem)
-                        )
-                    })
-                }
-            } else {
-                (rvNews.adapter as HomeNewsAdapter).setList(newsList)
+        if (rvNews.adapter == null) {
+            rvNews.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            rvNews.adapter = HomeNewsAdapter().apply {
+                setList(newsList)
+                setOnItemClickListener(listener = OnItemClickListener { adapter, view, position ->
+                    NewsDetailActivity.start(
+                        requireContext(),
+                        (adapter.data[position] as NewsItem)
+                    )
+                })
             }
+        } else {
+            (rvNews.adapter as HomeNewsAdapter).setList(newsList)
         }
     }
 
     private fun setupBettingStation(newsList: List<BettingStation>) {
-        binding.includeBettingStation.apply {
-            if (rvBettingStation.adapter == null) {
-                rvBettingStation.layoutManager =
-                    LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                rvBettingStation.addItemDecoration(
-                    SpaceItemDecoration(
-                        requireContext(),
-                        R.dimen.margin_10
-                    )
+        if (rvBettingStation.adapter == null) {
+            rvBettingStation.layoutManager =
+                LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            rvBettingStation.addItemDecoration(
+                SpaceItemDecoration(
+                    requireContext(),
+                    R.dimen.margin_10
                 )
-                PagerSnapHelper().attachToRecyclerView(rvBettingStation)
-                rvBettingStation.adapter = HomeBettingStationAdapter().apply {
-                    setList(newsList)
-                    setOnItemChildClickListener { adapter, view, position ->
-                        val data = (adapter as HomeBettingStationAdapter).data[position]
-                        JumpUtil.toExternalWeb(
-                            requireContext(),
-                            "https://maps.google.com/?q=@" + data.lat + "," + data.lon
-                        )
-                    }
+            )
+            PagerSnapHelper().attachToRecyclerView(rvBettingStation)
+            rvBettingStation.adapter = HomeBettingStationAdapter().apply {
+                setList(newsList)
+                setOnItemChildClickListener { adapter, view, position ->
+                    val data = (adapter as HomeBettingStationAdapter).data[position]
+                    JumpUtil.toExternalWeb(
+                        requireContext(),
+                        "https://maps.google.com/?q=@" + data.lat + "," + data.lon
+                    )
                 }
-            } else {
-                (rvBettingStation.adapter as HomeBettingStationAdapter).setList(newsList)
             }
+        } else {
+            (rvBettingStation.adapter as HomeBettingStationAdapter).setList(newsList)
         }
     }
 
     private fun setupAnnouncement(titleList: List<String>) {
+        val lin_announcement = binding.homeTopView.binding.linAnnouncement
         if (titleList.isEmpty()) {
             lin_announcement.visibility = View.GONE
         } else {
@@ -310,6 +294,8 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             lin_announcement.setOnClickListener {
                 startActivity(Intent(requireActivity(), NewsActivity::class.java))
             }
+
+            val rv_marquee = binding.homeTopView.binding.rvMarquee
             rv_marquee.apply {
                 layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

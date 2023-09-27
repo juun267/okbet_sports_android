@@ -7,13 +7,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
@@ -29,7 +27,6 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
-import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.thirdgames.GamesMaintain
@@ -104,19 +101,6 @@ object ServiceBroadcastReceiver {
     val closePlayCate: LiveData<Event<ClosePlayCateEvent?>>
         get() = _closePlayCate
 
-    val recordBetNew: SharedFlow<RecordNewEvent?>
-        get() = _recordBetNew
-    val recordWinsResult: SharedFlow<RecordNewEvent?>
-        get() = _recordWinsResult
-    val recordNewOkGame: SharedFlow<RecordNewEvent?>
-        get() = _recordNewOkGame
-    val recordResultOkGame: SharedFlow<RecordNewEvent?>
-        get() = _recordResultOkGame
-    val recordNewOkLive: SharedFlow<RecordNewEvent?>
-        get() = _recordNewOkLive
-    val recordResultOkLive: SharedFlow<RecordNewEvent?>
-        get() = _recordResultOkLive
-
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
     private val _notice = MutableLiveData<NoticeEvent?>()
@@ -135,14 +119,8 @@ object ServiceBroadcastReceiver {
     private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
     private val _closePlayCate = MutableLiveData<Event<ClosePlayCateEvent?>>()
-    private val _recordBetNew = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-    private val _recordWinsResult = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-    private val _recordNewOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-    private val _recordResultOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-    private val _recordNewOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-    private val _recordResultOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
-    val sportMaintenance: LiveData<SportMaintenanceEvent?> = MutableLiveData()
+    val sportMaintenance: LiveData<SportMaintenanceEvent> = MutableLiveData()
     val jackpotChange: LiveData<String?> = MutableLiveData()
     val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
 
@@ -207,8 +185,10 @@ object ServiceBroadcastReceiver {
             }
             //体育服务开关
             EventType.SPORT_MAINTAIN_STATUS -> {
-                val data = ServiceMessage.getSportMaintenance(jObjStr)
-                (sportMaintenance as MutableLiveData<SportMaintenanceEvent?>).postValue(data)
+                ServiceMessage.getSportMaintenance(jObjStr)?.let {
+                    (sportMaintenance as MutableLiveData<SportMaintenanceEvent>).postValue(it)
+                }
+
             }
             EventType.RECORD_RESULT_JACKPOT_OK_GAMES->{
                 Log.e("dachang","ws message: ${jObjStr}")
@@ -277,7 +257,6 @@ object ServiceBroadcastReceiver {
                 }
                 data.oddsListToOddsMap()
                 data.updateOddsSelectedState()
-                data.filterMenuPlayCate()
                 data.sortOddsMap()
                 onOddsEvent(data)
 
@@ -320,37 +299,6 @@ object ServiceBroadcastReceiver {
             EventType.UNKNOWN -> {
                 Timber.i("Receive UnKnown EventType : $eventType")
             }
-            EventType.RECORD_NEW -> {
-                //首页最新投注
-                val data = ServiceMessage.getRecondNew(jObjStr)
-                _recordBetNew.emit(data)
-            }
-            EventType.RECORD_RESULT -> {
-                //首页最新大奖
-                val data = ServiceMessage.getRecondResult(jObjStr)
-                _recordWinsResult.emit(data)
-            }
-            EventType.RECORD_NEW_OK_GAMES -> {
-                //最新投注
-                val data = ServiceMessage.getRecondNew(jObjStr)
-                _recordNewOkGame.emit(data)
-            }
-            EventType.RECORD_RESULT_OK_GAMES -> {
-                //最新大奖
-                val data = ServiceMessage.getRecondResult(jObjStr)
-                _recordResultOkGame.emit(data)
-            }
-            EventType.RECORD_NEW_OK_LIVE -> {
-                //最新投注
-                val data = ServiceMessage.getRecondNew(jObjStr)
-                _recordNewOkLive.emit(data)
-            }
-            EventType.RECORD_RESULT_OK_LIVE -> {
-                //最新大奖
-                val data = ServiceMessage.getRecondResult(jObjStr)
-                _recordResultOkLive.emit(data)
-            }
-
             EventType.THIRD_GAME_STATU_CHANGED -> { // 三方游戏维护状态
                 ServiceMessage.parseResult(jObjStr, GamesMaintain::class.java)?.let { thirdGamesMaintain.emit(it) }
             }
@@ -465,20 +413,6 @@ object ServiceBroadcastReceiver {
         }
 
         return this
-    }
-
-    /**
-     * 只有有下拉篩選玩法的才需要過濾odds
-     */
-    private fun OddsChangeEvent.filterMenuPlayCate() {
-        val playSelected = PlayRepository.playList.value?.peekContent()?.find { it.isSelected }
-
-        when (playSelected?.selectionType) {
-            SelectionType.SELECTABLE.code -> {
-                val playCateMenuCode = playSelected.playCateList?.find { it.isSelected }?.code
-                this.odds.entries.retainAll { oddMap -> oddMap.key == playCateMenuCode }
-            }
-        }
     }
 
     private fun MatchOddsChangeEvent.updateOddsSelectedState(): MatchOddsChangeEvent {

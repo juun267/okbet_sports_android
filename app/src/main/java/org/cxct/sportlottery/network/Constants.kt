@@ -341,8 +341,6 @@ object Constants {
     const val MATCH_BET_REMARK_BET = "/api/front/match/bet/reMarkBet"
     const val MATCH_BET_ADD = "/api/front/match/bet/add"
     const val MATCH_BET_LIST = "/api/front/match/bet/list"
-    const val MATCH_BET_SETTLED_LIST = "/api/front/match/bet/settled/list"
-    const val MATCH_BET_SETTLED_DETAIL_LIST = "/api/front/match/bet/settled/detail/list"
 
     //index
     const val INDEX_LOGIN = "/api/front/index/loginV2"
@@ -398,14 +396,7 @@ object Constants {
     //注册平台账号
     const val REG_PLATFORM_USER = "/api/front/index/regPlatformUser"
 
-    //parlay limit
-    const val PLAYQUOTACOM_LIST = "/api/front/playQuotaCom/list" //获取所有体育玩法限额
-
-    //league
-    const val LEAGUE_LIST = "/api/front/match/league/list"
-
     //match
-    const val MATCH_LIVE_URL = "/api/front/match/live/url"
     const val MATCH_LIVE_ROUND = "/api/front/liveRound"
 
     //match result
@@ -469,6 +460,7 @@ object Constants {
     const val USER_GET_BASIC_INFO = "/api/front/user/queryUserBasicInfoV2" //获取用户基本信息
     const val USER_VERIFY_CONFIG = "/api/front/user/verifyConfig" //获取需要提交信息配置，为1的必填
     const val UPLOAD_REVIEW_PHOTO = "/api/front/user/uploadReviewPhoto" //上传复审资料
+    const val SET_USERNAME = "/api/front/user/fullname" // 修改用户名称
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
@@ -553,7 +545,6 @@ object Constants {
     const val CANCEL_ACCOUNT = "/api/front/user/remove"
 
     //忘记密码 发送短信
-    const val VALIDATE_USER = "/api/front/index/validateUser" //用户校验
     const val FORGET_PASSWORD_SMS = "/api/front/index/validateForgotPasswordSMS"
     const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
     const val RESET_FORGET_PASSWORD_BY_EMAIL =
@@ -628,7 +619,7 @@ object Constants {
     const val CHAT_REMOVE_MESSAGE =
         "/api/chat/front/chat/{roomId}/removeMessage/{messageId}" //-- 删除讯息
     const val CHAT_GET_SIGN =
-        "/api/front/chat/getSign" //---------------------------------------- 获取平台用户信息和签名信息
+        "/api/front/chat/getNewSign" //---------------------------------------- 获取平台用户信息和签名信息
     const val CHAT_CHECK_TOKEN =
         "/api/chat/front/user/checktoken" //----------------------------- 验证token 是否过期。如果不过期返回token信息，过期返回success: false
     const val CHAT_GET_STICKER="/api/chat/front/emoticons/queryList"

@@ -31,6 +31,7 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -200,7 +201,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             true
         ) {
             //检查是否关闭入口
-            checkSportStatus(requireActivity()){
+            checkSportStatus(requireActivity() as BaseActivity<*>){
                 getMainTabActivity().jumpToInplaySport()
             }
         }

@@ -36,6 +36,7 @@ object ChatRepository {
     var userCurrency: String? = ""
     var userLevelConfigVO: UserLevelConfigVO? = null //用户权限
     var unPacketList: MutableList<UnPacketRow>? = mutableListOf()
+    var chatRoom : Row?=null
 
     suspend fun queryList(): ApiResult<List<Row>> = safeApi {
         chatApi.queryList()

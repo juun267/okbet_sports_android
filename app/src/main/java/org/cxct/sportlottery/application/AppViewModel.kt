@@ -13,7 +13,6 @@ import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
-import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
@@ -54,7 +53,6 @@ object AppViewModel {
         viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
-        viewModel { RegisterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HelpCenterViewModel(get(), get(), get(), get(), get(), get()) }
@@ -75,7 +73,7 @@ object AppViewModel {
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { SportViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { SportViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { LeagueSelectViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SportListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { SportTabViewModel(get(), get(), get(), get(), get(), get(), get()) }
@@ -105,7 +103,6 @@ object AppViewModel {
         single { FeedbackRepository() }
         single { HostRepository(get()) }
         single { WithdrawRepository }
-        single { PlayQuotaComRepository() }
         single { MyFavoriteRepository() }
         single { SelfLimitRepository() }
     }

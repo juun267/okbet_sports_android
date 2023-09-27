@@ -1625,5 +1625,12 @@
     <string name="P205">Transfer</string>
     <string name="P206">Transfers The Balance Of All Other Game Accounts To The Account Balance.</string>
     <string name="P212">Transfer To Account Balance</string>
+    <string name="P185">First Name</string>
+    <string name="P186">Middle Name</string>
+    <string name="P187">Last Name</string>
+    <string name="P188">Don‘t Have</string>
+    <string name="P189">Tips: Your real name should match the name on the submitted ID.</string>
+    <string name="N280">Format doesn\'t match</string>
+    <string name="P215">The Cardholder\'s Name should match your registered full name. If you have any questions, please contact our Customer Service.</string>
 
 </resources>

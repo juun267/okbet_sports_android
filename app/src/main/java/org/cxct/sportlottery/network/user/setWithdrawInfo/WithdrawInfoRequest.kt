@@ -1,23 +1,18 @@
 package org.cxct.sportlottery.network.user.setWithdrawInfo
 
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
-@JsonClass(generateAdapter = true) @KeepMembers
+@KeepMembers
 data class WithdrawInfoRequest(
-    @Json(name = "email")
     var email: String? = null,
-    @Json(name = "fullName")
     var fullName: String? = null,
-    @Json(name = "fundPwd")
     var fundPwd: String? = null,
-    @Json(name = "phone")
     var phone: String? = null,
-    @Json(name = "qq")
     var qq: String? = null,
-    @Json(name = "userId")
     val userId: Long,
-    @Json(name = "wechat")
-    var wechat: String? = null
+    var wechat: String? = null,
+    val firstName: String? = null,
+    val middelName: String? = null,
+    val lastName: String? = null,
 )

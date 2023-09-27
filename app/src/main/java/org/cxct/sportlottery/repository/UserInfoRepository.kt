@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.safeApi
 import org.cxct.sportlottery.net.ApiResult
@@ -18,7 +19,6 @@ import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.toJson
 import retrofit2.Response
 
-const val KEY_CHAT_SIGN = "chat_sign"
 
 object UserInfoRepository {
 
@@ -26,7 +26,7 @@ object UserInfoRepository {
         RetrofitHolder.createSignApiService(SignService::class.java)
     }
 
-    val sharedPref: SharedPreferences by lazy {
+    private val sharedPref: SharedPreferences by lazy {
         MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
@@ -48,7 +48,7 @@ object UserInfoRepository {
     }
 
     @WorkerThread
-    suspend fun updateUserInfo(userInfoData: UserInfoData?) {
+    fun updateUserInfo(userInfoData: UserInfoData?) {
         if (userInfoData == null) {
             return
         }
@@ -72,14 +72,11 @@ object UserInfoRepository {
 
     }
 
-    suspend fun getDiscount(): Float {
-//        return withContext(Dispatchers.IO) {
-//            userInfoDao.getDiscount(userId) ?: 1.0F
-//        }
+    fun getDiscount(): Float {
         return MultiLanguagesApplication.getInstance()?.userInfo()?.discount ?: 1.0F
     }
 
-    suspend fun updatePayPwFlag(userId: Long) {
+    fun updatePayPwFlag(userId: Long) {
 //        withContext(Dispatchers.IO) {
 //            userInfoDao.updatePayPw(userId, 0)
 //        }
@@ -136,7 +133,7 @@ object UserInfoRepository {
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
     }
 
-    suspend fun updateFullName(userId: Long, fullName: String) {
+    fun updateFullName(userId: Long, fullName: String) {
 //        withContext(Dispatchers.IO){
 //            userInfoDao.updateFullName(userId, fullName)
 //        }
@@ -212,16 +209,6 @@ object UserInfoRepository {
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
     }
 
-    suspend fun updateVerified(userId: Long, verified: Int) {
-//        withContext(Dispatchers.IO) {
-//            userInfoDao.updateVerified(userId, verified)
-//        }
-        val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
-        userInfo?.verified = verified
-        MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
-    }
-
-
     fun updateOddsChangeOption(option: Int) {
         val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
         userInfo?.oddsChangeOption = option
@@ -268,6 +255,12 @@ object UserInfoRepository {
             permanentZipCode = userInfoData.permanentZipCode,
         )
 
-    suspend fun getSign(): ApiResult<JsonElement> = safeApi { signService.getSign() }
-
+    suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {
+        val params = JsonObject()
+        params.addProperty("constraintType", constraintType)
+        params.addProperty("dataStatisticsRange", dataStatisticsRange)
+        return safeApi {
+            signService.getSign(params)
+        }
+    }
 }

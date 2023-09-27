@@ -144,11 +144,12 @@
 
                     <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
                         android:id="@+id/et_create_name"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_14"
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="@dimen/margin_14"
+                        app:endIcon="@drawable/ic_question_blue"
                         app:hintText="@string/hint_please_enter_create_name"
                         app:isResponsiveIconColor="false"
                         app:labelText="@string/create_name"
@@ -159,10 +160,12 @@
 
                         <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                             android:id="@+id/eet_create_name"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/margin_24"
                             android:imeOptions="actionNext"
                             android:maxLines="1"
+                            android:minWidth="100dp"
                             android:inputType="text"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp" />

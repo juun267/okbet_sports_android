@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,14 +12,10 @@ import org.cxct.sportlottery.common.enums.OddSpreadForSCO
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.match.MatchRound
-import org.cxct.sportlottery.network.match.MatchService
 import org.cxct.sportlottery.network.matchLiveInfo.ChatLiveLoginData
-import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
@@ -29,7 +24,6 @@ import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.network.sport.query.*
-import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
@@ -46,7 +40,6 @@ class SportViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     myFavoriteRepository: MyFavoriteRepository,
-    private val sportMenuRepository: SportMenuRepository,
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -58,16 +51,6 @@ class SportViewModel(
 
     val token = loginRepository.token
 
-
-    val messageListResult: LiveData<Event<MessageListResult?>>
-        get() = _messageListResult
-
-    val sportMenuResult: LiveData<SportMenuResult?>
-        get() = _sportMenuResult
-
-    val playList: LiveData<Event<List<Play>>>
-        get() = PlayRepository.playList
-
     val playCate: LiveData<Event<String?>>
         get() = _playCate
 
@@ -77,15 +60,8 @@ class SportViewModel(
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
     val showBetBasketballUpperLimit = betInfoRepository.showBetBasketballUpperLimit
 
-    private val _messageListResult = MutableLiveData<Event<MessageListResult?>>()
-    private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
-
     private val _playCate = MutableLiveData<Event<String?>>()
     private val _searchResult = MutableLiveData<Event<Pair<String, List<SearchResult>?>>>()
-
-    private val _betInfoResult = MutableLiveData<Event<BetInfoResult?>>()
-    val betInfoResult: LiveData<Event<BetInfoResult?>>
-        get() = _betInfoResult
 
     private val _oddsDetailResult = MutableLiveData<Event<OddsDetailResult?>?>()
     val oddsDetailResult: LiveData<Event<OddsDetailResult?>?>
@@ -573,7 +549,7 @@ class SportViewModel(
     }
 
     private fun getLocalString(res: Int): String {
-        return LocalUtils.getString(res)
+        return androidContext.getString(res)
     }
 
 
