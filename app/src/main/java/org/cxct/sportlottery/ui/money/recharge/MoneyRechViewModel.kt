@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.common.MoneyType
@@ -141,6 +142,10 @@ class MoneyRechViewModel(
     val onlinePayFirstRechargeTips: LiveData<Event<String?>>
         get() = _onlinePayFirstRechargeTips
     private val _onlinePayFirstRechargeTips = MutableLiveData<Event<String?>>()
+    //在線充值提交申請API回傳
+    val rechCheckResult: LiveData<Event<ApiResult<String>>>
+        get() = _rechCheckResult
+    private var _rechCheckResult = MutableLiveData<Event<ApiResult<String>>>()
 
     //更新使用者資料
     fun getUserInfo() {
@@ -302,10 +307,9 @@ class MoneyRechViewModel(
                     toExternalWeb(context, url)
                     AFInAppEventUtil.deposit(depositMoney ?: "",
                         sConfigData?.systemCurrency ?: "")
-
                     _onlinePayResult.value = depositMoney.toLong() //金額帶入result
                 }else{
-                    ToastUtil.showToast(context,it.msg)
+                   _rechCheckResult.postValue(Event(it))
                 }
             }
         }
@@ -344,7 +348,7 @@ class MoneyRechViewModel(
                     _onlinePayCryptoResult.value = ArithUtil.mul(depositMoney.toDouble(),
                         (mSelectRechCfgs?.exchangeRate ?: 0.0)) //金額帶入result
                 }else{
-                    ToastUtil.showToast(context,it.msg)
+                    _rechCheckResult.postValue(Event(it))
                 }
             }
         }

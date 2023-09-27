@@ -105,14 +105,25 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
 
     private fun initObserve() {
         //充值個數訊息
-        viewModel.rechargeAccountMsg.observe(viewLifecycleOwner, {
+        viewModel.rechargeAccountMsg.observe(viewLifecycleOwner) {
             et_recharge_account.setError(it)
-        })
+        }
 
         //在線充值成功
-        viewModel.onlinePayCryptoResult.observe(this.viewLifecycleOwner, {
+        viewModel.onlinePayCryptoResult.observe(this.viewLifecycleOwner) {
             resetEvent()
-        })
+        }
+        viewModel.rechCheckResult.observe(this.viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {
+                if (!it.succeeded()) {
+                    mSelectRechCfgs?.let {
+                        it.open = 2
+                        setupMoneyCfgMaintanince(it, btn_submit, linMaintenance)
+                    }
+                    showPromptDialog(getString(R.string.prompt), it.msg) {}
+                }
+            }
+        }
     }
 
     private fun initView() {

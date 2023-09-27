@@ -46,7 +46,7 @@ data class RechCfg(
     @Json(name = "remark")
     val remark: String?,
     @Json(name = "open")
-    val open: Int?,
+    var open: Int?,
     @Json(name = "frontDeskRemark")
     val frontDeskRemark: String?,
 )
