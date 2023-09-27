@@ -283,10 +283,7 @@ class HomeTopView @JvmOverloads constructor(
                 }
                 //bingo
                 OkBingo->{
-                    //开启世界杯才有点击
-                    if(StaticData.worldCupOpened()){
-                        (fragment.activity as MainTabActivity).jumpToWorldCup()
-                    }
+
                 }
             }
         }

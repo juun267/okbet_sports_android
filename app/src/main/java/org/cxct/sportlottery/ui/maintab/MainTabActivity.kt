@@ -40,7 +40,6 @@ import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetListFragment
-import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
@@ -58,6 +57,7 @@ import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import splitties.activities.start
 import kotlin.system.exitProcess
 
 
@@ -620,7 +620,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (getMarketSwitch()) {
             return
         }
-
         navToPosition(2)
     }
     fun jumpToOKLive() {
@@ -682,17 +681,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         (fragmentHelper.getFragment(1) as SportFragment2).setJumpSport(matchType, gameType)
         navToPosition(1)
-    }
-
-    fun jumpToWorldCup() {
-        navToPosition(0)
-        enableSelectBottomNav(false)
-        homeFragment().jumpToWorldCup()
-    }
-    fun jumpToWorldCupGame() {
-        navToPosition(0)
-        enableSelectBottomNav(false)
-        homeFragment().jumpToWorldCupGame()
     }
 
     fun jumpToInplaySport() {
