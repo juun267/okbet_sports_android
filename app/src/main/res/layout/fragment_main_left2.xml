@@ -146,41 +146,6 @@
                 android:layout_marginTop="6dp"
                 android:background="@color/color_e0e3ee" />
 
-            <LinearLayout
-                android:id="@+id/llSponsorship"
-                android:layout_width="match_parent"
-                android:layout_height="72dp"
-                android:layout_marginHorizontal="28dp"
-                android:gravity="center_vertical"
-                android:background="@drawable/selector_cor30_tran_blue">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="12dp"
-                    android:src="@drawable/ic_main_menu_sponsorship_0" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_weight="1"
-                    android:text="@string/N915"
-                    android:textColor="@color/color_6D7693"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/img_mpbl_logo" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginHorizontal="28dp"
-                android:background="@color/color_e0e3ee" />
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
