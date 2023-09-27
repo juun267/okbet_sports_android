@@ -7,12 +7,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
-import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupGameFragment
-import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.Param
 
@@ -26,8 +23,6 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
             Param(OKGamesFragment::class.java),
             Param(NewsHomeFragment::class.java, needRemove = true),
             Param(OKLiveFragment::class.java),
-            Param(WorldCupFragment::class.java, needRemove = true),
-            Param(WorldCupGameFragment::class.java, needRemove = true)
         ))
     }
 
@@ -55,11 +50,6 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     fun jumpToNews() = switchTabByPosition(2)
 
     fun jumpToOKLive() = switchTabByPosition(3)
-
-    fun jumpToWorldCup() = switchTabByPosition(4)
-
-    fun jumpToWorldCupGame() = switchTabByPosition(5)
-
 
 
     fun jumpToInplaySport() {

@@ -43,18 +43,12 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                 }
                 //bingo
                 HomeTopView.OkBingo->{
-                    //开启世界杯  替换掉bingo
-                    if(StaticData.worldCupOpened()){
-                        ivSportCover.setImageResource(R.drawable.img_worldcup)
+                    ivSportCover.setImageResource(R.drawable.img_okbingo)
+                    if(StaticData.okBingoOpened()){
                         tvSportClose.gone()
                     }else{
-                        ivSportCover.setImageResource(R.drawable.img_okbingo)
-                        if(StaticData.okBingoOpened()){
-                            tvSportClose.gone()
-                        }else{
-                            tvSportClose.visible()
-                            tvSportClose.text=context.getString(R.string.N700)
-                        }
+                        tvSportClose.visible()
+                        tvSportClose.text=context.getString(R.string.N700)
                     }
                 }
                 //oklive
