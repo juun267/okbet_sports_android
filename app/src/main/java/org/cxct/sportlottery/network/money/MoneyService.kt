@@ -55,6 +55,5 @@ interface MoneyService {
     @POST(REDEEM_CODE_HISTORY)
     suspend fun redeemCodeHistory(@Body code: SportBillListRequest?): Response<RedeemCodeHistoryResponse>
 
-    @POST(Constants.RECH_CHECK_STATUS)
-    suspend fun rechCheckStauts(@Body map:Map<String,String>): ApiResult<String>
+
 }

@@ -113,15 +113,13 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         viewModel.onlinePayCryptoResult.observe(this.viewLifecycleOwner) {
             resetEvent()
         }
-        viewModel.rechCheckResult.observe(this.viewLifecycleOwner) {
+        viewModel.rechCheckMsg.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let {
-                if (!it.succeeded()) {
-                    mSelectRechCfgs?.let {
-                        it.open = 2
-                        setupMoneyCfgMaintanince(it, btn_submit, linMaintenance)
-                    }
-                    showPromptDialog(getString(R.string.prompt), it.msg) {}
+                mSelectRechCfgs?.let {
+                    it.open = 2
+                    setupMoneyCfgMaintanince(it, btn_submit, linMaintenance)
                 }
+                showErrorPromptDialog(getString(R.string.prompt), it) {}
             }
         }
     }

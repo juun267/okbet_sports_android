@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.appsflyer.AppsFlyerLib
+import com.google.gson.JsonObject
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -143,9 +144,9 @@ class MoneyRechViewModel(
         get() = _onlinePayFirstRechargeTips
     private val _onlinePayFirstRechargeTips = MutableLiveData<Event<String?>>()
     //在線充值提交申請API回傳
-    val rechCheckResult: LiveData<Event<ApiResult<String>>>
-        get() = _rechCheckResult
-    private var _rechCheckResult = MutableLiveData<Event<ApiResult<String>>>()
+    val rechCheckMsg: LiveData<Event<String>>
+        get() = _rechCheckMsg
+    private var _rechCheckMsg = MutableLiveData<Event<String>>()
 
     //更新使用者資料
     fun getUserInfo() {
@@ -285,9 +286,10 @@ class MoneyRechViewModel(
                 return
 
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
+            val rechCfgId = (mSelectRechCfgs?.id ?: "").toString()
             val queryMap = hashMapOf(
                 "x-session-token" to (loginRepository.token ?: ""),
-                "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
+                "rechCfgId" to rechCfgId,
                 "bankCode" to (bankCode ?: ""),
                 "depositMoney" to depositMoney,
                 "clientType" to "2"
@@ -299,9 +301,10 @@ class MoneyRechViewModel(
                     put("appsFlyerKey", BuildConfig.AF_APPKEY)
                     put("appsFlyerPkgName",BuildConfig.APPLICATION_ID)
                 }
-
             }
-            callApi({MoneyRepository.rechCheckStauts(queryMap)}){
+            val params = JsonObject()
+            queryMap.forEach { params.addProperty(it.key,it.value) }
+            callApi({org.cxct.sportlottery.net.money.MoneyRepository.rechCheckStauts(params)}){
                 if (it.succeeded()){
                     url += toUrlParamsFormat(queryMap)
                     toExternalWeb(context, url)
@@ -309,7 +312,7 @@ class MoneyRechViewModel(
                         sConfigData?.systemCurrency ?: "")
                     _onlinePayResult.value = depositMoney.toLong() //金額帶入result
                 }else{
-                   _rechCheckResult.postValue(Event(it))
+                    _rechCheckMsg.postValue(Event(it.msg))
                 }
             }
         }
@@ -325,6 +328,7 @@ class MoneyRechViewModel(
         checkRcgOnlineAccount(depositMoney, mSelectRechCfgs)
         if (onlineCryptoPayInput()) {
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
+            val rechCfgId = (mSelectRechCfgs?.id ?: "").toString()
             val queryMap = hashMapOf(
                 "x-session-token" to (loginRepository.token ?: ""),
                 "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
@@ -339,7 +343,9 @@ class MoneyRechViewModel(
                     put("appsFlyerPkgName",BuildConfig.APPLICATION_ID)
                 }
             }
-            callApi({MoneyRepository.rechCheckStauts(queryMap)}){
+            val params = JsonObject()
+            queryMap.forEach { params.addProperty(it.key,it.value) }
+            callApi({org.cxct.sportlottery.net.money.MoneyRepository.rechCheckStauts(params)}){
                 if (it.succeeded()){
                     url += toUrlParamsFormat(queryMap)
                     toExternalWeb(context, url)
@@ -348,7 +354,7 @@ class MoneyRechViewModel(
                     _onlinePayCryptoResult.value = ArithUtil.mul(depositMoney.toDouble(),
                         (mSelectRechCfgs?.exchangeRate ?: 0.0)) //金額帶入result
                 }else{
-                    _rechCheckResult.postValue(Event(it))
+                    _rechCheckMsg.postValue(Event(it.msg))
                 }
             }
         }
