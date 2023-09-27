@@ -118,6 +118,17 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 showPromptDialog(getString(R.string.prompt), tipString) {}
             }
         }
+        viewModel.rechCheckResult.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {
+                if (!it.succeeded()) {
+                    mSelectRechCfgs?.let {
+                        it.open = 2
+                        setupMoneyCfgMaintanince(it, btn_submit, linMaintenance)
+                    }
+                    showPromptDialog(getString(R.string.prompt), it.msg) {}
+                }
+            }
+        }
     }
 
     private fun initView() {
