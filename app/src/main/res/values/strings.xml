@@ -1634,5 +1634,6 @@
     <string name="P206">Transfers The Balance Of All Other Game Accounts To The Account Balance.</string>
     <string name="P212">Transfer To Account Balance</string>
     <string name="P215">The Cardholder\'s Name should match your registered full name. If you have any questions, please contact our Customer Service.</string>
+    <string name="P216">Redeem Code Deposit</string>
 
 </resources>

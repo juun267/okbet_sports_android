@@ -14,4 +14,5 @@ enum class RechType(val type: String) {
     BETTING_STATION("bettingStation"),
     BETTING_STATION_AGENT("bettingStationAgent"),
     ACTIVITY("adminActivity"),
+    REDEMTIONCODE("redemptionCodeAddMoney"),
 }
