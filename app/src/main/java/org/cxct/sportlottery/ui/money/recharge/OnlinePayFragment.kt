@@ -26,8 +26,9 @@ import kotlinx.android.synthetic.main.online_pay_fragment.tv_fee_rate
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_hint
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_remark
 import kotlinx.android.synthetic.main.online_pay_fragment.txv_pay_bank
+import kotlinx.android.synthetic.main.online_pay_fragment.linMaintenance
 import kotlinx.android.synthetic.main.online_pay_fragment.view.*
-import kotlinx.android.synthetic.main.transfer_pay_fragment.*
+import kotlinx.android.synthetic.main.view_payment_maintenance.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.show
@@ -117,6 +118,15 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 showPromptDialog(getString(R.string.prompt), tipString) {}
             }
         }
+        viewModel.rechCheckMsg.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {
+                mSelectRechCfgs?.let {
+                    it.open = 2
+                    setupMoneyCfgMaintanince(it, btn_submit, linMaintenance)
+                }
+                showErrorPromptDialog(getString(R.string.prompt), it) {}
+            }
+        }
     }
 
     private fun initView() {
@@ -150,6 +160,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
             viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer)
         }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
+
         ll_pay_gap.setOnClickListener {
             payGapBottomSheet.show()
         }
@@ -196,6 +208,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         //反利、手續費
         setupRebateFee()
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
     }
 
     private fun refreshPayBank(rechCfgsList: RechCfg?) {

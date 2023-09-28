@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -447,6 +446,7 @@ object Constants {
     const val USER_RECHARGE_ONLINE_PAY = "/api/front/userrech/onlinepay"
     const val USER_RECHARGE_LIST = "/api/front/userrech/list"
     const val USER_BILL_LIST = "/api/front/sportBill/query"
+    const val RECH_CHECK_STATUS = "/api/front/userrech/onlinepayAndroidAndIos"//充值前检查参数状态
 
 
     //user
