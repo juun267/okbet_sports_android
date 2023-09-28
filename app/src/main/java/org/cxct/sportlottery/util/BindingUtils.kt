@@ -22,7 +22,6 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.repository.ThirdGameRepository
 import org.cxct.sportlottery.util.TimeUtil.DM_HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -261,22 +260,6 @@ fun TextView.setTextViewDrawableColor(colorRes: Int) {
     }
 }
 
-fun TextView.setSingleReceiptStatusTips(status: Int?) {
-
-    status?.let { statusNotNull ->
-        text = when (statusNotNull) {
-            7 -> context.getString(R.string.bet_fail)
-            else -> context.getString(R.string.bet_succeeded)
-        }
-
-        setTextColor(
-            when (statusNotNull) {
-                7 -> ContextCompat.getColor(context, R.color.color_E44438_e44438)
-                else -> ContextCompat.getColor(context, R.color.color_317FFF_1053af)
-            }
-        )
-    }
-}
 
 @BindingAdapter("gameStatusColor") //状态 1-处理中;2-成功;3-失败
 fun TextView.setGameStatusColor(status: Int?) {
@@ -381,27 +364,13 @@ fun TextView.setMoneyFormat(money: Long?) {
     }
 }
 
-val gameNameMap: Map<String?, Int> = mapOf(
-    "CG" to R.string.plat_money,
-    "DF" to R.string.third_game_df,
-    "SBTY" to R.string.third_game_sbty,
-    "AG" to R.string.third_game_ag,
-    "IBO" to R.string.third_game_ibo,
-    "CQ9" to R.string.third_game_cq9,
-    "CGCP" to R.string.third_game_cgcp,
-    "OGPLUS" to R.string.third_game_ogplus,
-    "CR" to R.string.third_game_cr,
-    "KY" to R.string.third_game_ky,
-    "VNCP" to R.string.third_game_vncp,
-    "LEG" to R.string.third_game_leg,
-)
 
 @BindingAdapter("platName")
 fun TextView.setPlatName(platCode: String?) {
     platCode?.let { code ->
         text = when (code) {
-            "CG" -> LocalUtils.getString(R.string.plat_money)
-            else -> ThirdGameRepository.thirdGameData.value?.gameFirmMap?.get(code)?.firmShowName ?: platCode
+            "CG" -> context.getString(R.string.plat_money)
+            else -> platCode
         }
     }
 }
@@ -444,7 +413,7 @@ fun TextView.setMoneyColorWhite(profit: Double = 0.0) {
 //31 半场状态不显示时间
 fun needCountStatus(status: Int?, leagueTime: Int?): Boolean {
     if (leagueTime != null) {
-        return status ?: 0 < 99 && status != 31 && leagueTime > 0
+        return (status ?: 0 < 99||listOf(106,107).contains(status)) && status != 31&& leagueTime > 0
     } else {
         return false
     }

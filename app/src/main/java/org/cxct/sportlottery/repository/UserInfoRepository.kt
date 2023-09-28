@@ -19,7 +19,6 @@ import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.toJson
 import retrofit2.Response
 
-const val KEY_CHAT_SIGN = "chat_sign"
 
 object UserInfoRepository {
 
@@ -27,7 +26,7 @@ object UserInfoRepository {
         RetrofitHolder.createSignApiService(SignService::class.java)
     }
 
-    val sharedPref: SharedPreferences by lazy {
+    private val sharedPref: SharedPreferences by lazy {
         MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
@@ -49,7 +48,7 @@ object UserInfoRepository {
     }
 
     @WorkerThread
-    suspend fun updateUserInfo(userInfoData: UserInfoData?) {
+    fun updateUserInfo(userInfoData: UserInfoData?) {
         if (userInfoData == null) {
             return
         }
@@ -73,14 +72,11 @@ object UserInfoRepository {
 
     }
 
-    suspend fun getDiscount(): Float {
-//        return withContext(Dispatchers.IO) {
-//            userInfoDao.getDiscount(userId) ?: 1.0F
-//        }
+    fun getDiscount(): Float {
         return MultiLanguagesApplication.getInstance()?.userInfo()?.discount ?: 1.0F
     }
 
-    suspend fun updatePayPwFlag(userId: Long) {
+    fun updatePayPwFlag(userId: Long) {
 //        withContext(Dispatchers.IO) {
 //            userInfoDao.updatePayPw(userId, 0)
 //        }
@@ -212,16 +208,6 @@ object UserInfoRepository {
         userInfo?.discount = discount
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
     }
-
-    suspend fun updateVerified(userId: Long, verified: Int) {
-//        withContext(Dispatchers.IO) {
-//            userInfoDao.updateVerified(userId, verified)
-//        }
-        val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
-        userInfo?.verified = verified
-        MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
-    }
-
 
     fun updateOddsChangeOption(option: Int) {
         val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()

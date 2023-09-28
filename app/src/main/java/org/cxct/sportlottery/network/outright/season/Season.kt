@@ -12,6 +12,4 @@ data class Season(
     val name: String?,
     @Json(name = "num")
     val num: Int?,
-) {
-    var isPin = false
-}
+)

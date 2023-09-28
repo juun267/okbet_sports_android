@@ -10,7 +10,6 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.setPadding
 import kotlinx.android.synthetic.main.menu_motion_floating.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 /**
  * @author Hewie
@@ -72,14 +71,12 @@ class MotionFloatingMenu @JvmOverloads constructor(
         motion_layout.getConstraintSet(R.id.open)
             .getConstraint(motion_cash_save.id).propertySet.mVisibilityMode =
             1 // 1 - ignore or 0 - normal
-        motion_cash_save.setVisibilityByCreditSystem()
         motion_layout.getConstraintSet(R.id.start)
             .getConstraint(motion_cash_get.id).propertySet.mVisibilityMode =
             1 // 1 - ignore or 0 - normal
         motion_layout.getConstraintSet(R.id.open)
             .getConstraint(motion_cash_get.id).propertySet.mVisibilityMode =
             1 // 1 - ignore or 0 - normal
-        motion_cash_get.setVisibilityByCreditSystem()
 
         motion_back_home.setOnClickListener {
             mOnMenuListener?.onHome()

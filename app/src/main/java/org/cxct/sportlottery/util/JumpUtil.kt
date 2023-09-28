@@ -27,52 +27,18 @@ object JumpUtil {
         bettingStation: BettingStation? = null
     ) {
         LogUtil.d("href:===>${href}")
-        when{
-            //是否世界杯主题活动页面
-            href?.isNotEmpty() == true &&href?.contains("/BasketballWorldCupLottery")->{
 
-                when(AppManager.currentActivity()){
-                     is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
-                     else-> {
-                         context.start<MainTabActivity>{}
-                         GlobalScope.launch {
-                             delay(1000)
-                             withContext(Dispatchers.Main){
-                                 (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
-                             }
-                         }
-                     }
+        context.startActivity(
+            Intent(context, WebActivity::class.java).apply {
+                putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
+                putExtra(WebActivity.KEY_TITLE, title)
+                putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
+                putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
+                if (bettingStation != null) {
+                    putExtra(WebActivity.BET_STATION, bettingStation)
                 }
             }
-            //是否世界杯页面
-            href?.isNotEmpty() == true &&href?.contains("/world-cup")->{
-                when(AppManager.currentActivity()){
-                    is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCup()
-                    else-> {
-                        context.start<MainTabActivity>{}
-                        GlobalScope.launch {
-                            delay(1000)
-                            withContext(Dispatchers.Main){
-                                (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCup()
-                            }
-                        }
-                    }
-                }
-            }
-            else->{
-                context.startActivity(
-                    Intent(context, WebActivity::class.java).apply {
-                        putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
-                        putExtra(WebActivity.KEY_TITLE, title)
-                        putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
-                        putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
-                        if (bettingStation != null) {
-                            putExtra(WebActivity.BET_STATION, bettingStation)
-                        }
-                    }
-                )
-            }
-        }
+        )
     }
 
     /**

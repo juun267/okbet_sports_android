@@ -295,7 +295,7 @@ class HotMatchView(
     private fun initAdapter(fragment: BaseFragment<*>) {
         setUpAdapter(fragment.viewLifecycleOwner,
             HomeRecommendListener(onItemClickListener = { matchInfo ->
-                if (isCreditSystem() && fragment.viewModel.isLogin.value != true) {
+                if (fragment.viewModel.isLogin.value != true) {
                     (fragment.requireActivity() as MainTabActivity).showLoginNotify()
                 } else {
                     matchInfo?.let {
@@ -309,7 +309,7 @@ class HotMatchView(
                         return@HomeRecommendListener
                     }
                     fragment.avoidFastDoubleClick()
-                    if (isCreditSystem() && fragment.viewModel.isLogin.value != true) {
+                    if (fragment.viewModel.isLogin.value != true) {
                         (fragment.requireActivity() as MainTabActivity).showLoginNotify()
                         return@HomeRecommendListener
                     }

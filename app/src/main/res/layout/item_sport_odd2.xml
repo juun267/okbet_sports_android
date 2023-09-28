@@ -39,7 +39,7 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginRight="5dp"
                     android:src="@drawable/selector_star_v4"
                     tools:ignore="ContentDescription"
                     tools:visibility="visible" />
@@ -53,6 +53,14 @@
                         android:id="@+id/leagueOddMatchStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:maxWidth="60dp"
+                        android:gravity="center"
+                        android:autoSizeTextType="uniform"
+                        android:autoSizeMaxTextSize="@dimen/textSize12sp"
+                        android:autoSizeMinTextSize="@dimen/textSize8sp"
+                        android:ellipsize="end"
                         android:layout_marginRight="@dimen/margin_5"
                         android:fontFamily="@font/helvetica_normal"
                         android:textColor="@color/color_6D7693"
@@ -115,7 +123,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="5dp"
                         android:src="@drawable/ic_ot"
                         tools:ignore="ContentDescription" />
 

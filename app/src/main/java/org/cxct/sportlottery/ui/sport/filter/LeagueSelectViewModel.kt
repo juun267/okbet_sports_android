@@ -10,9 +10,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.*
-import org.cxct.sportlottery.network.league.League
-import org.cxct.sportlottery.network.league.LeagueListRequest
-import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.OddsListData
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
@@ -44,15 +41,8 @@ class LeagueSelectViewModel(
         get() = _leagueOddList
     private val _leagueOddList = MutableLiveData<MutableList<LeagueOdd>>()
 
-    val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
-        get() = _oddsListGameHallResult
-    private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private var jobGetOddsList: Job? = null
 
-
-    fun clearSelectedLeague() {
-        _leagueOddList.postValue(mutableListOf())
-    }
 
      fun getOddsList(
         gameType: String,

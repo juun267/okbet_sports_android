@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.drake.spannable.addSpan
 import com.drake.spannable.setSpan
 import com.drake.spannable.span.ColorSpan
-import kotlinx.android.synthetic.main.activity_register.view.view
 import kotlinx.android.synthetic.main.view_home_okgame.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.net.games.data.OKGameBean

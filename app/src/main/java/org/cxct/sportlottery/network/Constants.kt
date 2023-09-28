@@ -263,19 +263,6 @@ object Constants {
         ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
     }
 
-    //2023篮球世界杯内容h5地址
-    fun getWorldCupH5Url(context: Context,toolbarHeight:Int): String {
-        val base = getH5BaseUrl()
-//        val base = "https://172.15.60.159:3000/"
-        return base + "mobile/world-cup?device=android&token=${LoginRepository.token?:""}&lang=${getSelectLanguage(context).key}&oddsType=${getCurrentOddsTypeName()}&oddsDiscount=${UserInfoRepository.userInfo.value?.discount?:1.0}&toolbarHeight=$toolbarHeight"
-    }
-    //2023篮球世界杯活动h5地址
-    fun getWorldCupActivityH5Url(context: Context,toolbarHeight:Int): String {
-        val base = getH5BaseUrl()
-//        val base = "https://172.15.60.199:3000/"
-        return base + "mobile/BasketballWorldCupLottery?bkType=1&device=android&token=${LoginRepository.token?:""}&lang=${getSelectLanguage(context).key}&toolbarHeight=$toolbarHeight"
-    }
-
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
     //打印小票H5地址
     fun getPrintReceipt(
@@ -340,8 +327,6 @@ object Constants {
     const val MATCH_BET_REMARK_BET = "/api/front/match/bet/reMarkBet"
     const val MATCH_BET_ADD = "/api/front/match/bet/add"
     const val MATCH_BET_LIST = "/api/front/match/bet/list"
-    const val MATCH_BET_SETTLED_LIST = "/api/front/match/bet/settled/list"
-    const val MATCH_BET_SETTLED_DETAIL_LIST = "/api/front/match/bet/settled/detail/list"
 
     //index
     const val INDEX_LOGIN = "/api/front/index/loginV2"
@@ -397,14 +382,7 @@ object Constants {
     //注册平台账号
     const val REG_PLATFORM_USER = "/api/front/index/regPlatformUser"
 
-    //parlay limit
-    const val PLAYQUOTACOM_LIST = "/api/front/playQuotaCom/list" //获取所有体育玩法限额
-
-    //league
-    const val LEAGUE_LIST = "/api/front/match/league/list"
-
     //match
-    const val MATCH_LIVE_URL = "/api/front/match/live/url"
     const val MATCH_LIVE_ROUND = "/api/front/liveRound"
 
     //match result
@@ -554,7 +532,6 @@ object Constants {
     const val CANCEL_ACCOUNT = "/api/front/user/remove"
 
     //忘记密码 发送短信
-    const val VALIDATE_USER = "/api/front/index/validateUser" //用户校验
     const val FORGET_PASSWORD_SMS = "/api/front/index/validateForgotPasswordSMS"
     const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
     const val RESET_FORGET_PASSWORD_BY_EMAIL =

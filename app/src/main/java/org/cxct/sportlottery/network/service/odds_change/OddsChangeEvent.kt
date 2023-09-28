@@ -18,8 +18,6 @@ data class OddsChangeEvent(
     val isLongTermEvent: Int?, //是否是冠军玩法，1：是，0：否
     @Json(name = "oddsList")
     val oddsList: MutableList<OddsList> = mutableListOf(),
-    @Json(name = "dynamicMarkets")
-    val dynamicMarkets: Map<String, DynamicMarkets>? = mapOf(), //动态市场字典(冠军玩法有效)， key: 对应odds的key, value: {zh:"xxx",en:"cxxewe"}
     @Json(name = "quickPlayCateList")
     val quickPlayCateList: List<QuickPlayCate>? = null,
     @Json(name = "gameType")

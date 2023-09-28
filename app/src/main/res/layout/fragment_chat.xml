@@ -18,8 +18,7 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:paddingTop="110dp"
-            tools:listitem="@layout/item_chat_message_red_envelope" />
+            android:paddingTop="110dp" />
     </FrameLayout>
 
     <org.cxct.sportlottery.ui.common.NoDragRecyclerView
@@ -28,8 +27,7 @@
         android:layout_height="70dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="107dp"
-        android:orientation="vertical"
-        tools:listitem="@layout/item_chat_welcome" />
+        android:orientation="vertical"/>
 
 
     <org.cxct.sportlottery.ui.chat.ChatActionView

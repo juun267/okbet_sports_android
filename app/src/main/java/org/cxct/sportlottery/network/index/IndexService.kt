@@ -27,7 +27,6 @@ import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD_BY_EMAIL
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.SEND_SMS_FORGET
 import org.cxct.sportlottery.network.Constants.USER_BASIC_INFO_UPDATE
-import org.cxct.sportlottery.network.Constants.VALIDATE_USER
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
@@ -124,8 +123,6 @@ interface IndexService {
     @POST(FORGET_PASSWORD_VALIDATE_EMAIL)
     suspend fun validateEmailCode(@Body params: Map<String, String>): Response<NetResult>
 
-    @POST(VALIDATE_USER)
-    suspend fun checkValidateUser(@Body sendSmsRequest: ValidateUserRequest): Response<ValidateUserResult>
 
     /**
      * "account":"3vbekk",

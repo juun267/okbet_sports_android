@@ -6,8 +6,6 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.etBet
-import kotlinx.android.synthetic.main.view_bet_edit_text.view.etBetParlay
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ViewBetEditTextBinding
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -70,20 +68,20 @@ class BetEditText @JvmOverloads constructor(
 
         if (isParlay) {
             if (LoginRepository.isLogin.value == true) {
-                val etBetHasInput = !etBet.etBetParlay.text.isNullOrEmpty()
-                etBet.tvHintParlayDefault.isVisible = !etBetHasInput //僅輸入金額以後隱藏
+                val etBetHasInput = !etBetParlay.text.isNullOrEmpty()
+                tvHintParlayDefault.isVisible = !etBetHasInput //僅輸入金額以後隱藏
                 if (mHasBetClosed) {
-                    etBet.tvHintParlayDefault.text =
+                    tvHintParlayDefault.text =
                         LocalUtils.getString(R.string.str_market_is_closed)
                     if (etBetHasInput) {
-                        etBet.etBetParlay.setText("")
+                        etBetParlay.setText("")
                     }
                 } else {
                     //限額用整數提示
-                    etBet.tvHintParlayDefault.text = betHint
+                    tvHintParlayDefault.text = betHint
                 }
             } else {
-                etBet.tvHintParlayDefault.isVisible = false
+                tvHintParlayDefault.isVisible = false
             }
         } else {
             etBetParlay.hint = betHint

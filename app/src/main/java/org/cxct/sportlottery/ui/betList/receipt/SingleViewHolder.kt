@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
-import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
+import kotlinx.android.synthetic.main.view_match_receipt_bet_parlay.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone

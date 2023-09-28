@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.news
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
+import kotlinx.android.synthetic.main.include_home_news.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
@@ -51,7 +52,7 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
         }
     }
 
-    private fun initRecyclerView() = binding.includeNews.rvNews.run {
+    private fun initRecyclerView() = rvNews.run {
         layoutManager = setLinearLayoutManager()
         adapter = HomeNewsAdapter().apply {
             setOnItemClickListener { adapter, _, position ->
@@ -68,15 +69,13 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
         }
     }
     private fun initNews() {
-        binding.includeNews.apply {
-            tvCateName.text = getString(R.string.N912)
-            tvMore.gone()
+        tvCateName.text = getString(R.string.N912)
+        tvMore.gone()
 //            ivMore.gone()
-            tabNews.addOnTabSelectedListener(TabSelectedAdapter { tab, _ ->
-                categoryId = if (tab.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
-                viewModel.getPageNews(1, PAGE_SIZE, categoryId)
-            })
-        }
+        tabNews.addOnTabSelectedListener(TabSelectedAdapter { tab, _ ->
+            categoryId = if (tab.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
+            viewModel.getPageNews(1, PAGE_SIZE, categoryId)
+        })
         binding.tvShowMore.setOnClickListener {
             viewModel.getPageNews(currentPage + 1, PAGE_SIZE, categoryId)
         }
@@ -84,7 +83,7 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
     }
 
     private fun setupNews(pageNum: Int, newsList: List<NewsItem>) {
-        (binding.includeNews.rvNews.adapter as HomeNewsAdapter).apply {
+        (rvNews.adapter as HomeNewsAdapter).apply {
             if (pageNum > 1) {
                 addData(newsList)
             } else {
