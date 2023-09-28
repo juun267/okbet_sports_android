@@ -68,6 +68,7 @@
         <item>@string/recharge_channel_admin</item>
         <item>@string/betting_station_deposit</item>
         <item>@string/P183</item>
+        <item>@string/text_account_history_activity</item>
     </string-array>
 
     <string-array name="withdraw_state_array">

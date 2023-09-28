@@ -164,6 +164,9 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             getString(R.string.P183) -> {
                 StatusSheetData(RechType.BETTING_STATION_AGENT.type, it)
             }
+            getString(R.string.text_account_history_activity) -> {
+                StatusSheetData(RechType.ACTIVITY.type, it)
+            }
             //全部渠道类型
             else -> {
                 StatusSheetData(viewModel.allTag, it).apply { isChecked = true }

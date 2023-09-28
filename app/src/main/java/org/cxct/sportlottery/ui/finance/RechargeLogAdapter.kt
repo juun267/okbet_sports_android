@@ -32,6 +32,7 @@ class RechargeLogAdapter: BindingAdapter<Row, ViewItemRechargeLogBinding>() {
             RechType.PAYMAYA.type -> context.getString(R.string.recharge_channel_paymaya)
             RechType.BETTING_STATION.type -> context.getString(R.string.betting_station_deposit)
             RechType.BETTING_STATION_AGENT.type -> context.getString(R.string.P183)
+            RechType.ACTIVITY.type -> context.getString(R.string.text_account_history_activity)
             else -> ""
         }
 
