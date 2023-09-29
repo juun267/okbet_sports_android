@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.online_crypto_pay_fragment.tv_recharge_mon
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.tv_remark
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.txv_account
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.txv_currency
+import kotlinx.android.synthetic.main.online_crypto_pay_fragment.linMaintenance
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -104,14 +105,23 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
 
     private fun initObserve() {
         //充值個數訊息
-        viewModel.rechargeAccountMsg.observe(viewLifecycleOwner, {
+        viewModel.rechargeAccountMsg.observe(viewLifecycleOwner) {
             et_recharge_account.setError(it)
-        })
+        }
 
         //在線充值成功
-        viewModel.onlinePayCryptoResult.observe(this.viewLifecycleOwner, {
+        viewModel.onlinePayCryptoResult.observe(this.viewLifecycleOwner) {
             resetEvent()
-        })
+        }
+        viewModel.rechCheckMsg.observe(this.viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {
+                mSelectRechCfgs?.let {
+                    it.open = 2
+                    setupMoneyCfgMaintanince(it, btn_submit, linMaintenance)
+                }
+                showErrorPromptDialog(getString(R.string.prompt), it) {}
+            }
+        }
     }
 
     private fun initView() {
@@ -150,6 +160,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
             val payeeName = txv_account.text.toString()
             viewModel.rechargeOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, payee, payeeName)
         }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
 
         cv_currency.setOnClickListener {
             currencyBottomSheet.show()
@@ -297,7 +308,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
 
             //充值個數限制
             updateMoneyRange()
-
+            mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -18,8 +18,19 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
+import kotlinx.android.synthetic.main.crypto_pay_fragment.btn_submit
+import kotlinx.android.synthetic.main.crypto_pay_fragment.cv_account
+import kotlinx.android.synthetic.main.crypto_pay_fragment.cv_currency
+import kotlinx.android.synthetic.main.crypto_pay_fragment.linMaintenance
+import kotlinx.android.synthetic.main.crypto_pay_fragment.tv_fee_amount
+import kotlinx.android.synthetic.main.crypto_pay_fragment.tv_fee_rate
+import kotlinx.android.synthetic.main.crypto_pay_fragment.tv_rate
+import kotlinx.android.synthetic.main.crypto_pay_fragment.tv_recharge_money
+import kotlinx.android.synthetic.main.crypto_pay_fragment.txv_account
+import kotlinx.android.synthetic.main.crypto_pay_fragment.txv_currency
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
+import kotlinx.android.synthetic.main.online_crypto_pay_fragment.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -113,6 +124,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 )
             }
         }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
 
         //年月日的时间选择器
         ll_recharge_time.setOnClickListener {
@@ -556,7 +568,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
             //更新充值金額&手續費金額
             refreshMoneyDetail(et_recharge_amount.getText())
-
+            mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
         } catch (e: Exception) {
             e.printStackTrace()
         }

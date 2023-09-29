@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"
         tools:itemCount="3"
-        tools:listitem="@layout/item_game_categroy" />
+        tools:listitem="@layout/item_game_view_list" />
 
     <LinearLayout
         android:id="@+id/okLiveP3LayoutProvider"

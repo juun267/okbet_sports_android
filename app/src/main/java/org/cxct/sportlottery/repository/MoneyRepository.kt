@@ -15,5 +15,4 @@ object MoneyRepository {
     suspend fun rechargeAdd(moneyAddRequest: MoneyAddRequest): Response<MoneyAddResult> {
         return OneBoSportApi.moneyService.rechargeAdd(moneyAddRequest)
     }
-
 }

@@ -10,7 +10,7 @@ data class UwType(
     @Json(name = "name")
     val name: String?,
     @Json(name = "open")
-    val `open`: Int?,
+    val open: Int?,
     @Json(name = "sort")
     val sort: Int?,
     @Json(name = "channelMode")

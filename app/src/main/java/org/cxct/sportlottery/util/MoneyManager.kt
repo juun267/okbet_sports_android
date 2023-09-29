@@ -172,6 +172,7 @@ object MoneyManager {
             RechType.PAYMAYA.type -> theContext.getString(R.string.recharge_channel_paymaya)
             RechType.BETTING_STATION.type -> theContext.getString(R.string.betting_station_deposit)
             RechType.BETTING_STATION_AGENT.type -> theContext.getString(R.string.P183)
+            RechType.ACTIVITY.type -> theContext.getString(R.string.text_account_history_activity)
             else -> ""
         }
     }

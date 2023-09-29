@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -264,19 +263,6 @@ object Constants {
         ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
     }
 
-    //2023篮球世界杯内容h5地址
-    fun getWorldCupH5Url(context: Context,toolbarHeight:Int): String {
-        val base = getH5BaseUrl()
-//        val base = "https://172.15.60.159:3000/"
-        return base + "mobile/world-cup?device=android&token=${LoginRepository.token?:""}&lang=${getSelectLanguage(context).key}&oddsType=${getCurrentOddsTypeName()}&oddsDiscount=${UserInfoRepository.userInfo.value?.discount?:1.0}&toolbarHeight=$toolbarHeight"
-    }
-    //2023篮球世界杯活动h5地址
-    fun getWorldCupActivityH5Url(context: Context,toolbarHeight:Int): String {
-        val base = getH5BaseUrl()
-//        val base = "https://172.15.60.199:3000/"
-        return base + "mobile/BasketballWorldCupLottery?bkType=1&device=android&token=${LoginRepository.token?:""}&lang=${getSelectLanguage(context).key}&toolbarHeight=$toolbarHeight"
-    }
-
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
     //打印小票H5地址
     fun getPrintReceipt(
@@ -438,6 +424,7 @@ object Constants {
     const val USER_RECHARGE_ONLINE_PAY = "/api/front/userrech/onlinepay"
     const val USER_RECHARGE_LIST = "/api/front/userrech/list"
     const val USER_BILL_LIST = "/api/front/sportBill/query"
+    const val RECH_CHECK_STATUS = "/api/front/userrech/onlinepayAndroidAndIos"//充值前检查参数状态
 
 
     //user

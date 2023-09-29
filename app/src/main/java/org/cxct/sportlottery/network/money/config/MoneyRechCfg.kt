@@ -4,7 +4,11 @@ import androidx.annotation.Keep
 
 
 class MoneyRechCfg {
-    enum class Switch(val code: Int) { ON(1) }
+    enum class Switch(val code: Int) {
+        CLOSE(1) ,
+        OPEN(1) ,
+        MAINTAINCE(2)//维护中
+    }
 }
 
 /**

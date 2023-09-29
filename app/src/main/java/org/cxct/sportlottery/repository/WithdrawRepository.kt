@@ -8,6 +8,7 @@ import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
+import org.cxct.sportlottery.network.money.config.MoneyRechCfg
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.network.user.UserInfo
@@ -105,13 +106,13 @@ object WithdrawRepository {
             val withdrawConfig = response.body()?.rechCfg?.uwTypes
 
             val bankWithdrawSystemOperation =
-                withdrawConfig?.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN
+                withdrawConfig?.find { it.type == TransferType.BANK.type }?.open == MoneyRechCfg.Switch.OPEN.code
             val cryptoWithdrawSystemOperation =
-                withdrawConfig?.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
+                withdrawConfig?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.OPEN.code
             val eWalletWithdrawSystemOperation =
-                withdrawConfig?.find { it.type == TransferType.E_WALLET.type || it.type == TransferType.PAYMAYA.type }?.open.toString() == FLAG_OPEN
+                withdrawConfig?.find { it.type == TransferType.E_WALLET.type || it.type == TransferType.PAYMAYA.type }?.open == MoneyRechCfg.Switch.OPEN.code
             val statiomWithdrawSystemOperation =
-                withdrawConfig?.find { it.type == TransferType.STATION.type }?.open.toString() == FLAG_OPEN
+                withdrawConfig?.find { it.type == TransferType.STATION.type }?.open == MoneyRechCfg.Switch.OPEN.code
 
             mWithdrawOperation = SystemOperation(
                 bankWithdrawSystemOperation,
