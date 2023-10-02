@@ -56,7 +56,8 @@ class PicSelectorDialog : BaseDialogFragment() {
 
     //選擇相片
     private fun pickPhoto() {
-        if (activity == null) {
+        if (activity == null || mSelectListener == null) {
+            dismiss()
             return
         }
         PictureSelector.create(activity)
