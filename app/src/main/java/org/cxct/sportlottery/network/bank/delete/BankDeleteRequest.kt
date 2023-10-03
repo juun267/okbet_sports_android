@@ -5,5 +5,6 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 @KeepMembers
 data class BankDeleteRequest(
     val fundPwd: String,
-    val id: Long
+    val id: String,
+    val securityCode: String
 )

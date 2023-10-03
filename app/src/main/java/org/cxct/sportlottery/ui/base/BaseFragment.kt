@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.getKClass
 import org.cxct.sportlottery.net.flow.IUiView
@@ -29,6 +31,13 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : Visibilit
 
     val viewModel: T by sharedViewModel(clazz = clazz ?: getKClass(0) as KClass<T>)
     var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (BuildConfig.DEBUG) {
+            Log.e("For Test", "======>>> BaseFragment ${this::class.java.name}")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
