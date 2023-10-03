@@ -1557,4 +1557,6 @@
     <string name="P189">温馨提示：真实姓名需要与提交的证件信息一致。</string>
     <string name="N280">格式不符</string>
     <string name="P215">持卡人姓名必须与注册真实姓名一致。如有任何问题，请联系在线客服。</string>
+    <string name="P218">短信验证码</string>
+    <string name="P219">请输入验证码</string>
 </resources>
