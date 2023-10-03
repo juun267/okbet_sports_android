@@ -401,6 +401,7 @@
                     android:layout_marginEnd="@dimen/margin_16"
                     app:endIcon="@drawable/ic_eye_close"
                     app:isResponsiveIconColor="false"
+                    app:hintText="@string/hint_please_enter_withdraw_password"
                     app:labelText="@string/withdraw_password"
                     app:labelTextStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -413,7 +414,6 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
                         android:inputType="textPassword"
-                        android:hint="@string/hint_please_enter_withdraw_password"
                         android:maxLines="1"
                         android:textColor="@color/color_FFFFFF_DE000000"
                         android:textSize="@dimen/textSize14sp" />
