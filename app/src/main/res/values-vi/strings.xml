@@ -1501,4 +1501,6 @@
     <string name="P189">Nhắc nhở: Họ và tên cần khớp với giấy tờ đã xác minh</string>
     <string name="N280">Định dạng không phù hợp</string>
     <string name="P215">Tên chủ thẻ phải trùng với  họ và tên đã đăng ký. Nếu có thắc mắc, vui lòng liên hệ CSKH online.</string>
+    <string name="P218">Tin nhắn mã OTP</string>
+    <string name="P219">Vui lòng nhập mã OTP</string>
 </resources>

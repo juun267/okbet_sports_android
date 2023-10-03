@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.ItemListviewBankCardBinding
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.config.*
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
@@ -181,6 +183,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             verifyCodeDialog.show(childFragmentManager, null)
         }
 
+
+        block_sms_valid_code.isVisible = StaticData.isNeedOTPBank()
         eet_sms_code.checkRegisterListener {
             val msg = when {
                 it.isNullOrBlank() -> getString(R.string.error_input_empty)
@@ -587,27 +591,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         }
 
-        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner) {
-            val result = it.second
-            if (result.success) {
-                EventBusUtil.post(BankCardChangeEvent())
-                val promptMessage = when (transferType) {
-                    TransferType.BANK -> getString(R.string.text_bank_card_delete_success)
-                    TransferType.CRYPTO -> getString(R.string.text_crypto_delete_success)
-                    TransferType.E_WALLET -> getString(R.string.text_e_wallet_delete_success)
-                    TransferType.PAYMAYA -> getString(R.string.text_pay_maya_delete_success)
-                    TransferType.STATION -> getString(R.string.text_e_wallet_delete_success)
-                }
-                showPromptDialog(
-                    getString(R.string.prompt),
-                    promptMessage
-                ) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
-            } else {
-                showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
-            }
-        }
-
-        //錯誤訊息
         //開戶名
         viewModel.createNameErrorMsg.observe(
             this.viewLifecycleOwner
@@ -649,7 +632,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         viewModel.submitEnable.observe(this.viewLifecycleOwner) {
-            updateButtonStatus(it && eet_sms_code.text.length == 4)
+            updateButtonStatus(it && (!StaticData.isNeedOTPBank() || eet_sms_code.text.length == 4))
         }
 
         viewModel.onEmsCodeSended.observe(this) {

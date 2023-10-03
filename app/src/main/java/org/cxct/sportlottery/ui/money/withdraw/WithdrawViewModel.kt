@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -74,9 +75,9 @@ class WithdrawViewModel(
         get() = _bankAddResult
     private var _bankAddResult = MutableLiveData<NetResult>()
 
-    val bankDeleteResult: LiveData<Pair<String, NetResult>>
+    val bankDeleteResult: LiveData<Pair<String, NetResult>?>
         get() = _bankDeleteResult
-    private var _bankDeleteResult = SingleLiveEvent<Pair<String, NetResult>>()
+    private var _bankDeleteResult = MutableLiveData<Pair<String, NetResult>?>()
 
     val withdrawAddResult: LiveData<WithdrawAddResult>
         get() = _withdrawAddResult
@@ -466,20 +467,18 @@ class WithdrawViewModel(
     }
 
     fun deleteBankCard(id: String, fundPwd: String, code: String) {
-        checkInputBankCardDeleteData(fundPwd)
-        if (checkBankCardDeleteData()) {
-            loading()
-            viewModelScope.launch {
-                doNetwork(androidContext) {
-                    OneBoSportApi.bankService.bankDelete(
-                        BankDeleteRequest(MD5Util.MD5Encode(fundPwd), id, code)
-                    )
-                }?.let { result ->
-                    _bankDeleteResult.value = Pair(id, result)
-                }
-
-                hideLoading()
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.bankService.bankDelete(
+                    BankDeleteRequest(MD5Util.MD5Encode(fundPwd), id, code)
+                )
+            }?.let { result ->
+                Log.e("For Test", "======>>> deleteBankCard 1111")
+                _bankDeleteResult.postValue(Pair(id, result))
+                Log.e("For Test", "======>>> deleteBankCard 2222 ${_bankDeleteResult}")
             }
+            Log.e("For Test", "======>>> deleteBankCard 3333")
+            hideLoading()
         }
     }
 
@@ -541,7 +540,7 @@ class WithdrawViewModel(
 
     fun clearBankCardFragmentStatus() {
         //若不清除下一次進入編輯銀行卡頁面時會直接觸發觀察判定編輯成功
-        _bankDeleteResult = SingleLiveEvent()
+        _bankDeleteResult.postValue(null)
         _bankAddResult = MutableLiveData()
         _createNameErrorMsg = MutableLiveData()
         _bankCardNumberMsg = MutableLiveData()
