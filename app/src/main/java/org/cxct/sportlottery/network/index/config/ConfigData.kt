@@ -147,7 +147,9 @@ data class ConfigData(
     var auditFailureRestrictsWithdrawalsSwitch:Int?,//提款额度大于打码量的时候直接拒绝提款
     var noLoginWitchVideoOrAnimation: Int? ,//未登陆观看视频/动画 0-关闭 1-启用
     var homeGamesList:List<HomeGameBean>?,  //首页场馆排序
-    var jackpotSwitch:Int=0  //okgame 奖池 0-关闭 1-开启
+    var jackpotSwitch:Int=0,  //okgame 奖池 0-关闭 1-开启
+    val isNeedOTPBank: Int = 0, // 添加删除编辑 银行卡时 是否需要验证码 0-否 1-是
+
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

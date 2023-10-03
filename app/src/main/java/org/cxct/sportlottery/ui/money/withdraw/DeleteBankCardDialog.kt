@@ -7,9 +7,11 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogDeleteBankcardBinding
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.util.CountDownUtil
@@ -74,6 +76,7 @@ class DeleteBankCardDialog(private val phoneNo: String,
 
 
     private fun initPassWordInputStyle() {
+        binding.blockSmsValidCode.isVisible = StaticData.isNeedOTPBank()
         val fieldBoxes = binding.etWithdrawalPassword
         val editText = binding.eetWithdrawalPassword
         fieldBoxes.endIconImageButton.setOnClickListener {
@@ -92,31 +95,30 @@ class DeleteBankCardDialog(private val phoneNo: String,
     private fun initEditTextObserver() = binding.run {
         eetWithdrawalPassword.checkRegisterListener {
             resetConfirmEnable()
+//            etWithdrawalPassword.setError(getErrorMsg(it.length), false)
             if (it.length == 4) {
                 btnSend.setBtnEnable(!countDownGoing)
-//                etWithdrawalPassword.setError(null, false)
             } else {
                 btnSend.setBtnEnable(false)
-//                etWithdrawalPassword.setError(
-//                    getString(R.string.hint_please_enter_withdraw_password),
-//                    false
-//                )
             }
         }
 
         eetSmsCode.checkRegisterListener {
             resetConfirmEnable()
-//            if (it.length == 4) {
-//                etSmsValidCode.setError(null, false)
-//            } else {
-//                etSmsValidCode.setError(getString(R.string.hint_verification_code_by_sms), false)
-//            }
+//            etSmsValidCode.setError(getErrorMsg(it.length), false)
         }
     }
 
+    private fun getErrorMsg(length: Int): String? {
+        return if (length == 0) {
+            getString(R.string.error_input_empty)
+        } else {
+            null
+        }
+    }
 
     private fun resetConfirmEnable() = binding.run {
-        tvConfirm.isEnabled = eetWithdrawalPassword.text.toString().length == 4 && eetSmsCode.text.toString().length == 4
+//        tvConfirm.isEnabled = eetWithdrawalPassword.text.toString().length == 4 && (!StaticData.isNeedOTPBank() || eetSmsCode.text.toString().length == 4)
     }
 
     private fun setUpBtn() = binding.run {
@@ -132,9 +134,27 @@ class DeleteBankCardDialog(private val phoneNo: String,
         }
 
         tvConfirm.setOnClickListener {
-            dismiss()
             val pwd = eetWithdrawalPassword.text.toString()
             val code = eetSmsCode.text.toString()
+            if (pwd.isEmpty()) {
+                ToastUtil.showToast(it.context, getString(R.string.hint_please_enter_withdraw_password))
+                return@setOnClickListener
+            }
+            if (pwd.length != 4) {
+                ToastUtil.showToast(it.context, getString(R.string.error_withdraw_password))
+                return@setOnClickListener
+            }
+
+            if (pwd.isEmpty()) {
+                ToastUtil.showToast(it.context, getString(R.string.P218))
+                return@setOnClickListener
+            }
+            if (pwd.length != 4) {
+                ToastUtil.showToast(it.context, getString(R.string.sms_code_length_error))
+                return@setOnClickListener
+            }
+
+            dismiss()
             onResult(pwd, code)
         }
     }

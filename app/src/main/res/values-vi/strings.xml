@@ -1503,4 +1503,6 @@
     <string name="P212">CK vào số dư TK</string>
     <string name="P215">Tên chủ thẻ phải trùng với  họ và tên đã đăng ký. Nếu có thắc mắc, vui lòng liên hệ CSKH online.</string>
     <string name="P216">Đổi mã nạp tiền</string>
+    <string name="P218">Tin nhắn mã OTP</string>
+    <string name="P219">Vui lòng nhập mã OTP</string>
 </resources>
