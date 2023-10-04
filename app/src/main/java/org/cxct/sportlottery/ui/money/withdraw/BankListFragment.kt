@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.money.withdraw
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -112,12 +113,12 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
            tv_unbind_bank_card.text = getString(R.string.bank_list_not_bink, cardTypeTitle)
            tv_add_money_card_type.text =
                getString(R.string.add_credit_or_virtual, cardTypeTitle)
-           tv_money_card_type.text =
-               getString(R.string.my_bank_card, cardTypeTitle, viewModel.numberOfBankCard.value)
+            updateCardNumbers("${viewModel.numberOfBankCard.value}")
+
         })
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer { bankCardList ->
             mBankListAdapter.setNewInstance(bankCardList?.toMutableList())
-            tv_no_bank_card.isVisible = bankCardList.isNullOrEmpty()
+
             viewModel.checkBankCardCount()
             if (bankCardList.isNullOrEmpty()){
                 tv_unbind_bank_card.visibility = View.VISIBLE
@@ -126,9 +127,9 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         })
         //银行卡数量
-        viewModel.numberOfBankCard.observe(this.viewLifecycleOwner,Observer{
-            tv_money_card_type.text = getString(R.string.my_bank_card, cardTypeTitle, it)
-        })
+        viewModel.numberOfBankCard.observe(this.viewLifecycleOwner) {
+            updateCardNumbers(it)
+        }
         cv_add_bank.setOnClickListener{
             val addSwitch=viewModel.addMoneyCardSwitch.value
             var transferType =when{
@@ -145,10 +146,12 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         viewModel.bankDeleteResult.observe(this.viewLifecycleOwner) {
-            val result = it.second
-            ToastUtil.showToast(context, result.msg)
+            val result = it?.second ?: return@observe
             if (result.success) {
-                mBankListAdapter.removeCard(it.first.toString())
+                mBankListAdapter.removeCard(it.first)
+                showPromptDialog(message = getString(R.string.text_bank_card_delete_success), buttonText = null, isShowDivider = false,) { }
+            } else {
+                showErrorPromptDialog(title = getString(R.string.prompt), message = result.msg, hasCancel = false) { }
             }
         }
     }
@@ -156,5 +159,9 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupRecyclerView(view: View) {
         view.rv_bank_list.setLinearLayoutManager()
         view.rv_bank_list.adapter = mBankListAdapter
+    }
+
+    private fun updateCardNumbers(number: String) {
+        tv_money_card_type.text = getString(R.string.my_bank_card, cardTypeTitle, number)
     }
 }

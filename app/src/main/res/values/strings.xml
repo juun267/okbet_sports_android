@@ -1635,5 +1635,7 @@
     <string name="P212">Transfer To Account Balance</string>
     <string name="P215">The Cardholder\'s Name should match your registered full name. If you have any questions, please contact our Customer Service.</string>
     <string name="P216">Redeem Code Deposit</string>
+    <string name="P218">OTP verification code</string>
+    <string name="P219">Please enter the verification code</string>
 
 </resources>

@@ -37,7 +37,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="17dp"
                 app:endIcon="@drawable/ic_eye_close"
-                app:hintText="@string/hint_please_enter_withdraw_password"
                 app:isResponsiveIconColor="false"
                 app:labelText="@string/withdraw_password"
                 app:labelTextStyle="normal"
@@ -53,11 +52,13 @@
                     android:gravity="bottom"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
+                    android:hint="@string/hint_please_enter_withdraw_password"
                     android:maxEms="4"
                     android:maxLength="4"
                     android:maxLines="1"
                     android:textColor="@color/color_FFFFFF_DE000000"
-                    android:textSize="@dimen/textSize14sp" />
+                    android:textColorHint="@color/color_C9CFD7"
+                    android:textSize="@dimen/textSize12sp" />
 
             </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
 
@@ -79,9 +80,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_2"
                     android:layout_marginEnd="10dp"
-                    app:hintText="@string/verification_code"
                     app:isResponsiveIconColor="false"
-                    app:labelText="@string/verification_code"
+                    app:labelText="@string/P218"
                     app:labelTextStyle="normal"
                     app:layout_constraintRight_toLeftOf="@+id/btnSend"
                     app:layout_constraintStart_toStartOf="parent"
@@ -94,19 +94,20 @@
                         android:layout_height="match_parent"
                         android:imeOptions="actionNext"
                         android:inputType="number"
+                        android:hint="@string/P219"
                         android:maxEms="4"
                         android:maxLength="4"
                         android:maxLines="1"
                         android:textColor="@color/color_FFFFFF_DE000000"
                         android:textColorHint="@color/color_C9CFD7"
-                        android:textSize="@dimen/textSize14sp" />
+                        android:textSize="@dimen/textSize12sp" />
                 </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
 
                 <Button
                     android:id="@+id/btnSend"
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="13dp"
                     android:background="@drawable/btn_send_sms"
                     android:text="@string/send"
                     android:textAllCaps="false"
