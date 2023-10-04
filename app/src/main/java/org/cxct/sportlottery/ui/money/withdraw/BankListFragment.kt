@@ -113,8 +113,8 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
            tv_unbind_bank_card.text = getString(R.string.bank_list_not_bink, cardTypeTitle)
            tv_add_money_card_type.text =
                getString(R.string.add_credit_or_virtual, cardTypeTitle)
-           tv_money_card_type.text =
-               getString(R.string.my_bank_card, cardTypeTitle, viewModel.numberOfBankCard.value)
+            updateCardNumbers("${viewModel.numberOfBankCard.value}")
+
         })
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer { bankCardList ->
             mBankListAdapter.setNewInstance(bankCardList?.toMutableList())
@@ -127,9 +127,9 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         })
         //银行卡数量
-        viewModel.numberOfBankCard.observe(this.viewLifecycleOwner,Observer{
-            tv_money_card_type.text = getString(R.string.my_bank_card, cardTypeTitle, it)
-        })
+        viewModel.numberOfBankCard.observe(this.viewLifecycleOwner) {
+            updateCardNumbers(it)
+        }
         cv_add_bank.setOnClickListener{
             val addSwitch=viewModel.addMoneyCardSwitch.value
             var transferType =when{
@@ -159,5 +159,9 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupRecyclerView(view: View) {
         view.rv_bank_list.setLinearLayoutManager()
         view.rv_bank_list.adapter = mBankListAdapter
+    }
+
+    private fun updateCardNumbers(number: String) {
+        tv_money_card_type.text = getString(R.string.my_bank_card, cardTypeTitle, number)
     }
 }
