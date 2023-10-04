@@ -23,6 +23,7 @@ data class MatchResultData(
 enum class ListType {
     TITLE,
     MATCH,
+    MATCH_FT,
     DETAIL,
     FIRST_ITEM_FT, //足球
     FIRST_ITEM_BK, //籃球

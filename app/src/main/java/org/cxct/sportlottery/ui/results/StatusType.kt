@@ -14,4 +14,8 @@ object StatusType {
     const val FOURTH_PLAT = 11 //第四盤
     const val FIFTH_PLAT = 12 //第五盤
     const val END_GAME = 100 //完賽 = 賽果)
+    const val OPT_BK = 40 // 篮球加时
+    const val OPT_OPT_1 = 106 // 足球-加时赛||上半场
+    const val OPT_OPT_2 = 107 // 足球-加时赛||下半场
+    const val PSO = 120 // 足球-点球决胜后
 }
