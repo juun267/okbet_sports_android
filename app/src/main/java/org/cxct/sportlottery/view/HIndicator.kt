@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import android.widget.HorizontalScrollView
 import androidx.annotation.ColorInt
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
@@ -108,6 +109,20 @@ class HIndicator @JvmOverloads constructor(
 
 //            this@HIndicator.isVisible = ratio < 1f // 需要requestLayout(), 不然在recyclervie中有可能显示不出来
             this@HIndicator.isInvisible = ratio >= 1f
+
+        }
+    }
+
+    fun binHorizontalScrollView(horizontalScrollView: HorizontalScrollView) {
+        horizontalScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            val maxWidth = horizontalScrollView.getChildAt(0).measuredWidth
+            val width = horizontalScrollView.measuredWidth
+            val maxScroll = maxWidth - width
+            if (maxWidth == 0 || width == 0 || maxScroll <= 0) {
+                return@setOnScrollChangeListener
+            }
+
+            progress = scrollX.toFloat() / maxScroll      //设置滚动距离所占比例
 
         }
     }
