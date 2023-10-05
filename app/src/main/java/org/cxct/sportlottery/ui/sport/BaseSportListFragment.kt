@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
+import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
@@ -284,7 +285,8 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected fun setSportDataList(list: MutableList<BaseNode>?, sizeNumber: String? = null) {
         val adapter = getGameListAdapter()
-        if(list.isNullOrEmpty()){
+        // 这个方法是最终显示数据的，已经处于数据结果状态。在这显示loading的时机不对，暂且先就这么处理，后面在优化
+        if(list.isNullOrEmpty() && this !is FavoriteFragment2) {
             showLoading()
         }
         adapter.setNewInstance(list)

@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.sport.favorite
 import android.util.Log
 import android.view.View
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
