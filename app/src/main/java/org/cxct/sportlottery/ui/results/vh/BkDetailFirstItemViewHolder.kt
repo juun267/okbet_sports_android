@@ -72,7 +72,7 @@ class BkDetailFirstItemViewHolder(viewGroup: ViewGroup,
         } else {
             setViewVisible(tvOpt, vHomeOpt, tvHomeOpt, vAwayOpt, tvAwayOpt)
             tvHomeOpt.text = optSection.homeScore?.toString() ?: ""
-            tvAwayOpt.text = optSection.homeScore?.toString() ?: ""
+            tvAwayOpt.text = optSection.awayScore?.toString() ?: ""
         }
 
     }
