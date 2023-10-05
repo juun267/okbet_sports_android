@@ -567,7 +567,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         if (select) {
             lin_withdraw.visibility = View.GONE
             fl_bet_station.visibility = View.VISIBLE
-            if (betStationFragment != null) {
+            if (!::betStationFragment.isInitialized) {
                 betStationFragment = BetStationFragment()
             }
             if (betStationFragment.isAdded) {

@@ -11,6 +11,7 @@ import android.os.Environment
 import android.text.Html
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.method.HideReturnsTransformationMethod
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -62,6 +63,8 @@ import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
+import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
+import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
 import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 import org.cxct.sportlottery.view.dialog.TrialGameDialog
@@ -1139,4 +1142,17 @@ fun setupMoneyCfgMaintanince(rechfg: RechCfg, submitBtn: Button, linMaintaince: 
         linMaintaince.linMaintenanceTip.isVisible = !rechfg?.frontDeskRemark.isNullOrEmpty()
         linMaintaince.tvTipsContent.text = rechfg.frontDeskRemark
     }
+}
+
+fun resetInputTransformationMethod(fieldBox: LoginFormFieldView, editText: EditText) {
+    if (fieldBox.endIconResourceId == R.drawable.ic_eye_open) {
+        editText.transformationMethod = AsteriskPasswordTransformationMethod()
+        fieldBox.setEndIcon(R.drawable.ic_eye_close)
+    } else {
+        fieldBox.setEndIcon(R.drawable.ic_eye_open)
+        editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+    }
+
+    fieldBox.hasFocus = true
+    editText.setSelection(editText.text.toString().length)
 }

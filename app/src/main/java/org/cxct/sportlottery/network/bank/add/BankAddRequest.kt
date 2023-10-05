@@ -12,5 +12,6 @@ data class BankAddRequest(
     val id: String? = null,
     val uwType: String,
     val userId: String? = null,
-    val bankCode: String? = null
+    val bankCode: String? = null,
+    val securityCode: String,
 )

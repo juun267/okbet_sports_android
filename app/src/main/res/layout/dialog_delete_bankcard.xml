@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginHorizontal="20dp"
+    android:background="@color/white"
+    app:cardCornerRadius="10dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="17dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:gravity="center_horizontal"
+                android:text="@string/chat_hint"
+                android:textColor="@color/color_0D2245"
+                android:textSize="@dimen/textSize20sp"
+                android:textStyle="bold" />
+
+
+            <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                android:id="@+id/et_withdrawal_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="17dp"
+                app:endIcon="@drawable/ic_eye_close"
+                app:isResponsiveIconColor="false"
+                app:labelText="@string/withdraw_password"
+                app:labelTextStyle="normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:primaryColor="@color/color_AFAFB1">
+
+                <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                    android:id="@+id/eet_withdrawal_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:hint="@string/hint_please_enter_withdraw_password"
+                    android:maxEms="4"
+                    android:maxLength="4"
+                    android:maxLines="1"
+                    android:textColor="@color/color_FFFFFF_DE000000"
+                    android:textColorHint="@color/color_C9CFD7"
+                    android:textSize="@dimen/textSize12sp" />
+
+            </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/block_sms_valid_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="15dp"
+                android:elevation="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/et_sms_valid_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_2"
+                    android:layout_marginEnd="10dp"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/P218"
+                    app:labelTextStyle="normal"
+                    app:layout_constraintRight_toLeftOf="@+id/btnSend"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eet_sms_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="100dp"
+                        android:ellipsize="end"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:hint="@string/P219"
+                        android:maxEms="4"
+                        android:maxLength="4"
+                        android:maxLines="1"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textColorHint="@color/color_C9CFD7"
+                        android:textSize="@dimen/textSize12sp" />
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+                <Button
+                    android:id="@+id/btnSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="13dp"
+                    android:background="@drawable/btn_send_sms"
+                    android:text="@string/send"
+                    android:textAllCaps="false"
+                    android:textColor="@color/color_2b2b2b_ffffff"
+                    android:textSize="@dimen/textSize14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_sms_valid_code"
+                    app:layout_constraintTop_toTopOf="@+id/et_sms_valid_code" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="17dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_e3e8ee" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvCancel"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/D037"
+                    android:textColor="@color/color_C9CFD7"
+                    android:textSize="@dimen/textSize16sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_e3e8ee" />
+
+                <TextView
+                    android:id="@+id/tvConfirm"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/btn_sure"
+                    android:textColor="@color/color_025BE8"
+                    android:textSize="@dimen/textSize16sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</androidx.cardview.widget.CardView>

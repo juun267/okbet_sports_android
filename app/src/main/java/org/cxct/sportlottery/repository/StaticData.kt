@@ -133,6 +133,8 @@ class StaticData {
             return true
         }
 
+        fun isNeedOTPBank() = 1 == sConfigData?.isNeedOTPBank
+
     }
 
 }

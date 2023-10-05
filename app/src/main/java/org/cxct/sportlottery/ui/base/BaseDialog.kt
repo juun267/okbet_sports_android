@@ -13,12 +13,16 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : BaseDialogFragment(
     val viewModel: T by sharedViewModel(clazz = clazz)
 
     init {
-        setStyle(STYLE_NO_TITLE, R.style.MyDialogStyle)
+        setDefaulStyle()
+    }
+
+    protected open fun setDefaulStyle() {
+        setStyle(STYLE_NO_TITLE, R.style.AppTheme)
     }
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) //預設鍵盤不要開啟
+//        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) //預設鍵盤不要開啟
     }
 
     protected fun setStyle(style: Int) {

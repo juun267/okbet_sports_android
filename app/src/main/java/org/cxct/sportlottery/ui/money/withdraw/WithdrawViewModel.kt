@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -19,6 +20,7 @@ import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bettingStation.AreaAll
 import org.cxct.sportlottery.network.bettingStation.BettingStation
+import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
@@ -73,9 +75,9 @@ class WithdrawViewModel(
         get() = _bankAddResult
     private var _bankAddResult = MutableLiveData<NetResult>()
 
-    val bankDeleteResult: LiveData<NetResult>
+    val bankDeleteResult: LiveData<Pair<String, NetResult>?>
         get() = _bankDeleteResult
-    private var _bankDeleteResult = MutableLiveData<NetResult>()
+    private var _bankDeleteResult = MutableLiveData<Pair<String, NetResult>?>()
 
     val withdrawAddResult: LiveData<WithdrawAddResult>
         get() = _withdrawAddResult
@@ -214,6 +216,7 @@ class WithdrawViewModel(
 
     var uwCheckData: UwCheckData?=null
 
+    val onEmsCodeSended = SingleLiveEvent<NetResult?>()
 
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
@@ -316,7 +319,7 @@ class WithdrawViewModel(
                     })
                 }
                 _bankCardList.value = cardList
-                _numberOfBankCard.value = "(${result.bankCardList?.size ?: 0})"
+                _numberOfBankCard.value = "${result.bankCardList?.size ?: 0}"
                 hideLoading()
             }
         }
@@ -365,6 +368,7 @@ class WithdrawViewModel(
     }
 
     fun addBankCard(
+        securityCode: String,
         bankName: String,
         subAddress: String? = null,
         cardNo: String,
@@ -380,6 +384,7 @@ class WithdrawViewModel(
                     val userId = userInfoRepository.userInfo?.value?.userId.toString()
                     OneBoSportApi.bankService.bankAdd(
                         createBankAddRequest(
+                            securityCode,
                             bankName,
                             subAddress,
                             cardNo,
@@ -393,8 +398,8 @@ class WithdrawViewModel(
                     )
                 }?.let { result ->
                     _bankAddResult.value = result
-                    hideLoading()
                 }
+                hideLoading()
             }
         }
     }
@@ -436,6 +441,7 @@ class WithdrawViewModel(
     }
 
     private fun createBankAddRequest(
+        securityCode: String,
         bankName: String,
         subAddress: String?,
         cardNo: String,
@@ -455,36 +461,29 @@ class WithdrawViewModel(
             id = id,
             userId = userId,
             uwType = uwType,
-            bankCode = bankCode
+            bankCode = bankCode,
+            securityCode = securityCode
         )
     }
 
-    fun deleteBankCard(id: Long, fundPwd: String) {
-        checkInputBankCardDeleteData(fundPwd)
-        if (checkBankCardDeleteData()) {
-            loading()
-            viewModelScope.launch {
-                doNetwork(androidContext) {
-                    OneBoSportApi.bankService.bankDelete(
-                        createBankDeleteRequest(
-                            id,
-                            MD5Util.MD5Encode(fundPwd)
-                        )
-                    )
-                }?.let { result ->
-                    _bankDeleteResult.value = result
-                    hideLoading()
-                }
+    fun deleteBankCard(id: String, fundPwd: String, code: String) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.bankService.bankDelete(
+                    BankDeleteRequest(MD5Util.MD5Encode(fundPwd), id, code)
+                )
+            }?.let { result ->
+                Log.e("For Test", "======>>> deleteBankCard 1111")
+                _bankDeleteResult.postValue(Pair(id, result))
+                Log.e("For Test", "======>>> deleteBankCard 2222 ${_bankDeleteResult}")
             }
+            Log.e("For Test", "======>>> deleteBankCard 3333")
+            hideLoading()
         }
     }
 
     private fun checkInputBankCardDeleteData(fundPwd: String) {
         checkWithdrawPassword(fundPwd)
-    }
-
-    private fun createBankDeleteRequest(id: Long, fundPwd: String): BankDeleteRequest {
-        return BankDeleteRequest(id = id, fundPwd = fundPwd)
     }
 
     fun getMoneyConfigs() {
@@ -541,7 +540,7 @@ class WithdrawViewModel(
 
     fun clearBankCardFragmentStatus() {
         //若不清除下一次進入編輯銀行卡頁面時會直接觸發觀察判定編輯成功
-        _bankDeleteResult = MutableLiveData()
+        _bankDeleteResult.postValue(null)
         _bankAddResult = MutableLiveData()
         _createNameErrorMsg = MutableLiveData()
         _bankCardNumberMsg = MutableLiveData()
@@ -703,7 +702,7 @@ class WithdrawViewModel(
         checkInputCompleteByWithdraw()
     }
 
-    private fun checkInputCompleteByAddBankCard(){
+    fun checkInputCompleteByAddBankCard(){
         var buttonEnableStatus = false
         when (curTransferType) {
             TransferType.BANK -> {
@@ -1167,5 +1166,13 @@ class WithdrawViewModel(
         }
         onConfirm.invoke()
         return null
+    }
+
+    fun senEmsCode(phoneNo: String, validCodeIdentity: String, validCode: String) {
+        val params = LoginCodeRequest(phoneNo, validCodeIdentity, validCode)
+        doRequest(androidContext, { OneBoSportApi.indexService.loginOrRegSendValidCode(params)}) {
+            onEmsCodeSended.value = it
+        }
+
     }
 }

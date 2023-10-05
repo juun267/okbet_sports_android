@@ -1478,5 +1478,7 @@
     <string name="P215">Ang pangalan ng cardholder ay dapat tumugma sa iyong rehistradong buong pangalan. Kung mayroon kang anumang mga katanungan, mangyaring makipag-ugnayan sa aming Customer Service.</string>
     <string name="text_account_history_activity">Presyo ng Aktibidad</string>
     <string name="P216">I-redeem ang Code Deposit</string>
+    <string name="P218">OTP verification code</string>
+    <string name="P219">Pakilagay ang code</string>
 </resources>
 

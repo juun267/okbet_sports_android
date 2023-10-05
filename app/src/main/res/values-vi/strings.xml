@@ -429,7 +429,7 @@
     <string name="error_withdraw_password">Mật khẩu bạn nhập không đúng</string>
     <string name="error_withdraw_password_for_new">Mật khẩu phải kết hợp 4 chữ số</string> <!--J170-->
     <string name="error_wallet_address">Địa chỉ bạn đăng nhập không hợp lệ</string>
-    <string name="text_bank_card_delete_success">Đã xóa thẻ ngân hàng thành công</string>
+    <string name="text_bank_card_delete_success">Xóa thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_delete_success">Đã xóa eWallet thành công</string>
     <string name="text_pay_maya_delete_success">Xoá PayMaya thành công</string>
     <string name="text_crypto_delete_success">Đã xóa tiền ảo thành công</string>
@@ -1502,4 +1502,6 @@
     <string name="N280">Định dạng không phù hợp</string>
     <string name="P215">Tên chủ thẻ phải trùng với  họ và tên đã đăng ký. Nếu có thắc mắc, vui lòng liên hệ CSKH online.</string>
     <string name="P216">Đổi mã nạp tiền</string>
+    <string name="P218">Tin nhắn mã OTP</string>
+    <string name="P219">Vui lòng nhập mã OTP</string>
 </resources>
