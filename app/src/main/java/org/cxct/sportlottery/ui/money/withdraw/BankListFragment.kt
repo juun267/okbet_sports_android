@@ -15,6 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.extentions.toLongS
+import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.PAYMAYA
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.UserInfoRepository
@@ -148,8 +149,9 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.bankDeleteResult.observe(this.viewLifecycleOwner) {
             val result = it?.second ?: return@observe
             if (result.success) {
-                mBankListAdapter.removeCard(it.first)
-                showPromptDialog(message = getString(R.string.text_bank_card_delete_success), buttonText = null, isShowDivider = false,) { }
+                val bankCardList = mBankListAdapter.removeCard(it.first)
+                updateCardNumbers(mBankListAdapter.dataCount().toString())
+                showPromptDialog(message = getDeleteInfo(bankCardList), buttonText = null, isShowDivider = false,) { }
             } else {
                 showErrorPromptDialog(title = getString(R.string.prompt), message = result.msg, hasCancel = false) { }
             }
@@ -162,6 +164,15 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun updateCardNumbers(number: String) {
-        tv_money_card_type.text = getString(R.string.my_bank_card, cardTypeTitle, number)
+        tv_money_card_type.text = getString(R.string.my_bank_card, cardTypeTitle, "($number)")
+    }
+
+    private fun getDeleteInfo(bankCardList: BankCardList?): String {
+        return when (bankCardList?.transferType?.type) {
+            TransferType.CRYPTO.type -> getString(R.string.text_crypto_delete_success)
+            TransferType.E_WALLET.type -> getString(R.string.text_e_wallet_delete_success)
+            TransferType.PAYMAYA.type -> getString(R.string.text_pay_maya_delete_success)
+            else -> getString(R.string.text_bank_card_delete_success)
+        }
     }
 }
