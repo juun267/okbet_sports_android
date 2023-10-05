@@ -128,8 +128,11 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
 
                         DownloadUtil.get().download(photoUrl,file.path ,object : DownloadUtil.OnDownloadListener{
                             override fun onDownloadSuccess(filePath:String) {
+                                val act = activity ?: return
+
+
                                 //保存图片后发送广播通知更新数据库
-                                MediaScannerConnection.scanFile(context, arrayOf(filePath), null,
+                                MediaScannerConnection.scanFile(act, arrayOf(filePath), null,
                                     object : MediaScannerConnection.MediaScannerConnectionClient {
                                         override fun onScanCompleted(path: String?, uri: Uri?) {
                                         }
@@ -139,10 +142,11 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
                                     }
                                 )
 
-                                activity?.runOnUiThread {
+
+                                act.runOnUiThread {
                                     showPromptDialog(
                                         title = null,
-                                        message = requireContext().getString(R.string.chat_photo_download_done),
+                                        message = act.getString(R.string.chat_photo_download_done),
                                         buttonText = null,
                                         isShowDivider = false
                                     ) {}
