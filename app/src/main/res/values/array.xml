@@ -69,6 +69,7 @@
         <item>@string/betting_station_deposit</item>
         <item>@string/P183</item>
         <item>@string/text_account_history_activity</item>
+        <item>@string/P216</item>
     </string-array>
 
     <string-array name="withdraw_state_array">
