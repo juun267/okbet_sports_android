@@ -429,7 +429,7 @@
     <string name="error_withdraw_password">Mật khẩu bạn nhập không đúng</string>
     <string name="error_withdraw_password_for_new">Mật khẩu phải kết hợp 4 chữ số</string> <!--J170-->
     <string name="error_wallet_address">Địa chỉ bạn đăng nhập không hợp lệ</string>
-    <string name="text_bank_card_delete_success">Đã xóa thẻ ngân hàng thành công</string>
+    <string name="text_bank_card_delete_success">Xóa thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_delete_success">Đã xóa eWallet thành công</string>
     <string name="text_pay_maya_delete_success">Xoá PayMaya thành công</string>
     <string name="text_crypto_delete_success">Đã xóa tiền ảo thành công</string>

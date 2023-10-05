@@ -62,13 +62,15 @@ class BankCardListAdapter(private val onCryptoEdit: (BankCardList) -> Unit,
         }
     }
 
-    fun removeCard(cardNo: String) {
+    fun removeCard(cardNo: String): BankCardList? {
         data.forEachIndexed { index, bankCardList ->
             if (bankCardList.id.toString() == cardNo) {
                 removeAt(index)
-                return
+                return bankCardList
             }
         }
+
+        return null
     }
 
 }
