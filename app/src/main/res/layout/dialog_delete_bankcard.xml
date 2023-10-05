@@ -92,6 +92,8 @@
                         android:id="@+id/eet_sms_code"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginEnd="100dp"
+                        android:ellipsize="end"
                         android:imeOptions="actionNext"
                         android:inputType="number"
                         android:hint="@string/P219"
