@@ -1,9 +1,7 @@
 package org.cxct.sportlottery.ui.sport.favorite
 
-import android.util.Log
 import android.view.View
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
@@ -40,13 +38,10 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
 
     fun setFavoriteData(favoriteLeagues: List<Item>) {
         currentFavoriteList = favoriteLeagues
-        Log.e("For Test", "=====>>> setFavoriteData  111")
         if (!haveData && isAdded) {
-            Log.e("For Test", "=====>>> setFavoriteData  222")
             dismissLoading()
             updateSportType(favoriteLeagues)
         }
-        Log.e("For Test", "=====>>> setFavoriteData  333")
         haveData = true
     }
 
