@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 class SocketLinearManager(context: Context?, @RecyclerView.Orientation orientation: Int, reverseLayout: Boolean) : LinearLayoutManager(context, orientation, reverseLayout) {
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
+        // 这里进行异常捕获了，真正引起问题的地方就无法暴露出来了
         try {
             super.onLayoutChildren(recycler, state)
         } catch (e: IndexOutOfBoundsException) {
+            e.printStackTrace()
+        } catch (e: IllegalArgumentException) {
             e.printStackTrace()
         }
     }
