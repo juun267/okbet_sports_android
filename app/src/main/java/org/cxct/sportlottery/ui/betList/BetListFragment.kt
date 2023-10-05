@@ -1237,7 +1237,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     }
                 }
 
-                fm.popBackStackImmediate()
+                runWithCatch { fm.popBackStackImmediate() }
             })
     }
 }
