@@ -32,10 +32,9 @@ object ServiceFloatingButton {
             }
 
             val serviceBtn = AppCompatImageView(activity)
-            5.dp.let { serviceBtn.setPadding(it, it, it, it) }
             serviceBtn.setImageResource(R.drawable.ic_service_blue)
 
-            val wh = 48.dp
+            val wh = 56.dp
             val layoutParams = FrameLayout.LayoutParams(wh, wh)
             if (yPoint == 0f) {
                 layoutParams.gravity = Gravity.BOTTOM
