@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
+import androidx.core.view.isGone
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.gone
@@ -44,8 +45,10 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                 //bingo
                 HomeTopView.OkBingo->{
                     ivSportCover.setImageResource(R.drawable.img_esport)
-                    //判断体育维护是否开启
-                    if(getSportEnterIsClose()){
+                    if (!item.isOpen()) {
+                        tvSportClose.visible()
+                        tvSportClose.text=context.getString(R.string.N700)
+                    } else if(getSportEnterIsClose()){ //判断体育维护是否开启
                         //展示维护中
                         tvSportClose.visible()
                         tvSportClose.text=context.getString(R.string.N257)
@@ -68,7 +71,14 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                         tvSportClose.text=context.getString(R.string.N700)
                     }
                 }
+
+                else -> {
+                    tvSportClose.visible()
+                    tvSportClose.text=context.getString(R.string.N700)
+                }
             }
         }
+
+        binding.root.isEnabled = binding.tvSportClose.isGone
     }
 }
