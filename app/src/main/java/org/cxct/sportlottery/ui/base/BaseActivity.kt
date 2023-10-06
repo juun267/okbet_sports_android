@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.floatingbtn.ServiceFloatingButton
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -73,7 +74,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
 
         onTokenStateChanged()
         onNetworkException()
-
+        ServiceFloatingButton.targetActivity(this)
         if (BuildConfig.DEBUG) {
             Log.e("For Test", "======>>> Activity ${this::class.java.name}")
         }
