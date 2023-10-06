@@ -85,4 +85,14 @@
         android:adjustViewBounds="true"
         android:src="@drawable/icon_backtop_blue" />
 
+    <ImageView
+        android:id="@+id/ivService"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="90dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_service_blue" />
+
 </RelativeLayout>
