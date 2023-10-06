@@ -40,7 +40,9 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     }
 
     private fun switchTabByPosition(position: Int) {
-        fragmentHelper.showFragment(position)
+        if(isAdded) {
+            fragmentHelper.showFragment(position)
+        }
     }
 
     fun backMainHome() = switchTabByPosition(0)
