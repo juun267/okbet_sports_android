@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_bank_list.*
 import kotlinx.android.synthetic.main.fragment_bank_list.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.extentions.toLongS
 import org.cxct.sportlottery.network.bank.my.BankCardList
@@ -132,18 +133,20 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             updateCardNumbers(it)
         }
         cv_add_bank.setOnClickListener{
-            val addSwitch=viewModel.addMoneyCardSwitch.value
-            var transferType =when{
-                addSwitch?.bankTransfer==true-> TransferType.BANK
-                addSwitch?.cryptoTransfer==true-> TransferType.CRYPTO
-                addSwitch?.walletTransfer==true-> TransferType.E_WALLET
-                addSwitch?.paymataTransfer == true -> TransferType.PAYMAYA
-                else-> TransferType.BANK
-            }
-            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
+            runWithCatch {
+                val addSwitch=viewModel.addMoneyCardSwitch.value
+                var transferType =when{
+                    addSwitch?.bankTransfer==true-> TransferType.BANK
+                    addSwitch?.cryptoTransfer==true-> TransferType.CRYPTO
+                    addSwitch?.walletTransfer==true-> TransferType.E_WALLET
+                    addSwitch?.paymataTransfer == true -> TransferType.PAYMAYA
+                    else-> TransferType.BANK
+                }
+                val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
                     null,
                     transferType)
-            mNavController.navigate(action)
+                mNavController.navigate(action)
+            }
         }
 
         viewModel.bankDeleteResult.observe(this.viewLifecycleOwner) {
