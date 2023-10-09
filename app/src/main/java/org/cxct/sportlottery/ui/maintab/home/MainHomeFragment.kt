@@ -13,14 +13,14 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.include_home_bettingstation.*
 import kotlinx.android.synthetic.main.include_home_news.*
+import kotlinx.android.synthetic.main.item_sport_news.view.*
+import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentMainHomeBinding
-import org.cxct.sportlottery.databinding.IncludeHomeBettingstationBinding
-import org.cxct.sportlottery.databinding.IncludeHomeNewsBinding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.bettingStation.BettingStation
@@ -61,6 +61,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         initNews()
         EventBusUtil.targetLifecycle(this@MainHomeFragment)
         ToGcashDialog.showByLogin(viewModel)
+        setHalloweenStyle()
     }
 
     override fun onInitData() {
@@ -77,6 +78,23 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         binding.ivService.setServiceClick(childFragmentManager)
     }
 
+    private fun setHalloweenStyle() = binding.run {
+        hotMatchView.ivHotMatch.setImageResource(R.drawable.ic_hot_match_title_h)
+        includeNews.ivNews.setImageResource(R.drawable.ic_cate_news_h)
+        winsRankView.setHalloweenStyle()
+        includeBettingStation.ivBetStation.setImageResource(R.drawable.ic_home_bettingstation_h)
+        homeBottumView.setHalloweenStyle()
+        homeTopView.setHalloweenStyle()
+    }
+
+    fun setHalloweenStyle2() = binding.run {
+        gameViewOkGame.setPadding(12.dp, 8.dp, 2.dp, 0)
+        gameViewOkGame.setIcon(R.drawable.ic_home_okgames_title_h)
+        gameViewOkGame.setBackgroundResource(R.drawable.bg_halloween_part5)
+        gameViewOkLive.setPadding(12.dp, 13.dp, 2.dp, 0)
+        gameViewOkLive.setIcon(R.drawable.ic_home_oklive_title_h)
+        gameViewOkLive.setBackgroundResource(R.drawable.bg_halloween_part4)
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSportStatusChange(event: SportStatusEvent) {
@@ -93,6 +111,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             gameViewOkLive.initOkLiveList(this@MainHomeFragment)
             gameViewOkLive.bindLifecycleOwner(this@MainHomeFragment)
 //        }
+        setHalloweenStyle2()
         initBetWinsRecodeLayout()
         initObservable()
         binding.winsRankView.loadData()
@@ -116,6 +135,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     }
 
     fun initToolBar() = binding.run {
+        homeToolbar.setHalloweenStyle()
         homeToolbar.attach(this@MainHomeFragment, getMainTabActivity(), viewModel)
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))

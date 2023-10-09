@@ -64,6 +64,12 @@ class HomeTopView @JvmOverloads constructor(
         initHomeVenues()
     }
 
+    fun setHalloweenStyle() {
+        binding.tvLogin.setBackgroundResource(R.drawable.btn_login_h)
+        binding.tvRegist.setBackgroundResource(R.drawable.btn_register_h)
+        binding.tvDeposit.setBackgroundResource(R.drawable.btn_login_h)
+    }
+
     /**
      * 检测体育服务是否关闭
      */

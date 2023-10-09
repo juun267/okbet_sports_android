@@ -601,7 +601,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private fun setupBottomNavBarVisibility(isVisible: Boolean) {
         bottom_navigation_view.isVisible = isVisible
-        space1.isVisible = isVisible
         if (betListCount == 0) {
             parlayFloatWindow.gone()
         }
