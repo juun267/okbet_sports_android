@@ -46,5 +46,21 @@ class ResourceWrapper(private val context: Context, origin: Resources): Resource
         return context.createConfigurationContext(conf)
     }
 
+    override fun getInteger(id: Int): Int {
+        return try {
+            super.getInteger(id)
+
+        } catch (e: Exception) {
+            try {
+                context.resources.getInteger(id)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                0
+            }
+
+        }
+
+    }
+
 
 }

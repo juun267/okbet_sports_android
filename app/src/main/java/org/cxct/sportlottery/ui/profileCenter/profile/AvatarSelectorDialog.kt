@@ -46,7 +46,7 @@ class AvatarSelectorDialog: BottomSheetDialogFragment() {
 
     //選擇相片
     private fun pickPhoto() {
-        if (activity == null) {
+        if (activity == null || mSelectListener == null) {
             return
         }
         PictureSelector.create(activity)
@@ -62,7 +62,7 @@ class AvatarSelectorDialog: BottomSheetDialogFragment() {
 
     //拍照
     private fun openCamera() {
-        if (activity == null) {
+        if (activity == null || mSelectListener == null) {
             return
         }
         PictureSelector.create(activity)
