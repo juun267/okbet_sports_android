@@ -25,6 +25,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.index.config.HomeGameBean
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.ConfigRepository
@@ -50,7 +51,7 @@ class HomeTopView @JvmOverloads constructor(
     companion object{
         const val OkSport="pageOKSports"
         const val OkGame="pageOKGames"
-        const val OkBingo="pageOKBingo"
+        const val OkBingo="pageOKBingo"  // 实际对应的是ESport 2023.10.06
         const val OkLive="pageOKLive"
     }
     init {
@@ -249,20 +250,15 @@ class HomeTopView @JvmOverloads constructor(
      * 初始化首页场馆列表
      */
     private fun initHomeVenues(){
-        sConfigData?.homeGamesList=sConfigData?.homeGamesList?.sortedBy { it.gameSort }
 
-        sConfigData?.homeGamesList?.forEach {
-            //市场开关   okGames和 世界杯
-            if(it.uniqueName== OkGame||it.uniqueName== OkLive||(it.uniqueName== OkBingo&&StaticData.worldCupOpened())){
-                //开关为false
-                if(!getMarketSwitch()){
-                    //添加okGames
-                    venuesAdapter.addData(it)
-                }
-            }else{
-                venuesAdapter.addData(it)
-            }
+        val homeGamesList = sConfigData?.homeGamesList ?: return
+        val list = homeGamesList.filter {
+            ((it.uniqueName == OkGame || it.uniqueName == OkLive) && !getMarketSwitch())
+                    || it.uniqueName == OkBingo
+                    || it.uniqueName == OkSport
         }
+
+        venuesAdapter.setNewInstance(list.sortedBy { it.gameSort }.toMutableList())
     }
 
 
@@ -289,7 +285,7 @@ class HomeTopView @JvmOverloads constructor(
                 }
                 //bingo
                 OkBingo->{
-
+                    (fragment.activity as MainTabActivity).jumpToESport()
                 }
             }
         }
