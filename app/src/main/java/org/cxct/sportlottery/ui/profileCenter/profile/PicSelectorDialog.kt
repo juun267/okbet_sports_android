@@ -56,7 +56,7 @@ class PicSelectorDialog : BaseDialogFragment() {
 
     //選擇相片
     private fun pickPhoto() {
-        if (activity == null) {
+        if (activity == null || mSelectListener == null) {
             return
         }
         PictureSelector.create(activity)
@@ -72,7 +72,7 @@ class PicSelectorDialog : BaseDialogFragment() {
 
     //拍照
     private fun openCamera() {
-        if (activity == null) {
+        if (activity == null || mSelectListener == null) {
             return
         }
         PictureSelector.create(activity)
