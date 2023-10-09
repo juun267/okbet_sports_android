@@ -40,7 +40,9 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     : LinearLayoutCompat(context, attrs, defStyle) {
 
     init {
-        setBackgroundResource(R.color.color_F8F9FD)
+        if (background == null) {
+            setBackgroundResource(R.color.color_F8F9FD)
+        }
         12.dp.let { setPadding(6.dp, it, it, it) }
         gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
         addChildView()
@@ -265,5 +267,18 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             duration = 1000
         })
         viewModel.getMoneyAndTransferOut()
+    }
+
+    fun setHalloweenStyle() {
+        setBackgroundResource(R.drawable.bg_home_toolbar_h)
+        (ivLogo.layoutParams as LinearLayout.LayoutParams).let {
+            it.height = 39.dp
+            it.leftMargin = 12.dp
+        }
+        ivLogo.setImageResource(R.drawable.logo_okbet_color_h)
+        ivMenuLeft.setImageResource(R.drawable.ic_home_menu_2)
+        ivMenuLeft.setPadding(0, 0, 0, 0)
+        tvLogin.setBackgroundResource(R.drawable.btn_login_h)
+        tvRegist.setBackgroundResource(R.drawable.btn_register_h)
     }
 }

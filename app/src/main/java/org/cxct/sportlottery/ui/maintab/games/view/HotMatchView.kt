@@ -293,7 +293,7 @@ class HotMatchView(
 
 
     private fun initAdapter(fragment: BaseFragment<*>) {
-        setUpAdapter(fragment.viewLifecycleOwner,
+        setUpAdapter(fragment,
             HomeRecommendListener(onItemClickListener = { matchInfo ->
                 if (fragment.viewModel.isLogin.value != true) {
                     (fragment.requireActivity() as MainTabActivity).showLoginNotify()

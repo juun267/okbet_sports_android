@@ -19,9 +19,9 @@
             android:layout_height="36dp">
 
             <ImageView
+                android:id="@+id/ivTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/color_317FFF_1053af"
                 android:src="@drawable/bg_hot_game_title" />
 
             <TextView
