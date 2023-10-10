@@ -97,11 +97,6 @@ class DeleteBankCardDialog(private val phoneNo: String,
         eetWithdrawalPassword.checkRegisterListener {
             resetConfirmEnable()
             etWithdrawalPassword.setError(getErrorMsg(it.length), false)
-            if (it.length == 4) {
-                btnSend.setBtnEnable(!countDownGoing)
-            } else {
-                btnSend.setBtnEnable(false)
-            }
         }
 
         eetSmsCode.checkSMSCode(etSmsValidCode) {
@@ -123,7 +118,6 @@ class DeleteBankCardDialog(private val phoneNo: String,
     }
 
     private fun setUpBtn() = binding.run {
-        btnSend.setBtnEnable(false)
         tvCancel.setOnClickListener { dismiss() }
         btnSend.setOnClickListener {
             val verifyCodeDialog = VerifyCodeDialog()
