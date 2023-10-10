@@ -82,10 +82,11 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         includeBettingStation.ivBetStation.setImageResource(R.drawable.ic_home_bettingstation_h)
         homeBottumView.setHalloweenStyle()
         homeTopView.setHalloweenStyle()
+        hotMatchView.setHalloweenStyle()
     }
 
-    fun setHalloweenStyle2() = binding.run {
-        gameViewOkGame.setPadding(12.dp, 8.dp, 2.dp, 0)
+    private fun setHalloweenStyle2() = binding.run {
+        gameViewOkGame.setPadding(12.dp, 0, 2.dp, 0)
         gameViewOkGame.setIcon(R.drawable.ic_home_okgames_title_h)
         gameViewOkGame.setBackgroundResource(R.drawable.bg_halloween_part5)
         gameViewOkLive.setPadding(12.dp, 13.dp, 2.dp, 0)

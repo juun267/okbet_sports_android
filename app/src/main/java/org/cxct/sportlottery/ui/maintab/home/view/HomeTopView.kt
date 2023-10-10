@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.promotion.PromotionDetailActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
 
@@ -68,6 +69,10 @@ class HomeTopView @JvmOverloads constructor(
         binding.tvLogin.setBackgroundResource(R.drawable.btn_login_h)
         binding.tvRegist.setBackgroundResource(R.drawable.btn_register_h)
         binding.tvDeposit.setBackgroundResource(R.drawable.btn_login_h)
+        binding.rcvPromote.run {
+            setBackgroundResource(R.drawable.bg_halloween_part2)
+            setPadding(paddingLeft, 40.dp, paddingRight, 0)
+        }
     }
 
     /**

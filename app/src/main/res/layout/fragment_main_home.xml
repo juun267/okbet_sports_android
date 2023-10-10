@@ -33,13 +33,7 @@
                 android:id="@+id/hotMatchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_halloween_part3"/>
-
-<!--            <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView-->
-<!--                android:id="@+id/okGamesView"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
+                />
 
             <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
                 android:id="@+id/gameViewOkGame"
