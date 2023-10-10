@@ -30,6 +30,9 @@
                 android:textSize="@dimen/textSize20sp"
                 android:textStyle="bold" />
 
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
             <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
                 android:id="@+id/et_withdrawal_password"
@@ -61,13 +64,10 @@
                     android:textSize="@dimen/textSize12sp" />
 
             </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_1"
-                android:background="@color/color_EEF3FC"
-                android:layout_marginHorizontal="17dp"
-                android:layout_marginVertical="@dimen/margin_8"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/block_sms_valid_code"
                 android:layout_width="match_parent"
@@ -123,7 +123,7 @@
                     app:layout_constraintTop_toTopOf="@+id/et_sms_valid_code" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
+            </FrameLayout>
 
             <View
                 android:layout_width="match_parent"

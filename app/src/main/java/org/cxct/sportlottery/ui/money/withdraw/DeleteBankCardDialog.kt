@@ -20,6 +20,7 @@ import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.checkRegisterListener
+import org.cxct.sportlottery.view.checkSMSCode
 
 
 class DeleteBankCardDialog(private val phoneNo: String,
@@ -95,7 +96,7 @@ class DeleteBankCardDialog(private val phoneNo: String,
     private fun initEditTextObserver() = binding.run {
         eetWithdrawalPassword.checkRegisterListener {
             resetConfirmEnable()
-//            etWithdrawalPassword.setError(getErrorMsg(it.length), false)
+            etWithdrawalPassword.setError(getErrorMsg(it.length), false)
             if (it.length == 4) {
                 btnSend.setBtnEnable(!countDownGoing)
             } else {
@@ -103,9 +104,8 @@ class DeleteBankCardDialog(private val phoneNo: String,
             }
         }
 
-        eetSmsCode.checkRegisterListener {
+        eetSmsCode.checkSMSCode(etSmsValidCode) {
             resetConfirmEnable()
-//            etSmsValidCode.setError(getErrorMsg(it.length), false)
         }
     }
 
