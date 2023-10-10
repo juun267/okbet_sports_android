@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
@@ -7,6 +8,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
+import android.os.Build
 import android.os.Environment
 import android.text.Html
 import android.text.SpannableStringBuilder
@@ -30,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.snackbar.Snackbar
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.android.synthetic.main.view_payment_maintenance.view.*
@@ -1155,4 +1158,28 @@ fun resetInputTransformationMethod(fieldBox: LoginFormFieldView, editText: EditT
 
     fieldBox.hasFocus = true
     editText.setSelection(editText.text.toString().length)
+}
+
+/**
+ * 获取内存权限，兼容android33 部分手机
+ */
+fun RxPermissions.requestWriteStorageWithApi33(grantFun: ()->Unit,unGrantFun: ()->Unit){
+    this.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        .subscribe { aBoolean ->
+            if (aBoolean) {
+                grantFun()
+            } else {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                    this.request(Manifest.permission.READ_MEDIA_IMAGES).subscribe {
+                        if (it){
+                            grantFun()
+                        }else{
+                            unGrantFun
+                        }
+                    }
+                }else{
+                    unGrantFun
+                }
+            }
+        }
 }
