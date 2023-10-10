@@ -118,7 +118,8 @@ class DeleteBankCardDialog(private val phoneNo: String,
     }
 
     private fun resetConfirmEnable() = binding.run {
-//        tvConfirm.isEnabled = eetWithdrawalPassword.text.toString().length == 4 && (!StaticData.isNeedOTPBank() || eetSmsCode.text.toString().length == 4)
+        tvConfirm.isEnabled = eetWithdrawalPassword.text.toString().length == 4 && (!StaticData.isNeedOTPBank() || eetSmsCode.text.toString().length == 4)
+        tvConfirm.setBtnEnable(tvConfirm.isEnabled)
     }
 
     private fun setUpBtn() = binding.run {
@@ -137,20 +138,20 @@ class DeleteBankCardDialog(private val phoneNo: String,
             val pwd = eetWithdrawalPassword.text.toString()
             val code = eetSmsCode.text.toString()
             if (pwd.isEmpty()) {
-                ToastUtil.showToast(it.context, getString(R.string.hint_please_enter_withdraw_password))
+                etWithdrawalPassword.setError(getString(R.string.error_input_empty),false)
                 return@setOnClickListener
             }
             if (pwd.length != 4) {
-                ToastUtil.showToast(it.context, getString(R.string.error_withdraw_password))
+                etWithdrawalPassword.setError(getString(R.string.error_withdraw_password),false)
                 return@setOnClickListener
             }
 
-            if (pwd.isEmpty()) {
-                ToastUtil.showToast(it.context, getString(R.string.P218))
+            if (code.isEmpty()) {
+                etSmsValidCode.setError(getString(R.string.P218),false)
                 return@setOnClickListener
             }
-            if (pwd.length != 4) {
-                ToastUtil.showToast(it.context, getString(R.string.sms_code_length_error))
+            if (code.length != 4) {
+                etSmsValidCode.setError(getString(R.string.sms_code_length_error),false)
                 return@setOnClickListener
             }
 
