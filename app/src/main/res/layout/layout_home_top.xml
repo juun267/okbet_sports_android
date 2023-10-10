@@ -160,25 +160,18 @@
 
     </LinearLayout>
 
-    <FrameLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvPromote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_halloween_part2">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvPromote"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:paddingHorizontal="10dp"
-            android:clipChildren="true"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="2"
-            tools:listitem="@layout/item_promote_view" />
-
-    </FrameLayout>
+        android:layout_gravity="bottom"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:clipChildren="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_promote_view" />
 
     <FrameLayout
         android:layout_width="match_parent"
