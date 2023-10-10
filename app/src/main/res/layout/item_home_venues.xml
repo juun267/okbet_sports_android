@@ -22,7 +22,7 @@
         android:id="@+id/tvSportClose"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#90000000"
+        android:background="@drawable/bg_game_comingsoon"
         android:gravity="center"
         android:text="@string/N700"
         android:textColor="@color/color_FFFFFF"

@@ -35,6 +35,8 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.StreamerTextView
+import splitties.views.leftPadding
+import splitties.views.rightPadding
 
 class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayoutCompat(context, attrs, defStyle) {
@@ -144,7 +146,6 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             maxLines = 1
             ellipsize = TextUtils.TruncateAt.END
             gravity = Gravity.CENTER
-            elevation = 2.dp.toFloat()
             textSize = 14f
             setText(text)
             //自动调整大小
@@ -278,7 +279,12 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         ivLogo.setImageResource(R.drawable.logo_okbet_color_h)
         ivMenuLeft.setImageResource(R.drawable.ic_home_menu_2)
         ivMenuLeft.setPadding(0, 0, 0, 0)
+        (tvLogin.layoutParams as LinearLayout.LayoutParams).let {
+            it.height = 42.dp
+            it.rightMargin = 3.dp
+        }
         tvLogin.setBackgroundResource(R.drawable.btn_login_h)
         tvRegist.setBackgroundResource(R.drawable.btn_register_h)
+        loginLayout.setPadding(0, 5.dp, 0, 0)
     }
 }
