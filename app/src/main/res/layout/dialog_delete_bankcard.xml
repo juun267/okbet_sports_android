@@ -47,7 +47,7 @@
                 <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                     android:id="@+id/eet_withdrawal_password"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:gravity="bottom"
                     android:imeOptions="actionNext"
@@ -62,13 +62,17 @@
 
             </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
 
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_1"
+                android:background="@color/color_EEF3FC"
+                android:layout_marginHorizontal="17dp"
+                android:layout_marginVertical="@dimen/margin_8"/>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/block_sms_valid_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="15dp"
                 android:elevation="10dp"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -91,7 +95,7 @@
                     <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                         android:id="@+id/eet_sms_code"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginEnd="100dp"
                         android:ellipsize="end"
                         android:imeOptions="actionNext"
@@ -123,7 +127,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/margin_0.5"
                 android:layout_marginHorizontal="17dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/color_e3e8ee" />
@@ -145,7 +149,7 @@
                     android:textSize="@dimen/textSize16sp" />
 
                 <View
-                    android:layout_width="1dp"
+                    android:layout_width="@dimen/margin_0.5"
                     android:layout_height="match_parent"
                     android:background="@color/color_e3e8ee" />
 
