@@ -18,6 +18,7 @@ import com.xuexiang.xupdate.service.OnFileDownloadListener
 import kotlinx.android.synthetic.main.dialog_app_download.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.databinding.DialogAppDownloadBinding
 import org.cxct.sportlottery.network.Constants
@@ -49,14 +50,17 @@ class AppDownloadDialog(
     override fun initView() {
         setCanceledOnTouchOutside(false) //設置無法點擊外部關閉
         setCancelable(false) //設置無法點擊 Back 關閉
+        tv_title.text = MultiLanguagesApplication.stringOf(R.string.find_new_version)
+        btn_cancel.text = MultiLanguagesApplication.stringOf(R.string.btn_pass)
         btn_cancel.visibility = if (mIsForce) View.GONE else View.VISIBLE
         btn_cancel.setOnClickListener {
             mOnDownloadCallBack.goHomeActivity()
             dismiss()
         }
-        btn_download.text =
-            if (mFileUrl.isNullOrEmpty()) context.getString(R.string.update) else context.getString(
-                R.string.install)
+            if (mFileUrl.isNullOrEmpty())
+                btn_download.text = MultiLanguagesApplication.stringOf(R.string.update)
+            else
+                btn_download.text = MultiLanguagesApplication.stringOf(R.string.install)
         btn_download.setOnClickListener {
             if (BuildConfig.FLAVOR != "google") {
                 if (mFileUrl.isNullOrEmpty())
@@ -106,7 +110,7 @@ class AppDownloadDialog(
 
                         override fun onCompleted(file: File): Boolean {
                             btn_download.isEnabled = true
-                            btn_download.setText(R.string.install)
+                            btn_download.text = MultiLanguagesApplication.stringOf(R.string.install)
                             block_bottom_bar.visibility = View.VISIBLE
                             mFileUrl = file.absolutePath
                             return false
@@ -114,7 +118,7 @@ class AppDownloadDialog(
 
                         override fun onError(throwable: Throwable) {
                             btn_download.isEnabled = true
-                            btn_download.setText(R.string.update)
+                            btn_download.text = MultiLanguagesApplication.stringOf(R.string.update)
                             block_bottom_bar.visibility = View.VISIBLE
                             block_progress_bar.visibility = View.GONE
                             ToastUtil.showToastInCenter(context,
