@@ -15,7 +15,7 @@
     <item
         android:id="@+id/i_favorite"
         android:icon="@drawable/selector_tab_chat_h"
-        android:title="@string/main_tab_favorite" />
+        android:title="@string/N984" />
     <item
         android:id="@+id/i_user"
         android:icon="@drawable/selector_tab_user_h"

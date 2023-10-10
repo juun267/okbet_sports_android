@@ -66,6 +66,10 @@ class HomeTopView @JvmOverloads constructor(
     }
 
     fun setHalloweenStyle() {
+        42.dp.let {
+            binding.tvLogin.layoutParams.height = it
+            binding.tvRegist.layoutParams.height = it
+        }
         binding.tvLogin.setBackgroundResource(R.drawable.btn_login_h)
         binding.tvRegist.setBackgroundResource(R.drawable.btn_register_h)
         binding.tvDeposit.setBackgroundResource(R.drawable.btn_login_h)
