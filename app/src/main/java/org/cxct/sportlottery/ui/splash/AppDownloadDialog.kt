@@ -88,47 +88,44 @@ class AppDownloadDialog(
     private fun doInternalDownload() {
         //先請求存取權限，再行下載
         mRxPermissions
-            .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .subscribe { aBoolean ->
-                if (aBoolean) {
-                    block_bottom_bar.visibility = View.GONE
-                    block_progress_bar.visibility = View.VISIBLE
-                    XUpdate.newBuild(context)
-                        .apkCacheDir(context.cacheDir.absolutePath) //设置下载缓存的根目录
-                        .build()
-                        .download(Constants.getAppDownloadUrl(), object : OnFileDownloadListener {
-                            //设置下载的地址和下载的监听
-                            override fun onStart() {
+            .requestWriteStorageWithApi33(grantFun= {
+                block_bottom_bar.visibility = View.GONE
+                block_progress_bar.visibility = View.VISIBLE
+                XUpdate.newBuild(context)
+                    .apkCacheDir(context.cacheDir.absolutePath) //设置下载缓存的根目录
+                    .build()
+                    .download(Constants.getAppDownloadUrl(), object : OnFileDownloadListener {
+                        //设置下载的地址和下载的监听
+                        override fun onStart() {
 
-                            }
+                        }
 
-                            override fun onProgress(progress: Float, total: Long) {
-                                pb_download.progress = (progress * 100).toInt()
-                            }
+                        override fun onProgress(progress: Float, total: Long) {
+                            pb_download.progress = (progress * 100).toInt()
+                        }
 
-                            override fun onCompleted(file: File): Boolean {
-                                btn_download.isEnabled = true
-                                btn_download.setText(R.string.install)
-                                block_bottom_bar.visibility = View.VISIBLE
-                                mFileUrl = file.absolutePath
-                                return false
-                            }
+                        override fun onCompleted(file: File): Boolean {
+                            btn_download.isEnabled = true
+                            btn_download.setText(R.string.install)
+                            block_bottom_bar.visibility = View.VISIBLE
+                            mFileUrl = file.absolutePath
+                            return false
+                        }
 
-                            override fun onError(throwable: Throwable) {
-                                btn_download.isEnabled = true
-                                btn_download.setText(R.string.update)
-                                block_bottom_bar.visibility = View.VISIBLE
-                                block_progress_bar.visibility = View.GONE
-                                ToastUtil.showToastInCenter(context,
-                                    context.getString(R.string.download_fail))
-                            }
-                        })
-                } else {
-                    ToastUtil.showToastInCenter(context,
-                        context.getString(R.string.denied_read_memory_card))
-                    mOnDownloadCallBack.onDownloadError()
-                }
-            }
+                        override fun onError(throwable: Throwable) {
+                            btn_download.isEnabled = true
+                            btn_download.setText(R.string.update)
+                            block_bottom_bar.visibility = View.VISIBLE
+                            block_progress_bar.visibility = View.GONE
+                            ToastUtil.showToastInCenter(context,
+                                context.getString(R.string.download_fail))
+                        }
+                    })
+            },unGrantFun= {
+                ToastUtil.showToastInCenter(context,
+                    context.getString(R.string.denied_read_memory_card))
+                mOnDownloadCallBack.onDownloadError()
+            })
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
