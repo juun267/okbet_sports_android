@@ -279,6 +279,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         ivLogo.setImageResource(R.drawable.logo_okbet_color_h)
         ivMenuLeft.setImageResource(R.drawable.ic_home_menu_2)
         ivMenuLeft.setPadding(0, 0, 0, 0)
+        (ivMenuLeft.layoutParams  as LinearLayout.LayoutParams).topMargin = 6.dp
         (tvLogin.layoutParams as LinearLayout.LayoutParams).let {
             it.height = 42.dp
             it.rightMargin = 3.dp
