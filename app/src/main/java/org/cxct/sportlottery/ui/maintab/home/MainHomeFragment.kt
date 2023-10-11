@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.content.Intent
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -89,6 +90,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         gameViewOkGame.setPadding(12.dp, 0, 2.dp, 0)
         gameViewOkGame.setIcon(R.drawable.ic_home_okgames_title_h)
         gameViewOkGame.setBackgroundResource(R.drawable.bg_halloween_part5)
+        (gameViewOkGame.layoutParams as MarginLayoutParams).topMargin = -10.dp
         gameViewOkLive.setPadding(12.dp, 13.dp, 2.dp, 0)
         gameViewOkLive.setIcon(R.drawable.ic_home_oklive_title_h)
         gameViewOkLive.setBackgroundResource(R.drawable.bg_halloween_part4)

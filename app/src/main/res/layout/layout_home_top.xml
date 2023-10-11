@@ -48,130 +48,145 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/loginLayout"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <Button
-            android:id="@+id/tvLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/bg_blue_radius_15"
-            android:gravity="center"
-            android:minWidth="74dp"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="6dp"
-            android:text="@string/J134"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-
-        <org.cxct.sportlottery.view.StreamerTextView
-            android:id="@+id/tvRegist"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_orange_radius_15"
-            android:gravity="center"
-            android:minWidth="74dp"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="6dp"
-            android:text="@string/J151"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:text="OR"
-            android:textColor="@color/color_414655"
-            android:textSize="14sp" />
-
-        <ImageView
-            android:id="@+id/ivGoogle"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_google" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/depositLayout"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <Button
-            android:id="@+id/tvDeposit"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_blue_radius_15"
-            android:gravity="center"
-            android:minWidth="74dp"
-            android:paddingHorizontal="10dp"
-            android:text="@string/J285"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:text="With"
-            android:textColor="@color/color_333333"
-            android:textSize="14sp" />
-
-        <ImageView
-            android:id="@+id/ivGLive"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_glive" />
-
-        <ImageView
-            android:id="@+id/ivPaymaya"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_paymaya" />
-
-        <ImageView
-            android:id="@+id/ivPayX"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_pay_x" />
-
-        <ImageView
-            android:id="@+id/ivFortunepay"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_fortunepay" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvPromote"
+    <FrameLayout
+        android:id="@+id/llPromote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:paddingHorizontal="10dp"
-        android:clipChildren="true"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="2"
-        tools:listitem="@layout/item_promote_view" />
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/vBg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"/>
+
+        <LinearLayout
+            android:id="@+id/loginLayout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <Button
+                android:id="@+id/tvLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/bg_blue_radius_15"
+                android:gravity="center"
+                android:minWidth="74dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="6dp"
+                android:text="@string/J134"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <org.cxct.sportlottery.view.StreamerTextView
+                android:id="@+id/tvRegist"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_orange_radius_15"
+                android:gravity="center"
+                android:minWidth="74dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="6dp"
+                android:text="@string/J151"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="OR"
+                android:textColor="@color/color_414655"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/ivGoogle"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_circle_google" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/depositLayout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <Button
+                android:id="@+id/tvDeposit"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_blue_radius_15"
+                android:gravity="center"
+                android:minWidth="74dp"
+                android:paddingHorizontal="10dp"
+                android:text="@string/J285"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="With"
+                android:textColor="@color/color_333333"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/ivGLive"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_circle_glive" />
+
+            <ImageView
+                android:id="@+id/ivPaymaya"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_circle_paymaya" />
+
+            <ImageView
+                android:id="@+id/ivPayX"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_circle_pay_x" />
+
+            <ImageView
+                android:id="@+id/ivFortunepay"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_circle_fortunepay" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvPromote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="54dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:clipChildren="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_promote_view" />
+
+    </FrameLayout>
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -200,7 +215,7 @@
                 android:layout_marginHorizontal="4dp"
                 android:layout_weight="1"
                 android:text="@string/N703"
-                android:textColor="@color/color_14366B"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold" />
 
