@@ -41,7 +41,7 @@
             android:layout_weight="1"
             android:paddingLeft="4dp"
             android:text="@string/N881"
-            android:textColor="@color/color_0D2245"
+            android:textColor="@android:color/black"
             android:textStyle="bold" />
 
 

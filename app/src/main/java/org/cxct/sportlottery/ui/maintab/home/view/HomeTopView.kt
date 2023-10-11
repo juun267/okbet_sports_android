@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -69,15 +70,16 @@ class HomeTopView @JvmOverloads constructor(
     fun setHalloweenStyle() {
         42.dp.let {
             binding.tvLogin.layoutParams.height = it
+            (binding.tvLogin.layoutParams as MarginLayoutParams).rightMargin = 0
             binding.tvRegist.layoutParams.height = it
+            binding.tvDeposit.layoutParams.height= it
         }
         binding.tvLogin.setBackgroundResource(R.drawable.btn_login_h)
         binding.tvRegist.setBackgroundResource(R.drawable.btn_register_h)
         binding.tvDeposit.setBackgroundResource(R.drawable.btn_login_h)
-        binding.rcvPromote.run {
-            setBackgroundResource(R.drawable.bg_halloween_part2)
-            setPadding(paddingLeft, 40.dp, paddingRight, 0)
-        }
+        binding.vBg.setBackgroundResource(R.drawable.bg_halloween_part2)
+        binding.depositLayout.background = null
+        binding.loginLayout.background = null
     }
 
     /**

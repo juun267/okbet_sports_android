@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -282,8 +283,10 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         (ivMenuLeft.layoutParams  as LinearLayout.LayoutParams).topMargin = 6.dp
         (tvLogin.layoutParams as LinearLayout.LayoutParams).let {
             it.height = 42.dp
-            it.rightMargin = 3.dp
+            it.rightMargin = 0
         }
+        tvLogin.setBackgroundColor(Color.RED)
+        tvRegist.setBackgroundColor(Color.RED)
         tvLogin.setBackgroundResource(R.drawable.btn_login_h)
         tvRegist.setBackgroundResource(R.drawable.btn_register_h)
         loginLayout.setPadding(0, 5.dp, 0, 0)

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/vSports"
@@ -8,6 +7,7 @@
     android:layout_marginRight="10dp"
     android:layout_marginTop="8dp"
     android:foreground="@drawable/fg_ripple"
+    app:cardBackgroundColor="@color/transparent"
     app:cardCornerRadius="0px"
     app:cardElevation="0dp">
 
@@ -15,8 +15,7 @@
         android:id="@+id/ivSportCover"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img_sports" />
+        android:scaleType="fitXY"/>
 
     <TextView
         android:id="@+id/tvSportClose"
