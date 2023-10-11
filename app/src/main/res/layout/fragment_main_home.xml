@@ -32,19 +32,14 @@
             <org.cxct.sportlottery.ui.maintab.games.view.HotMatchView
                 android:id="@+id/hotMatchView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-<!--            <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView-->
-<!--                android:id="@+id/okGamesView"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
+                android:layout_height="wrap_content"
+                />
 
             <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
                 android:id="@+id/gameViewOkGame"
                 android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
 
 
             <org.cxct.sportlottery.ui.maintab.games.view.LivePageView
@@ -54,18 +49,47 @@
                 android:layout_height="wrap_content"/>
             <!--part-2-end-->
 
-            <include
-                android:id="@+id/includeNews"
-                layout="@layout/include_home_news" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_halloween_part6"/>
+                <include
+                    android:id="@+id/includeNews"
+                    layout="@layout/include_home_news"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"/>
+            </FrameLayout>
+
 
             <org.cxct.sportlottery.ui.maintab.home.view.WinsRankView
                 android:id="@+id/winsRankView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:background="@drawable/bg_halloween_part7"/>
 
-            <include
-                android:id="@+id/includeBettingStation"
-                layout="@layout/include_home_bettingstation" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_halloween_part8"/>
+
+                <include
+                    android:id="@+id/includeBettingStation"
+                    layout="@layout/include_home_bettingstation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"/>
+
+            </FrameLayout>
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
                 android:id="@+id/homeBottumView"
@@ -81,18 +105,26 @@
         android:layout_height="56dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="60dp"
         android:adjustViewBounds="true"
         android:src="@drawable/icon_backtop_blue" />
 
-    <ImageView
-        android:id="@+id/ivService"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="120dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_service_blue" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        android:gravity="right|bottom">
+
+        <ImageView
+            android:id="@+id/ivService"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="80dp"
+            android:src="@drawable/ic_service_blue" />
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>
