@@ -6,8 +6,10 @@ import android.content.Intent
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isInvisible
@@ -72,6 +74,10 @@ class HomeTopView @JvmOverloads constructor(
             (binding.tvLogin.layoutParams as MarginLayoutParams).rightMargin = 0
             binding.tvRegist.layoutParams.height = it
             binding.tvDeposit.layoutParams.height= it
+        }
+        (binding.rcvPromote.layoutParams as FrameLayout.LayoutParams).let {
+            it.topMargin = 48.dp
+            it.gravity = Gravity.TOP
         }
         binding.tvLogin.setBackgroundResource(R.drawable.btn_login_h)
         binding.tvRegist.setBackgroundResource(R.drawable.btn_register_h)
