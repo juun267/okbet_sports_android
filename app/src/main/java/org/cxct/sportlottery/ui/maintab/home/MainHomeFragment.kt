@@ -3,9 +3,11 @@ package org.cxct.sportlottery.ui.maintab.home
 
 import android.os.Bundle
 import android.content.Intent
+import android.graphics.Typeface
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -250,17 +252,20 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     //hot match end
     private fun initNews() {
         tabNews.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                (tab.view.getChildAt(1) as TextView).typeface = Typeface.DEFAULT_BOLD
                 val categoryId =
-                    if (tab?.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
+                    if (tab.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
                 viewModel.getHomeNews(1, 5, listOf(categoryId))
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                (tab.view.getChildAt(1) as TextView).typeface = Typeface.DEFAULT
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
+
         })
         linTab.setOnClickListener {
             getHomeFragment().jumpToNews()

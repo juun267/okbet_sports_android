@@ -290,5 +290,6 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         tvLogin.setBackgroundResource(R.drawable.btn_login_h)
         tvRegist.setBackgroundResource(R.drawable.btn_register_h)
         loginLayout.setPadding(0, 5.dp, 0, 0)
+        (userMoneyView.layoutParams as MarginLayoutParams).topMargin = 8.dp
     }
 }
