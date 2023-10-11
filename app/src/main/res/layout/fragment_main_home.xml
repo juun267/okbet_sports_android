@@ -109,14 +109,20 @@
         android:adjustViewBounds="true"
         android:src="@drawable/icon_backtop_blue" />
 
-    <ImageView
-        android:id="@+id/ivService"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="120dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_service_blue" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        android:gravity="right|bottom">
+
+        <ImageView
+            android:id="@+id/ivService"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="80dp"
+            android:src="@drawable/ic_service_blue" />
+
+    </LinearLayout>
 
 </RelativeLayout>
