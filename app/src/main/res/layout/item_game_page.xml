@@ -28,7 +28,8 @@
                 <ImageView
                     android:id="@+id/iv_cover1"
                     android:layout_width="110dp"
-                    android:layout_height="110dp" />
+                    android:layout_height="110dp"
+                    android:scaleType="centerCrop"/>
 
                 <TextView
                     android:id="@+id/tv_firm_name1"
@@ -132,7 +133,8 @@
                 <ImageView
                     android:id="@+id/iv_cover2"
                     android:layout_width="110dp"
-                    android:layout_height="110dp" />
+                    android:layout_height="110dp"
+                    android:scaleType="centerCrop"/>
 
                 <TextView
                     android:id="@+id/tv_firm_name2"
@@ -233,7 +235,8 @@
                 <ImageView
                     android:id="@+id/iv_cover3"
                     android:layout_width="110dp"
-                    android:layout_height="110dp" />
+                    android:layout_height="110dp"
+                    android:scaleType="centerCrop"/>
 
                 <TextView
                     android:id="@+id/tv_firm_name3"
@@ -337,7 +340,8 @@
                 <ImageView
                     android:id="@+id/iv_cover4"
                     android:layout_width="110dp"
-                    android:layout_height="110dp" />
+                    android:layout_height="110dp"
+                    android:scaleType="centerCrop"/>
 
                 <TextView
                     android:id="@+id/tv_firm_name4"
@@ -439,7 +443,8 @@
                 <ImageView
                     android:id="@+id/iv_cover5"
                     android:layout_width="110dp"
-                    android:layout_height="110dp" />
+                    android:layout_height="110dp"
+                    android:scaleType="centerCrop"/>
 
                 <TextView
                     android:id="@+id/tv_firm_name5"
@@ -542,7 +547,8 @@
                 <ImageView
                     android:id="@+id/iv_cover6"
                     android:layout_width="110dp"
-                    android:layout_height="110dp" />
+                    android:layout_height="110dp"
+                    android:scaleType="centerCrop"/>
 
                 <TextView
                     android:id="@+id/tv_firm_name6"

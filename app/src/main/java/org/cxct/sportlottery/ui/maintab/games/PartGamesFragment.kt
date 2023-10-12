@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.loading.Gloading
@@ -36,7 +37,7 @@ class PartGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGames
             if (okGamesFragment().collectGame(gameBean)) {
                 view.animDuang(1.3f)
             }
-        }, moreClick = ::onMoreClick)
+        }, moreClick = ::onMoreClick,gameEntryType = GameEntryType.OKGAMES)
     }
 
     var loadingMoreFlag = false
