@@ -4,9 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
 import org.cxct.sportlottery.common.extentions.runWithCatch
@@ -19,7 +17,6 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity.Companion.LOGIN_TYPE_PWD
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.util.*
@@ -30,11 +27,9 @@ class LoginViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    protected val userInfoRepository: UserInfoRepository,
+    private val userInfoRepository: UserInfoRepository,
 ) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
 
-    val loginFormState: LiveData<LoginFormState>
-        get() = _loginFormState
     val loginResult: LiveData<LoginResult>
         get() = _loginResult
     val loginSmsResult: LiveData<NetResult>
@@ -57,7 +52,6 @@ class LoginViewModel(
         get() = _loginGlifeOrRegist
 
     private val _isLoading = MutableLiveData<Boolean>()
-    private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult>()
     private val _selectAccount= MutableLiveData<LoginResult>()
     private val _loginGlifeOrRegist= MutableLiveData<LoginResult>()
@@ -95,7 +89,6 @@ class LoginViewModel(
     //跳转至完善信息监听
     val registerInfoEvent by lazy { SingleEvent<LoginResult>() }
 
-    val account by lazy { loginRepository.account }
     val password by lazy { loginRepository.password }
 
     var loginType = LOGIN_TYPE_PWD
@@ -104,11 +97,6 @@ class LoginViewModel(
             checkAllInputComplete()
         }
 
-    var isRememberPWD
-        get() = loginRepository.isRememberPWD
-        set(value) {
-            loginRepository.isRememberPWD = value
-        }
     var agreeChecked = true
         set(value) {
             field = value
@@ -296,23 +284,6 @@ class LoginViewModel(
                     runWithCatch { userInfoRepository.getUserInfo() }
                 }
                 _validResult.postValue(result)
-            }
-        }
-    }
-
-
-    suspend fun getUserPhone(): String? {
-        return withContext(Dispatchers.IO) {
-            userInfoRepository.userInfo?.value?.phone.toString()
-        }
-    }
-
-    fun loginAsGuest() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.loginForGuest()
-            }?.let {
-                _loginResult.value = it
             }
         }
     }
