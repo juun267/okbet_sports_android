@@ -475,7 +475,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     private fun checkStr(str: String?): String {
         return if (str.isNullOrEmpty()) {
-            resources.getString(R.string.set)
+            ""
         } else {
             str
         }
@@ -489,12 +489,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tvSourceOfIncome.text = if (it.t.salarySource?.id == 6) {
                 checkStr(it.t.salarySource.name)
             } else if (it.t.salarySource?.id == null) {
-                resources.getString(R.string.set)
+                ""
             } else {
                 it.t.salarySource.id.let { it1 ->
                     viewModel.getSalaryName(
                         it1,
-                        resources.getString(R.string.set)
+                        ""
                     )
                 }
             }
