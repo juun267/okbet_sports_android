@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -35,12 +36,16 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.StreamerTextView
+import splitties.views.leftPadding
+import splitties.views.rightPadding
 
 class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayoutCompat(context, attrs, defStyle) {
 
     init {
-        setBackgroundResource(R.color.color_F8F9FD)
+        if (background == null) {
+            setBackgroundResource(R.color.color_F8F9FD)
+        }
         12.dp.let { setPadding(6.dp, it, it, it) }
         gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
         addChildView()
@@ -142,7 +147,6 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             maxLines = 1
             ellipsize = TextUtils.TruncateAt.END
             gravity = Gravity.CENTER
-            elevation = 2.dp.toFloat()
             textSize = 14f
             setText(text)
             //自动调整大小
@@ -265,5 +269,27 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             duration = 1000
         })
         viewModel.getMoneyAndTransferOut()
+    }
+
+    fun setHalloweenStyle() {
+        setBackgroundResource(R.drawable.bg_home_toolbar_h)
+        (ivLogo.layoutParams as LinearLayout.LayoutParams).let {
+            it.height = 39.dp
+            it.leftMargin = 12.dp
+        }
+        ivLogo.setImageResource(R.drawable.logo_okbet_color_h)
+        ivMenuLeft.setImageResource(R.drawable.ic_home_menu_2)
+        ivMenuLeft.setPadding(0, 0, 0, 0)
+        (ivMenuLeft.layoutParams  as LinearLayout.LayoutParams).topMargin = 6.dp
+        (tvLogin.layoutParams as LinearLayout.LayoutParams).let {
+            it.height = 42.dp
+            it.rightMargin = 0
+        }
+        tvLogin.setBackgroundColor(Color.RED)
+        tvRegist.setBackgroundColor(Color.RED)
+        tvLogin.setBackgroundResource(R.drawable.btn_login_h)
+        tvRegist.setBackgroundResource(R.drawable.btn_register_h)
+        loginLayout.setPadding(0, 5.dp, 0, 0)
+        (userMoneyView.layoutParams as MarginLayoutParams).topMargin = 8.dp
     }
 }

@@ -54,6 +54,12 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
         initViews()
     }
 
+    fun setHalloweenStyle() {
+        rbtnLb.setBackgroundResource(R.drawable.selector_tab_okgame_p3_h)
+        rbtnLbw.setBackgroundResource(R.drawable.selector_tab_okgame_p3_h)
+        setTipsIcon(R.drawable.ic_okgame_p2_h)
+    }
+
     private var recordHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             var newItem: RecordNewEvent? = null

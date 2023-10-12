@@ -13,6 +13,7 @@
         android:paddingHorizontal="@dimen/margin_12">
 
         <ImageView
+            android:id="@+id/ivBetStation"
             android:layout_width="@dimen/margin_24"
             android:layout_height="@dimen/margin_24"
             android:src="@drawable/ic_home_bettingstation" />
@@ -31,7 +32,8 @@
         android:id="@+id/rvBettingStation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_12"
+        android:paddingHorizontal="12dp"
+        android:clipChildren="false"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_home_bettingstation"

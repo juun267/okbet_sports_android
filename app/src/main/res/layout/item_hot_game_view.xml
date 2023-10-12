@@ -7,7 +7,8 @@
     android:layout_marginLeft="2dp"
     android:layout_marginBottom="6dp"
     app:cardElevation="3dp"
-    app:cardCornerRadius="11dp">
+    app:cardCornerRadius="11dp"
+    android:outlineSpotShadowColor="@color/color_b4b4b4">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,9 +20,9 @@
             android:layout_height="36dp">
 
             <ImageView
+                android:id="@+id/ivTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/color_317FFF_1053af"
                 android:src="@drawable/bg_hot_game_title" />
 
             <TextView
@@ -64,7 +65,6 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:paddingLeft="7dp"
-                android:text=""
                 android:textColor="@color/color_303030"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text=""
+                android:fontFamily="@font/inter_bold"
                 android:textColor="@color/color_303030"
                 android:textSize="@dimen/textSize18sp" />
         </LinearLayout>
@@ -167,7 +167,6 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:paddingLeft="7dp"
-                android:text=""
                 android:textColor="@color/color_303030"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -176,7 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text=""
+                android:fontFamily="@font/inter_bold"
                 android:textColor="@color/color_303030"
                 android:textSize="@dimen/textSize18sp" />
         </LinearLayout>

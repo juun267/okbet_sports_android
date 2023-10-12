@@ -815,7 +815,7 @@
     <!--歷史紀錄end-->
 
     <!--region 最新消息-->
-    <string name="news_tab_game">Game</string>
+    <string name="news_tab_game">Games</string>
     <string name="news_tab_system">System</string>
     <string name="J653">Platform</string>
     <string name="news_detail">Detail</string>

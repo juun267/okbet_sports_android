@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.maintab.games.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +35,11 @@ class HomeFollowView(
         mRecyclerMenu?.layoutManager = manager
         mRecyclerMenu?.adapter = mAdapter
         initHomeFollowData()
+    }
+
+    fun setHalloweenStyle() {
+        findViewById<ImageView>(R.id.ivFollowUs).setImageResource(R.drawable.ic_home_follow_us_h)
+
     }
 
     /**

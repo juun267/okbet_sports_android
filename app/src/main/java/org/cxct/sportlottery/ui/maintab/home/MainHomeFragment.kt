@@ -3,8 +3,11 @@ package org.cxct.sportlottery.ui.maintab.home
 
 import android.os.Bundle
 import android.content.Intent
+import android.graphics.Typeface
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -13,14 +16,14 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.include_home_bettingstation.*
 import kotlinx.android.synthetic.main.include_home_news.*
+import kotlinx.android.synthetic.main.item_sport_news.view.*
+import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentMainHomeBinding
-import org.cxct.sportlottery.databinding.IncludeHomeBettingstationBinding
-import org.cxct.sportlottery.databinding.IncludeHomeNewsBinding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.bettingStation.BettingStation
@@ -37,6 +40,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -61,6 +65,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         initNews()
         EventBusUtil.targetLifecycle(this@MainHomeFragment)
         ToGcashDialog.showByLogin(viewModel)
+        setHalloweenStyle()
     }
 
     override fun onInitData() {
@@ -72,8 +77,30 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         //设置监听游戏试玩
         setTrialPlayGameDataObserve()
         viewModel.getAnnouncement()
+
+        binding.ivService.setOnTouchListener(SuckEdgeTouch())
+        binding.ivService.setServiceClick(childFragmentManager)
     }
 
+    private fun setHalloweenStyle() = binding.run {
+        hotMatchView.ivHotMatch.setImageResource(R.drawable.ic_hot_match_title_h)
+        includeNews.ivNews.setImageResource(R.drawable.ic_cate_news_h)
+        winsRankView.setHalloweenStyle()
+        includeBettingStation.ivBetStation.setImageResource(R.drawable.ic_home_bettingstation_h)
+        homeBottumView.setHalloweenStyle()
+        homeTopView.setHalloweenStyle()
+        hotMatchView.setHalloweenStyle()
+    }
+
+    private fun setHalloweenStyle2() = binding.run {
+        gameViewOkGame.setPadding(12.dp, 0, 2.dp, 0)
+        gameViewOkGame.setIcon(R.drawable.ic_home_okgames_title_h)
+        gameViewOkGame.setBackgroundResource(R.drawable.bg_halloween_part5)
+        (gameViewOkGame.layoutParams as MarginLayoutParams).topMargin = -10.dp
+        gameViewOkLive.setPadding(12.dp, 13.dp, 2.dp, 0)
+        gameViewOkLive.setIcon(R.drawable.ic_home_oklive_title_h)
+        gameViewOkLive.setBackgroundResource(R.drawable.bg_halloween_part4)
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSportStatusChange(event: SportStatusEvent) {
@@ -90,6 +117,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             gameViewOkLive.initOkLiveList(this@MainHomeFragment)
             gameViewOkLive.bindLifecycleOwner(this@MainHomeFragment)
 //        }
+        setHalloweenStyle2()
         initBetWinsRecodeLayout()
         initObservable()
         binding.winsRankView.loadData()
@@ -113,6 +141,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     }
 
     fun initToolBar() = binding.run {
+        homeToolbar.setHalloweenStyle()
         homeToolbar.attach(this@MainHomeFragment, getMainTabActivity(), viewModel)
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
@@ -224,17 +253,20 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     //hot match end
     private fun initNews() {
         tabNews.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                (tab.view.getChildAt(1) as TextView).typeface = Typeface.DEFAULT_BOLD
                 val categoryId =
-                    if (tab?.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
+                    if (tab.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
                 viewModel.getHomeNews(1, 5, listOf(categoryId))
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                (tab.view.getChildAt(1) as TextView).typeface = Typeface.DEFAULT
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
+
         })
         linTab.setOnClickListener {
             getHomeFragment().jumpToNews()
