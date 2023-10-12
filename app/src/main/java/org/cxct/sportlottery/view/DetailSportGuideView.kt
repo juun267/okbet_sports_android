@@ -2,81 +2,67 @@ package org.cxct.sportlottery.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
+import android.view.Gravity
+import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatImageView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.KvUtils
 
 class DetailSportGuideView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : LinearLayout(context, attrs, defStyle) {
+    : FrameLayout(context, attrs, defStyle) {
 
-    private var dsgt1: DetailSportGuideTipsView
-    private var dsgt2: DetailSportGuideTipsView
-    private var dsgt3: DetailSportGuideTipsView
-    private var dsgt4: DetailSportGuideTipsView
-    private var dsgt5: DetailSportGuideTipsView
-    private var dsgt6: DetailSportGuideTipsView
-    private var dsgt7: DetailSportGuideTipsView
-    private var dsgt8: DetailSportGuideTipsView
-    private var ivBg: ImageView
+    private val ivBg: ImageView
+    private val dsgt: DetailSportGuideTipsView
     private var curIndex = 0
-    var dsgtImgList =
+    private val dsgtLayoutParams: LayoutParams
+    private var dsgtImgList =
         mutableListOf(
-            R.drawable.bg_sports_detail_tips_01,
-            R.drawable.bg_sports_detail_tips_02,
-            R.drawable.bg_sports_detail_tips_03,
-            R.drawable.bg_sports_detail_tips_04,
-            R.drawable.bg_sports_detail_tips_05,
-            R.drawable.bg_sports_detail_tips_06,
-            R.drawable.bg_sports_detail_tips_07,
-            R.drawable.bg_sports_detail_tips_08,
+            Pair(-1, R.drawable.bg_sports_detail_tips_01),
+            Pair(313.dp, R.drawable.bg_sports_detail_tips_02),
+            Pair(156.dp, R.drawable.bg_sports_detail_tips_03),
+            Pair(156.dp, R.drawable.bg_sports_detail_tips_04),
+            Pair(240.dp, R.drawable.bg_sports_detail_tips_05),
+            Pair(240.dp, R.drawable.bg_sports_detail_tips_06),
+            Pair(273.dp, R.drawable.bg_sports_detail_tips_07),
+            Pair(240.dp, R.drawable.bg_sports_detail_tips_08),
         )
 
-
+    private val dsgtParams = mutableListOf(
+        Triple(context.getString(R.string.P001), context.getString(R.string.P002), "1/8"),
+        Triple("", context.getString(R.string.P004), "2/8"),
+        Triple("", resources.getString(R.string.P006) + "\n" + resources.getString(R.string.P007), "3/8"),
+        Triple("", context.getString(R.string.P016), "4/8"),
+        Triple("", context.getString(R.string.P008), "5/8"),
+        Triple("", context.getString(R.string.P009), "6/8"),
+        Triple("", context.getString(R.string.P010), "7/8"),
+        Triple("", context.getString(R.string.P011), "8/8")
+    )
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.detail_sport_guide, this)
-        ivBg = findViewById(R.id.iv_bg)
-        ivBg.setImageResource(dsgtImgList[0])
-        dsgt1 = findViewById(R.id.dsgt1)
-        dsgt2 = findViewById(R.id.dsgt2)
-        dsgt3 = findViewById(R.id.dsgt3)
-        dsgt4 = findViewById(R.id.dsgt4)
-        dsgt5 = findViewById(R.id.dsgt5)
-        dsgt6 = findViewById(R.id.dsgt6)
-        dsgt7 = findViewById(R.id.dsgt7)
-        dsgt8 = findViewById(R.id.dsgt8)
-        dsgt1.setPreviousEnable(false)
-        dsgt8.setNextStepStr(resources.getString(R.string.N102))
-        dsgt3.setContent(resources.getString(R.string.P006) + "\n" + resources.getString(R.string.P007))
-        var dsgtList = mutableListOf<DetailSportGuideTipsView>()
-        dsgtList.add(dsgt1)
-        dsgtList.add(dsgt2)
-        dsgtList.add(dsgt3)
-        dsgtList.add(dsgt4)
-        dsgtList.add(dsgt5)
-        dsgtList.add(dsgt6)
-        dsgtList.add(dsgt7)
-        dsgtList.add(dsgt8)
+        ivBg = AppCompatImageView(context)
+        ivBg.scaleType = ImageView.ScaleType.MATRIX
+        ivBg.setBackgroundResource(R.color.transparent_black_40)
+        addView(ivBg, LayoutParams(-1, -1))
 
-        var dsListener = object :
-            DetailSportGuideTipsView.OnDSGTipsClickListener {
+        dsgt = DetailSportGuideTipsView(context, null)
+        dsgtLayoutParams = LayoutParams(-1, -2).apply { gravity = Gravity.CENTER }
+        addView(dsgt, dsgtLayoutParams)
+        onRebind()
+
+        var dsListener = object : DetailSportGuideTipsView.OnDSGTipsClickListener {
             override fun onPreviousClick() {
                 if (curIndex > 0) {
-                    dsgtList[curIndex].visibility = GONE
                     curIndex--
-                    dsgtList[curIndex].visibility = visibility
-                    ivBg.setImageResource(dsgtImgList[curIndex])
+                    onRebind()
                 }
             }
 
             override fun onNextClick() {
-                if (curIndex < dsgtList.size - 1) {
-                    dsgtList[curIndex].visibility = GONE
+                if (curIndex < dsgtParams.size - 1) {
                     curIndex++
-                    dsgtList[curIndex].visibility = visibility
-                    ivBg.setImageResource(dsgtImgList[curIndex])
+                    onRebind()
                 } else {
                     visibility = GONE
                     KvUtils.put(KvUtils.BASKETBALL_GUIDE_TIP_FLAG, true)
@@ -89,13 +75,32 @@ class DetailSportGuideView @JvmOverloads constructor(context: Context, attrs: At
             }
 
         }
-        dsgt1.setOnPreviousOrNextClickListener(dsListener)
-        dsgt2.setOnPreviousOrNextClickListener(dsListener)
-        dsgt3.setOnPreviousOrNextClickListener(dsListener)
-        dsgt4.setOnPreviousOrNextClickListener(dsListener)
-        dsgt5.setOnPreviousOrNextClickListener(dsListener)
-        dsgt6.setOnPreviousOrNextClickListener(dsListener)
-        dsgt7.setOnPreviousOrNextClickListener(dsListener)
-        dsgt8.setOnPreviousOrNextClickListener(dsListener)
+
+        dsgt.setOnPreviousOrNextClickListener(dsListener)
     }
+
+    private fun onRebind() {
+        val imgParams = dsgtImgList[curIndex]
+        ivBg.setImageResource(imgParams.second)
+        val contentText = dsgtParams[curIndex]
+        dsgt.setTitle(contentText.first)
+        dsgt.setContent(contentText.second)
+        dsgt.setIndexText(contentText.third)
+        dsgt.setPreviousEnable(curIndex != 0)
+        if (curIndex < dsgtParams.size - 1) {
+            dsgt.setNextText()
+        } else {
+            dsgt.setNextBetText()
+        }
+        val topMargin = imgParams.first
+        if (topMargin > 0) {
+            dsgtLayoutParams.gravity = Gravity.TOP
+            dsgtLayoutParams.topMargin = topMargin
+        } else {
+            dsgtLayoutParams.gravity = Gravity.CENTER
+            dsgtLayoutParams.topMargin = 0
+        }
+        dsgt.layoutParams = dsgtLayoutParams
+    }
+
 }

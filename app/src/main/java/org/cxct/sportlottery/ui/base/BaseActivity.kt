@@ -2,7 +2,9 @@ package org.cxct.sportlottery.ui.base
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
@@ -38,6 +40,7 @@ import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.language.MultiLanguages
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -68,7 +71,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         LotteryManager.instance.bind(this as BaseActivity<BaseViewModel>)
     }
 
+    private var firstCrate = false
     override fun onCreate(savedInstanceState: Bundle?) {
+        firstCrate = true
         super.onCreate(savedInstanceState)
 
         onTokenStateChanged()
@@ -424,18 +429,25 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         mHandler.postDelayed({ mIsEnabled = true }, 100)
     }
 
-
-    private val localeResources by lazy { ResourceWrapper(this@BaseActivity, super.getResources()) }
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        firstCrate = true
+        super.onConfigurationChanged(newConfig)
+    }
 
     /**
      * 修正 auto size 偶發失效問題
      * */
     override fun getResources(): Resources {
-
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            AutoSizeCompat.autoConvertDensityOfGlobal(localeResources)
+        val res = super.getResources()
+        if (firstCrate && Looper.myLooper() == Looper.getMainLooper()) {
+            firstCrate = false
+            AutoSizeCompat.autoConvertDensityOfGlobal(res)
         }
-        return localeResources
+        return res
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(MultiLanguages.attach(newBase))
     }
 
     open fun setStatusbar(bgColor: Int, darkFont: Boolean) {
