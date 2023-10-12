@@ -14,6 +14,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.language.MultiLanguages
 import java.util.*
 
 object LanguageManager {
@@ -209,6 +210,7 @@ object LanguageManager {
         val lastLanguage = getSelectLanguage(context)
         FirebaseLog.addLogInfo("currentLanguage", select.name) // 在崩溃日志中记录当前的语言类型
         selectedLocale = convert(select)
+        MultiLanguages.setAppLanguage(context, selectedLocale)
         SPUtil.getInstance(context).saveLanguage(select.key)
         KvUtils.removeKey("splashAd")
         setApplicationLanguage(context)
