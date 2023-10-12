@@ -1,10 +1,13 @@
 package org.cxct.sportlottery.ui.chat
 
-import android.view.LayoutInflater
+import android.view.Gravity
 import android.view.ViewGroup
-import android.widget.TextView
-import org.cxct.sportlottery.databinding.ItemChatMarqueeBinding
+import android.view.ViewGroup.MarginLayoutParams
+import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.MixFontTextView
 
 /**
  * @author kevin
@@ -12,14 +15,15 @@ import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
  * @description
  */
 class ChatMarqueeAdapter : MarqueeAdapter() {
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): DetailViewHolder {
-        val layoutView =
-            ItemChatMarqueeBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
-        return MarqueeViewHolder(layoutView)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val textView = MixFontTextView(viewGroup.context)
+        textView.layoutParams = MarginLayoutParams(-2, -1).apply { marginEnd = 375.dp }
+        textView.gravity = Gravity.CENTER_VERTICAL
+        textView.textSize = 12.0f
+        textView.maxLines = 1
+        textView.setTextColor(viewGroup.context.getColor(R.color.color_chat_marquee_text))
+        return MarqueeVH(textView, textView)
     }
 
-    inner class MarqueeViewHolder(val binding: ItemChatMarqueeBinding) :
-        DetailViewHolder(binding.root) {
-        override var detail: TextView = binding.tvMarquee
-    }
+
 }

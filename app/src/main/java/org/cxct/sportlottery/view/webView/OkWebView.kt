@@ -3,6 +3,7 @@ package org.cxct.sportlottery.view.webView
 import android.content.Context
 import android.util.AttributeSet
 import android.webkit.WebView
+import org.cxct.sportlottery.util.language.MultiLanguages
 
 open class OkWebView  : WebView {
 
@@ -26,6 +27,7 @@ open class OkWebView  : WebView {
 
     init {
         initWebView()
+        MultiLanguages.updateAppLanguage(context)
     }
 
     private fun initWebView() {

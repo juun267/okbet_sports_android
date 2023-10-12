@@ -13,6 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.*
@@ -52,7 +53,7 @@ object LoginRepository {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             MultiLanguagesApplication.mInstance.userInfo.observeForever { mutableLiveData.value = it != null }
         } else {
-            Handler(Looper.getMainLooper()).post {
+            post {
                 MultiLanguagesApplication.mInstance.userInfo.observeForever { mutableLiveData.value = it != null }
             }
         }
@@ -62,11 +63,8 @@ object LoginRepository {
     val kickedOut: LiveData<Event<String?>>
         get() = _kickedOut
 
-    val transNum: LiveData<Int?> //交易狀況數量
-        get() = _transNum
 
     val _kickedOut = MutableLiveData<Event<String?>>()
-    private val _transNum = MutableLiveData<Int?>()
 
     private val mUserMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額
@@ -131,15 +129,6 @@ object LoginRepository {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-            }
-        }
-
-    var isRememberPWD
-        get() = sharedPref.getBoolean(KEY_REMEMBER_PWD, false)
-        set(value) {
-            with(sharedPref.edit()) {
-                putBoolean(KEY_REMEMBER_PWD, value)
-                commit()
             }
         }
 
@@ -303,10 +292,6 @@ object LoginRepository {
 
     suspend fun loginForGuest(): Response<LoginResult> {
         return OneBoSportApi.indexService.loginForGuest(LoginForGuestRequest(deviceSn = getDeviceName()))
-    }
-
-    fun updateTransNum(transNum: Int) {
-        _transNum.postValue(transNum)
     }
 
     private fun getDeviceName(): String {
