@@ -1637,5 +1637,6 @@
     <string name="P216">Redeem Code Deposit</string>
     <string name="P218">OTP verification code</string>
     <string name="P219">Please enter the verification code</string>
+    <string name="P225">Lose Amount</string>
 
 </resources>

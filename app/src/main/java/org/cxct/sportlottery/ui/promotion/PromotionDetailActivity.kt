@@ -83,7 +83,8 @@ class PromotionDetailActivity :
             tvDepositName.text = when (activityDetail.activityType) {
                 1 -> getString(R.string.H019)
                 2 -> getString(R.string.title_deposit_money)//充值活动
-                else -> getString(R.string.deposits)
+                3 -> getString(R.string.P225)//充值活动
+                else -> getString(R.string.deposits)//亏损金额
             }
             tvReward.text = TextUtil.formatMoney(activityDetail.reward)
             if (activityDetail.reward == 0.0) {

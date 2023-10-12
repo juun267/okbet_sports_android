@@ -1505,4 +1505,5 @@
     <string name="P216">Đổi mã nạp tiền</string>
     <string name="P218">Tin nhắn mã OTP</string>
     <string name="P219">Vui lòng nhập mã OTP</string>
+    <string name="P225">Số tiền thua</string>
 </resources>
