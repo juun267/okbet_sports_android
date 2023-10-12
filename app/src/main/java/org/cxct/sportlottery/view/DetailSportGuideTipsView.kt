@@ -10,9 +10,11 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
 
-class DetailSportGuideTipsView : LinearLayout {
+class DetailSportGuideTipsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
+    : LinearLayout(context, attrs, defStyle) {
 
     interface OnDSGTipsClickListener {
         fun onPreviousClick()
@@ -27,75 +29,50 @@ class DetailSportGuideTipsView : LinearLayout {
     private lateinit var tvNext: TextView
     private lateinit var ivTipsClose: ImageView
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
-        initView(context)
-        if (context != null && attrs != null) {
-            initAttrs(context, attrs)
-        }
+
+    init {
+        initView()
     }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
-        initView(context)
-        if (context != null && attrs != null) {
-            initAttrs(context, attrs)
-        }
-    }
-
-    constructor(
-        context: Context?,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes) {
-        initView(context)
-        if (context != null && attrs != null) {
-            initAttrs(context, attrs)
-        }
-    }
-
-    fun initView(context: Context?) {
+    private fun initView() {
         LayoutInflater.from(context).inflate(R.layout.detail_sport_guide_tips, this)
-        tvTitleIndex = findViewById<TextView>(R.id.tv_tips_index)
-        tvTitle = findViewById<TextView>(R.id.tv_title)
-        tvContent = findViewById<TextView>(R.id.tv_content)
-        tvPrevious = findViewById<TextView>(R.id.tv_previous)
-        tvNext = findViewById<TextView>(R.id.tv_next)
-        ivTipsClose = findViewById<ImageView>(R.id.iv_tips_close)
+        tvTitleIndex = findViewById(R.id.tv_tips_index)
+        tvTitle = findViewById(R.id.tv_title)
+        tvContent = findViewById(R.id.tv_content)
+        tvPrevious = findViewById(R.id.tv_previous)
+        tvNext = findViewById(R.id.tv_next)
+        ivTipsClose = findViewById(R.id.iv_tips_close)
 
     }
 
-    private fun initAttrs(context: Context, attrs: AttributeSet) {
-        val mTypedArray =
-            context.obtainStyledAttributes(attrs, R.styleable.DetailSportGuideTipsView)
-        val titleIndex = mTypedArray.getString(R.styleable.DetailSportGuideTipsView_tvTitleIndex)
-        val title = mTypedArray.getString(R.styleable.DetailSportGuideTipsView_tvTitle)
-        val content = mTypedArray.getString(R.styleable.DetailSportGuideTipsView_tvContent)
-        val titleVisibility =
-            mTypedArray.getInteger(R.styleable.DetailSportGuideTipsView_titleVisibility, 0)
-        var sbs = SpannableString(titleIndex)
+
+    fun setIndexText(indexText: String) {
+        var sbs = SpannableString(indexText)
         sbs.setSpan(
             ForegroundColorSpan(Color.parseColor("#025BE8")),
             0,
             1,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
+
         tvTitleIndex.text = sbs
+    }
+
+    fun setNextText() {
+        tvNext.setText(R.string.P013)
+    }
+
+    fun setNextBetText() {
+        tvNext.setText(R.string.N102)
+    }
+
+    fun setTitle(title: String) {
         tvTitle.text = title
-        tvContent.text = content
-        tvTitle.visibility = titleVisibility
-        mTypedArray.recycle()
+        tvTitle.isVisible = title.isNotEmpty()
     }
 
     fun setContent(content: String) {
         tvContent.text = content
-    }
-
-    fun setNextStepStr(str: String) {
-        tvNext.text = str
     }
 
     fun setPreviousEnable(flag: Boolean) {

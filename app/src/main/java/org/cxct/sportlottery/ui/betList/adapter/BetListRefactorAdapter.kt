@@ -30,8 +30,10 @@ class BetListRefactorAdapter(
 
     var adapterBetType: BetRvType = SINGLE
         set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (field != value) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
 
@@ -48,21 +50,27 @@ class BetListRefactorAdapter(
         }
     var oddsType: OddsType = OddsType.EU
         set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (field != value) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
 
     var userLogin: Boolean = false
         set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (field != value) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     var userMoney: Double = 0.0
         set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (field != value) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     var hasBetClosed: Boolean = false

@@ -121,7 +121,6 @@ class AccountHistoryViewModel(
                     }else{
 
                         unsettledDataEvent.postValue(result.rows!!)
-                        loginRepository.updateTransNum(result.total ?: 0)
                     }
 
                 } else {
@@ -187,7 +186,6 @@ class AccountHistoryViewModel(
                             hasMore=false
                         }
                         _settledData.postValue(it)
-                        loginRepository.updateTransNum(result.total ?: 0)
                     }
                     result.other?.totalAmount?.let {
                         totalBet=it

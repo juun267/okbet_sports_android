@@ -115,7 +115,6 @@ class TransactionStatusViewModel(
                         page,
                         (rowList.size >= (result.total ?: 0))
                     )
-                    loginRepository.updateTransNum(result.total ?: 0)
                 } else {
                     if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
                         requestCount += 1
