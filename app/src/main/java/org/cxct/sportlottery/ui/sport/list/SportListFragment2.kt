@@ -47,6 +47,11 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         })
     }
 
+    override fun onInitView(view: View) {
+        binding.gameList.itemAnimator = null
+        super.onInitView(view)
+    }
+
 
     // 该方法中不要引用与生命周期有关的(比如：ViewModel、Activity)
     private fun reset() {
