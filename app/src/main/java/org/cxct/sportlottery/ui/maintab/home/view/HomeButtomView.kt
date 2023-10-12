@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.include_view_payment_method.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.maintab.games.view.HomeFollowView
@@ -33,7 +35,6 @@ class HomeButtomView@JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     private fun bindView() {
-        setPadding(0, 0, 0, 40.dp)
         val tvPrivacyPolicy = findViewById<TextView>(R.id.tvPrivacyPolicy)
         val tvTermConditions = findViewById<TextView>(R.id.tvTermConditions)
         val tvResponsibleGaming = findViewById<TextView>(R.id.tvResponsibleGaming)
@@ -105,4 +106,15 @@ class HomeButtomView@JvmOverloads constructor(context: Context, attrs: Attribute
 //    fun showFollowView(){
 //        findViewById<HomeFollowView>(R.id.homeFollowView).showFollowView()
 //    }
+
+    fun setHalloweenStyle() {
+        findViewById<ImageView>(R.id.imageView4).setImageResource(R.drawable.icon_payment_method_h)
+        findViewById<ImageView>(R.id.ivAward).setImageResource(R.drawable.icon_sigma_h)
+        findViewById<HomeFollowView>(R.id.homeFollowView).setHalloweenStyle()
+        findViewById<View>(R.id.vPayment).setBackgroundResource(R.drawable.bg_halloween_part9)
+        findViewById<View>(R.id.ivaWardsH).visible()
+        findViewById<View>(R.id.dividePayment).inVisible()
+        findViewById<View>(R.id.homeFollowView).setBackgroundResource(R.drawable.bg_halloween_part10)
+        findViewById<View>(R.id.endView).setBackgroundResource(R.drawable.bg_halloween_part11)
+    }
 }

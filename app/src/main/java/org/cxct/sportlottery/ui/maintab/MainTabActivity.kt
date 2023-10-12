@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.core.view.isVisible
@@ -34,7 +33,6 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
@@ -44,7 +42,6 @@ import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
-import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
@@ -116,24 +113,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
-        ConfigRepository.onNewConfig(this) {
-            changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
-//            if (isOpenChatRoom()) {
-//                changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
-//            } else {
-//                changeChatTabStatus(getString(R.string.main_tab_favorite), R.drawable.selector_tab_fav)
-//            }
-        }
-    }
 
-    private fun changeChatTabStatus(title: String, @DrawableRes icon: Int) {
-        val item = binding.bottomNavigationView.menu.findItem(R.id.i_favorite)
-        if (item.title == title) {
-            return
-        }
-
-        item.title = title
-        item.icon = getDrawable(icon)
     }
 
     override fun onNightModeChanged(mode: Int) {
@@ -602,7 +582,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private fun setupBottomNavBarVisibility(isVisible: Boolean) {
         bottom_navigation_view.isVisible = isVisible
-        space1.isVisible = isVisible
         if (betListCount == 0) {
             parlayFloatWindow.gone()
         }
@@ -646,11 +625,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
      */
     private fun enableSelectBottomNav(enable: Boolean) {
         if (enable){
-            bottom_navigation_view.itemTextColor = ContextCompat.getColorStateList(this@MainTabActivity,R.color.main_tab_text_selector)
-            bottom_navigation_view.menu[0].icon = ContextCompat.getDrawable(this@MainTabActivity,R.drawable.selector_tab_home)
+            bottom_navigation_view.itemTextColor = ContextCompat.getColorStateList(this@MainTabActivity,R.color.main_tab_text_selector_h)
+            bottom_navigation_view.menu[0].icon = ContextCompat.getDrawable(this@MainTabActivity,R.drawable.selector_tab_home_h)
         }else{
-            bottom_navigation_view.itemTextColor = ContextCompat.getColorStateList(this@MainTabActivity,R.color.color_6C7BA8)
-            bottom_navigation_view.menu[0].icon = ContextCompat.getDrawable(this@MainTabActivity,R.drawable.ic_tab_home_nor)
+            bottom_navigation_view.itemTextColor = ContextCompat.getColorStateList(this@MainTabActivity,R.color.color_120A3D)
+            bottom_navigation_view.menu[0].icon = ContextCompat.getDrawable(this@MainTabActivity,R.drawable.ic_tab_home_h_nor)
         }
     }
 

@@ -3,10 +3,13 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isInvisible
@@ -39,6 +42,7 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.promotion.PromotionDetailActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
 
@@ -63,6 +67,25 @@ class HomeTopView @JvmOverloads constructor(
         initLogin()
         initSportEnterStatus()
         initHomeVenues()
+    }
+
+    fun setHalloweenStyle() {
+        42.dp.let {
+            binding.tvLogin.layoutParams.height = it
+            (binding.tvLogin.layoutParams as MarginLayoutParams).rightMargin = 0
+            binding.tvRegist.layoutParams.height = it
+            binding.tvDeposit.layoutParams.height= it
+        }
+        (binding.rcvPromote.layoutParams as FrameLayout.LayoutParams).let {
+            it.topMargin = 48.dp
+            it.gravity = Gravity.TOP
+        }
+        binding.tvLogin.setBackgroundResource(R.drawable.btn_login_h)
+        binding.tvRegist.setBackgroundResource(R.drawable.btn_register_h)
+        binding.tvDeposit.setBackgroundResource(R.drawable.btn_login_h)
+        binding.vBg.setBackgroundResource(R.drawable.bg_halloween_part2)
+        binding.depositLayout.background = null
+        binding.loginLayout.background = null
     }
 
     /**
