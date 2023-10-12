@@ -41,7 +41,9 @@ inline fun View.gone() {
 inline fun View.inVisible() {
     this.visibility = View.INVISIBLE
 }
-
+inline fun setViewClickable(isClickable: Boolean,vararg views: View) {
+    views.forEach { it.isClickable = isClickable }
+}
 inline fun setViewVisible(vararg views: View) {
     views.forEach { it.visibility = View.VISIBLE }
 }

@@ -17,10 +17,7 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.include_user_profile.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
@@ -534,11 +531,11 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 tv_real_name.text = it.fullName
                 setWithdrawInfo(it)
             }
-
             ll_verified.isVisible =
                 sConfigData?.realNameWithdrawVerified.isStatusOpen() || sConfigData?.realNameRechargeVerified.isStatusOpen()
             tv_pass_word.text =
                 if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
+            setIdentifyStatus(ll_verified.isVisible&&it?.verified==VerifiedType.PASSED.value)
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = true
@@ -749,6 +746,44 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             .setDate(tomorrow)
             .build()
 
+    }
+    private fun setIdentifyStatus(verified: Boolean){
+        val iconViews = arrayOf(
+            iconNationality,
+            iconBirthday,
+            iconPlaceOfBirth,
+            iconSourceOfIncome,
+            iconNatureOfWork,
+            iconProvinceCurrent,
+            iconCityCurrent,
+            iconAddressCurrent,
+            iconZipCodeCurrent,
+            iconProvincePermanent,
+            iconCityPermanent,
+            iconAddressPermanent,
+            iconZipCodePermanent,
+        )
+        if (verified){
+            setViewGone(*iconViews)
+        }else{
+            setViewVisible(*iconViews)
+        }
+        val itemViews = arrayOf(
+            llNationality,
+            llBirthday,
+            llPlaceOfBirth,
+            llSourceOfIncome,
+            llNatureOfWork,
+            llProvinceCurrent,
+            llCityCurrent,
+            llAddressCurrent,
+            llZipCodeCurrent,
+            llProvincePermanent,
+            llCityPermanent,
+            llAddressPermanent,
+            llZipCodePermanent,
+        )
+        setViewClickable(!verified,*itemViews)
     }
 
 }
