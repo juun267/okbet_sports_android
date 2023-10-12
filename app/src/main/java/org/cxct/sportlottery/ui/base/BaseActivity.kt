@@ -73,7 +73,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
 
         onTokenStateChanged()
         onNetworkException()
-
+//        ServiceFloatingButton.targetActivity(this)
         if (BuildConfig.DEBUG) {
             Log.e("For Test", "======>>> Activity ${this::class.java.name}")
         }

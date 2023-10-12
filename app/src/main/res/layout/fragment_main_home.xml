@@ -34,10 +34,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-<!--            <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView-->
-<!--                android:id="@+id/okGamesView"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
+            <!--            <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView-->
+            <!--                android:id="@+id/okGamesView"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content" />-->
 
 
             <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
@@ -84,5 +84,21 @@
         android:layout_marginBottom="20dp"
         android:adjustViewBounds="true"
         android:src="@drawable/icon_backtop_blue" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        android:gravity="right|bottom">
+
+        <ImageView
+            android:id="@+id/ivService"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="80dp"
+            android:src="@drawable/ic_service_blue" />
+
+    </LinearLayout>
 
 </RelativeLayout>
