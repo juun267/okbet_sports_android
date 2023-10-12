@@ -3,10 +3,13 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isInvisible
@@ -25,6 +28,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.index.config.HomeGameBean
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.ConfigRepository
@@ -38,6 +42,7 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.promotion.PromotionDetailActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
 
@@ -50,7 +55,7 @@ class HomeTopView @JvmOverloads constructor(
     companion object{
         const val OkSport="pageOKSports"
         const val OkGame="pageOKGames"
-        const val OkBingo="pageOKBingo"
+        const val OkBingo="pageOKBingo"  // 实际对应的是ESport 2023.10.06
         const val OkLive="pageOKLive"
     }
     init {
@@ -62,6 +67,25 @@ class HomeTopView @JvmOverloads constructor(
         initLogin()
         initSportEnterStatus()
         initHomeVenues()
+    }
+
+    fun setHalloweenStyle() {
+        42.dp.let {
+            binding.tvLogin.layoutParams.height = it
+            (binding.tvLogin.layoutParams as MarginLayoutParams).rightMargin = 0
+            binding.tvRegist.layoutParams.height = it
+            binding.tvDeposit.layoutParams.height= it
+        }
+        (binding.rcvPromote.layoutParams as FrameLayout.LayoutParams).let {
+            it.topMargin = 48.dp
+            it.gravity = Gravity.TOP
+        }
+        binding.tvLogin.setBackgroundResource(R.drawable.btn_login_h)
+        binding.tvRegist.setBackgroundResource(R.drawable.btn_register_h)
+        binding.tvDeposit.setBackgroundResource(R.drawable.btn_login_h)
+        binding.vBg.setBackgroundResource(R.drawable.bg_halloween_part2)
+        binding.depositLayout.background = null
+        binding.loginLayout.background = null
     }
 
     /**
@@ -243,20 +267,15 @@ class HomeTopView @JvmOverloads constructor(
      * 初始化首页场馆列表
      */
     private fun initHomeVenues(){
-        sConfigData?.homeGamesList=sConfigData?.homeGamesList?.sortedBy { it.gameSort }
 
-        sConfigData?.homeGamesList?.forEach {
-            //市场开关   okGames和 世界杯
-            if(it.uniqueName== OkGame||it.uniqueName== OkLive||(it.uniqueName== OkBingo&&StaticData.worldCupOpened())){
-                //开关为false
-                if(!getMarketSwitch()){
-                    //添加okGames
-                    venuesAdapter.addData(it)
-                }
-            }else{
-                venuesAdapter.addData(it)
-            }
+        val homeGamesList = sConfigData?.homeGamesList ?: return
+        val list = homeGamesList.filter {
+            ((it.uniqueName == OkGame || it.uniqueName == OkLive) && !getMarketSwitch())
+                    || it.uniqueName == OkBingo
+                    || it.uniqueName == OkSport
         }
+
+        venuesAdapter.setNewInstance(list.sortedBy { it.gameSort }.toMutableList())
     }
 
 
@@ -283,7 +302,7 @@ class HomeTopView @JvmOverloads constructor(
                 }
                 //bingo
                 OkBingo->{
-
+                    (fragment.activity as MainTabActivity).jumpToESport()
                 }
             }
         }

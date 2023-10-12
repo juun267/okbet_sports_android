@@ -2,9 +2,11 @@ package org.cxct.sportlottery.ui.maintab.games.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.LinearLayout
+import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -33,18 +35,19 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.onClick
 
-@Suppress("NAME_SHADOWING")
 class HotMatchView(
     context: Context, attrs: AttributeSet
-) : LinearLayout(context, attrs) {
+) : ConstraintLayout(context, attrs) {
     private var adapter: HotMatchAdapter? = null
     private var fragment: BaseFragment<*>? = null
 
     init {
-        orientation = VERTICAL
         initView()
     }
 
+    fun setHalloweenStyle() {
+        findViewById<View>(R.id.vBg).setBackgroundResource(R.drawable.bg_halloween_part3)
+    }
 
     private fun initView() {
         LayoutInflater.from(context).inflate(R.layout.view_hot_game, this, true)
@@ -293,7 +296,7 @@ class HotMatchView(
 
 
     private fun initAdapter(fragment: BaseFragment<*>) {
-        setUpAdapter(fragment.viewLifecycleOwner,
+        setUpAdapter(fragment,
             HomeRecommendListener(onItemClickListener = { matchInfo ->
                 if (fragment.viewModel.isLogin.value != true) {
                     (fragment.requireActivity() as MainTabActivity).showLoginNotify()

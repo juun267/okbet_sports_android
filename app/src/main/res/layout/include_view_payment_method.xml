@@ -5,43 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutPayment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_payment_method" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="@string/J369"
-        android:textColor="@color/color_0D2245"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+        <View
+            android:id="@+id/vPayment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvPayment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="5dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:spanCount="4"
-        tools:itemCount="4"
-        tools:listitem="@layout/item_view_payment_method" />
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_payment_method" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/J369"
+            android:textColor="@color/color_0D2245"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvPayment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="5dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:spanCount="4"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_view_payment_method" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:id="@+id/dividePayment"
@@ -49,7 +64,7 @@
         android:layout_height="@dimen/margin_0.5"
         android:layout_marginTop="@dimen/margin_12"
         android:layout_marginHorizontal="@dimen/margin_12"
-        app:layout_constraintTop_toBottomOf="@id/rcvPayment"
+        app:layout_constraintTop_toBottomOf="@id/layoutPayment"
         android:background="@color/color_E0E3EE"/>
     <ImageView
         android:id="@+id/ivAward"
@@ -73,6 +88,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/ivAward"
         app:layout_constraintStart_toEndOf="@+id/ivAward"
         app:layout_constraintTop_toTopOf="@+id/ivAward" />
+
+    <ImageView
+        android:id="@+id/ivaWardsH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/dividePayment"
+        app:layout_constraintEnd_toEndOf="@+id/layoutPayment"
+        android:src="@drawable/img_halloween_awards"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/linAward"
@@ -122,200 +146,212 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/linAward" />
 
-    <View
-        android:id="@+id/view5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="@dimen/margin_16"
-        android:background="@color/color_e0e3ee"
-        app:layout_constraintTop_toBottomOf="@+id/homeFollowView"
-        tools:layout_editor_absoluteX="12dp" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/N001"
-        android:textColor="@color/color_0D2245"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view5" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/faqs"
-        android:textColor="@color/color_0D2245"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/textView5" />
-
-    <TextView
-        android:id="@+id/tvPrivacyPolicy"
-        style="@style/text_style_responsible"
-        android:text="@string/J094"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-    <TextView
-        android:id="@+id/tvTermConditions"
-        style="@style/text_style_responsible"
-        android:text="@string/J095"
-        app:layout_constraintStart_toStartOf="@+id/tvPrivacyPolicy"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrivacyPolicy" />
-
-    <TextView
-        android:id="@+id/tvResponsibleGaming"
-        style="@style/text_style_responsible"
-        android:text="@string/J093"
-        app:layout_constraintStart_toStartOf="@+id/tvTermConditions"
-        app:layout_constraintTop_toBottomOf="@+id/tvTermConditions" />
-
-    <TextView
-        android:id="@+id/tvLiveChat"
-        style="@style/text_style_responsible"
-        android:text="@string/J299"
-        app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-    <TextView
-        android:id="@+id/tvContactUs"
-        style="@style/text_style_responsible"
-        android:text="@string/N019"
-        app:layout_constraintStart_toStartOf="@+id/tvLiveChat"
-        app:layout_constraintTop_toBottomOf="@+id/tvLiveChat" />
-
-    <TextView
-        android:id="@+id/tvFaqs"
-        style="@style/text_style_responsible"
-        android:text="@string/faqs"
-        app:layout_constraintStart_toStartOf="@+id/tvContactUs"
-        app:layout_constraintTop_toBottomOf="@+id/tvContactUs" />
-
-    <TextView
-        android:id="@+id/textView15"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/endView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:paddingHorizontal="10dp"
-        android:text="OKbet is a Registered Trade Mark, Brand and Business Name Owned by KINGWIN VENTURES INC.Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR)."
-        android:textColor="@color/color_6D7693"
-        android:textSize="@dimen/textSize12sp"
-        app:layout_constraintEnd_toEndOf="@+id/view4"
-        app:layout_constraintStart_toStartOf="@+id/view4"
-        app:layout_constraintTop_toBottomOf="@+id/view4" />
+        android:paddingBottom="80dp"
+        app:layout_constraintTop_toBottomOf="@+id/homeFollowView">
 
-    <View
-        android:id="@+id/view6"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="20dp"
-        android:visibility="visible"
-        android:background="@color/color_e0e3ee"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:visibility="visible"
-        android:text="@string/J093"
-        android:textColor="@color/color_0D2245"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view6" />
-
-    <View
-        android:id="@+id/view4"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/color_e0e3ee"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvResponsibleGaming" />
-    <LinearLayout
-        android:id="@+id/linBrand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_marginTop="26dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView16">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
-            <ImageView
-                android:id="@+id/iv_pagcor"
-                android:layout_width="@dimen/margin_50"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/ic_pagcor" />
-            <ImageView
-                android:id="@+id/iv_bmm"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:layout_marginStart="@dimen/margin_40"
-                android:src="@drawable/ic_bmm_testlabs" />
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/iv_pagcor21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
+        <View
+            android:id="@+id/view5"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginHorizontal="12dp"
             android:layout_marginTop="@dimen/margin_16"
-            android:src="@drawable/bottom_license" />
+            android:background="@color/color_e0e3ee"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="12dp" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/N001"
+            android:textColor="@color/color_0D2245"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view5" />
 
-    <View
-        android:id="@+id/view7"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="@dimen/margin_16"
-        android:background="@color/color_e0e3ee"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linBrand" />
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/faqs"
+            android:textColor="@color/color_0D2245"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/textView5" />
 
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Copyright © 2023 OKbet ALL RIGHTS RESERVED"
-        android:textColor="@color/color_5E6D78"
-        android:textSize="12sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view7" />
+        <TextView
+            android:id="@+id/tvPrivacyPolicy"
+            style="@style/text_style_responsible"
+            android:text="@string/J094"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
+        <TextView
+            android:id="@+id/tvTermConditions"
+            style="@style/text_style_responsible"
+            android:text="@string/J095"
+            app:layout_constraintStart_toStartOf="@+id/tvPrivacyPolicy"
+            app:layout_constraintTop_toBottomOf="@+id/tvPrivacyPolicy" />
+
+        <TextView
+            android:id="@+id/tvResponsibleGaming"
+            style="@style/text_style_responsible"
+            android:text="@string/J093"
+            app:layout_constraintStart_toStartOf="@+id/tvTermConditions"
+            app:layout_constraintTop_toBottomOf="@+id/tvTermConditions" />
+
+        <TextView
+            android:id="@+id/tvLiveChat"
+            style="@style/text_style_responsible"
+            android:text="@string/J299"
+            app:layout_constraintStart_toStartOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/tvContactUs"
+            style="@style/text_style_responsible"
+            android:text="@string/N019"
+            app:layout_constraintStart_toStartOf="@+id/tvLiveChat"
+            app:layout_constraintTop_toBottomOf="@+id/tvLiveChat" />
+
+        <TextView
+            android:id="@+id/tvFaqs"
+            style="@style/text_style_responsible"
+            android:text="@string/faqs"
+            app:layout_constraintStart_toStartOf="@+id/tvContactUs"
+            app:layout_constraintTop_toBottomOf="@+id/tvContactUs" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:text="OKbet is a Registered Trade Mark, Brand and Business Name Owned by KINGWIN VENTURES INC.Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR)."
+            android:textColor="@color/color_6D7693"
+            android:textSize="@dimen/textSize12sp"
+            app:layout_constraintEnd_toEndOf="@+id/view4"
+            app:layout_constraintStart_toStartOf="@+id/view4"
+            app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+        <View
+            android:id="@+id/view6"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="20dp"
+            android:visibility="visible"
+            android:background="@color/color_e0e3ee"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="visible"
+            android:text="@string/J093"
+            android:textColor="@color/color_0D2245"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view6" />
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/color_e0e3ee"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvResponsibleGaming" />
+        <LinearLayout
+            android:id="@+id/linBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="26dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView16">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/img_pagcor_h" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:layout_marginStart="22dp"
+                    android:src="@drawable/img_bmm_h" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/img_keep21_h" />
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_pagcor21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_16"
+                android:src="@drawable/bottom_license" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view7"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="@dimen/margin_16"
+            android:background="@color/color_e0e3ee"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linBrand" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Copyright © 2023 OKbet ALL RIGHTS RESERVED"
+            android:textColor="@color/color_5E6D78"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view7" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </merge>
