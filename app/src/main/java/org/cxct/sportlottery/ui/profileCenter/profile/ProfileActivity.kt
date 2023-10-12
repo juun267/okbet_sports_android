@@ -475,38 +475,16 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     private fun checkStr(str: String?): String {
         return if (str.isNullOrEmpty()) {
-            ""
+            if(viewModel.userInfo.value?.verified == VerifiedType.PASSED.value) "" else resources.getString(R.string.set)
         } else {
             str
         }
     }
 
+
     private fun initObserve() {
         viewModel.userDetail.observe(this) {
-            tvNationality.text = checkStr(it.t.nationality)
-            tvBirthday.text = checkStr(it.t.birthday)
-            tvPlaceOfBirth.text = checkStr(it.t.placeOfBirth)
-            tvSourceOfIncome.text = if (it.t.salarySource?.id == 6) {
-                checkStr(it.t.salarySource.name)
-            } else if (it.t.salarySource?.id == null) {
-                ""
-            } else {
-                it.t.salarySource.id.let { it1 ->
-                    viewModel.getSalaryName(
-                        it1,
-                        ""
-                    )
-                }
-            }
-            tvNatureOfWork.text = checkStr(it.t.natureOfWork)
-            tvProvinceCurrent.text = checkStr(it.t.province)
-            tvCityCurrent.text = checkStr(it.t.city)
-            tvAddressCurrent.text = checkStr(it.t.address)
-            tvZipCodeCurrent.text = checkStr(it.t.zipCode)
-            tvProvincePermanent.text = checkStr(it.t.permanentProvince)
-            tvCityPermanent.text = checkStr(it.t.permanentCity)
-            tvAddressPermanent.text = checkStr(it.t.permanentAddress)
-            tvZipCodePermanent.text = checkStr(it.t.permanentZipCode)
+            setIdentityDetail(it)
         }
         viewModel.editIconUrlResult.observe(this) {
             val iconUrlResult = it?.getContentIfNotHandled()
@@ -536,6 +514,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_pass_word.text =
                 if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
             setIdentifyStatus(ll_verified.isVisible&&it?.verified==VerifiedType.PASSED.value)
+            viewModel.userDetail.value?.let { setIdentityDetail(it) }
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = true
@@ -746,6 +725,32 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             .setDate(tomorrow)
             .build()
 
+    }
+    private fun setIdentityDetail(it: UserInfoDetailsEntity){
+        tvNationality.text = checkStr(it.t.nationality)
+        tvBirthday.text = checkStr(it.t.birthday)
+        tvPlaceOfBirth.text = checkStr(it.t.placeOfBirth)
+        tvSourceOfIncome.text = if (it.t.salarySource?.id == 6) {
+            checkStr(it.t.salarySource.name)
+        } else if (it.t.salarySource?.id == null) {
+            resources.getString(R.string.set)
+        } else {
+            it.t.salarySource.id.let { it1 ->
+                viewModel.getSalaryName(
+                    it1,
+                    resources.getString(R.string.set)
+                )
+            }
+        }
+        tvNatureOfWork.text = checkStr(it.t.natureOfWork)
+        tvProvinceCurrent.text = checkStr(it.t.province)
+        tvCityCurrent.text = checkStr(it.t.city)
+        tvAddressCurrent.text = checkStr(it.t.address)
+        tvZipCodeCurrent.text = checkStr(it.t.zipCode)
+        tvProvincePermanent.text = checkStr(it.t.permanentProvince)
+        tvCityPermanent.text = checkStr(it.t.permanentCity)
+        tvAddressPermanent.text = checkStr(it.t.permanentAddress)
+        tvZipCodePermanent.text = checkStr(it.t.permanentZipCode)
     }
     private fun setIdentifyStatus(verified: Boolean){
         val iconViews = arrayOf(
