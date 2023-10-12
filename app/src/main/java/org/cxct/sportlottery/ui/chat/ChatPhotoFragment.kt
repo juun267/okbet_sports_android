@@ -22,10 +22,7 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.FragmentChatPhotoBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.menu.ScannerActivity
-import org.cxct.sportlottery.util.DownloadUtil
-import org.cxct.sportlottery.util.FileUtil
-import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -110,8 +107,7 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
      * 儲存到圖片庫
      */
     private fun saveToPictureFolder() {
-        RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe { onNext ->
-            if (onNext) {
+        RxPermissions(this).requestWriteStorageWithApi33(grantFun = {
                 viewModel.viewModelScope.launch (Dispatchers.IO){
 
                     try {
@@ -167,13 +163,7 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
                     }
                 }
 
-            } else {
-//                ToastUtil.showToast(
-//                    requireContext(),
-//                    LocalUtils.getString(R.string.N980)
-//                )
-            }
-        }.isDisposed
+            } , unGrantFun =  {})
 
 
     }

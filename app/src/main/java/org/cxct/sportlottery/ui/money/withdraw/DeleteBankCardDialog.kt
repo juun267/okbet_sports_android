@@ -20,6 +20,7 @@ import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.checkRegisterListener
+import org.cxct.sportlottery.view.checkSMSCode
 
 
 class DeleteBankCardDialog(private val phoneNo: String,
@@ -95,17 +96,11 @@ class DeleteBankCardDialog(private val phoneNo: String,
     private fun initEditTextObserver() = binding.run {
         eetWithdrawalPassword.checkRegisterListener {
             resetConfirmEnable()
-//            etWithdrawalPassword.setError(getErrorMsg(it.length), false)
-            if (it.length == 4) {
-                btnSend.setBtnEnable(!countDownGoing)
-            } else {
-                btnSend.setBtnEnable(false)
-            }
+            etWithdrawalPassword.setError(getErrorMsg(it.length), false)
         }
 
-        eetSmsCode.checkRegisterListener {
+        eetSmsCode.checkSMSCode(etSmsValidCode) {
             resetConfirmEnable()
-//            etSmsValidCode.setError(getErrorMsg(it.length), false)
         }
     }
 
@@ -118,11 +113,11 @@ class DeleteBankCardDialog(private val phoneNo: String,
     }
 
     private fun resetConfirmEnable() = binding.run {
-//        tvConfirm.isEnabled = eetWithdrawalPassword.text.toString().length == 4 && (!StaticData.isNeedOTPBank() || eetSmsCode.text.toString().length == 4)
+        tvConfirm.isEnabled = eetWithdrawalPassword.text.toString().length == 4 && (!StaticData.isNeedOTPBank() || eetSmsCode.text.toString().length == 4)
+        tvConfirm.setBtnEnable(tvConfirm.isEnabled)
     }
 
     private fun setUpBtn() = binding.run {
-        btnSend.setBtnEnable(false)
         tvCancel.setOnClickListener { dismiss() }
         btnSend.setOnClickListener {
             val verifyCodeDialog = VerifyCodeDialog()
@@ -137,20 +132,20 @@ class DeleteBankCardDialog(private val phoneNo: String,
             val pwd = eetWithdrawalPassword.text.toString()
             val code = eetSmsCode.text.toString()
             if (pwd.isEmpty()) {
-                ToastUtil.showToast(it.context, getString(R.string.hint_please_enter_withdraw_password))
+                etWithdrawalPassword.setError(getString(R.string.error_input_empty),false)
                 return@setOnClickListener
             }
             if (pwd.length != 4) {
-                ToastUtil.showToast(it.context, getString(R.string.error_withdraw_password))
+                etWithdrawalPassword.setError(getString(R.string.error_withdraw_password),false)
                 return@setOnClickListener
             }
 
-            if (pwd.isEmpty()) {
-                ToastUtil.showToast(it.context, getString(R.string.P218))
+            if (code.isEmpty()) {
+                etSmsValidCode.setError(getString(R.string.P218),false)
                 return@setOnClickListener
             }
-            if (pwd.length != 4) {
-                ToastUtil.showToast(it.context, getString(R.string.sms_code_length_error))
+            if (code.length != 4) {
+                etSmsValidCode.setError(getString(R.string.sms_code_length_error),false)
                 return@setOnClickListener
             }
 
