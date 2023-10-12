@@ -44,7 +44,7 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                 }
                 //bingo
                 HomeTopView.OkBingo->{
-                    ivSportCover.setImageResource(R.drawable.img_esport)
+                    ivSportCover.setImageResource(R.drawable.img_esports_h)
                     if (!item.isOpen()) {
                         tvSportClose.visible()
                         tvSportClose.text=context.getString(R.string.N700)
