@@ -349,10 +349,6 @@ class ChatViewModel(
                 guestChatInit()
             }
         }
-        viewModelScope.launch {
-
-
-        }
         return super.checkLoginStatus()
     }
 
@@ -408,10 +404,11 @@ class ChatViewModel(
 
             if (sign != null) {
                 val result = ChatRepository.chatInit(sign!!)
+                val chatRoom = ChatRepository.chatRoom
                 errorMsg = result.msg
-                if (result.succeeded()) {
+                if (result.succeeded() && chatRoom != null) {
                     Timber.i("[Chat] 初始化成功 用戶遊客獲取房間列表")
-                    enterRoom()
+                    enterRoom(chatRoom)
                     userIsSpeak = result?.getData()?.state == 0 //state（0正常、1禁言、2禁止登录)
                     if(!isInitEmoji){
                         isInitEmoji=true
@@ -436,9 +433,10 @@ class ChatViewModel(
         repeat(maxInitRetry) {
             Timber.i("[Chat] guest init 失敗 重新 init, 次數 -> $it")
             var result = ChatRepository.chatGuestInit()
-            if (result.succeeded()) {
+            val chatRoom = ChatRepository.chatRoom
+            if (result.succeeded() && chatRoom != null) {
                 Timber.i("[Chat] 初始化成功 訪客獲取房間列表")
-                enterRoom()
+                enterRoom(chatRoom)
                 return@launch
             }
 
@@ -476,13 +474,13 @@ class ChatViewModel(
         }
         return@launch
     }
-    private suspend fun enterRoom(){
+    private suspend fun enterRoom(chatRoom: Row){
         ChatService.connect() // 链接聊天室
-        if (ChatRepository.chatRoomID != ChatRepository.chatRoom!!.id) {
+        if (ChatRepository.chatRoomID != chatRoom.id) {
             //背景返回之後，比較既有roomId，如果不同才重新joinRoom
-            joinRoom(ChatRepository.chatRoom!!)
+            joinRoom(chatRoom)
         } else {
-            subscribeRoomAndUser(ChatRepository.chatRoom!!)
+            subscribeRoomAndUser(chatRoom)
         }
     }
 
