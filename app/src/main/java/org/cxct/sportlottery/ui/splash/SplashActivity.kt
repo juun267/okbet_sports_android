@@ -254,10 +254,10 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
 
     private var isSkiped = false
     override fun startActivity(intent: Intent) {
-        if (!isSkiped) {
+        if (!isSkiped && intent.component?.packageName == packageName) {
             isSkiped = true
-            super.startActivity(intent)
         }
+        super.startActivity(intent)
     }
 
     private fun sendToMain(config: ConfigResult?){
