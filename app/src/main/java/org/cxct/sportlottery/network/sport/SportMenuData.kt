@@ -9,5 +9,10 @@ data class SportMenuData(
     @Json(name = "menu")
     val menu: Menu,
     @Json(name = "atStart")
-    val atStart: Sport
+    val atStart: Sport,
+    @Json(name = "in12hr")
+    val in12hr: Sport,
+    @Json(name = "in24hr")
+    val in24hr: Sport,
+
 )

@@ -8,7 +8,6 @@ import org.cxct.sportlottery.ui.maintab.games.bean.FollowMenuBean
 class RecyclerHomeFollowAdapter : BindingAdapter<FollowMenuBean, ItemHomeFollowBinding>() {
 
     override fun onBinding(position: Int, binding: ItemHomeFollowBinding, item: FollowMenuBean) {
-        binding.tvName.text=item.name
         binding.ivCover.load(item.icon)
     }
 }

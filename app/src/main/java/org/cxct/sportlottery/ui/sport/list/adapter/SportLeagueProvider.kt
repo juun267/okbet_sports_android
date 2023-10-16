@@ -16,11 +16,8 @@ import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.util.AppFont
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.setArrowSpin
-import org.cxct.sportlottery.util.setExpandArrow
-import org.cxct.sportlottery.util.setLeagueLogo
 import splitties.views.lines
 
 
@@ -32,6 +29,7 @@ class SportLeagueProvider(
     private val tvLeagueNameId = View.generateViewId()
     private val ivCountryId = View.generateViewId()
     private val ivArrowId = View.generateViewId()
+    private val tvNumId = View.generateViewId()
     private val dividerId = View.generateViewId()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -81,6 +79,20 @@ class SportLeagueProvider(
             }
         }
         root.addView(ivArrow)
+        val tvNum = AppCompatTextView(context).apply {
+            id = tvNumId
+            background = ContextCompat.getDrawable(context,R.drawable.bg_blue_radius_10_stroke)
+            setTextColor(ContextCompat.getColor(context,R.color.color_025BE8))
+            typeface = Typeface.DEFAULT_BOLD
+            gravity = Gravity.CENTER
+            layoutParams = FrameLayout.LayoutParams(-2, wh20).apply {
+                gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
+                rightMargin = 12.dp
+                setPadding(4.dp,0,4.dp,0)
+                minWidth = 26.dp
+            }
+        }
+        root.addView(tvNum)
 
         val divider = View(context)
         divider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_D4E1F1))
@@ -98,10 +110,16 @@ class SportLeagueProvider(
         helper.setVisible(dividerId, helper.bindingAdapterPosition == 0)
         helper.getView<ImageView>(ivCountryId).setLeagueLogo(item.league.categoryIcon)
         setExpandArrow(helper.getView(ivArrowId), leagueOdd.isExpanded)
+        helper.setText(tvNumId,leagueOdd.matchOdds.size.toString())
+        helper.setVisible(ivArrowId,leagueOdd.isExpanded)
+        helper.setGone(tvNumId,leagueOdd.isExpanded)
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
-        setExpandArrow(helper.getView(ivArrowId), (item as LeagueOdd).isExpanded)
+        val leagueOdd = item as LeagueOdd
+        setExpandArrow(helper.getView(ivArrowId), leagueOdd.isExpanded)
+        helper.setVisible(ivArrowId, leagueOdd.isExpanded)
+        helper.setGone(tvNumId,leagueOdd.isExpanded)
     }
 
     override fun onClick(helper: BaseViewHolder, view: View, item: BaseNode, position: Int) {
@@ -109,7 +127,11 @@ class SportLeagueProvider(
         adapter.nodeExpandOrCollapse(item, parentPayload = position)
         val league = item as LeagueOdd
         helper.getView<ImageView>(ivArrowId).apply {
-            setArrowSpin(league.isExpanded, true) { setExpandArrow(this, league.isExpanded) }
+            setArrowSpin(league.isExpanded, true) {
+                setExpandArrow(this, league.isExpanded)
+                helper.setVisible(ivArrowId, league.isExpanded)
+                helper.setGone(tvNumId,league.isExpanded)
+            }
         }
     }
 

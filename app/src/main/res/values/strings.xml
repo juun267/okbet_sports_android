@@ -1635,5 +1635,6 @@
     <string name="P216">Redeem Code Deposit</string>
     <string name="P218">OTP verification code</string>
     <string name="P219">Please enter the verification code</string>
-
+    <string name="home_tab_in12hr">In Next 12 Hours</string>
+    <string name="home_tab_in24hr">In Next 24 Hours</string>
 </resources>

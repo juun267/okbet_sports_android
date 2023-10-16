@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport.oddsbtn
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -22,6 +21,7 @@ class PlayCateView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
+    open val nameLayout: LinearLayout
     private val homeText: TextView
     private val awayText: TextView
     private val drawText: TextView
@@ -39,7 +39,7 @@ class PlayCateView @JvmOverloads constructor(
         layoutParams = ViewGroup.LayoutParams(200.dp, -1)
         12.dp.let { setPadding(it, 0, it, 0) }
 
-        val nameLayout = LinearLayout(context)
+        nameLayout = LinearLayout(context)
         val param = LayoutParams(0, -1, 1f)
         homeText = createNameTextView()
         nameLayout.addView(homeText, param)

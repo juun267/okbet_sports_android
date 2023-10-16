@@ -88,6 +88,7 @@ data class MatchInfo(
     var startTimeDisplay: String? = null
 
     var isFavorite = false
+    var expand = true
 
     override var homeTotalScore: Int? = null
     override var awayTotalScore: Int? = null
