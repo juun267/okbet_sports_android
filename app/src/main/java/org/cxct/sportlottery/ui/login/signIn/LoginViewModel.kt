@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
@@ -191,6 +192,11 @@ class LoginViewModel(
             toast(loginData.msg!!)
             return
         }
+        if (loginData.ifnew != false) {
+            AFInAppEventUtil.register("username")
+        } else {
+            AFInAppEventUtil.login(loginData.uid.toString())
+        }
         loginRepository.setUpLoginData(loginData)
         checkBasicInfo(loginResult) {
             //继续登录
@@ -198,11 +204,6 @@ class LoginViewModel(
                 runWithCatch { userInfoRepository.getUserInfo() }
             _loginResult.postValue(loginResult!!)
             RegisterSuccessDialog.ifNew = loginData.ifnew==true
-            if (loginData.ifnew != false) {
-                AFInAppEventUtil.register("username")
-            } else {
-                AFInAppEventUtil.login(loginData.uid.toString())
-            }
         }
     }
     /**
@@ -219,25 +220,29 @@ class LoginViewModel(
             block()
             return
         }
-        //用户完善信息开关
-        val infoSwitchResult = doNetwork(androidContext) { loginRepository.getUserInfoSwitch() }
-        //是否已完善信息
-        val userInfoCheck = doNetwork(androidContext) { loginRepository.getUserInfoCheck() }
-        if (infoSwitchResult != null && userInfoCheck != null) {
-            val isSwitch = infoSwitchResult.t
-            val isFinished = userInfoCheck.t
-            //是否需要完善
-            if (checkNeedCompleteInfo(isSwitch, isFinished)) {
-                //跳转到完善页面
-                registerInfoEvent.post(loginResult)
+        viewModelScope.launch {
+            //用户完善信息开关
+            val infoSwitchDefered = async { doNetwork(androidContext) { loginRepository.getUserInfoSwitch() } }
+            //是否已完善信息
+            val userInfoCheckDefered = async { doNetwork(androidContext) { loginRepository.getUserInfoCheck() } }
+            val infoSwitchResult = infoSwitchDefered.await()
+            val userInfoCheck = userInfoCheckDefered.await()
+            if (infoSwitchResult != null && userInfoCheck != null) {
+                val isSwitch = infoSwitchResult.t
+                val isFinished = userInfoCheck.t
+                //是否需要完善
+                if (checkNeedCompleteInfo(isSwitch, isFinished)) {
+                    //跳转到完善页面
+                    registerInfoEvent.post(loginResult)
+                } else {
+                    //执行原有登录逻辑
+                    block()
+                }
             } else {
-                //执行原有登录逻辑
-                block()
-            }
-        } else {
 //            loginRepository.clear()
-            block()
-            hideLoading()
+                block()
+                hideLoading()
+            }
         }
 
     }
