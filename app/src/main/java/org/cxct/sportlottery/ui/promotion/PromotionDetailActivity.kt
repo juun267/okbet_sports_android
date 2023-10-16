@@ -52,7 +52,9 @@ class PromotionDetailActivity :
              setActivity(it)
         }
         viewModel.activityApply.observe(this) {
-            binding.tvDeposit.text = TextUtil.formatMoney(0)
+            if (viewModel.activityDetail.value?.activityType!=3){
+                binding.tvDeposit.text = TextUtil.formatMoney(0)
+            }
             binding.tvReward.text = TextUtil.formatMoney(0)
             binding.linApply.isEnabled = false
             binding.linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
