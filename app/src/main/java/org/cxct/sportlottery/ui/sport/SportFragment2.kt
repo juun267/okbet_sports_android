@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
@@ -96,6 +97,11 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         background = null
         attach(this@SportFragment2, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
+        betlistIcon.setOnClickListener {
+            loginedRun(it.context) {
+                startActivity(BetRecordActivity::class.java)
+            }
+        }
         ivMenuLeft.setOnClickListener {
             getMainTabActivity().showSportLeftMenu()
             EventBusUtil.post(MenuEvent(true))
