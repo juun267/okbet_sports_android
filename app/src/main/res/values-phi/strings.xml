@@ -1481,5 +1481,7 @@
     <string name="P218">OTP verification code</string>
     <string name="P219">Pakilagay ang code</string>
     <string name="P225">Lose Amount</string>
+    <string name="P228">In Next 12 Hours</string>
+    <string name="P229">In Next 24 Hours</string>
 </resources>
 

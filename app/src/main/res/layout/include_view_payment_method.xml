@@ -46,15 +46,18 @@
             android:id="@+id/rcvPayment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="5dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="@dimen/margin_8"
+            android:background="@drawable/bg_white_radius_8"
+            android:padding="@dimen/margin_5"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_view_payment_method"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:spanCount="4"
-            tools:itemCount="4"
-            tools:listitem="@layout/item_view_payment_method" />
+             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

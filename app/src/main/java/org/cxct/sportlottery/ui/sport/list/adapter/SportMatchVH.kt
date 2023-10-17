@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.doOnLayout
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,8 +25,11 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.sport.common.OddButtonPagerAdapter2
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
+import org.cxct.sportlottery.view.expand
+import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.layoutmanager.CustomLinearLayoutManager
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import java.util.*
@@ -89,6 +93,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     fun resetStatusView() = binding.run {
         onStop()
         leagueOddMatchStatus.text = ""
+        tvCollseStatus.text = ""
+        tvCollseTime.text = ""
         setViewGone(leagueNeutral,
             leagueCornerKicks,
             leagueSpt,
@@ -127,6 +133,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     fun setupMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
         leagueOddMatchNameHome.text = matchInfo?.homeName
         leagueOddMatchNameAway.text = matchInfo?.awayName
+        tvCollseHomeName.text = leagueOddMatchNameHome.text
+        tvCollseAwayName.text = leagueOddMatchNameAway.text
 
         setupMatchScore(matchInfo, matchType)
         leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
@@ -138,7 +146,14 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
 
 //        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
 
-        matchInfo?.let { bindLiveStatus(it) }
+        matchInfo?.let { matchInfo->
+            bindLiveStatus(matchInfo)
+            setLinCollse(matchInfo)
+            setOnClickListeners(linCollse,ivCollseArrow,llLeftPanel,viewVpTitle){
+                matchInfo.expand = !matchInfo.expand
+                setLinCollse(matchInfo)
+            }
+        }
     }
 
     fun bindOTStatus(matchInfo: MatchInfo?) = binding.run {
@@ -359,7 +374,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         } else {
             "00:00"
         }
-
+        binding.tvCollseTime.text = binding.leagueOddMatchTime.text
         matchInfo.leagueTimeRecode = timeMillis
     }
 
@@ -368,6 +383,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             binding.root.context.getString(R.string.at_start_remain_minute),
             if (timeMillis > 1000) TimeUtil.longToMinute(timeMillis) else 0)
         matchInfo.leagueTimeRecode = timeMillis
+        binding.tvCollseTime.text = binding.leagueOddMatchTime.text
     }
 
     fun setupMatchTimeAndStatus(matchInfo: MatchInfo,
@@ -404,16 +420,22 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             }
             isVisible = text.isNotEmpty()
         }
+        binding.tvCollseStatus.apply {
+            text = binding.leagueOddMatchStatus.text
+            isVisible = binding.leagueOddMatchStatus.isVisible
+        }
 
         if (isTimeInPlay) {
             if (matchInfo.gameType == GameType.TN.key
                 || !isTimerEnable(matchInfo?.gameType, matchType)
                 || !needCountStatus(matchInfo.socketMatchStatus, matchInfo.leagueTime)) {
                 binding.leagueOddMatchTime.gone()
+                binding.tvCollseTime.gone()
                 return
             }
 
             binding.leagueOddMatchTime.visible()
+            binding.tvCollseTime.visible()
             var timeMillis = (matchInfo.leagueTime?.toLong() ?: 0) * 1000
             matchInfo.leagueTimeRecode = timeMillis
             onTimerUpdate(timeMillis, matchInfo)
@@ -456,12 +478,14 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         }
 
         binding.leagueOddMatchTime.visible()
+        binding.tvCollseTime.visible()
         if(matchInfo?.startTime == null) {
             binding.leagueOddMatchTime.text = ""
         } else {
             binding.leagueOddMatchTime.text = TimeUtil.timeFormat(matchInfo.startTime,
                     if (TimeUtil.isTimeToday(matchInfo.startTime)) TimeUtil.HM_FORMAT else TimeUtil.DM_HM_FORMAT)
         }
+        binding.tvCollseTime.text =  binding.leagueOddMatchTime.text
     }
 
     fun setupOddsButton(matchType: MatchType,
@@ -473,28 +497,26 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     }
 
     fun updateMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
-        leagueOddMatchNameHome.text = matchInfo?.homeName
         leagueOddMatchNameAway.text = matchInfo?.awayName
+        leagueOddMatchNameHome.text = matchInfo?.homeName
+        tvCollseHomeName.text = leagueOddMatchNameHome.text
+        tvCollseAwayName.text = leagueOddMatchNameAway.text
         setupMatchScore(matchInfo, matchType)
         leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
         leagueNeutral.isVisible = matchInfo?.neutral == 1
-        matchInfo?.let { bindLiveStatus(it) }
+        matchInfo?.let {
+            bindLiveStatus(it)
+        }
     }
 
     fun updateFavoriteStatus(matchInfo: MatchInfo?) {
         binding.leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
     }
 
-    fun setupCsTextLayout(matchType: MatchType, item: MatchOdd) = binding.run {
-        if (matchType == MatchType.CS) {
-            llCsTextLayout.visible()
-            setMatchCsLayout(item, tvCorrect1, tvCorrect2, tvCorrect3)
-        } else {
-            llCsTextLayout.gone()
-        }
+    private fun setLinCollse(matchInfo: MatchInfo)=binding.run{
+        linCollse.isVisible = !matchInfo.expand
+        linMatch.isVisible = matchInfo.expand
+        frBottom.isVisible = matchInfo.expand
     }
-
-
-    
 }

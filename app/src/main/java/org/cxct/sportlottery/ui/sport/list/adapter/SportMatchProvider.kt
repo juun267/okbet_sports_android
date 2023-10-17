@@ -89,7 +89,6 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
         binding.updateMatchInfo(matchInfo, adapter.matchType)
         matchInfo?.let { binding.setupMatchTimeAndStatus(it, adapter.matchType) }
         binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
-        binding.setupCsTextLayout(adapter.matchType, matchOdd)
     }
 
 
