@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:elevation="0dp"
+    android:foreground="@drawable/fg_ripple"
+    app:cardBackgroundColor="@color/color_F7F7F7"
+    app:cardCornerRadius="@dimen/margin_12"
+    app:cardElevation="0dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1px">
+
+                <ImageView
+                    android:id="@+id/iv_cover"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"/>
+
+                <TextView
+                    android:id="@+id/tv_firm_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="ARCADE" />
+
+                <ImageView
+                    android:id="@+id/iv_fav"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="right"
+                    android:padding="4dp"
+                    android:src="@drawable/selector_game_fav" />
+
+
+                <eightbitlab.com.blurview.BlurView
+                    android:id="@+id/blurBottom"
+                    android:layout_gravity="bottom"
+                    android:background="#40000000"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="26dp">
+                </eightbitlab.com.blurview.BlurView>
+                <TextView
+                    android:id="@+id/tvPot"
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp"
+                    android:layout_gravity="bottom"
+                    android:singleLine="true"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:textColor="#F2FFA0"
+                    android:paddingHorizontal="2dp"
+                    android:textSize="13sp"
+                    android:textFontWeight="700"
+                    android:text="" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_414655"
+                android:textSize="13sp"
+                tools:text="Game Name" />
+        </LinearLayout>
+
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/blurCard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <TextView
+        android:id="@+id/tvCover"
+        tools:text="@string/N702"
+        android:textSize="@dimen/textSize14sp"
+        android:gravity="center"
+        android:paddingHorizontal="4dp"
+        android:textColor="@color/color_0D2245"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</androidx.cardview.widget.CardView>

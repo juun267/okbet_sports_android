@@ -30,6 +30,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.GameChildAdapter
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
+import org.cxct.sportlottery.ui.maintab.games.SportFootGameAdapter
 import org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -42,7 +43,7 @@ class SportFooterGamesView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr), OnItemClickListener {
 
-    private val okGamesAdapter by lazy { GameChildAdapter(::onFavoriteClick,gameEntryType = GameEntryType.OKGAMES, showFavorite = false).apply { setOnItemClickListener(this@SportFooterGamesView) } }
+    private val okGamesAdapter by lazy { SportFootGameAdapter(::onFavoriteClick,gameEntryType = GameEntryType.OKGAMES, showFavorite = false).apply { setOnItemClickListener(this@SportFooterGamesView) } }
     private lateinit var fragment: BaseFragment<*>
     private lateinit var okGamesViewModel: OKGamesViewModel
     private lateinit var noMoreText: TextView
@@ -100,12 +101,16 @@ class SportFooterGamesView @JvmOverloads constructor(
         recyclerView.isNestedScrollingEnabled = false
         recyclerView.setLinearLayoutManager(RecyclerView.HORIZONTAL)
         recyclerView.adapter = okGamesAdapter
-        recyclerView.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+        recyclerView.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
         recyclerView.setRecycledViewPool(gameItemViewPool)
         addView(recyclerView)
     }
     private fun initBottomView() {
         homeButtomView = HomeButtomView(context)
+        homeButtomView.apply {
+            findViewById<View>(R.id.layoutPayment).gone()
+            findViewById<View>(R.id.homeFollowView).gone()
+        }
         addView(homeButtomView)
     }
     fun setUp(fragment: BaseFragment<*>, viewmodel: OKGamesViewModel) {
