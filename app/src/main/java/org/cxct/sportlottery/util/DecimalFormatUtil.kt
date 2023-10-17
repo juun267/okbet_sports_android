@@ -16,7 +16,7 @@ open class DecimalFormatUtil {
     protected fun doNumberFormat(number: Any, pattern: String, applyFun: ((DecimalFormat) -> Unit)? = null): String {
         Locale.setDefault(Locale.US)
         val df = DecimalFormat(pattern).apply { applyFun?.invoke(this) }
-        df.roundingMode = RoundingMode.FLOOR //不进行四舍五入
+//        df.roundingMode = RoundingMode.FLOOR //不进行四舍五入
         return df.format(number)
     }
 
