@@ -19,8 +19,8 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 33
-        versionName "1.3.4"
-        versionCode 106
+        versionName OKBET_VERSION_NAME as String
+        versionCode OKBET_VERSION_CODE as int
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -187,7 +187,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             def date = new SimpleDateFormat("yyyyMMddHHmm").format(new Date())
-            outputFileName = variant.flavorName + '_' + getVersionName() + '_' + date + '.apk'
+            outputFileName = variant.flavorName + "_" + versionCode + '_' + versionName + '_' + date + '.apk'
         }
     }
 

@@ -245,6 +245,12 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         exitProcess(0)
     }
 
+    override fun onResume() {
+        super.onResume()
+        isStoped = false
+    }
+
+    private var isStoped = false
     override fun onStop() {
         super.onStop()
         if (isSkiped) {
@@ -257,7 +263,9 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         if (!isSkiped && intent.component?.packageName == packageName) {
             isSkiped = true
         }
-        super.startActivity(intent)
+        if(!isStoped) {
+            super.startActivity(intent)
+        }
     }
 
     private fun sendToMain(config: ConfigResult?){
