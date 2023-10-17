@@ -92,6 +92,10 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
                 tvPot.setTextColorGradient()
                 tvPot.text="$showCurrencySign ${TextUtil.formatMoney(item.jackpotAmount)}"
             }
+            ivCover.layoutParams.apply {
+                height = if (gameEntryType==GameEntryType.OKGAMES) 110.dp else 88.dp
+                ivCover.layoutParams = this
+            }
             ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
             tvName.text = item.gameName
             tvFirmName.text = item.firmName

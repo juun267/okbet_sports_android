@@ -81,17 +81,17 @@ class SportFooterGamesView @JvmOverloads constructor(
         params.bottomMargin = 8.dp
         addView(moreLabelLayout, params)
 
-        val icon = AppCompatImageView(context)
-        icon.setImageResource(R.drawable.ic_home_okgames_title)
-        24.dp.let { moreLabelLayout.addView(icon, LayoutParams(it, it)) }
+//        val icon = AppCompatImageView(context)
+//        icon.setImageResource(R.drawable.ic_home_okgames_title)
+//        24.dp.let { moreLabelLayout.addView(icon, LayoutParams(it, it)) }
 
         val text = AppCompatTextView(context)
-        text.setPadding(4.dp, 0, 0, 0)
+//        text.setPadding(4.dp, 0, 0, 0)
         text.setTextColor(ContextCompat.getColor(context, R.color.color_000000))
         text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
         text.paint.style = Paint.Style.FILL_AND_STROKE
         text.paint.strokeWidth = 0.9f
-        text.setText(R.string.J203)
+        text.setText(R.string.casino)
         moreLabelLayout.addView(text, LayoutParams(0, -2, 1f))
 
 

@@ -22,8 +22,8 @@ class TodayMenuPop(val context: Activity,val onItemClickListener: (position:Int)
     private var names = listOf(
         context.getString(R.string.home_tab_today),
         context.getString(R.string.home_tab_at_start),
-        context.getString(R.string.home_tab_in12hr),
-        context.getString(R.string.home_tab_in24hr),
+        context.getString(R.string.P228),
+        context.getString(R.string.P229),
     )
     private var counts = mutableListOf<Int>(
         0,
@@ -81,8 +81,8 @@ class TodayMenuPop(val context: Activity,val onItemClickListener: (position:Int)
         counts = countOfType.toMutableList()
         (rgTodayMenu?.getChildAt(0) as TextView).text = context.getString(R.string.home_tab_today)+" "+counts[0].toString()
         (rgTodayMenu?.getChildAt(1) as TextView).text = context.getString(R.string.home_tab_at_start)+" "+counts[1].toString()
-        (rgTodayMenu?.getChildAt(2) as TextView).text = context.getString(R.string.home_tab_in12hr)+" "+counts[2].toString()
-        (rgTodayMenu?.getChildAt(3) as TextView).text = context.getString(R.string.home_tab_in24hr)+" "+counts[3].toString()
+        (rgTodayMenu?.getChildAt(2) as TextView).text = context.getString(R.string.P228)+" "+counts[2].toString()
+        (rgTodayMenu?.getChildAt(3) as TextView).text = context.getString(R.string.P229)+" "+counts[3].toString()
         todayTabItem?.customView?.apply {
             tv_title.text = names[lastSelectPosition]
             tv_number.text = counts[lastSelectPosition].toString()

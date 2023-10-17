@@ -24,8 +24,8 @@ enum class MatchType private constructor(val postValue: String, @StringRes val r
     OTHER_EPS("OTHER_EPS", R.string.my_favorite),
     DETAIL("DETAIL", R.string.my_favorite),
     SINGLE("SINGLE",R.string.ou_hdp_1x2_title),
-    IN12HR("IN12HR",R.string.home_tab_in12hr),
-    IN24HR("IN12HR",R.string.home_tab_in24hr),
+    IN12HR("IN12HR",R.string.P228),
+    IN24HR("IN12HR",R.string.P229),
     FIBA("FIBA", R.string.fiba_2023);
 
     companion object {

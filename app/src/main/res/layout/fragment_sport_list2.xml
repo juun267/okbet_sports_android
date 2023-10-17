@@ -87,7 +87,10 @@
                         android:src="@drawable/ic_arrow_up" />
 
                 </LinearLayout>
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_0.5"
+                    android:background="@color/color_D4E1F1"/>
             </LinearLayout>
 
 
