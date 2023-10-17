@@ -333,6 +333,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                 it.txvOut,
                 it.leagueOddMatchHalfStatus,
                 it.leagueOddMatchBasebag)
+            binding.tvCollseStatus.text = it.leagueOddMatchBbStatus.text
         }
 
     }
