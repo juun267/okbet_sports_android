@@ -5,21 +5,13 @@ import android.content.Intent
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
-import com.facebook.FacebookSdk
-import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 
 object AuthManager {
-
-    init {
-        FacebookSdk.sdkInitialize(MultiLanguagesApplication.mInstance)
-        AppEventsLogger.activateApp(MultiLanguagesApplication.mInstance)
-    }
 
     const val RC_SIGN_IN = 0x123
     private val callbackManager = CallbackManager.Factory.create()
