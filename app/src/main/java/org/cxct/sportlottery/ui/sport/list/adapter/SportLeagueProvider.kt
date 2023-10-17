@@ -41,7 +41,7 @@ class SportLeagueProvider(
 
         val topDivider = View(context)
         topDivider.id = dividerId
-        topDivider.layoutParams = ViewGroup.LayoutParams(-1, 0.5f.dp)
+        topDivider.layoutParams = ViewGroup.LayoutParams(-1, 4.dp)
         topDivider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_E1EDFF))
         root.addView(topDivider)
 
@@ -107,7 +107,7 @@ class SportLeagueProvider(
     override fun convert(helper: BaseViewHolder, item: BaseNode) {
         val leagueOdd = item as LeagueOdd
         helper.setText(tvLeagueNameId, leagueOdd.league.name)
-        helper.setVisible(dividerId, helper.bindingAdapterPosition == 0)
+        helper.setGone(dividerId, helper.bindingAdapterPosition == 0)
         helper.getView<ImageView>(ivCountryId).setLeagueLogo(item.league.categoryIcon)
         setExpandArrow(helper.getView(ivArrowId), leagueOdd.isExpanded)
         helper.setText(tvNumId,leagueOdd.matchOdds.size.toString())

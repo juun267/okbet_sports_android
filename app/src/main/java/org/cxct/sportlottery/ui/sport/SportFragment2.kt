@@ -61,7 +61,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         MatchType.TODAY,
         MatchType.AT_START,
         MatchType.IN12HR,
-        MatchType.IN12HR
+        MatchType.IN24HR
     )
     private val favoriteIndex = matchTypeTab.indexOf(MatchType.MY_EVENT)
     private inline fun getMainTabActivity() = activity as MainTabActivity
@@ -70,6 +70,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private val mianViewModel: OKGamesViewModel by viewModel()
     private var todayTabItem:TabLayout.Tab?=null
     private val todayMenuPop by lazy { TodayMenuPop(requireActivity(), onItemClickListener = { position ->
+           matchTypeTab[2] = matchTypeTodayTab[position]
            selectTab(2)
       })
     }
@@ -190,11 +191,11 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
         addTab(getString(R.string.home_tab_in_play), countInPlay, ++position)
 //        addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
-        when (todayMenuPop.lastSelectPosition){
-            0-> addTab(getString(R.string.home_tab_today), countToday, ++position)
-            1-> addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
-            2-> addTab(getString(R.string.home_tab_in12hr), countAtStart, ++position)
-            3-> addTab(getString(R.string.home_tab_in24hr), countAtStart, ++position)
+        when (matchTypeTab[2]){
+            MatchType.TODAY-> addTab(getString(R.string.home_tab_today), countToday, ++position)
+            MatchType.AT_START-> addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
+            MatchType.IN12HR-> addTab(getString(R.string.P228), countAtStart, ++position)
+            MatchType.IN24HR-> addTab(getString(R.string.P229), countAtStart, ++position)
         }
         addTab(getString(R.string.home_tab_early), countEarly, ++position)
         addTab(getString(R.string.home_tab_parlay), countParlay, ++position)
@@ -228,8 +229,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             ivArrow.isVisible = when(name){
                 getString(R.string.home_tab_today),
                 getString(R.string.home_tab_at_start),
-                getString(R.string.home_tab_in12hr),
-                getString(R.string.home_tab_in24hr)->true
+                getString(R.string.P228),
+                getString(R.string.P229)->true
                 else ->false
             }
             if(ivArrow.isVisible){
@@ -252,9 +253,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     private fun selectTab(position: Int) {
         var matchType =  matchTypeTab.getOrNull(position) ?: return
-        if (matchType==MatchType.TODAY){
-            matchType=matchTypeTodayTab[todayMenuPop.lastSelectPosition]
-        }
         currentMatchType = matchType
         navGameFragment(matchType)
     }
