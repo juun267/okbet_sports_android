@@ -57,6 +57,38 @@ class LeagueSelectViewModel(
         } else if (matchType == MatchType.END_SCORE.postValue) {
             playCateMenuCode = MatchType.END_SCORE.postValue
         }
+         var selectStartTime:String?=""
+         var selectEndTime:String?=""
+         when(matchType){
+             MatchType.AT_START.postValue->{
+                 TimeUtil.getAtStartTimeRangeParams().let {
+                     selectStartTime = it.startTime
+                     selectEndTime = it.endTime
+                 }
+             }
+             MatchType.TODAY.postValue->{
+                 TimeUtil.getTodayTimeRangeParams().let {
+                     selectStartTime = it.startTime
+                     selectEndTime = it.endTime
+                 }
+             }
+             MatchType.IN12HR.postValue->{
+                 TimeUtil.getInHrRangeParams(12).let {
+                     selectStartTime = it.startTime
+                     selectEndTime = it.endTime
+                 }
+             }
+             MatchType.IN24HR.postValue->{
+                 TimeUtil.getInHrRangeParams(24).let {
+                     selectStartTime = it.startTime
+                     selectEndTime = it.endTime
+                 }
+             }
+             else->{
+                 selectStartTime=startTime
+                 selectEndTime=endTime
+             }
+         }
         if (jobGetOddsList?.isActive == true) {
             jobGetOddsList?.cancel()
         }
@@ -69,8 +101,8 @@ class LeagueSelectViewModel(
                         OddsListRequest(
                             gameType,
                             matchType,
-                            startTime = startTime,
-                            endTime = endTime,
+                            startTime = selectStartTime,
+                            endTime = selectEndTime,
                             playCateMenuCode = playCateMenuCode
                         )
                     )
@@ -93,8 +125,8 @@ class LeagueSelectViewModel(
                         OddsListRequest(
                             gameType,
                             matchType,
-                            startTime = startTime,
-                            endTime = endTime,
+                            startTime = selectStartTime,
+                            endTime = selectEndTime,
                             playCateMenuCode = playCateMenuCode
                         )
                     )

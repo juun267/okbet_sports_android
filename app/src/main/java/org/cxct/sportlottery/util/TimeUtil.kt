@@ -598,6 +598,19 @@ object TimeUtil {
                 get() = endTimeStamp.toString()
         }
     }
+    fun getInHrRangeParams(hours: Int): TimeRangeParams {
+        val calendar = Calendar.getInstance()
+        val startTimeStamp = calendar.timeInMillis
+        calendar.add(Calendar.HOUR_OF_DAY, hours)
+        val endTimeStamp = calendar.timeInMillis
+
+        return object : TimeRangeParams {
+            override val startTime: String
+                get() = startTimeStamp.toString()
+            override val endTime: String
+                get() = endTimeStamp.toString()
+        }
+    }
 
     fun getFutureDate(day: Int, locale: Locale = Locale.getDefault()): List<String> {
         val weekDateList = mutableListOf<String>()
