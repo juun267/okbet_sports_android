@@ -1480,7 +1480,7 @@
     <string name="P216">I-redeem ang Code Deposit</string>
     <string name="P218">OTP verification code</string>
     <string name="P219">Pakilagay ang code</string>
-    <string name="P228">In Next 12 Hours</string>
-    <string name="P229">In Next 24 Hours</string>
+    <string name="P228">Sa Susunod na 12 Oras</string>
+    <string name="P229">Sa Susunod na 24 Oras</string>
 </resources>
 

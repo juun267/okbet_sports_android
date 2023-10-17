@@ -297,6 +297,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
      */
     private inline fun setSptText(matchInfo: MatchInfo) {
         binding.leagueSpt.setMatchSptText(matchInfo)
+        binding.tvCollseStatus.text = binding.leagueSpt.text
     }
 
     /**
@@ -306,6 +307,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
      */
     private inline fun setCurrentPeroid(matchInfo: MatchInfo) {
         binding.tvPeroid.setMatchCurrentPeroid(matchInfo)
+        binding.tvCollseTime.text = binding.tvPeroid.text
     }
 
 
@@ -422,7 +424,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         }
         binding.tvCollseStatus.apply {
             text = binding.leagueOddMatchStatus.text
-            isVisible = binding.leagueOddMatchStatus.isVisible
+//            isVisible = binding.leagueOddMatchStatus.isVisible
         }
 
         if (isTimeInPlay) {
@@ -430,7 +432,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                 || !isTimerEnable(matchInfo?.gameType, matchType)
                 || !needCountStatus(matchInfo.socketMatchStatus, matchInfo.leagueTime)) {
                 binding.leagueOddMatchTime.gone()
-                binding.tvCollseTime.gone()
+//                binding.tvCollseTime.gone()
                 return
             }
 
