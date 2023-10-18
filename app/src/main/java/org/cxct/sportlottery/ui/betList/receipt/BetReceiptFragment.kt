@@ -27,11 +27,7 @@ import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.BetsFailedReasonUtil
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.toJson
-import splitties.views.setCompoundDrawables
-import org.cxct.sportlottery.util.setupSportStatusChange
 import timber.log.Timber
 
 
