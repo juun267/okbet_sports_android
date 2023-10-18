@@ -133,6 +133,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     fun setupMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
         leagueOddMatchNameHome.text = matchInfo?.homeName
         leagueOddMatchNameAway.text = matchInfo?.awayName
+        leagueOddMatchNameHome.requestLayout()
+        leagueOddMatchNameAway.requestLayout()
         tvCollseHomeName.text = leagueOddMatchNameHome.text
         tvCollseAwayName.text = leagueOddMatchNameAway.text
 
@@ -504,6 +506,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     fun updateMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
         leagueOddMatchNameAway.text = matchInfo?.awayName
         leagueOddMatchNameHome.text = matchInfo?.homeName
+        leagueOddMatchNameHome.requestLayout()
+        leagueOddMatchNameAway.requestLayout()
         tvCollseHomeName.text = leagueOddMatchNameHome.text
         tvCollseAwayName.text = leagueOddMatchNameAway.text
         setupMatchScore(matchInfo, matchType)

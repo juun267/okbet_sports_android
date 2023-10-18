@@ -11,9 +11,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="2dp"
-        android:textColor="@color/color_FFFFFF"
-        android:textSize="10sp"
+        android:textColor="@color/color_000000"
+        android:textSize="12sp"
         android:visibility="gone"
+        android:includeFontPadding="false"
         tools:text="10"
         tools:visibility="visible" />
 
@@ -29,8 +30,8 @@
 
     <ImageView
         android:id="@+id/league_odd_match_basebag"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_marginRight="5dp"
         android:src="@drawable/ic_bb_base_bag_0_0_0"
         android:visibility="gone"
@@ -42,8 +43,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
-        android:textColor="@color/color_FFFFFF"
+        android:textColor="@color/color_000000"
         android:textSize="@dimen/textSize12sp"
+        android:includeFontPadding="false"
         android:visibility="gone"
         tools:text="@string/game_out"
         tools:visibility="visible" />
