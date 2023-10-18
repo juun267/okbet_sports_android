@@ -307,7 +307,6 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
      */
     private inline fun setCurrentPeroid(matchInfo: MatchInfo) {
         binding.tvPeroid.setMatchCurrentPeroid(matchInfo)
-        updateCollse(matchInfo)
     }
 
 
@@ -517,17 +516,17 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             GameType.FT.key ->
                 setCollseStatusAndTime(binding.leagueOddMatchStatus,binding.leagueOddMatchTime)
             GameType.VB.key, GameType.TT.key ->
-                setCollseStatusAndTime(binding.leagueSpt,if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.tvPeroid else binding.leagueOddMatchStatus)
+                setCollseStatusAndTime(binding.leagueOddMatchStatus,if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.tvPeroid else binding.leagueOddMatchTime)
             GameType.TN.key ->
-                setCollseStatusAndTime(binding.leagueSpt,if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.tvPeroid else binding.leagueOddMatchStatus)
+                setCollseStatusAndTime(binding.leagueOddMatchStatus,if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.tvPeroid else binding.leagueOddMatchTime)
             GameType.BK.key ->
                 setCollseStatusAndTime(binding.leagueOddMatchStatus,binding.leagueOddMatchTime)
             GameType.BM.key ->
-                setCollseStatusAndTime(binding.leagueSpt,if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.tvPeroid else binding.leagueOddMatchStatus)
+                setCollseStatusAndTime(binding.leagueOddMatchStatus,if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.tvPeroid else binding.leagueOddMatchTime)
             GameType.BB.key ->
-                setCollseStatusAndTime(binding.contentBaseballStatus.leagueOddMatchBbStatus,if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.leagueOddMatchTime else binding.leagueOddMatchStatus)
+                setCollseStatusAndTime(if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.contentBaseballStatus.leagueOddMatchBbStatus else binding.leagueOddMatchStatus, binding.leagueOddMatchTime)
             GameType.CK.key ->
-                setCollseStatusAndTime(binding.leagueOddMatchStatus,binding.leagueOddMatchTime)
+                setCollseStatusAndTime(binding.leagueOddMatchStatus, binding.leagueOddMatchTime)
             else ->
                 setCollseStatusAndTime(binding.leagueOddMatchStatus,binding.leagueOddMatchTime)
         }
