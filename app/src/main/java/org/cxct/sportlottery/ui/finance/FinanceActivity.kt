@@ -37,12 +37,17 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::c
                     navRechargeWithdrawFragment()
                 }
                 getString(R.string.record_conversion) -> {
-                    navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToMoneyTransferRecordFragment())
+                    if (navController.currentDestination?.id == R.id.financeFragment) {
+                        navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToMoneyTransferRecordFragment())
+                    }
                 }
                 getString(R.string.record_history) -> {
-                    navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToAccountHistoryFragment())
+                    if (navController.currentDestination?.id == R.id.financeFragment) {
+                        navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToAccountHistoryFragment())
+                    }
                 }
                 getString(R.string.redenvelope_record) -> {
+                    if (navController.currentDestination?.id == R.id.financeFragment)
                     navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToRedEnvelopeFragment())
                 }
             }
