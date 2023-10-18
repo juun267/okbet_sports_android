@@ -9,21 +9,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
-import timber.log.Timber
 
 class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetReceiptCallback()) {
 
-    private val adapterScope = CoroutineScope(Dispatchers.Default)
-
     lateinit var refreshBetStatusFunction: (Long) -> Unit
     lateinit var refreshBetStatusFinishFunction: () -> Unit
-    lateinit var parlayOrSingleFunction: () -> Unit
 
     var interfaceStatusChangeListener: InterfaceStatusChangeListener? = null
 
@@ -33,15 +27,15 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             notifyDataSetChanged()
         }
 
-    var betParlayList: List<ParlayOdd>? = null
+    private var betParlayList: List<ParlayOdd>? = null
 
-    var betConfirmTime: Long? = 0
+    private var betConfirmTime: Long? = 0
 
     enum class ItemType { SINGLE, PARLAY }
 
-    val mHandler = Handler(Looper.getMainLooper())
+    private val mHandler = Handler(Looper.getMainLooper())
 
-    val mRunnableList: MutableList<Runnable?> by lazy {
+    private val mRunnableList: MutableList<Runnable?> by lazy {
         MutableList(itemCount) { _ -> null }
     }
 
@@ -65,11 +59,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             parlayList.map {
                 //標記串關第一項(NC1), 第一項需顯示賠率, 以parlayType做比對, 有投注的第一項不一定是NC1
                 parlayOrSingle?.invoke(ItemType.PARLAY)
-                if (betParlayList.first().parlayType == it.parlayType) {
-                    DataItem.ParlayData(it, true)
-                } else {
-                    DataItem.ParlayData(it)
-                }
+                DataItem.ParlayData(it)
             }
         } else {
             parlayOrSingle?.invoke(ItemType.SINGLE)
@@ -192,7 +182,6 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                 val itemData = getItem(position) as DataItem.ParlayData
                 holder.bind(
                     itemData.result,
-                    itemData.firstItem,
                     currentOddsType,
                     betParlayList,
                     interfaceStatusChangeListener,
@@ -240,7 +229,7 @@ sealed class DataItem {
         override val status = result.status
     }
 
-    data class ParlayData(val result: BetResult, val firstItem: Boolean = false) : DataItem() {
+    data class ParlayData(val result: BetResult) : DataItem() {
         override val orderNo = result.orderNo
         override val status = result.status
     }

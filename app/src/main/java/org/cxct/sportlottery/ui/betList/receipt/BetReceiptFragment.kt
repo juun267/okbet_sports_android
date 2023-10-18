@@ -19,7 +19,6 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentBetReceiptBinding
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.repository.showCurrencySign
@@ -28,11 +27,7 @@ import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.BetsFailedReasonUtil
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.toJson
-import splitties.views.setCompoundDrawables
-import org.cxct.sportlottery.util.setupSportStatusChange
 import timber.log.Timber
 
 
