@@ -55,7 +55,6 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
     }
 
     var currentItem: Item? = null
-    private set
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val itemView = SVGAImageView(parent.context)
@@ -73,6 +72,9 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
             loops = 1
             clearsAfterStop = false
             setAssetSvgIcon(GameType.getGameTypeMenuSVGA(item.code))
+            if (item.isSelected){
+                stepToFrame(0, true)
+            }
         }
         background = if (item.isSelected) bgDrawable else null
     }
