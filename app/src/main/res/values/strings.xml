@@ -1635,5 +1635,6 @@
     <string name="P216">Redeem Code Deposit</string>
     <string name="P218">OTP verification code</string>
     <string name="P219">Please enter the verification code</string>
+    <string name="P226">It has been some time since your last login. To ensure the security of your account, please perform an OTP verification.</string>
 
 </resources>

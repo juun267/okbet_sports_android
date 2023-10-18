@@ -1504,4 +1504,5 @@
     <string name="P216">Đổi mã nạp tiền</string>
     <string name="P218">Tin nhắn mã OTP</string>
     <string name="P219">Vui lòng nhập mã OTP</string>
+    <string name="P226">Matagal ka nang hindi nakakapag-log in. Para sa seguridad ng iyong account, mangyaring magsagawa ng OTP na pag-verify.</string>
 </resources>

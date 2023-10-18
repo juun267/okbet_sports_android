@@ -1480,5 +1480,6 @@
     <string name="P216">I-redeem ang Code Deposit</string>
     <string name="P218">OTP verification code</string>
     <string name="P219">Pakilagay ang code</string>
+    <string name="P226">Bạn đã không đăng nhật một thời gian dài, để đảm bảo an toàn cho tài khoản tiến hành xác minh mã OTP</string>
 </resources>
 

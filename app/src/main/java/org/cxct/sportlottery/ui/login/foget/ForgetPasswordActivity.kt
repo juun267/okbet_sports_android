@@ -32,7 +32,7 @@ import splitties.activities.start
 /**
  * @app_destination 通过手机号或者邮箱重置登录密码
  */
-open class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::class) {
+class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::class) {
 
     companion object {
 
