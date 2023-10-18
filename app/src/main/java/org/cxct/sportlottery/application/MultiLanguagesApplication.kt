@@ -31,6 +31,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.user.UserInfo
@@ -108,7 +109,7 @@ class MultiLanguagesApplication : Application() {
         asyncInit()
         AppViewModel.startKoin(this@MultiLanguagesApplication)
         AppManager.init(mInstance)
-        AutoSize.initCompatMultiProcess(this)
+        runWithCatch { AutoSize.initCompatMultiProcess(this) }
         setNightMode()
         LanguageManager.init(this)
         RequestManager.init(mInstance)
