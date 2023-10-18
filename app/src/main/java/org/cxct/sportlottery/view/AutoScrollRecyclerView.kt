@@ -5,6 +5,9 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.MetricsUtil.convertDpToPixel
@@ -97,6 +100,19 @@ class AutoScrollRecyclerView @JvmOverloads constructor(context: Context, attrs: 
     override fun onDetachedFromWindow() {
         stopAuto()
         super.onDetachedFromWindow()
+    }
+
+    fun bindLifecycler(lifecycleOwner: LifecycleOwner) {
+        lifecycleOwner.lifecycle.addObserver(object : LifecycleEventObserver {
+            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    startAuto()
+                } else if (event == Lifecycle.Event.ON_STOP) {
+                    stopAuto()
+                }
+            }
+
+        })
     }
 
 }
