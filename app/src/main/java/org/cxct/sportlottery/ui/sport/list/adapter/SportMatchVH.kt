@@ -198,6 +198,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             GameType.CK.key -> setCkScoreText(matchInfo)
             else -> matchInfo?.let { setBkScoreText(it, matchType) }
         }
+        updateCollse(matchInfo)
     }
 
     private fun setFbKicks(matchInfo: MatchInfo) {
@@ -248,8 +249,6 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         setScoreTextAtFront(matchInfo)
         setSptText(matchInfo)
         setCurrentPeroid(matchInfo)
-        setAttack(matchInfo)
-        binding.tvCollseStatus.text = binding.leagueSpt.text
     }
 
     private fun setTnScoreText(matchInfo: MatchInfo, matchType: MatchType) {
@@ -258,7 +257,6 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         setTennisRoundScore(matchInfo)
         setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
-        binding.tvCollseStatus.text = binding.leagueSpt.text
     }
 
     private fun setBmScoreText(matchInfo: MatchInfo, matchType: MatchType) {
@@ -267,7 +265,6 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         setSptText(matchInfo)
         setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
-        binding.tvCollseStatus.text = binding.leagueSpt.text
     }
 
     private fun setBbScoreText(matchInfo: MatchInfo, matchType: MatchType) {
@@ -278,7 +275,6 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         } else {
             setBkScoreText(matchInfo, matchType)
         }
-
     }
 
     private fun setCkScoreText(matchInfo: MatchInfo) {
@@ -311,7 +307,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
      */
     private inline fun setCurrentPeroid(matchInfo: MatchInfo) {
         binding.tvPeroid.setMatchCurrentPeroid(matchInfo)
-        binding.tvCollseTime.text = binding.tvPeroid.text
+        updateCollse(matchInfo)
     }
 
 
@@ -337,9 +333,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                 it.txvOut,
                 it.leagueOddMatchHalfStatus,
                 it.leagueOddMatchBasebag)
-            binding.tvCollseStatus.text = it.leagueOddMatchBbStatus.text
         }
-
+        updateCollse(matchInfo)
     }
 
     /**
@@ -381,8 +376,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         } else {
             "00:00"
         }
-        binding.tvCollseTime.text = binding.leagueOddMatchTime.text
         matchInfo.leagueTimeRecode = timeMillis
+        updateCollse(matchInfo)
     }
 
     private fun onTimerUpdate2(timeMillis: Long, matchInfo: MatchInfo) {
@@ -390,7 +385,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             binding.root.context.getString(R.string.at_start_remain_minute),
             if (timeMillis > 1000) TimeUtil.longToMinute(timeMillis) else 0)
         matchInfo.leagueTimeRecode = timeMillis
-        binding.tvCollseTime.text = binding.leagueOddMatchTime.text
+        updateCollse(matchInfo)
     }
 
     fun setupMatchTimeAndStatus(matchInfo: MatchInfo,
@@ -427,22 +422,15 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             }
             isVisible = text.isNotEmpty()
         }
-        binding.tvCollseStatus.apply {
-            text = binding.leagueOddMatchStatus.text
-            isVisible = binding.leagueOddMatchStatus.isVisible
-        }
 
         if (isTimeInPlay) {
             if (matchInfo.gameType == GameType.TN.key
                 || !isTimerEnable(matchInfo?.gameType, matchType)
                 || !needCountStatus(matchInfo.socketMatchStatus, matchInfo.leagueTime)) {
                 binding.leagueOddMatchTime.gone()
-                binding.tvCollseTime.gone()
                 return
             }
-
             binding.leagueOddMatchTime.visible()
-            binding.tvCollseTime.visible()
             var timeMillis = (matchInfo.leagueTime?.toLong() ?: 0) * 1000
             matchInfo.leagueTimeRecode = timeMillis
             onTimerUpdate(timeMillis, matchInfo)
@@ -465,7 +453,6 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                     binding.root.post { onTimerUpdate(timeMillis, matchInfo) }
                 }
             })
-
             return
         }
 
@@ -480,19 +467,16 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                     binding.root.post { onTimerUpdate2(remainTime, matchInfo) }
                 }
             })
-
             return
         }
 
         binding.leagueOddMatchTime.visible()
-        binding.tvCollseTime.visible()
         if(matchInfo?.startTime == null) {
             binding.leagueOddMatchTime.text = ""
         } else {
             binding.leagueOddMatchTime.text = TimeUtil.timeFormat(matchInfo.startTime,
                     if (TimeUtil.isTimeToday(matchInfo.startTime)) TimeUtil.HM_FORMAT else TimeUtil.DM_HM_FORMAT)
         }
-        binding.tvCollseTime.text =  binding.leagueOddMatchTime.text
     }
 
     fun setupOddsButton(matchType: MatchType,
@@ -527,5 +511,31 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         linCollse.isVisible = !matchInfo.expand
         linMatch.isVisible = matchInfo.expand
         frBottom.isVisible = matchInfo.expand
+    }
+    fun updateCollse(matchInfo: MatchInfo?){
+        when (matchInfo?.gameType) {
+            GameType.FT.key ->
+                setCollseStatusAndTime(binding.leagueOddMatchStatus,binding.leagueOddMatchTime)
+            GameType.VB.key, GameType.TT.key ->
+                setCollseStatusAndTime(binding.leagueSpt,if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.tvPeroid else binding.leagueOddMatchStatus)
+            GameType.TN.key ->
+                setCollseStatusAndTime(binding.leagueSpt,if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.tvPeroid else binding.leagueOddMatchStatus)
+            GameType.BK.key ->
+                setCollseStatusAndTime(binding.leagueOddMatchStatus,binding.leagueOddMatchTime)
+            GameType.BM.key ->
+                setCollseStatusAndTime(binding.leagueSpt,if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.tvPeroid else binding.leagueOddMatchStatus)
+            GameType.BB.key ->
+                setCollseStatusAndTime(binding.contentBaseballStatus.leagueOddMatchBbStatus,if(TimeUtil.isTimeInPlay(matchInfo.startTime)) binding.leagueOddMatchTime else binding.leagueOddMatchStatus)
+            GameType.CK.key ->
+                setCollseStatusAndTime(binding.leagueOddMatchStatus,binding.leagueOddMatchTime)
+            else ->
+                setCollseStatusAndTime(binding.leagueOddMatchStatus,binding.leagueOddMatchTime)
+        }
+    }
+    private fun setCollseStatusAndTime(tvStatus:TextView,tvTime:TextView){
+        binding.tvCollseStatus.isVisible = tvStatus.text.isNotEmpty()&&tvStatus.isVisible()
+        binding.tvCollseStatus.text = tvStatus.text
+        binding.tvCollseTime.isVisible = tvTime.text.isNotEmpty()&&tvTime.isVisible()
+        binding.tvCollseTime.text = tvTime.text
     }
 }

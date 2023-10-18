@@ -36,6 +36,7 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
         binding.resetStatusView()
         binding.setupMatchInfo(matchInfo, adapter.matchType)
         matchInfo?.let { binding.setupMatchTimeAndStatus(it, adapter.matchType) }
+        binding.updateCollse(matchInfo)
         binding.setupOddsButton(adapter.matchType, item, adapter.oddsType)
     }
 
@@ -79,6 +80,7 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
     private fun updateMatchStatus(binding: SportMatchVH , matchOdd: MatchOdd) {
         matchOdd.matchInfo?.let {
             binding.setupMatchTimeAndStatus(it, adapter.matchType)
+            binding.updateCollse(it)
             binding.bindOTStatus(it)
         }
         binding.setupMatchScore(matchOdd.matchInfo, adapter.matchType)
@@ -88,6 +90,7 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
         val matchInfo = matchOdd.matchInfo
         binding.updateMatchInfo(matchInfo, adapter.matchType)
         matchInfo?.let { binding.setupMatchTimeAndStatus(it, adapter.matchType) }
+        binding.updateCollse(matchInfo)
         binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
     }
 
