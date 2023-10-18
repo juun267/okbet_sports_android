@@ -435,7 +435,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                 || !isTimerEnable(matchInfo?.gameType, matchType)
                 || !needCountStatus(matchInfo.socketMatchStatus, matchInfo.leagueTime)) {
                 binding.leagueOddMatchTime.gone()
-//                binding.tvCollseTime.gone()
+                binding.tvCollseTime.gone()
                 return
             }
 
