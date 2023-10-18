@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
@@ -116,6 +118,10 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             loginedRun(it.context) {
                 startActivity(BetRecordActivity::class.java)
             }
+        }
+        (ivLogo.layoutParams as LinearLayout.LayoutParams).apply {
+            bottomMargin = 5.dp
+            ivLogo.layoutParams = this
         }
         ivMenuLeft.setOnClickListener {
             getMainTabActivity().showSportLeftMenu()

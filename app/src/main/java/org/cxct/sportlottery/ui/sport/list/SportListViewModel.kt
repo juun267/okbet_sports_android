@@ -194,7 +194,7 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    TimeUtil.getAtStartTimeRangeParams(),
+                    TimeUtil.getInHrRangeParams(12),
                     leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
                 )
@@ -203,7 +203,7 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    TimeUtil.getAtStartTimeRangeParams(),
+                    TimeUtil.getInHrRangeParams(24),
                     leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
                 )

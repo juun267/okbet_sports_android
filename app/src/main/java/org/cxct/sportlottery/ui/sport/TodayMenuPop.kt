@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.core.view.get
@@ -91,7 +92,6 @@ class TodayMenuPop(val context: Activity,val onItemClickListener: (position:Int)
     override fun showAsDropDown(anchor: View?) {
         super.showAsDropDown(anchor)
         todayTabItem?.customView?.ivArrow?.rotation = 180f
-
     }
     private fun backgroundAlpha(bgAlpha: Float) {
         context.window.attributes.apply {
