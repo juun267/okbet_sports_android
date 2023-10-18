@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.doOnLayout
 import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -510,6 +511,9 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         linCollse.isVisible = !matchInfo.expand
         linMatch.isVisible = matchInfo.expand
         frBottom.isVisible = matchInfo.expand
+        if (!matchInfo.expand){
+            updateCollse(matchInfo)
+        }
     }
     fun updateCollse(matchInfo: MatchInfo?){
         when (matchInfo?.gameType) {
@@ -532,9 +536,15 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         }
     }
     private fun setCollseStatusAndTime(tvStatus:TextView,tvTime:TextView){
-        binding.tvCollseStatus.isVisible = tvStatus.text.isNotEmpty()&&tvStatus.isVisible()
-        binding.tvCollseStatus.text = tvStatus.text
-        binding.tvCollseTime.isVisible = tvTime.text.isNotEmpty()&&tvTime.isVisible()
-        binding.tvCollseTime.text = tvTime.text
+        post{
+            binding.tvCollseStatus.run {
+                isVisible = tvStatus.text.isNotEmpty()&&tvStatus.isVisible()
+                text = tvStatus.text
+            }
+            binding.tvCollseTime.run {
+                isVisible = tvTime.text.isNotEmpty()&&tvTime.isVisible()
+                text = tvTime.text
+            }
+        }
     }
 }
