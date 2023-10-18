@@ -15,6 +15,7 @@ import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.loadMore
 import org.cxct.sportlottery.view.rumWithSlowRequest
@@ -97,23 +98,23 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
     }
 
     private fun initObserve() {
-        //网络请求失败
-        viewModel.responseFailed.observe(this) {
-            hideLoading()
-            if(viewModel.unsettledDataEvent.value!=null){
-                mAdapter.setList(viewModel.unsettledDataEvent.value)
-            }else{
-                mAdapter.setList(arrayListOf())
-            }
-        }
+
         //未接单数据监听
         viewModel.unsettledDataEvent.observe(this) {
             hideLoading()
             binding.recyclerUnsettled.visible()
-            if(viewModel.pageIndex == 2){
-                mAdapter.setList(it)
+            if (!it.second) {
+                ToastUtil.showToast(context(), it.third)
+                return@observe
+            }
+            if (it.first.isEmpty()) {
+                return@observe
+            }
+
+            if(viewModel.pageIndex == 2) {
+                mAdapter.setList(it.first)
             }else{
-                mAdapter.addData(it)
+                mAdapter.addData(it.first)
             }
         }
 
