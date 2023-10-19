@@ -96,7 +96,6 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
                 height = if (gameEntryType==GameEntryType.OKGAMES) 110.dp else 88.dp
                 ivCover.layoutParams = this
             }
-
             ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
             tvName.text = item.gameName
             tvFirmName.text = item.firmName

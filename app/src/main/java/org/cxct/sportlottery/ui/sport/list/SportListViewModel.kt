@@ -187,6 +187,24 @@ open class SportListViewModel(
                     matchIdList = selectMatchIdList,
                 )
             }
+            MatchType.IN12HR -> {
+                getOddsList(
+                    gameType = gameType,
+                    matchType.postValue,
+                    TimeUtil.getInHrRangeParams(12),
+                    leagueIdList = selectLeagueIdList,
+                    matchIdList = selectMatchIdList,
+                )
+            }
+            MatchType.IN24HR -> {
+                getOddsList(
+                    gameType = gameType,
+                    matchType.postValue,
+                    TimeUtil.getInHrRangeParams(24),
+                    leagueIdList = selectLeagueIdList,
+                    matchIdList = selectMatchIdList,
+                )
+            }
             MatchType.TODAY -> {
                 getOddsList(
                     gameType = gameType,
@@ -279,10 +297,17 @@ open class SportListViewModel(
         oddsListRequestTag = requestTag
         var currentTimeRangeParams: TimeRangeParams? = null
         when (matchType) {
-            MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue, MatchType.OTHER.postValue -> {
+            MatchType.IN_PLAY.postValue,
+            MatchType.AT_START.postValue,
+            MatchType.OTHER.postValue -> {
                 currentTimeRangeParams = timeRangeParams
             }
-            MatchType.TODAY.postValue, MatchType.CS.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
+            MatchType.TODAY.postValue,
+            MatchType.IN12HR.postValue,
+            MatchType.IN24HR.postValue,
+            MatchType.CS.postValue,
+            MatchType.EARLY.postValue,
+            MatchType.PARLAY.postValue -> {
                 currentTimeRangeParams = timeRangeParams
             }
             else -> { // 特殊賽事要給特殊代碼 Ex: matchType: "sc:QAtest"
@@ -516,6 +541,8 @@ open class SportListViewModel(
             MatchType.PARLAY -> menuData.menu.parlay.items
             MatchType.OUTRIGHT -> menuData.menu.outright.items
             MatchType.AT_START -> menuData.atStart.items
+            MatchType.IN12HR -> menuData.in12hr.items
+            MatchType.IN24HR -> menuData.in24hr.items
             MatchType.CS -> menuData.menu.cs.items
             MatchType.EPS -> menuData.menu.eps?.items ?: listOf()
             MatchType.MY_EVENT -> menuData.menu.myFavorite?.items ?: listOf()
@@ -526,6 +553,8 @@ open class SportListViewModel(
             if (matchType == MatchType.FIBA
                 ||matchType == MatchType.IN_PLAY
                 || matchType == MatchType.AT_START
+                || matchType == MatchType.IN12HR
+                || matchType == MatchType.IN24HR
                 || matchType == MatchType.TODAY
                 || matchType == MatchType.EARLY) {
 
@@ -540,94 +569,4 @@ open class SportListViewModel(
         sportTypeMenuData.value = Triple(itemList, sportMenuResult.succeeded(), sportMenuResult.msg)
         sportMenuApiResult.value = sportMenuResult
     }
-
-    private fun SportMenuData.updateSportSelectState(
-        matchType: MatchType?,
-        gameTypeCode: String?,
-    ): SportMenuData {
-        when (matchType) {
-            MatchType.IN_PLAY -> this.menu.inPlay.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.inPlay.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.TODAY -> this.menu.today.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.today.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.EARLY -> this.menu.early.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.early.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.CS -> this.menu.cs.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.cs.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.PARLAY -> this.menu.parlay.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.parlay.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.OUTRIGHT -> this.menu.outright.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.outright.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.AT_START -> this.atStart.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.atStart.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.EPS -> this.menu.eps?.items?.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.eps.items.indexOf(sport) == 0
-                    }
-                }
-            }
-        }
-        return this
-    }
-
 }

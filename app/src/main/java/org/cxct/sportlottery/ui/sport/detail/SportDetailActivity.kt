@@ -599,7 +599,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             return@Handler false
         }
        val needCount= needCountStatus(matchInfo?.socketMatchStatus, matchInfo?.leagueTime)
-        LogUtil.d("needCount="+needCount+",socketMatchStatus="+matchInfo?.socketMatchStatus+",leagueTime="+matchInfo?.leagueTime+",startTime="+startTime+",timeMillis="+TimeUtil.longToMmSs(timeMillis))
         if (needCount) {
             if (timeMillis >= 1000) {
                 sportToolBarTopFragment.updateMatchTime(TimeUtil.longToMmSs(timeMillis))
