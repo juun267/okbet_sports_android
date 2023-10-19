@@ -1560,4 +1560,5 @@
     <string name="P216">兑换码充值</string>
     <string name="P218">短信验证码</string>
     <string name="P219">请输入验证码</string>
+    <string name="P225">亏损金额</string>
 </resources>
