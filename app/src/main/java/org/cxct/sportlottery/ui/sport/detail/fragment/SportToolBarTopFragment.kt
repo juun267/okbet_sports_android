@@ -109,7 +109,6 @@ class SportToolBarTopFragment :
         }
         img_home_logo.setTeamLogo(matchInfo.homeIcon)
         img_away_logo.setTeamLogo(matchInfo.awayIcon)
-
         //endregion
         //region 比賽延期判斷
         if (matchInfo.status == GameStatus.POSTPONED.code && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) {

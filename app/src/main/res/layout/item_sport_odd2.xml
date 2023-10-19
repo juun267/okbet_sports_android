@@ -159,7 +159,6 @@
                             android:textColor="@color/color_000000"
                             android:textSize="@dimen/textSize13sp"
                             app:layout_constrainedWidth="true"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/ic_attack_h"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintHorizontal_chainStyle="packed"

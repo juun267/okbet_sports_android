@@ -127,7 +127,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     fun setupMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
         leagueOddMatchNameHome.text = matchInfo?.homeName
         leagueOddMatchNameAway.text = matchInfo?.awayName
-
+        leagueOddMatchNameHome.requestLayout()
+        leagueOddMatchNameAway.requestLayout()
         setupMatchScore(matchInfo, matchType)
         leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
 
@@ -475,6 +476,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     fun updateMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
         leagueOddMatchNameHome.text = matchInfo?.homeName
         leagueOddMatchNameAway.text = matchInfo?.awayName
+        leagueOddMatchNameHome.requestLayout()
+        leagueOddMatchNameAway.requestLayout()
         setupMatchScore(matchInfo, matchType)
         leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
@@ -496,5 +499,5 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     }
 
 
-    
+
 }
