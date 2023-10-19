@@ -34,6 +34,7 @@ import org.cxct.sportlottery.ui.maintab.games.SportFootGameAdapter
 import org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
@@ -105,11 +106,23 @@ class SportFooterGamesView @JvmOverloads constructor(
         recyclerView.setRecycledViewPool(gameItemViewPool)
         addView(recyclerView)
     }
+    private val bgDrawable by lazy {
+
+    }
     private fun initBottomView() {
+        setBackgroundResource(R.color.color_FFFFFF)
         homeButtomView = HomeButtomView(context)
         homeButtomView.apply {
             findViewById<View>(R.id.layoutPayment).gone()
             findViewById<View>(R.id.homeFollowView).gone()
+            setBackgroundResource(R.color.color_FFFFFF)
+            DrawableCreator.Builder()
+                .setSolidColor(ContextCompat.getColor(context, R.color.color_F7F7F7))
+                .setCornersRadius(8.dp.toFloat())
+                .build().let {
+                    findViewById<View>(R.id.linAward).background=it
+                }
+
         }
         addView(homeButtomView)
     }
