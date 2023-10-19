@@ -17,10 +17,7 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.include_user_profile.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
@@ -478,38 +475,16 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     private fun checkStr(str: String?): String {
         return if (str.isNullOrEmpty()) {
-            resources.getString(R.string.set)
+            if(viewModel.userInfo.value?.verified == VerifiedType.PASSED.value) "" else resources.getString(R.string.set)
         } else {
             str
         }
     }
 
+
     private fun initObserve() {
         viewModel.userDetail.observe(this) {
-            tvNationality.text = checkStr(it.t.nationality)
-            tvBirthday.text = checkStr(it.t.birthday)
-            tvPlaceOfBirth.text = checkStr(it.t.placeOfBirth)
-            tvSourceOfIncome.text = if (it.t.salarySource?.id == 6) {
-                checkStr(it.t.salarySource.name)
-            } else if (it.t.salarySource?.id == null) {
-                resources.getString(R.string.set)
-            } else {
-                it.t.salarySource.id.let { it1 ->
-                    viewModel.getSalaryName(
-                        it1,
-                        resources.getString(R.string.set)
-                    )
-                }
-            }
-            tvNatureOfWork.text = checkStr(it.t.natureOfWork)
-            tvProvinceCurrent.text = checkStr(it.t.province)
-            tvCityCurrent.text = checkStr(it.t.city)
-            tvAddressCurrent.text = checkStr(it.t.address)
-            tvZipCodeCurrent.text = checkStr(it.t.zipCode)
-            tvProvincePermanent.text = checkStr(it.t.permanentProvince)
-            tvCityPermanent.text = checkStr(it.t.permanentCity)
-            tvAddressPermanent.text = checkStr(it.t.permanentAddress)
-            tvZipCodePermanent.text = checkStr(it.t.permanentZipCode)
+            setIdentityDetail(it)
         }
         viewModel.editIconUrlResult.observe(this) {
             val iconUrlResult = it?.getContentIfNotHandled()
@@ -534,11 +509,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 tv_real_name.text = it.fullName
                 setWithdrawInfo(it)
             }
-
             ll_verified.isVisible =
                 sConfigData?.realNameWithdrawVerified.isStatusOpen() || sConfigData?.realNameRechargeVerified.isStatusOpen()
             tv_pass_word.text =
                 if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
+            setIdentifyStatus(ll_verified.isVisible&&it?.verified==VerifiedType.PASSED.value)
+            viewModel.userDetail.value?.let { setIdentityDetail(it) }
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = true
@@ -749,6 +725,70 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             .setDate(tomorrow)
             .build()
 
+    }
+    private fun setIdentityDetail(it: UserInfoDetailsEntity){
+        tvNationality.text = checkStr(it.t.nationality)
+        tvBirthday.text = checkStr(it.t.birthday)
+        tvPlaceOfBirth.text = checkStr(it.t.placeOfBirth)
+        tvSourceOfIncome.text = if (it.t.salarySource?.id == 6) {
+            checkStr(it.t.salarySource.name)
+        } else if (it.t.salarySource?.id == null) {
+            resources.getString(R.string.set)
+        } else {
+            it.t.salarySource.id.let { it1 ->
+                viewModel.getSalaryName(
+                    it1,
+                    resources.getString(R.string.set)
+                )
+            }
+        }
+        tvNatureOfWork.text = checkStr(it.t.natureOfWork)
+        tvProvinceCurrent.text = checkStr(it.t.province)
+        tvCityCurrent.text = checkStr(it.t.city)
+        tvAddressCurrent.text = checkStr(it.t.address)
+        tvZipCodeCurrent.text = checkStr(it.t.zipCode)
+        tvProvincePermanent.text = checkStr(it.t.permanentProvince)
+        tvCityPermanent.text = checkStr(it.t.permanentCity)
+        tvAddressPermanent.text = checkStr(it.t.permanentAddress)
+        tvZipCodePermanent.text = checkStr(it.t.permanentZipCode)
+    }
+    private fun setIdentifyStatus(verified: Boolean){
+        val iconViews = arrayOf(
+            iconNationality,
+            iconBirthday,
+            iconPlaceOfBirth,
+            iconSourceOfIncome,
+            iconNatureOfWork,
+            iconProvinceCurrent,
+            iconCityCurrent,
+            iconAddressCurrent,
+            iconZipCodeCurrent,
+            iconProvincePermanent,
+            iconCityPermanent,
+            iconAddressPermanent,
+            iconZipCodePermanent,
+        )
+        if (verified){
+            setViewGone(*iconViews)
+        }else{
+            setViewVisible(*iconViews)
+        }
+        val itemViews = arrayOf(
+            llNationality,
+            llBirthday,
+            llPlaceOfBirth,
+            llSourceOfIncome,
+            llNatureOfWork,
+            llProvinceCurrent,
+            llCityCurrent,
+            llAddressCurrent,
+            llZipCodeCurrent,
+            llProvincePermanent,
+            llCityPermanent,
+            llAddressPermanent,
+            llZipCodePermanent,
+        )
+        setViewClickable(!verified,*itemViews)
     }
 
 }
