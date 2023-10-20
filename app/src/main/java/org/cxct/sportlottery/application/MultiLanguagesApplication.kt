@@ -41,7 +41,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.language.MultiLanguages
 import org.cxct.sportlottery.view.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.view.dialog.promotion.PromotionPopupDialog
 import timber.log.Timber
@@ -91,7 +90,8 @@ class MultiLanguagesApplication : Application() {
     override fun attachBaseContext(base: Context) {
         //第一次进入app时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
         LanguageManager.saveSystemCurrentLanguage(base)
-        super.attachBaseContext(MultiLanguages.attach(base))
+        super.attachBaseContext(base)
+//        super.attachBaseContext(MultiLanguages.attach(base))
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -105,7 +105,7 @@ class MultiLanguagesApplication : Application() {
         appContext = applicationContext
         mInstance = this
         // 初始化语种切换框架
-        MultiLanguages.init(this)
+//        MultiLanguages.init(this)
         asyncInit()
         AppViewModel.startKoin(this@MultiLanguagesApplication)
         AppManager.init(mInstance)
@@ -134,6 +134,16 @@ class MultiLanguagesApplication : Application() {
         initXUpdate()
 
         initNetWorkListener()
+    }
+
+    private val localeResources by lazy {
+        ResourceWrapper(
+            this@MultiLanguagesApplication, super.getResources()
+        )
+    }
+
+    override fun getResources(): Resources {
+        return localeResources
     }
 
     private fun initAppsFlyerSDK() {
