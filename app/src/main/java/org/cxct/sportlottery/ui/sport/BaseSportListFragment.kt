@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
+import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
@@ -114,7 +115,10 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         }
 
         viewModel.sportMenuApiResult.observe(viewLifecycleOwner) {
-            (parentFragment as SportFragment2?)?.updateSportMenuResult(it)
+            when(parentFragment){
+                is SportFragment2->(parentFragment as SportFragment2).updateSportMenuResult(it)
+                is ESportFragment->(parentFragment as ESportFragment).updateSportMenuResult(it)
+            }
         }
     }
 
@@ -210,7 +214,10 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     private fun initGameListView() = binding.gameList.run {
 
         setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue, scrollTopFunc = {
-            (parentFragment as SportFragment2).onScrollTop(it ==0)
+            when(parentFragment){
+                is SportFragment2->(parentFragment as SportFragment2).onScrollTop(it ==0)
+                is ESportFragment->(parentFragment as ESportFragment).onScrollTop(it ==0)
+            }
         })
         layoutManager = getGameLayoutManger()
         adapter = getGameListAdapter().apply { setEmptyView(EmptySportGamesView(context())) }
@@ -250,7 +257,10 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected open fun onGameTypeChanged(item: Item, position: Int) {
         if (item.code == FIBAUtil.fibaCode){
-            (parentFragment as SportFragment2).setJumpSport(MatchType.FIBA)
+            when(parentFragment){
+                is SportFragment2->(parentFragment as SportFragment2).setJumpSport(MatchType.FIBA)
+                is ESportFragment ->(parentFragment as ESportFragment).setJumpSport(MatchType.FIBA)
+            }
             return
         }
         //日期圖示選取狀態下，切換球種要重置UI狀態

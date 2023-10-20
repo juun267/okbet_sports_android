@@ -43,6 +43,7 @@ import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
@@ -635,8 +636,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToESport() {
         checkSportStatus(this) {
-            (fragmentHelper.getFragment(1) as SportFragment2).setJumpESport()
-            navToPosition(1)
+            (fragmentHelper.getFragment(0) as HomeFragment).jumpToESport()
+            navToPosition(0)
         }
     }
 

@@ -23,8 +23,10 @@ import splitties.views.lines
 
 class SportLeagueProvider(
     private val adapter: SportLeagueAdapter2,
+    val esportTheme: Boolean = false,
     override val itemViewType: Int = 1,
-    override val layoutId: Int = 0): BaseNodeProvider() {
+    override val layoutId: Int = 0
+   ): BaseNodeProvider() {
 
     private val tvLeagueNameId = View.generateViewId()
     private val ivCountryId = View.generateViewId()
@@ -36,7 +38,7 @@ class SportLeagueProvider(
 
         val root = FrameLayout(context)
         root.layoutParams = ViewGroup.LayoutParams(-1, 44.dp)
-        root.setBackgroundResource(R.color.color_FCFDFF)
+        root.setBackgroundResource(if(esportTheme) R.drawable.bg_gradient_alpha70_league else R.color.color_FCFDFF)
         root.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
 
         val topDivider = View(context)

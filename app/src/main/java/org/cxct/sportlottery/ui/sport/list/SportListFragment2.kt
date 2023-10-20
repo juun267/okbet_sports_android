@@ -37,7 +37,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         sportLeagueAdapter2.onOddsChangeEvent(it)
     }
 
-    private val sportLeagueAdapter2 by lazy {
+    open val sportLeagueAdapter2 by lazy {
         SportLeagueAdapter2(matchType,
             this,
             onNodeExpand = { resubscribeChannel(200) },

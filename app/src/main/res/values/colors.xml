@@ -245,6 +245,8 @@
     <color name="transparent_black_60">#99000000</color>
 
     <color name="transparent_white_70">#B3FFFFFF</color>
+    <color name="transparent_white_50">#7fFFFFFF</color>
+    <color name="transparent_white_90">#e5FFFFFF</color>
 
     <!--    <color name="color_fff3f3f3">#fff3f3f3</color>-->
     <!--    <color name="color_ffededed">#ffededed</color>-->
@@ -572,5 +574,6 @@
     <color name="color_E9FFE9">#E9FFE9</color>
     <color name="color_DDE8FF">#DDE8FF</color>
     <color name="color_F7F7F7">#F7F7F7</color>
+    <color name="color_BFCDE1">#BFCDE1</color>
 
 </resources>
