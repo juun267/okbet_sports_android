@@ -52,7 +52,9 @@ class PromotionDetailActivity :
              setActivity(it)
         }
         viewModel.activityApply.observe(this) {
-            binding.tvDeposit.text = TextUtil.formatMoney(0)
+            if (viewModel.activityDetail.value?.activityType!=3){
+                binding.tvDeposit.text = TextUtil.formatMoney(0)
+            }
             binding.tvReward.text = TextUtil.formatMoney(0)
             binding.linApply.isEnabled = false
             binding.linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
@@ -83,7 +85,8 @@ class PromotionDetailActivity :
             tvDepositName.text = when (activityDetail.activityType) {
                 1 -> getString(R.string.H019)
                 2 -> getString(R.string.title_deposit_money)//充值活动
-                else -> getString(R.string.deposits)
+                3 -> getString(R.string.P225)//充值活动
+                else -> getString(R.string.deposits)//亏损金额
             }
             tvReward.text = TextUtil.formatMoney(activityDetail.reward)
             if (activityDetail.reward == 0.0) {

@@ -40,7 +40,7 @@ import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.language.MultiLanguages
+//import org.cxct.sportlottery.util.language.MultiLanguages
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -434,11 +434,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         super.onConfigurationChanged(newConfig)
     }
 
+    private val localeResources by lazy { ResourceWrapper(this@BaseActivity, super.getResources()) }
+
     /**
      * 修正 auto size 偶發失效問題
      * */
     override fun getResources(): Resources {
-        val res = super.getResources()
+        val res = localeResources
         if (firstCrate && Looper.myLooper() == Looper.getMainLooper()) {
             firstCrate = false
             AutoSizeCompat.autoConvertDensityOfGlobal(res)
@@ -446,9 +448,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         return res
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(MultiLanguages.attach(newBase))
-    }
+//    override fun attachBaseContext(newBase: Context) {
+//        super.attachBaseContext(MultiLanguages.attach(newBase))
+//    }
 
     open fun setStatusbar(bgColor: Int, darkFont: Boolean) {
         ImmersionBar.with(this).statusBarColor(bgColor)

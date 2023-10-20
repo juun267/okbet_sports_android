@@ -197,6 +197,7 @@ class HomeTopView @JvmOverloads constructor(
 
     fun setup(fragment: MainHomeFragment) {
         initVenuesItemClick(fragment)
+        binding.rvMarquee.bindLifecycler(fragment)
         ConfigRepository.onNewConfig(fragment) {
             setUpBanner()
             fragment.viewModel.getActivityImageListH5()

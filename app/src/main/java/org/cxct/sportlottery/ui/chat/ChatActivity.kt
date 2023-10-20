@@ -46,6 +46,7 @@ class ChatActivity : BindingActivity<ChatViewModel, ActivityChatBinding>() {
 
     private fun initMarquee() {
         binding.rvMarquee.adapter = marqueeAdapter
+        binding.rvMarquee.bindLifecycler(this)
     }
 
     private fun initObserve() = viewModel.run {

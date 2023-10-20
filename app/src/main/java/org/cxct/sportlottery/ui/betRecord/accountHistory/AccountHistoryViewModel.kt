@@ -9,8 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
+import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.bet.settledList.RemarkBetResult
 import org.cxct.sportlottery.repository.*
@@ -85,13 +87,11 @@ class AccountHistoryViewModel(
 
     private var betListRequesting = false
 
-
-    val unsettledDataEvent=SingleLiveEvent<List<org.cxct.sportlottery.network.bet.list.Row>>()
+    val unsettledDataEvent = SingleLiveEvent<Triple<List<Row>, Boolean, String>>()
     var pageIndex=1
     private val pageSize=20
     fun getUnsettledList() {
-        if (betListRequesting ){
-            _responseFailed.postValue(true)
+        if (pageIndex == -1 || betListRequesting){
             return
         }
         betListRequesting = true
@@ -108,34 +108,24 @@ class AccountHistoryViewModel(
                 OneBoSportApi.betService.getBetList(betListRequest)
             }
             betListRequesting = false
-            if(resultData==null){
-                _responseFailed.postValue(true)
+            if(resultData == null){
+                unsettledDataEvent.value = Triple(arrayListOf(), false, androidContext.getString(R.string.N655))
                 return@launch
             }
 
-            resultData.let { result ->
-                if (result.success) {
-                    pageIndex++
-                    if(result.rows.isNullOrEmpty()){
-                        unsettledDataEvent.postValue(arrayListOf())
-                    }else{
-
-                        unsettledDataEvent.postValue(result.rows!!)
-                    }
-
-                } else {
-                    unsettledDataEvent.postValue(arrayListOf())
-                }
+            if(resultData.rows.isNullOrEmpty()) {
+                pageIndex = -1
+            } else {
+                pageIndex++
             }
+            unsettledDataEvent.value = Triple(resultData.rows ?: arrayListOf(), resultData.success, "${resultData.msg}")
         }
     }
 
 
-
-
-    val settledData: LiveData<List<org.cxct.sportlottery.network.bet.list.Row>>
+    val settledData: LiveData<List<Row>>
         get() = _settledData
-    private val _settledData = MutableLiveData<List<org.cxct.sportlottery.network.bet.list.Row>>()
+    private val _settledData = MutableLiveData<List<Row>>()
 
     val errorEvent=SingleLiveEvent<String>()
 

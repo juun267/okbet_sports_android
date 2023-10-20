@@ -55,6 +55,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     lateinit var ivLogo: ImageView
     private lateinit var searchView: View
     lateinit var searchIcon: View
+    lateinit var betlistIcon: View
     lateinit var userMoneyView: LinearLayout
     lateinit var tvUserMoney: TextView
     lateinit var ivRefreshMoney: ImageView
@@ -78,7 +79,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
-        addView(ivLogo, LayoutParams(-2, 32.dp))
+        addView(ivLogo, LayoutParams(-2, 38.dp))
 
         addSearchView()
         addUserView()
@@ -98,7 +99,14 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             minimumWidth = wh
             (searchView as ViewGroup).addView(this)
         }
-
+        betlistIcon = AppCompatImageView(context).apply {
+            val drawable = ContextCompat.getDrawable(context, R.drawable.ic_betlist_home)
+            DrawableCompat.setTint(drawable!!.mutate(), ContextCompat.getColor(context, R.color.color_0651e5))
+            setImageDrawable(drawable)
+            minimumHeight = wh
+            minimumWidth = wh
+            (searchView as ViewGroup).addView(this, LayoutParams(-2,-2).apply { leftMargin = 12.dp })
+        }
         addView(searchView, LayoutParams(-1, 26.dp).apply { leftMargin = 16.dp })
     }
 
@@ -276,6 +284,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         (ivLogo.layoutParams as LinearLayout.LayoutParams).let {
             it.height = 39.dp
             it.leftMargin = 12.dp
+            it.bottomMargin = 0.dp
         }
         ivLogo.setImageResource(R.drawable.logo_okbet_color_h)
         ivMenuLeft.setImageResource(R.drawable.ic_home_menu_2)

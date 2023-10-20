@@ -15,7 +15,6 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.betRecord.ParlayType
-import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setBetReceiptStatus
 import org.cxct.sportlottery.util.setReceiptStatusColor
@@ -33,7 +32,6 @@ class ParlayViewHolder private constructor(itemView: View) :
 
     fun bind(
         itemData: BetResult,
-        firstItem: Boolean,
         oddsType: OddsType,
         betParlay: List<ParlayOdd>?,
         interfaceStatusChangeListener: BetReceiptDiffAdapter.InterfaceStatusChangeListener?,
@@ -63,9 +61,9 @@ class ParlayViewHolder private constructor(itemView: View) :
         itemData.apply {
 
             tv_winnable_amount_title.text =
-                LocalUtils.getString(R.string.bet_receipt_win_quota_with_sign_max)
+                context.getString(R.string.bet_receipt_win_quota_with_sign_max)
             tv_bet_amount_title.text =
-                LocalUtils.getString(R.string.bet_receipt_bet_quota_with_sign_money)
+                context.getString(R.string.bet_receipt_bet_quota_with_sign_money)
 
             matchOdds?.firstOrNull()?.apply {
                 parlayType?.let { parlayTypeCode ->
