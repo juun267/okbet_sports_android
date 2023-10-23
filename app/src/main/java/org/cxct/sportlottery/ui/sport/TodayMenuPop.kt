@@ -75,7 +75,7 @@ class TodayMenuPop(val context: Activity,val onItemClickListener: (position:Int)
         elevation = 0f
         setBackgroundDrawable(null)
         setOnDismissListener {
-            todayTabItem?.customView?.ivArrow?.rotation = 0f
+            todayTabItem?.customView?.ivArrow?.setImageResource(R.drawable.ic_arrow_gray_down)
         }
     }
     open fun updateCount(vararg countOfType:Int){
@@ -91,12 +91,6 @@ class TodayMenuPop(val context: Activity,val onItemClickListener: (position:Int)
     }
     override fun showAsDropDown(anchor: View?) {
         super.showAsDropDown(anchor)
-        todayTabItem?.customView?.ivArrow?.rotation = 180f
-    }
-    private fun backgroundAlpha(bgAlpha: Float) {
-        context.window.attributes.apply {
-            alpha = bgAlpha
-            context.window.attributes = this
-        }
+        todayTabItem?.customView?.ivArrow?.setImageResource(R.drawable.ic_arrow_blue_up)
     }
 }

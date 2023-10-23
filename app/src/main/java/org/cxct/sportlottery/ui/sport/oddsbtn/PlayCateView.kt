@@ -32,7 +32,7 @@ class PlayCateView @JvmOverloads constructor(
 
     private val oddHeight = 56.dp
     private val oddLayout = LinearLayout(context)
-    private val oddMargins = 2.dp
+    private val oddMargins = 4.dp
 
     init {
         orientation = VERTICAL

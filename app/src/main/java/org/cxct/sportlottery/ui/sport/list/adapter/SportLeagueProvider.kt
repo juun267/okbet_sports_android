@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import splitties.views.dsl.core.add
 import splitties.views.lines
 
 
@@ -34,28 +36,32 @@ class SportLeagueProvider(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
 
-        val root = FrameLayout(context)
-        root.layoutParams = ViewGroup.LayoutParams(-1, 44.dp)
+        val root = LinearLayout(context)
+        root.layoutParams = ViewGroup.LayoutParams(-1, -2)
+        root.orientation = LinearLayout.VERTICAL
         root.setBackgroundResource(R.color.color_FCFDFF)
-        root.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
 
         val topDivider = View(context)
         topDivider.id = dividerId
         topDivider.layoutParams = ViewGroup.LayoutParams(-1, 4.dp)
-        topDivider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_E1EDFF))
+        topDivider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_E7EDF8))
         root.addView(topDivider)
 
         val wh20 = 20.dp
 
+        val linContent = LinearLayout(context)
+        linContent.layoutParams = ViewGroup.LayoutParams(-1, 44.dp)
+        linContent.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
+        linContent.gravity = Gravity.CENTER_VERTICAL
+
         val ivCountry = AppCompatImageView(context)
         ivCountry.id = ivCountryId
         ivCountry.scaleType = ImageView.ScaleType.CENTER_CROP
-        ivCountry.layoutParams = FrameLayout.LayoutParams(wh20, wh20).apply {
+        ivCountry.layoutParams = LinearLayout.LayoutParams(wh20, wh20).apply {
             gravity = Gravity.CENTER_VERTICAL
             leftMargin = 12.dp
-            topMargin = 2.dp
         }
-        root.addView(ivCountry)
+        linContent.addView(ivCountry)
 
         val tvLeagueName = AppCompatTextView(context).apply {
             id = tvLeagueNameId
@@ -63,13 +69,14 @@ class SportLeagueProvider(
             ellipsize = TextUtils.TruncateAt.END
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
             setTextColor(context.getColor(R.color.color_000000))
-            layoutParams = FrameLayout.LayoutParams(-1, -2).apply {
+            layoutParams = LinearLayout.LayoutParams(-1, wh20).apply {
+                weight = 1f
                 gravity = Gravity.CENTER_VERTICAL
-                leftMargin = 40.dp
-                rightMargin = 56.dp
+                leftMargin = 8.dp
+                rightMargin = 8.dp
             }
         }
-        root.addView(tvLeagueName)
+        linContent.addView(tvLeagueName)
 
         val ivArrow = AppCompatImageView(context).apply {
             id = ivArrowId
@@ -78,7 +85,7 @@ class SportLeagueProvider(
                 rightMargin = 12.dp
             }
         }
-        root.addView(ivArrow)
+        linContent.addView(ivArrow)
         val tvNum = AppCompatTextView(context).apply {
             id = tvNumId
             background = ContextCompat.getDrawable(context,R.drawable.bg_blue_radius_10_stroke)
@@ -92,13 +99,13 @@ class SportLeagueProvider(
                 minWidth = 26.dp
             }
         }
-        root.addView(tvNum)
+        linContent.addView(tvNum)
+
+        root.addView(linContent)
 
         val divider = View(context)
         divider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_D4E1F1))
-        divider.layoutParams = FrameLayout.LayoutParams(-2, 0.5f.dp).apply {
-            gravity = Gravity.BOTTOM
-        }
+        divider.layoutParams = LinearLayout.LayoutParams(-2, 0.5f.dp)
 
         root.addView(divider)
         return BaseViewHolder(root)
@@ -111,14 +118,14 @@ class SportLeagueProvider(
         helper.getView<ImageView>(ivCountryId).setLeagueLogo(item.league.categoryIcon)
         setExpandArrow(helper.getView(ivArrowId), leagueOdd.isExpanded)
         helper.setText(tvNumId,leagueOdd.matchOdds.size.toString())
-        helper.setVisible(ivArrowId,leagueOdd.isExpanded)
+        helper.setGone(ivArrowId,!leagueOdd.isExpanded)
         helper.setGone(tvNumId,leagueOdd.isExpanded)
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
         val leagueOdd = item as LeagueOdd
         setExpandArrow(helper.getView(ivArrowId), leagueOdd.isExpanded)
-        helper.setVisible(ivArrowId, leagueOdd.isExpanded)
+        helper.setGone(ivArrowId, !leagueOdd.isExpanded)
         helper.setGone(tvNumId,leagueOdd.isExpanded)
     }
 
@@ -129,7 +136,7 @@ class SportLeagueProvider(
         helper.getView<ImageView>(ivArrowId).apply {
             setArrowSpin(league.isExpanded, true) {
                 setExpandArrow(this, league.isExpanded)
-                helper.setVisible(ivArrowId, league.isExpanded)
+                helper.setGone(ivArrowId, !league.isExpanded)
                 helper.setGone(tvNumId,league.isExpanded)
             }
         }
