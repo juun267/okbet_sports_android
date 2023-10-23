@@ -2,16 +2,13 @@ package org.cxct.sportlottery.ui.sport.list.adapter
 
 import android.content.Context
 import android.graphics.Paint
-import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -25,9 +22,7 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.GameChildAdapter
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.games.SportFootGameAdapter
@@ -93,7 +88,7 @@ class SportFooterGamesView @JvmOverloads constructor(
         text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
         text.paint.style = Paint.Style.FILL_AND_STROKE
         text.paint.strokeWidth = 0.9f
-        text.setText(R.string.casino)
+        text.setText(R.string.P230)
         moreLabelLayout.addView(text, LayoutParams(0, -2, 1f))
 
 
