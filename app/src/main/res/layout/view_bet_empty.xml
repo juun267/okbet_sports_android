@@ -8,7 +8,7 @@
 
     <ImageView
         android:src="@drawable/ic_bet_empty"
-        android:layout_marginTop="169dp"
+        android:layout_marginTop="100dp"
         android:layout_width="106dp"
         android:layout_height="95dp"/>
 

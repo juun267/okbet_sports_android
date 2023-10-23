@@ -1,14 +1,10 @@
 package org.cxct.sportlottery.ui.betRecord
 
-import android.graphics.Typeface
+import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.ShowInPlayEvent
 import org.cxct.sportlottery.databinding.ActivityBetRecordBinding
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.view.onClick
-import org.cxct.sportlottery.view.setColors
 
 class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>() {
     //未结单
@@ -21,56 +17,33 @@ class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>(
 
         binding.run {
 
-            ivBack.onClick {
+            customToolBar.setOnBackPressListener {
                 finish()
-                EventBusUtil.post(ShowInPlayEvent())
             }
-
-            //未结单
-            tvUnsettled.onClick(1000) {
-                changeTabStyle(0)
-                replaceFragment(R.id.frameContainer,unsettledFragment)
+            customTabLayout.apply {
+                tabLayoutCustom.setTabTextColors(ContextCompat.getColor(context,R.color.color_6D7693),ContextCompat.getColor(context,R.color.color_025BE8))
+                tabLayoutCustom.isTabIndicatorFullWidth = false
+                tabLayoutCustom.setSelectedTabIndicator(R.drawable.custom_tab_indicator_40_2)
+                setCustomTabSelectedListener { position ->
+                        when(position) {
+                            0 -> {
+                                avoidFastDoubleClick()
+                                replaceFragment(R.id.frameContainer,unsettledFragment)
+                            }
+                            1 -> {
+                                avoidFastDoubleClick()
+                                replaceFragment(R.id.frameContainer,settledFragment)
+                            }
+                        }
+                    }
             }
-            //已结单
-            tvSettled.onClick(1000) {
-                changeTabStyle(1)
-                replaceFragment(R.id.frameContainer,settledFragment)
-            }
-
         }
     }
 
     override fun onInitData() {
         super.onInitData()
         //默认选中未结单
-        binding.tvUnsettled.performClick()
-//        changeTabStyle(0)
-//        replaceFragment(R.id.frameContainer,unsettledFragment)
+        replaceFragment(R.id.frameContainer,unsettledFragment)
     }
-
-
-    private fun changeTabStyle(index:Int){
-        binding.tvUnsettled.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
-        binding.tvSettled.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
-        binding.tvUnsettled.setColors(R.color.color_6D7693)
-        binding.tvSettled.setColors(R.color.color_6D7693)
-        selectTabStyle(index)
-    }
-
-
-
-    private fun selectTabStyle(index:Int){
-        when(index){
-            0->{
-                binding.tvUnsettled.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
-                binding.tvUnsettled.setColors(R.color.color_000000)
-            }
-            1->{
-                binding.tvSettled.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
-                binding.tvSettled.setColors(R.color.color_000000)
-            }
-        }
-    }
-
 
 }
