@@ -44,9 +44,13 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.greenrobot.eventbus.Subscribe
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.util.*
+import kotlin.reflect.KClass
 
 abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListViewModel, FragmentSportList2Binding>() {
+
+    override fun createVM(clazz: KClass<SportListViewModel>) = getViewModel(clazz = clazz)
 
     protected abstract var matchType: MatchType
     open fun getCurGameType() = GameType.getGameType(gameType) ?: GameType.ALL
