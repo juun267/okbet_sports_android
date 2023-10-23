@@ -112,6 +112,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     override fun onBindViewStatus(view: View) {
         footView.setUp(this, mianViewModel)
+        binding.homeToolbar.attach(this@ESportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         viewModel.getMatchData()
         jumpMatchType?.let { navGameFragment(it) }
         favoriteDelayRunable.doOnDelay(0)
@@ -121,7 +122,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     fun initToolBar() = binding.homeToolbar.run {
         background = null
-        attach(this@ESportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         betlistIcon.setOnClickListener {
             loginedRun(it.context) {

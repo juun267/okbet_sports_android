@@ -30,9 +30,17 @@ import kotlin.reflect.KClass
 
 @SuppressLint("InflateParams")
 // 不需要传入参数了，通过反射获取类型
-open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : VisibilityFragment() ,IUiView{
+open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null) : VisibilityFragment() ,IUiView{
 
-    val viewModel: T by lazy { createVM(clazz = clazz ?: getKClass(0) as KClass<T>) }
+    private lateinit var _viewModel: T
+    val viewModel: T
+    get() {
+        if (!::_viewModel.isInitialized) {
+            _viewModel = createVM(clazz = clazz ?: getKClass(0) as KClass<T>)
+        }
+        return _viewModel
+    }
+
     var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
 
     protected open fun createVM(clazz: KClass<T>): T {
@@ -51,6 +59,7 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : Visibilit
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _viewModel = createVM(clazz = clazz ?: getKClass(0) as KClass<T>)
         return createRootView(inflater, container, savedInstanceState)
     }
 
