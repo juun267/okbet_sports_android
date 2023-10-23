@@ -24,6 +24,16 @@ class VerifyIdentityActivity :
         setContentView(R.layout.activity_verify_identity)
         initToolbar()
         initObserver()
+    }
+
+    private var isFirst = true
+
+    override fun onStart() {
+        super.onStart()
+
+        if (!isFirst) {
+            return
+        }
 
         val verified = viewModel.userInfo.value?.verified
         if (verified != ProfileActivity.VerifiedType.NOT_YET.value
@@ -36,7 +46,6 @@ class VerifyIdentityActivity :
         } else {
             post{ checkKYCStatus() }
         }
-
     }
 
     private fun initObserver() {
