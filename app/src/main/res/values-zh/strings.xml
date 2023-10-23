@@ -658,7 +658,7 @@
     <string name="upload_content">请点击上传身份证明文件</string>
     <string name="upload_tips">请上传能够证明您身份的文件</string>
     <string name="upload_photo_title">上传正面照</string>
-    <string name="upload_photo_tips">照片档案大小上限: 2MB</string>
+    <string name="upload_photo_tips">照片档案大小上限: 500KB</string>
     <string name="upload_photo_content">请点击上传您的正面照</string>
     <string name="upload_media_reset">重拍</string>
     <string name="upload_fail">上传失败</string>
@@ -949,7 +949,7 @@
     <string name="kyc_type2">证件类型2</string>
     <string name="kyc_num2">证件号码2</string>
     <string name="kyc_pick_upload_id">请选择上传身份证明文件</string>
-    <string name="kyc_size_2_mb">文件大小不超过2MB</string>
+    <string name="kyc_size_2_mb">文件大小不超过500KB</string>
     <string name="kyc_contact_service">如需帮助，请联系客服</string>
     <string name="kyc_contact_service_hilight">在线客服</string>
     <string name="kyc_verify_first">请先进行实名验证。</string>
@@ -1113,7 +1113,7 @@
     <!--投注改版-->
     <string name="format_error">格式不符</string>
     <string name="over_size">文件过大</string>
-    <string name="optional_tips">选填:仅支持PNG或者JPG格式的文件，且小于2MB</string>
+    <string name="optional_tips">选填:仅支持PNG或者JPG格式的文件，且小于500KB</string>
     <string name="error_amount_limit_less">充值额小于最低限额</string>
     <string name="update_voucher">上传凭证</string>
     <string name="no_select_file">未选择文件</string>
@@ -1543,7 +1543,7 @@
     <string name="J653_1">平台</string>
     <string name="P211">补充信息</string>
     <string name="P207">自拍照</string>
-    <string name="P208">上传自拍照文件，文件大小须小于2MB。</string>
+    <string name="P208">上传自拍照文件，文件大小须小于500KB。</string>
     <string name="P209">收入证明</string>
     <string name="P198">点击上传图片</string>
     <string name="P211_1">补充信息</string>
