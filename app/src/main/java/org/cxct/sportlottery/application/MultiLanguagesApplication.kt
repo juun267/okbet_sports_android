@@ -26,6 +26,7 @@ import com.xuexiang.xupdate.utils.UpdateUtils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import me.jessyan.autosize.AutoSize
+import me.jessyan.autosize.AutoSizeConfig
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
@@ -109,6 +110,7 @@ class MultiLanguagesApplication : Application() {
         asyncInit()
         AppViewModel.startKoin(this@MultiLanguagesApplication)
         AppManager.init(mInstance)
+        AutoSizeConfig.getInstance().isExcludeFontScale = true  // 字体大小不随系统字体大小变化
         runWithCatch { AutoSize.initCompatMultiProcess(this) }
         setNightMode()
         LanguageManager.init(this)
