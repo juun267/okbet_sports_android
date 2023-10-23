@@ -59,7 +59,7 @@ class ImageCompressEngine(private val maxSize: Int = 100) : CompressEngine {
                     }
                 }
 
-                override fun onError(index: Int, e: Throwable) {
+                override fun onError(index: Int, e: Throwable?) {
                     if (index != -1) {
                         val media = list[index]
                         media.isCompressed = false
