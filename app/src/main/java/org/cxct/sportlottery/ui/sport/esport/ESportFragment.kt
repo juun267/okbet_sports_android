@@ -133,8 +133,8 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             ivLogo.layoutParams = this
         }
         ivMenuLeft.setOnClickListener {
-            getMainTabActivity().showSportLeftMenu()
             EventBusUtil.post(MenuEvent(true))
+            getMainTabActivity().showMainLeftMenu(this@ESportFragment.javaClass)
         }
     }
 
