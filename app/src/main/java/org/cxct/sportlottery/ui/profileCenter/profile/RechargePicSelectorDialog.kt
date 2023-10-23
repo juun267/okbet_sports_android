@@ -60,7 +60,7 @@ class RechargePicSelectorDialog : BottomSheetDialogFragment() {
             .setLanguage(getLanguage()) // 设置语言，默认中文
             .isDisplayCamera(false) // 是否显示拍照按钮 true or false
             .setSelectionMode(SelectModeConfig.SINGLE) // 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-            .setCompressEngine(ImageCompressEngine(2048))
+            .setCompressEngine(ImageCompressEngine(500))
             .forResult(mSelectListener)
     }
 
@@ -73,7 +73,7 @@ class RechargePicSelectorDialog : BottomSheetDialogFragment() {
         PictureSelector.create(activity)
             .openCamera(SelectMimeType.ofImage())
             .setLanguage(getLanguage()) // 设置语言，默认中文
-            .setCompressEngine(ImageCompressEngine(100))
+            .setCompressEngine(ImageCompressEngine(500))
             .forResult(mSelectListener)
     }
 
