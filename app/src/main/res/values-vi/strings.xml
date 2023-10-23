@@ -184,7 +184,7 @@
     <string name="upload_content">Vui lòng tải lên tài liệu chứng minh nhân dân</string>
     <string name="upload_tips">Vui lòng tải lên ID hợp lệ có thể được chứng minh danh tính của bạn.</string>
     <string name="upload_photo_title">Tải lên ảnh hồ sơ của bạn</string>
-    <string name="upload_photo_tips">Kích thước tệp tải lên tối đa: 2MB.</string>
+    <string name="upload_photo_tips">Kích thước tệp tải lên tối đa: 500KB.</string>
     <string name="upload_photo_content">Vui lòng tải lên ảnh hồ sơ của bạn</string>
     <string name="upload_media_reset">重拍</string>
     <string name="upload_fail">上传失败</string>
@@ -935,7 +935,7 @@
     <string name="kyc_type2">Loại giấy tờ 2</string>
     <string name="kyc_num2">Số giấy tờ2</string>
     <string name="kyc_pick_upload_id">Mời chọn giấy tờ nhận dạng để tải lên</string>
-    <string name="kyc_size_2_mb">Tập tin không lớn hơn 2MB</string>
+    <string name="kyc_size_2_mb">Tập tin không lớn hơn 500KB</string>
     <string name="kyc_contact_service">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng liên hệ.</string>
     <string name="kyc_contact_service_hilight">Live chat</string>
     <string name="kyc_verify_first">Mời xác minh danh tính trước</string>
@@ -1062,7 +1062,7 @@
     <string name="D037">Hủy</string>
     <string name="format_error">Định dạng không phù hợp</string>
     <string name="over_size">Tệp quá lớn</string>
-    <string name="optional_tips">Tùy chọn: Chỉ hỗ trợ tệp định dạng PNG hoặc JPG và dưới 2MB</string>
+    <string name="optional_tips">Tùy chọn: Chỉ hỗ trợ tệp định dạng PNG hoặc JPG và dưới 500KB</string>
     <string name="error_amount_limit_less">Tiền nạp nhỏ hơn mức tối thiểu</string>
     <string name="update_voucher">Tải lên hoá đơn</string>
     <string name="no_select_file">Chưa chọn tệp</string>
@@ -1487,7 +1487,7 @@
     <string name="P204">Đơn cược</string>
     <string name="P211">Thông tin bổ sung</string>
     <string name="P207">Ảnh selfie</string>
-    <string name="P208">Tải ảnh selfie lên, dung lượng file phải nhỏ hơn 2MB.</string>
+    <string name="P208">Tải ảnh selfie lên, dung lượng file phải nhỏ hơn 500KB.</string>
     <string name="P209">Chứng minh thu nhập</string>
     <string name="P198">Bấm để tải ảnh lên</string>
     <string name="P211_1">Thông tin bổ sung</string>
