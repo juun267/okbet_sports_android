@@ -96,12 +96,17 @@ abstract class BaseViewModel(
         apiFun: suspend () -> Response<T>,
     ): T? {
         return try {
-            if (!NetworkUtil.isAvailable(context)) throw DoNoConnectException()
             doApiFun(apiFun)
         } catch (e: Exception) {
             Timber.e("doNetwork: $e")
             e.printStackTrace()
-            if (exceptionHandle) doOnException(context, e)
+            if (exceptionHandle) {
+                if (NetworkUtil.isAvailable(context)) {
+                    doOnException(context, e)
+                } else {
+                    doOnException(context, DoNoConnectException())
+                }
+            }
             null
         }
     }
