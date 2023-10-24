@@ -631,7 +631,7 @@
     <string name="upload_content">Paki-click upang mag-upload ng mga dokumento ng pagkakakilanlan</string>
     <string name="upload_tips">Mag-upload ng isang dokumento na maaaring patunayan ang iyong pagkakakilanlan</string>
     <string name="upload_photo_title">Mag upload ng personal picture</string>
-    <string name="upload_photo_tips">Limitasyon sa laki ng file ng larawan: 2MB</string>
+    <string name="upload_photo_tips">Limitasyon sa laki ng file ng larawan: 500KB</string>
     <string name="upload_photo_content"> i-click upang i-upload ang iyong larawan </string>
     <string name="upload_media_reset">Ulitin ang pagkuha</string>
     <string name="upload_fail">Hindi na-upload</string>
@@ -909,7 +909,7 @@
     <string name="kyc_type2">Uri ng ID2</string>
     <string name="kyc_num2">ID number 2</string>
     <string name="kyc_pick_upload_id">Mangyaring piliin ang pag-upload ng dokumento ng pagkakakilanlan</string>
-    <string name="kyc_size_2_mb">Ang laki ng file ay hindi dapat lumampas sa 2MB</string>
+    <string name="kyc_size_2_mb">Ang laki ng file ay hindi dapat lumampas sa 500KB</string>
     <string name="kyc_contact_service">Kung may katanungan, makipag ugnayan sa CS</string>
     <string name="kyc_contact_service_hilight">CS</string>
     <string name="kyc_verify_first">Mangyaring gawin muna ang tunay na pangalan na pag-verify.</string>
@@ -1059,7 +1059,7 @@
     <!--投注改版-->
     <string name="format_error">Hindi tugma ang format</string>
     <string name="over_size">Napakalaki ng file</string>
-    <string name="optional_tips">Opsyonal: Tanging mga PNG o JPG na format na mga file ang sinusuportahan at mas mababa sa 2MB</string>
+    <string name="optional_tips">Opsyonal: Tanging mga PNG o JPG na format na mga file ang sinusuportahan at mas mababa sa 500KB</string>
     <string name="error_amount_limit_less">Ang halaga ng recharge ay mas mababa sa minimum na limitasyon</string>
     <string name="update_voucher">Mag-upload ng resibo</string>
     <string name="no_select_file">Walang napiling file</string>
@@ -1463,7 +1463,7 @@
     <string name="J653_1">Game Vendor</string>
     <string name="P211">Karagdagang impormasyon</string>
     <string name="P207">Selfie Picture</string>
-    <string name="P208">Upload Selfie Picture Documents，the file size should be under 2MB</string>
+    <string name="P208">Upload Selfie Picture Documents，the file size should be under 500KB</string>
     <string name="P209">Katibayan ng kita</string>
     <string name="P211_1">Karagdagang impormasyon</string>
     <string name="P205">Paglipat</string>

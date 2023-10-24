@@ -801,7 +801,7 @@ fun getCompressFile(path: String?): File? {
         //對寬高進行等比縮小 任一邊不超過1024
         resizeBitmap(bitmap, 1024)?.let { resizeImage ->
             //對質量進行一次壓縮
-            compressImageToFile(resizeImage, 1024)?.let { compressFile ->
+            compressImageToFile(resizeImage, 500)?.let { compressFile ->
                 if (compressFile.exists()) return compressFile
             }
         }
