@@ -54,7 +54,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected abstract var matchType: MatchType
     open fun getCurGameType() = GameType.getGameType(gameType) ?: GameType.ALL
-    protected var gameType: String = GameType.BK.key
+    open var gameType: String = GameType.BK.key
 
     protected val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
     private val loadingHolder by lazy { Gloading.wrapView(binding.gameList) }

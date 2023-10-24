@@ -64,7 +64,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         setupToolbarStatus()
     }
 
-    fun reload(matchType: MatchType, gameType: String?) {
+    open fun reload(matchType: MatchType, gameType: String?) {
         this.matchType = matchType
         this.gameType = gameType ?: GameType.BK.key
         sportLeagueAdapter2.matchType = this.matchType
