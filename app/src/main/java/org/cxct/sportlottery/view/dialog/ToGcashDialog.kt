@@ -8,9 +8,10 @@ import androidx.core.view.isVisible
 import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogToGcashBinding
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.KvUtils
@@ -33,16 +34,16 @@ class ToGcashDialog(val visibleNoReminder: Boolean = true) : BaseDialog<BaseView
         /**
          * 根据条件判断是否需要显示
          */
-        fun showByLogin(viewModel: BaseSocketViewModel){
-            if (viewModel.getLoginBoolean() && viewModel.userInfo.value?.isGlifeAccount()==true) {
+        fun showByLogin(){
+            if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount()) {
                 if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_TIP_FLAG, false)&&needShow) {
                     needShow=false
                     ToGcashDialog().show((AppManager.currentActivity() as BaseActivity<*>).supportFragmentManager,ToGcashDialog.javaClass.name)
                 }
             }
         }
-        fun showByClick(viewModel: BaseSocketViewModel,next: () -> Unit){
-            if (viewModel.getLoginBoolean() && viewModel.userInfo.value?.isGlifeAccount()==true) {
+        fun showByClick(next: () -> Unit){
+            if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount()) {
                 ToGcashDialog(false).show((AppManager.currentActivity() as BaseActivity<*>).supportFragmentManager,ToGcashDialog.javaClass.name)
                 return
             }

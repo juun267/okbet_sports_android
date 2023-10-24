@@ -41,24 +41,13 @@
         android:textColor="@color/color_0D2245"
         android:textSize="@dimen/textSize24sp" />
 
-
-    <ImageView
-        android:id="@+id/ivLogo"
-        android:layout_width="151dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/tv_title"
-        android:layout_marginBottom="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/logo_okbet_color" />
-
-
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivLogo"
+        android:layout_below="@+id/tv_title"
         android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/bg_white_radius_8"
         android:elevation="1dp"
         android:fadingEdge="none"
@@ -394,19 +383,39 @@
             </FrameLayout>
 
 
-            <Button
-                android:id="@+id/btn_commit"
-                style="?android:attr/borderlessButtonStyle"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_marginTop="@dimen/margin_16"
-                android:alpha="0.5"
-                android:background="@drawable/ic_submit"
-                android:enabled="false"
-                android:text="@string/btn_sure"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/textSize17sp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/margin_16">
+
+                <Button
+                    android:id="@+id/btnSkip"
+                    android:layout_width="0dp"
+                    android:layout_height="46dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="7dp"
+                    android:background="@drawable/bg_border_gray_round_8"
+                    android:text="@string/btn_pass"
+                    android:textAllCaps="false"
+                    android:textColor="@color/color_BEC7DC"
+                    android:textSize="@dimen/textSize17sp" />
+
+                <Button
+                    android:id="@+id/btn_commit"
+                    android:layout_width="0dp"
+                    android:layout_height="46dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="7dp"
+                    android:background="@drawable/ic_submit"
+                    android:enabled="false"
+                    android:text="@string/btn_sure"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textSize17sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
