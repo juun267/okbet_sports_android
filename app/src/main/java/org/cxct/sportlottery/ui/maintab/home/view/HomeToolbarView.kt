@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -11,9 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -35,7 +38,10 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.StreamerTextView
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import splitties.views.dsl.core.add
 import splitties.views.leftPadding
 import splitties.views.rightPadding
 
@@ -57,8 +63,10 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     lateinit var searchIcon: View
     lateinit var betlistIcon: View
     lateinit var userMoneyView: LinearLayout
+    lateinit var banlanceView: LinearLayout
     lateinit var tvUserMoney: TextView
     lateinit var ivRefreshMoney: ImageView
+    lateinit var btnDeposit: Button
     lateinit var loginLayout: LinearLayout
     lateinit var tvLogin: TextView
     lateinit var tvRegist: TextView
@@ -113,22 +121,39 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private fun addUserView() {
         userMoneyView = LinearLayout(context).apply {
             gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL
+            2.dp.let { setPadding(0, it, 0, it) }
         }
 
+        banlanceView = LinearLayout(context)
+        6.dp.let { banlanceView.setPadding(it, it, it, it) }
+        banlanceView.background = DrawableCreatorUtils.getCommonBackgroundStyle(20.dp, R.color.color_20b8d2f8, R.color.color_b8d2f8, 1)
+        userMoneyView.addView(banlanceView)
+
         tvUserMoney = AppCompatTextView(context).apply {
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f)
+            typeface = Typeface.DEFAULT_BOLD
+            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
             setTextColor(resources.getColor(R.color.color_FFFFFF_414655))
-            userMoneyView.addView(this, LayoutParams(-2, -2))
+            banlanceView.addView(this, LayoutParams(-2, -2))
         }
 
         ivRefreshMoney = ImageView(context).apply {
             setImageResource(R.drawable.ic_refresh_green)
             val ivParams = LayoutParams(-2, -2)
             ivParams.gravity = Gravity.CENTER_VERTICAL
-            ivParams.leftMargin = 8.dp
-            ivParams.rightMargin = 4.dp
-            userMoneyView.addView(this, ivParams)
+            ivParams.leftMargin = 4.dp
+            ivParams.rightMargin = ivParams.leftMargin
+            banlanceView.addView(this, ivParams)
         }
+
+        btnDeposit = AppCompatButton(context)
+        btnDeposit.textSize = 14f
+        btnDeposit.minWidth = 72.dp
+        btnDeposit.gravity = Gravity.CENTER
+        btnDeposit.setText(R.string.J285)
+        btnDeposit.setBackgroundResource(R.drawable.bg_blue_radius_15)
+        btnDeposit.setTextColor(Color.WHITE)
+        userMoneyView.addView(btnDeposit, LayoutParams(-2, 42.dp))
+
         addView(userMoneyView, LayoutParams(0, -2, 1f))
     }
 
@@ -215,13 +240,14 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             return
         }
 
-
-
         loginLayout.gone()
         if (userModelEnable) {
             searchView.gone()
             userMoneyView.visible()
             bindMoneyText(viewModel.userMoney?.value ?: 0.0)
+            btnDeposit.setOnClickListener {
+                ToGcashDialog.showByClick{ viewModel.checkRechargeKYCVerify() }
+            }
         } else {
             searchView.visible()
             userMoneyView.gone()
@@ -294,10 +320,10 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             it.height = 42.dp
             it.rightMargin = 0
         }
-        tvLogin.setBackgroundColor(Color.RED)
-        tvRegist.setBackgroundColor(Color.RED)
+
         tvLogin.setBackgroundResource(R.drawable.btn_login_h)
         tvRegist.setBackgroundResource(R.drawable.btn_register_h)
+        btnDeposit.setBackgroundResource(R.drawable.btn_login_h)
         loginLayout.setPadding(0, 5.dp, 0, 0)
         (userMoneyView.layoutParams as MarginLayoutParams).topMargin = 8.dp
     }
