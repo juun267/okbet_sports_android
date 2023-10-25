@@ -26,7 +26,7 @@
             app:layout_constraintWidth_percent="0.36"
             tools:text="Mario Gavranovic" />
 
-        <org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetail
+        <org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetailSCO
             android:id="@+id/button_odds_1st"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             app:layout_constraintStart_toEndOf="@id/tv_name"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetail
+        <org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetailSCO
             android:id="@+id/button_odds_ant"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -44,7 +44,7 @@
             app:layout_constraintStart_toEndOf="@id/button_odds_1st"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetail
+        <org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetailSCO
             android:id="@+id/button_odds_last"
             android:layout_width="0dp"
             android:layout_height="match_parent"
