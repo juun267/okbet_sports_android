@@ -19,7 +19,8 @@
         app:tabPaddingEnd="@dimen/margin_12"
         app:tabGravity="center"
         app:tabMode="scrollable"
-        android:background="@color/color_FFFFFF"
+        app:tabRippleColor="@null"
+        android:background="@color/color_F9FAFD"
         app:tabSelectedTextColor="@color/color_FFFFFF"
         app:tabTextColor="@color/color_6D7693">
 
