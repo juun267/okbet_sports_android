@@ -2,13 +2,11 @@ package org.cxct.sportlottery.ui.base
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.annotation.Nullable
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.common.exception.DoNoConnectException
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -21,7 +19,6 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.NetworkUtil
 import org.cxct.sportlottery.util.updateDefaultHandicapType
 import retrofit2.Response
 import timber.log.Timber
@@ -96,12 +93,13 @@ abstract class BaseViewModel(
         apiFun: suspend () -> Response<T>,
     ): T? {
         return try {
-            if (!NetworkUtil.isAvailable(context)) throw DoNoConnectException()
             doApiFun(apiFun)
         } catch (e: Exception) {
             Timber.e("doNetwork: $e")
             e.printStackTrace()
-            if (exceptionHandle) doOnException(context, e)
+            if (exceptionHandle && e !is CancellationException) {
+                _networkExceptionUnavailable.postValue(context.getString(R.string.message_network_no_connect))
+            }
             null
         }
     }
@@ -138,18 +136,6 @@ abstract class BaseViewModel(
             }
         }
         return errorResult
-    }
-
-    private fun doOnException(context: Context, exception: Exception) {
-        when (exception) {
-            is kotlinx.coroutines.CancellationException -> {
-                // 取消线程不执行业务
-            }
-
-            else -> {
-                _networkExceptionUnavailable.postValue(context.getString(R.string.message_network_no_connect))
-            }
-        }
     }
 
     fun doLogoutAPI() {
