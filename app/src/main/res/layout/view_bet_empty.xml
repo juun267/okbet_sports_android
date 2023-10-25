@@ -9,8 +9,9 @@
     <ImageView
         android:src="@drawable/ic_bet_empty"
         android:layout_marginTop="100dp"
-        android:layout_width="106dp"
-        android:layout_height="95dp"/>
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"/>
 
 
     <TextView

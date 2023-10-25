@@ -40,7 +40,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_5"
-                    android:background="@color/color_F1F5FF"/>
+                    android:background="@color/color_E7EDF8"/>
 
                 <LinearLayout
                     android:id="@+id/lin_opt"

@@ -10,14 +10,16 @@
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:topTitleText="@string/N944"/>
+        app:topTitleText="@string/N944" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_0.5"
+        android:background="@color/color_E0E3EE"/>
     <org.cxct.sportlottery.view.CustomTabLayout
         android:id="@+id/custom_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="50dp"
+        android:layout_height="@dimen/margin_44"
         android:background="@color/color_FFFFFF"
-        android:layout_marginTop="1dp"
         app:firstTabText="@string/not_settled"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

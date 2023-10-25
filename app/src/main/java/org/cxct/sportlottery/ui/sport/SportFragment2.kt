@@ -111,6 +111,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     fun initToolBar() = binding.homeToolbar.run {
+        setPadding(paddingLeft, paddingTop, paddingRight,2.dp)
         background = null
         attach(this@SportFragment2, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
