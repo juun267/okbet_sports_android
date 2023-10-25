@@ -11,20 +11,15 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.opensource.svgaplayer.SVGAImageView
-import com.opensource.svgaplayer.SVGAParser
-import com.opensource.svgaplayer.SVGAVideoEntity
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAItem
+import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.SvgUtil.setAssetSvgIcon
 import org.cxct.sportlottery.util.drawable.DrawableCreator
-import org.jetbrains.annotations.NotNull
 
 
-class ESportTypeAdapter(private val itemClick: (Item, Int) -> Unit) : BaseQuickAdapter<Item, BaseViewHolder>(0), OnItemClickListener {
+class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : BaseQuickAdapter<CategoryItem, BaseViewHolder>(0), OnItemClickListener {
 
     init {
         setOnItemClickListener(this)
@@ -54,7 +49,7 @@ class ESportTypeAdapter(private val itemClick: (Item, Int) -> Unit) : BaseQuickA
             .build()
     }
 
-    var currentItem: Item? = null
+    var currentItem: CategoryItem? = null
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val itemView = SVGAImageView(parent.context)
@@ -63,23 +58,18 @@ class ESportTypeAdapter(private val itemClick: (Item, Int) -> Unit) : BaseQuickA
         return BaseViewHolder(itemView)
     }
 
-    override fun convert(holder: BaseViewHolder, item: Item) = (holder.itemView as SVGAImageView).run {
-        if (item is FIBAItem) {
-            7.dp.let { setPadding(it, it, it, it) }
-            setImageDrawable(item.icon)
-        } else {
-            setPadding(0, 0, 0, 0)
-            loops = 1
-            clearsAfterStop = false
-            setAssetSvgIcon(GameType.getGameTypeMenuSVGA(item.code))
-            if (item.isSelected){
-                stepToFrame(0, true)
-            }
+    override fun convert(holder: BaseViewHolder, item: CategoryItem) = (holder.itemView as SVGAImageView).run {
+        setPadding(0, 0, 0, 0)
+        loops = 1
+        clearsAfterStop = false
+        setAssetSvgIcon(GameType.getGameTypeMenuSVGA(item.code))
+        if (item.isSelected){
+            stepToFrame(0, true)
         }
         background = if (item.isSelected) bgDrawable else null
     }
 
-    override fun convert(holder: BaseViewHolder, item: Item, payloads: List<Any>) {
+    override fun convert(holder: BaseViewHolder, item: CategoryItem, payloads: List<Any>) {
         holder.itemView.background = if (item.isSelected) bgDrawable else null
     }
 
@@ -104,7 +94,7 @@ class ESportTypeAdapter(private val itemClick: (Item, Int) -> Unit) : BaseQuickA
         itemClick.invoke(currentItem!!, position)
     }
 
-    override fun setNewInstance(list: MutableList<Item>?) {
+    override fun setNewInstance(list: MutableList<CategoryItem>?) {
         currentItem = list?.find { it.isSelected }
         super.setNewInstance(list)
     }

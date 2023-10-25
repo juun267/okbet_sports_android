@@ -1,21 +1,28 @@
 package org.cxct.sportlottery.ui.sport.esport
 
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
 import org.cxct.sportlottery.ui.sport.list.SportListFragment2
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.SportLeagueAdapter2
 import org.cxct.sportlottery.util.loginedRun
+import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import java.util.ArrayList
 
 class ESportListFragment:SportListFragment2<SportListViewModel, FragmentSportList2Binding>() {
 
     override var gameType = GameType.ES.key
+    protected val esportTypeAdapter by lazy { ESportTypeAdapter(::onESportTypeChanged) }
+    private var eSportType = "ALL"
+
     override val sportLeagueAdapter2 by lazy {
         SportLeagueAdapter2(matchType,
             this,
@@ -41,6 +48,14 @@ class ESportListFragment:SportListFragment2<SportListViewModel, FragmentSportLis
         selectMatchIdList: ArrayList<String>
     ) {
         super.load(item, selectLeagueIdList, selectMatchIdList)
+    }
+    fun onESportTypeChanged(item: CategoryItem, position: Int){
+        eSportType = item.code
+        clearData()
+        val layoutManager = binding.sportTypeList.layoutManager as ScrollCenterLayoutManager
+        layoutManager.smoothScrollToPosition(binding.sportTypeList, RecyclerView.State(), position)
+        clearSubscribeChannels()
+//        load(item)
     }
 
 }
