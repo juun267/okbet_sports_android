@@ -63,7 +63,7 @@
             android:background="@null"
             android:drawableLeft="@drawable/ic_verfication"
             android:drawablePadding="8dp"
-            android:hint="@string/P218"
+            android:hint="@string/J053"
             android:inputType="number"
             android:maxLength="4"
             android:textSize="@dimen/textSize14sp"/>
