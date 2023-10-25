@@ -16,6 +16,7 @@ import org.cxct.sportlottery.ui.sport.detail.OddStateViewHolderDetail
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetail
+import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetailSCO
 import org.cxct.sportlottery.util.TextUtil
 
 
@@ -99,9 +100,9 @@ class TypeSCOAdapter(
 
     inner class ViewHolder(view: View) : OddStateViewHolderDetail(view) {
 
-        private val btnOdds1st = itemView.findViewById<OddsButtonDetail>(R.id.button_odds_1st)
-        private val btnOddsAnt = itemView.findViewById<OddsButtonDetail>(R.id.button_odds_ant)
-        private val btnOddsLast = itemView.findViewById<OddsButtonDetail>(R.id.button_odds_last)
+        private val btnOdds1st = itemView.findViewById<OddsButtonDetailSCO>(R.id.button_odds_1st)
+        private val btnOddsAnt = itemView.findViewById<OddsButtonDetailSCO>(R.id.button_odds_ant)
+        private val btnOddsLast = itemView.findViewById<OddsButtonDetailSCO>(R.id.button_odds_last)
         private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
         private val clItem = itemView.findViewById<ConstraintLayout>(R.id.cl_item)
 

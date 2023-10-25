@@ -461,21 +461,12 @@ class BetInfoItemViewHolder(
         }
 
         //特別處理playCode為SCO時, 此處不顯示
-        if (itemData.matchOdd.playCode != PlayCate.SCO.value) {
-            if (itemData.matchOdd.extInfo != null) {
-                tvContent.text = itemData.matchOdd.extInfo + spread
-            } else {
-                tvContent.text = spread
-            }
+        if (itemData.matchOdd.extInfo != null && itemData.matchOdd.playCode != PlayCate.SCO.value) {
+            tvContent.text = itemData.matchOdd.extInfo + spread
+        } else {
+            tvContent.text = spread
         }
 
-
-        //設定playCateCode為OU時, container背景, 文字大小和顏色
-//            if (itemData.matchOdd.playCode == PlayCate.OU.value) {
-//                oddsContentContainer.setBackgroundResource(R.drawable.transparent)
-//                tvOddsContent.setOUStyle(false)
-//                tvContent.setOUStyle(false)
-//            } else {
         oddsContentContainer.setBackgroundResource(R.color.transparent)
         tvOddsContent.setOUStyle(false)
         tvContent.setOUStyle(false)

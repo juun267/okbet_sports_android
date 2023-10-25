@@ -652,6 +652,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             OddsDetailListAdapter(OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 if (mIsEnabled) {
                     avoidFastDoubleClick()
+                    scoPlayCateNameForBetInfo?.let {
+                        odd.spread = tranByPlayCode(this,odd.playCode, null,null,null)
+                    }
                     matchOdd?.let { matchOdd ->
                         val fastBetDataBean = FastBetDataBean(
                             matchType = matchType,
