@@ -112,12 +112,12 @@ class LoginViewModel(
             return@launch
         }
 
-//        if (checkedResult.getData() == true) { // 需要短信验证
+        if (checkedResult.getData() == true) { // 需要短信验证
             hideLoading()
             onNeedVerifyPhone.invoke(loginRequest)
-//        } else {
-//            loginV3(loginRequest)
-//        }
+        } else {
+            loginV3(loginRequest)
+        }
     }
 
     suspend fun loginV3(loginRequest: LoginRequest) {
