@@ -118,9 +118,10 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         }
 
         banlanceView = LinearLayout(context)
+        banlanceView.gravity = Gravity.CENTER_VERTICAL
         6.dp.let { banlanceView.setPadding(it, it, it, it) }
         banlanceView.background = DrawableCreatorUtils.getCommonBackgroundStyle(20.dp, R.color.color_20b8d2f8, R.color.color_b8d2f8, 1)
-        userMoneyView.addView(banlanceView, LinearLayout.LayoutParams(-2, -2))
+        userMoneyView.addView(banlanceView, LinearLayout.LayoutParams(-2, 32.dp))
 
         tvUserMoney = AppCompatTextView(context).apply {
             typeface = Typeface.DEFAULT_BOLD
@@ -132,7 +133,6 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         ivRefreshMoney = ImageView(context).apply {
             setImageResource(R.drawable.ic_refresh_green)
             val ivParams = LayoutParams(-2, -2)
-            ivParams.gravity = Gravity.CENTER_VERTICAL
             ivParams.leftMargin = 4.dp
             ivParams.rightMargin = ivParams.leftMargin
             banlanceView.addView(this, ivParams)
@@ -315,7 +315,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             it.height = h42
             it.rightMargin = 0
         }
-
+        (tvRegist.layoutParams as MarginLayoutParams).height = h42
         (banlanceView.layoutParams as MarginLayoutParams).topMargin = 6.dp
         (btnDeposit.layoutParams as MarginLayoutParams).let {
             it.height = h42
