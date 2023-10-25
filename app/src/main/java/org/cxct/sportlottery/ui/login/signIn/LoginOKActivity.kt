@@ -4,20 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.text.Html
 import android.text.InputType
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import android.view.View
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
-import androidx.core.view.marginRight
-import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import cn.jpush.android.api.JPushInterface
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_login_ok.*
@@ -163,20 +155,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupPassword() {
-        if (!viewModel.password.isNullOrBlank()) {
-            binding.eetPassword.setText(viewModel.password)
-        }
+
         binding.etPassword.endIconImageButton.setOnClickListener {
-            if (binding.etPassword.endIconResourceId == R.drawable.ic_eye_open) {
-                binding.eetPassword.transformationMethod =
-                    PasswordTransformationMethod.getInstance()
-                binding.etPassword.setEndIcon(R.drawable.ic_eye_close)
-            } else {
-                binding.etPassword.setEndIcon(R.drawable.ic_eye_open)
-                binding.eetPassword.transformationMethod =
-                    HideReturnsTransformationMethod.getInstance()
-            }
-            binding.eetPassword.setSelection(binding.eetPassword.text.toString().length)
+            resetInputTransformationMethod(binding.etPassword, binding.eetPassword)
         }
         //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
         if (binding.eetPassword.text.toString().isEmpty()) {
@@ -269,7 +250,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 validCodeIdentity = identity,
                 validCode = validCode
             )
-            viewModel.login(loginRequest, password)
+            viewModel.checkUserNeedCode(loginRequest) {
+                LoginVerifyActivity.startLoginVerify(this@LoginOKActivity, it)
+            }
         }
 
         verifyCodeDialog.show(supportFragmentManager, null)
