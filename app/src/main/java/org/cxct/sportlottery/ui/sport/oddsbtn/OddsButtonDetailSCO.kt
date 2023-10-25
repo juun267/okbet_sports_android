@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -190,7 +191,7 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
                 )
                 iv_arrow.apply {
                     setImageResource(R.drawable.icon_odds_up)
-                    (layoutParams as LinearLayout.LayoutParams).gravity = Gravity.TOP
+                    (layoutParams as FrameLayout.LayoutParams).gravity = Gravity.TOP or Gravity.RIGHT
                     visibility = View.VISIBLE
 
                 }
@@ -206,7 +207,7 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
                 )
                 iv_arrow.apply {
                     setImageResource(R.drawable.icon_odds_down)
-                    (layoutParams as LinearLayout.LayoutParams).gravity = Gravity.BOTTOM
+                    (layoutParams as FrameLayout.LayoutParams).gravity = Gravity.BOTTOM or Gravity.RIGHT
                     visibility = View.VISIBLE
                 }
                 status = true
