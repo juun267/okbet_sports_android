@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -121,7 +122,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 startActivity(BetRecordActivity::class.java)
             }
         }
-        (ivLogo.layoutParams as LinearLayout.LayoutParams).apply {
+        (ivLogo.layoutParams as MarginLayoutParams).apply {
             bottomMargin = 5.dp
             ivLogo.layoutParams = this
         }
