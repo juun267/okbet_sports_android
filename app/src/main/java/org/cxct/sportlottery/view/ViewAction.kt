@@ -49,7 +49,7 @@ fun View.expand(height:Int){
     val animator=ObjectAnimator.ofInt(height)
     animator.duration = 200
     animator.addUpdateListener {
-        this.layoutParams.height=animator.animatedValue as Int
+        this.layoutParams.height=-2
         this.requestLayout()
     }
     animator.start()
@@ -59,7 +59,7 @@ fun View.unExpand(height:Int){
     val animator=ObjectAnimator.ofInt(height,0)
     animator.duration = 200
     animator.addUpdateListener {
-        this.layoutParams.height=animator.animatedValue as Int
+        this.layoutParams.height=0
         this.requestLayout()
     }
     animator.start()
