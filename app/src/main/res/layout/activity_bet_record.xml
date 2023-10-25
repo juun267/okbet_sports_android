@@ -25,7 +25,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/custom_tool_bar"
         app:secondTabText="@string/I059" />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_0.5"
+        android:background="@color/color_E0E3EE"/>
 
 
     <FrameLayout

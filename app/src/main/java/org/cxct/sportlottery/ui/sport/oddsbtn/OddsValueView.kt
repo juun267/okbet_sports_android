@@ -66,7 +66,7 @@ class OddsValueView @JvmOverloads constructor(
     }
 
     private fun disableBuoy() {
-        valuesText.setTextColor(getColor(R.color.selector_button_odd_bottom_text))
+        valuesText.setTextColor(ContextCompat.getColorStateList(context, R.color.selector_button_odd_top_text))
     }
 
 }
