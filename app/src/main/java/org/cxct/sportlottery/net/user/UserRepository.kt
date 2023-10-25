@@ -1,15 +1,16 @@
 package org.cxct.sportlottery.net.user
 
 import com.google.gson.JsonObject
-import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.user.api.UserApiService
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
-import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
 import org.cxct.sportlottery.net.user.data.VerifyConfig
-import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.network.index.login.LoginData
+import org.cxct.sportlottery.network.index.login.LoginRequest
+import org.cxct.sportlottery.repository.LOGIN_SRC
+import retrofit2.http.Body
 
 object UserRepository {
 
@@ -76,6 +77,18 @@ object UserRepository {
         params["lastName"] = lastName
         params["fullName"] = "$firstName $middelName $lastName"
         return userApi.changeUserName(params)
+    }
+
+    suspend fun checkUserLoginNeedCode(account: String, password: String): ApiResult<Boolean> {
+        val params = mutableMapOf<String, String>()
+        params["account"] = account
+        params["password"] = password
+        params["loginSrc"] = "$LOGIN_SRC"
+        return userApi.checkUserLoginNeedCode(params)
+    }
+
+    suspend fun userLoginV3(@Body params: LoginRequest): ApiResult<LoginData> {
+        return userApi.userLoginV3(params)
     }
 
 }

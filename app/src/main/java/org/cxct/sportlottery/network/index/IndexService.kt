@@ -52,6 +52,9 @@ interface IndexService {
     @POST(INDEX_LOGIN)
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResult>
 
+    @POST(Constants.USER_LOGIN)
+    suspend fun userLoginV3(@Body params: LoginRequest): Response<LoginResult>
+
     @POST(INDEX_SEND_LOGIN_DEVICE_SMS)
     suspend fun sendLoginDeviceSms(@Header("x-session-token") token: String): Response<NetResult>
 
