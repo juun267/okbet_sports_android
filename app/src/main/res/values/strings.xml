@@ -1638,6 +1638,7 @@
     <string name="P218">OTP verification code</string>
     <string name="P219">Please enter the verification code</string>
     <string name="P225">Lose Amount</string>
+    <string name="P226">It has been some time since your last login. To ensure the security of your account, please perform an OTP verification.</string>
 
     <string name="P228">In Next 12 Hours</string>
     <string name="P229">In Next 24 Hours</string>

@@ -10,10 +10,14 @@ import org.cxct.sportlottery.network.Constants.ACTIVITY_DETAIL_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
+import org.cxct.sportlottery.network.Constants.LOGIN_CHECK_NEED_CODE
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.UPLOAD_REVIEW_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_VERIFY_CONFIG
 import org.cxct.sportlottery.network.Constants.SET_USERNAME
+import org.cxct.sportlottery.network.Constants.USER_LOGIN
+import org.cxct.sportlottery.network.index.login.LoginData
+import org.cxct.sportlottery.network.index.login.LoginRequest
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -48,6 +52,12 @@ interface UserApiService {
 
     @POST(SET_USERNAME)
     suspend fun changeUserName(@Body params: Map<String, String>): ApiResult<String>
+
+    @POST(LOGIN_CHECK_NEED_CODE)
+    suspend fun checkUserLoginNeedCode(@Body params: Map<String, String>): ApiResult<Boolean>
+
+    @POST(USER_LOGIN)
+    suspend fun userLoginV3(@Body params: LoginRequest): ApiResult<LoginData>
 
 
 }

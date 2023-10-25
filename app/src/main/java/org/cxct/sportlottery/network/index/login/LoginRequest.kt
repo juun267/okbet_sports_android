@@ -1,8 +1,11 @@
 package org.cxct.sportlottery.network.index.login
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @KeepMembers
+@Parcelize
 data class LoginRequest(
     var account: String,
     var password: String? = null, //MD5 加密
@@ -14,4 +17,4 @@ data class LoginRequest(
     var loginEnvInfo: String? = null, //登入环境信息
     var securityCode: String? = null, //短信或者邮件验证码
     var inviteCode: String? = null,
-)
+): Parcelable
