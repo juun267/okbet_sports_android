@@ -12,14 +12,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.TextViewCompat
@@ -41,19 +39,15 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.StreamerTextView
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
-import splitties.views.dsl.core.add
-import splitties.views.leftPadding
-import splitties.views.rightPadding
 
 class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : LinearLayoutCompat(context, attrs, defStyle) {
+    : FrameLayout(context, attrs, defStyle) {
 
     init {
         if (background == null) {
             setBackgroundResource(R.color.color_F8F9FD)
         }
         12.dp.let { setPadding(6.dp, it, it, it) }
-        gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
         addChildView()
     }
 
@@ -66,7 +60,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     lateinit var banlanceView: LinearLayout
     lateinit var tvUserMoney: TextView
     lateinit var ivRefreshMoney: ImageView
-    lateinit var btnDeposit: Button
+    lateinit var btnDeposit: TextView
     lateinit var loginLayout: LinearLayout
     lateinit var tvLogin: TextView
     lateinit var tvRegist: TextView
@@ -87,7 +81,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
-        addView(ivLogo, LayoutParams(-2, 38.dp))
+        addView(ivLogo, LayoutParams(-2, 38.dp).apply { leftMargin = 36.dp })
 
         addSearchView()
         addUserView()
@@ -120,14 +114,13 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
 
     private fun addUserView() {
         userMoneyView = LinearLayout(context).apply {
-            gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL
             2.dp.let { setPadding(0, it, 0, it) }
         }
 
         banlanceView = LinearLayout(context)
         6.dp.let { banlanceView.setPadding(it, it, it, it) }
         banlanceView.background = DrawableCreatorUtils.getCommonBackgroundStyle(20.dp, R.color.color_20b8d2f8, R.color.color_b8d2f8, 1)
-        userMoneyView.addView(banlanceView)
+        userMoneyView.addView(banlanceView, LinearLayout.LayoutParams(-2, -2))
 
         tvUserMoney = AppCompatTextView(context).apply {
             typeface = Typeface.DEFAULT_BOLD
@@ -145,16 +138,18 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             banlanceView.addView(this, ivParams)
         }
 
-        btnDeposit = AppCompatButton(context)
+        btnDeposit = AppCompatTextView(context)
+        val p10 = 10.dp
+        btnDeposit.setPadding(p10, 0, p10, 0)
         btnDeposit.textSize = 14f
         btnDeposit.minWidth = 72.dp
         btnDeposit.gravity = Gravity.CENTER
         btnDeposit.setText(R.string.J285)
-        btnDeposit.setBackgroundResource(R.drawable.bg_blue_radius_15)
+        btnDeposit.background = DrawableCreatorUtils.getGradientBackgroundStyle(20.dp, R.color.color_0082f9, R.color.color_0050e6)
         btnDeposit.setTextColor(Color.WHITE)
-        userMoneyView.addView(btnDeposit, LayoutParams(-2, 42.dp))
+        userMoneyView.addView(btnDeposit, LayoutParams(-2, 32.dp).apply { leftMargin = 8.dp })
 
-        addView(userMoneyView, LayoutParams(0, -2, 1f))
+        addView(userMoneyView, LayoutParams(-2, -2, Gravity.RIGHT))
     }
 
     private fun addLoginBtn() {
@@ -170,7 +165,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         tvRegist = createRegistBtnText(R.string.J151, R.drawable.bg_orange_radius_15)
         loginLayout.addView(tvRegist,params)
 
-        addView(loginLayout, LayoutParams(0, -2, 1f))
+        addView(loginLayout, LayoutParams(-2, -2, Gravity.RIGHT))
     }
 
     @SuppressLint("RestrictedApi")
@@ -307,24 +302,27 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
 
     fun setHalloweenStyle() {
         setBackgroundResource(R.drawable.bg_home_toolbar_h)
-        (ivLogo.layoutParams as LinearLayout.LayoutParams).let {
+        (ivLogo.layoutParams as MarginLayoutParams).let {
             it.height = 39.dp
-            it.leftMargin = 12.dp
             it.bottomMargin = 0.dp
         }
         ivLogo.setImageResource(R.drawable.logo_okbet_color_h)
         ivMenuLeft.setImageResource(R.drawable.ic_home_menu_2)
         ivMenuLeft.setPadding(0, 0, 0, 0)
-        (ivMenuLeft.layoutParams  as LinearLayout.LayoutParams).topMargin = 6.dp
-        (tvLogin.layoutParams as LinearLayout.LayoutParams).let {
-            it.height = 42.dp
+        (ivMenuLeft.layoutParams  as MarginLayoutParams).topMargin = 6.dp
+        val h42 = 42.dp
+        (tvLogin.layoutParams as MarginLayoutParams).let {
+            it.height = h42
             it.rightMargin = 0
         }
 
+        (banlanceView.layoutParams as MarginLayoutParams).topMargin = 6.dp
+        (btnDeposit.layoutParams as MarginLayoutParams).let {
+            it.height = h42
+            it.leftMargin = 0
+        }
         tvLogin.setBackgroundResource(R.drawable.btn_login_h)
         tvRegist.setBackgroundResource(R.drawable.btn_register_h)
         btnDeposit.setBackgroundResource(R.drawable.btn_login_h)
-        loginLayout.setPadding(0, 5.dp, 0, 0)
-        (userMoneyView.layoutParams as MarginLayoutParams).topMargin = 8.dp
     }
 }
