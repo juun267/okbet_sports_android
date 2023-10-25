@@ -220,9 +220,7 @@ class HomeTopView @JvmOverloads constructor(
     private fun initRechargeClick(fragment: MainHomeFragment) {
 
         val depositClick = OnClickListener {
-             ToGcashDialog.showByClick(fragment.viewModel){
-                 fragment.viewModel.checkRechargeKYCVerify()
-             }
+            ToGcashDialog.showByClick{ fragment.viewModel.checkRechargeKYCVerify() }
         }
 
         setOnClickListeners(

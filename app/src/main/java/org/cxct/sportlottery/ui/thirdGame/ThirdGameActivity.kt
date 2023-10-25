@@ -106,7 +106,7 @@ open class ThirdGameActivity : WebActivity() {
 
             override fun onCashSave() {
                 if (checkLogin()) {
-                    ToGcashDialog.showByClick(viewModel){
+                    ToGcashDialog.showByClick {
                         viewModel.checkRechargeKYCVerify()
                     }
                 }

@@ -1026,7 +1026,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             val dialog= BetBalanceDialog(requireContext())
             dialog.showDialog{
                 //跳转充值
-                ToGcashDialog.showByClick(this.viewModel){
+                ToGcashDialog.showByClick{
                     loading()
                     viewModel.checkRechargeKYCVerify()
                 }
