@@ -24,9 +24,9 @@
         android:layout_marginLeft="@dimen/margin_2"
         android:textSize="@dimen/textSize14sp"
         android:includeFontPadding="false"
-        android:textColor="@color/color_000000"
+        android:textColor="@color/selector_black_blue"
         android:fontFamily="@font/inter_bold"
         tools:text="643"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </LinearLayout>
