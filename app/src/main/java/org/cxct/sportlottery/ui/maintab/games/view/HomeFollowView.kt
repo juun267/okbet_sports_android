@@ -43,7 +43,6 @@ class HomeFollowView(
     }
 
     fun setHalloweenStyle() {
-        findViewById<ImageView>(R.id.ivFollowUs).setImageResource(R.drawable.ic_home_follow_us_h)
 
     }
 

@@ -107,11 +107,10 @@ class HomeButtomView@JvmOverloads constructor(context: Context, attrs: Attribute
 //    }
 
     fun setHalloweenStyle() {
-        findViewById<ImageView>(R.id.imageView4).setImageResource(R.drawable.icon_payment_method_h)
-        findViewById<ImageView>(R.id.ivAward).setImageResource(R.drawable.icon_sigma_h)
         findViewById<HomeFollowView>(R.id.homeFollowView).setHalloweenStyle()
         setBackgroundResource(R.drawable.bg_home_bottom_h)
         findViewById<View>(R.id.ivaWardsH).visible()
         findViewById<View>(R.id.dividePayment).inVisible()
+        (findViewById<View>(R.id.tvAwardTitle).layoutParams as MarginLayoutParams).topMargin = 4.dp
     }
 }

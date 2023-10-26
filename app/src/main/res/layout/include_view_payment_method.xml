@@ -19,28 +19,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icon_payment_method" />
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
             android:text="@string/J369"
             android:textColor="@color/color_0D2245"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvPayment"
@@ -69,28 +59,19 @@
         android:layout_marginHorizontal="@dimen/margin_12"
         app:layout_constraintTop_toBottomOf="@id/layoutPayment"
         android:background="@color/color_E0E3EE"/>
-    <ImageView
-        android:id="@+id/ivAward"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dividePayment"
-        app:srcCompat="@drawable/icon_sigma" />
 
     <TextView
         android:id="@+id/tvAwardTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
         android:text="@string/P199"
         android:textColor="@color/color_0D2245"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/ivAward"
-        app:layout_constraintStart_toEndOf="@+id/ivAward"
-        app:layout_constraintTop_toTopOf="@+id/ivAward" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dividePayment" />
 
     <ImageView
         android:id="@+id/ivaWardsH"
