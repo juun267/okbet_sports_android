@@ -47,7 +47,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         if (background == null) {
             setBackgroundResource(R.color.color_F8F9FD)
         }
-        12.dp.let { setPadding(6.dp, it, it, it) }
+        12.dp.let { setPadding(6.dp, 6.dp, it, it) }
         addChildView()
     }
 
@@ -74,14 +74,18 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private fun addChildView() {
         ivMenuLeft = AppCompatImageView(context)
         ivMenuLeft.setImageResource(R.drawable.ic_home_menu)
-        6.dp.let { ivMenuLeft.setPadding(it, it, it, it) }
 
-        val wh = 36.dp
-        addView(ivMenuLeft, LayoutParams(wh, wh))
+        val wh = 24.dp
+        addView(ivMenuLeft, LayoutParams(wh, wh).apply {
+            gravity = Gravity.BOTTOM
+            leftMargin = 6.dp
+        })
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
-        addView(ivLogo, LayoutParams(-2, 38.dp).apply { leftMargin = 36.dp })
+        addView(ivLogo, LayoutParams(-2, 36.dp).apply {
+            leftMargin = 36.dp
+        })
 
         addSearchView()
         addUserView()
@@ -109,7 +113,10 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             minimumWidth = wh
             (searchView as ViewGroup).addView(this, LayoutParams(-2,-2).apply { leftMargin = 12.dp })
         }
-        addView(searchView, LayoutParams(-1, 26.dp).apply { leftMargin = 16.dp })
+        addView(searchView, LayoutParams(-1, 26.dp).apply {
+            leftMargin = 16.dp
+            gravity = Gravity.BOTTOM
+        })
     }
 
     private fun addUserView() {
@@ -149,7 +156,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         btnDeposit.setTextColor(Color.WHITE)
         userMoneyView.addView(btnDeposit, LayoutParams(-2, 32.dp).apply { leftMargin = 8.dp })
 
-        addView(userMoneyView, LayoutParams(-2, -2, Gravity.RIGHT))
+        addView(userMoneyView, LayoutParams(-2, -2, Gravity.RIGHT or Gravity.BOTTOM))
     }
 
     private fun addLoginBtn() {
@@ -165,7 +172,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         tvRegist = createRegistBtnText(R.string.J151, R.drawable.bg_orange_radius_15)
         loginLayout.addView(tvRegist,params)
 
-        addView(loginLayout, LayoutParams(-2, -2, Gravity.RIGHT))
+        addView(loginLayout, LayoutParams(-2, -2, Gravity.RIGHT or Gravity.BOTTOM))
     }
 
     @SuppressLint("RestrictedApi")
@@ -304,12 +311,13 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         setBackgroundResource(R.drawable.bg_home_toolbar_h)
         (ivLogo.layoutParams as MarginLayoutParams).let {
             it.height = 39.dp
-            it.bottomMargin = 0.dp
         }
         ivLogo.setImageResource(R.drawable.logo_okbet_color_h)
         ivMenuLeft.setImageResource(R.drawable.ic_home_menu_2)
-        ivMenuLeft.setPadding(0, 0, 0, 0)
-        (ivMenuLeft.layoutParams  as MarginLayoutParams).topMargin = 6.dp
+        (ivMenuLeft.layoutParams as FrameLayout.LayoutParams).apply {
+            bottomMargin = 8.dp
+            ivMenuLeft.layoutParams = this
+        }
         val h42 = 42.dp
         (tvLogin.layoutParams as MarginLayoutParams).let {
             it.height = h42
