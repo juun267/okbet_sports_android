@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -26,6 +27,8 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
@@ -146,6 +149,31 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
                     enterThirdGame(it, event.first)
                 }.show(childFragmentManager, null)
             }
+        }
+
+        isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
+            val b = it.getContentIfNotHandled() ?: return@observe
+            if (b) {
+                VerifyIdentityDialog().show(childFragmentManager, null)
+            } else {
+                loading()
+                viewModel.checkRechargeSystem()
+            }
+        }
+
+        rechargeSystemOperation.observe(viewLifecycleOwner) {
+            hideLoading()
+            val b = it.getContentIfNotHandled() ?: return@observe
+            if (b) {
+                startActivity(Intent(context, MoneyRechargeActivity::class.java))
+                return@observe
+            }
+
+            showPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.message_recharge_maintain)
+            ) {}
+
         }
     }
 
