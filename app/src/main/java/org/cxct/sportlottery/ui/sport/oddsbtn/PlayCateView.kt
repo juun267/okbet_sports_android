@@ -79,8 +79,8 @@ class PlayCateView @JvmOverloads constructor(
         if (oddBtnDraw == null) {
             oddBtnDraw = createOddBtn()
             val params = LayoutParams(-1, oddHeight, 1f)
-            params.leftMargin = oddMargins
-            params.rightMargin = oddMargins
+            params.leftMargin = 0.dp
+            params.rightMargin = 0.dp
             oddLayout.addView(oddBtnDraw, 1, params)
         }
         return oddBtnDraw!!
