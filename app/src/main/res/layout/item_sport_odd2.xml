@@ -246,7 +246,7 @@
                             android:fontFamily="@font/helvetica_normal"
                             android:maxLines="2"
                             android:lineSpacingExtra="@dimen/margin_2"
-                            android:textColor="@color/color_E54754"
+                            android:textColor="@color/color_000000"
                             android:textSize="@dimen/textSize12sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toStartOf="@+id/ic_attack_h"

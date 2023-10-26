@@ -108,7 +108,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     fun initToolBar() = binding.homeToolbar.run {
-        setPadding(paddingLeft, paddingTop, paddingRight,2.dp)
         background = null
         attach(this@SportFragment2, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
@@ -116,10 +115,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             loginedRun(it.context) {
                 startActivity(BetRecordActivity::class.java)
             }
-        }
-        (ivLogo.layoutParams as MarginLayoutParams).apply {
-            bottomMargin = 5.dp
-            ivLogo.layoutParams = this
         }
         ivMenuLeft.setOnClickListener {
             getMainTabActivity().showSportLeftMenu()
