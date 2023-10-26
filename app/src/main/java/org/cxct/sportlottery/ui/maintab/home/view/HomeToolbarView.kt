@@ -81,7 +81,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
-        addView(ivLogo, LayoutParams(-2, 38.dp).apply { leftMargin = 36.dp })
+        addView(ivLogo, LayoutParams(-2, 36.dp))
 
         addSearchView()
         addUserView()

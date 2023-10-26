@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport.oddsbtn
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -22,6 +21,7 @@ class PlayCateView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
+    open val nameLayout: LinearLayout
     private val homeText: TextView
     private val awayText: TextView
     private val drawText: TextView
@@ -30,16 +30,16 @@ class PlayCateView @JvmOverloads constructor(
     private var oddBtnDraw: OddsButton2? = null
     private var oddBtnOther: OddsButton2? = null
 
-    private val oddHeight = 56.dp
+    private val oddHeight = 48.dp
     private val oddLayout = LinearLayout(context)
-    private val oddMargins = 2.dp
+    private val oddMargins = 4.dp
 
     init {
         orientation = VERTICAL
         layoutParams = ViewGroup.LayoutParams(200.dp, -1)
         12.dp.let { setPadding(it, 0, it, 0) }
 
-        val nameLayout = LinearLayout(context)
+        nameLayout = LinearLayout(context)
         val param = LayoutParams(0, -1, 1f)
         homeText = createNameTextView()
         nameLayout.addView(homeText, param)
@@ -47,7 +47,7 @@ class PlayCateView @JvmOverloads constructor(
         nameLayout.addView(drawText, param)
         awayText = createNameTextView()
         nameLayout.addView(awayText, param)
-        addView(nameLayout, LayoutParams(-1, 46.dp))
+        addView(nameLayout, LayoutParams(-1, 48.dp))
 
         oddBtnHome = createOddBtn()
         oddBtnAway = createOddBtn()
@@ -79,8 +79,8 @@ class PlayCateView @JvmOverloads constructor(
         if (oddBtnDraw == null) {
             oddBtnDraw = createOddBtn()
             val params = LayoutParams(-1, oddHeight, 1f)
-            params.leftMargin = oddMargins
-            params.rightMargin = oddMargins
+            params.leftMargin = 0.dp
+            params.rightMargin = 0.dp
             oddLayout.addView(oddBtnDraw, 1, params)
         }
         return oddBtnDraw!!

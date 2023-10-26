@@ -4,12 +4,10 @@
     <item android:gravity="center">
         <shape>
             <size
-                android:width="22dp"
-                android:height="2dp" />
+                android:height="36dp" />
             <corners
-                android:bottomRightRadius="0dp" android:bottomLeftRadius="0dp"
-                android:topLeftRadius="2dp" android:topRightRadius="2dp" />
-            <solid android:color="@color/color_025BE8_025BE8" />
+                android:radius="@dimen/margin_18" />
+            <solid android:color="@color/color_025BE8" />
         </shape>
     </item>
 </layer-list>

@@ -3,7 +3,9 @@ package org.cxct.sportlottery.ui.sport
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
@@ -29,6 +31,7 @@ import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
 import org.cxct.sportlottery.ui.sport.list.SportListFragment2
+import org.cxct.sportlottery.ui.sport.list.TodayMenuPop
 import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
@@ -43,7 +46,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private val matchTypeTab = mutableListOf(
         MatchType.END_SCORE,
         MatchType.IN_PLAY,
-        MatchType.AT_START,
         MatchType.TODAY,
         MatchType.EARLY,
         MatchType.PARLAY,
@@ -54,11 +56,23 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             add(1,MatchType.FIBA)
         }
     }
+    private val matchTypeTodayTab = mutableListOf(
+        MatchType.TODAY,
+        MatchType.AT_START,
+        MatchType.IN12HR,
+        MatchType.IN24HR
+    )
     private val favoriteIndex = matchTypeTab.indexOf(MatchType.MY_EVENT)
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper by lazy { FragmentHelper2(childFragmentManager, R.id.fl_content) }
     private val footView by lazy { SportFooterGamesView(binding.root.context) }
     private val mianViewModel: OKGamesViewModel by viewModel()
+    private var todayTabItem:TabLayout.Tab?=null
+    private val todayMenuPop by lazy { TodayMenuPop(requireActivity(), onItemClickListener = { position ->
+           matchTypeTab[2] = matchTypeTodayTab[position]
+           binding.tabLayout.getTabAt(2)?.select()
+      })
+    }
 
     private var jumpMatchType: MatchType? = null
     private var jumpGameType: GameType? = null
@@ -94,6 +108,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     fun initToolBar() = binding.homeToolbar.run {
+        setPadding(paddingLeft, paddingTop, paddingRight,2.dp)
         background = null
         attach(this@SportFragment2, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
@@ -101,6 +116,10 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             loginedRun(it.context) {
                 startActivity(BetRecordActivity::class.java)
             }
+        }
+        (ivLogo.layoutParams as MarginLayoutParams).apply {
+            bottomMargin = 5.dp
+            ivLogo.layoutParams = this
         }
         ivMenuLeft.setOnClickListener {
             getMainTabActivity().showSportLeftMenu()
@@ -114,13 +133,15 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             private fun setTabStyle(tab: TabLayout.Tab, color: Int) {
                 val color = ContextCompat.getColor(context, color)
                 tab.customView!!.tv_number.apply {
-                    setTextColor(color)
+                    if (tab.isSelected)
+                        setTextColor(color)
+                    else
+                        setTextColor(ContextCompat.getColor(context, R.color.color_000000))
                 }
                 tab.customView!!.tv_title.apply {
                     setTextColor(color)
                 }
             }
-
             override fun onTabSelected(tab: TabLayout.Tab) {
                 selectTab(tab.position)
                 setTabStyle(tab, R.color.color_025BE8)
@@ -131,9 +152,9 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
+                //带箭头的就是today选项，进行弹窗选择
                 selectTab(tab.position)
             }
-
         })
     }
 
@@ -144,6 +165,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         sportMenuData?.menu?.let { sportMenu = it }
         val countInPlay = sportMenuData?.menu?.inPlay?.items?.sumOf { it.num } ?: 0
         val countAtStart = sportMenuData?.atStart?.items?.sumOf { it.num } ?: 0
+        val countIn12hr = sportMenuData?.in12hr?.items?.sumOf { it.num } ?: 0
+        val countIn24hr = sportMenuData?.in24hr?.items?.sumOf { it.num } ?: 0
         val countToday = sportMenuData?.menu?.today?.items?.sumOf { it.num } ?: 0
         val countEarly = sportMenuData?.menu?.early?.items?.sumOf { it.num } ?: 0
 //        val countCS = sportMenuData?.menu?.cs?.items?.sumOf { it.num } ?: 0
@@ -152,7 +175,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         val countBkEnd = sportMenuData?.menu?.bkEnd?.items?.sumOf { it.num } ?: 0
         defaultMatchType = when {
             countInPlay > 0 -> MatchType.IN_PLAY
-            countAtStart > 0 -> MatchType.AT_START
+//            countAtStart > 0 -> MatchType.AT_START
             countToday > 0 -> MatchType.TODAY
             else -> MatchType.EARLY
         }
@@ -162,12 +185,18 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             addTab(getString(R.string.fiba_2023), FIBAUtil.takeFIBAItem()?.num?:0, ++position)
         }
         addTab(getString(R.string.home_tab_in_play), countInPlay, ++position)
-        addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
-        addTab(getString(R.string.home_tab_today), countToday, ++position)
+//        addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
+        when (matchTypeTab[2]){
+            MatchType.TODAY-> addTab(getString(R.string.home_tab_today), countToday, ++position,true)
+            MatchType.AT_START-> addTab(getString(R.string.home_tab_at_start), countAtStart, ++position,true)
+            MatchType.IN12HR-> addTab(getString(R.string.P228), countAtStart, ++position,true)
+            MatchType.IN24HR-> addTab(getString(R.string.P229), countAtStart, ++position,true)
+        }
         addTab(getString(R.string.home_tab_early), countEarly, ++position)
         addTab(getString(R.string.home_tab_parlay), countParlay, ++position)
         addTab(getString(R.string.home_tab_outright), countOutright, ++position)
         val tabView = addTab(getString(R.string.N082), favoriteCount(favoriteItems), ++position)
+        todayMenuPop.updateCount(countToday,countAtStart,countIn12hr,countIn24hr)
         if (!LoginRepository.isLogined()) {
             tabView.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -179,7 +208,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
     }
 
-    private fun addTab(name: String, num: Int, position: Int): View = binding.tabLayout.run {
+    private fun addTab(name: String, num: Int, position: Int,showArrow:Boolean = false): View = binding.tabLayout.run {
 
         val tab = if (tabCount > position) {
             getTabAt(position)!!
@@ -192,6 +221,21 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         tab.customView?.run {
             tv_title.text = name
             tv_number.text = if(name==getString(R.string.fiba_2023)) "" else num.toString()
+            ivArrow.isVisible = showArrow
+            if(showArrow){
+                todayTabItem = tab
+                todayMenuPop.todayTabItem = todayTabItem
+                (parent as View).setOnTouchListener { _, event ->
+                    if (event.action == MotionEvent.ACTION_DOWN) {
+                        if (todayMenuPop.isShowing){
+                            todayMenuPop.dismiss()
+                        }else{
+                            todayMenuPop.showAsDropDown(binding.tabLayout)
+                        }
+                    }
+                    return@setOnTouchListener true
+                }
+            }
         }
 
         return@run tab.customView!!
