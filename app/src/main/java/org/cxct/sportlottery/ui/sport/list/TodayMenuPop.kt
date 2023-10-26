@@ -1,15 +1,10 @@
-package org.cxct.sportlottery.ui.sport
+package org.cxct.sportlottery.ui.sport.list
 
 import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.PopupWindow
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
-import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
@@ -17,7 +12,6 @@ import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.databinding.ItemTodayMenuBinding
-import org.cxct.sportlottery.util.LogUtil
 
 class TodayMenuPop(val context: Activity,val onItemClickListener: (position:Int) -> Unit) : PopupWindow(context) {
 
@@ -110,7 +104,7 @@ class TodayMenuPop(val context: Activity,val onItemClickListener: (position:Int)
         override fun onBinding(position: Int, binding: ItemTodayMenuBinding, item: String) {
             binding.tvName.text = item
             binding.tvNum.text = countArr?.get(position).toString()
-            binding.tvName.isSelected = selectPos==position
+            binding.root.isSelected = selectPos==position
         }
 
     }
