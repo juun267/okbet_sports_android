@@ -42,7 +42,7 @@ class OddsValueView @JvmOverloads constructor(
             typeface = AppFont.inter_bold
             includeFontPadding = false
             gravity = Gravity.CENTER
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
+            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15f)
         }
 
         addView(valuesText,LayoutParams(-2,-2).apply { addRule(CENTER_IN_PARENT,TRUE) })
@@ -66,7 +66,7 @@ class OddsValueView @JvmOverloads constructor(
     }
 
     private fun disableBuoy() {
-        valuesText.setTextColor(getColor(R.color.color_000000))
+        valuesText.setTextColor(ContextCompat.getColorStateList(context, R.color.selector_button_odd_top_text))
     }
 
 }

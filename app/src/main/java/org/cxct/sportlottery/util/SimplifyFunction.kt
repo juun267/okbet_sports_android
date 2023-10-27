@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
@@ -75,6 +76,8 @@ import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.reflect.Field
+
 
 fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String? = null,scrollTopFunc: ((yDistance: Int)->Unit)? = null ) {
 
@@ -449,7 +452,7 @@ fun View.setSpinnerView(
     spinnerList: List<StatusSheetData>,
     touchListener: () -> Unit,
     itemSelectedListener: (data: StatusSheetData?) -> Unit,
-    popupWindowDismissListener: () -> Unit
+    popupWindowDismissListener: () -> Unit,
 ) {
     val spinnerAdapter: StatusSpinnerAdapter?
 
@@ -801,7 +804,7 @@ fun getCompressFile(path: String?): File? {
         //對寬高進行等比縮小 任一邊不超過1024
         resizeBitmap(bitmap, 1024)?.let { resizeImage ->
             //對質量進行一次壓縮
-            compressImageToFile(resizeImage, 1024)?.let { compressFile ->
+            compressImageToFile(resizeImage, 500)?.let { compressFile ->
                 if (compressFile.exists()) return compressFile
             }
         }
@@ -1030,7 +1033,7 @@ fun enterThirdGame(
     baseFragment: BaseFragment<*>,
     viewModel: MainHomeViewModel,
     result: EnterThirdGameResult,
-    firmType: String
+    firmType: String,
 ) = baseFragment.run {
     hideLoading()
     when (result.resultType) {
@@ -1102,7 +1105,7 @@ fun View.setArrowSpin(isExpanded: Boolean, isAnimate: Boolean, angle: Float = 18
 }
 
 fun Context.dividerView(
-    @ColorRes color: Int, width: Int = 0.5f.dp, isVertical: Boolean = true, margins: Int = 0
+    @ColorRes color: Int, width: Int = 0.5f.dp, isVertical: Boolean = true, margins: Int = 0,
 ): View {
     return View(this).apply {
         setBackgroundResource(color)

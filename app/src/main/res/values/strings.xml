@@ -653,7 +653,7 @@
     <string name="upload_content">Please upload identity card document</string>
     <string name="upload_tips">Please upload valid ID that can be prove your identity.</string>
     <string name="upload_photo_title">Upload your profile picture</string>
-    <string name="upload_photo_tips">Maximum upload file size: 2MB.</string>
+    <string name="upload_photo_tips">Maximum upload file size: 500KB.</string>
     <string name="upload_photo_content">Please upload your profile picture</string>
     <string name="upload_media_reset">重拍</string>
     <string name="upload_fail">上传失败</string>
@@ -959,7 +959,7 @@
     <string name="kyc_type2">ID Type</string>
     <string name="kyc_num2">ID Number [2]</string>
     <string name="kyc_pick_upload_id">Upload Personal ID Documents</string>
-    <string name="kyc_size_2_mb">The file size to under 2MB.</string>
+    <string name="kyc_size_2_mb">The file size to under 500KB.</string>
     <string name="kyc_contact_service">If you need assistance, please contact customer service</string>
     <string name="kyc_contact_service_hilight">Live chat</string>
     <string name="kyc_verify_first">Please get verified.</string>
@@ -1120,7 +1120,7 @@
     <string name="online_fortune_pay">FortunePay</string>
     <string name="format_error">format doesn\'t match</string>
     <string name="over_size">oversized files</string>
-    <string name="optional_tips">Optional:Only support PNG or JPG format files, and less than 2MB</string>
+    <string name="optional_tips">Optional:Only support PNG or JPG format files, and less than 500KB</string>
     <string name="error_amount_limit_less">Deposit amount less than min limit</string>
     <string name="update_voucher">Upload receipt</string>
     <string name="no_select_file">Unselected files</string>
@@ -1618,7 +1618,7 @@
     <string name="J653_1">Game Vendor</string>
     <string name="P211">Additional info</string>
     <string name="P207">Selfie Picture</string>
-    <string name="P208">Upload Selfie Picture Documents，the file size should be under 2MB</string>
+    <string name="P208">Upload Selfie Picture Documents，the file size should be under 500KB</string>
     <string name="P209">Proof of income</string>
     <string name="P198">Click to upload the picture</string>
     <string name="P211_1">Additional information</string>
@@ -1639,5 +1639,5 @@
 
     <string name="P228">In Next 12 Hours</string>
     <string name="P229">In Next 24 Hours</string>
-    <string name="casino">Casino</string>
+    <string name="P230">Casino</string>
 </resources>

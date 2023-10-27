@@ -177,7 +177,7 @@ class OddsDetailListAdapter(
             isPreload -> BaseItemType.PRELOAD_ITEM.type
             itemList.isNullOrEmpty() -> BaseItemType.NO_DATA.type
             else -> {
-                val playCateCode = oddsDetailDataList[position].gameType
+                val playCateCode = itemList[position].gameType
                 PlayCate.getPlayCate(playCateCode).let { playCate ->
                     when (playCate) {
                         PlayCate.UNCHECK -> {
@@ -548,15 +548,6 @@ class OddsDetailListAdapter(
             itemView.rootView.isVisible = visible
         }
 
-        private fun controlExpandBottom(expand: Boolean) {
-            try {
-                itemView.findViewById<View>(R.id.spaceItemBottom).isVisible = expand
-//                itemView.findViewById<View>(R.id.view_line).visibility =
-//                    if (expand) View.VISIBLE else View.GONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
 
         private val tvGameName: TextView? = itemView.findViewById(R.id.tv_game_name)
         private val oddsDetailPin: ImageView? = itemView.findViewById(R.id.odd_detail_pin)
@@ -691,7 +682,6 @@ class OddsDetailListAdapter(
                 }
             }
 
-            controlExpandBottom(oddsDetail.isExpand)
             odd_detail_fold.isSelected = oddsDetail.isExpand
             clItem?.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
@@ -1562,6 +1552,7 @@ class OddsDetailListAdapter(
             }
 
             tvHomeName?.apply {
+                text = homeName
                 isSelected = oddsDetail.gameTypeSCOSelect == homeName
                 setOnClickListener {
                     (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(
@@ -1577,6 +1568,7 @@ class OddsDetailListAdapter(
             }
 
             tvAwayName?.apply {
+                text = awayName
                 isSelected = oddsDetail.gameTypeSCOSelect == awayName
                 setOnClickListener {
                     (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(

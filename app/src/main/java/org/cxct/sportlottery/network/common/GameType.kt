@@ -131,7 +131,9 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 RB.key -> "icon_rugby.svga"
                 AFT.key-> "icon_americafootball.svga"
                 GF.key -> "icon_golf.svga"
+                MR.key -> "icon_helmet.svga"
                 ES.key -> "icon_game.svga"
+                FB.key -> "icon_finance.svga"
                 ES_COMING_SOON.key -> "icon_game.svga"
                 else -> "icon_football.svga"
             }

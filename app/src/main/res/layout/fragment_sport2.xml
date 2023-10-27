@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/linToolbar"
         android:layout_width="match_parent"
-        android:layout_height="124dp"
+        android:layout_height="115dp"
         android:background="@drawable/bg_sportslist_header_1"
         android:orientation="vertical">
 

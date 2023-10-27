@@ -35,6 +35,10 @@ object UserInfoRepository {
     val userInfo: LiveData<UserInfo?>
         get() = MultiLanguagesApplication.mInstance.userInfo
 
+    fun isGlifeAccount(): Boolean {
+        return userInfo.value?.isGlifeAccount() == true
+    }
+
     suspend fun getUserInfo(): Response<UserInfoResult> {
         val userInfoResponse = OneBoSportApi.userService.getUserInfo()
 

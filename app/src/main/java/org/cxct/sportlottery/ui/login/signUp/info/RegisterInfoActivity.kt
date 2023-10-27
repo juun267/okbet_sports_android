@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityRegisterInfoBinding
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -94,7 +95,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
                 binding.eetEmail.setText(viewModel.emailInput)
             }
 
-            if (!it.firstName.isEmptyStr()) { // 如果firstName不为空则认为设置过真实姓名，不让再编辑
+            if (!it.firstName.isEmptyStr() && "N/A" != it.firstName?.toUpperCase()) { // 如果firstName不为空则认为设置过真实姓名，不让再编辑
                 binding.eetFirstName.setText(it.firstName)
                 binding.eetFirstName.isEnabled = false
                 binding.eedtMiddleName.isEnabled = false
@@ -255,10 +256,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             viewModel.commitUserBasicInfo()
         }
 
-        binding.btnBack.setOnClickListener {
-            finishPage()
-        }
-
+        setOnClickListeners(binding.btnBack, binding.btnSkip) { finishPage() }
 
         binding.eetPhoneNumber.checkRegisterListener {
             val msg=viewModel.checkPhone(it)

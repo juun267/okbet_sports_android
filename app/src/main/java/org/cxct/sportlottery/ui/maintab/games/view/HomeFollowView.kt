@@ -43,7 +43,6 @@ class HomeFollowView(
     }
 
     fun setHalloweenStyle() {
-        findViewById<ImageView>(R.id.ivFollowUs).setImageResource(R.drawable.ic_home_follow_us_h)
 
     }
 
@@ -104,6 +103,11 @@ class HomeFollowView(
                 R.drawable.ic_home_gray_telegram,
                 it.telegramLinkConfig
             )
+            val vlberMenu = FollowMenuBean(
+                context.getString(R.string.viber),
+                R.drawable.ic_home_gray_viber,
+                it.viberLinkConfig
+            )
 
             //添加社交按钮
             initListData(
@@ -114,6 +118,7 @@ class HomeFollowView(
                 tiktokMenu,
                 whatAppMenu,
                 telegramMenu,
+                vlberMenu
             )
 
             //没数据隐藏

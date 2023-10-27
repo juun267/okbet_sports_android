@@ -195,7 +195,7 @@ class ProfileCenterFragment :
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-            ToGcashDialog.showByClick(viewModel){
+            ToGcashDialog.showByClick{
                 viewModel.checkRechargeKYCVerify()
             }
         }
@@ -205,7 +205,7 @@ class ProfileCenterFragment :
         btn_withdraw.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-            ToGcashDialog.showByClick(viewModel){
+            ToGcashDialog.showByClick{
                 viewModel.checkWithdrawKYCVerify()
             }
         }

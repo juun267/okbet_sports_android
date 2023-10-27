@@ -2,61 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/transparent_black_30">
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_0.5"
         android:background="@color/color_E0E3EE"/>
-    <RadioGroup
-        android:id="@+id/rgTodayMenu"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingVertical="@dimen/margin_10"
         android:elevation="0dp"
-        android:background="@drawable/bg_white_radius_12_bottom">
-        <RadioButton
-            android:id="@+id/rbtnToday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:paddingHorizontal="@dimen/margin_20"
-            android:paddingVertical="@dimen/margin_10"
-            android:button="@null"
-            android:textColor="@color/color_select_blue_black"
-            android:textSize="@dimen/textSize14sp"
-            android:text="@string/home_tab_today"/>
-        <RadioButton
-            android:id="@+id/rbtnSoon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/margin_20"
-            android:paddingVertical="@dimen/margin_10"
-            android:button="@null"
-            android:textColor="@color/color_select_blue_black"
-            android:textSize="@dimen/textSize14sp"
-            android:text="@string/home_tab_at_start"/>
-        <RadioButton
-            android:id="@+id/rbtnNext12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/margin_20"
-            android:paddingVertical="@dimen/margin_10"
-            android:button="@null"
-            android:textColor="@color/color_select_blue_black"
-            android:textSize="@dimen/textSize14sp"
-            android:text="Next 12 hours"/>
-        <RadioButton
-            android:id="@+id/rbtnNext24"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/margin_20"
-            android:paddingVertical="@dimen/margin_10"
-            android:button="@null"
-            android:textColor="@color/color_select_blue_black"
-            android:textSize="@dimen/textSize14sp"
-            android:text="Next 24 hours"/>
-    </RadioGroup>
+        android:background="@drawable/bg_white_radius_12_bottom"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="4"
+        tools:listitem="@layout/item_today_menu">
+    </androidx.recyclerview.widget.RecyclerView>
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

@@ -20,17 +20,37 @@ object DrawableCreatorUtils {
      * solidColor:填充颜色
      */
     fun getCommonBackgroundStyle(
-        cornerRadius: Int, @ColorRes solidColor: Int, @ColorRes strokeColor: Int = 0xaaff, strokeWidth: Int = 1
+        cornerRadius: Int, @ColorRes solidColor: Int, @ColorRes strokeColor: Int = 0x0, strokeWidth: Int = 1
     ): Drawable {
         val drawableBuilder = DrawableCreator.Builder()
         return try {
             drawableBuilder.apply {
                 setCornersRadius(cornerRadius.dp.toFloat())
                 setStrokeWidth(strokeWidth.dp.toFloat())
-                if (strokeColor != 0xaaff) {
+                if (strokeColor != 0x0) {
                     setStrokeColor(appCtx.getColor(strokeColor))
                 }
                 setSolidColor(appCtx.getColor(solidColor))
+            }.build()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            drawableBuilder.build()
+        }
+    }
+
+    fun getGradientBackgroundStyle(
+        cornerRadius: Int, @ColorRes startColorRes: Int, @ColorRes endColorRes: Int, @ColorRes strokeColor: Int = 0x0, strokeWidth: Int = 1
+    ): Drawable {
+        val drawableBuilder = DrawableCreator.Builder()
+        return try {
+            drawableBuilder.apply {
+                setCornersRadius(cornerRadius.dp.toFloat())
+                setGradientAngle(0)
+                setGradientColor(appCtx.getColor(startColorRes), appCtx.getColor(endColorRes))
+                setStrokeWidth(strokeWidth.dp.toFloat())
+                if (strokeColor != 0x0) {
+                    setStrokeColor(appCtx.getColor(strokeColor))
+                }
             }.build()
         } catch (e: Exception) {
             e.printStackTrace()

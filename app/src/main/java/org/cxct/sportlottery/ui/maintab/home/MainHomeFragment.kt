@@ -64,7 +64,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         initToolBar()
         initNews()
         EventBusUtil.targetLifecycle(this@MainHomeFragment)
-        ToGcashDialog.showByLogin(viewModel)
+        ToGcashDialog.showByLogin()
         setHalloweenStyle()
     }
 
