@@ -1,16 +1,15 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -18,8 +17,11 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.include_view_payment_method.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.inVisible
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.repository.StaticData
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.maintab.games.view.HomeFollowView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -62,6 +64,12 @@ class HomeButtomView@JvmOverloads constructor(context: Context, attrs: Attribute
 
         jumpToWebView(tvFaqs, Constants.getFAQsUrl(context), R.string.faqs)
         initRcvPaymentMethod(rcvPayment)
+
+        val serviceEmail = sConfigData?.customerServiceEmailAddress
+        if (!serviceEmail.isEmptyStr()) {
+            tvEmail.visible()
+            tvEmail.setOnClickListener { toSendEmail(it.context, serviceEmail!!) }
+        }
     }
 
     private fun jumpToWebView(view: View, url: String?, @StringRes title: Int) {

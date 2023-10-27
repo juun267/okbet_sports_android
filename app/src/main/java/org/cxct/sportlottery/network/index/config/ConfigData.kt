@@ -149,6 +149,7 @@ data class ConfigData(
     var homeGamesList:List<HomeGameBean>?,  //首页场馆排序
     var jackpotSwitch:Int=0,  //okgame 奖池 0-关闭 1-开启
     val isNeedOTPBank: Int = 0, // 添加删除编辑 银行卡时 是否需要验证码 0-否 1-是
+    val customerServiceEmailAddress: String?, // 客服邮箱
 
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
