@@ -1637,4 +1637,7 @@
     <string name="P219">Please enter the verification code</string>
     <string name="P225">Lose Amount</string>
 
+    <string name="P228">In Next 12 Hours</string>
+    <string name="P229">In Next 24 Hours</string>
+    <string name="P230">Casino</string>
 </resources>

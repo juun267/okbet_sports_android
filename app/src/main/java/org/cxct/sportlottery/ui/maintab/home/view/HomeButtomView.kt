@@ -11,6 +11,7 @@ import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -20,11 +21,8 @@ import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.maintab.games.view.HomeFollowView
-import org.cxct.sportlottery.util.DisplayUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.ScreenUtil
-import org.cxct.sportlottery.util.setServiceClick
 
 class HomeButtomView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : ConstraintLayout(context, attrs, defStyle) {
@@ -79,11 +77,12 @@ class HomeButtomView@JvmOverloads constructor(context: Context, attrs: Attribute
             R.drawable.icon_paymaya,
             R.drawable.icon_fortune_pay,
 //            R.drawable.icon_epon,
-            R.drawable.icon_payloro,
             R.drawable.icon_unionbank,
-            R.drawable.icon_aub
+            R.drawable.icon_aub,
+            R.drawable.icon_payloro,
         )
-        rcvPayment.layoutManager = GridLayoutManager(context, 4)
+        rcvPayment.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL,false)
+        rcvPayment.addItemDecoration(SpaceItemDecoration(context,R.dimen.margin_5))
         val paymentAdapter =
             object : BaseQuickAdapter<Int, BaseViewHolder>(R.layout.item_view_payment_method) {
                 override fun convert(holder: BaseViewHolder, item: Int) {
@@ -108,13 +107,10 @@ class HomeButtomView@JvmOverloads constructor(context: Context, attrs: Attribute
 //    }
 
     fun setHalloweenStyle() {
-        findViewById<ImageView>(R.id.imageView4).setImageResource(R.drawable.icon_payment_method_h)
-        findViewById<ImageView>(R.id.ivAward).setImageResource(R.drawable.icon_sigma_h)
         findViewById<HomeFollowView>(R.id.homeFollowView).setHalloweenStyle()
-        findViewById<View>(R.id.vPayment).setBackgroundResource(R.drawable.bg_halloween_part9)
+        setBackgroundResource(R.drawable.bg_home_bottom_h)
         findViewById<View>(R.id.ivaWardsH).visible()
         findViewById<View>(R.id.dividePayment).inVisible()
-        findViewById<View>(R.id.homeFollowView).setBackgroundResource(R.drawable.bg_halloween_part10)
-        findViewById<View>(R.id.endView).setBackgroundResource(R.drawable.bg_halloween_part11)
+        (findViewById<View>(R.id.tvAwardTitle).layoutParams as MarginLayoutParams).topMargin = 4.dp
     }
 }

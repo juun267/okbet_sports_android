@@ -4,10 +4,17 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.GameEntryType
+import org.cxct.sportlottery.common.extentions.asyncApi
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toIntS
+import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
@@ -239,8 +246,7 @@ class OKGamesViewModel(
     private val _recordNewBetHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
     private val _recordResultWinsHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
 
-    val sportOKLives = SingleLiveEvent<List<OKGameBean>>()
-    val sportOKGames = SingleLiveEvent<List<OKGameBean>>()
+    val sportFooterGames = SingleLiveEvent<List<OKGameBean>>()
     fun getOKGamesRecordNew() = callApi({ OKGamesRepository.getOKGamesRecordNew() }) {
         if (it.succeeded()) {
             _recordNewBetHttpOkGame.postValue(it.getData())
@@ -252,13 +258,27 @@ class OKGamesViewModel(
             _recordResultWinsHttpOkGame.postValue(it.getData())
         }
     }
-
-    fun getSportOKLive() = callApi({ OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKLIVE) }) {
-        it.getData()?.let { sportOKLives.value = it }
-    }
-
-    fun getSportOKGames() = callApi({ OKGamesRepository.getOKLiveList(1, 12,  GameEntryType.OKGAMES) }) {
-        it.getData()?.let { sportOKGames.value = it }
+    fun getFooterGames(){
+        viewModelScope.launch {
+            var task1: Deferred<ApiResult<List<OKGameBean>>>? =null
+            var task2: Deferred<ApiResult<List<OKGameBean>>>? =null
+            if (StaticData.okGameOpened()){
+                task1 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKGAMES) }
+            }
+            if (StaticData.okLiveOpened()){
+                task2 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKLIVE) }
+            }
+            val result1 = task1?.await()
+            val result2 = task2?.await()
+            val newList = mutableListOf<OKGameBean>()
+            result1?.getData()?.let {
+                newList.addAll(it)
+            }
+            result2?.getData()?.let {
+                newList.addAll(it)
+            }
+            sportFooterGames.postValue(newList)
+        }
     }
 
 }

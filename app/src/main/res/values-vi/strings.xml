@@ -1505,4 +1505,7 @@
     <string name="P218">Tin nhắn mã OTP</string>
     <string name="P219">Vui lòng nhập mã OTP</string>
     <string name="P225">Số tiền thua</string>
+    <string name="P228">12 Giờ Tới</string>
+    <string name="P229">24 Giờ Tới</string>
+    <string name="P230">Casino</string>
 </resources>
