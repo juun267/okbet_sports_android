@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.opensource.svgaplayer.SVGAImageView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.ESportType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -52,20 +53,15 @@ class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : Ba
     var currentItem: CategoryItem? = null
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val itemView = SVGAImageView(parent.context)
+        val itemView = ImageView(parent.context)
         itemView.layoutParams = iconParams
         itemView.scaleType = ImageView.ScaleType.CENTER_CROP
         return BaseViewHolder(itemView)
     }
 
-    override fun convert(holder: BaseViewHolder, item: CategoryItem) = (holder.itemView as SVGAImageView).run {
+    override fun convert(holder: BaseViewHolder, item: CategoryItem) = (holder.itemView as ImageView).run {
         setPadding(0, 0, 0, 0)
-        loops = 1
-        clearsAfterStop = false
-        setAssetSvgIcon(GameType.getGameTypeMenuSVGA(item.code))
-        if (item.isSelected){
-            stepToFrame(0, true)
-        }
+        setImageResource(ESportType.getESportIcon(item.code))
         background = if (item.isSelected) bgDrawable else null
     }
 
@@ -90,7 +86,6 @@ class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : Ba
         item.isSelected = true
         currentItem = item
         notifyItemChanged(position,Any())
-        (view as SVGAImageView).stepToFrame(0, true)
         itemClick.invoke(currentItem!!, position)
     }
 

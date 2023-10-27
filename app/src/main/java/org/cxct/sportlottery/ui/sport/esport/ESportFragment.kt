@@ -180,19 +180,16 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     private var sportMenu: Menu? = null
     private fun refreshTabLayout(sportMenuResult: ApiResult<SportMenuData>) {
-        LogUtil.d("refreshTabLayout=")
         val sportMenuData = sportMenuResult.getData()
         sportMenuData?.menu?.let { sportMenu = it }
-        val countInPlay = sportMenuData?.menu?.inPlay?.items?.sumOf { it.num } ?: 0
-        val countAtStart = sportMenuData?.atStart?.items?.sumOf { it.num } ?: 0
-        val countIn12hr = sportMenuData?.in12hr?.items?.sumOf { it.num } ?: 0
-        val countIn24hr = sportMenuData?.in24hr?.items?.sumOf { it.num } ?: 0
-        val countToday = sportMenuData?.menu?.today?.items?.sumOf { it.num } ?: 0
-        val countEarly = sportMenuData?.menu?.early?.items?.sumOf { it.num } ?: 0
-//        val countCS = sportMenuData?.menu?.cs?.items?.sumOf { it.num } ?: 0
-        val countOutright = sportMenuData?.menu?.outright?.items?.sumOf { it.num } ?: 0
-        val countParlay = sportMenuData?.menu?.parlay?.items?.sumOf { it.num } ?: 0
-        val countBkEnd = sportMenuData?.menu?.bkEnd?.items?.sumOf { it.num } ?: 0
+        val countInPlay = sportMenuData?.menu?.inPlay?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+        val countAtStart = sportMenuData?.atStart?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+        val countIn12hr = sportMenuData?.in12hr?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+        val countIn24hr = sportMenuData?.in24hr?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+        val countToday = sportMenuData?.menu?.today?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+        val countEarly = sportMenuData?.menu?.early?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+        val countOutright = sportMenuData?.menu?.outright?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+        val countParlay = sportMenuData?.menu?.parlay?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         defaultMatchType = when {
             countInPlay > 0 -> MatchType.IN_PLAY
 //            countAtStart > 0 -> MatchType.AT_START
@@ -200,12 +197,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             else -> MatchType.EARLY
         }
         var position =0
-        addTab(getString(R.string.home_tab_end_score), countBkEnd, position)
-        if (FIBAUtil.enableFiba()){
-            addTab(getString(R.string.fiba_2023), FIBAUtil.takeFIBAItem()?.num?:0, ++position)
-        }
-        addTab(getString(R.string.home_tab_in_play), countInPlay, ++position)
-//        addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
+        addTab(getString(R.string.home_tab_in_play), countInPlay, +position)
         when (matchTypeTab[2]){
             MatchType.TODAY-> addTab(getString(R.string.home_tab_today), countToday, ++position)
             MatchType.AT_START-> addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)

@@ -18,9 +18,10 @@ open class CategoryItem(
     @Json(name = "icon")
     val icon: String,
     @Json(name = "num")
-    val num: Int,
+    var num: Int,
     @Json(name = "sort")
     val sort: Int
 ) {
     var isSelected: Boolean = false
+    var categoryCodeList: List<String>? = null
 }

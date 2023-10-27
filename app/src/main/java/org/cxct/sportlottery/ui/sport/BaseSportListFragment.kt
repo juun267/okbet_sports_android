@@ -276,11 +276,15 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         load(item)
     }
 
-    protected open fun load(item: Item, selectLeagueIdList: ArrayList<String> = arrayListOf(),selectMatchIdList: ArrayList<String> = arrayListOf()) {
+    protected open fun load(item: Item,
+                            selectLeagueIdList:
+                            ArrayList<String> = arrayListOf(),
+                            selectMatchIdList: ArrayList<String> = arrayListOf(),
+                            categoryCodeList:List<String>?=null) {
         resetArrow()
         showLoading()
         setMatchInfo(item.name, "")
-        viewModel.switchGameType(matchType, item, selectLeagueIdList,selectMatchIdList)
+        viewModel.switchGameType(matchType, item, selectLeagueIdList,selectMatchIdList,categoryCodeList)
     }
 
     protected fun setMatchInfo(name: String, num: String) {
