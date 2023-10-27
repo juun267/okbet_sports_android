@@ -145,74 +145,100 @@
             android:layout_marginTop="@dimen/margin_16"
             android:background="@color/color_e0e3ee"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="12dp" />
+            tools:layout_editor_absoluteX="12dp"
+            tools:viewBindingIgnore="true"/>
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="19dp"
             android:layout_marginTop="16dp"
             android:text="@string/N001"
             android:textColor="@color/color_0D2245"
             android:textSize="16sp"
             android:textStyle="bold"
+            tools:viewBindingIgnore="true"
+            app:layout_constraintTop_toBottomOf="@+id/view5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view5" />
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.zhy.view.flowlayout.FlowLayout
+            android:id="@+id/aboutLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="20dp"
+            tools:viewBindingIgnore="true">
+
+            <TextView
+                android:id="@+id/tvPrivacyPolicy"
+                style="@style/text_style_responsible"
+                android:text="@string/J094" />
+
+            <TextView
+                android:id="@+id/tvTermConditions"
+                style="@style/text_style_responsible"
+                android:text="@string/J095"
+                android:layout_marginStart="12dp"/>
+
+            <TextView
+                android:id="@+id/tvResponsibleGaming"
+                style="@style/text_style_responsible"
+                android:text="@string/J093"
+                android:layout_marginStart="12dp"/>
+
+        </com.zhy.view.flowlayout.FlowLayout>
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
             android:text="@string/faqs"
             android:textColor="@color/color_0D2245"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/textView5" />
+            tools:viewBindingIgnore="true"
+            app:layout_constraintTop_toBottomOf="@+id/aboutLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:id="@+id/tvPrivacyPolicy"
-            style="@style/text_style_responsible"
-            android:text="@string/J094"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        <com.zhy.view.flowlayout.FlowLayout
+            android:id="@+id/aboutFaqs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:viewBindingIgnore="true">
 
-        <TextView
-            android:id="@+id/tvTermConditions"
-            style="@style/text_style_responsible"
-            android:text="@string/J095"
-            app:layout_constraintStart_toStartOf="@+id/tvPrivacyPolicy"
-            app:layout_constraintTop_toBottomOf="@+id/tvPrivacyPolicy" />
+            <TextView
+                android:id="@+id/tvLiveChat"
+                style="@style/text_style_responsible"
+                android:text="@string/J299"/>
 
-        <TextView
-            android:id="@+id/tvResponsibleGaming"
-            style="@style/text_style_responsible"
-            android:text="@string/J093"
-            app:layout_constraintStart_toStartOf="@+id/tvTermConditions"
-            app:layout_constraintTop_toBottomOf="@+id/tvTermConditions" />
+            <TextView
+                android:id="@+id/tvContactUs"
+                style="@style/text_style_responsible"
+                android:text="@string/N019"
+                android:layout_marginStart="12dp"/>
 
-        <TextView
-            android:id="@+id/tvLiveChat"
-            style="@style/text_style_responsible"
-            android:text="@string/J299"
-            app:layout_constraintStart_toStartOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            <TextView
+                android:id="@+id/tvFaqs"
+                style="@style/text_style_responsible"
+                android:text="@string/faqs"
+                android:layout_marginStart="12dp"/>
 
-        <TextView
-            android:id="@+id/tvContactUs"
-            style="@style/text_style_responsible"
-            android:text="@string/N019"
-            app:layout_constraintStart_toStartOf="@+id/tvLiveChat"
-            app:layout_constraintTop_toBottomOf="@+id/tvLiveChat" />
+            <TextView
+                android:id="@+id/tvEmail"
+                style="@style/text_style_responsible"
+                android:text="@string/P234"
+                android:layout_marginStart="12dp"/>
 
-        <TextView
-            android:id="@+id/tvFaqs"
-            style="@style/text_style_responsible"
-            android:text="@string/faqs"
-            app:layout_constraintStart_toStartOf="@+id/tvContactUs"
-            app:layout_constraintTop_toBottomOf="@+id/tvContactUs" />
+        </com.zhy.view.flowlayout.FlowLayout>
 
         <TextView
             android:id="@+id/textView15"
@@ -247,6 +273,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
+
         <TextView
             android:id="@+id/textView16"
             android:layout_width="wrap_content"
@@ -270,7 +297,8 @@
             android:background="@color/color_e0e3ee"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvResponsibleGaming" />
+            app:layout_constraintTop_toBottomOf="@+id/aboutFaqs" />
+
         <LinearLayout
             android:id="@+id/linBrand"
             android:layout_width="wrap_content"
