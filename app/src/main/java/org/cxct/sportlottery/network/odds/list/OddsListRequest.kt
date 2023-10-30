@@ -11,5 +11,6 @@ data class OddsListRequest(
     val matchIdList: List<String> = listOf(),
     val date: String? = null,
     val startTime: String? = null,
-    val endTime: String? = null
+    val endTime: String? = null,
+    val categoryCodeList: List<String>?=null,//电竞玩法里面的具体游戏code
 )

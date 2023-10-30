@@ -229,6 +229,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                     <View
+                        android:id="@+id/viewToolCenter"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/margin_12"
                         android:background="@color/color_F9FAFD"/>
@@ -273,7 +274,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_cat"
-                        android:layout_width="0dp"
+                        android:layout_width="346dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="@dimen/margin_10"

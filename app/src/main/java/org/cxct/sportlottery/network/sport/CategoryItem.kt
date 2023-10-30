@@ -8,20 +8,20 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 
 @JsonClass(generateAdapter = true)
 @KeepMembers
-open class Item(
+open class CategoryItem(
+    @Json(name = "id")
+    val id: String,
     @Json(name = "code")
     val code: String,
     @Json(name = "name")
     val name: String,
+    @Json(name = "icon")
+    val icon: String,
     @Json(name = "num")
-    val num: Int,
-    @Json(name = "sortNum")
-    val sortNum: Int,
-    @Json(name = "categoryList")
-    var categoryList: MutableList<CategoryItem>?=null
+    var num: Int,
+    @Json(name = "sort")
+    val sort: Int
 ) {
     var isSelected: Boolean = false
-    var playCateNum: Int? = null
-
-    var leagueOddsList: List<LeagueOdd>? = null // 收藏赛事-该字段会手动负值
+    var categoryCodeList: List<String>? = null
 }

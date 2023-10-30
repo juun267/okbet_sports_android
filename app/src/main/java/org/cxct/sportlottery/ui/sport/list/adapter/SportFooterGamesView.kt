@@ -15,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
+import kotlinx.android.synthetic.main.include_view_payment_method.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.animDuang
@@ -35,16 +36,17 @@ import org.cxct.sportlottery.view.transform.TransformInDialog
 
 class SportFooterGamesView @JvmOverloads constructor(
     context: Context,
+    val esportTheme: Boolean = false,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr), OnItemClickListener {
 
-    private val okGamesAdapter by lazy { SportFootGameAdapter(::onFavoriteClick,gameEntryType = GameEntryType.OKGAMES, showFavorite = false).apply { setOnItemClickListener(this@SportFooterGamesView) } }
+    private val okGamesAdapter by lazy { SportFootGameAdapter(::onFavoriteClick,gameEntryType = GameEntryType.OKGAMES, showFavorite = false,esportTheme=esportTheme).apply { setOnItemClickListener(this@SportFooterGamesView) } }
     private lateinit var fragment: BaseFragment<*>
     private lateinit var okGamesViewModel: OKGamesViewModel
     private lateinit var noMoreText: TextView
     private lateinit var moreLabelLayout: LinearLayout
-    private lateinit var homeButtomView: HomeButtomView
+    lateinit var homeButtomView: HomeButtomView
     private val gameItemViewPool by lazy {
         RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(0, 20) }
     }
@@ -56,6 +58,9 @@ class SportFooterGamesView @JvmOverloads constructor(
         addNomoreText()
         initOKGameList()
         initBottomView()
+        if (esportTheme){
+            homeButtomView.linAward.setBackgroundResource(R.drawable.bg_white_alpha90_radius_8)
+        }
     }
 
     private fun addNomoreText() {
@@ -101,11 +106,8 @@ class SportFooterGamesView @JvmOverloads constructor(
         recyclerView.setRecycledViewPool(gameItemViewPool)
         addView(recyclerView)
     }
-    private val bgDrawable by lazy {
 
-    }
     private fun initBottomView() {
-        setBackgroundResource(R.color.color_FFFFFF)
         homeButtomView = HomeButtomView(context)
         homeButtomView.apply {
             findViewById<View>(R.id.layoutPayment).gone()
@@ -117,7 +119,6 @@ class SportFooterGamesView @JvmOverloads constructor(
                 .build().let {
                     findViewById<View>(R.id.linAward).background=it
                 }
-
         }
         addView(homeButtomView)
     }

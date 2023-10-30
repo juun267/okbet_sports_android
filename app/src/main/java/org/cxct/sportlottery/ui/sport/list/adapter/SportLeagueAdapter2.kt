@@ -24,8 +24,8 @@ class SportLeagueAdapter2(
     val lifecycleOwner: LifecycleOwner,
     private val onNodeExpand: (BaseNode) -> Unit,
     onOddClick: OnOddClickListener,
-    onFavorite:(String) -> Unit
-
+    onFavorite:(String) -> Unit,
+    val esportTheme: Boolean = false,
 ): ExpanableOddsAdapter<MatchOdd>() {
 
     var oddsType: OddsType = OddsType.EU
@@ -39,8 +39,8 @@ class SportLeagueAdapter2(
 
     init {
         footerWithEmptyEnable = true
-        addFullSpanNodeProvider(SportLeagueProvider(this)) // 联赛名
-        addFullSpanNodeProvider(SportMatchProvider(this, onOddClick, onFavorite)) // 赛事
+        addFullSpanNodeProvider(SportLeagueProvider(this,esportTheme)) // 联赛名
+        addFullSpanNodeProvider(SportMatchProvider(this,esportTheme, onOddClick, onFavorite)) // 赛事
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -225,5 +225,7 @@ class SportLeagueAdapter2(
     override fun toString(): String {
         return " ==SportLeagueAdapter2 ${lifecycleOwner::class.java.simpleName} $matchType==  "
     }
+   fun setESportTheme(){
 
+   }
 }

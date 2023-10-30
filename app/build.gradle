@@ -372,7 +372,6 @@ dependencies {
     //SVGAPlayer
     implementation 'com.github.yyued:SVGAPlayer-Android:2.5.3'
 
-
     //compose
 //    implementation 'androidx.activity:activity-compose:1.6.1'
 //    implementation "androidx.compose.ui:ui:$compose_version"

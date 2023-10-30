@@ -49,7 +49,8 @@ class LeagueSelectViewModel(
         matchType: String,
         startTime: String? = null,
         endTime: String?=null,
-        isDateSelected: Boolean = false
+        isDateSelected: Boolean = false,
+        categoryCodeList: List<String>?=null
     ) {
         var playCateMenuCode = MenuCode.MAIN.code
         if (matchType == MatchType.CS.postValue) {
@@ -127,7 +128,8 @@ class LeagueSelectViewModel(
                             matchType,
                             startTime = selectStartTime,
                             endTime = selectEndTime,
-                            playCateMenuCode = playCateMenuCode
+                            playCateMenuCode = playCateMenuCode,
+                            categoryCodeList = categoryCodeList
                         )
                     )
                 }
@@ -160,9 +162,9 @@ class LeagueSelectViewModel(
     }
 
     val outrightLeagues = SingleLiveEvent<List<org.cxct.sportlottery.network.outright.odds.LeagueOdd>>()
-    fun getOutRightLeagueList(gameType: String) {
+    fun getOutRightLeagueList(gameType: String, categoryCodeList: List<String>?=null) {
 
-        val params = OutrightOddsListRequest(gameType, matchType = MatchType.OUTRIGHT.postValue)
+        val params = OutrightOddsListRequest(gameType, matchType = MatchType.OUTRIGHT.postValue,categoryCodeList =categoryCodeList)
         doRequest(androidContext, { OneBoSportApi.outrightService.getOutrightOddsList(params) }) {
             val leagues = it?.outrightOddsListData?.leagueOdds
             if (leagues == null) {
