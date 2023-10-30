@@ -33,6 +33,7 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.fix.PictureSelectorFix
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.user.UserInfo
@@ -123,6 +124,8 @@ class MultiLanguagesApplication : Application() {
                 .build()
         }
 
+        // 修复PictureSelector V3.11.1 bug
+        PictureSelectorFix.fixBug(this)
     }
 
     // 不需要在主线程初始化的进行异步初始化

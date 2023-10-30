@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.money.recharge
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
@@ -11,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
 import timber.log.Timber
 
@@ -70,9 +70,9 @@ class MoneySubmitDialog() : DialogFragment() {
                 )
             })
         }
-        tv_service.setOnClickListener {
-            kotlin.runCatching { Uri.parse(sConfigData?.customerServiceUrl) }.getOrNull()?.let {
-                startActivity(Intent(Intent.ACTION_VIEW).setData(it))
+        tv_service.setOnClickListener { view ->
+            sConfigData?.customerServiceUrl?.let {
+                JumpUtil.toExternalWeb(view.context, it)
             }
             dismiss()
         }
