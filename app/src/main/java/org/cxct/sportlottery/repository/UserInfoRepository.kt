@@ -35,6 +35,8 @@ object UserInfoRepository {
     val userInfo: LiveData<UserInfo?>
         get() = MultiLanguagesApplication.mInstance.userInfo
 
+    fun loginedInfo() = userInfo.value
+
     fun isGlifeAccount(): Boolean {
         return userInfo.value?.isGlifeAccount() == true
     }

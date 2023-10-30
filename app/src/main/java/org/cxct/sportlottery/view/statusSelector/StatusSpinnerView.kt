@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.view.statusSelector
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.KeyboadrdHideUtil
 import org.cxct.sportlottery.util.ScreenUtil
 
 class StatusSpinnerView @JvmOverloads constructor(
@@ -71,22 +73,26 @@ class StatusSpinnerView @JvmOverloads constructor(
 
             iv_arrow.setImageResource(arrowImg)
             tv_name.tag = ""
-            tv_name.text =
-                typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
+            tv_name.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
             tv_name.setTextColor(ContextCompat.getColor(context, R.color.color_C9CFD7))
             tv_name.gravity = textGravity
             setOnClickListener {
                 this@StatusSpinnerView.callOnClick()
-                if (mListPop.isShowing) {
-                    mListPop.dismiss()
-                    iv_arrow.setImageResource(arrowImg)
-                } else {
-                    mListPop.horizontalOffset = (cl_root.width - mListPop.width) / 2
-                    mListPop.show()
-                    iv_arrow.setImageResource(arrowImgUp)
+                if (!KeyboadrdHideUtil.isActive(it.context)) {
+                    showListPop()
+                    return@setOnClickListener
                 }
+
+                // 处理软键盘处于弹出时popwindow显示位置问题
+                KeyboadrdHideUtil.hideSoftKeyboard(it)
+                it.isEnabled = false
+                it.postDelayed({
+                    showListPop()
+                    it.isEnabled = true
+                }, 100)
             }
         }
+
         if (dataList.size > 0) {
             val first = dataList[0]
             first.isChecked = true
@@ -150,6 +156,17 @@ class StatusSpinnerView @JvmOverloads constructor(
                 }
             }
         })
+    }
+
+    private fun showListPop() {
+        if (mListPop.isShowing) {
+            mListPop.dismiss()
+            iv_arrow.setImageResource(arrowImg)
+        } else {
+            mListPop.horizontalOffset = (cl_root.width - mListPop.width) / 2
+            mListPop.show()
+            iv_arrow.setImageResource(arrowImgUp)
+        }
     }
 
     fun setBetStationStyle(){
