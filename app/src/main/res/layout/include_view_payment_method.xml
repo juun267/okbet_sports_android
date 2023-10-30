@@ -238,7 +238,8 @@
                 android:id="@+id/tvEmail"
                 style="@style/text_style_responsible"
                 android:text="@string/P234"
-                android:layout_marginStart="12dp"/>
+                android:layout_marginStart="12dp"
+                android:visibility="gone"/>
 
         </com.zhy.view.flowlayout.FlowLayout>
 
