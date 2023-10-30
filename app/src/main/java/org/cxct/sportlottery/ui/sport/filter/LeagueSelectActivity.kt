@@ -39,12 +39,14 @@ class LeagueSelectActivity :
             gameType: String,
             matchType: MatchType,
             timeRangeParams: TimeRangeParams?=null,
+            categoryCodeList: List<String>?=null,
         ) {
             var intent = Intent(context, LeagueSelectActivity::class.java)
             intent.putExtra("gameType", gameType)
             intent.putExtra("matchType", matchType)
             intent.putExtra("startTime", timeRangeParams?.startTime?:"")
             intent.putExtra("endTime", timeRangeParams?.endTime?:"")
+            intent.putStringArrayListExtra("categoryCodeList", categoryCodeList as ArrayList<String>?)
             context.startActivity(intent)
         }
     }
@@ -52,6 +54,7 @@ class LeagueSelectActivity :
 
     private val gameType by lazy { intent?.getStringExtra("gameType") ?: GameType.FT.key }
     private val matchType by lazy { (intent?.getSerializableExtra("matchType") as MatchType?) ?: MatchType.IN_PLAY }
+    private val categoryCodeList by lazy { intent?.getStringArrayListExtra("categoryCodeList") }
 
     private var selectStartTime:String = ""
     private var selectEndTime:String = ""
@@ -92,9 +95,9 @@ class LeagueSelectActivity :
                              isDateSelected: Boolean = false) {
 
         if (gameType == FIBAUtil.takeFIBAItem()?.code) {
-            viewModel.getOddsList(GameType.BK.key, gameType, startTime, endTime, isDateSelected)
+            viewModel.getOddsList(GameType.BK.key, gameType, startTime, endTime, isDateSelected,categoryCodeList)
         } else {
-            viewModel.getOddsList(gameType, matchType, startTime, endTime, isDateSelected)
+            viewModel.getOddsList(gameType, matchType, startTime, endTime, isDateSelected,categoryCodeList)
         }
     }
 

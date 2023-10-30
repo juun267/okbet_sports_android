@@ -30,7 +30,7 @@ class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : Ba
         val wh = 40.dp
         val param = FrameLayout.LayoutParams(wh, wh)
         8.dp.let {
-//            param.topMargin = it
+            param.topMargin = it
             param.bottomMargin = it
         }
         10.dp.let {
@@ -42,11 +42,12 @@ class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : Ba
 
     private val bgDrawable by lazy {
         DrawableCreator.Builder()
-            .setShapeAlpha(0.3f)
-            .setSolidColor(ContextCompat.getColor(context, R.color.color_025BE8))
+            .setSolidColor(ContextCompat.getColor(context, R.color.color_D3E0F3))
             .setSizeWidth(iconParams.width.toFloat())
             .setSizeHeight(iconParams.height.toFloat())
             .setCornersRadius(iconParams.height.toFloat())
+            .setStrokeColor(ContextCompat.getColor(context, R.color.color_FFFFFF))
+            .setStrokeWidth(1.dp.toFloat())
             .build()
     }
 
@@ -56,11 +57,11 @@ class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : Ba
         val itemView = ImageView(parent.context)
         itemView.layoutParams = iconParams
         itemView.scaleType = ImageView.ScaleType.CENTER_CROP
+        itemView.setPadding(12, 12, 12, 12)
         return BaseViewHolder(itemView)
     }
 
     override fun convert(holder: BaseViewHolder, item: CategoryItem) = (holder.itemView as ImageView).run {
-        setPadding(0, 0, 0, 0)
         setImageResource(ESportType.getESportIcon(item.code))
         background = if (item.isSelected) bgDrawable else null
     }

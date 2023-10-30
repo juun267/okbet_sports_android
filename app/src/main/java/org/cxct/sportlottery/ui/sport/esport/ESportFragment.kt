@@ -33,17 +33,12 @@ import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
-import org.cxct.sportlottery.ui.sport.TodayMenuPop
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
-import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
-import org.cxct.sportlottery.ui.sport.list.SportListFragment2
+import org.cxct.sportlottery.ui.sport.list.TodayMenuPop
 import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
-import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.view.dialog.PopImageDialog
-import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -76,8 +71,8 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private val mianViewModel: OKGamesViewModel by viewModel()
     private var todayTabItem:TabLayout.Tab?=null
     private val todayMenuPop by lazy { TodayMenuPop(requireActivity(), onItemClickListener = { position ->
-           matchTypeTab[2] = matchTypeTodayTab[position]
-           selectTab(2)
+           matchTypeTab[1] = matchTypeTodayTab[position]
+           binding.tabLayout.getTabAt(1)?.select()
       })
     }
 
@@ -85,10 +80,10 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private var jumpGameType: GameType? = null
     //根据赛事数量判断默认的分类
     private var defaultMatchType: MatchType? = null
-    private var favoriteItems = listOf<Item>()
+    private var curFavoriteItem: Item? = null
     private val favoriteDelayRunable by lazy { DelayRunable(this@ESportFragment) { viewModel.loadFavoriteGameList() } }
-    private inline fun favoriteCount(items: List<Item>): Int {
-        return items.sumOf { it.leagueOddsList?.sumOf { it.matchOdds.size } ?: 0 }
+    private inline fun favoriteCount(items: Item?): Int {
+        return items?.leagueOddsList?.sumOf { it.matchOdds.size }?:0
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -107,7 +102,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             setBackgroundResource(R.color.transparent_white_50)
             homeButtomView.setBackgroundResource(R.color.transparent_white_50)
         }
-        showSportDialog()
     }
 
     override fun onBindViewStatus(view: View) {
@@ -122,15 +116,12 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     fun initToolBar() = binding.homeToolbar.run {
         background = null
+        attach(this@ESportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         betlistIcon.setOnClickListener {
             loginedRun(it.context) {
                 startActivity(BetRecordActivity::class.java)
             }
-        }
-        (ivLogo.layoutParams as LinearLayout.LayoutParams).apply {
-            bottomMargin = 5.dp
-            ivLogo.layoutParams = this
         }
         ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
@@ -153,7 +144,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                     setTextColor(color)
                 }
             }
-
             override fun onTabSelected(tab: TabLayout.Tab) {
                 selectTab(tab.position)
                 setTabStyle(tab, R.color.color_025BE8)
@@ -165,15 +155,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
             override fun onTabReselected(tab: TabLayout.Tab) {
                 //带箭头的就是today选项，进行弹窗选择
-                if (tab.customView?.ivArrow?.isVisible() == true){
-                   if (todayMenuPop.isShowing){
-                       todayMenuPop.dismiss()
-                   }else{
-                       todayMenuPop.showAsDropDown(binding.tabLayout)
-                   }
-                }else{
-                    selectTab(tab.position)
-                }
+                selectTab(tab.position)
             }
         })
     }
@@ -198,16 +180,16 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
         var position =0
         addTab(getString(R.string.home_tab_in_play), countInPlay, +position)
-        when (matchTypeTab[2]){
-            MatchType.TODAY-> addTab(getString(R.string.home_tab_today), countToday, ++position)
-            MatchType.AT_START-> addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
-            MatchType.IN12HR-> addTab(getString(R.string.P228), countAtStart, ++position)
-            MatchType.IN24HR-> addTab(getString(R.string.P229), countAtStart, ++position)
+        when (matchTypeTab[1]){
+            MatchType.TODAY-> addTab(getString(R.string.home_tab_today), countToday, ++position,true)
+            MatchType.AT_START-> addTab(getString(R.string.home_tab_at_start), countAtStart, ++position,true)
+            MatchType.IN12HR-> addTab(getString(R.string.P228), countIn12hr, ++position,true)
+            MatchType.IN24HR-> addTab(getString(R.string.P229), countIn24hr, ++position,true)
         }
         addTab(getString(R.string.home_tab_early), countEarly, ++position)
         addTab(getString(R.string.home_tab_parlay), countParlay, ++position)
         addTab(getString(R.string.home_tab_outright), countOutright, ++position)
-        val tabView = addTab(getString(R.string.N082), favoriteCount(favoriteItems), ++position)
+        val tabView = addTab(getString(R.string.N082), favoriteCount(curFavoriteItem), ++position)
         todayMenuPop.updateCount(countToday,countAtStart,countIn12hr,countIn24hr)
         if (!LoginRepository.isLogined()) {
             tabView.setOnTouchListener { _, event ->
@@ -220,7 +202,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
     }
 
-    private fun addTab(name: String, num: Int, position: Int): View = binding.tabLayout.run {
+    private fun addTab(name: String, num: Int, position: Int,showArrow:Boolean = false): View = binding.tabLayout.run {
 
         val tab = if (tabCount > position) {
             getTabAt(position)!!
@@ -233,16 +215,20 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         tab.customView?.run {
             tv_title.text = name
             tv_number.text = if(name==getString(R.string.fiba_2023)) "" else num.toString()
-            ivArrow.isVisible = when(name){
-                getString(R.string.home_tab_today),
-                getString(R.string.home_tab_at_start),
-                getString(R.string.P228),
-                getString(R.string.P229)->true
-                else ->false
-            }
-            if(ivArrow.isVisible){
+            ivArrow.isVisible = showArrow
+            if(showArrow){
                 todayTabItem = tab
                 todayMenuPop.todayTabItem = todayTabItem
+                (parent as View).setOnTouchListener { _, event ->
+                    if (event.action == MotionEvent.ACTION_DOWN) {
+                        if (todayMenuPop.isShowing){
+                            todayMenuPop.dismiss()
+                        }else{
+                            todayMenuPop.showAsDropDown(binding.tabLayout)
+                        }
+                    }
+                    return@setOnTouchListener true
+                }
             }
         }
 
@@ -281,7 +267,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
         when (matchType) {
             MatchType.OUTRIGHT -> {
-                fragmentHelper.show(SportOutrightFragment::class.java, args) { fragment, newInstance ->
+                fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, newInstance ->
                     fragment.resetFooterView(footView)
                 }
             }
@@ -293,9 +279,9 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             }
 
             MatchType.MY_EVENT -> {
-                fragmentHelper.show(FavoriteFragment2::class.java, args) { fragment, newInstance ->
+                fragmentHelper.show(ESportFavoriteFragment::class.java, args) { fragment, newInstance ->
                     fragment.resetFooterView(footView)
-                    fragment.setFavoriteData(favoriteItems)
+                    fragment.setFavoriteData(curFavoriteItem)
                 }
             }
 
@@ -376,7 +362,9 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             updateUiWithResult(it)
         }
 
-        sportTypeMenuData.observe(viewLifecycleOwner) { updateFavoriteItem(it.first) }
+        esportTypeMenuData.observe(viewLifecycleOwner) {
+            updateFavoriteItem(it.first)
+        }
 
         var favorMatchs = favorMatchList.value
         favorMatchList.observe(viewLifecycleOwner) {
@@ -386,20 +374,19 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
     }
 
-    private fun updateFavoriteItem(favoriteLeagues: List<Item>) {
-
+    private fun updateFavoriteItem(favoriteItem: Item?) {
         val favoriteTab = binding.tabLayout.getTabAt(favoriteIndex)
         if (favoriteTab == null) {
-            favoriteItems = favoriteLeagues
+            curFavoriteItem = favoriteItem
             return
         }
 
-        favoriteTab.customView?.tv_number?.text = favoriteCount(favoriteLeagues).toString()
+        favoriteTab.customView?.tv_number?.text = favoriteCount(favoriteItem).toString()
         val currentFragment = fragmentHelper.currentFragment()
-        if (currentFragment is FavoriteFragment2) {
-            currentFragment.setFavoriteData(favoriteLeagues)
+        if (currentFragment is ESportFavoriteFragment) {
+            currentFragment.setFavoriteData(curFavoriteItem)
         }
-        favoriteItems = favoriteLeagues
+        curFavoriteItem = favoriteItem
     }
 
     private fun updateUiWithResult(sportMenuResult: ApiResult<SportMenuData>) {
@@ -434,16 +421,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         viewModel.setSportMenuResult(sportMenuResult)
     }
 
-    private fun showSportDialog(){
-        if (PopImageDialog.showSportDialog) {
-            PopImageDialog.showSportDialog = false
-            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_SPORT.code)) {
-                requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_SPORT.code)
-                }).show(childFragmentManager, PopImageDialog::class.simpleName)
-            }
-        }
-    }
     fun onScrollTop(isTop: Boolean){
         binding.tabShadow.layoutParams.apply {
             height = if(isTop) 0 else 1.dp

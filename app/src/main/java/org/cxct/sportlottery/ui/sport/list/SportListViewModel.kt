@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.sport.SportRepository
@@ -64,12 +65,14 @@ open class SportListViewModel(
 
             if (result?.success != true) {
                 sportTypeMenuData.value = Triple(listOf(), false, "${result?.msg}")
+                esportTypeMenuData.value = Triple(null, false, "${result?.msg}")
                 return@doRequest
             }
 
             val favoriteList = result.rows
             if (favoriteList.isNullOrEmpty()) {
                 sportTypeMenuData.value = Triple(listOf(), true, "")
+                esportTypeMenuData.value = Triple(null, true, "")
                 return@doRequest
             }
 
@@ -79,7 +82,8 @@ open class SportListViewModel(
                 val item = Item(it.gameType,
                     GameType.getGameTypeString(androidContext, it.gameType),
                     it.leagueOddsList.size,
-                    0)
+                    0
+                )
                 item.leagueOddsList = it.leagueOddsList
                 gameItems.add(item)
 
@@ -116,8 +120,11 @@ open class SportListViewModel(
                     }
                 }
             }
-
             sportTypeMenuData.value = Triple(gameItems, true, "")
+            gameItems.firstOrNull { it.code == GameType.ES.key }.let {
+                it?.let { it1 -> rebuildForESport(it1,true) }
+                esportTypeMenuData.value = Triple(it, true, "")
+            }
         }
     }
 
@@ -170,7 +177,6 @@ open class SportListViewModel(
         selectMatchIdList: ArrayList<String> = arrayListOf(),
         categoryCodeList: List<String>?=null
     ) {
-
         when (matchType) {
             MatchType.IN_PLAY -> {
                 getOddsList(
@@ -260,7 +266,8 @@ open class SportListViewModel(
                 getOutrightOddsList(
                     gameType,
                     leagueIdList = selectLeagueIdList,
-                    selectMatchIdList = selectMatchIdList
+                    selectMatchIdList = selectMatchIdList,
+                    categoryCodeList = categoryCodeList
                 )
             }
             MatchType.MY_EVENT -> {
@@ -285,7 +292,6 @@ open class SportListViewModel(
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
-
         jobSwitchGameType = viewModelScope.launch {
             if (matchType == MatchType.FIBA) {
                 getOddsList(GameType.BK.key, item.code, null, selectLeagueIdList, selectMatchIdList)
@@ -397,7 +403,7 @@ open class SportListViewModel(
     }
 
     private lateinit var outrightOddsListRequestTag: Any
-    private fun getOutrightOddsList(gameType: String, leagueIdList: List<String>? = null, selectMatchIdList: ArrayList<String>? = null) {
+    private fun getOutrightOddsList(gameType: String, leagueIdList: List<String>? = null, selectMatchIdList: ArrayList<String>? = null,categoryCodeList: List<String>?=null) {
         val requestTag = Any()
         outrightOddsListRequestTag = requestTag
         viewModelScope.launch(Dispatchers.IO) {
@@ -408,14 +414,16 @@ open class SportListViewModel(
                         OutrightOddsListRequest(
                             gameType,
                             matchType = MatchType.OUTRIGHT.postValue,
-                            matchIdList = selectMatchIdList
+                            matchIdList = selectMatchIdList ,
+                            categoryCodeList = categoryCodeList
                         )
                     } else {
                         OutrightOddsListRequest(
                             gameType,
                             matchType = MatchType.OUTRIGHT.postValue,
                             leagueIdList = leagueIdList,
-                            matchIdList = selectMatchIdList
+                            matchIdList = selectMatchIdList,
+                            categoryCodeList = categoryCodeList
                         )
                     }
                 )
@@ -585,7 +593,7 @@ open class SportListViewModel(
         sportMenuApiResult.value = sportMenuResult
 
         itemList.firstOrNull { it.code == GameType.ES.key }.let {
-            it?.let { it1 -> buildOtherForESport(it1) }
+            it?.let { it1 -> rebuildForESport(it1) }
             esportTypeMenuData.value = Triple(it, sportMenuResult.succeeded(), sportMenuResult.msg)
         }
     }
@@ -593,14 +601,49 @@ open class SportListViewModel(
     /**
      * 电竞others需要前端自己拼装数据
      */
-    private fun buildOtherForESport(item: Item){
+    private fun rebuildForESport(item: Item, isFavorite: Boolean =false){
         var otherCodeArr = mutableListOf<String>()
         var otherNum = 0
-        var othersCategoryItem = item.categoryList?.firstOrNull { it.code == ESportType.OTHERS.key }
         val newCategoryList = mutableListOf<CategoryItem>()
-        item.categoryList?.forEach{
+        val allCategoryItem = CategoryItem(
+            id = ESportType.ALL.key,
+            code = ESportType.ALL.key,
+            name = androidContext.getString(R.string.label_all),
+            icon = "",
+            num = item.num,
+            sort = 0,
+        ).apply {
+            categoryCodeList = mutableListOf()
+        }
+        newCategoryList.add(allCategoryItem)
+        if (isFavorite){
+            item.leagueOddsList?.groupBy { it.league.categoryCode }?.forEach {
+                when(it.key){
+                    ESportType.DOTA.key,
+                    ESportType.LOL.key,
+                    ESportType.CS.key,
+                    ESportType.HK.key->{
+                        val categoryItem = CategoryItem(
+                            id = it.key,
+                            code = it.key,
+                            name = it.value.first().league.category,
+                            icon = "",
+                            num = it.value.sumOf { it.matchOdds.size },
+                            sort = 0,
+                        ).apply {
+                            categoryCodeList = mutableListOf(it.key)
+                        }
+                        newCategoryList.add(categoryItem)
+                    }
+                    else-> {
+                        otherCodeArr.add(it.key)
+                        otherNum += it.value.sumOf { it.matchOdds.size }
+                    }
+                }
+            }
+        }else{
+         item.categoryList?.forEach{
             when(it.code){
-                ESportType.ALL.key,
                 ESportType.DOTA.key,
                 ESportType.LOL.key,
                 ESportType.CS.key,
@@ -610,14 +653,23 @@ open class SportListViewModel(
                 }
                 else-> {
                     otherCodeArr.add(it.code)
-                    otherNum = otherNum
+                    otherNum += it.num
                 }
             }
         }
-        othersCategoryItem?.let { othersItem->
-            othersItem.num = otherNum
-            othersItem.categoryCodeList = otherCodeArr.toList()
-            newCategoryList.add(othersItem)
+        }
+        if (otherNum>0){
+            val othersCategoryItem = CategoryItem(
+                id = ESportType.OTHERS.key,
+                code = ESportType.OTHERS.key,
+                name = androidContext.getString(R.string.other),
+                icon = "",
+                num = otherNum,
+                sort = 999,
+            ).apply {
+                categoryCodeList = otherCodeArr.toList()
+            }
+            newCategoryList.add(othersCategoryItem)
         }
         item.categoryList = newCategoryList
     }

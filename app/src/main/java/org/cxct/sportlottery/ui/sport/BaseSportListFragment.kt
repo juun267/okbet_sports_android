@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.chad.library.adapter.base.entity.node.BaseNode
+import com.didichuxing.doraemonkit.util.GsonUtils
 import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
@@ -33,6 +34,7 @@ import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
+import org.cxct.sportlottery.ui.sport.esport.ESportFavoriteFragment
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
@@ -55,6 +57,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected abstract var matchType: MatchType
     open fun getCurGameType() = GameType.getGameType(gameType) ?: GameType.ALL
     open var gameType: String = GameType.BK.key
+    private var categoryCodeList: List<String>? = null
 
     protected val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
     private val loadingHolder by lazy { Gloading.wrapView(binding.gameList) }
@@ -80,7 +83,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         initToolbar()
         initSportTypeList()
         initGameListView()
-
     }
 
     override fun onBindViewStatus(view: View) {
@@ -126,7 +128,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         }
     }
 
-    protected fun updateSportType(gameTypeList: List<Item>) {
+    open fun updateSportType(gameTypeList: List<Item>) {
 
         if (gameTypeList.isEmpty()) {
             setSportDataList(null)
@@ -199,6 +201,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 requireContext(),
                 gameType,
                 matchType,
+                categoryCodeList = categoryCodeList,
             )
         }
 
@@ -283,7 +286,14 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                             categoryCodeList:List<String>?=null) {
         resetArrow()
         showLoading()
-        setMatchInfo(item.name, "")
+        if(categoryCodeList==null){
+            setMatchInfo(item.name, "")
+        }else{
+            //电竞主页的情况，名称要换成游戏名字
+            val name = item.categoryList?.firstOrNull { it.categoryCodeList == categoryCodeList }?.name?:item.name
+            setMatchInfo(name, "")
+        }
+        this.categoryCodeList =categoryCodeList
         viewModel.switchGameType(matchType, item, selectLeagueIdList,selectMatchIdList,categoryCodeList)
     }
 
@@ -304,7 +314,8 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected fun setSportDataList(list: MutableList<BaseNode>?, sizeNumber: String? = null) {
         val adapter = getGameListAdapter()
         // 这个方法是最终显示数据的，已经处于数据结果状态。在这显示loading的时机不对，暂且先就这么处理，后面在优化
-        if(list.isNullOrEmpty() && this !is FavoriteFragment2) {
+        val showLoading = list.isNullOrEmpty() && this !is FavoriteFragment2 && this !is ESportFavoriteFragment
+        if(showLoading) {
             showLoading()
         }
         adapter.setNewInstance(list)

@@ -5,10 +5,10 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @KeepMembers
 enum class ESportType(val key: String) {
-    ALL(""),
+    ALL("ALL"),
     DOTA("SB:DOTA"),
     LOL("SB:LOL"),
-    CS("SB:CS"),
+    CS("SB:CSGO"),
     HK("SB:HK"),
     OTHERS("others");
     companion object {
