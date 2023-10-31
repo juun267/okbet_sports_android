@@ -1,22 +1,17 @@
 package org.cxct.sportlottery.ui.sport.esport
 
-import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.opensource.svgaplayer.SVGAImageView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.ESportType
-import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.SvgUtil.setAssetSvgIcon
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 
 
@@ -30,7 +25,7 @@ class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : Ba
         val wh = 40.dp
         val param = FrameLayout.LayoutParams(wh, wh)
         8.dp.let {
-            param.topMargin = it
+//            param.topMargin = it
             param.bottomMargin = it
         }
         10.dp.let {
