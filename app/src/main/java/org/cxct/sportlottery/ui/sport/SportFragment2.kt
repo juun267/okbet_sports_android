@@ -415,10 +415,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         if (matchType != null) {
             // 加post, 避免选中的tab不 能滚动到中间
             post{
-                if (!isAdded) {
-                    binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
-                    navGameSport = null
-                }
+                binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
+                navGameSport = null
             }
         }
     }
