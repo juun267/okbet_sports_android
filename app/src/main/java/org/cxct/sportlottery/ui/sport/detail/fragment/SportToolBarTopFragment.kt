@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.view_detail_head_toolbar1.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ViewDetailHeadToolbar1Binding
+import org.cxct.sportlottery.network.common.ESportType
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -61,9 +62,14 @@ class SportToolBarTopFragment :
 
     override fun onInitView(view: View) {
         binding.ivDetailBg.setImageResource(
-            GameType.getGameTypeDetailBg(
-                GameType.getGameType(matchInfo?.gameType) ?: GameType.FT
-            )
+            if (matchInfo?.gameType==GameType.ES.key){
+                ESportType.getESportImg(matchInfo?.categoryCode?:ESportType.ALL.key)
+            }else{
+                GameType.getGameTypeDetailBg(
+                    GameType.getGameType(matchInfo?.gameType) ?: GameType.FT
+                )
+            }
+
         )
     }
 

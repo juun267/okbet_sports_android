@@ -242,6 +242,7 @@ class SportViewModel(
             //MatchInfo中聯賽名稱為null, 為配合注單取用欄位, 將聯賽名稱塞入
             result?.oddsDetailData?.matchOdd?.matchInfo?.apply {
                 leagueName = result?.oddsDetailData?.league?.name
+                categoryCode = result.oddsDetailData.league.categoryCode
                 isFavorite = favorMatchList.value?.contains(matchId)==true
             }
             _oddsDetailResult.postValue(Event(result))

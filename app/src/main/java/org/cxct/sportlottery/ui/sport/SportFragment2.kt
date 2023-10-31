@@ -269,7 +269,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         val args = Bundle()
         args.putSerializable("matchType", matchType)
         args.putString("gameType", gameType)
-
+        onScrollTop(true)
         when (matchType) {
             MatchType.OUTRIGHT -> {
                 fragmentHelper.show(SportOutrightFragment::class.java, args) { fragment, newInstance ->

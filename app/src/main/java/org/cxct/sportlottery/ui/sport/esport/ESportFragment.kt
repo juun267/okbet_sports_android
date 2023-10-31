@@ -12,6 +12,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -55,7 +56,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         MatchType.TODAY,
         MatchType.EARLY,
         MatchType.PARLAY,
-        MatchType.OUTRIGHT,
+//        MatchType.OUTRIGHT,
         MatchType.MY_EVENT
     )
     private val matchTypeTodayTab = mutableListOf(
@@ -170,7 +171,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         val countIn24hr = sportMenuData?.in24hr?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         val countToday = sportMenuData?.menu?.today?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         val countEarly = sportMenuData?.menu?.early?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countOutright = sportMenuData?.menu?.outright?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+//        val countOutright = sportMenuData?.menu?.outright?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         val countParlay = sportMenuData?.menu?.parlay?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         defaultMatchType = when {
             countInPlay > 0 -> MatchType.IN_PLAY
@@ -188,7 +189,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
         addTab(getString(R.string.home_tab_early), countEarly, ++position)
         addTab(getString(R.string.home_tab_parlay), countParlay, ++position)
-        addTab(getString(R.string.home_tab_outright), countOutright, ++position)
+//        addTab(getString(R.string.home_tab_outright), countOutright, ++position)
         val tabView = addTab(getString(R.string.N082), favoriteCount(curFavoriteItem), ++position)
         todayMenuPop.updateCount(countToday,countAtStart,countIn12hr,countIn24hr)
         if (!LoginRepository.isLogined()) {
@@ -264,7 +265,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         val args = Bundle()
         args.putSerializable("matchType", matchType)
         args.putString("gameType", gameType)
-
+        onScrollTop(true)
         when (matchType) {
             MatchType.OUTRIGHT -> {
                 fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, newInstance ->

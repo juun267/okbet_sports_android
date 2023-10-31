@@ -142,6 +142,7 @@ open class SportListViewModel(
                     matchInfo.startDateDisplay = TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
                     matchOdd.matchInfo.startTimeDisplay = TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
                     matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+                    matchInfo.categoryCode = leagueOdd.league.categoryCode
 
                     matchOdd.oddsMap?.forEach { map ->
                         map.value?.updateOddSelectState()
@@ -622,7 +623,7 @@ open class SportListViewModel(
                     ESportType.DOTA.key,
                     ESportType.LOL.key,
                     ESportType.CS.key,
-                    ESportType.HK.key->{
+                    ESportType.KOG.key->{
                         val categoryItem = CategoryItem(
                             id = it.key,
                             code = it.key,
@@ -647,7 +648,7 @@ open class SportListViewModel(
                 ESportType.DOTA.key,
                 ESportType.LOL.key,
                 ESportType.CS.key,
-                ESportType.HK.key->{
+                ESportType.KOG.key->{
                     it.categoryCodeList = mutableListOf(it.code)
                     newCategoryList.add(it)
                 }
