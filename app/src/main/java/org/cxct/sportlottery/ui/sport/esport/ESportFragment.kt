@@ -105,6 +105,9 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     override fun onBindViewStatus(view: View) {
+        if (binding.tabLayout.tabCount > 0) {
+            binding.tabLayout.removeAllTabs()
+        }
         footView.setUp(this, mianViewModel)
         binding.homeToolbar.attach(this@ESportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         viewModel.getMatchData()
@@ -426,6 +429,11 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             height = if(isTop) 0 else 1.dp
             binding.tabShadow.layoutParams = this
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fragmentHelper.destory()
     }
 
 }
