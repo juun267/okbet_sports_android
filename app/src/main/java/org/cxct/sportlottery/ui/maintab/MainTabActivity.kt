@@ -49,6 +49,7 @@ import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.SportFragment2
+import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -184,7 +185,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (fragment is SportFragment2) {
             return true
         }
-
+        if (fragment is ESportFragment) {
+            return true
+        }
         return false
     }
 
@@ -379,9 +382,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onShowInPlay(event: ShowInPlayEvent) {
-        binding.bottomNavigationView.postDelayed({
-            jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
-        },200)
+        if (fragmentHelper.getCurrentFragment() is ESportFragment){
+            //如果当前处于电竞页面，就不切体育滚球
+        }else{
+            binding.bottomNavigationView.postDelayed({
+                jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
+            },200)
+        }
 
     }
 
@@ -643,8 +650,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToESport() {
         checkSportStatus(this) {
+            backMainHome()
             (fragmentHelper.getFragment(0) as HomeFragment).jumpToESport()
-            navToPosition(0)
+            enableSelectBottomNav(false)
         }
     }
 

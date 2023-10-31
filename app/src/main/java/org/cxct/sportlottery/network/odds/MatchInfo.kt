@@ -122,6 +122,7 @@ data class MatchInfo(
 
     //联赛图标
     var categoryIcon: String? = null
+    var categoryCode: String? = null
 
     var pullRtmpUrl: String? = null
 }
