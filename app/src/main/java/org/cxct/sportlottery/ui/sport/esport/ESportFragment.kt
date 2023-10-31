@@ -66,7 +66,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     )
     private val favoriteIndex = matchTypeTab.indexOf(MatchType.MY_EVENT)
     private inline fun getMainTabActivity() = activity as MainTabActivity
-    private val fragmentHelper by lazy { FragmentHelper2(childFragmentManager, R.id.fl_content) }
+    private lateinit var fragmentHelper: FragmentHelper2
     private val footView by lazy { SportFooterGamesView(binding.root.context,esportTheme = true) }
     private val mianViewModel: OKGamesViewModel by viewModel()
     private var todayTabItem:TabLayout.Tab?=null
@@ -105,6 +105,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     override fun onBindViewStatus(view: View) {
+        fragmentHelper = FragmentHelper2(childFragmentManager, R.id.fl_content)
         if (binding.tabLayout.tabCount > 0) {
             binding.tabLayout.removeAllTabs()
         }
@@ -275,12 +276,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 }
             }
 
-            MatchType.END_SCORE -> {
-                fragmentHelper.show(EndScoreFragment::class.java, args) { fragment, newInstance ->
-                    fragment.resetFooterView(footView)
-                }
-            }
-
             MatchType.MY_EVENT -> {
                 fragmentHelper.show(ESportFavoriteFragment::class.java, args) { fragment, newInstance ->
                     fragment.resetFooterView(footView)
@@ -433,6 +428,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     override fun onDestroyView() {
         super.onDestroyView()
+        defaultMatchType = null
         fragmentHelper.destory()
     }
 
