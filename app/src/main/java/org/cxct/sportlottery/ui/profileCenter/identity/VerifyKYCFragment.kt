@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_verify_identity_kyc.*
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.repository.UserInfoRepository
@@ -211,14 +213,18 @@ class VerifyKYCFragment :
 
     private fun setUserInfo() {
         val userInfo = UserInfoRepository.loginedInfo() ?: return
-        if (userInfo.hasFullName()) {
-            return
-        }
 
         frFirstName.visible()
         frMiddleName.visible()
         frLastName.visible()
         flBirthday.visible()
+        if (userInfo.hasFullName()) {
+            eetFirstName.setText(userInfo.firstName)
+            eedtMiddleName.setText(userInfo.middleName)
+            cbNoMiddleName.isChecked = userInfo.middleName.isEmptyStr() or "N/A".equals(userInfo.middleName, true)
+            eedtLastName.setText(userInfo.lastName)
+            et_birthday.setText(userInfo.birthday)
+        }
 
         eetFirstName.afterTextChanged { checkInput(eetFirstName, etFirstName) }
         eedtMiddleName.afterTextChanged { checkInput(eedtMiddleName, edtMiddleName, !cbNoMiddleName.isChecked) }
@@ -375,13 +381,21 @@ class VerifyKYCFragment :
                             secondFile!!,
                             identity_2nd.selector_type.selectedCode?.toInt(),
                             identity_2nd.ed_num.text.toString(),
+                            firstName = eetFirstName.text.toString(),
+                            middleName = eedtMiddleName.text.toString(),
+                            lastName = eedtLastName.text.toString(),
+                            birthday = et_birthday.text.toString(),
                         )
                     else
                         viewModel.uploadVerifyPhoto(
                             headIdFile,
                             firstFile!!,
                             identity_1st.selector_type.selectedCode?.toInt(),
-                            identity_1st.ed_num.text.toString()
+                            identity_1st.ed_num.text.toString(),
+                            firstName = eetFirstName.text.toString(),
+                            middleName = eedtMiddleName.text.toString(),
+                            lastName = eedtLastName.text.toString(),
+                            birthday = et_birthday.text.toString(),
                         )
                 }
             }

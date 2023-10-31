@@ -46,6 +46,10 @@ data class UserInfo(
     var permanentAddress: String?="",
     var zipCode: String?="",
     var permanentZipCode: String?="",
+    val firstName: String?="",
+    val middleName: String?="",
+    val lastName: String?="",
+    val birthday: String?="",
 ){
     fun isGlifeAccount():Boolean = vipType==1
     fun hasFullName() = !fullName.isEmptyStr() && !"N/A".equals(fullName!!.trim(), true)

@@ -63,6 +63,9 @@ data class UserInfoData(
     @Json(name = "permanentAddress") var permanentAddress: String?,
     @Json(name = "zipCode") var zipCode: String?,
     @Json(name = "permanentZipCode") var permanentZipCode: String?,
-
+    val firstName: String?="",
+    val middleName: String?="",
+    val lastName: String?="",
+    val birthday: String?="",
 
 )

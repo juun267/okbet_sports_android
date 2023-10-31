@@ -259,6 +259,10 @@ object UserInfoRepository {
             permanentAddress = userInfoData.permanentAddress,
             zipCode = userInfoData.zipCode,
             permanentZipCode = userInfoData.permanentZipCode,
+            firstName = userInfoData.firstName,
+            middleName = userInfoData.middleName,
+            lastName = userInfoData.lastName,
+            birthday = userInfoData.birthday,
         )
 
     suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {
