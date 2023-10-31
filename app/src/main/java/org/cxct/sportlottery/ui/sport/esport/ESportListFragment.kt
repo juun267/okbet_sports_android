@@ -5,8 +5,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
-import com.didichuxing.doraemonkit.util.GsonUtils
-import kotlinx.android.synthetic.main.fragment_main_right.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
