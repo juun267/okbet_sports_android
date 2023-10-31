@@ -24,11 +24,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameListAdapter= RecyclerGameListAdapter()
-    private val providersAdapter by lazy { OkGameProvidersAdapter() }
     private var categoryList = mutableListOf<OKGamesCategory>()
-
-    private var p3ogProviderFirstPosi: Int = 0
-    private var p3ogProviderLastPosi: Int = 3
 
     private var lastRequestTimeStamp = 0L
 
@@ -213,51 +209,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private fun onBindPart3View() {
         binding.winsRankView.setUp( this, { viewModel.getOKGamesRecordNew() }, { viewModel.getOKGamesRecordResult() })
 
-        binding.ivProvidersLeft.alpha = 0.5F
-        providersAdapter.setOnItemClickListener { _, _, position ->
-            okGamesFragment().changePartGames(providersAdapter.getItem(position))
-        }
-
-        var okGameProLLM = binding.rvOkgameProviders.setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
-        binding.rvOkgameProviders.adapter = providersAdapter
-        binding.rvOkgameProviders.layoutManager = okGameProLLM
-        binding.rvOkgameProviders.addOnScrollListener(object : OnScrollListener() {
-            override fun onScrollStateChanged(rvView: RecyclerView, newState: Int) {
-                // 获取当前滚动到的条目位置
-                p3ogProviderFirstPosi = okGameProLLM.findFirstVisibleItemPosition()
-                p3ogProviderLastPosi = okGameProLLM.findLastVisibleItemPosition()
-                binding.ivProvidersLeft.isClickable = p3ogProviderFirstPosi > 0
-
-                if (p3ogProviderFirstPosi > 0) {
-                    binding.ivProvidersLeft.alpha = 1F
-                } else {
-                    binding.ivProvidersLeft.alpha = 0.5F
-                }
-                if (p3ogProviderLastPosi == providersAdapter.data.size - 1) {
-                    binding.ivProvidersRight.alpha = 0.5F
-                } else {
-                    binding.ivProvidersRight.alpha = 1F
-                }
-
-                binding.ivProvidersRight.isClickable = p3ogProviderLastPosi != providersAdapter.data.size - 1
-            }
-        })
-
         viewModel.providerResult.observe(viewLifecycleOwner) { resultData ->
             val firmList = resultData?.firmList ?: return@observe
-
-            providersAdapter.setNewInstance(firmList.toMutableList())
-            if (firmList.isNotEmpty()) {
-                binding.run { setViewVisible(rvOkgameProviders, okgameP3LayoutProivder) }
-            } else {
-                binding.run { setViewGone(rvOkgameProviders, okgameP3LayoutProivder) }
-            }
-
-            if (firmList.size > 3) {
-                binding.run { setViewVisible(ivProvidersLeft, ivProvidersRight) }
-            } else {
-                binding.run { setViewGone(ivProvidersLeft, ivProvidersRight) }
-            }
+            okGamesFragment().setupProvider(firmList.toMutableList())
         }
 
         viewModel.recordNewBetHttpOkGame.observe(viewLifecycleOwner) {
@@ -270,36 +224,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 binding.winsRankView.onNewHttpWinsData(it.reversed())
             }
         }
-        //供应商左滑按钮
-        binding.ivProvidersLeft.setOnClickListener {
-            if (p3ogProviderFirstPosi >= 3) {
-                binding.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkgameProviders,
-                    RecyclerView.State(),
-                    p3ogProviderFirstPosi - 2
-                )
-            } else {
-                binding.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkgameProviders, RecyclerView.State(), 0
-                )
-            }
-        }
-        //供应商右滑按钮
-        binding.ivProvidersRight.setOnClickListener {
-            if (p3ogProviderLastPosi < providersAdapter.data.size - 4) {
-                binding.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkgameProviders,
-                    RecyclerView.State(),
-                    p3ogProviderLastPosi + 2
-                )
-            } else {
-                binding.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkgameProviders,
-                    RecyclerView.State(),
-                    providersAdapter.data.size - 1
-                )
-            }
-        }
+
         //设置监听游戏试玩
         setTrialPlayGameDataObserve()
     }
