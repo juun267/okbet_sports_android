@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.changePassword
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,7 +13,7 @@ import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 
@@ -76,12 +77,15 @@ class SettingPasswordViewModel(
     }
 
     private fun createUpdateFunPwd(currentPwd: String, newPwd: String): UpdateFundPwdRequest? {
+        Log.e("For Test", "=======>>> createUpdateFunPwd currentPwd=$currentPwd newPwd=$newPwd")
         return UpdateFundPwdRequest(
             userId = userInfo.value?.userId ?: return null,
             platformId = userInfo.value?.platformId ?: return null,
             oldPassword = MD5Util.MD5Encode(currentPwd),
             newPassword = MD5Util.MD5Encode(newPwd)
-        )
+        ).apply {
+            Log.e("For Test", "=======>>> createUpdateFunPwd UpdateFundPwdRequest=${JsonUtil.toJson(this)}")
+        }
     }
 
     private fun updatePwd(updatePwdRequest: UpdatePwdRequest) {
@@ -122,7 +126,7 @@ class SettingPasswordViewModel(
             _currentPwdError.value = ""
         } else {
             _currentPwdError.value = when {
-                currentPwd.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
+                currentPwd.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
                 else -> ""
             }
         }
@@ -131,14 +135,14 @@ class SettingPasswordViewModel(
 
     fun checkNewPwd(pwdPage: SettingPasswordActivity.PwdPage, currentPwd: String, newPwd: String) {
         _newPwdError.value = when {
-            newPwd.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            newPwd.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
             pwdPage == SettingPasswordActivity.PwdPage.LOGIN_PWD -> when {
                 !VerifyConstUtil.verifyPwd(newPwd) ->
-                    LocalUtils.getString(R.string.error_password_format)
+                    androidContext.getString(R.string.error_password_format)
                 else -> ""
             }
-            pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> LocalUtils.getString(R.string.error_withdraw_password_for_new)
-            currentPwd == newPwd -> LocalUtils.getString(R.string.error_password_cannot_be_same)
+            pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> androidContext.getString(R.string.error_withdraw_password_for_new)
+            currentPwd == newPwd -> androidContext.getString(R.string.error_password_cannot_be_same)
             else -> ""
         }
         checkInputComplete()
@@ -146,9 +150,9 @@ class SettingPasswordViewModel(
 
     fun checkConfirmPwd(newPwd: String, confirmPwd: String) {
         _confirmPwdError.value = when {
-            confirmPwd.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            confirmPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            newPwd != confirmPwd -> LocalUtils.getString(R.string.error_confirm_password)
+            confirmPwd.isEmpty() -> androidContext.getString(R.string.error_input_empty)
+            confirmPwd.isBlank() -> androidContext.getString(R.string.error_input_empty)
+            newPwd != confirmPwd -> androidContext.getString(R.string.error_confirm_password)
             else -> ""
         }
         checkInputComplete()

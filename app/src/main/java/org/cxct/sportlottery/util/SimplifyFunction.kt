@@ -1163,6 +1163,19 @@ fun resetInputTransformationMethod(fieldBox: LoginFormFieldView, editText: EditT
     editText.setSelection(editText.text.toString().length)
 }
 
+fun resetInputTransformationMethod(fieldBox: TextFormFieldBoxes, editText: EditText) {
+    if (fieldBox.endIconResourceId == R.drawable.ic_eye_open) {
+        editText.transformationMethod = AsteriskPasswordTransformationMethod()
+        fieldBox.setEndIcon(R.drawable.ic_eye_close)
+    } else {
+        fieldBox.setEndIcon(R.drawable.ic_eye_open)
+        editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+    }
+
+    fieldBox.hasFocus = true
+    editText.setSelection(editText.text.toString().length)
+}
+
 /**
  * 获取内存权限，兼容android33 部分手机
  */

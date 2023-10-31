@@ -196,6 +196,9 @@
             android:name=".ui.profileCenter.changePassword.SettingPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.profileCenter.changePassword.VerifyPhoneNoActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.common.WebActivity"
             android:screenOrientation="portrait" />
         <activity
