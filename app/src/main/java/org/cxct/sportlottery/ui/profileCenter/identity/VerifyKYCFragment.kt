@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -222,6 +221,7 @@ class VerifyKYCFragment :
             eetFirstName.setText(userInfo.firstName)
             eedtMiddleName.setText(userInfo.middleName)
             cbNoMiddleName.isChecked = userInfo.middleName.isEmptyStr() or "N/A".equals(userInfo.middleName, true)
+            eedtMiddleName.isEnabled = !cbNoMiddleName.isChecked
             eedtLastName.setText(userInfo.lastName)
             et_birthday.setText(userInfo.birthday)
         }
