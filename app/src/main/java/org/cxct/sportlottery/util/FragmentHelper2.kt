@@ -42,4 +42,12 @@ class FragmentHelper2(
 
     fun currentFragment() = current
 
+    fun destory() {
+        if (current != null) {
+            val transaction = fragmentManager.beginTransaction()
+            transaction.remove(current!!).commitAllowingStateLoss()
+            current = null
+        }
+    }
+
 }
