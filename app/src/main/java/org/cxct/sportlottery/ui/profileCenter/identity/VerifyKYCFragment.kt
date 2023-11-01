@@ -213,10 +213,6 @@ class VerifyKYCFragment :
     private fun setUserInfo() {
         val userInfo = UserInfoRepository.loginedInfo() ?: return
 
-        frFirstName.visible()
-        frMiddleName.visible()
-        frLastName.visible()
-        flBirthday.visible()
         if (userInfo.hasFullName()) {
             eetFirstName.setText(userInfo.firstName)
             eedtMiddleName.setText(userInfo.middleName)
