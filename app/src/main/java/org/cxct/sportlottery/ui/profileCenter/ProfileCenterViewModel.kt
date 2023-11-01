@@ -271,7 +271,7 @@ class ProfileCenterViewModel(
 
     fun loadUserInfo() {
         viewModelScope.launch {
-            doRequest(androidContext, { userInfoRepository.getUserInfo()}) {
+            doRequest({ userInfoRepository.getUserInfo()}) {
                 userInfoEvent.value = Any()
             }
         }
