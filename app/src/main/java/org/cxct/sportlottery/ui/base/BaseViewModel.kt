@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.base
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.annotation.Nullable
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
@@ -15,6 +14,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.error.HttpError
+import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
@@ -78,10 +78,10 @@ abstract class BaseViewModel(
     }
 
     fun <T : BaseResult> doRequest(
-        context: Context, apiFun: suspend () -> Response<T>, callback: (T?) -> Unit
+        apiFun: suspend () -> Response<T>, callback: (T?) -> Unit
     ) {
         viewModelScope.launch/*(Dispatchers.IO)*/ {
-            val result = doNetwork(context, true, apiFun)
+            val result = doNetwork(androidContext,true, apiFun)
             withContext(Dispatchers.Main) {
                 callback.invoke(result)
             }

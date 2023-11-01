@@ -3,8 +3,6 @@ package org.cxct.sportlottery.ui.login.signIn
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -146,54 +144,36 @@ class LoginViewModel(
 
     fun loginOrReg(account: String, smsCode: String, inviteCode: String) {
         loading()
-
+        loginRepository.account = account
         val loginRequest = LoginRequest(
             account = account,
             password = null,
             securityCode = smsCode,
             inviteCode = inviteCode
         )
-        viewModelScope.launch {
-            //預設存帳號
-            loginRepository.account = loginRequest.account
 
-            //登录
-           doNetwork(androidContext) {
-                loginRepository.loginOrReg(loginRequest)
-            }?.let { loginResult->
-                dealWithLoginResult(loginResult)
-            }
+        doRequest({ loginRepository.loginOrReg(loginRequest) }) {
+            it?.let { launch { dealWithLoginResult(it) } }
             hideLoading()
         }
     }
 
     fun loginGoogle(token: String) {
         loading()
-        viewModelScope.launch {
-            //預設存帳號
-           doNetwork(androidContext) {
-                loginRepository.googleLogin(
-                    token,
-                    inviteCode = Constants.getInviteCode()
-                )
-            }?.let { loginResult->
-               hideLoading()
-               dealWithLoginResult(loginResult)
-            }
+        doRequest({ loginRepository.googleLogin(token, inviteCode = Constants.getInviteCode()) }) {
+            hideLoading()
+            it?.let { launch { dealWithLoginResult(it) } }
         }
     }
+
     fun regPlatformUser(token: String,loginRequest: LoginRequest) {
         loading()
-        viewModelScope.launch {
-            //通过glife账号，注册平台账号
-            doNetwork(androidContext) {
-                loginRepository.regPlatformUser(token,loginRequest)
-            }?.let { loginResult->
-                hideLoading()
-                dealWithLoginResult(loginResult)
-            }
+        doRequest({ loginRepository.regPlatformUser(token,loginRequest) }) {
+            hideLoading()
+            it?.let { launch { dealWithLoginResult(it) } }
         }
     }
+
     private suspend fun dealWithLoginResult(loginResult: LoginResult) {
         if (loginResult.success) {
             //t不为空则t是登录账号，rows里面1个账号就直接登录，2个账号就选择账号
@@ -277,26 +257,14 @@ class LoginViewModel(
 
     fun loginFacebook(token: String) {
         loading()
-        viewModelScope.launch {
-            //預設存帳號
-            doNetwork(androidContext) {
-                loginRepository.facebookLogin(
-                    token,
-                    inviteCode = Constants.getInviteCode()
-                )
-            }?.let { loginResult ->
-                dealWithLoginResult(loginResult)
-            }
+        doRequest({ loginRepository.facebookLogin(token, inviteCode = Constants.getInviteCode()) }) {
+            it?.let { launch { dealWithLoginResult(it) } }
         }
     }
 
     fun sendLoginDeviceSms(token: String) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.sendLoginDeviceSms(token)
-            }?.let { result ->
-                _loginSmsResult.postValue(result)
-            }
+        doRequest({ loginRepository.sendLoginDeviceSms(token) }) { result ->
+            result?.let { _loginSmsResult.postValue(result) }
         }
     }
 
@@ -308,43 +276,32 @@ class LoginViewModel(
             loginSrc = LOGIN_SRC
         )
 
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.validateLoginDeviceSms(token, validateRequest)
-            }?.let { result ->
-                //手機驗證成功後, 獲取最新的用戶資料
-                if (result.success) {
-                    runWithCatch { userInfoRepository.getUserInfo() }
-                }
-                _validResult.postValue(result)
+        doRequest({ loginRepository.validateLoginDeviceSms(token, validateRequest) }) { result ->
+            if (result == null) {
+                return@doRequest
             }
+            //手機驗證成功後, 獲取最新的用戶資料
+            if (result.success) {
+                launch { runWithCatch { userInfoRepository.getUserInfo() } }
+            }
+            _validResult.postValue(result)
         }
     }
 
     fun loginAsGuest() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.loginForGuest()
-            }?.let {
-                _loginResult.value = it
-            }
+        doRequest({ loginRepository.loginForGuest()}) {
+            it?.let { _loginResult.value = it }
         }
     }
 
     fun getValidCode(identity: String?) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity))
-            }
+        doRequest({ OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity)) }) { result->
             _validCodeResult.postValue(result)
         }
     }
 
     fun loginOrRegSendValidCode(loginCodeRequest: LoginCodeRequest) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.indexService.loginOrRegSendValidCode(loginCodeRequest)
-            }
+        doRequest( {OneBoSportApi.indexService.loginOrRegSendValidCode(loginCodeRequest)} ) { result->
             _msgCodeResult.postValue(result)
         }
     }
@@ -483,10 +440,7 @@ class LoginViewModel(
     }
 
     fun queryPlatform(inviteCode: String) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.queryPlatform(inviteCode)
-            }
+        doRequest({ OneBoSportApi.bettingStationService.queryPlatform(inviteCode) }) { result->
             if (result?.success == true) {
 
             } else {
@@ -497,16 +451,8 @@ class LoginViewModel(
     }
 
     fun checkUserExist(phoneNumberOrEmail: String) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.indexService.checkUserExist(
-                    CheckUserRequest(
-                        phoneNumberOrEmail
-                    )
-                )
-            }?.let {
-                _checkUserExist.value = it.success
-            }
+        doRequest({ OneBoSportApi.indexService.checkUserExist( CheckUserRequest(phoneNumberOrEmail)) }) {
+            it?.let { _checkUserExist.value = it.success }
         }
     }
 
