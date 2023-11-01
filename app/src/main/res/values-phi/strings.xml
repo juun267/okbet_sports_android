@@ -363,7 +363,7 @@
     <string name="online_online_bank">Online Banking</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
-    <string name="online_maya">PayMaya</string>
+    <string name="online_maya">Maya</string>
     <string name="online_paypal">Paypal</string>
     <string name="online_gragon_pay">DragonPay</string>
     <string name="online_momopay">MoMoPay</string>
@@ -440,7 +440,7 @@
     <string name="text_crypto_add_success">Matagumpay ang virtual currency binding</string>
     <string name="text_bank_card_modify_success">Matagumpay na na-edit ang bank card</string>
     <string name="text_e_wallet_modify_success">Matagumpay na na-edit ang eWallet</string>
-    <string name="text_pay_maya_modify_success">Matagumpay na na-edit ang PayMaya</string>
+    <string name="text_pay_maya_modify_success">Matagumpay na na-edit ang Maya</string>
     <string name="text_crypto_modify_success">Matagumpay na na-edit ang virtual currency</string>
     <string name="bet_receipt_bet_quota">Taya:</string>
     <string name="bet_info_list_win_quota">Mapapanalunan:</string>
@@ -1155,7 +1155,7 @@
     <string name="please_setting_paymaya">Mangyaring i-set up muna ang iyong Maya</string>
     <string name="N865">Ang halaga ay lumampas sa limitasyon</string>
     <string name="text_paymaya_add_success">Matagumpay ang pag-bind ng Maya</string>
-    <string name="text_pay_maya_delete_success">Matagumpay na na-delete ang PayMaya</string>
+    <string name="text_pay_maya_delete_success">Matagumpay na na-delete ang Maya</string>
 
     <string name="N177">Pakilagay ang tamang numero ng telepono</string>
     <string name="N889">Pakilagay ang valid email</string>

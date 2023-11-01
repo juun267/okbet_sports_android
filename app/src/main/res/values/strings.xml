@@ -371,7 +371,7 @@
     <string name="epon">E-pon</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
-    <string name="online_maya">PayMaya</string>
+    <string name="online_maya">Maya</string>
     <string name="online_alipay">Alipay</string>
     <string name="online_weixin">Wechat</string>
     <string name="online_qq">QQ</string>
@@ -438,7 +438,7 @@
     <string name="text_bank_card_delete_success">Bank card deleted successfully</string>
     <string name="text_crypto_delete_success">The virtual coin was successfully deleted</string>
     <string name="text_e_wallet_delete_success">eWallet deleted successfully</string>
-    <string name="text_pay_maya_delete_success">PayMaya deleted successfully</string>
+    <string name="text_pay_maya_delete_success">Maya deleted successfully</string>
     <string name="text_bank_card_add_success">Bank card binding successfully</string>
     <string name="text_crypto_add_success">Crypto binding successfully</string>
     <string name="text_e_wallet_add_success">eWallet binding successfully</string>
@@ -446,7 +446,7 @@
     <string name="text_bank_card_modify_success">Edit bank card successfully</string>
     <string name="text_crypto_modify_success">Edit virtual coin successfully</string>
     <string name="text_e_wallet_modify_success">Edit eWallet successfully</string>
-    <string name="text_pay_maya_modify_success">PayMaya edited successfully</string>
+    <string name="text_pay_maya_modify_success">Maya edited successfully</string>
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">To win：</string>
     <string name="bet_receipt_win_quota">EST winning：</string>
@@ -1262,7 +1262,7 @@
     <string name="sms_code_length_error">Verification code at least 4 digits</string>
     <string name="phone_no_error">Phone number must be 11 digits &amp; starting with 09</string>
     <string name="edit_paymaya">Edit Maya</string>
-    <string name="add_paymaya">Add maya</string>
+    <string name="add_paymaya">Add Maya</string>
     <string name="please_setting_paymaya">Please set up your Maya first</string>
     <string name="tail_number">Tail Number</string>
     <string name="J486">The withdraw amount is higher than the account balance.</string>
