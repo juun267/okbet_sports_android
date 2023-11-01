@@ -262,12 +262,12 @@
   },
   {
     "titleNameMap": {
-      "zh": "PayMaya",
-      "en": "PayMaya",
-      "phi": "PayMaya",
-      "vi": "PayMaya"
+      "zh": "Maya",
+      "en": "Maya",
+      "phi": "Maya",
+      "vi": "Maya"
     },
-    "subtitle": "菲律賓在線網銀 PayMaya",
+    "subtitle": "菲律賓在線網銀 Maya",
     "image": "ic_pay_maya",
     "rechType": "onlinePayment",
     "onlineType": "206"
@@ -286,10 +286,10 @@
   },
   {
     "titleNameMap": {
-      "zh": "PayMaya",
-      "en": "PayMaya",
-      "phi": "PayMaya",
-      "vi": "PayMaya"
+      "zh": "Maya",
+      "en": "Maya",
+      "phi": "Maya",
+      "vi": "Maya"
     },
     "subtitle": "微信转账支付",
     "image": "ic_pay_maya",
