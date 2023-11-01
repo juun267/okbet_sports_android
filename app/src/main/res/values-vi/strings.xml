@@ -359,7 +359,7 @@
     <string name="online_online_bank">Online Banking</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
-    <string name="online_maya">PayMaya</string>
+    <string name="online_maya">Maya</string>
     <string name="online_paypal">Paypal</string>
     <string name="online_gragon_pay">DragonPay</string>
     <string name="online_momopay">MoMoPay</string>
@@ -431,7 +431,7 @@
     <string name="error_wallet_address">Địa chỉ bạn đăng nhập không hợp lệ</string>
     <string name="text_bank_card_delete_success">Xóa thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_delete_success">Đã xóa eWallet thành công</string>
-    <string name="text_pay_maya_delete_success">Xoá PayMaya thành công</string>
+    <string name="text_pay_maya_delete_success">Xoá Maya thành công</string>
     <string name="text_crypto_delete_success">Đã xóa tiền ảo thành công</string>
     <string name="text_bank_card_add_success">Mặc định thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_add_success">Mặc định eWallet thành công</string>
@@ -439,7 +439,7 @@
     <string name="text_bank_card_modify_success">Chỉnh sửa thẻ ngân hàng thành công</string>
     <string name="text_crypto_modify_success">Chỉnh sửa tiền ảo thành công</string>
     <string name="text_e_wallet_modify_success">Chỉnh sửa eWallet thành công</string>
-    <string name="text_pay_maya_modify_success">Chỉnh sửa PayMaya thành công</string>
+    <string name="text_pay_maya_modify_success">Chỉnh sửa Maya thành công</string>
     <string name="bet_receipt_bet_quota">Tiền Cược：</string>
     <string name="bet_info_list_win_quota">Ước thắng：</string> <!--I010-->
     <string name="bet_receipt_win_quota">Số tiền có thể thắng：</string>
