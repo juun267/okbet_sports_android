@@ -343,7 +343,7 @@ fun EditText.checkRegisterListener(onCheck: (String) -> Unit) {
     this.onFocusChange { onCheck(it) }
 }
 
-fun EditText.checkPhoneNum(textFieldBoxes: FrameLayout, onResult: ((String?) -> Unit)?) {
+fun EditText.checkPhoneNum(textFieldBoxes: FrameLayout?, onResult: ((String?) -> Unit)?) {
     checkRegisterListener { phoneNum->
         val msg = when {
             phoneNum.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
@@ -360,11 +360,11 @@ fun EditText.checkPhoneNum(textFieldBoxes: FrameLayout, onResult: ((String?) -> 
     }
 }
 
-fun EditText.checkSMSCode(textFieldBoxes: FrameLayout, onResult: ((String?) -> Unit)?) {
+fun EditText.checkSMSCode(textFieldBoxes: FrameLayout?, onResult: ((String?) -> Unit)?) {
     checkRegisterListener { smsCode->
         val msg = when {
             smsCode.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            smsCode.length < 4 -> textFieldBoxes.context.getString(R.string.sms_code_length_error)
+            smsCode.length < 4 -> context.getString(R.string.sms_code_length_error)
             !VerifyConstUtil.verifySMSCode(smsCode, 4) -> LocalUtils.getString(R.string.error_verification_code_by_sms)
             else -> null
         }

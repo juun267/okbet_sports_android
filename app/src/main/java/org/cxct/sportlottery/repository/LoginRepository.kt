@@ -406,7 +406,6 @@ object LoginRepository {
             discount = loginData.discount,
             verified = loginData.verified,
             vipType = loginData.vipType,
-            firstPhoneGiveMoney = loginData.firstPhoneGiveMoney,
         )
 
     fun addRecentPlayGame(gameId: String): LinkedHashSet<String> {

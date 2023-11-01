@@ -64,5 +64,5 @@ data class LoginData(
     @Json(name = "isCreateAccount")
     var isCreateAccount: Int?, // 提醒创建平台用户(如果登录用户为glife用户) 0-否 1-是
     @Json(name = "firstPhoneGiveMoney")
-    val firstPhoneGiveMoney: Int = 0// 注册绑定手机送金额
+    val firstPhoneGiveMoney: Boolean?// 注册绑定手机送金额
 ) : java.io.Serializable

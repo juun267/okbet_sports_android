@@ -9,8 +9,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:background="@color/color_FFFFFF"
+        android:layout_margin="15dp"
+        android:background="@drawable/bg_white_radius_16"
         android:gravity="center"
         android:orientation="vertical">
     <ImageView
@@ -79,6 +79,9 @@
           android:paddingHorizontal="@dimen/margin_12"
           android:drawablePadding="@dimen/margin_12"
           android:hint="@string/phone_number"
+          android:textColorHint="@color/color_BEC7DC"
+          android:textColor="@color/color_0D2245"
+          android:textSize="@dimen/textSize18sp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/linTitle"/>
@@ -95,18 +98,31 @@
         android:drawablePadding="@dimen/margin_12"
         android:paddingRight="130dp"
         android:hint="@string/verification_code"
+        android:textColorHint="@color/color_BEC7DC"
+        android:textColor="@color/color_0D2245"
+        android:textSize="@dimen/textSize18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etPhone"/>
-
+    <TextView
+        android:id="@+id/btnSendSms"
+        android:layout_width="120dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="@string/get_verification_code"
+        android:textSize="@dimen/textSize16sp"
+        android:textColor="@color/color_025BE8"
+        app:layout_constraintEnd_toEndOf="@id/etVerificationCode"
+        app:layout_constraintTop_toTopOf="@id/etVerificationCode"
+        app:layout_constraintBottom_toBottomOf="@id/etVerificationCode"/>
 
     <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginVertical="@dimen/margin_24"
-            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginVertical="@dimen/margin_25"
+            android:layout_marginHorizontal="@dimen/margin_15"
             app:layout_constraintTop_toBottomOf="@+id/etVerificationCode"
             app:layout_constraintBottom_toBottomOf="parent">
 
@@ -132,8 +148,8 @@
                 android:layout_height="44dp"
                 android:layout_weight="1"
                 android:layout_marginLeft="@dimen/margin_12"
-                android:background="@drawable/button_radius_8_bet_button"
-                android:enabled="true"
+                android:background="@drawable/selector_button_default"
+                android:enabled="false"
                 android:text="@string/submit"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize17sp"

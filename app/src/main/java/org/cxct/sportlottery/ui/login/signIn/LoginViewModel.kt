@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity.Companion.LOGIN_TYPE_PWD
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.util.*
@@ -198,12 +199,13 @@ class LoginViewModel(
             AFInAppEventUtil.login(loginData.uid.toString())
         }
         loginRepository.setUpLoginData(loginData)
+        RegisterSuccessDialog.ifNew = loginData.ifnew==true
+        RegisterSuccessDialog.loginFirstPhoneGiveMoney = loginData.firstPhoneGiveMoney==true
         checkBasicInfo(loginResult) {
             //继续登录
             if (loginData.deviceValidateStatus == 1)
                 runWithCatch { userInfoRepository.getUserInfo() }
             _loginResult.postValue(loginResult!!)
-            RegisterSuccessDialog.ifNew = loginData.ifnew==true
         }
     }
     /**
