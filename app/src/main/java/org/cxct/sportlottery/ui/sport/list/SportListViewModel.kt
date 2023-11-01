@@ -623,7 +623,14 @@ open class SportListViewModel(
                     ESportType.DOTA.key,
                     ESportType.LOL.key,
                     ESportType.CS.key,
-                    ESportType.KOG.key->{
+                    ESportType.KOG.key,
+                    ESportType.LOLWR.key,
+                    ESportType.VLR.key,
+                    ESportType.ML.key,
+                    ESportType.COD.key,
+                    ESportType.PUBG.key,
+                    ESportType.APL.key,
+                    ->{
                         val categoryItem = CategoryItem(
                             id = it.key,
                             code = it.key,

@@ -149,14 +149,14 @@ class SportViewModel(
         }
     }
 
-    fun getSportSearch(key: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun getSportSearch(key: String,gameType: String?) = viewModelScope.launch(Dispatchers.IO) {
         //[Martin] 小弟愚鈍 搜尋無法一次Filter所有資料(待強人捕)
         // 所以下面的做法總共分三次去Filter資料 然後再合併
         // 1.篩選球種 2.篩選聯賽 3.篩選比賽
         var finalResult: MutableList<SearchResult> = arrayListOf()
         //1.篩選球種
         var searchResult = allSearchData?.filter { row ->
-            row.leagueMatchList.any { leagueMatch ->
+            ( gameType.isNullOrBlank()||gameType==row.gameType)&&row.leagueMatchList.any { leagueMatch ->
                 leagueMatch.matchInfoList.any { matchInfo ->
                     leagueMatch.leagueName.contains(key, true) || matchInfo.homeName.contains(
                         key, true
