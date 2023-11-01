@@ -662,7 +662,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToNews() {
-        backMainHome()
+        if (fragmentHelper.getCurrentFragment() !is HomeFragment) {
+            navToPosition(0)
+        }
+        enableSelectBottomNav(true)
         homeFragment().jumpToNews()
     }
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
