@@ -8,10 +8,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.runWithCatch
-import org.cxct.sportlottery.common.extentions.safeApi
 import org.cxct.sportlottery.common.extentions.toast
-import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -104,39 +103,57 @@ class LoginViewModel(
             focusChangeCheckAllInputComplete()
         }
 
-    fun checkUserNeedCode(loginRequest: LoginRequest, onNeedVerifyPhone: (LoginRequest) -> Unit) = viewModelScope.launch {
+    fun loginV3(account: String, password: String, identity: String, validCode: String, onNeedVerifyPhone: (String) -> Unit) = launch {
         loading()
-        val checkedResult = safeApi { UserRepository.checkUserLoginNeedCode(loginRequest.account, "${loginRequest.password}") }
-        if (!checkedResult.succeeded()) {
+
+        val loginRequest = LoginRequest(
+            account = account,
+            password = MD5Util.MD5Encode(password),
+            validCodeIdentity = identity,
+            validCode = validCode
+        )
+
+        //預設存帳號
+        loginRepository.account = account
+        val loginResult = doNetwork { LoginRepository.userLoginV3(loginRequest) }
+
+        if (loginResult != null && !loginResult.success) {
             hideLoading()
-            toast(checkedResult.msg)
+            toast(loginResult.msg)
             return@launch
         }
 
-        if (checkedResult.getData() == true) { // 需要短信验证
+        if (loginResult == null || loginResult.rows.isNullOrEmpty()) {
             hideLoading()
-            onNeedVerifyPhone.invoke(loginRequest)
-        } else {
-            loginV3(loginRequest)
+            toast(androidContext.getString(R.string.unknown_error))
+            return@launch
         }
+
+        val needOptAcount = loginResult.rows.find { it.needOTPLogin }
+        if (needOptAcount == null) {
+            dealWithLoginResult(loginResult)
+            return@launch
+        }
+
+        hideLoading()
+        if (needOptAcount.phone.isEmptyStr()) {
+            toast(androidContext.getString(R.string.text_cant_play))
+            return@launch
+        }
+
+        onNeedVerifyPhone(needOptAcount.phone!!)
+
     }
 
-    suspend fun loginV3(loginRequest: LoginRequest) {
-        //預設存帳號
-        loginRepository.account = loginRequest.account
-        doNetwork { LoginRepository.userLoginV3(loginRequest) }?.let { loginResult ->
-            val loginData = loginResult.t ?: loginResult.rows?.getOrNull(0)
-            if (loginData == null) {
-                toast("${loginResult.msg}")
-                hideLoading()
-            } else {
-                dealWithLoginData(loginResult, loginData)
-            }
-        }
-    }
-
-    fun loginOrReg(loginRequest: LoginRequest) {
+    fun loginOrReg(account: String, smsCode: String, inviteCode: String) {
         loading()
+
+        val loginRequest = LoginRequest(
+            account = account,
+            password = null,
+            securityCode = smsCode,
+            inviteCode = inviteCode
+        )
         viewModelScope.launch {
             //預設存帳號
             loginRepository.account = loginRequest.account
@@ -145,9 +162,9 @@ class LoginViewModel(
            doNetwork(androidContext) {
                 loginRepository.loginOrReg(loginRequest)
             }?.let { loginResult->
-                hideLoading()
                 dealWithLoginResult(loginResult)
             }
+            hideLoading()
         }
     }
 
