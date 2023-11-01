@@ -204,9 +204,7 @@ abstract class BaseViewModel(
     }
 
 
-    fun launch(block: suspend (coroutine: CoroutineScope) -> Unit) {
-        viewModelScope.launch {
-            block(this)
-        }
+    fun launch(block: suspend CoroutineScope.() -> Unit) {
+        viewModelScope.launch(block = block)
     }
 }

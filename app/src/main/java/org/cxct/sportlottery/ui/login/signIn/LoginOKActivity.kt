@@ -208,29 +208,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun login() {
-        val deviceSn = JPushInterface.getRegistrationID(this)
-        val deviceId = Settings.Secure.getString(
-            applicationContext.contentResolver,
-            Settings.Secure.ANDROID_ID
-        )
-        var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
+
         hideSoftKeyboard(this)
         if (viewModel.loginType == LOGIN_TYPE_CODE) {
             val account = binding.eetAccount.text.toString()
             val smsCode = binding.eetVerificationCode.text.toString()
             var inviteCode = binding.eetRecommendCode.text.toString()
-            val loginRequest = LoginRequest(
-                account = account,
-                password = null,
-                loginSrc = LOGIN_SRC,
-                deviceSn = deviceSn,
-                appVersion = appVersion,
-                loginEnvInfo = deviceId,
-                securityCode = smsCode,
-                inviteCode = inviteCode
-            )
-
-            viewModel.loginOrReg(loginRequest)
+            viewModel.loginOrReg(account, smsCode, inviteCode)
             return
         }
 
@@ -239,18 +223,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         verifyCodeDialog.callBack = { identity, validCode ->
             val account = binding.eetUsername.text.toString()
             val password = binding.eetPassword.text.toString()
-            val loginRequest = LoginRequest(
-                account = account,
-                password = MD5Util.MD5Encode(password),
-                loginSrc = LOGIN_SRC,
-                deviceSn = deviceSn,
-                appVersion = appVersion,
-                loginEnvInfo = deviceId,
-                securityCode = null,
-                validCodeIdentity = identity,
-                validCode = validCode
-            )
-            viewModel.checkUserNeedCode(loginRequest) {
+            viewModel.loginV3(account, password, "$identity", validCode) {
                 LoginVerifyActivity.startLoginVerify(this@LoginOKActivity, it)
             }
         }
@@ -286,18 +259,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                         viewModel.dealWithLoginData(loginResult!!,it)
                     }else{
                         //新的注册接口
-                        val deviceSn = JPushInterface.getRegistrationID(this@LoginOKActivity)
-                        val deviceId = Settings.Secure.getString(
-                            applicationContext.contentResolver,
-                            Settings.Secure.ANDROID_ID
-                        )
-                        var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
                         val loginRequest = LoginRequest(
                             account = it.userName?:"",
                             loginSrc = LOGIN_SRC,
-                            deviceSn = deviceSn,
-                            appVersion = appVersion,
-                            loginEnvInfo = deviceId,
                         )
                         viewModel.regPlatformUser(it.token?:"",loginRequest)
                     }
