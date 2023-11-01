@@ -43,6 +43,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import splitties.fragments.start
 import kotlin.reflect.KClass
 
 class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
@@ -122,7 +123,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     fun initToolBar() = binding.homeToolbar.run {
         background = null
         attach(this@ESportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
-        searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
+        searchIcon.setOnClickListener { start<SportSearchtActivity> { putExtra("gameType",GameType.ES.key)  } }
         betlistIcon.setOnClickListener {
             loginedRun(it.context) {
                 startActivity(BetRecordActivity::class.java)

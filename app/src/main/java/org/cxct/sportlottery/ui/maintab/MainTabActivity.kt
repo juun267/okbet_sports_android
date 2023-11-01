@@ -24,6 +24,7 @@ import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.event.ShowInPlayEvent
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
@@ -185,8 +186,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (fragment is SportFragment2) {
             return true
         }
-        if (fragment is ESportFragment) {
-            return true
+        runWithCatch {//homeFragment().getCurrentFragment() 可能拿到空的fragment
+            if (fragment is HomeFragment && homeFragment().getCurrentFragment() is ESportFragment) {
+                return true
+            }
         }
         return false
     }
@@ -382,7 +385,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onShowInPlay(event: ShowInPlayEvent) {
-        if (fragmentHelper.getCurrentFragment() is ESportFragment){
+        if (fragmentHelper.getCurrentFragment() is HomeFragment&&homeFragment().getCurrentFragment() is ESportFragment){
             //如果当前处于电竞页面，就不切体育滚球
         }else{
             binding.bottomNavigationView.postDelayed({
@@ -650,7 +653,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToESport() {
         checkSportStatus(this) {
-            backMainHome()
+            if (fragmentHelper.getCurrentFragment() !is HomeFragment) {
+                navToPosition(0)
+            }
             (fragmentHelper.getFragment(0) as HomeFragment).jumpToESport()
             enableSelectBottomNav(false)
         }
@@ -664,7 +669,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToNews() {
-        backMainHome()
+        if (fragmentHelper.getCurrentFragment() !is HomeFragment) {
+            navToPosition(0)
+        }
+        enableSelectBottomNav(true)
         homeFragment().jumpToNews()
     }
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {

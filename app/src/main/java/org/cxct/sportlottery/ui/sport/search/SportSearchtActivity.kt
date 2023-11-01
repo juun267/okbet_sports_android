@@ -48,6 +48,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
             textSize = 12f
         }
     }
+    private val gameType by lazy { intent.getStringExtra("gameType") }
 
     private fun getSearchTagAdapter(): TagAdapter<String> {
         return object : TagAdapter<String>(searchHistoryList) {
@@ -158,7 +159,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
             MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
             searchFlag = false
             tvSearch.text = getString(R.string.D037)
-            viewModel.getSportSearch(searchKey)
+            viewModel.getSportSearch(searchKey,gameType)
             hideSoftInput()
             etSearch.clearFocus()
         } else {
