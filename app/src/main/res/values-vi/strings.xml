@@ -1508,4 +1508,7 @@
     <string name="P228">12 Giờ Tới</string>
     <string name="P229">24 Giờ Tới</string>
     <string name="P230">Casino</string>
+    <string name="P235">Thiết lập SĐT thưởng ngay %s</string>
+    <string name="P236">Cảm ơn bạn đã đăng ký</string>
+    <string name="P237">Bạn đã nhận được %s tiền thưởng!</string>
 </resources>

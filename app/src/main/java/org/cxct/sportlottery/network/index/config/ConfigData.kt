@@ -149,7 +149,7 @@ data class ConfigData(
     var homeGamesList:List<HomeGameBean>?,  //首页场馆排序
     var jackpotSwitch:Int=0,  //okgame 奖池 0-关闭 1-开启
     val isNeedOTPBank: Int = 0, // 添加删除编辑 银行卡时 是否需要验证码 0-否 1-是
-
+    val firstPhoneGiveMoney: Int = 0// 注册绑定手机送金额
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

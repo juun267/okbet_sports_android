@@ -1564,4 +1564,7 @@
     <string name="P228">接下来12小时</string>
     <string name="P229">接下来24小时</string>
     <string name="P230">娱乐城</string>
+    <string name="P235">设置手机号码奖励%s</string>
+    <string name="P236">感谢您的注册</string>
+    <string name="P237">您已经获得%s的欢迎礼金!</string>
 </resources>

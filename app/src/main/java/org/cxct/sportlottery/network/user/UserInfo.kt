@@ -45,6 +45,7 @@ data class UserInfo(
     var permanentAddress: String?="",
     var zipCode: String?="",
     var permanentZipCode: String?="",
+    var firstPhoneGiveMoney:Int = 0
 ){
     fun isGlifeAccount():Boolean = vipType==1
 }
