@@ -646,7 +646,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToESport() {
         checkSportStatus(this) {
-            backMainHome()
+            if (fragmentHelper.getCurrentFragment() !is HomeFragment) {
+                navToPosition(0)
+            }
             (fragmentHelper.getFragment(0) as HomeFragment).jumpToESport()
             enableSelectBottomNav(false)
         }
