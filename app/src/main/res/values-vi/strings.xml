@@ -313,7 +313,7 @@
     <string name="cft_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Tenpay có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="gcash_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Gcash có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="grabpay_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản GrabPay có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
-    <string name="paymaya_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản PayMaya có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
+    <string name="paymaya_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Maya có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="title_pay_channel">Phương thức thanh toán</string>
     <string name="title_choose_pay_channel">Chọn phương thức thanh toán</string>
     <string name="M132">Chọn tài khoản thanh toán</string>
@@ -468,7 +468,7 @@
     <string name="recharge_channel_crypto">Chuyển khoản tiền ảo</string>
     <string name="recharge_channel_gcash">Gcash</string>
     <string name="recharge_channel_grabpay">GrabPay</string>
-    <string name="recharge_channel_paymaya">PayMaya</string>
+    <string name="recharge_channel_paymaya">Maya</string>
     <string name="recharge_channel_admin">Hệ thống gửi tiền</string>
     <string name="recharge_log_order_time">Thời gian đơn cược</string>
     <string name="recharge_log_recharge_amount">Số tiền đặt cọc</string>
@@ -1173,14 +1173,14 @@
     <string name="J566">Vui lòng nhập số điện thoại</string>
     <string name="J558">Vui lòng nhập email</string>
     <string name="tail_number">Số đuôi</string>
-    <string name="edit_paymaya">Sửa PayMaya</string>
-    <string name="add_paymaya">Thêm Paymaya</string>
-    <string name="please_setting_paymaya">Vui lòng cài đặt PayMaya trước</string>
+    <string name="edit_paymaya">Sửa Maya</string>
+    <string name="add_paymaya">Thêm Maya</string>
+    <string name="please_setting_paymaya">Vui lòng cài đặt Maya trước</string>
     <string name="J486">Số tiền rút lớn hơn số dư tài khoản</string>
     <string name="J485">Định dạng hoặc giá trị của số rút tiền không đúng</string>
     <string name="N171">Vui lòng nhập SĐT gồm 11 chữ số</string>
     <string name="N865">Số tiền vượt hạn mức</string>
-    <string name="text_paymaya_add_success">Liên kết PayMaya thành công</string>
+    <string name="text_paymaya_add_success">Liên kết Maya thành công</string>
     <string name="N866">Cài đặt SĐT thành công</string>
     <string name="N867">Cài đặt email thành công</string>
     <string name="N866_1">SĐT đã thay đổi!</string>
