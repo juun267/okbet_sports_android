@@ -8,8 +8,10 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.databinding.ActivityLoginVerifyBinding
+import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
 import org.cxct.sportlottery.util.CountDownUtil
 import org.cxct.sportlottery.util.EventBusUtil
@@ -21,14 +23,14 @@ class LoginVerifyActivity: BindingActivity<LoginViewModel, ActivityLoginVerifyBi
 
     companion object {
 
-        fun startLoginVerify(activity: Activity, loginRequest: LoginRequest) {
+        fun startLoginVerify(activity: Activity, phone: String) {
             val intent = Intent(activity, LoginVerifyActivity::class.java)
-            intent.putExtra("data", loginRequest)
+            intent.putExtra("phone", phone)
             activity.startActivity(intent)
         }
     }
 
-    private val loginRequest by lazy { intent.getParcelableExtra<LoginRequest>("data")!! }
+    private val phone by lazy { intent.getStringExtra("phone")!! }
     private var countDownGoing = false
 
     override fun onInitView() = binding.run {
@@ -50,17 +52,17 @@ class LoginVerifyActivity: BindingActivity<LoginViewModel, ActivityLoginVerifyBi
         btnLogin.setBtnEnable(false)
         edtCode.checkRegisterListener(::onInputCode)
         btnBack.setOnClickListener { finish() }
+        btnLogin.setOnClickListener { viewModel.loginOrReg(phone, edtCode.text.toString(), "") }
         btnSend.setOnClickListener {
-            loginRequest.securityCode = null
-            viewModel.checkUserNeedCode(loginRequest) {
-                startCountDown()
+            VerifyCodeDialog().run {
+                callBack = { identity, validCode ->
+                    loading()
+                    viewModel.loginOrRegSendValidCode(LoginCodeRequest(phone!!, identity, validCode))
+                }
+                show(supportFragmentManager, null)
             }
         }
-        btnLogin.setOnClickListener {
-            loginRequest.securityCode = edtCode.text.toString()
-            loading()
-            lifecycleScope.launch { viewModel.loginV3(loginRequest) }
-        }
+
     }
 
     private fun initObserver() = viewModel.run {
@@ -83,6 +85,15 @@ class LoginVerifyActivity: BindingActivity<LoginViewModel, ActivityLoginVerifyBi
         loginResult.observe(this@LoginVerifyActivity) {
             EventBusUtil.post(RegisterInfoEvent(it))
             finish()
+        }
+
+        msgCodeResult.observe(this@LoginVerifyActivity) {
+            hideLoading()
+            if (it?.success == true) {
+                startCountDown()
+            } else {
+                it?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
+            }
         }
     }
 

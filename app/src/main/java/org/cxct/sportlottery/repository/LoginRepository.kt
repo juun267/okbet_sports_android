@@ -371,7 +371,7 @@ object LoginRepository {
 
     private fun transform(loginData: LoginData): UserInfo =
         UserInfo(
-            loginData.userId,
+            loginData.userId ?: 0,
             fullName = loginData.fullName,
             iconUrl = loginData.iconUrl,
             lastLoginIp = loginData.lastLoginIp,

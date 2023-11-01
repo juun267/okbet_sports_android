@@ -19,7 +19,7 @@ data class LoginData(
     val testFlag: Long?, //是否测试用户（0-正常用户，1-游客，2-内部测试）
     val token: String?,
     val uid: Long?, //用户id（保留，建议用userId
-    val userId: Long, //用户id
+    val userId: Long?, //用户id
     val userName: String?, //用户名
     val userType: String?, //用户类型（"ADMIN"：超管；"ZDL"：总代理；"DL"：代理；"HY"：会员；"ZZH"：子账户）
     val hyType: Int?, //会员类型
@@ -39,4 +39,6 @@ data class LoginData(
     val middleName: String?,
     val lastName: String?,
     val birthday: String?,
+    val needOTPLogin: Boolean, // 账号长时间未登陆需要验证手机号
+    val phone: String?,         // 账号长时间未登陆需要验证手机号时会返回
 ) : java.io.Serializable

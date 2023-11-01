@@ -1166,7 +1166,7 @@ class WithdrawViewModel(
 
     fun senEmsCode(phoneNo: String, validCodeIdentity: String, validCode: String) {
         val params = LoginCodeRequest(phoneNo, validCodeIdentity, validCode)
-        doRequest(androidContext, { OneBoSportApi.indexService.loginOrRegSendValidCode(params)}) {
+        doRequest({ OneBoSportApi.indexService.loginOrRegSendValidCode(params)}) {
             onEmsCodeSended.value = it
         }
 
