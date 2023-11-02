@@ -152,6 +152,7 @@ object MoneyManager {
         PNB("PNB",  R.drawable.ic_bank_pnb),
         GCASH("Gcash", R.drawable.ic_g_cash_type),
         PAYMAYA("Paymaya", R.drawable.ic_pay_maya_type),
+        MAYA("Maya", R.drawable.ic_pay_maya_type),
         JUANCASH("JuanCash", R.drawable.ic_juancash_type),
         GRABPAY("Grabpay", R.drawable.ic_grab_pay_type),
         ALIPAY("Alipay", R.drawable.ic_alipay_type),
