@@ -459,13 +459,16 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
                     R.string.kyc_unverified,
                     resources.getColor(R.color.color_FF2E00))
             }
-            ProfileActivity.VerifiedType.VERIFYING.value,ProfileActivity.VerifiedType.VERIFIED_WAIT.value, ProfileActivity.VerifiedType.REVERIFYING.value -> {
+            ProfileActivity.VerifiedType.VERIFYING.value,ProfileActivity.VerifiedType.VERIFIED_WAIT.value -> {
                 setVerify(true, true, R.string.kyc_unverifing, resources.getColor(R.color.color_6D7693))
 
             }
             ProfileActivity.VerifiedType.REVERIFIED_NEED.value -> {
                 setVerify(true, true, R.string.P211, resources.getColor(R.color.color_6D7693))
 
+            }
+            ProfileActivity.VerifiedType.REVERIFYING.value -> {
+                setVerify(true, true, R.string.P196, resources.getColor(R.color.color_6D7693))
             }
             else -> {
                 setVerify(true, true, R.string.kyc_unverified, resources.getColor(R.color.color_6D7693))

@@ -5,6 +5,9 @@ import android.content.Intent
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -44,6 +47,8 @@ import org.cxct.sportlottery.ui.redeem.RedeemActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -596,7 +601,7 @@ class ProfileCenterFragment :
         } else {
             userInfo?.nickName
         }
-
+        bindVerifyStatus(userInfo)
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         label_user_name.text = "${getString(R.string.username)}："
@@ -664,5 +669,42 @@ class ProfileCenterFragment :
     //实名验证
     private fun showKYCVerifyDialog() {
         VerifyIdentityDialog().show(childFragmentManager, null)
+    }
+    private fun bindVerifyStatus(userInfo: UserInfo?) {
+        tvKycStatus.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
+                || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
+
+        when (userInfo?.verified) {
+            ProfileActivity.VerifiedType.PASSED.value -> {
+                setVerify(R.string.kyc_passed, R.color.color_1EB65B)
+            }
+            ProfileActivity.VerifiedType.NOT_YET.value,ProfileActivity.VerifiedType.VERIFIED_FAILED.value -> {
+                setVerify(R.string.kyc_unverified, R.color.color_C4CDE3)
+            }
+            ProfileActivity.VerifiedType.VERIFYING.value,ProfileActivity.VerifiedType.VERIFIED_WAIT.value -> {
+                setVerify(R.string.kyc_unverifing, R.color.color_FF8A00)
+
+            }
+            ProfileActivity.VerifiedType.REVERIFIED_NEED.value -> {
+                setVerify(R.string.P211, R.color.color_FF8A00)
+
+            }
+            ProfileActivity.VerifiedType.REVERIFYING.value -> {
+                setVerify(R.string.P196, R.color.color_FF8A00)
+            }
+            else -> {
+                setVerify(R.string.kyc_unverified, R.color.color_C4CDE3)
+            }
+        }
+    }
+
+    private fun setVerify(text: Int, colorResId: Int) {
+        tvKycStatus.setText(text)
+        val bgDrawable = DrawableCreator.Builder()
+            .setSolidColor(ContextCompat.getColor(requireContext(), colorResId))
+            .setSizeHeight(18.dp.toFloat())
+            .setCornersRadius(9.dp.toFloat())
+            .build()
+        tvKycStatus.setBackgroundDrawable(bgDrawable)
     }
 }
