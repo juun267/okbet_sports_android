@@ -202,7 +202,7 @@ class LoginViewModel(
         RegisterSuccessDialog.ifNew = loginData.ifnew==true
         RegisterSuccessDialog.loginFirstPhoneGiveMoney = loginData.firstPhoneGiveMoney==true
         LogUtil.toJson(loginData)
-        BindPhoneDialog.afterLoginOrRegist = true
+        BindPhoneDialog.afterLoginOrRegist = (sConfigData?.firstPhoneGiveMoney?:0)>0 && loginData.phone.isNullOrEmpty()
         checkBasicInfo(loginResult) {
             //继续登录
             if (loginData.deviceValidateStatus == 1)

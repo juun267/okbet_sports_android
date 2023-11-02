@@ -35,6 +35,8 @@ data class LoginData(
     val userId: Long, //用户id
     @Json(name = "userName")
     val userName: String?, //用户名
+    @Json(name = "phone")
+    val phone: String?, //手机号
     @Json(name = "userType")
     val userType: String?, //用户类型（"ADMIN"：超管；"ZDL"：总代理；"DL"：代理；"HY"：会员；"ZZH"：子账户）
     @Json(name = "hyType")

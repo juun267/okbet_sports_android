@@ -30,12 +30,7 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
             if (instance!=null){
                   return false
             }
-            if (afterLoginOrRegist){
-                UserInfoRepository.userInfo.value?.let {
-                    return  ((sConfigData?.firstPhoneGiveMoney?:0)>0 && it.phone.isNullOrEmpty())
-                }
-            }
-            return false
+            return afterLoginOrRegist
         }
     }
 
