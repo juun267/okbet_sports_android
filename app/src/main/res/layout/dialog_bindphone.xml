@@ -14,6 +14,13 @@
         android:gravity="center"
         android:orientation="vertical">
     <ImageView
+        android:layout_width="164dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bg_bindphone_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
         android:id="@+id/ivClose"
         android:layout_width="@dimen/margin_24"
         android:layout_height="@dimen/margin_24"
