@@ -153,6 +153,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
 
     private fun initTopView() = binding.topView.run {
         setup(this@OKLiveFragment, 18, gameType = "oklive")
+        setProviderVisible(false)
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
             hideKeyboard()
