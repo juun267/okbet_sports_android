@@ -29,6 +29,9 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
         fun needShow():Boolean{
             if (instance!=null){
                   return false
+            }else if((sConfigData?.firstPhoneGiveMoney?:0)==0){
+                afterLoginOrRegist=false
+                return false
             }
             return afterLoginOrRegist
         }
