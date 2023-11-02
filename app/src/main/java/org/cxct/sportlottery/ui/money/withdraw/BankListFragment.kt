@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_bank_list.*
 import kotlinx.android.synthetic.main.fragment_bank_list.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.BankCardChangeEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.network.money.config.PAYMAYA
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 /**
@@ -155,6 +157,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 val bankCardList = mBankListAdapter.removeCard(it.first)
                 updateCardNumbers(mBankListAdapter.dataCount().toString())
                 showPromptDialog(message = getDeleteInfo(bankCardList), buttonText = null, isShowDivider = false,) { }
+                EventBusUtil.post(BankCardChangeEvent())
             } else {
                 showErrorPromptDialog(title = getString(R.string.prompt), message = result.msg, hasCancel = false) { }
             }
