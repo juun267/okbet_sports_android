@@ -15,6 +15,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.didichuxing.doraemonkit.kit.toolpanel.decoration.HorizontalDividerItemDecoration
+import com.didichuxing.doraemonkit.kit.toolpanel.decoration.VerticalDividerItemDecoration
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
@@ -195,6 +197,9 @@ class OKGamesTopView @JvmOverloads constructor(
         var okGameProLLM = rvOkgameProviders.setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
         rvOkgameProviders.adapter = providersAdapter
         rvOkgameProviders.layoutManager = okGameProLLM
+        if (rvOkgameProviders.itemDecorationCount==0) {
+            rvOkgameProviders.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
+        }
         rvOkgameProviders.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(rvView: RecyclerView, newState: Int) {
                 // 获取当前滚动到的条目位置
