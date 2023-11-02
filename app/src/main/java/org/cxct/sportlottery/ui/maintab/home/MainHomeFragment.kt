@@ -30,6 +30,7 @@ import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
@@ -197,8 +198,10 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                     }).show(childFragmentManager, PopImageDialog::class.simpleName)
                 }
             }
-            if (viewModel.isLogin.value==true&&RegisterSuccessDialog.ifNew){
-                RegisterSuccessDialog.ifNew=false
+            if (viewModel.isLogin.value==true&&BindPhoneDialog.needShow()){
+                BindPhoneDialog().show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
+            }
+            if (viewModel.isLogin.value==true&&RegisterSuccessDialog.needShow()){
                 RegisterSuccessDialog{
                     viewModel.checkRechargeKYCVerify()
                 }.show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)

@@ -40,10 +40,24 @@
             android:textColor="@color/color_FFFFFF_414655"
             android:textSize="@dimen/textSize18sp"
             android:textStyle="bold"
-            android:text="@string/register_success"
+            android:text="@string/P236"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivSuccess" />
+    <TextView
+        android:id="@+id/tvGiveMoney"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_8"
+        android:textColor="@color/color_0D2245"
+        android:textSize="@dimen/textSize14sp"
+        android:text="@string/P237"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         <TextView
             android:id="@+id/tvSummary"
@@ -56,7 +70,7 @@
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvGiveMoney"
             android:layout_marginTop="@dimen/margin_12" />
 
 

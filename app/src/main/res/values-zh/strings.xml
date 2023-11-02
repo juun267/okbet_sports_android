@@ -1568,4 +1568,7 @@
     <string name="J053">验证码</string>
     <string name="P196">复审中</string>
     <string name="P234">邮件联系我们</string>
+    <string name="P235">设置手机号码奖励%s</string>
+    <string name="P236">感谢您的注册</string>
+    <string name="P237">您已经获得%s的欢迎礼金!</string>
 </resources>

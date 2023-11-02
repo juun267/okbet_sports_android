@@ -1512,4 +1512,7 @@
     <string name="J053">Mã xác nhận</string>
     <string name="P196">Đang xem xét</string>
     <string name="P234">Email cho chúng tôi</string>
+    <string name="P235">Thiết lập SĐT thưởng ngay %s</string>
+    <string name="P236">Cảm ơn bạn đã đăng ký</string>
+    <string name="P237">Bạn đã nhận được %s tiền thưởng!</string>
 </resources>

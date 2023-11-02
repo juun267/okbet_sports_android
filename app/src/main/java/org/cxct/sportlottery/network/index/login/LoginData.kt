@@ -65,4 +65,6 @@ data class LoginData(
     var isCreateAccount: Int?, // 提醒创建平台用户(如果登录用户为glife用户) 0-否 1-是
     val needOTPLogin: Boolean, // 账号长时间未登陆需要验证手机号
     val phone: String?,         // 账号长时间未登陆需要验证手机号时会返回
+    @Json(name = "firstPhoneGiveMoney")
+    val firstPhoneGiveMoney: Boolean?// 注册绑定手机送金额
 ) : java.io.Serializable
