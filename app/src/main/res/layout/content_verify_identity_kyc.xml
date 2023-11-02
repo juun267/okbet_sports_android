@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="20dp">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/cl_type"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="54dp"
         android:background="@color/color_FFFFFF"
         android:orientation="horizontal"
         android:visibility="visible"
@@ -41,7 +40,7 @@
         <org.cxct.sportlottery.view.statusSelector.StatusSpinnerView
             android:id="@+id/selector_type"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="54dp"
             android:layout_marginEnd="8dp"
             app:defaultStatusText="@string/hint_select_document_type"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +61,7 @@
     <LinearLayout
         android:id="@+id/cl_num"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="54dp"
         android:layout_marginTop="1dp"
         android:background="@color/color_FFFFFF"
         android:orientation="horizontal"
@@ -111,48 +110,56 @@
         android:background="@color/color_eeeeee"/>
 
     <LinearLayout
-        android:id="@+id/cl_pic"
-        android:layout_width="195dp"
+        android:id="@+id/cl_picLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
+        android:gravity="center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_num">
-
-        <ImageView
-            android:id="@+id/img_pic"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_icon_id01"
-            android:background="@color/color_F0F5FA"/>
+        app:layout_constraintTop_toBottomOf="@+id/cl_num"
+        android:background="@color/color_F0F5FA">
 
         <LinearLayout
-            android:id="@+id/btn_add_pic"
-            android:layout_width="match_parent"
+            android:id="@+id/cl_pic"
+            android:layout_width="195dp"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_rectangle_268"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="@+id/cl_num"
-            app:layout_constraintTop_toBottomOf="@+id/cl_num">
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_upload_id_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/img_pic"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/click_upload_id_photo"
-                android:textColor="@color/home_card_text_color"
-                android:textSize="@dimen/textSize14sp" />
+                android:src="@drawable/ic_icon_id01"
+                android:background="@color/color_F0F5FA"/>
 
+            <LinearLayout
+                android:id="@+id/btn_add_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_rectangle_268"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/cl_num"
+                app:layout_constraintTop_toBottomOf="@+id/cl_num">
+
+                <TextView
+                    android:id="@+id/tv_upload_id_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/click_upload_id_photo"
+                    android:textColor="@color/home_card_text_color"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
 
     <ImageView
         android:id="@+id/img_tri"
@@ -176,13 +183,13 @@
         android:text="@string/upload_tips"
         android:textColor="@color/color_D65752"
         android:textSize="@dimen/textSize12sp"
-        app:layout_constraintStart_toStartOf="@+id/cl_pic"
-        app:layout_constraintTop_toBottomOf="@+id/cl_pic" />
+        app:layout_constraintStart_toStartOf="@+id/cl_picLayout"
+        app:layout_constraintTop_toBottomOf="@+id/cl_picLayout" />
 
     <TextView
         android:id="@+id/tvUploadTip2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_10"
         android:drawableLeft="@drawable/ic_tip_red"
         android:drawablePadding="@dimen/margin_4"

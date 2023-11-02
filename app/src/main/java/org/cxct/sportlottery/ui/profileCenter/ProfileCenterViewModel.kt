@@ -85,6 +85,10 @@ class ProfileCenterViewModel(
         secndFile: File? = null,
         identityTypeBackup: Int? = null,
         identityNumberBackup: String? = null,
+        firstName: String?,
+        middleName: String?,
+        lastName: String?,
+        birthday: String?,
     ) {
         viewModelScope.launch {
             val docResponse = doNetwork(androidContext) {
@@ -149,7 +153,11 @@ class ProfileCenterViewModel(
                                     photoResponse.imgData?.path,
                                     identityTypeBackup,
                                     identityNumberBackup,
-                                    headResponse?.imgData?.path
+                                    headResponse?.imgData?.path,
+                                    firstName = firstName,
+                                    middleName = middleName,
+                                    lastName = lastName,
+                                    birthday = birthday,
                                 )
                             }
 
@@ -166,8 +174,14 @@ class ProfileCenterViewModel(
                         }
                     } else {
                         uploadIdentityDoc(
-                            docResponse.imgData?.path, identityType, identityNumber,
-                            verifyPhoto1 = headResponse?.imgData?.path
+                            docResponse.imgData?.path,
+                            identityType,
+                            identityNumber,
+                            verifyPhoto1 = headResponse?.imgData?.path,
+                            firstName = firstName,
+                            middleName = middleName,
+                            lastName = lastName,
+                            birthday = birthday,
                         )
                     }
                 }
@@ -182,10 +196,18 @@ class ProfileCenterViewModel(
         }
     }
 
-    fun uploadIdentityDoc(
-        firstVerifyPath: String? = null, identityType: Int?,
-        identityNumber: String?, secondVerifyPath: String? = null, identityTypeBackup: Int? = null,
-        identityNumberBackup: String? = null, verifyPhoto1: String? = null
+    private fun uploadIdentityDoc(
+        firstVerifyPath: String? = null,
+        identityType: Int?,
+        identityNumber: String?,
+        secondVerifyPath: String? = null,
+        identityTypeBackup: Int? = null,
+        identityNumberBackup: String? = null,
+        verifyPhoto1: String? = null,
+        firstName: String?,
+        middleName: String?,
+        lastName: String?,
+        birthday: String?,
     ) {
         val firstVerifyPathUrl =
             firstVerifyPath ?: _docUrlResult.value?.peekContent()?.imgData?.path
@@ -216,7 +238,11 @@ class ProfileCenterViewModel(
                                 secondVerifyPathUrl,
                                 identityTypeBackup,
                                 identityNumberBackup,
-                                verifyPhoto1
+                                verifyPhoto1,
+                                firstName = firstName,
+                                middleName = middleName,
+                                lastName = lastName,
+                                birthday = birthday,
                             )
                         )
                     }
