@@ -1484,5 +1484,7 @@
     <string name="P228">Sa Susunod na 12 Oras</string>
     <string name="P229">Sa Susunod na 24 Oras</string>
     <string name="P230">Casino</string>
+    <string name="P226">Matagal ka nang hindi nakakapag-log in. Para sa seguridad ng iyong account, mangyaring magsagawa ng OTP na pag-verify.</string>
+    <string name="J053">Verification code</string>
 </resources>
 

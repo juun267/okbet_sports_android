@@ -15,7 +15,7 @@ data class LoginResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val t: LoginData? = null,
+    val t: LoginData? = null,  // google登陆会返回这个字段
     @Json(name = "rows")
     val rows: List<LoginData>? = null
 ) : BaseResult(),java.io.Serializable

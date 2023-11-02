@@ -8,6 +8,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.network.Constants
@@ -90,80 +91,93 @@ class LoginViewModel(
     //跳转至完善信息监听
     val registerInfoEvent by lazy { SingleEvent<LoginResult>() }
 
-    val password by lazy { loginRepository.password }
-
     var loginType = LOGIN_TYPE_PWD
         set(value) {
             field = value
             checkAllInputComplete()
         }
 
-    var agreeChecked = true
+    private var agreeChecked = true
         set(value) {
             field = value
             focusChangeCheckAllInputComplete()
         }
 
-    fun login(loginRequest: LoginRequest, originalPassword: String) {
+    fun loginV3(account: String, password: String, identity: String, validCode: String, onNeedVerifyPhone: (String) -> Unit) = launch {
         loading()
-        viewModelScope.launch {
-            //預設存帳號
-            loginRepository.account = loginRequest.account
 
-            doNetwork(androidContext) {
-                loginRepository.login(loginRequest)
-            }?.let {
-                hideLoading()
-                dealWithLoginResult(it)
-            }
+        val loginRequest = LoginRequest(
+            account = account,
+            password = MD5Util.MD5Encode(password),
+            validCodeIdentity = identity,
+            validCode = validCode
+        )
+
+        //預設存帳號
+        loginRepository.account = account
+        val loginResult = doNetwork { LoginRepository.userLoginV3(loginRequest) }
+
+        if (loginResult != null && !loginResult.success) {
+            hideLoading()
+            toast(loginResult.msg)
+            return@launch
         }
+
+        if (loginResult == null || loginResult.rows.isNullOrEmpty()) {
+            hideLoading()
+            toast(androidContext.getString(R.string.unknown_error))
+            return@launch
+        }
+
+        val needOptAcount = loginResult.rows.find { it.needOTPLogin }
+        if (needOptAcount == null) {
+            dealWithLoginResult(loginResult)
+            return@launch
+        }
+
+        hideLoading()
+        if (needOptAcount.phone.isEmptyStr()) {
+            toast(androidContext.getString(R.string.text_cant_play))
+            return@launch
+        }
+
+        onNeedVerifyPhone(needOptAcount.phone!!)
+
     }
 
-
-    fun loginOrReg(loginRequest: LoginRequest) {
+    fun loginOrReg(account: String, smsCode: String, inviteCode: String) {
         loading()
-        viewModelScope.launch {
-            //預設存帳號
-            loginRepository.account = loginRequest.account
+        loginRepository.account = account
+        val loginRequest = LoginRequest(
+            account = account,
+            password = null,
+            securityCode = smsCode,
+            inviteCode = inviteCode
+        )
 
-            //登录
-           doNetwork(androidContext) {
-                loginRepository.loginOrReg(loginRequest)
-            }?.let { loginResult->
-                hideLoading()
-                dealWithLoginResult(loginResult)
-            }
+        doRequest({ loginRepository.loginOrReg(loginRequest) }) {
+            it?.let { launch { dealWithLoginResult(it) } }
+            hideLoading()
         }
     }
 
     fun loginGoogle(token: String) {
         loading()
-        viewModelScope.launch {
-            //預設存帳號
-           doNetwork(androidContext) {
-                loginRepository.googleLogin(
-                    token,
-                    inviteCode = Constants.getInviteCode()
-                )
-            }?.let { loginResult->
-               hideLoading()
-               dealWithLoginResult(loginResult)
-            }
+        doRequest({ loginRepository.googleLogin(token, inviteCode = Constants.getInviteCode()) }) {
+            hideLoading()
+            it?.let { launch { dealWithLoginResult(it) } }
         }
     }
+
     fun regPlatformUser(token: String,loginRequest: LoginRequest) {
         loading()
-        viewModelScope.launch {
-            //通过glife账号，注册平台账号
-            doNetwork(androidContext) {
-                loginRepository.regPlatformUser(token,loginRequest)
-            }?.let { loginResult->
-                hideLoading()
-                dealWithLoginResult(loginResult)
-            }
+        doRequest({ loginRepository.regPlatformUser(token,loginRequest) }) {
+            hideLoading()
+            it?.let { launch { dealWithLoginResult(it) } }
         }
     }
-    suspend fun dealWithLoginResult(loginResult: LoginResult) {
+
+    private suspend fun dealWithLoginResult(loginResult: LoginResult) {
         if (loginResult.success) {
             //t不为空则t是登录账号，rows里面1个账号就直接登录，2个账号就选择账号
             when  {
@@ -206,6 +220,8 @@ class LoginViewModel(
             RegisterSuccessDialog.ifNew = loginData.ifnew==true
         }
     }
+
+
     /**
      * 检查用户完善基本信息
      */
@@ -240,35 +256,21 @@ class LoginViewModel(
                 }
             } else {
 //            loginRepository.clear()
-                block()
-                hideLoading()
-            }
+            block()
         }
 
     }
 
     fun loginFacebook(token: String) {
         loading()
-        viewModelScope.launch {
-            //預設存帳號
-            doNetwork(androidContext) {
-                loginRepository.facebookLogin(
-                    token,
-                    inviteCode = Constants.getInviteCode()
-                )
-            }?.let { loginResult ->
-                dealWithLoginResult(loginResult)
-            }
+        doRequest({ loginRepository.facebookLogin(token, inviteCode = Constants.getInviteCode()) }) {
+            it?.let { launch { dealWithLoginResult(it) } }
         }
     }
 
     fun sendLoginDeviceSms(token: String) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.sendLoginDeviceSms(token)
-            }?.let { result ->
-                _loginSmsResult.postValue(result)
-            }
+        doRequest({ loginRepository.sendLoginDeviceSms(token) }) { result ->
+            result?.let { _loginSmsResult.postValue(result) }
         }
     }
 
@@ -280,33 +282,32 @@ class LoginViewModel(
             loginSrc = LOGIN_SRC
         )
 
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.validateLoginDeviceSms(token, validateRequest)
-            }?.let { result ->
-                //手機驗證成功後, 獲取最新的用戶資料
-                if (result.success) {
-                    runWithCatch { userInfoRepository.getUserInfo() }
-                }
-                _validResult.postValue(result)
+        doRequest({ loginRepository.validateLoginDeviceSms(token, validateRequest) }) { result ->
+            if (result == null) {
+                return@doRequest
             }
+            //手機驗證成功後, 獲取最新的用戶資料
+            if (result.success) {
+                launch { runWithCatch { userInfoRepository.getUserInfo() } }
+            }
+            _validResult.postValue(result)
+        }
+    }
+
+    fun loginAsGuest() {
+        doRequest({ loginRepository.loginForGuest()}) {
+            it?.let { _loginResult.value = it }
         }
     }
 
     fun getValidCode(identity: String?) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity))
-            }
+        doRequest({ OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity)) }) { result->
             _validCodeResult.postValue(result)
         }
     }
 
     fun loginOrRegSendValidCode(loginCodeRequest: LoginCodeRequest) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.indexService.loginOrRegSendValidCode(loginCodeRequest)
-            }
+        doRequest( {OneBoSportApi.indexService.loginOrRegSendValidCode(loginCodeRequest)} ) { result->
             _msgCodeResult.postValue(result)
         }
     }
@@ -317,9 +318,9 @@ class LoginViewModel(
     fun checkInviteCode(inviteCode: String?) {
         _inviteCodeMsg.value = when {
             inviteCode.isNullOrEmpty() -> {
-                LocalUtils.getString(R.string.error_input_empty)
+                androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyInviteCode(inviteCode) -> LocalUtils.getString(R.string.referral_code_invalid)
+            !VerifyConstUtil.verifyInviteCode(inviteCode) -> androidContext.getString(R.string.referral_code_invalid)
             else -> null
         }
         focusChangeCheckAllInputComplete()
@@ -331,19 +332,19 @@ class LoginViewModel(
     fun checkAccount(username: String): String? {
         val msg = if (sConfigData?.enableEmailReg == "0") {
             when {
-                username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+                username.isBlank() -> androidContext.getString(R.string.error_input_empty)
                 !VerifyConstUtil.verifyPhone(username) -> {
-                    LocalUtils.getString(R.string.pls_enter_correct_mobile)
+                    androidContext.getString(R.string.pls_enter_correct_mobile)
                 }
                 else -> null
             }
         } else {
             when {
-                username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+                username.isBlank() -> androidContext.getString(R.string.error_input_empty)
                 !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(
                     username
                 )) -> {
-                    LocalUtils.getString(R.string.pls_enter_correct_mobile_email)
+                    androidContext.getString(R.string.pls_enter_correct_mobile_email)
                 }
                 else -> null
             }
@@ -358,7 +359,7 @@ class LoginViewModel(
      */
     fun checkUserName(username: String): String? {
         val msg = when {
-            username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            username.isBlank() -> androidContext.getString(R.string.error_input_empty)
             !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(
                 username
             ) || VerifyConstUtil.verifyLengthRange(
@@ -366,7 +367,7 @@ class LoginViewModel(
                 4,
                 20
             )) -> {
-                LocalUtils.getString(R.string.pls_enter_correct_mobile_email_username)
+                androidContext.getString(R.string.pls_enter_correct_mobile_email_username)
             }
             else -> null
         }
@@ -377,9 +378,9 @@ class LoginViewModel(
 
     fun checkPassword(password: String): String? {
         val msg = when {
-            password.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            password.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPwd(password) ->
-                LocalUtils.getString(R.string.error_register_password)
+                androidContext.getString(R.string.error_register_password)
             else -> null
         }
         _passwordMsg.value = Pair(msg, msg == null)
@@ -389,8 +390,8 @@ class LoginViewModel(
 
     fun checkValidCode(validCode: String): String? {
         val msg = when {
-            validCode.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.verification_not_correct)
+            validCode.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyValidCode(validCode) -> androidContext.getString(R.string.verification_not_correct)
             else -> null
         }
         _validateCodeMsg.value = Pair(msg, msg == null)
@@ -400,8 +401,8 @@ class LoginViewModel(
 
     fun checkMsgCode(validCode: String): String? {
         val msg = when {
-            validCode.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.verification_not_correct)
+            validCode.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyValidCode(validCode) -> androidContext.getString(R.string.verification_not_correct)
             else -> null
         }
         _msgCodeMsg.value = Pair(msg, msg == null)
@@ -445,10 +446,7 @@ class LoginViewModel(
     }
 
     fun queryPlatform(inviteCode: String) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.queryPlatform(inviteCode)
-            }
+        doRequest({ OneBoSportApi.bettingStationService.queryPlatform(inviteCode) }) { result->
             if (result?.success == true) {
 
             } else {
@@ -459,16 +457,8 @@ class LoginViewModel(
     }
 
     fun checkUserExist(phoneNumberOrEmail: String) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.indexService.checkUserExist(
-                    CheckUserRequest(
-                        phoneNumberOrEmail
-                    )
-                )
-            }?.let {
-                _checkUserExist.value = it.success
-            }
+        doRequest({ OneBoSportApi.indexService.checkUserExist( CheckUserRequest(phoneNumberOrEmail)) }) {
+            it?.let { _checkUserExist.value = it.success }
         }
     }
 

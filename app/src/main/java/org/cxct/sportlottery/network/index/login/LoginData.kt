@@ -32,7 +32,7 @@ data class LoginData(
     @Json(name = "uid")
     val uid: Long?, //用户id（保留，建议用userId
     @Json(name = "userId")
-    val userId: Long, //用户id
+    val userId: Long? = 0, //用户id
     @Json(name = "userName")
     val userName: String?, //用户名
     @Json(name = "userType")
@@ -63,4 +63,6 @@ data class LoginData(
     var msg: String?,   //错误信息提示，需要判断
     @Json(name = "isCreateAccount")
     var isCreateAccount: Int?, // 提醒创建平台用户(如果登录用户为glife用户) 0-否 1-是
+    val needOTPLogin: Boolean, // 账号长时间未登陆需要验证手机号
+    val phone: String?,         // 账号长时间未登陆需要验证手机号时会返回
 ) : java.io.Serializable

@@ -57,7 +57,7 @@ open class SportListViewModel(
             return
         }
 
-        doRequest(androidContext, {
+        doRequest({
             OneBoSportApi.favoriteService.getMyFavoriteQueryAll(MyFavoriteMatchRequest(null, MenuCode.MAIN.code))
         }) { result ->
 

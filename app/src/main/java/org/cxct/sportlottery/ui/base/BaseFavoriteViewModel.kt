@@ -15,7 +15,6 @@ import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SingleLiveEvent
-import org.cxct.sportlottery.util.TimeUtil
 
 
 abstract class BaseFavoriteViewModel(
@@ -57,7 +56,7 @@ abstract class BaseFavoriteViewModel(
             return
         }
 
-        doRequest(androidContext, { myFavoriteRepository.getFavorite() }) { }
+        doRequest({ myFavoriteRepository.getFavorite() }) { }
     }
 
 
@@ -97,7 +96,7 @@ abstract class BaseFavoriteViewModel(
             return
         }
 
-        doRequest( androidContext, { myFavoriteRepository.pinFavorite(type, content, gameType) }) {
+        doRequest({ myFavoriteRepository.pinFavorite(type, content, gameType) }) {
 
         }
 
