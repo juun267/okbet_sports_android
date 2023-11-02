@@ -201,6 +201,7 @@ class LoginViewModel(
         loginRepository.setUpLoginData(loginData)
         RegisterSuccessDialog.ifNew = loginData.ifnew==true
         RegisterSuccessDialog.loginFirstPhoneGiveMoney = loginData.firstPhoneGiveMoney==true
+        BindPhoneDialog.afterLoginOrRegist = true
         checkBasicInfo(loginResult) {
             //继续登录
             if (loginData.deviceValidateStatus == 1)
