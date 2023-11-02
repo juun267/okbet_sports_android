@@ -15,8 +15,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.didichuxing.doraemonkit.kit.toolpanel.decoration.HorizontalDividerItemDecoration
-import com.didichuxing.doraemonkit.kit.toolpanel.decoration.VerticalDividerItemDecoration
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
