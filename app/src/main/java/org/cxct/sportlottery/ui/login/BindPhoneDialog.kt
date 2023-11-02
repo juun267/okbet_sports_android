@@ -21,12 +21,19 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.KeyboadrdHideUtil.Companion.hideSoftKeyboard
 import org.cxct.sportlottery.view.checkRegisterListener
 
-class BindPhoneDialog(): BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
+class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
 
     companion object{
+        private var instance: BindPhoneDialog?=null
+        var afterLoginOrRegist =false //是否有登录注册的动作
         fun needShow():Boolean{
-            UserInfoRepository.userInfo.value?.let {
-              return  (sConfigData?.firstPhoneGiveMoney?:0)>0 && it.phone.isNullOrEmpty()
+            if (instance!=null){
+                  return false
+            }
+            if (afterLoginOrRegist){
+                UserInfoRepository.userInfo.value?.let {
+                    return  ((sConfigData?.firstPhoneGiveMoney?:0)>0 && it.phone.isNullOrEmpty())
+                }
             }
             return false
         }
@@ -90,7 +97,7 @@ class BindPhoneDialog(): BaseDialog<BindInfoViewModel>(BindInfoViewModel::class)
             }
         }
         setOnClickListeners(binding.ivClose,binding.btnSkip){
-            dismissAllowingStateLoss()
+            dismiss()
         }
     }
     private fun sendCode(identity: String?, validCode: String) = binding.btnSendSms.run {
@@ -116,19 +123,13 @@ class BindPhoneDialog(): BaseDialog<BindInfoViewModel>(BindInfoViewModel::class)
 
     private fun onCountDownEnd() = binding.btnSendSms.run  {
         tag = null
-        onNewSMSStatus()
-        setTextColor(Color.WHITE)
-        setText(R.string.send)
+        setBtnEnable(true)
+        setText(R.string.get_security_code)
     }
     private fun toVerify() {
         loading()
         hideSoftKeyboard(requireActivity())
-        viewModel.verifyEmailOrPhoneCode("$inputPhoneNoOrEmail", "$smsCode")
-    }
-    private fun onNewSMSStatus()  {
-        if (binding.btnSendSms.tag == null) {
-            binding.btnSendSms.setBtnEnable(true)
-        }
+        viewModel.resetEmailOrPhone("$inputPhoneNoOrEmail", "$smsCode")
     }
     private fun initObserve() = viewModel.run {
 
@@ -144,36 +145,16 @@ class BindPhoneDialog(): BaseDialog<BindInfoViewModel>(BindInfoViewModel::class)
 
             ToastUtil.showToast(requireActivity(), smsResult.msg)
             binding.btnSendSms.setBtnEnable(true)
-            //做异常处理
-//            if (smsResult?.code == 2765 || smsResult?.code == 2766) {
-//                binding.inputForm.setError(smsResult.msg,false)
-//            } else {
-//                binding.etSmsValidCode.setError(smsResult?.msg,false)
-//            }
-        }
-
-        verifyResult.observe(viewLifecycleOwner) { result-> // 验证短信验证码
-            hideLoading()
-            if (result.succeeded()){
-
-                return@observe
-            }
-
-            ToastUtil.showToast(requireActivity(), result.msg)
-//            if (result.code == 2765|| result.code == 2766) {
-//                binding.inputForm.setError(result.msg,false)
-//            } else {
-//                binding.etSmsValidCode.setError(result.msg,false)
-//            }
         }
 
         resetResult.observe(viewLifecycleOwner) {
             hideLoading()
-            if (!it.succeeded()) {
+            if (it.succeeded()) {
+                ToastUtil.showToast(requireActivity(), R.string.N866)
+                dismiss()
+            }else{
                 ToastUtil.showToast(requireActivity(), it.msg)
-                return@observe
             }
-            dismissAllowingStateLoss()
         }
     }
     private fun checkInputComplete(){
@@ -192,4 +173,16 @@ class BindPhoneDialog(): BaseDialog<BindInfoViewModel>(BindInfoViewModel::class)
         }
         binding.btnSubmit.isEnabled = phoneErrorMsg.isNullOrEmpty()&&codeErrorMsg.isNullOrEmpty()
     }
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        super.show(manager, tag)
+        instance = this
+        afterLoginOrRegist =false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        instance = null
+    }
+
 }

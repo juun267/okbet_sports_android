@@ -103,7 +103,7 @@
     <string name="error_verification_code_by_sms">Error sa SMS verification code</string>
     <string name="get_verification_code">Ipadala ang verification code</string>
     <string name="get_valid_code_fail_point">Hindi natuloy ang request ng inyong verification code, Paki-click upang subukang muli!</string>
-    <string name="get_security_code">Kunin ang verification code</string>
+    <string name="get_security_code">Send code</string><!--ftt要求菲文太长，改成英文翻译 -->
     <string name="phone_verify_content">Maligayang pagbalik  sa laro, upang matiyak ang seguridad ng paggamit ng account, mangyaring kumpletuhin ang pag-verify ng telepono</string>
     <string name="dialog_security_title">Pakilagay ang verification code</string>
     <string name="dialog_security_error">Maling verification code</string>
