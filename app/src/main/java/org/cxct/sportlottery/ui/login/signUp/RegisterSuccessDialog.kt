@@ -47,7 +47,7 @@ class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>
     }
     private fun initView() {
         UserInfoRepository.userInfo.value?.let {
-            if (((sConfigData?.firstPhoneGiveMoney?:0)>0) && !it.phone.isNullOrEmpty()){
+            if (((sConfigData?.firstPhoneGiveMoney?:0)>0) && loginFirstPhoneGiveMoney){
                 binding.tvGiveMoney.text = getString(R.string.P237,"${sConfigData?.systemCurrencySign}${sConfigData?.firstPhoneGiveMoney?:0}")
                 binding.tvGiveMoney.visible()
             }
