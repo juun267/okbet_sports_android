@@ -28,7 +28,7 @@ class OkGameProvidersAdapter :
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val frameLayout = FrameLayout(parent.context)
         frameLayout.background = bgDrawable
-        frameLayout.layoutParams = FrameLayout.LayoutParams(110.dp, 40.dp).apply { rightMargin = 8.dp }
+        frameLayout.layoutParams = FrameLayout.LayoutParams(110.dp, 40.dp)
         val ivLogo = AppCompatImageView(parent.context)
         ivLogo.scaleType = ImageView.ScaleType.CENTER_CROP
         frameLayout.addView(ivLogo, FrameLayout.LayoutParams(78.dp, 30.dp).apply { gravity = Gravity.CENTER })

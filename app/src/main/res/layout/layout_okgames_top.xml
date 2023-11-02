@@ -44,25 +44,11 @@
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|right"
         android:orientation="horizontal"
         android:visibility="gone"
         tools:visibility="visible">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_okgame_p" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_weight="1"
-            android:text="@string/N880"
-            android:textColor="#0D2245"
-            android:textSize="16sp"
-            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iv_providers_left"
