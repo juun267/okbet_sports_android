@@ -14,8 +14,6 @@ import org.cxct.sportlottery.network.money.config.TransferType
 data class BankCardList(
     @Json(name = "addTime")
     val addTime: String,
-    @Json(name = "bankName")
-    val bankName: String,
     @Json(name = "cardNo")
     val cardNo: String,
     @Json(name = "id")
@@ -33,6 +31,9 @@ data class BankCardList(
     @Json(name = "bankCode")
     val bankCode: String,
 ) : Parcelable {
+    @Json(name = "bankName")
+    var bankName: String = ""
+        get() = if (field == "PayMaya") "Maya" else field
     var transferType: TransferType = TransferType.BANK
     var isSelected = false
 }

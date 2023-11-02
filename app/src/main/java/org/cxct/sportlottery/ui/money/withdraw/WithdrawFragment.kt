@@ -569,24 +569,25 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             fl_bet_station.visibility = View.VISIBLE
             if (!::betStationFragment.isInitialized) {
                 betStationFragment = BetStationFragment()
-            }
-            if (betStationFragment.isAdded) {
-                childFragmentManager.beginTransaction().show(betStationFragment).commit()
-            } else {
-                childFragmentManager.beginTransaction().add(R.id.fl_bet_station, betStationFragment)
+                childFragmentManager.beginTransaction()
+                    .add(R.id.fl_bet_station, betStationFragment)
                     .commit()
-            }
-        } else {
-            lin_withdraw.visibility = View.VISIBLE
-            fl_bet_station.visibility = View.GONE
-            if (this::betStationFragment.isInitialized){
-                if (betStationFragment != null && betStationFragment.isAdded) {
-                    childFragmentManager.beginTransaction().hide(betStationFragment).commit()
-                }
+            } else {
+                childFragmentManager.beginTransaction().show(betStationFragment).commit()
             }
 
+            return
+        }
+
+        lin_withdraw.visibility = View.VISIBLE
+        fl_bet_station.visibility = View.GONE
+        if (this::betStationFragment.isInitialized){
+            if (betStationFragment != null && betStationFragment.isAdded) {
+                childFragmentManager.beginTransaction().hide(betStationFragment).commit()
+            }
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBankCardChange(event: BankCardChangeEvent){
         setupData()
