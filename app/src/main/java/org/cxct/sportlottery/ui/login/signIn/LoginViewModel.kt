@@ -291,20 +291,17 @@ class LoginViewModel(
                 loginSrc = LOGIN_SRC
             )
 
-            doRequest({
-                loginRepository.validateLoginDeviceSms(token,
-                    validateRequest)
-            }) { result ->
-                if (result == null) {
-                    return@doRequest
-                }
-                //手機驗證成功後, 獲取最新的用戶資料
-                if (result.success) {
-                    launch { runWithCatch { userInfoRepository.getUserInfo() } }
-                }
-                _validResult.postValue(result)
+        doRequest({ loginRepository.validateLoginDeviceSms(token, validateRequest) }) { result ->
+            if (result == null) {
+                return@doRequest
             }
+            //手機驗證成功後, 獲取最新的用戶資料
+            if (result.success) {
+                launch { runWithCatch { userInfoRepository.getUserInfo() } }
+            }
+            _validResult.postValue(result)
         }
+    }
 
     fun getValidCode(identity: String?) {
         doRequest({ OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity)) }) { result->
