@@ -103,7 +103,7 @@
     <string name="error_verification_code_by_sms">Error sa SMS verification code</string>
     <string name="get_verification_code">Ipadala ang verification code</string>
     <string name="get_valid_code_fail_point">Hindi natuloy ang request ng inyong verification code, Paki-click upang subukang muli!</string>
-    <string name="get_security_code">Kunin ang verification code</string>
+    <string name="get_security_code">Send code</string><!--ftt要求菲文太长，改成英文翻译 -->
     <string name="phone_verify_content">Maligayang pagbalik  sa laro, upang matiyak ang seguridad ng paggamit ng account, mangyaring kumpletuhin ang pag-verify ng telepono</string>
     <string name="dialog_security_title">Pakilagay ang verification code</string>
     <string name="dialog_security_error">Maling verification code</string>
@@ -317,7 +317,7 @@
     <string name="cft_recharge_hint">Mag-log in at suriin ang Tenpay account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
     <string name="gcash_recharge_hint">Mag-log in at suriin ang Gcash account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
     <string name="grabpay_recharge_hint">Mag-log in at suriin ang Grabpay account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
-    <string name="paymaya_recharge_hint">Mag-log in at suriin ang Paymaya account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
+    <string name="paymaya_recharge_hint">Mag-log in at suriin ang Maya account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
     <string name="title_pay_channel">Channel ng pagbabayad</string>
     <string name="title_choose_pay_channel">Pumili ng paraan ng pagbabayad</string>
     <string name="M132">Pumili ng account</string>
@@ -363,7 +363,7 @@
     <string name="online_online_bank">Online Banking</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
-    <string name="online_maya">PayMaya</string>
+    <string name="online_maya">Maya</string>
     <string name="online_paypal">Paypal</string>
     <string name="online_gragon_pay">DragonPay</string>
     <string name="online_momopay">MoMoPay</string>
@@ -440,7 +440,7 @@
     <string name="text_crypto_add_success">Matagumpay ang virtual currency binding</string>
     <string name="text_bank_card_modify_success">Matagumpay na na-edit ang bank card</string>
     <string name="text_e_wallet_modify_success">Matagumpay na na-edit ang eWallet</string>
-    <string name="text_pay_maya_modify_success">Matagumpay na na-edit ang PayMaya</string>
+    <string name="text_pay_maya_modify_success">Matagumpay na na-edit ang Maya</string>
     <string name="text_crypto_modify_success">Matagumpay na na-edit ang virtual currency</string>
     <string name="bet_receipt_bet_quota">Taya:</string>
     <string name="bet_info_list_win_quota">Mapapanalunan:</string>
@@ -1144,18 +1144,18 @@
     <string name="J558">Paki lagay ang email</string>
 
     <string name="bet_details_title">Mga detalye ng kumbinasyon ng link</string>
-    <string name="recharge_channel_paymaya">PayMaya</string>
+    <string name="recharge_channel_paymaya">Maya</string>
     <string name="tail_number">Last digit number</string>
     <string name="J486">Ang halaga ng pag-withdraw ay mas malaki kaysa sa balanse ng account</string>
     <string name="J485">Mali ang format o halaga ng withdrawal</string>
 
     <string name="N171">Pakilagay ang tamang 11-digit na numero ng mobile phone</string>
-    <string name="edit_paymaya">I-edit ang PayMaya</string>
-    <string name="add_paymaya">I-edit ang PayMaya</string>
-    <string name="please_setting_paymaya">Mangyaring i-set up muna ang iyong PayMaya</string>
+    <string name="edit_paymaya">I-edit ang Maya</string>
+    <string name="add_paymaya">I-edit ang Maya</string>
+    <string name="please_setting_paymaya">Mangyaring i-set up muna ang iyong Maya</string>
     <string name="N865">Ang halaga ay lumampas sa limitasyon</string>
-    <string name="text_paymaya_add_success">Matagumpay ang pag-bind ng PayMaya</string>
-    <string name="text_pay_maya_delete_success">Matagumpay na na-delete ang PayMaya</string>
+    <string name="text_paymaya_add_success">Matagumpay ang pag-bind ng Maya</string>
+    <string name="text_pay_maya_delete_success">Matagumpay na na-delete ang Maya</string>
 
     <string name="N177">Pakilagay ang tamang numero ng telepono</string>
     <string name="N889">Pakilagay ang valid email</string>
@@ -1484,6 +1484,13 @@
     <string name="P228">Sa Susunod na 12 Oras</string>
     <string name="P229">Sa Susunod na 24 Oras</string>
     <string name="P230">Casino</string>
+    <string name="P226">Matagal ka nang hindi nakakapag-log in. Para sa seguridad ng iyong account, mangyaring magsagawa ng OTP na pag-verify.</string>
+    <string name="J053">Verification code</string>
+    <string name="P196">Nasa ilalim ng pagsusuri</string>
+    <string name="P234">Mag-email sa Amin</string>
+    <string name="P235">I-set ang phone number para makakuha ng %s</string>
+    <string name="P236">Salamat sa pagrehistro sa amin.</string>
+    <string name="P237">Nakatanggap ka ng %s bilang welcome gift!</string>
     <string name="P231">Magpapadala kami ng OTP verification code sa iyong mobile number:</string>
 </resources>
 

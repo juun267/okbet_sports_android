@@ -36,6 +36,8 @@ object UserInfoRepository {
     val userInfo: LiveData<UserInfo?>
         get() = MultiLanguagesApplication.mInstance.userInfo
 
+    fun loginedInfo() = userInfo.value
+
     fun isGlifeAccount(): Boolean {
         return userInfo.value?.isGlifeAccount() == true
     }
@@ -256,6 +258,10 @@ object UserInfoRepository {
             permanentAddress = userInfoData.permanentAddress,
             zipCode = userInfoData.zipCode,
             permanentZipCode = userInfoData.permanentZipCode,
+            firstName = userInfoData.firstName,
+            middleName = userInfoData.middleName,
+            lastName = userInfoData.lastName,
+            birthday = userInfoData.birthday,
         )
 
     suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {

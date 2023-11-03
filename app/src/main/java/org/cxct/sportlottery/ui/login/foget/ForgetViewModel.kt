@@ -35,21 +35,21 @@ class ForgetViewModel(
 
     fun sendEmail(email: String,  identity: String, validCode: String) {
         val params = mapOf("email" to email, "validCodeIdentity" to identity, "validCode" to validCode)
-        doRequest(androidContext, { OneBoSportApi.indexService.sendEmailForget(params) }) {
+        doRequest({ OneBoSportApi.indexService.sendEmailForget(params) }) {
             _smsResult.value = it
         }
     }
 
     fun checkEmailCode(email: String, emailCode: String) {
         val params = mapOf("email" to email, "emailCode" to emailCode)
-        doRequest(androidContext, { OneBoSportApi.indexService.validateEmailCode(params) }) {
+        doRequest({ OneBoSportApi.indexService.validateEmailCode(params) }) {
             _smsCodeResult.value = it
         }
     }
 
     fun resetPassWorkByEmail(userName: String, newPassword: String) {
         val request = ResetPasswordRequest(userName, newPassword, newPassword)
-        doRequest(androidContext, { OneBoSportApi.indexService.resetPassWordByEmail(request) }) {
+        doRequest({ OneBoSportApi.indexService.resetPassWordByEmail(request) }) {
             _resetPasswordResult.value = it
         }
     }

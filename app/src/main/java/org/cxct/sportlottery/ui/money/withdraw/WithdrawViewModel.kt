@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -473,11 +472,8 @@ class WithdrawViewModel(
                     BankDeleteRequest(MD5Util.MD5Encode(fundPwd), id, code)
                 )
             }?.let { result ->
-                Log.e("For Test", "======>>> deleteBankCard 1111")
                 _bankDeleteResult.postValue(Pair(id, result))
-                Log.e("For Test", "======>>> deleteBankCard 2222 ${_bankDeleteResult}")
             }
-            Log.e("For Test", "======>>> deleteBankCard 3333")
             hideLoading()
         }
     }
@@ -1170,7 +1166,7 @@ class WithdrawViewModel(
 
     fun senEmsCode(phoneNo: String, validCodeIdentity: String, validCode: String) {
         val params = LoginCodeRequest(phoneNo, validCodeIdentity, validCode)
-        doRequest(androidContext, { OneBoSportApi.indexService.loginOrRegSendValidCode(params)}) {
+        doRequest({ OneBoSportApi.indexService.loginOrRegSendValidCode(params)}) {
             onEmsCodeSended.value = it
         }
 

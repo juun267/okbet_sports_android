@@ -21,6 +21,7 @@ import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.view.checkSMSCode
+import org.cxct.sportlottery.view.isVisible
 
 
 class DeleteBankCardDialog(private val phoneNo: String,
@@ -130,7 +131,7 @@ class DeleteBankCardDialog(private val phoneNo: String,
 
         tvConfirm.setOnClickListener {
             val pwd = eetWithdrawalPassword.text.toString()
-            val code = eetSmsCode.text.toString()
+
             if (pwd.isEmpty()) {
                 etWithdrawalPassword.setError(getString(R.string.error_input_empty),false)
                 return@setOnClickListener
@@ -140,13 +141,17 @@ class DeleteBankCardDialog(private val phoneNo: String,
                 return@setOnClickListener
             }
 
-            if (code.isEmpty()) {
-                etSmsValidCode.setError(getString(R.string.P218),false)
-                return@setOnClickListener
-            }
-            if (code.length != 4) {
-                etSmsValidCode.setError(getString(R.string.sms_code_length_error),false)
-                return@setOnClickListener
+            val code = eetSmsCode.text.toString()
+            if (binding.blockSmsValidCode.isVisible()) {
+                if (code.isEmpty()) {
+                    etSmsValidCode.setError(getString(R.string.P218),false)
+                    return@setOnClickListener
+                }
+                if (code.length != 4) {
+                    etSmsValidCode.setError(getString(R.string.sms_code_length_error),false)
+                    return@setOnClickListener
+                }
+
             }
 
             dismiss()

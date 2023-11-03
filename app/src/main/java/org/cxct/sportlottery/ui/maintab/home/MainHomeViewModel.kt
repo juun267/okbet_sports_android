@@ -551,7 +551,7 @@ open class MainHomeViewModel(
         thirdGameResult: EnterThirdGameResult,
         baseFragment: BaseFragment<*>,
     ) {
-        doRequest(androidContext, { OneBoSportApi.thirdGameService.getAllBalance() }) { result ->
+        doRequest({ OneBoSportApi.thirdGameService.getAllBalance() }) { result ->
             baseFragment.hideLoading()
             var balance: Double = result?.resultMap?.get(firmType)?.money ?: (0).toDouble()
             _gameBalanceResult.postValue(Event(Triple(firmType, thirdGameResult, balance)))

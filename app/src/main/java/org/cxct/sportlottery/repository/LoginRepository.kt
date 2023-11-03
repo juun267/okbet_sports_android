@@ -26,15 +26,14 @@ import org.cxct.sportlottery.network.user.authbind.AuthBindResult
 import org.cxct.sportlottery.network.user.info.UserBasicInfoRequest
 import org.cxct.sportlottery.util.*
 import retrofit2.Response
+import retrofit2.http.Body
 
 // 原则上键定义在什么地方就只能在什么地方，对外暴露的只有读取和修改所存储数据的方法
 
 const val NAME_LOGIN = "login"
 const val KEY_TOKEN = "token"
 const val KEY_ACCOUNT = "account"
-const val KEY_PWD = "pwd"
 const val KEY_PLATFORM_ID = "platformId"
-const val KEY_REMEMBER_PWD = "remember_pwd"
 const val KEY_ODDS_TYPE = "oddsType"
 const val KEY_DISCOUNT = "discount"
 const val KEY_USER_ID = "user_id"
@@ -104,30 +103,6 @@ object LoginRepository {
             with(sharedPref.edit()) {
                 putString(KEY_ACCOUNT, value)
                 apply()
-            }
-        }
-
-    var password: String?
-        get() {
-            return try {
-                val securityKey = AesCryptoUtil.encrypt(KEY_PWD)
-                val securityValue = sharedPref.getString(securityKey, "") ?: ""
-                AesCryptoUtil.decrypt(securityValue)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
-            }
-        }
-        set(value) {
-            try {
-                with(sharedPref.edit()) {
-                    val securityKey = AesCryptoUtil.encrypt(KEY_PWD)
-                    val securityValue = AesCryptoUtil.encrypt(value ?: "")
-                    putString(securityKey, securityValue)
-                    commit()
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
 
@@ -214,6 +189,10 @@ object LoginRepository {
     suspend fun login(loginRequest: LoginRequest): Response<LoginResult> {
 
         return OneBoSportApi.indexService.login(loginRequest)
+    }
+
+    suspend fun userLoginV3(@Body params: LoginRequest): Response<LoginResult> {
+        return OneBoSportApi.indexService.userLoginV3(params)
     }
 
     /**
@@ -388,7 +367,7 @@ object LoginRepository {
 
     private fun transform(loginData: LoginData): UserInfo =
         UserInfo(
-            loginData.userId,
+            loginData.userId ?: 0,
             fullName = loginData.fullName,
             iconUrl = loginData.iconUrl,
             lastLoginIp = loginData.lastLoginIp,

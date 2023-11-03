@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.user
 
 import androidx.annotation.Keep
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.network.common.UserRebate
 
 @Keep
@@ -45,7 +46,12 @@ data class UserInfo(
     var permanentAddress: String?="",
     var zipCode: String?="",
     var permanentZipCode: String?="",
+    val firstName: String?="",
+    val middleName: String?="",
+    val lastName: String?="",
+    val birthday: String?="",
 ){
     fun isGlifeAccount():Boolean = vipType==1
+    fun hasFullName() = !fullName.isEmptyStr() && !"N/A".equals(fullName!!.trim(), true)
 }
 

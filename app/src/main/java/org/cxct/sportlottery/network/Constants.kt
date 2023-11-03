@@ -447,6 +447,8 @@ object Constants {
     const val USER_VERIFY_CONFIG = "/api/front/user/verifyConfig" //获取需要提交信息配置，为1的必填
     const val UPLOAD_REVIEW_PHOTO = "/api/front/user/uploadReviewPhoto" //上传复审资料
     const val SET_USERNAME = "/api/front/user/fullname" // 修改用户名称
+    const val LOGIN_CHECK_NEED_CODE = "/api/front/index/checkUserNeedCode"   // loginV3登陆前检查是否需要校验短信验证码
+    const val USER_LOGIN = "/api/front/index/loginV3"   // 用户登陆  2023.10.24
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片

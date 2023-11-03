@@ -163,7 +163,7 @@ class LeagueSelectViewModel(
     fun getOutRightLeagueList(gameType: String) {
 
         val params = OutrightOddsListRequest(gameType, matchType = MatchType.OUTRIGHT.postValue)
-        doRequest(androidContext, { OneBoSportApi.outrightService.getOutrightOddsList(params) }) {
+        doRequest({ OneBoSportApi.outrightService.getOutrightOddsList(params) }) {
             val leagues = it?.outrightOddsListData?.leagueOdds
             if (leagues == null) {
                 outrightLeagues.value = listOf()

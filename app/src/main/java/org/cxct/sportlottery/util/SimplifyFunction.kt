@@ -8,6 +8,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.text.Html
@@ -915,6 +916,12 @@ fun Context.copyToClipboard(copyText: String) {
     ToastUtil.showToastInCenter(this, this.getString(R.string.bet_slip_id_is_copied))
 }
 
+fun Context.copyText(copyText: String) {
+    val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+    val clipData = ClipData.newPlainText(null, copyText)
+    clipboard?.setPrimaryClip(clipData)
+}
+
 fun Activity.startRegister() {
     if (isUAT()) {
         return
@@ -1198,4 +1205,20 @@ fun RxPermissions.requestWriteStorageWithApi33(grantFun: ()->Unit,unGrantFun: ()
                 }
             }
         }
+}
+
+// 发送邮件
+fun toSendEmail(context: Context, emailAddress: String) {
+    try {
+        val emailIntent = Intent(Intent.ACTION_SENDTO)
+        emailIntent.data = Uri.parse("mailto:")
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(emailAddress))    // 收件人地址
+//        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "subject")     // 邮件主题
+//        emailIntent.putExtra(Intent.EXTRA_TEXT, "message")        // 邮件内容
+        context.startActivity(emailIntent)
+    } catch (e: Exception) {
+        context.copyText(emailAddress)
+        toast("${context.getString(R.string.email_address)}, ${context.getString(R.string.text_money_copy_success)}")
+    }
+
 }

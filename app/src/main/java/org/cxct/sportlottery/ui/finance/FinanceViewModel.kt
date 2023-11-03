@@ -111,7 +111,7 @@ class FinanceViewModel(
 
         val filter = { item: String? -> if (item == allTag || item.isNullOrBlank()) null else item }
 
-        doRequest(androidContext, {
+        doRequest({
             OneBoSportApi.moneyService.getUserRechargeList(
                 RechargeListRequest(
                     rechType = filter(rechType),

@@ -34,7 +34,7 @@ class VerifyIdentityActivity :
         if (!isFirst) {
             return
         }
-
+        isFirst = false
         val verified = viewModel.userInfo.value?.verified
         if (verified != ProfileActivity.VerifiedType.NOT_YET.value
             && verified != ProfileActivity.VerifiedType.PASSED.value) {

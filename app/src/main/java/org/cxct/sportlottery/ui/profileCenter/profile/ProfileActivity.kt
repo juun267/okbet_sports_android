@@ -536,10 +536,16 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
                 }
 
-                VerifiedType.VERIFYING.value, VerifiedType.VERIFIED_WAIT.value, VerifiedType.REVERIFYING.value -> {
+                VerifiedType.VERIFYING.value, VerifiedType.VERIFIED_WAIT.value -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_unverifing)
+
+                }
+                VerifiedType.REVERIFYING.value -> {
+                    ll_verified.isEnabled = true
+                    ll_verified.isClickable = true
+                    tv_verified.text = getString(R.string.P196)
 
                 }
 

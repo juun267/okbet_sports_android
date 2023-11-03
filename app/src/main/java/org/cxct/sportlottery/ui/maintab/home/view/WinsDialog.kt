@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.View.OnClickListener
@@ -32,7 +31,6 @@ class WinsDialog(private val betRecode: RecordNewEvent,
         setContentView(R.layout.dialog_wins_betdetails)
         initStyle()
         bindInfo()
-        Log.e("For Test", "=====>>> betRecode $betRecode ${JsonUtil.toJson(betRecode)}")
     }
 
     private fun bindInfo() {

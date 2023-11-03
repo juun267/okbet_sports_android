@@ -45,7 +45,7 @@ class KeyboadrdHideUtil private constructor(activity: Activity, content: ViewGro
     }
 
     fun setOnTouchListener(activity: Activity, view: View) {
-        view.setOnTouchListener { view, motionEvent ->
+        view.setOnTouchListener { _, motionEvent ->
             dispatchTouchEvent(activity, motionEvent)
             false
         }
@@ -118,36 +118,15 @@ class KeyboadrdHideUtil private constructor(activity: Activity, content: ViewGro
          *
          * @param activity
          */
-        fun hideSoftKeyboard(activity: Activity?) {
-            if (null == activity) {
-                throw RuntimeException("参数错误")
-            }
-            val view = activity.currentFocus
-            if (null != view) {
-                val inputMethodManager =
-                    activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(
-                    view.windowToken,
-                    InputMethodManager.HIDE_NOT_ALWAYS
-                )
-            }
+        fun hideSoftKeyboard(activity: Activity) {
+            activity.currentFocus?.let { hideSoftKeyboard(it) }
         }
 
-        /**
-         * Forced hidden keyboard
-         *
-         * @param view
-         */
-        fun hideSoftKeyboard(view: View?) {
-            if (null != view) {
-                val inputMethodManager =
-                    view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(
-                    view.windowToken,
-                    InputMethodManager.HIDE_NOT_ALWAYS
-                )
-            } else {
-                throw RuntimeException("参数错误")
+
+        fun hideSoftKeyboard(view: View) {
+            val inputMethodManager = view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (inputMethodManager.isActive) {
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
             }
         }
 
@@ -160,15 +139,15 @@ class KeyboadrdHideUtil private constructor(activity: Activity, content: ViewGro
             if (null == dialog) {
                 throw RuntimeException("参数错误")
             }
-            val view = dialog.currentFocus
-            if (null != view) {
-                val inputMethodManager =
-                    dialog.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(
-                    view.windowToken,
-                    InputMethodManager.HIDE_NOT_ALWAYS
-                )
+            val view = dialog.currentFocus ?: return
+            val inputMethodManager = dialog.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (inputMethodManager.isActive) {
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
             }
+        }
+
+        inline fun isActive(context: Context): Boolean {
+            return (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).isActive
         }
     }
 
@@ -181,7 +160,7 @@ class KeyboadrdHideUtil private constructor(activity: Activity, content: ViewGro
             content = activity.findViewById<View>(R.id.content) as ViewGroup
         }
         getScrollView(content, activity)
-        content.setOnTouchListener { view, motionEvent ->
+        content.setOnTouchListener { _, motionEvent ->
             dispatchTouchEvent(activity, motionEvent)
             false
         }
