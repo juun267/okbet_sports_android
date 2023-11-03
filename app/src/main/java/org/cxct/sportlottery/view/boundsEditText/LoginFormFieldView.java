@@ -428,6 +428,10 @@ public class LoginFormFieldView extends FrameLayout {
 
     }
 
+    public void setBottomLineLeftMargin(int margin) {
+        ((MarginLayoutParams) bottomLine.getLayoutParams()).leftMargin = margin;
+    }
+
     private void initOnClick() {
 
         final FrameLayout mainBody = this;

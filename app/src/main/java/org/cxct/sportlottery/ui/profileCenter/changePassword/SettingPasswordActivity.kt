@@ -56,7 +56,7 @@ class SettingPasswordActivity : BindingActivity<SettingPasswordViewModel, Activi
                     phoneNumCheckDialog(this@SettingPasswordActivity, supportFragmentManager)
                     return@setOnClickListener
                 }
-                startActivity<VerifyPhoneNoActivity>()
+                startActivity<VerifyPhoneNoActivity>(Pair("phone", phoneNo))
             } else {
                 startActivity(ForgetWaysActivity::class.java)
             }
@@ -226,7 +226,7 @@ class SettingPasswordActivity : BindingActivity<SettingPasswordViewModel, Activi
 
     private fun cleanField() = binding.run {
         eetCurrentPassword.text = null
-        etCurrentPassword.setError(null, false)
+        etCurrentPassword.setError(null, true)
         eetNewPassword.text = null
         etNewPassword.setError(null, false)
         eetConfirmPassword.text = null

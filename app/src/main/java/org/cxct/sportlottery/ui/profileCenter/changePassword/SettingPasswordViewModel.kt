@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.repository.*
@@ -38,6 +39,7 @@ class SettingPasswordViewModel(
     private val _currentPwdError = MutableLiveData<String>()
     private val _newPwdError = MutableLiveData<String>()
     private val _confirmPwdError = MutableLiveData<String>()
+    private val _msgCodeResult = MutableLiveData<NetResult?>()
 
     val updatePwdResult: LiveData<NetResult?>
         get() = _updatePwdResult
@@ -53,6 +55,9 @@ class SettingPasswordViewModel(
     val submitEnable: LiveData<Boolean>
         get() = _submitEnable
     private val _submitEnable = MutableLiveData<Boolean>()
+
+    val msgCodeResult: LiveData<NetResult?>
+        get() = _msgCodeResult
 
     fun checkInputField(pwdPage: SettingPasswordActivity.PwdPage, currentPwd: String, newPwd: String, confirmPwd: String) {
         checkCurrentPwd(currentPwd)
@@ -161,6 +166,12 @@ class SettingPasswordViewModel(
     private fun checkInputComplete() {
         _submitEnable.value =
             (userInfo.value?.passwordSet == true || _currentPwdError.value.isNullOrEmpty()) && _newPwdError.value?.isEmpty() == true && _confirmPwdError.value?.isEmpty() == true
+    }
+
+    fun loginOrRegSendValidCode(loginCodeRequest: LoginCodeRequest) {
+//        doRequest({ OneBoSportApi.indexService.loginOrRegSendValidCode(loginCodeRequest) }) { result ->
+//            _msgCodeResult.postValue(result)
+//        }
     }
 
 }
