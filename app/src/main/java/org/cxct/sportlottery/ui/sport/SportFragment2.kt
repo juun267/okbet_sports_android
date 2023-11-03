@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.Menu
 import org.cxct.sportlottery.network.sport.SportMenuData
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -60,6 +61,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             add(1,MatchType.FIBA)
         }
     }
+    private val todayMatchPosition = 2
     private val matchTypeTodayTab = mutableListOf(
         MatchType.TODAY,
         MatchType.AT_START,
@@ -73,8 +75,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private val mianViewModel: OKGamesViewModel by viewModel()
     private var todayTabItem:TabLayout.Tab?=null
     private val todayMenuPop by lazy { TodayMenuPop(requireActivity(), onItemClickListener = { position ->
-           matchTypeTab[2] = matchTypeTodayTab[position]
-           binding.tabLayout.getTabAt(2)?.select()
+           matchTypeTab[todayMatchPosition] = matchTypeTodayTab[position]
+           binding.tabLayout.getTabAt(todayMatchPosition)?.select()
       })
     }
 
@@ -158,9 +160,10 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private var sportMenu: Menu? = null
+    private var sportMenuData: SportMenuData? = null
     private fun refreshTabLayout(sportMenuResult: ApiResult<SportMenuData>) {
 
-        val sportMenuData = sportMenuResult.getData()
+        sportMenuData = sportMenuResult.getData()
         sportMenuData?.menu?.let { sportMenu = it }
         val countInPlay = sportMenuData?.menu?.inPlay?.items?.sumOf { it.num } ?: 0
         val countAtStart = sportMenuData?.atStart?.items?.sumOf { it.num } ?: 0
@@ -185,7 +188,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
         addTab(getString(R.string.home_tab_in_play), countInPlay, ++position)
 //        addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
-        when (matchTypeTab[2]){
+        when (matchTypeTab[todayMatchPosition]){
             MatchType.TODAY-> addTab(getString(R.string.home_tab_today), countToday, ++position,true)
             MatchType.AT_START-> addTab(getString(R.string.home_tab_at_start), countAtStart, ++position,true)
             MatchType.IN12HR-> addTab(getString(R.string.P228), countAtStart, ++position,true)
@@ -312,22 +315,28 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             navGameSport = gameType
             return
         }
-
-        val menuData = sportMenu!!
-        val matchType = findMatchType(menuData, gameType)
+        val matchType = findMatchType(sportMenuData, gameType)
         setJumpSport(matchType, gameType = gameType)
     }
 
-    private fun findMatchType(menu: Menu, gameType: GameType): MatchType {
-        val matchType = findESport(menu.inPlay.items, MatchType.IN_PLAY, gameType)
-            ?: findESport(menu.today.items, MatchType.TODAY, gameType)
-            ?: findESport(menu.early.items, MatchType.EARLY, gameType)
-
+    private fun findMatchType(sportMenuData: SportMenuData?, gameType: GameType): MatchType {
+        var matchType: MatchType? = null
+        if (sportMenuData!=null){
+            val menu = sportMenuData?.menu
+            matchType = findESport(menu.inPlay.items, MatchType.IN_PLAY, gameType)
+                ?: findESport(menu.today.items, MatchType.TODAY, gameType)
+                ?: findESport(sportMenuData.atStart.items, MatchType.AT_START, gameType)
+                ?: findESport(sportMenuData.in12hr.items, MatchType.IN12HR, gameType)
+                ?: findESport(sportMenuData.in24hr.items, MatchType.IN24HR, gameType)
+                ?: findESport(menu.early.items, MatchType.EARLY, gameType)
+            if (matchType!=null){
+                return matchType
+            }
+        }
         if (matchType == null) {
             if (gameType == GameType.ES) { // 仅电竞的时候提示
                 showPromptDialog(getString(R.string.prompt), getString(R.string.P172)) { }
             }
-//            ToastUtil.showToast(context(), R.string.P172)
             return MatchType.EARLY
         }
         return matchType
@@ -349,7 +358,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         if (isAdded) {
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
             jumpMatchType = jumpMatchType ?: defaultMatchType
-            binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
+            matchType?.let { tabLayoutSelect(it) }
         }
     }
 
@@ -406,16 +415,15 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             navGameSport = null
             return
         }
-        val menuData = sportMenuResult.getData()!!.menu
         val matchType = if (navGameSport != null) {
-            findMatchType(menuData, navGameSport!!)
+            findMatchType(sportMenuResult.getData(), navGameSport!!)
         } else {
             jumpMatchType ?: defaultMatchType
         }
         if (matchType != null) {
             // 加post, 避免选中的tab不 能滚动到中间
             post{
-                binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
+                tabLayoutSelect(matchType)
                 navGameSport = null
             }
         }
@@ -439,6 +447,35 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         binding.tabShadow.layoutParams.apply {
             height = if(isTop) 0 else 1.dp
             binding.tabShadow.layoutParams = this
+        }
+    }
+    fun tabLayoutSelect(matchType: MatchType){
+       val todayIndex= matchTypeTodayTab.indexOf(matchType)
+        if (todayIndex>=0){
+            matchTypeTab[todayMatchPosition] = matchTypeTodayTab[todayIndex]
+            todayTabItem?.customView?.apply {
+                when (matchType){
+                    MatchType.TODAY-> {
+                        tv_title.text = getString(R.string.home_tab_today)
+                        tv_number.text = sportMenu?.today?.num.toString()
+                    }
+                    MatchType.AT_START-> {
+                        tv_title.text = getString(R.string.home_tab_at_start)
+                        tv_number.text = sportMenuData?.atStart?.num.toString()
+                    }
+                    MatchType.IN12HR-> {
+                        tv_title.text = getString(R.string.P228)
+                        tv_number.text = sportMenuData?.in12hr?.num.toString()
+                    }
+                    MatchType.IN24HR-> {
+                        tv_title.text = getString(R.string.P229)
+                        tv_number.text = sportMenuData?.in24hr?.num.toString()
+                    }
+                }
+            }
+            binding.tabLayout.getTabAt(todayMatchPosition)?.select()
+        }else{
+            binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
         }
     }
 }
