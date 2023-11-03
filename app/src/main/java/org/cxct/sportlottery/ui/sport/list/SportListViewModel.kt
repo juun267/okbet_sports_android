@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
@@ -546,18 +547,12 @@ open class SportListViewModel(
     val sportMenuApiResult = SingleLiveEvent<ApiResult<SportMenuData>>()
     val esportTypeMenuData by lazy { SingleLiveEvent<Triple<Item?, Boolean, String>>() }
 
-    fun loadMatchType(matchType: MatchType) = callApi({
-        SportRepository.getSportMenu(
-            TimeUtil.getNowTimeStamp().toString(),
-            TimeUtil.getTodayStartTimeStamp().toString())
-    }) { sportMenuResult->
+    fun loadSportMenu(sportMenuResult: ApiResult<SportMenuData>, matchType: MatchType) {
         val menuData = sportMenuResult.getData()
-
         if(!sportMenuResult.succeeded() || menuData == null) {
             sportTypeMenuData.value = Triple(listOf(), sportMenuResult.succeeded(), sportMenuResult.msg)
-            return@callApi
+            return
         }
-
         var itemList = when (matchType) {
             MatchType.IN_PLAY ->  menuData.menu.inPlay.items
             MatchType.TODAY -> menuData.menu.today.items

@@ -4,25 +4,18 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.show
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
-import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.ui.sport.list.SportListFragment2
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
-import java.util.ArrayList
 
 class ESportFavoriteFragment: ESportListFragment<SportListViewModel, FragmentSportList2Binding>() {
 
     override var matchType = MatchType.MY_EVENT
     private var favoriteItem: Item?=null
-    private var haveData = false
     override fun observeSportList() { }
 
     override fun observerMenuData() { }
@@ -35,14 +28,10 @@ class ESportFavoriteFragment: ESportListFragment<SportListViewModel, FragmentSpo
     }
 
     override fun onInitData() {
-        if (haveData) {
-            if (favoriteItem!=null){
-                updateESportType(favoriteItem!!)
-            }else{
-                setSportDataList(null)
-            }
-        } else {
-            showLoading()
+        if (favoriteItem!=null){
+            updateESportType(favoriteItem!!)
+        }else{
+            setSportDataList(null)
         }
         viewModel.esportTypeMenuData.observe(this@ESportFavoriteFragment.viewLifecycleOwner){
             it.first?.let {
@@ -60,6 +49,42 @@ class ESportFavoriteFragment: ESportListFragment<SportListViewModel, FragmentSpo
     override fun updateSportType(gameTypeList: List<Item>) {
         //这里是体育大厅的结果显示，电竞用 updateESportType 方法，
     }
+
+//    override fun updateESportType(item: Item) {
+//        if (item?.categoryList.isNullOrEmpty()) {
+//            dismissLoading()
+//            setSportDataList(null)
+//            return
+//        }
+//        currentItem = item
+//        //处理默认不选中的情况
+//        var targetItem: CategoryItem? = null
+//        item.categoryList?.forEach {
+//            it.isSelected = false
+//        }
+//        binding.sportTypeList.show()
+//        targetItem = item.categoryList?.first()
+//        if (currentCategoryItem==null){
+//            currentCategoryItem = targetItem
+//            currentCategoryItem?.isSelected = true
+//            load(item, categoryCodeList = currentCategoryItem!!.categoryCodeList)
+//        }else{
+//            val existItem = item.categoryList?.firstOrNull { it.code == currentCategoryItem!!.code }
+//            currentCategoryItem = existItem?:targetItem
+//            currentCategoryItem?.isSelected = true
+//            if (existItem!=currentCategoryItem){
+//                load(item, categoryCodeList = currentCategoryItem!!.categoryCodeList)
+//            }
+//        }
+//        esportTypeAdapter.setNewInstance(item.categoryList)
+//        (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+//            binding.sportTypeList,
+//            RecyclerView.State(),
+//            esportTypeAdapter.data.indexOfFirst { it.isSelected })
+//
+//    }
+
+
     override fun load(
         item: Item,
         selectLeagueIdList: ArrayList<String>,
@@ -87,9 +112,17 @@ class ESportFavoriteFragment: ESportListFragment<SportListViewModel, FragmentSpo
             esportTypeAdapter.data.indexOfFirst { it.isSelected })
     }
 
+    override fun onESportTypeChanged(item: CategoryItem, position: Int){
+        currentCategoryItem = item
+        clearData()
+        val layoutManager = binding.sportTypeList.layoutManager as ScrollCenterLayoutManager
+        layoutManager.smoothScrollToPosition(binding.sportTypeList, RecyclerView.State(), position)
+        clearSubscribeChannels()
+        favoriteItem?.let { load(it, categoryCodeList = item.categoryCodeList) }
+    }
     fun setFavoriteData(favoriteItem: Item?) {
         this.favoriteItem = favoriteItem
-        if (!haveData && isAdded) {
+        if (isAdded){
             dismissLoading()
             if (favoriteItem==null){
                 setSportDataList(null)
@@ -97,15 +130,13 @@ class ESportFavoriteFragment: ESportListFragment<SportListViewModel, FragmentSpo
                 updateESportType(favoriteItem)
             }
         }
-        haveData = true
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        haveData = false
-        favoriteItem = null
         esportTypeAdapter.setNewInstance(null)
         setMatchInfo("", "")
+        currentCategoryItem = null
     }
     fun setESportType(){
         //电竞主题背景增加

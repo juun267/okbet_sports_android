@@ -11,18 +11,21 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
+import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
+import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.list.SportListFragment2
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
@@ -58,8 +61,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
     //电竞自己的内容
     override var gameType = GameType.ES.key
     protected val esportTypeAdapter by lazy { ESportTypeAdapter(::onESportTypeChanged) }
-    private var esportType = ESportType.ALL.key
-    var currentItem :Item? =null
+    var currentCategoryItem :CategoryItem? =null
 
     override fun onInitView(view: View) {
         binding.gameList.itemAnimator = null
@@ -81,6 +83,8 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         clearSubscribeChannels()
         setupSportTypeList()
         setupToolbarStatus()
+        currentItem = null
+        currentCategoryItem = null
     }
 
     open fun reload(matchType: MatchType, gameType: String?) {
@@ -90,8 +94,8 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         reset()
         scrollBackTop()
         binding.appbarLayout.scrollBy(0, 0)
-        viewModel.loadMatchType(matchType)
         showLoading()
+        getMenuDataByParent(false)
     }
 
     override fun onBindViewStatus(view: View) {
@@ -283,7 +287,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         //这里是体育大厅的结果显示，电竞用 updateESportType 方法，
     }
 
-    protected fun updateESportType(item: Item) {
+    open fun updateESportType(item: Item) {
         if (item?.categoryList.isNullOrEmpty()) {
             dismissLoading()
             setSportDataList(null)
@@ -296,15 +300,19 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
             it.isSelected = false
         }
         binding.sportTypeList.show()
-        if (targetItem == null) {
-            targetItem = item.categoryList?.find { it.num > 0  }
+        targetItem = item.categoryList?.first()
+        if (currentCategoryItem==null){
+            currentCategoryItem = targetItem
+            currentCategoryItem?.isSelected = true
+            load(item, categoryCodeList = currentCategoryItem!!.categoryCodeList)
+        }else{
+            val existItem = item.categoryList?.firstOrNull { it.code == currentCategoryItem!!.code }
+            currentCategoryItem = existItem?:targetItem
+            currentCategoryItem?.isSelected = true
+            if (existItem!=currentCategoryItem){
+                load(item, categoryCodeList = currentCategoryItem!!.categoryCodeList)
+            }
         }
-        if (targetItem == null) {
-            targetItem = item.categoryList?.first()
-        }
-        esportType = targetItem!!.code
-        targetItem!!.isSelected = true
-        load(item, categoryCodeList = targetItem!!.categoryCodeList)
         esportTypeAdapter.setNewInstance(item.categoryList)
         (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             binding.sportTypeList,
@@ -320,13 +328,12 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
             }
         }
     }
-    fun onESportTypeChanged(item: CategoryItem, position: Int){
-        esportType = item.code
+   open fun onESportTypeChanged(item: CategoryItem, position: Int){
+        currentCategoryItem = item
         clearData()
         val layoutManager = binding.sportTypeList.layoutManager as ScrollCenterLayoutManager
         layoutManager.smoothScrollToPosition(binding.sportTypeList, RecyclerView.State(), position)
         clearSubscribeChannels()
         currentItem?.let { load(it, categoryCodeList = item.categoryCodeList) }
     }
-
 }
