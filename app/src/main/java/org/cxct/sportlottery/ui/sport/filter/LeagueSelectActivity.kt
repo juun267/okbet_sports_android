@@ -46,7 +46,7 @@ class LeagueSelectActivity :
             intent.putExtra("matchType", matchType)
             intent.putExtra("startTime", timeRangeParams?.startTime?:"")
             intent.putExtra("endTime", timeRangeParams?.endTime?:"")
-            intent.putStringArrayListExtra("categoryCodeList", categoryCodeList as ArrayList<String>?)
+            intent.putStringArrayListExtra("categoryCodeList",ArrayList(categoryCodeList))
             context.startActivity(intent)
         }
     }

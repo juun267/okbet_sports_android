@@ -62,6 +62,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         clearSubscribeChannels()
         setupSportTypeList()
         setupToolbarStatus()
+        currentItem = null
     }
 
     open fun reload(matchType: MatchType, gameType: String?) {
@@ -71,8 +72,8 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         reset()
         scrollBackTop()
         binding.appbarLayout.scrollBy(0, 0)
-        viewModel.loadMatchType(matchType)
         showLoading()
+        getMenuDataByParent(false)
     }
 
     override fun onBindViewStatus(view: View) {

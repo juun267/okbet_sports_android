@@ -44,7 +44,7 @@ class SportTabViewModel(
         get() = _sportMenuResult
     private val _sportMenuResult = SingleLiveEvent<ApiResult<SportMenuData>>()
 
-    fun getMatchData() {
+    fun getSportMenuData() {
         callApi({
             SportRepository.getSportMenu(
                 TimeUtil.getNowTimeStamp().toString(),
@@ -86,7 +86,4 @@ class SportTabViewModel(
         return this
     }
 
-    fun setSportMenuResult(sportMenuResult: ApiResult<SportMenuData>) {
-        _sportMenuResult.postValue(sportMenuResult)
-    }
 }
