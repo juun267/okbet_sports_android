@@ -66,7 +66,7 @@
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/margin_12"
                 android:background="@drawable/bg_trans_radius_8_white_stroke"
-                android:text="@string/P205"
+                android:text="@string/J285"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize14sp" />
             <TextView
