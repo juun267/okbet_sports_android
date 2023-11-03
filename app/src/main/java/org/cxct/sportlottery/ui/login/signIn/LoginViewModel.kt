@@ -308,11 +308,6 @@ class LoginViewModel(
             _validCodeResult.postValue(result)
         }
     }
-        fun loginAsGuest() {
-            doRequest({ loginRepository.loginForGuest() }) {
-                it?.let { _loginResult.value = it }
-            }
-        }
 
         fun loginOrRegSendValidCode(loginCodeRequest: LoginCodeRequest) {
             doRequest({ OneBoSportApi.indexService.loginOrRegSendValidCode(loginCodeRequest) }) { result ->
