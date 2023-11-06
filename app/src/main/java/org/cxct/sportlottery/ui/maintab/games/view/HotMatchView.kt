@@ -45,10 +45,6 @@ class HotMatchView(
         initView()
     }
 
-    fun setHalloweenStyle() {
-        findViewById<View>(R.id.vBg).setBackgroundResource(R.drawable.bg_halloween_part3)
-    }
-
     private fun initView() {
         LayoutInflater.from(context).inflate(R.layout.view_hot_game, this, true)
         val manager = LinearLayoutManager(context)

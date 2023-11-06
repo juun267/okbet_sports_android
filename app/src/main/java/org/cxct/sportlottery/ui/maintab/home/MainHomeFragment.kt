@@ -66,7 +66,6 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         initNews()
         EventBusUtil.targetLifecycle(this@MainHomeFragment)
         ToGcashDialog.showByLogin()
-        setHalloweenStyle()
     }
 
     override fun onInitData() {
@@ -81,26 +80,6 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
         binding.ivService.setOnTouchListener(SuckEdgeTouch())
         binding.ivService.setServiceClick(childFragmentManager)
-    }
-
-    private fun setHalloweenStyle() = binding.run {
-        hotMatchView.ivHotMatch.setImageResource(R.drawable.ic_hot_match_title_h)
-        includeNews.ivNews.setImageResource(R.drawable.ic_cate_news_h)
-        winsRankView.setHalloweenStyle()
-        includeBettingStation.ivBetStation.setImageResource(R.drawable.ic_home_bettingstation_h)
-        homeBottumView.setHalloweenStyle()
-        homeTopView.setHalloweenStyle()
-        hotMatchView.setHalloweenStyle()
-    }
-
-    private fun setHalloweenStyle2() = binding.run {
-        gameViewOkGame.setPadding(12.dp, 0, 2.dp, 0)
-        gameViewOkGame.setIcon(R.drawable.ic_home_okgames_title_h)
-        gameViewOkGame.setBackgroundResource(R.drawable.bg_halloween_part5)
-        (gameViewOkGame.layoutParams as MarginLayoutParams).topMargin = -10.dp
-        gameViewOkLive.setPadding(12.dp, 13.dp, 2.dp, 0)
-        gameViewOkLive.setIcon(R.drawable.ic_home_oklive_title_h)
-        gameViewOkLive.setBackgroundResource(R.drawable.bg_halloween_part4)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -118,7 +97,6 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             gameViewOkLive.initOkLiveList(this@MainHomeFragment)
             gameViewOkLive.bindLifecycleOwner(this@MainHomeFragment)
 //        }
-        setHalloweenStyle2()
         initBetWinsRecodeLayout()
         initObservable()
         binding.winsRankView.loadData()
@@ -142,7 +120,6 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     }
 
     fun initToolBar() = binding.run {
-        homeToolbar.setHalloweenStyle()
         homeToolbar.attach(this@MainHomeFragment, getMainTabActivity(), viewModel)
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))

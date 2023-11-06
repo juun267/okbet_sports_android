@@ -306,31 +306,4 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         })
         viewModel.getMoneyAndTransferOut()
     }
-
-    fun setHalloweenStyle() {
-        setBackgroundResource(R.drawable.bg_home_toolbar_h)
-        (ivLogo.layoutParams as MarginLayoutParams).let {
-            it.height = 39.dp
-        }
-        ivLogo.setImageResource(R.drawable.logo_okbet_color_h)
-        ivMenuLeft.setImageResource(R.drawable.ic_home_menu_2)
-        (ivMenuLeft.layoutParams as FrameLayout.LayoutParams).apply {
-            bottomMargin = 8.dp
-            ivMenuLeft.layoutParams = this
-        }
-        val h42 = 42.dp
-        (tvLogin.layoutParams as MarginLayoutParams).let {
-            it.height = h42
-            it.rightMargin = 0
-        }
-        (tvRegist.layoutParams as MarginLayoutParams).height = h42
-        (banlanceView.layoutParams as MarginLayoutParams).topMargin = 6.dp
-        (btnDeposit.layoutParams as MarginLayoutParams).let {
-            it.height = h42
-            it.leftMargin = 0
-        }
-        tvLogin.setBackgroundResource(R.drawable.btn_login_h)
-        tvRegist.setBackgroundResource(R.drawable.btn_register_h)
-        btnDeposit.setBackgroundResource(R.drawable.btn_login_h)
-    }
 }

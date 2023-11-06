@@ -32,8 +32,13 @@
             <org.cxct.sportlottery.ui.maintab.games.view.HotMatchView
                 android:id="@+id/hotMatchView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content"/>
+
+<!--            <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView-->
+<!--                android:id="@+id/okGamesView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
+
 
             <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
                 android:id="@+id/gameViewOkGame"
@@ -54,8 +59,7 @@
                 android:layout_height="wrap_content">
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_halloween_part6"/>
+                    android:layout_height="wrap_content"/>
                 <include
                     android:id="@+id/includeNews"
                     layout="@layout/include_home_news"
@@ -69,8 +73,7 @@
                 android:id="@+id/winsRankView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:background="@drawable/bg_halloween_part7"/>
+                android:paddingTop="20dp"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -79,8 +82,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_halloween_part8"/>
+                    android:layout_height="wrap_content"/>
 
                 <include
                     android:id="@+id/includeBettingStation"
