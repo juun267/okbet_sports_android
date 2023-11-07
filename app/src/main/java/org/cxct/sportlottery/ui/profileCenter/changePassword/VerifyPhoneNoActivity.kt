@@ -41,12 +41,12 @@ class VerifyPhoneNoActivity: BindingActivity<LoginViewModel, ActivityVerifyPhone
     }
 
     private fun setVerifyInfo() = binding.run {
-//        " ******${phoneNo.takeLast(4)}"
         tvTipsInfo.text = getString(R.string.P231)
             .setSpan(ColorSpan(getColor(R.color.color_0D2245)))
-            .addSpan(" $phoneNo", listOf(StyleSpan(Typeface.BOLD), ColorSpan(getColor(R.color.color_F23C3B))))
+            .addSpan(" ******${phoneNo.takeLast(4)}", listOf(StyleSpan(Typeface.BOLD), ColorSpan(getColor(R.color.color_F23C3B))))
         etSmsValidCode.setBottomLineLeftMargin(0)
         etSmsValidCode.bottomPart.setPadding(0, 0, 0, 0)
+        btnConfirm.setBtnEnable(false)
         eetSmsCode.checkSMSCode(etSmsValidCode) {
             smsCode = it
             btnConfirm.setBtnEnable(it != null)
@@ -111,7 +111,11 @@ class VerifyPhoneNoActivity: BindingActivity<LoginViewModel, ActivityVerifyPhone
     private fun initObserver(){
         viewModel.msgCodeResult.observe(this) { onResult(it?.success, it?.msg) { startCountDown() } }
         viewModel.smsCodeVerify.observe(this) { onResult(it.succeeded(), it.msg) { setPwdInput() } }
-        viewModel.resetWithdraw.observe(this) { onResult(it.succeeded(), it.msg) { finishWithOK() } }
+        viewModel.resetWithdraw.observe(this) {
+            onResult(it.succeeded(), it.msg) {
+                showErrorPromptDialog(getString(R.string.update_withdrawal_pwd)) { finishWithOK() }
+            }
+        }
     }
 
     private inline fun onResult(success: Boolean?, msg: String?, onSucceed: Runnable) {

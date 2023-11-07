@@ -22,12 +22,9 @@ import org.cxct.sportlottery.view.checkEmail
 import org.cxct.sportlottery.view.checkPhoneNum
 import org.cxct.sportlottery.view.checkSMSCode
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
-import org.cxct.sportlottery.util.CountDownUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreator
-import org.cxct.sportlottery.util.setBtnEnable
-import org.cxct.sportlottery.util.setServiceClick
 
 
 // 验证绑定的手机号或者邮箱
@@ -353,12 +350,18 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
 
         resetResult.observe(this@ModifyBindInfoActivity) {
             hideLoading()
-            if (!it.succeeded()) {
-                ToastUtil.showToast(this@ModifyBindInfoActivity, it.msg)
+            if (!it.second.succeeded()) {
+                ToastUtil.showToast(this@ModifyBindInfoActivity, it.second.msg)
                 return@observe
             }
 
-            setResult(Activity.RESULT_OK)
+            val intent = Intent()
+            if (VerifyConstUtil.verifyPhone(it.first)) {
+                intent.putExtra("phone", it.first)
+            } else if (VerifyConstUtil.verifyMail(it.first)) {
+                intent.putExtra("email", it.first)
+            }
+            setResult(Activity.RESULT_OK, intent)
             setProgressSuccess()
         }
 

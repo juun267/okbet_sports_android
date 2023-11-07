@@ -147,11 +147,11 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
 
         resetResult.observe(viewLifecycleOwner) {
             hideLoading()
-            if (it.succeeded()) {
+            if (it.second.succeeded()) {
                 ToastUtil.showToast(requireActivity(), R.string.N866)
                 dismiss()
             }else{
-                ToastUtil.showToast(requireActivity(), it.msg)
+                ToastUtil.showToast(requireActivity(), it.second.msg)
             }
         }
     }
