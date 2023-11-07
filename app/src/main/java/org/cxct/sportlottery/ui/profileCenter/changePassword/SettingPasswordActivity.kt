@@ -29,7 +29,6 @@ class SettingPasswordActivity : BindingActivity<SettingPasswordViewModel, Activi
 
     companion object {
         const val PWD_PAGE = "PWD_PAGE"
-        const val REQ_BIND_PHONENUM = 0x9981
     }
 
     enum class PwdPage { LOGIN_PWD, BANK_PWD }
@@ -55,7 +54,8 @@ class SettingPasswordActivity : BindingActivity<SettingPasswordViewModel, Activi
             if (mPwdPage == PwdPage.BANK_PWD) {
                 val phoneNo = UserInfoRepository.getPhoneNo()
                 if (phoneNo.isEmptyStr()) {
-                    ModifyBindInfoActivity.start(this@SettingPasswordActivity, ModifyType.PhoneNumber, REQ_BIND_PHONENUM, null, null)
+                    ModifyBindInfoActivity.start(this@SettingPasswordActivity, ModifyType.PhoneNumber, 0x9981, null, null)
+                    finish()
                     return@setOnClickListener
                 }
                 startActivity<VerifyPhoneNoActivity>(Pair("phone", phoneNo))
@@ -245,18 +245,6 @@ class SettingPasswordActivity : BindingActivity<SettingPasswordViewModel, Activi
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQ_BIND_PHONENUM) {
-            if (resultCode == Activity.RESULT_OK) {
-                val phone = data?.getStringExtra("phone")
-                if (phone.isEmptyStr()) {
-                    toast(getString(R.string.unknown_error))
-                } else {
-                    startActivity<VerifyPhoneNoActivity>(Pair("phone", phone))
-                }
-            }
-            return
-        }
-
         if (resultCode == Activity.RESULT_OK) {
             finishWithOK()
         }
