@@ -29,6 +29,7 @@
         android:id="@+id/tvLicense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_license"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
         android:lineSpacingExtra="3dp"
