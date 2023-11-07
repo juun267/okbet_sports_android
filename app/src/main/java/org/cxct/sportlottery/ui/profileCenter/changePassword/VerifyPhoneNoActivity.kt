@@ -49,16 +49,13 @@ class VerifyPhoneNoActivity: BindingActivity<LoginViewModel, ActivityVerifyPhone
         etSmsValidCode.bottomPart.setPadding(0, 0, 0, 0)
         eetSmsCode.checkSMSCode(etSmsValidCode) {
             smsCode = it
-            (smsCode != null).let {
-                btnConfirm.setBtnEnable(it)
-            }
+            btnConfirm.setBtnEnable(it != null)
         }
         btnSendSms.setOnClickListener {
             hideSoftKeyboard(this@VerifyPhoneNoActivity)
             VerifyCodeDialog().run {
                 callBack = { identity, validCode ->
                     loading()
-                    btnSendSms.setBtnEnable(false)
                     eetSmsCode.requestFocus()
                     viewModel.loginOrRegSendValidCode(LoginCodeRequest(phoneNo, identity, validCode))
                 }
