@@ -43,6 +43,7 @@ import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
+import org.cxct.sportlottery.ui.maintab.home.HomeFragment2
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
@@ -64,7 +65,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
-                Param(HomeFragment::class.java),
+                Param(HomeFragment2::class.java),
                 Param(SportFragment2::class.java),
                 Param(OKGamesFragment::class.java),
                 Param(OKGamesFragment::class.java), // 占坑
@@ -369,7 +370,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         //网络恢复
         if (event.isValid) {
             val fragment = fragmentHelper.getFragment(0)
-            if (fragment is HomeFragment) {
+            if (fragment is HomeFragment2) {
                 //更新config   刷新体育服务开关
                 fragment.viewModel.getConfigData()
             }
@@ -589,7 +590,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
 
-    private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment
+    private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment2
 
     fun backMainHome() {
         enableSelectBottomNav(true)
