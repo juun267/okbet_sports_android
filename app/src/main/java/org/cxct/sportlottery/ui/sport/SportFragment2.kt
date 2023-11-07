@@ -106,7 +106,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     override fun onBindViewStatus(view: View) {
         footView.setUp(this, mianViewModel)
-        viewModel.getMatchData()
+        getMenuData(true)
         jumpMatchType?.let { navGameFragment(it) }
         favoriteDelayRunable.doOnDelay(0)
 
@@ -254,6 +254,10 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     private fun selectTab(position: Int) {
         var matchType =  matchTypeTab.getOrNull(position) ?: return
+        //排除之前未选中matchType的情况
+        if (currentMatchType!=null){
+            getMenuData(true)
+        }
         currentMatchType = matchType
         navGameFragment(matchType)
     }
@@ -374,6 +378,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         sportMenuResult.observe(viewLifecycleOwner) {
             hideLoading()
             updateUiWithResult(it)
+            (fragmentHelper.currentFragment() as BaseSportListFragment<*, *>?)?.loadSportMenu(it)
         }
 
         sportTypeMenuData.observe(viewLifecycleOwner) { updateFavoriteItem(it.first) }
@@ -428,9 +433,15 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             }
         }
     }
-
-    fun updateSportMenuResult(sportMenuResult: ApiResult<SportMenuData>) {
-        viewModel.setSportMenuResult(sportMenuResult)
+    //是否拿最新的sportMenu数据
+    fun getMenuData(newData: Boolean) {
+        if (newData){
+            viewModel.getSportMenuData()
+        }else{
+            viewModel.sportMenuResult.value?.let {
+                (fragmentHelper.currentFragment() as BaseSportListFragment<*, *>?)?.loadSportMenu(it)
+            }
+        }
     }
 
     private fun showSportDialog(){

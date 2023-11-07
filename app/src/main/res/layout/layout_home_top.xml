@@ -205,7 +205,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/ic_gamevenues_h" />
+                android:src="@drawable/ic_gamevenues" />
 
             <TextView
                 android:id="@+id/tv_name"
@@ -222,17 +222,15 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:src="@drawable/img_h_pumpkin"/>
+                android:layout_gravity="right"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerVenues"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="4dp"
             android:layout_marginTop="46dp"
+            android:layout_marginHorizontal="12dp"
             />
 
 

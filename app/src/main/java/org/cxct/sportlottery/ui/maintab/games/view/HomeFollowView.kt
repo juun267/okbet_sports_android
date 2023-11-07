@@ -42,9 +42,6 @@ class HomeFollowView(
         initHomeFollowData()
     }
 
-    fun setHalloweenStyle() {
-
-    }
 
     /**
      * 底部是否显示社交view   只有首页需要

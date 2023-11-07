@@ -57,7 +57,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         MatchType.TODAY,
         MatchType.EARLY,
         MatchType.PARLAY,
-//        MatchType.OUTRIGHT,
+        MatchType.OUTRIGHT,
         MatchType.MY_EVENT
     )
     private val todayMatchPosition = 1
@@ -114,7 +114,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
         footView.setUp(this, mianViewModel)
         binding.homeToolbar.attach(this@ESportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
-        viewModel.getMatchData()
+        getMenuData(true)
         jumpMatchType?.let { navGameFragment(it) }
         favoriteDelayRunable.doOnDelay(0)
 
@@ -178,7 +178,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         val countIn24hr = sportMenuData?.in24hr?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         val countToday = sportMenuData?.menu?.today?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         val countEarly = sportMenuData?.menu?.early?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-//        val countOutright = sportMenuData?.menu?.outright?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+        val countOutright = sportMenuData?.menu?.outright?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         val countParlay = sportMenuData?.menu?.parlay?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         defaultMatchType = when {
             countInPlay > 0 -> MatchType.IN_PLAY
@@ -196,7 +196,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
         addTab(getString(R.string.home_tab_early), countEarly, ++position)
         addTab(getString(R.string.home_tab_parlay), countParlay, ++position)
-//        addTab(getString(R.string.home_tab_outright), countOutright, ++position)
+        addTab(getString(R.string.home_tab_outright), countOutright, ++position)
         val tabView = addTab(getString(R.string.N082), favoriteCount(curFavoriteItem), ++position)
         todayMenuPop.updateCount(countToday,countAtStart,countIn12hr,countIn24hr)
         if (!LoginRepository.isLogined()) {
@@ -254,6 +254,10 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     private fun selectTab(position: Int) {
         var matchType =  matchTypeTab.getOrNull(position) ?: return
+        //排除之前未选中matchType的情况
+        if (currentMatchType!=null){
+            getMenuData(true)
+        }
         currentMatchType = matchType
         navGameFragment(matchType)
     }
@@ -268,7 +272,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         if (currentFragment?.currentMatchType() == matchType && gameType == currentFragment.currentGameType()) {
             return
         }
-
         val args = Bundle()
         args.putSerializable("matchType", matchType)
         args.putString("gameType", gameType)
@@ -346,7 +349,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         if (isAdded) {
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
             jumpMatchType = jumpMatchType ?: defaultMatchType
-            binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
+            matchType?.let { tabLayoutSelect(it) }
         }
     }
 
@@ -362,6 +365,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         sportMenuResult.observe(viewLifecycleOwner) {
             hideLoading()
             updateUiWithResult(it)
+            (fragmentHelper.currentFragment() as BaseSportListFragment<*, *>?)?.loadSportMenu(it)
         }
 
         esportTypeMenuData.observe(viewLifecycleOwner) {
@@ -413,14 +417,20 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         if (matchType != null) {
             // 加post, 避免选中的tab不 能滚动到中间
             post{
-                binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
+                tabLayoutSelect(matchType)
                 navGameSport = null
             }
         }
     }
-
-    fun updateSportMenuResult(sportMenuResult: ApiResult<SportMenuData>) {
-        viewModel.setSportMenuResult(sportMenuResult)
+    //是否拿最新的sportMenu数据
+    fun getMenuData(newData:Boolean) {
+        if (newData){
+            viewModel.getSportMenuData()
+        }else{
+            viewModel.sportMenuResult.value?.let {
+                (fragmentHelper.currentFragment() as BaseSportListFragment<*, *>?)?.loadSportMenu(it)
+            }
+        }
     }
 
     fun onScrollTop(isTop: Boolean){

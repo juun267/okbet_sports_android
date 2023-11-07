@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.layout_home_top.view.*
 import org.cxct.sportlottery.R
@@ -61,31 +62,9 @@ class HomeTopView @JvmOverloads constructor(
     init {
         orientation = VERTICAL
         binding = LayoutHomeTopBinding.inflate(LayoutInflater.from(context), this)
-
-        binding.recyclerVenues.layoutManager=GridLayoutManager(context,2)
-        binding.recyclerVenues.adapter=venuesAdapter
         initLogin()
         initSportEnterStatus()
         initHomeVenues()
-    }
-
-    fun setHalloweenStyle() {
-        42.dp.let {
-            binding.tvLogin.layoutParams.height = it
-            (binding.tvLogin.layoutParams as MarginLayoutParams).rightMargin = 0
-            binding.tvRegist.layoutParams.height = it
-            binding.tvDeposit.layoutParams.height= it
-        }
-        (binding.rcvPromote.layoutParams as FrameLayout.LayoutParams).let {
-            it.topMargin = 48.dp
-            it.gravity = Gravity.TOP
-        }
-        binding.tvLogin.setBackgroundResource(R.drawable.btn_login_h)
-        binding.tvRegist.setBackgroundResource(R.drawable.btn_register_h)
-        binding.tvDeposit.setBackgroundResource(R.drawable.btn_login_h)
-        binding.vBg.setBackgroundResource(R.drawable.bg_halloween_part2)
-        binding.depositLayout.background = null
-        binding.loginLayout.background = null
     }
 
     /**
@@ -266,7 +245,12 @@ class HomeTopView @JvmOverloads constructor(
      * 初始化首页场馆列表
      */
     private fun initHomeVenues(){
-
+        binding.recyclerVenues.apply {
+            layoutManager=GridLayoutManager(context,2)
+            adapter=venuesAdapter
+            if(itemDecorationCount==0)
+            addItemDecoration(GridSpacingItemDecoration(2,10.dp,false))
+        }
         val homeGamesList = sConfigData?.homeGamesList ?: return
         val list = homeGamesList.filter {
             ((it.uniqueName == OkGame || it.uniqueName == OkLive) && !getMarketSwitch())

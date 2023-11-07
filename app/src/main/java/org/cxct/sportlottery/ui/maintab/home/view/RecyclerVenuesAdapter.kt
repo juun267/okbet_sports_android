@@ -17,7 +17,7 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
             when(item.uniqueName){
                 //体育
                 HomeTopView.OkSport->{
-                    ivSportCover.setImageResource(R.drawable.img_sports_h)
+                    ivSportCover.setImageResource(R.drawable.img_sports)
                     //判断体育维护是否开启
                     if(getSportEnterIsClose()){
                         //展示维护中
@@ -34,7 +34,7 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                 }
                 //okgame
                 HomeTopView.OkGame->{
-                    ivSportCover.setImageResource(R.drawable.img_okgames_h)
+                    ivSportCover.setImageResource(R.drawable.img_okgames)
                     if(StaticData.okGameOpened()){
                         tvSportClose.gone()
                     }else{
@@ -44,7 +44,7 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                 }
                 //bingo
                 HomeTopView.OkBingo->{
-                    ivSportCover.setImageResource(R.drawable.img_esports_h)
+                    ivSportCover.setImageResource(R.drawable.img_esport)
                     if (!item.isOpen()) {
                         tvSportClose.visible()
                         tvSportClose.text=context.getString(R.string.N700)
@@ -63,7 +63,7 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                 }
                 //oklive
                 HomeTopView.OkLive->{
-                    ivSportCover.setImageResource(R.drawable.img_oklive_h)
+                    ivSportCover.setImageResource(R.drawable.img_oklive)
                     if(StaticData.okLiveOpened()){
                         tvSportClose.gone()
                     }else{
