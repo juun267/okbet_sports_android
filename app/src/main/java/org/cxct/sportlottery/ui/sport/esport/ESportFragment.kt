@@ -57,7 +57,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         MatchType.TODAY,
         MatchType.EARLY,
         MatchType.PARLAY,
-//        MatchType.OUTRIGHT,
+        MatchType.OUTRIGHT,
         MatchType.MY_EVENT
     )
     private val todayMatchPosition = 1
@@ -178,7 +178,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         val countIn24hr = sportMenuData?.in24hr?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         val countToday = sportMenuData?.menu?.today?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         val countEarly = sportMenuData?.menu?.early?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-//        val countOutright = sportMenuData?.menu?.outright?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+        val countOutright = sportMenuData?.menu?.outright?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         val countParlay = sportMenuData?.menu?.parlay?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
         defaultMatchType = when {
             countInPlay > 0 -> MatchType.IN_PLAY
@@ -196,7 +196,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
         addTab(getString(R.string.home_tab_early), countEarly, ++position)
         addTab(getString(R.string.home_tab_parlay), countParlay, ++position)
-//        addTab(getString(R.string.home_tab_outright), countOutright, ++position)
+        addTab(getString(R.string.home_tab_outright), countOutright, ++position)
         val tabView = addTab(getString(R.string.N082), favoriteCount(curFavoriteItem), ++position)
         todayMenuPop.updateCount(countToday,countAtStart,countIn12hr,countIn24hr)
         if (!LoginRepository.isLogined()) {
@@ -277,11 +277,11 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         args.putString("gameType", gameType)
         onScrollTop(true)
         when (matchType) {
-//            MatchType.OUTRIGHT -> {
-//                fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, newInstance ->
-//                    fragment.resetFooterView(footView)
-//                }
-//            }
+            MatchType.OUTRIGHT -> {
+                fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, newInstance ->
+                    fragment.resetFooterView(footView)
+                }
+            }
 
             MatchType.MY_EVENT -> {
                 fragmentHelper.show(ESportFavoriteFragment::class.java, args) { fragment, newInstance ->
