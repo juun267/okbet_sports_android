@@ -6,14 +6,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/vBg"
-        android:layout_width="match_parent"
-        android:layout_height="244dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="40dp" />
-
     <LinearLayout
         android:id="@+id/llayout_title"
         android:layout_width="match_parent"

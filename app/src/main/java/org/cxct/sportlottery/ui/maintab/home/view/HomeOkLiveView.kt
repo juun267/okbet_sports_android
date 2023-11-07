@@ -13,46 +13,44 @@ import com.drake.spannable.setSpan
 import com.drake.spannable.span.ColorSpan
 import kotlinx.android.synthetic.main.view_home_okgame.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ViewHomeNewsBinding
-import org.cxct.sportlottery.databinding.ViewHomeOkgameBinding
+import org.cxct.sportlottery.databinding.ViewHomeOkliveBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
+import org.cxct.sportlottery.ui.maintab.games.AllLiveFragment
+import org.cxct.sportlottery.ui.maintab.games.OKLiveViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.transform.TransformInDialog
 import splitties.systemservices.layoutInflater
 
-class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
+class HomeOkLiveView(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
 
-    private val binding  = ViewHomeOkgameBinding.inflate(layoutInflater,this)
+    private val binding  = ViewHomeOkliveBinding.inflate(layoutInflater,this)
     private val gameAdapter = RecyclerHomeOkGamesAdapter()
 
     init {
         initView()
     }
 
-    private fun initView() = binding.run {
+    private fun initView() = binding.run{
         recyclerGames.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL,false)
         recyclerGames.adapter = gameAdapter
     }
 
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-    fun <T : MainHomeViewModel> setUp(fragment: BindingSocketFragment<T, *>?) {
+    fun <T : MainHomeViewModel> setUp(fragment: BindingSocketFragment<T, *>) {
         if (fragment == null) {
             return
         }
         //请求games数据
-        fragment.viewModel.getHomeOKGamesList()
+        fragment.viewModel.getOkLiveOKGamesList()
         fragment.viewModel.homeGamesList.observe(fragment.viewLifecycleOwner) {
             fragment.hideLoading()
-            //缓存这一页数据到map
             gameAdapter.setList(it)
         }
 
@@ -60,7 +58,7 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
         initEnterGame(fragment)
 
         tvMore.onClick {
-            (fragment as MainHomeFragment).jumpToOKGames()
+            (fragment as AllLiveFragment).jumpToOKGames()
         }
 
         //item点击 进入游戏
@@ -82,11 +80,7 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
         }
     }
 
-
     private fun <T : MainHomeViewModel> initEnterGame(fragment: BindingSocketFragment<T, *>) {
-        fragment.viewModel.enterThirdGameResult.observe(fragment.viewLifecycleOwner) {
-            if (fragment.isVisible) fragment.enterThirdGame(it.second, it.first)
-        }
         fragment.viewModel.gameBalanceResult.observe(fragment.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { event ->
                 TransformInDialog(event.first, event.second, event.third) { enterResult ->

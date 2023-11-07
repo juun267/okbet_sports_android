@@ -1,52 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginRight="10dp"
-    android:orientation="vertical">
+    android:id="@+id/cardCover"
+    android:layout_width="170dp"
+    android:layout_height="190dp"
+    app:cardCornerRadius="8dp"
+    android:foreground="@drawable/fg_ripple">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardCover"
-        android:layout_width="wrap_content"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="0dp"
-        android:layout_height="wrap_content"
-        android:foreground="@drawable/fg_ripple">
-
-        <ImageView
-            android:id="@+id/ivCover"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:scaleType="fitXY"/>
-
+    <ImageView
+        android:id="@+id/ivCover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_48"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@color/transparent_black_60">
         <TextView
             android:id="@+id/tvGameType"
-            android:text=""
-            android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/textSize12sp"
-            android:layout_gravity="bottom|center_horizontal"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="three card pokerthre"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/textSize14sp"
             android:maxLines="1"
             android:textStyle="bold"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:ellipsize="end"
-            android:paddingBottom="8dp"
-            android:layout_height="wrap_content"/>
-    </androidx.cardview.widget.CardView>
+            />
+        <TextView
+            android:id="@+id/tvGameName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- casino -"
+            android:textColor="@color/color_99FFFFFF"
+            android:textSize="@dimen/textSize10sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvGameName"
-        android:text=""
-        android:paddingTop="8dp"
-        android:textColor="@color/color_0D2245"
-        android:textSize="@dimen/textSize14sp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_width="wrap_content"
-        android:paddingBottom="14dp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+
+</androidx.cardview.widget.CardView>

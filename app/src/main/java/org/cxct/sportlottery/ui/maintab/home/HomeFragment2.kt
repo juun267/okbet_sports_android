@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -28,18 +29,20 @@ import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
+import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.view.HomeMenuAdapter
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
 
 class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     private fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper by lazy {
         FragmentHelper(childFragmentManager, binding.flContent.id, arrayOf(
-            Param(MainHomeFragment::class.java),
+            Param(HomeHotFragment::class.java),
             Param(OKGamesFragment::class.java),
             Param(NewsHomeFragment::class.java, needRemove = true),
             Param(OKLiveFragment::class.java),
@@ -51,6 +54,8 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
         initToolBar()
         binding.rvMarquee.bindLifecycler(this)
         initMenu()
+        initIndicate()
+        switchTabByPosition(0)
     }
 
     override fun onBindViewStatus(view: View) {
@@ -157,9 +162,34 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     }
     private fun initMenu() = binding.rvMenu.run{
        layoutManager = LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
-       addItemDecoration(SpaceItemDecoration(requireContext(),R.dimen.margin_1))
-       adapter = homeMenuAdapter
-       PagerSnapHelper().attachToRecyclerView(this)
+        adapter = homeMenuAdapter
+        homeMenuAdapter.setOnItemClickListener{_,_,position->
+            homeMenuAdapter.selectPos = position
+        }
+//       PagerSnapHelper().attachToRecyclerView(this)
+    }
+    private fun initIndicate(){
+        binding.hIndicator.run {
+            setIndicatorColor(context.getColor(R.color.color_E0E3EE), context.getColor(R.color.color_025BE8))
+            val height = 6.dp
+            itemWidth = 12.dp
+            itemHeight = height
+            mRadius = itemWidth.toFloat()
+            setSpacing(height)
+            itemClickListener = { binding.rvMenu.smoothScrollToPosition(it) }
+        }
+        binding.rvMenu.doOnLayout {
+            binding.rvMenu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                val itemWidth = binding.rvMenu.measuredWidth.toFloat() // 这个很重要，item的宽度要刚好等于recyclerview的宽度，不然PagerSnapHelper翻页会存在滑动偏差导致指示器位置计算的不准
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val scrollX = recyclerView.computeHorizontalScrollOffset()
+                    val positionFloat = scrollX / itemWidth
+                    val position = positionFloat.toInt()
+                    val progress = positionFloat - position
+                    binding.hIndicator.onPageScrolled(position, progress, scrollX)
+                }
+            })
+        }
     }
     private fun switchTabByPosition(position: Int) {
         if(isAdded) {

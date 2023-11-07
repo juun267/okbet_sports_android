@@ -11,10 +11,8 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
-import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.receipt.BetReceiptFragment
-import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
-import timber.log.Timber
+import org.cxct.sportlottery.ui.maintab.entity.HomeMenuBean
 import kotlin.reflect.KClass
 
 
@@ -43,7 +41,7 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
     abstract fun showMyFavoriteNotify(myFavoriteNotifyType: Int)
 
-    abstract fun navOneSportPage(thirdGameCategory: ThirdGameCategory?)
+    abstract fun navOneSportPage(thirdGameCategory: HomeMenuBean?)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

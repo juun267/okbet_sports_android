@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="320dp"
-    android:layout_height="130dp"
-    android:layout_marginHorizontal="5dp"
-    android:layout_marginBottom="6dp"
-    android:outlineSpotShadowColor="@color/color_b4b4b4"
-    app:cardCornerRadius="11dp"
-    app:cardElevation="3dp">
+    android:layout_width="match_parent"
+    android:layout_height="142dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
 
     <ImageView
         android:id="@+id/ivItemPromote"

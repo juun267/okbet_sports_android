@@ -27,7 +27,7 @@
                 android:src="@drawable/img_banner_news"/>
             <include
                 android:id="@+id/includeNews"
-                layout="@layout/include_home_news"/>
+                layout="@layout/view_home_news"/>
             <TextView
                 android:id="@+id/tvShowMore"
                 android:layout_width="wrap_content"

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="@dimen/margin_5">
+    android:padding="@dimen/margin_5"
+    android:background="@drawable/selector_bg_home_menu">
    <ImageView
        android:id="@+id/ivIcon"
        android:layout_width="@dimen/margin_24"
@@ -17,7 +18,7 @@
         android:layout_marginTop="@dimen/margin_3"
         android:lines="1"
         android:ellipsize="end"
-        android:textColor="@color/color_0D2245"
+        android:textColor="@color/color_home_black_white"
         android:textSize="@dimen/textSize10sp"
         android:text="hot"/>
 </LinearLayout>

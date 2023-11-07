@@ -3,7 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.news
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.include_home_news.*
+import kotlinx.android.synthetic.main.view_home_news.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone

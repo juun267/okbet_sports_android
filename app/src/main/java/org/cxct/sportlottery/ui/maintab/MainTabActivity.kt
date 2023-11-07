@@ -40,9 +40,8 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
-import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.maintab.entity.HomeMenuBean
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
-import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment2
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
@@ -516,7 +515,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         //  tv_odds_type.text = getString(oddsType.res)
     }
 
-    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
+    override fun navOneSportPage(thirdGameCategory: HomeMenuBean?) {
 //        if (thirdGameCategory != null) {
 //            val intent = Intent(this, MainActivity::class.java).putExtra(
 //                MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory

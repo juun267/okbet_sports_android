@@ -21,6 +21,8 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.doOnStop
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.ViewHomePromotionBinding
+import org.cxct.sportlottery.databinding.ViewHotGameBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
@@ -34,10 +36,13 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.onClick
+import splitties.systemservices.layoutInflater
 
 class HotMatchView(
     context: Context, attrs: AttributeSet
 ) : ConstraintLayout(context, attrs) {
+
+    val binding = ViewHotGameBinding.inflate(layoutInflater, this, true)
     private var adapter: HotMatchAdapter? = null
     private var fragment: BaseFragment<*>? = null
 
@@ -46,7 +51,6 @@ class HotMatchView(
     }
 
     private fun initView() {
-        LayoutInflater.from(context).inflate(R.layout.view_hot_game, this, true)
         val manager = LinearLayoutManager(context)
         initRecyclerView(manager)
         //右滑动
