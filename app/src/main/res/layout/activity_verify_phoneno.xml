@@ -33,6 +33,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="36dp"
                 android:textSize="14sp"
+                android:lineSpacingExtra="3dp"
                 android:text="We will send an OTP verification code to your mobile number：*******1234"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,8 +82,6 @@
                     android:textAllCaps="false"
                     android:textColor="@color/color_2b2b2b_ffffff"
                     android:textSize="@dimen/textSize14sp"
-                    android:enabled="false"
-                    android:alpha="0.5"
                     app:layout_constraintEnd_toEndOf="@+id/et_sms_valid_code"
                     app:layout_constraintTop_toTopOf="@+id/et_sms_valid_code"/>
 
@@ -99,7 +98,8 @@
                 app:isResponsiveIconColor="false"
                 app:labelText="@string/new_password"
                 app:labelTextStyle="normal"
-                app:primaryColor="@color/color_AFAFB1">
+                app:primaryColor="@color/color_AFAFB1"
+                android:visibility="gone">
 
                 <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                     android:id="@+id/eet_new_password"
@@ -124,7 +124,8 @@
                 app:isResponsiveIconColor="false"
                 app:labelText="@string/confirm_password"
                 app:labelTextStyle="normal"
-                app:primaryColor="@color/color_AFAFB1">
+                app:primaryColor="@color/color_AFAFB1"
+                android:visibility="gone">
 
                 <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                     android:id="@+id/eet_confirm_password"
@@ -143,14 +144,14 @@
     </androidx.core.widget.NestedScrollView>
 
     <Button
-        android:id="@+id/btn_confirm"
+        android:id="@+id/btnConfirm"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="32dp"
         android:layout_marginHorizontal="20dp"
         android:background="@drawable/ic_submit"
-        android:text="@string/btn_confirm"
+        android:text="@string/next_step"
         android:textColor="@color/color_FCFCFC"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"

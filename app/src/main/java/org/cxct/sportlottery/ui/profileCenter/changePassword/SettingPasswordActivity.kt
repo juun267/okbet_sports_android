@@ -9,15 +9,14 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivitySettingPasswordBinding
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.NetResult
+import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
-import org.cxct.sportlottery.util.phoneNumCheckDialog
-import org.cxct.sportlottery.util.resetInputTransformationMethod
-import org.cxct.sportlottery.util.setBtnEnable
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.afterTextChanged
-import org.cxct.sportlottery.util.setTitleLetterSpacing
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
 
@@ -74,18 +73,9 @@ class SettingPasswordActivity : BindingActivity<SettingPasswordViewModel, Activi
         etNewPassword.bottom_line.setBackgroundResource(bottomLineColorRes)
         etConfirmPassword.bottom_line.setBackgroundResource(bottomLineColorRes)
         updateButtonStatus(false)
-
-        etCurrentPassword.endIconImageButton.setOnClickListener {
-            resetInputTransformationMethod(etCurrentPassword, eetCurrentPassword)
-        }
-
-        etNewPassword.endIconImageButton.setOnClickListener {
-            resetInputTransformationMethod(etNewPassword, eetNewPassword)
-        }
-
-        etConfirmPassword.endIconImageButton.setOnClickListener {
-            resetInputTransformationMethod(etConfirmPassword, eetConfirmPassword)
-        }
+        etCurrentPassword.setTransformationMethodEvent(eetCurrentPassword)
+        etNewPassword.setTransformationMethodEvent(eetNewPassword)
+        etConfirmPassword.setTransformationMethodEvent(eetConfirmPassword)
     }
 
     private fun setupTab() {
@@ -225,19 +215,25 @@ class SettingPasswordActivity : BindingActivity<SettingPasswordViewModel, Activi
     }
 
     private fun cleanField() = binding.run {
+        if (eetCurrentPassword.transformationMethod !is AsteriskPasswordTransformationMethod) {
+            eetCurrentPassword.transformationMethod = AsteriskPasswordTransformationMethod()
+        }
+        if (eetNewPassword.transformationMethod !is AsteriskPasswordTransformationMethod) {
+            eetNewPassword.transformationMethod = AsteriskPasswordTransformationMethod()
+        }
+        if (eetConfirmPassword.transformationMethod !is AsteriskPasswordTransformationMethod) {
+            eetConfirmPassword.transformationMethod = AsteriskPasswordTransformationMethod()
+        }
         eetCurrentPassword.text = null
-        etCurrentPassword.setError(null, true)
         eetNewPassword.text = null
-        etNewPassword.setError(null, false)
         eetConfirmPassword.text = null
+        etCurrentPassword.setError(null, false)
+        etNewPassword.setError(null, false)
         etConfirmPassword.setError(null, false)
-        eetCurrentPassword.transformationMethod = AsteriskPasswordTransformationMethod()
-        eetNewPassword.transformationMethod = AsteriskPasswordTransformationMethod()
-        eetConfirmPassword.transformationMethod = AsteriskPasswordTransformationMethod()
         etCurrentPassword.setEndIcon(R.drawable.ic_eye_close)
         etNewPassword.setEndIcon(R.drawable.ic_eye_close)
         etConfirmPassword.setEndIcon(R.drawable.ic_eye_close)
-//        tvForgetPassword.isVisible = true //mPwdPage == PwdPage.BANK_PWD
+        tvForgetPassword.isVisible = true // mPwdPage == PwdPage.BANK_PWD && (true != sConfigData?.enableRetrieveWithdrawPassword?.isStatusOpen())
     }
 
     private fun updateButtonStatus(isEnable: Boolean) {

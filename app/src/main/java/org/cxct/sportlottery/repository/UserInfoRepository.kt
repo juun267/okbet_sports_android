@@ -38,6 +38,8 @@ object UserInfoRepository {
 
     fun loginedInfo() = userInfo.value
 
+    fun userId() = userInfo.value?.userId ?: -1
+
     fun isGlifeAccount(): Boolean {
         return userInfo.value?.isGlifeAccount() == true
     }

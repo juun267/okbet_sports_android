@@ -8,16 +8,19 @@ import com.drake.spannable.setSpan
 import com.drake.spannable.span.ColorSpan
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.bindFinish
+import org.cxct.sportlottery.common.extentions.finishWithOK
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityVerifyPhonenoBinding
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
-import org.cxct.sportlottery.util.CountDownUtil
-import org.cxct.sportlottery.util.setBtnEnable
-import org.cxct.sportlottery.util.setTitleLetterSpacing
+import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.checkSMSCode
+import org.cxct.sportlottery.view.checkWithdrawPassword
 
-class VerifyPhoneNoActivity: BindingActivity<SettingPasswordViewModel, ActivityVerifyPhonenoBinding>() {
+class VerifyPhoneNoActivity: BindingActivity<LoginViewModel, ActivityVerifyPhonenoBinding>() {
 
     private val phoneNo by lazy { intent.getStringExtra("phone")!! }
 
@@ -27,6 +30,7 @@ class VerifyPhoneNoActivity: BindingActivity<SettingPasswordViewModel, ActivityV
     override fun onInitView() {
         setTitleStyle()
         setVerifyInfo()
+        initObserver()
     }
 
     private fun setTitleStyle() = binding.run {
@@ -42,9 +46,12 @@ class VerifyPhoneNoActivity: BindingActivity<SettingPasswordViewModel, ActivityV
             .setSpan(ColorSpan(getColor(R.color.color_0D2245)))
             .addSpan(" $phoneNo", listOf(StyleSpan(Typeface.BOLD), ColorSpan(getColor(R.color.color_F23C3B))))
         etSmsValidCode.setBottomLineLeftMargin(0)
+        etSmsValidCode.bottomPart.setPadding(0, 0, 0, 0)
         eetSmsCode.checkSMSCode(etSmsValidCode) {
             smsCode = it
-            btnSendSms.setBtnEnable(smsCode != null && !countDownGoing)
+            (smsCode != null).let {
+                btnConfirm.setBtnEnable(it)
+            }
         }
         btnSendSms.setOnClickListener {
             hideSoftKeyboard(this@VerifyPhoneNoActivity)
@@ -58,15 +65,44 @@ class VerifyPhoneNoActivity: BindingActivity<SettingPasswordViewModel, ActivityV
                 show(supportFragmentManager, null)
             }
         }
+
+        btnConfirm.setOnClickListener {
+            loading()
+            viewModel.verifySMSCode(phoneNo, "$smsCode")
+        }
+    }
+
+    private fun setPwdInput() = binding.run {
+        btnSendSms.setBtnEnable(false)
+        tvTipsInfo.gone()
+        blockSmsValidCode.gone()
+        etNewPassword.visible()
+        etConfirmPassword.visible()
+        btnConfirm.setBtnEnable(false)
+        btnConfirm.setText(R.string.chat_confirm)
+        eetNewPassword.checkWithdrawPassword(etNewPassword) {
+            btnConfirm.setBtnEnable(it != null && it == eetConfirmPassword.text.toString())
+        }
+        eetConfirmPassword.checkWithdrawPassword(etConfirmPassword, eetNewPassword) {
+            btnConfirm.setBtnEnable(it != null && it == eetNewPassword.text.toString())
+        }
+        btnConfirm.setOnClickListener {
+            loading()
+            viewModel.resetWithdraw(eetConfirmPassword.text.toString())
+        }
+        etNewPassword.setTransformationMethodEvent(eetNewPassword)
+        etConfirmPassword.setTransformationMethodEvent(eetConfirmPassword)
     }
 
     private fun startCountDown() {
+        if (countDownGoing) {
+            return
+        }
         countDownGoing = true
         CountDownUtil.smsCountDown(lifecycleScope, {
             binding.btnSendSms.setBtnEnable(false)
             countDownGoing = true
         }, {
-            binding.btnSendSms.setBtnEnable(false)
             binding.btnSendSms.text = "${it}s"
         }, {
             binding.btnSendSms.setBtnEnable(smsCode != null)
@@ -75,14 +111,18 @@ class VerifyPhoneNoActivity: BindingActivity<SettingPasswordViewModel, ActivityV
         })
     }
 
-    private val initObserver = viewModel.run {
-        msgCodeResult.observe(this@VerifyPhoneNoActivity) {
-            hideLoading()
-            if (it?.success == true) {
-                startCountDown()
-            } else {
-                it?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
-            }
+    private fun initObserver(){
+        viewModel.msgCodeResult.observe(this) { onResult(it?.success, it?.msg) { startCountDown() } }
+        viewModel.smsCodeVerify.observe(this) { onResult(it.succeeded(), it.msg) { setPwdInput() } }
+        viewModel.resetWithdraw.observe(this) { onResult(it.succeeded(), it.msg) { finishWithOK() } }
+    }
+
+    private inline fun onResult(success: Boolean?, msg: String?, onSucceed: Runnable) {
+        hideLoading()
+        if (success == true) {
+            onSucceed.run()
+        } else {
+            showErrorPromptDialog(msg ?: getString(R.string.unknown_error)) {}
         }
     }
 }

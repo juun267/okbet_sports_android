@@ -360,6 +360,12 @@ object Constants {
     //登录或注册获取验证码(新版优化登录注册->使用)
     const val LOGIN_OR_REG_SEND_VALIDCODE = "/api/front/index/loginOrRegSendValidCode"
 
+    // 校验/api/front/index/loginOrRegSendValidCode这个接口发出的短信验证码
+    const val VERIFY_SMS_CODE = "/api/front/index/onlyVerifySms"
+
+    // 重制提款密码
+    const val RRESET_WITHDRAW = "/api/front/user/timesFundPwd"
+
     // facebook登录或注册(新版优化登录注册->使用)
     const val FACEBOOK_LOGIN = "/api/front/index/facebookLogin"
 

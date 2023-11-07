@@ -1274,6 +1274,10 @@ public class LoginFormFieldView extends FrameLayout {
         return this.helperLabel;
     }
 
+    public View getBottomPart() {
+        return bottomPart;
+    }
+
     public AppCompatTextView getCounterLabel() {
         return this.counterLabel;
     }
