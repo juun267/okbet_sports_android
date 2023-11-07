@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/i_home"
-        android:icon="@drawable/selector_tab_home_h"
+        android:icon="@drawable/selector_tab_home"
         android:title="@string/bottom_nav_home" />
     <item
         android:id="@+id/i_sport"
-        android:icon="@drawable/selector_tab_sport_h"
+        android:icon="@drawable/selector_tab_sport"
         android:title="@string/main_tab_sport" />
     <item
         android:id="@+id/i_game"
-        android:icon="@drawable/selector_tab_game_h"
+        android:icon="@drawable/selector_tab_game"
         android:title="@string/news_tab_game" />
     <item
         android:id="@+id/i_favorite"
-        android:icon="@drawable/selector_tab_chat_h"
+        android:icon="@drawable/selector_tab_chat"
         android:title="@string/N984" />
     <item
         android:id="@+id/i_user"
-        android:icon="@drawable/selector_tab_user_h"
+        android:icon="@drawable/selector_tab_user"
         android:title="@string/main_tab_mine" />
 </menu>
