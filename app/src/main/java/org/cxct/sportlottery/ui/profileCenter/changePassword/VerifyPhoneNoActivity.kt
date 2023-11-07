@@ -102,7 +102,7 @@ class VerifyPhoneNoActivity: BindingActivity<LoginViewModel, ActivityVerifyPhone
         }, {
             binding.btnSendSms.text = "${it}s"
         }, {
-            binding.btnSendSms.setBtnEnable(smsCode != null)
+            binding.btnSendSms.setBtnEnable(true)
             binding.btnSendSms.text = getString(R.string.send)
             countDownGoing = false
         })
