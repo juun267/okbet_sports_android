@@ -106,11 +106,23 @@ object RetrofitHolder {
     }
 
     fun changeHost(baseUrl: String) {
-        runWithCatch { RetrofitUrlManager.getInstance().setGlobalDomain(baseUrl) }
+        try {
+            RetrofitUrlManager.getInstance().setGlobalDomain(baseUrl)
+        } catch (e: Exception) {
+            if (!baseUrl.startsWith("http", true)) {
+                runWithCatch { RetrofitUrlManager.getInstance().setGlobalDomain("http://$baseUrl") }
+            }
+        }
     }
 
     fun changeChatHost(host: String) {
-        runWithCatch { chatUrlManager.setGlobalDomain(host) }
+        try {
+            chatUrlManager.setGlobalDomain(host)
+        } catch (e: Exception) {
+            if (!host.startsWith("http", true)) {
+                runWithCatch { chatUrlManager.setGlobalDomain("http://$host") }
+            }
+        }
     }
 
     private fun getHttpClient(block: (OkHttpClient.Builder) -> Unit): OkHttpClient {
