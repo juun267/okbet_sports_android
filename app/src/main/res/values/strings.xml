@@ -1649,4 +1649,5 @@
     <string name="P235">Set Phone Number Get %s</string>
     <string name="P236">Thank you for registering with us.</string>
     <string name="P237">You have received %s as a welcome gift!</string>
+    <string name="P231">We will send an OTP verification code to your mobile number:</string>
 </resources>

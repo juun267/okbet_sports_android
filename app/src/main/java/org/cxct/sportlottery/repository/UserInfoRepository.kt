@@ -16,7 +16,7 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.util.GameConfigManager
-import org.cxct.sportlottery.util.toJson
+import org.cxct.sportlottery.util.KvUtils
 import retrofit2.Response
 
 
@@ -38,9 +38,13 @@ object UserInfoRepository {
 
     fun loginedInfo() = userInfo.value
 
+    fun userId() = userInfo.value?.userId ?: -1
+
     fun isGlifeAccount(): Boolean {
         return userInfo.value?.isGlifeAccount() == true
     }
+
+    fun getPhoneNo() = userInfo.value?.phone
 
     suspend fun getUserInfo(): Response<UserInfoResult> {
         val userInfoResponse = OneBoSportApi.userService.getUserInfo()
@@ -68,15 +72,11 @@ object UserInfoRepository {
         GameConfigManager.maxBetMoney = userInfoData.maxBetMoney ?: 9999999
         GameConfigManager.maxCpBetMoney = userInfoData.maxCpBetMoney ?: 9999
         GameConfigManager.maxParlayBetMoney = userInfoData.maxParlayBetMoney ?: 9999
+        KvUtils.put(KEY_USER_LEVEL_ID, userInfoData.userLevelId)
+    }
 
-        with(sharedPref.edit()) {
-            putInt(KEY_USER_LEVEL_ID, userInfoData.userLevelId)
-            userInfoData?.liveSyncUserInfoVO?.let {
-                putString(KEY_LIVE_USER_INFO, it.toJson())
-            }
-            apply()
-        }
-
+    fun getUserLevelId(): Int {
+        return KvUtils.decodeInt(KEY_USER_LEVEL_ID, -1)
     }
 
     fun getDiscount(): Float {

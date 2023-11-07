@@ -15,7 +15,6 @@ import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_LOGIN_DEVICE_SMS
-import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_LOGIN_DEVICE_SMS
 import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
@@ -35,7 +34,6 @@ import org.cxct.sportlottery.network.index.login.*
 import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.register.RegisterRequest
-import org.cxct.sportlottery.network.index.sendSms.SmsRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.network.user.UserSwitchResult
@@ -79,12 +77,6 @@ interface IndexService {
 
     @POST(INDEX_REGISTER)
     suspend fun register(@Body registerRequest: RegisterRequest): Response<LoginResult>
-
-    @POST(INDEX_SEND_SMS)
-    suspend fun sendSms(@Body smsRequest: SmsRequest): Response<NetResult>
-
-    @GET(Constants.INDEX_CHECK_EXIST)
-    suspend fun checkAccountExist(@Path("userName") userName: String): Response<CheckAccountResult>
 
     @GET(Constants.USER_BASIC_INFO_SWITCH)
     suspend fun getUserInfoSwitch(): Response<UserSwitchResult>

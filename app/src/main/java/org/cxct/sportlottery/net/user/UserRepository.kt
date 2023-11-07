@@ -10,6 +10,8 @@ import org.cxct.sportlottery.net.user.data.VerifyConfig
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.repository.LOGIN_SRC
+import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.util.MD5Util
 import retrofit2.http.Body
 
 object UserRepository {
@@ -89,6 +91,18 @@ object UserRepository {
 
     suspend fun userLoginV3(@Body params: LoginRequest): ApiResult<LoginData> {
         return userApi.userLoginV3(params)
+    }
+
+    suspend fun verifySMSCode(phone: String, smsCode: String): ApiResult<String> {
+        return userApi.verifySMSCode(mapOf("phone" to phone, "securityCode" to smsCode))
+    }
+
+    suspend fun resetWithdraw(newPassword: String): ApiResult<String> {
+        val params = JsonObject()
+        params.addProperty("userId", UserInfoRepository.userId())
+        params.addProperty("platformId", LOGIN_SRC)
+        params.addProperty("newPassword", MD5Util.MD5Encode(newPassword))
+        return userApi.resetWithdraw(params)
     }
 
 }

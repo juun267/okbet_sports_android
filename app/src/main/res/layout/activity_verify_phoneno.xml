@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F0F5FA"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolBar"
+        layout="@layout/view_base_tool_bar_no_drawer" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_eeeeee"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:paddingBottom="20dp">
+
+            <TextView
+                android:id="@+id/tvTipsInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="36dp"
+                android:textSize="14sp"
+                android:lineSpacingExtra="3dp"
+                android:text="We will send an OTP verification code to your mobile number：*******1234"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/block_sms_valid_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:elevation="10dp">
+
+                <org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
+                    android:id="@+id/et_sms_valid_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_2"
+                    app:hintText="@string/verification_code"
+                    app:isResponsiveIconColor="false"
+                    app:labelTextStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/btn_send_sms"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eet_sms_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:maxLength="4"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColorHint="@color/color_C9CFD7" />
+                </org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView>
+
+                <Button
+                    android:id="@+id/btn_send_sms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:background="@drawable/btn_send_sms"
+                    android:minHeight="32dp"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:text="@string/send"
+                    android:textAllCaps="false"
+                    android:textColor="@color/color_2b2b2b_ffffff"
+                    android:textSize="@dimen/textSize14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_sms_valid_code"
+                    app:layout_constraintTop_toTopOf="@+id/et_sms_valid_code"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                android:id="@+id/et_new_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="18dp"
+                app:endIcon="@drawable/ic_eye_close"
+                app:hintText="@string/hint_register_password"
+                app:isResponsiveIconColor="false"
+                app:labelText="@string/new_password"
+                app:labelTextStyle="normal"
+                app:primaryColor="@color/color_AFAFB1"
+                android:visibility="gone">
+
+                <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                    android:id="@+id/eet_new_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/color_FFFFFF_DE000000"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+            <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                android:id="@+id/et_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="18dp"
+                app:endIcon="@drawable/ic_eye_close"
+                app:hintText="@string/hint_confirm_password"
+                app:isResponsiveIconColor="false"
+                app:labelText="@string/confirm_password"
+                app:labelTextStyle="normal"
+                app:primaryColor="@color/color_AFAFB1"
+                android:visibility="gone">
+
+                <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                    android:id="@+id/eet_confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/color_FFFFFF_DE000000"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btnConfirm"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/ic_submit"
+        android:text="@string/next_step"
+        android:textColor="@color/color_FCFCFC"
+        android:textSize="@dimen/textSize14sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
+
+</LinearLayout>

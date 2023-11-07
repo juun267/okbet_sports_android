@@ -1516,4 +1516,5 @@
     <string name="P235">Thiết lập SĐT thưởng ngay %s</string>
     <string name="P236">Cảm ơn bạn đã đăng ký</string>
     <string name="P237">Bạn đã nhận được %s tiền thưởng!</string>
+    <string name="P231">Chúng tôi sẽ gửi OTP qua tin nhắn đến sđt của bạn:</string>
 </resources>

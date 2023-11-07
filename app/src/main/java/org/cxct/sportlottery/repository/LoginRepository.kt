@@ -38,7 +38,6 @@ const val KEY_ODDS_TYPE = "oddsType"
 const val KEY_DISCOUNT = "discount"
 const val KEY_USER_ID = "user_id"
 const val KEY_USER_LEVEL_ID = "user_Level_Id"
-const val KEY_LIVE_USER_INFO = "live_user_info"
 
 private const val KEY_GAME_RECENT_PLAY = "recentPlay"
 
@@ -328,9 +327,6 @@ object LoginRepository {
             putLong(KEY_USER_ID, loginData?.userId ?: -1)
             putLong(KEY_PLATFORM_ID, loginData?.platformId ?: -1)
             putFloat(KEY_DISCOUNT, loginData?.discount ?: 1f)
-            loginData?.liveSyncUserInfoVO?.let {
-                putString(KEY_LIVE_USER_INFO, it.toJson())
-            }
             apply()
         }
     }
@@ -339,10 +335,10 @@ object LoginRepository {
         with(sharedPref.edit()) {
             remove(KEY_TOKEN)
             remove(KEY_ODDS_TYPE)
-            remove(KEY_LIVE_USER_INFO)
-            KvUtils.removeKey(KV_STR_SELECT_ODDS_MODE)
             apply()
         }
+        KvUtils.removeKey(KV_STR_SELECT_ODDS_MODE)
+        KvUtils.removeKey(KEY_USER_LEVEL_ID)
 //        clearRecentPlayGame()
         clearUserInfo()
     }
