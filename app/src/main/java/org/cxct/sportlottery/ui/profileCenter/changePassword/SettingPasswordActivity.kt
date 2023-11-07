@@ -233,7 +233,7 @@ class SettingPasswordActivity : BindingActivity<SettingPasswordViewModel, Activi
         etCurrentPassword.setEndIcon(R.drawable.ic_eye_close)
         etNewPassword.setEndIcon(R.drawable.ic_eye_close)
         etConfirmPassword.setEndIcon(R.drawable.ic_eye_close)
-        tvForgetPassword.isVisible = true // mPwdPage == PwdPage.BANK_PWD && (true != sConfigData?.enableRetrieveWithdrawPassword?.isStatusOpen())
+        tvForgetPassword.isVisible = mPwdPage != PwdPage.BANK_PWD || (true == sConfigData?.enableRetrieveWithdrawPassword?.isStatusOpen())
     }
 
     private fun updateButtonStatus(isEnable: Boolean) {
