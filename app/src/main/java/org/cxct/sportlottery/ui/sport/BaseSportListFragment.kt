@@ -174,6 +174,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             }
         }
         gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
+        scrollBackTop()
         (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             binding.sportTypeList,
             RecyclerView.State(),
