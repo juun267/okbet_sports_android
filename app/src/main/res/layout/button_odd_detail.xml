@@ -34,7 +34,6 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/helvetica_normal"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
@@ -57,18 +56,17 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/ll_odd_detail"
+            <FrameLayout
+                android:id="@+id/fl_odd_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/tv_odds"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8"
-                    android:layout_marginRight="@dimen/margin_8"
+                    android:layout_marginHorizontal="@dimen/margin_12"
                     android:fontFamily="@font/inter_bold"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center"
                     android:textFontWeight="700"
                     android:textColor="@color/selector_button_odd_bottom_text"
                     android:textSize="@dimen/textSize14sp"
@@ -78,11 +76,11 @@
                     android:id="@+id/iv_arrow"
                     android:layout_width="12dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
+                    android:layout_gravity="top|right"
                     tools:src="@drawable/icon_odds_up"
                     android:visibility="gone"
                     tools:visibility="visible" />
-            </LinearLayout>
+            </FrameLayout>
 
 
         </LinearLayout>
