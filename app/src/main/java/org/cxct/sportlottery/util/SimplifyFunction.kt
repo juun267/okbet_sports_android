@@ -1088,10 +1088,10 @@ fun String.formatHTML(): String {
         "<head>" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " + "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" + "</head>";
     return "<html>$head<body>$this</body></html>";
 }
-fun setExpandArrow(ivArrow: ImageView, isExpanded: Boolean) {
+fun setExpandArrow(ivArrow: ImageView, isExpanded: Boolean,esportTheme: Boolean = false) {
     if (isExpanded) {
         ivArrow.rotation = 0f
-        ivArrow.setImageResource(R.drawable.ic_filter_arrow_up)
+        ivArrow.setImageResource(if(esportTheme) R.drawable.ic_filter_arrow_up_es else R.drawable.ic_filter_arrow_up)
     } else {
         ivArrow.rotation = 180f
         ivArrow.setImageResource(R.drawable.ic_filter_arrow_up2)

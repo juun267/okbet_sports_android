@@ -25,6 +25,8 @@ import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.list.adapter.SportLeagueAdapter2
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.loginedRun
@@ -62,6 +64,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         binding.sportTypeList.isVisible =true
         //电竞主题背景增加
         binding.sportTypeList.setBackgroundResource(R.drawable.bg_esport_game)
+        binding.sportTypeList.elevation = 1.dp.toFloat()
         binding.linOpt.setBackgroundResource(R.drawable.bg_white_alpha70_radius_8_top)
         binding.gameList.setBackgroundResource(R.color.color_FFFFFF)
     }

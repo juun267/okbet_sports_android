@@ -46,7 +46,7 @@ class SportLeagueProvider(
         val topDivider = View(context)
         topDivider.id = dividerId
         topDivider.layoutParams = ViewGroup.LayoutParams(-1, 4.dp)
-        root.setBackgroundResource(if(esportTheme) R.drawable.bg_gradient_alpha70_league else R.color.color_FCFDFF)
+        root.setBackgroundResource(R.color.color_E1EDFF)
         root.addView(topDivider)
 
         val wh20 = 20.dp
@@ -55,7 +55,7 @@ class SportLeagueProvider(
         linContent.layoutParams = ViewGroup.LayoutParams(-1, 44.dp)
         linContent.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
         linContent.gravity = Gravity.CENTER_VERTICAL
-
+        linContent.setBackgroundResource(if(esportTheme) R.drawable.bg_gradient_alpha70_league else R.color.color_FCFDFF)
         val ivCountry = AppCompatImageView(context)
         ivCountry.id = ivCountryId
         ivCountry.scaleType = ImageView.ScaleType.CENTER_CROP
@@ -118,7 +118,7 @@ class SportLeagueProvider(
         helper.setText(tvLeagueNameId, leagueOdd.league.name)
         helper.setGone(dividerId, helper.bindingAdapterPosition == 0)
         helper.getView<ImageView>(ivCountryId).setLeagueLogo(item.league.categoryIcon)
-        setExpandArrow(helper.getView(ivArrowId), leagueOdd.isExpanded)
+        setExpandArrow(helper.getView(ivArrowId), leagueOdd.isExpanded,esportTheme = esportTheme)
         helper.setText(tvNumId,leagueOdd.matchOdds.size.toString())
         helper.setGone(ivArrowId,!leagueOdd.isExpanded)
         helper.setGone(tvNumId,leagueOdd.isExpanded)
@@ -126,7 +126,7 @@ class SportLeagueProvider(
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
         val leagueOdd = item as LeagueOdd
-        setExpandArrow(helper.getView(ivArrowId), leagueOdd.isExpanded)
+        setExpandArrow(helper.getView(ivArrowId), leagueOdd.isExpanded,esportTheme = esportTheme)
         helper.setGone(ivArrowId, !leagueOdd.isExpanded)
         helper.setGone(tvNumId,leagueOdd.isExpanded)
     }
@@ -137,7 +137,7 @@ class SportLeagueProvider(
         val league = item as LeagueOdd
         helper.getView<ImageView>(ivArrowId).apply {
             setArrowSpin(league.isExpanded, true) {
-                setExpandArrow(this, league.isExpanded)
+                setExpandArrow(this, league.isExpanded,esportTheme = esportTheme)
                 helper.setGone(ivArrowId, !league.isExpanded)
                 helper.setGone(tvNumId,league.isExpanded)
             }

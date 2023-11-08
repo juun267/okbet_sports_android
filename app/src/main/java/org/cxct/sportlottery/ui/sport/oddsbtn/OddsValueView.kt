@@ -31,6 +31,7 @@ class OddsValueView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
+    val esportTheme: Boolean =false
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
 
@@ -66,7 +67,7 @@ class OddsValueView @JvmOverloads constructor(
     }
 
     private fun disableBuoy() {
-        valuesText.setTextColor(ContextCompat.getColorStateList(context, R.color.selector_button_odd_top_text))
+        valuesText.setTextColor(ContextCompat.getColorStateList(context, if(esportTheme) R.color.selector_button_odd_top_text_es else R.color.selector_button_odd_top_text))
     }
 
 }

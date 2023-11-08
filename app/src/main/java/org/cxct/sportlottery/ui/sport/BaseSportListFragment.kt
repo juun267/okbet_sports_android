@@ -240,6 +240,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         })
         layoutManager = getGameLayoutManger()
         adapter = getGameListAdapter().apply { setEmptyView(EmptySportGamesView(context())) }
+        scrollBackTop()
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

@@ -92,7 +92,7 @@ class SportFooterGamesView @JvmOverloads constructor(
         text.setTextColor(ContextCompat.getColor(context, R.color.color_000000))
         text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
         text.paint.style = Paint.Style.FILL_AND_STROKE
-        text.paint.strokeWidth = 0.9f
+        text.paint.isFakeBoldText = true
         text.setText(R.string.P230)
         moreLabelLayout.addView(text, LayoutParams(0, -2, 1f))
 

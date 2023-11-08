@@ -25,9 +25,10 @@ class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : Ba
         val wh = 40.dp
         val param = FrameLayout.LayoutParams(wh, wh)
         8.dp.let {
-//            param.topMargin = it
-            param.bottomMargin = it
+
         }
+        param.topMargin = 8.dp
+        param.bottomMargin = 10.dp
         10.dp.let {
             param.leftMargin = it
             param.rightMargin = it
