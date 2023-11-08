@@ -42,6 +42,7 @@ import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
 import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
+import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
@@ -94,6 +95,8 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     override fun onBindViewStatus(view: View) {
+        currentItem = null
+        gameTypeAdapter.setNewInstance(null)
         EventBusUtil.targetLifecycle(this)
         setupOddsChangeListener()
         _initObserver()
@@ -171,6 +174,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             }
         }
         gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
+        scrollBackTop()
         (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             binding.sportTypeList,
             RecyclerView.State(),
