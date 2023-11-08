@@ -113,7 +113,7 @@ class VerifyPhoneNoActivity: BindingActivity<LoginViewModel, ActivityVerifyPhone
         viewModel.smsCodeVerify.observe(this) { onResult(it.succeeded(), it.msg) { setPwdInput() } }
         viewModel.resetWithdraw.observe(this) {
             onResult(it.succeeded(), it.msg) {
-                showErrorPromptDialog(getString(R.string.update_withdrawal_pwd)) { finishWithOK() }
+                showPromptDialog(message = getString(R.string.update_withdrawal_pwd)) { finishWithOK() }
             }
         }
     }
