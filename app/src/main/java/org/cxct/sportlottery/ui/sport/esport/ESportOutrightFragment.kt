@@ -87,10 +87,10 @@ class ESportOutrightFragment: BaseSportListFragment<SportListViewModel, Fragment
         arguments?.getString("gameType")?.let { gameType = it }
         initObserve()
         showLoading()
-        getMenuDataByParent(false)
+        getMenuDataByParent()
     }
 
-    open fun setupSportTypeList() {
+    private fun setupSportTypeList() {
         binding.sportTypeList.visible()
         binding.sportTypeList.adapter = esportTypeAdapter
     }

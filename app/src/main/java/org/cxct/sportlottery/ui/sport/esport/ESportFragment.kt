@@ -365,7 +365,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         sportMenuResult.observe(viewLifecycleOwner) {
             hideLoading()
             updateUiWithResult(it)
-            (fragmentHelper.currentFragment() as BaseSportListFragment<*, *>?)?.loadSportMenu(it)
         }
 
         esportTypeMenuData.observe(viewLifecycleOwner) {
@@ -423,13 +422,9 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
     }
     //是否拿最新的sportMenu数据
-    fun getMenuData(newData:Boolean) {
+    private fun getMenuData(newData:Boolean) {
         if (newData){
             viewModel.getSportMenuData()
-        }else{
-            viewModel.sportMenuResult.value?.let {
-                (fragmentHelper.currentFragment() as BaseSportListFragment<*, *>?)?.loadSportMenu(it)
-            }
         }
     }
 
