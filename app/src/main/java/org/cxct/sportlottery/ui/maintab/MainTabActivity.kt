@@ -41,7 +41,6 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
-import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
@@ -525,20 +524,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun updateOddsType(oddsType: OddsType) {
         //  tv_odds_type.text = getString(oddsType.res)
     }
-
-    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
-//        if (thirdGameCategory != null) {
-//            val intent = Intent(this, MainActivity::class.java).putExtra(
-//                MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory
-//            )
-//            startActivity(intent)
-//
-//            return
-//        }
-//
-//        startActivity(Intent(this, GamePublicityActivity::class.java))
-    }
-
     override fun initToolBar() {
     }
 

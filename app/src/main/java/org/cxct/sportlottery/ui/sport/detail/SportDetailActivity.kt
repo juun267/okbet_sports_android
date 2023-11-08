@@ -56,7 +56,6 @@ import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetListFragment
-import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.adapter.*
 import org.cxct.sportlottery.ui.sport.detail.fragment.SportChartFragment
@@ -544,10 +543,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             anchorView = binding.snackbarHolder
             show()
         }
-
-    }
-
-    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
 
     }
 

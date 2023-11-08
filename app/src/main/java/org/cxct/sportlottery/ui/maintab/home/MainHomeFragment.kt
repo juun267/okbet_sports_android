@@ -120,6 +120,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     fun initToolBar() = binding.run {
         homeToolbar.attach(this@MainHomeFragment, getMainTabActivity(), viewModel)
+        homeToolbar.ivMenuLeft.setImageResource(R.drawable.ic_home_menu_2)
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             getMainTabActivity().showMainLeftMenu(null)

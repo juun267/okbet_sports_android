@@ -317,7 +317,7 @@
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:layout_marginStart="22dp"
-                    android:src="@drawable/img_bmm_h" />
+                    android:src="@drawable/ic_bmm_testlabs" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
