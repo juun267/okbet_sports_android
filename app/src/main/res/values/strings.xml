@@ -26,11 +26,8 @@
     <string name="login_account">Account</string>
     <string name="please_input_account">Enter account</string>
     <string name="login_password">Password</string>
-    <string name="recommend_code">Invite Code(Optional</string>
     <string name="hint_recommend_code">Please enter invite code</string>
-    <string name="error_recommend_code">Not available the outlet, please confirm</string>
     <string name="member_account">Account</string>
-    <string name="hint_member_account">4-16 characters and contain numbers and letters.</string>
     <string name="error_member_account">Username must be 4–16 characters and contain letter and numbers</string>
     <string name="error_member_nickname">Nickname must be %1$d-%2$d characters long and contain English &amp; Chinese letter</string>
     <string name="error_register_id_exist">Username already exists</string>
@@ -65,8 +62,6 @@
     <string name="e_mail">Email</string>
     <string name="hint_e_mail">Email</string>
     <string name="error_e_mail">Email formatted incorrectly</string>
-    <string name="postal_code">Postal code</string>
-    <string name="hint_postal_code">Please enter Postal code</string>
     <string name="province">Province</string>
     <string name="hint_province">Please enter province</string>
     <string name="city">City</string>
@@ -235,7 +230,7 @@
     <string name="hint_current_login_password">Password</string>
     <string name="hint_current_withdrawal_password">Please enter your withdrawal password</string>
     <string name="new_password">New password</string>
-    <string name="hint_withdrawal_new_password">only be 4 characters</string>
+    <string name="hint_withdrawal_new_password">4 digits password</string>
     <string name="error_password_cannot_be_same">New password must different from old password</string>
     <string name="update_withdrawal_pwd">Successfully changed your withdrawal password</string>
     <string name="download_fail">Download failed</string>
@@ -1648,4 +1643,6 @@
     <string name="P236">Thank you for registering with us.</string>
     <string name="P237">You have received %s as a welcome gift!</string>
     <string name="P231">We will send an OTP verification code to your mobile number:</string>
+    <string name="P239">New withdraw password</string>
+    <string name="J169">Confirm password don\'t match</string>
 </resources>

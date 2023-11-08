@@ -397,7 +397,7 @@ fun EditText.checkWithdrawPassword(textFieldBoxes: FrameLayout, other: EditText?
         val msg = when {
             text.isNullOrEmpty() -> context.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPayPwd(text) -> context.getString(R.string.error_withdraw_password_for_new)
-            (other != null && other.text.toString() != text) -> context.getString(R.string.error_confirm_password)
+            (other != null && other.text.toString() != text) -> context.getString(R.string.J169)
             else -> null
         }
 

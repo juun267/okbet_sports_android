@@ -9,7 +9,6 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivitySettingPasswordBinding
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.NetResult
-import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -58,7 +57,7 @@ class SettingPasswordActivity : BindingActivity<SettingPasswordViewModel, Activi
                     finish()
                     return@setOnClickListener
                 }
-                startActivity<VerifyPhoneNoActivity>(Pair("phone", phoneNo))
+                startActivity<ResetWithdrawActivity>(Pair("phone", phoneNo))
             } else {
                 startActivity(ForgetWaysActivity::class.java)
             }
