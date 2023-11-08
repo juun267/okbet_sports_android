@@ -414,7 +414,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
         val isFirstSwitch = defaultMatchType == null
         refreshTabLayout(sportMenuResult)
-        EventBusUtil.post(sportMenuResult)
         if (!isFirstSwitch) {
             navGameSport = null
             return
