@@ -50,7 +50,7 @@
     <string name="register_jump">Ire-redirect ka sa %s sa loob ng 5 segundo....</string>
     <string name="register_recharge_now">Deposito ngayon</string>
     <string name="confirm_password">Kumpirmahin ang password</string>
-    <string name="hint_confirm_password">Kumpirmahin ang password</string>
+    <string name="hint_confirm_password">Paki ulit ang password</string>
     <string name="error_confirm_password">Ang dalawang password na nilagay ay hindi tugma</string>
     <string name="withdrawal_pwd">Withdrawal password</string>
     <string name="hint_withdrawal_pwd">Password ay 4 na numero</string>
