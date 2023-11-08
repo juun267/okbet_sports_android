@@ -631,7 +631,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             bottom_navigation_view.itemTextColor = ContextCompat.getColorStateList(this@MainTabActivity,R.color.main_tab_text_selector)
             bottom_navigation_view.menu[0].icon = ContextCompat.getDrawable(this@MainTabActivity,R.drawable.selector_tab_home)
         }else{
-            bottom_navigation_view.itemTextColor = ContextCompat.getColorStateList(this@MainTabActivity,R.color.color_025BE8)
+            bottom_navigation_view.itemTextColor = ContextCompat.getColorStateList(this@MainTabActivity,R.color.color_6C7BA8)
             bottom_navigation_view.menu[0].icon = ContextCompat.getDrawable(this@MainTabActivity,R.drawable.ic_tab_home_nor)
         }
     }
