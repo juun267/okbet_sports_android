@@ -101,6 +101,9 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
     protected open fun observeSportList() = viewModel.run {
 
         oddsListGameHallResult.observe(this@SportListFragment2.viewLifecycleOwner) {
+            if (it.tag != gameType) {
+                return@observe
+            }
 
 
             val oddsListData = it.getContentIfNotHandled()?.oddsListData ?: return@observe
