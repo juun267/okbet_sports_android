@@ -28,6 +28,7 @@ import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -35,7 +36,6 @@ import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
-import org.cxct.sportlottery.ui.sport.esport.ESportFavoriteFragment
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
@@ -180,12 +180,12 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     fun resetFooterView(footerView: View) {
 
-        footerView.gone()
         val adapter = getGameListAdapter()
         if (footerView.tag == adapter) {
             return
         }
 
+        footerView.gone()
         (footerView.parent as ViewGroup?)?.let { it.removeView(footerView) }
         footerView.tag = adapter
         adapter.addFooterView(footerView)
@@ -321,11 +321,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected fun setSportDataList(list: MutableList<BaseNode>?, sizeNumber: String? = null) {
         val adapter = getGameListAdapter()
-        // 这个方法是最终显示数据的，已经处于数据结果状态。在这显示loading的时机不对，暂且先就这么处理，后面在优化
-        val showLoading = list.isNullOrEmpty() && this !is FavoriteFragment2 && this !is ESportFavoriteFragment
-        if(showLoading) {
-            showLoading()
-        }
         adapter.setNewInstance(list)
         if (sizeNumber == null) setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "") else setMatchNum(sizeNumber)
         if (!list.isNullOrEmpty()) {
@@ -419,17 +414,12 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     /**
      * 通过父fragment来加载sport/menu 接口数据
      */
-    fun getMenuDataByParent(newData:Boolean){
-        when(parentFragment){
-            is SportFragment2->(parentFragment as SportFragment2).getMenuData(newData)
-            is ESportFragment->(parentFragment as ESportFragment).getMenuData(newData)
+    protected fun getMenuDataByParent(){
+        val sportParentFrament = (parentFragment as BaseFragment<SportTabViewModel>)
+        if (sportParentFrament != null) {
+            sportParentFrament.viewModel.sportMenuResult.value?.let { viewModel.loadSportMenu(it, matchType) }
         }
     }
-    /**
-     * 父fragment拿到sport/menu数据后，通过此方法，传给子fragemnt
-     */
-    fun loadSportMenu(sportMenuResult: ApiResult<SportMenuData>){
-        viewModel.loadSportMenu(sportMenuResult,matchType)
-    }
+
 
 }
