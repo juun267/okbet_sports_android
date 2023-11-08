@@ -96,7 +96,7 @@
                 app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/hint_withdrawal_new_password"
                 app:isResponsiveIconColor="false"
-                app:labelText="@string/new_password"
+                app:labelText="@string/P239"
                 app:labelTextStyle="normal"
                 app:primaryColor="@color/color_AFAFB1"
                 android:visibility="gone">

@@ -20,7 +20,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.checkSMSCode
 import org.cxct.sportlottery.view.checkWithdrawPassword
 
-class VerifyPhoneNoActivity: BindingActivity<LoginViewModel, ActivityVerifyPhonenoBinding>() {
+class ResetWithdrawActivity: BindingActivity<LoginViewModel, ActivityVerifyPhonenoBinding>() {
 
     private val phoneNo by lazy { intent.getStringExtra("phone")!! }
 
@@ -52,7 +52,7 @@ class VerifyPhoneNoActivity: BindingActivity<LoginViewModel, ActivityVerifyPhone
             btnConfirm.setBtnEnable(it != null)
         }
         btnSendSms.setOnClickListener {
-            hideSoftKeyboard(this@VerifyPhoneNoActivity)
+            hideSoftKeyboard(this@ResetWithdrawActivity)
             VerifyCodeDialog().run {
                 callBack = { identity, validCode ->
                     loading()

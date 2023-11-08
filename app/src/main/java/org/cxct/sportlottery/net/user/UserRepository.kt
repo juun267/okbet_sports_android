@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.MD5Util
 import retrofit2.http.Body
 
@@ -100,7 +101,7 @@ object UserRepository {
     suspend fun resetWithdraw(newPassword: String): ApiResult<String> {
         val params = JsonObject()
         params.addProperty("userId", UserInfoRepository.userId())
-        params.addProperty("platformId", LOGIN_SRC)
+        params.addProperty("platformId", sConfigData?.platformId ?: 1)
         params.addProperty("newPassword", MD5Util.MD5Encode(newPassword))
         return userApi.resetWithdraw(params)
     }
