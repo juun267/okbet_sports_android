@@ -17,7 +17,7 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : BaseDialogFragment(
     }
 
     protected open fun setDefaulStyle() {
-        setStyle(STYLE_NO_TITLE, R.style.AppTheme)
+        setStyle(STYLE_NO_TITLE, R.style.MyDialogStyle)
     }
 
     override fun onStart() {
