@@ -226,11 +226,12 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     private fun initGameListView() = binding.gameList.run {
-
         setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue, scrollTopFunc = {
-            when(parentFragment){
-                is SportFragment2->(parentFragment as SportFragment2).onScrollTop(it ==0)
-                is ESportFragment->(parentFragment as ESportFragment).onScrollTop(it ==0)
+            if (isVisibleToUser()){
+                when(parentFragment){
+                    is SportFragment2->(parentFragment as SportFragment2).onScrollTop(it ==0)
+                    is ESportFragment->(parentFragment as ESportFragment).onScrollTop(it ==0)
+                }
             }
         })
         layoutManager = getGameLayoutManger()
