@@ -52,6 +52,7 @@ data class UserInfo(
     val birthday: String?="",
 ){
     fun isGlifeAccount():Boolean = vipType==1
-    fun hasFullName() = !fullName.isEmptyStr() && !"N/A".equals(fullName!!.trim(), true)
+    fun hasFullName() = !firstName.isEmptyStr() || !lastName.isEmptyStr()
+    fun noneMiddleName() = middleName.isEmptyStr() || "N/A".equals(middleName, true)
 }
 
