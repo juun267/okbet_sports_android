@@ -11,10 +11,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
-import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.receipt.BetReceiptFragment
-import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
-import timber.log.Timber
 import kotlin.reflect.KClass
 
 
@@ -43,8 +40,6 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
     abstract fun showMyFavoriteNotify(myFavoriteNotifyType: Int)
 
-    abstract fun navOneSportPage(thirdGameCategory: ThirdGameCategory?)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -55,11 +50,6 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
         viewModel.oddsType.observe(this) {
             updateOddsType(it)
         }
-
-        viewModel.thirdGameCategory.observe(this) {
-            navOneSportPage(it.getContentIfNotHandled())
-        }
-
         viewModel.intentClass.observe(this) {
             it.getContentIfNotHandled()?.let { clazz ->
                 startActivity(Intent(this, clazz))

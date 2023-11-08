@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.Event
 
 abstract class BaseBottomNavViewModel(
@@ -22,8 +21,6 @@ abstract class BaseBottomNavViewModel(
     infoCenterRepository,
     favoriteRepository
 ) {
-    val thirdGameCategory: LiveData<Event<ThirdGameCategory?>>
-        get() = _thirdGameCategory
 
     val intentClass: LiveData<Event<Class<*>>>
         get() = _intentClass
@@ -37,7 +34,6 @@ abstract class BaseBottomNavViewModel(
     val settlementNotificationMsg
         get() = betInfoRepository.settlementNotificationMsg
 
-    private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
     private val _showShoppingCart = MutableLiveData<Event<Boolean>>()
     private val _navPublicityPage = MutableLiveData<Event<Boolean>>()
 
