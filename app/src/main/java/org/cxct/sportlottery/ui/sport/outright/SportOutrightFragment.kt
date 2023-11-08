@@ -71,7 +71,7 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
         arguments?.getString("gameType")?.let { gameType = it }
         initObserve()
         showLoading()
-        getMenuDataByParent(false)
+        getMenuDataByParent()
     }
 
 

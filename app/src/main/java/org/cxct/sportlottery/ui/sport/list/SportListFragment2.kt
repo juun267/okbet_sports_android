@@ -73,7 +73,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         scrollBackTop()
         binding.appbarLayout.scrollBy(0, 0)
         showLoading()
-        getMenuDataByParent(false)
+        getMenuDataByParent()
     }
 
     override fun onBindViewStatus(view: View) {

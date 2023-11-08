@@ -378,7 +378,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         sportMenuResult.observe(viewLifecycleOwner) {
             hideLoading()
             updateUiWithResult(it)
-            (fragmentHelper.currentFragment() as BaseSportListFragment<*, *>?)?.loadSportMenu(it)
         }
 
         sportTypeMenuData.observe(viewLifecycleOwner) { updateFavoriteItem(it.first) }
@@ -434,14 +433,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
     }
     //是否拿最新的sportMenu数据
-    fun getMenuData(newData: Boolean) {
-        if (newData){
-            viewModel.getSportMenuData()
-        }else{
-            viewModel.sportMenuResult.value?.let {
-                (fragmentHelper.currentFragment() as BaseSportListFragment<*, *>?)?.loadSportMenu(it)
-            }
-        }
+    private fun getMenuData(newData: Boolean) {
+        viewModel.getSportMenuData()
     }
 
     private fun showSportDialog(){
@@ -460,7 +453,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             binding.tabShadow.layoutParams = this
         }
     }
-    fun tabLayoutSelect(matchType: MatchType){
+    private fun tabLayoutSelect(matchType: MatchType){
        val todayIndex= matchTypeTodayTab.indexOf(matchType)
         if (todayIndex>=0){
             matchTypeTab[todayMatchPosition] = matchTypeTodayTab[todayIndex]

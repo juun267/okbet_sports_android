@@ -11,22 +11,18 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
-import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
-import org.cxct.sportlottery.ui.sport.SportFragment2
-import org.cxct.sportlottery.ui.sport.list.SportListFragment2
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.list.adapter.SportLeagueAdapter2
@@ -95,7 +91,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         scrollBackTop()
         binding.appbarLayout.scrollBy(0, 0)
         showLoading()
-        getMenuDataByParent(false)
+        getMenuDataByParent()
     }
 
     override fun onBindViewStatus(view: View) {
