@@ -258,10 +258,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     if (event.login){
                         viewModel.dealWithLoginData(loginResult!!,it)
                     }else{
+                        var inviteCode = binding.eetRecommendCode.text.toString()
                         //新的注册接口
                         val loginRequest = LoginRequest(
                             account = it.userName?:"",
                             loginSrc = LOGIN_SRC,
+                            inviteCode = inviteCode,
                         )
                         viewModel.regPlatformUser(it.token?:"",loginRequest)
                     }
