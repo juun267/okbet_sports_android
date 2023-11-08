@@ -18,7 +18,6 @@ import org.cxct.sportlottery.common.event.SelectMatchEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
-import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -26,7 +25,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -37,12 +35,10 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
-import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
 import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
-import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
@@ -84,8 +80,21 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     fun currentMatchType(): MatchType = matchType
     fun currentGameType(): String = gameType
 
-    protected fun scrollBackTop() = binding.appbarLayout.run {
-        ((layoutParams as CoordinatorLayout.LayoutParams).behavior as AppBarLayout.Behavior?)?.setTopAndBottomOffset(0)
+    protected fun scrollBackTop() = binding.run {
+        //解决到顶部无法滑动的问题
+        gameList.scrollToPosition(0)
+        //拿到 appbar 的 behavior,让 appbar 滚动
+        val layoutParams: ViewGroup.LayoutParams = appbarLayout.getLayoutParams()
+        val behavior = (layoutParams as CoordinatorLayout.LayoutParams).behavior
+        if (behavior is AppBarLayout.Behavior) {
+            val appBarLayoutBehavior = behavior
+            //拿到下方tabs的y坐标，即为我要的偏移量
+            val topAndBottomOffset = appBarLayoutBehavior.topAndBottomOffset
+            if (topAndBottomOffset != 0) {
+                appBarLayoutBehavior.topAndBottomOffset = 0
+                appbarLayout.setExpanded(true, true)
+            }
+        }
     }
 
     override fun onInitView(view: View){
@@ -95,6 +104,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     override fun onBindViewStatus(view: View) {
+        scrollBackTop()
         currentItem = null
         gameTypeAdapter.setNewInstance(null)
         EventBusUtil.targetLifecycle(this)
@@ -231,16 +241,15 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     private fun initGameListView() = binding.gameList.run {
         setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue, scrollTopFunc = {
-            if (isVisibleToUser()){
-                when(parentFragment){
-                    is SportFragment2->(parentFragment as SportFragment2).onScrollTop(it ==0)
-                    is ESportFragment->(parentFragment as ESportFragment).onScrollTop(it ==0)
+            if(isVisibleToUser()) {
+                when (parentFragment) {
+                    is SportFragment2 -> (parentFragment as SportFragment2).onScrollTop(it == 0)
+                    is ESportFragment -> (parentFragment as ESportFragment).onScrollTop(it == 0)
                 }
             }
         })
         layoutManager = getGameLayoutManger()
         adapter = getGameListAdapter().apply { setEmptyView(EmptySportGamesView(context())) }
-        scrollBackTop()
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -293,11 +302,13 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         load(item)
     }
 
-    protected open fun load(item: Item,
-                            selectLeagueIdList:
-                            ArrayList<String> = arrayListOf(),
-                            selectMatchIdList: ArrayList<String> = arrayListOf(),
-                            categoryCodeList:List<String>?=null) {
+    protected open fun load(
+        item: Item,
+        selectLeagueIdList:
+        ArrayList<String> = arrayListOf(),
+        selectMatchIdList: ArrayList<String> = arrayListOf(),
+        categoryCodeList: List<String>? = null,
+    ) {
         resetArrow()
         showLoading()
         if(categoryCodeList==null){
@@ -395,9 +406,9 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         matchInfo: MatchInfo,
         odd: Odd,
         playCateCode: String,
-        betPlayCateName:String? = null,
+        betPlayCateName: String? = null,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-        outRightMatchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd? = null  // 冠军时必传
+        outRightMatchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd? = null,  // 冠军时必传
     ) {
        val playCateName=when(matchType){
            MatchType.END_SCORE-> getString(R.string.home_tab_end_score)
