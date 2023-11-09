@@ -25,21 +25,10 @@ abstract class BaseBottomNavViewModel(
     val thirdGameCategory: LiveData<Event<HomeMenuBean?>>
         get() = _thirdGameCategory
 
-    val intentClass: LiveData<Event<Class<*>>>
-        get() = _intentClass
-    private val _intentClass = MutableLiveData<Event<Class<*>>>()
-
-    val showShoppingCart: LiveData<Event<Boolean>>
-        get() = _showShoppingCart
-
-    val navPublicityPage: LiveData<Event<Boolean>>
-        get() = _navPublicityPage
     val settlementNotificationMsg
         get() = betInfoRepository.settlementNotificationMsg
 
     private val _thirdGameCategory = MutableLiveData<Event<HomeMenuBean?>>()
-    private val _showShoppingCart = MutableLiveData<Event<Boolean>>()
-    private val _navPublicityPage = MutableLiveData<Event<Boolean>>()
 
 
 }

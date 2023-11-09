@@ -1,22 +1,16 @@
 package org.cxct.sportlottery.ui.maintab
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.view.get
-import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
-import kotlinx.android.synthetic.main.custom_bottom_sheet_item.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.NetWorkEvent
@@ -40,7 +34,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
-import org.cxct.sportlottery.ui.maintab.entity.HomeMenuBean
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment2
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
@@ -67,11 +61,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Param(HomeFragment2::class.java),
                 Param(SportFragment2::class.java),
                 Param(OKGamesFragment::class.java),
-                Param(OKGamesFragment::class.java), // 占坑
                 Param(ProfileCenterFragment::class.java),
             )
         )
     }
+
+    private val INDEX_HOME = 0
+    private val INDEX_SPORT = 1
+    private val INDEX_GAMES = 2
+    private val INDEX_PROFILE = 3
 
     private var betListFragment: BetListFragment? = null
 
@@ -99,21 +97,82 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private val binding by lazy { ActivityMainTabBinding.inflate(layoutInflater) }
+    private lateinit var tabHelper: MainTabInflate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
+        ImmersionBar.with(this)
+            .statusBarDarkFont(true)
+            .transparentStatusBar()
             .fitsSystemWindows(false).init()
         initDrawerLayout()
         initMenu()
-        initBottomFragment(savedInstanceState?.getInt("startTabPosition") ?: 0)
+        tabHelper = MainTabInflate(binding.linTab, ::onTabClick)
+        navToPosition(INDEX_HOME)
         initBottomNavigation()
         initObserve()
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
+    }
 
+    private fun onTabClick(tabName: Int): Boolean {
+        val result = when(tabName) {
+            R.string.menu -> { // 菜单
+                val currentFragment = fragmentHelper.getCurrentFragment()
+                onMenuEvent(MenuEvent(true))
+                if (currentFragment is HomeFragment2 || currentFragment is ProfileCenterFragment) {
+                    showMainLeftMenu(null)
+                } else {
+                    showSportLeftMenu()
+                }
+                false
+            }
+
+            R.string.main_tab_sport -> { // 体育
+                if (!StaticData.okSportOpened()) {
+                    ToastUtil.showToast(this@MainTabActivity, getString(R.string.N700))
+                    false
+                } else {
+                    navToPosition(INDEX_SPORT)
+                    true
+                }
+            }
+
+            R.string.news_tab_game -> { // OKGames
+                if(!StaticData.okGameOpened()) {
+                    ToastUtil.showToast(this@MainTabActivity,getString(R.string.N700))
+                    false
+                } else {
+                    navToPosition(INDEX_GAMES)
+                    true
+                }
+            }
+
+            R.string.N984 -> { // 聊天室
+                start<ChatActivity>()
+                false
+            }
+
+            R.string.main_tab_mine -> { // 我的
+                if(LoginRepository.isLogined()) {
+                    navToPosition(INDEX_PROFILE)
+                    true
+                } else {
+                    startActivity(LoginOKActivity::class.java)
+                    false
+                }
+            }
+
+            else -> false
+        }
+
+        if (result) {
+            homeFragment().backMainHome()
+        }
+
+        return result
     }
 
     override fun onNightModeChanged(mode: Int) {
@@ -130,9 +189,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 //关闭已选中的投注
                 closeBetFragment()
                 //回到首页
-                binding.bottomNavigationView.postDelayed({
-                    backMainHome()
-                }, 200)
+                binding.root.postDelayed({ backMainHome() }, 200)
             }
 
             EventBusUtil.post(SportStatusEvent(it))
@@ -187,73 +244,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         return false
     }
 
-
-    private fun initBottomFragment(position: Int) {
-        binding.bottomNavigationView.apply {
-            enableAnimation(false)
-            enableShiftingMode(false)
-            setTextVisibility(true)
-            setTextSize(10f)
-            setIconSize(24f)
-            menu.getItem(2).isVisible = !getMarketSwitch()
-            onNavigationItemSelectedListener =
-                BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
-                    if (mIsEnabled) {
-                        avoidFastDoubleClick()
-                        ImmersionBar.with(this@MainTabActivity)
-                            .statusBarDarkFont(true)
-                            .init()
-
-                        val itemPosition = getMenuItemPosition(menuItem)
-                        if (checkMainPosition(itemPosition)) {
-                            return@OnNavigationItemSelectedListener false
-                        }
-                        if(itemPosition==1&&!StaticData.okSportOpened()){
-                            ToastUtil.showToast(this@MainTabActivity,getString(R.string.N700))
-                            return@OnNavigationItemSelectedListener  false
-                        }
-                        if(itemPosition==2&&!StaticData.okGameOpened()){
-                            ToastUtil.showToast(this@MainTabActivity,getString(R.string.N700))
-                            return@OnNavigationItemSelectedListener  false
-                        }
-
-                        when (menuItem.itemId) {
-                            R.id.i_user -> {
-                                if (viewModel.isLogin.value == false) {
-                                    startLogin()
-                                    return@OnNavigationItemSelectedListener false
-                                }
-                            }
-
-                            R.id.i_favorite -> {
-                                start<ChatActivity> {}
-                                return@OnNavigationItemSelectedListener false
-                            }
-                        }
-
-                        fragmentHelper.showFragment(itemPosition)
-                        if (itemPosition == 0) {
-                            enableSelectBottomNav(true)
-                        }
-                        homeFragment().backMainHome()
-                        setupBetBarVisiblity(itemPosition)
-                        return@OnNavigationItemSelectedListener true
-                    }
-                    return@OnNavigationItemSelectedListener false
-                }
-
-
-        }
-
-        // 如果回复之前的position会有很多其它崩溃异常
-        binding.bottomNavigationView.currentItem = 0 /*position*/
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt("startTabPosition", bottom_navigation_view.currentItem)
-        super.onSaveInstanceState(outState)
-    }
-
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(Bundle()) // 如果回复之前的position会有很多其它崩溃异常
     }
@@ -268,40 +258,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private fun initDrawerLayout() {
 //        drawerLayout.setScrimColor(Color.TRANSPARENT)
-        drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
-            override fun onDrawerStateChanged(newState: Int) {
-            }
 
-            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-
-//                val mContent: View = drawerLayout.getChildAt(0)
-//                //设置1.1，让主界面更缩小
-//                val scale = 1 - slideOffset
-//                val rightScale = 0.55f + scale * 0.45f
-//                if (drawerView.tag == "LEFT") {
-//                    val leftScale = 1 - scale
-//                    drawerView.scaleX = leftScale
-//                    drawerView.scaleY = leftScale
-//                    drawerView.alpha = 1f
-//                    mContent.translationX = drawerView.measuredWidth * (1 - scale) * 0.94f
-//                    mContent.pivotX = 0f
-//                    mContent.pivotY = (mContent.measuredHeight / 2).toFloat()
-//                    mContent.invalidate()
-//                    mContent.scaleX = rightScale
-//                    mContent.scaleY = rightScale
-//                }
-            }
-
+        drawerLayout.addDrawerListener(object : SimpleDrawerListener() {
             override fun onDrawerOpened(drawerView: View) {
                 if (drawerView.tag == "LEFT") {
-                    drawerLayout.setDrawerLockMode(
-                        DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT
-                    )
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT)
                 } else {
-                    drawerLayout.setDrawerLockMode(
-                        DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT
-                    )
-
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT)
                 }
             }
 
@@ -332,16 +295,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 fragment.reloadData()
             }
         }
-
-//        supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
-//            .commit()
-
-//        sportLeftFragment.matchType = matchType
-//        sportLeftFragment.gameType = gameType
     }
 
 
-    override fun initMenu() {
+    private fun initMenu() {
         try {
             //關閉側邊欄滑動行為
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -378,10 +335,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onShowInPlay(event: ShowInPlayEvent) {
-        binding.bottomNavigationView.postDelayed({
-            jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
-        },200)
-
+        binding.root.postDelayed({ jumpToTheSport(MatchType.IN_PLAY, GameType.BK) },200)
     }
 
 
@@ -457,17 +411,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun updateBetListCount(num: Int) {
         betListCount = num
-        setupBetBarVisiblity(bottom_navigation_view.currentItem)
+        setupBetBarVisiblity()
         parlayFloatWindow.updateCount(betListCount.toString())
         if (num > 0) viewModel.getMoneyAndTransferOut()
     }
 
 
-    private fun setupBetBarVisiblity(position: Int) {
-        val needShowBetBar = when (position) {
-            0, 1, 3 -> true
-            else -> false
-        }
+    private fun setupBetBarVisiblity() {
+
+        val needShowBetBar = fragmentHelper.getCurrentPosition() >= 0
+                && (fragmentHelper.getCurrentFragment() is HomeFragment2 || fragmentHelper.getCurrentFragment() is SportFragment2)
 
         if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
             == BetListFragment.SINGLE
@@ -488,7 +441,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun showLoginNotify() {
         snackBarLoginNotify.apply {
-            setAnchorView(R.id.bottom_navigation_view)
+            setAnchorView(R.id.linTab)
             show()
         }
     }
@@ -496,53 +449,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
         setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
         snackBarMyFavoriteNotify?.apply {
-            setAnchorView(R.id.bottom_navigation_view)
+            setAnchorView(R.id.linTab)
             show()
         }
     }
 
-    override fun updateUiWithLogin(isLogin: Boolean) {
-        if (isLogin) {
-
-
-        } else {
-
-
-        }
-    }
-
-    override fun updateOddsType(oddsType: OddsType) {
-        //  tv_odds_type.text = getString(oddsType.res)
-    }
-
-    override fun navOneSportPage(thirdGameCategory: HomeMenuBean?) {
-//        if (thirdGameCategory != null) {
-//            val intent = Intent(this, MainActivity::class.java).putExtra(
-//                MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory
-//            )
-//            startActivity(intent)
-//
-//            return
-//        }
-//
-//        startActivity(Intent(this, GamePublicityActivity::class.java))
-    }
-
-    override fun initToolBar() {
-    }
-
-    override fun clickMenuEvent() {
-    }
-
-
-    @SuppressLint("ClickableViewAccessibility")
-    override fun initBottomNavigation() {
-//        parlayFloatWindow.tv_balance_currency.text = sConfigData?.systemCurrencySign
-//        parlayFloatWindow.tv_balance.text = TextUtil.formatMoney(0.0)
-        binding.parlayFloatWindow.onViewClick = {
-            showBetListPage()
-        }
-
+    private fun initBottomNavigation() {
+        binding.parlayFloatWindow.onViewClick = { showBetListPage() }
     }
 
     override fun showBetListPage() {
@@ -562,45 +475,34 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         })
 
 
-        ft
-//            .setCustomAnimations(
-//            R.anim.pickerview_slide_in_bottom,
-//            R.anim.pickerview_slide_out_bottom,
-//            R.anim.pickerview_slide_in_bottom,
-//            R.anim.pickerview_slide_out_bottom
-//        )
-            .add(R.id.fl_bet_list, betListFragment!!).addToBackStack(null).commit()
+        ft.add(R.id.fl_bet_list, betListFragment!!).addToBackStack(null).commit()
     }
 
 
     fun setupBetData(fastBetDataBean: FastBetDataBean, view: View? = null) {
         viewModel.updateMatchBetListData(fastBetDataBean)
-        if (view != null) {
-//            addAction(view)
-        }
     }
 
     private fun setupBottomNavBarVisibility(isVisible: Boolean) {
-        bottom_navigation_view.isVisible = isVisible
         if (betListCount == 0) {
             parlayFloatWindow.gone()
         }
-
     }
-
 
     private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment2
 
     fun backMainHome() {
         enableSelectBottomNav(true)
         homeFragment().backMainHome()
-        navToPosition(0)
+        navToPosition(INDEX_HOME)
+
     }
+
     fun jumpToOKGames() {
         if (getMarketSwitch()) {
             return
         }
-        navToPosition(2)
+        navToPosition(INDEX_HOME)
     }
 
     fun jumpToOkLive(){
@@ -615,9 +517,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun navToPosition(position: Int) {
-        if (bottom_navigation_view.currentItem != position) {
-            bottom_navigation_view.currentItem = position
-        }
+        fragmentHelper.showFragment(position)
     }
 
     /**
@@ -625,25 +525,23 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
      */
     private fun enableSelectBottomNav(enable: Boolean) {
         if (enable){
-            bottom_navigation_view.itemTextColor = ContextCompat.getColorStateList(this@MainTabActivity,R.color.main_tab_text_selector)
-            bottom_navigation_view.menu[0].icon = ContextCompat.getDrawable(this@MainTabActivity,R.drawable.selector_tab_home)
+
         }else{
-            bottom_navigation_view.itemTextColor = ContextCompat.getColorStateList(this@MainTabActivity,R.color.color_025BE8)
-            bottom_navigation_view.menu[0].icon = ContextCompat.getDrawable(this@MainTabActivity,R.drawable.ic_tab_home_nor)
+            tabHelper.clearSelected()
         }
     }
 
     fun jumpToESport() {
         checkSportStatus(this) {
             (fragmentHelper.getFragment(1) as SportFragment2).setJumpESport()
-            navToPosition(1)
+            navToPosition(INDEX_SPORT)
         }
     }
 
     fun jumpToSport(gameType: GameType) {
         checkSportStatus(this) {
             (fragmentHelper.getFragment(1) as SportFragment2).jumpToSport(gameType)
-            navToPosition(1)
+            navToPosition(INDEX_SPORT)
         }
     }
 
@@ -653,7 +551,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         (fragmentHelper.getFragment(1) as SportFragment2).setJumpSport(matchType, gameType)
-        navToPosition(1)
+        navToPosition(INDEX_SPORT)
     }
 
     fun jumpToInplaySport() {
@@ -670,15 +568,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (getMarketSwitch()) {
             return
         }
-        if(LoginRepository.isLogined()){
-            startActivity(BetRecordActivity::class.java)
-        }else{
-            startLogin()
-        }
-//        if (bottom_navigation_view.currentItem != 2) {
-//            bottom_navigation_view.currentItem = 2
-//        }
-//        (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
+        loginedRun(this) { startActivity(BetRecordActivity::class.java) }
     }
 
     override fun onDestroy() {
@@ -690,6 +580,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
 
-    open fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
+    fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
 
 }

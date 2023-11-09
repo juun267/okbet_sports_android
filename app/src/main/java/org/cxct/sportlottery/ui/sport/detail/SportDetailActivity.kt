@@ -187,7 +187,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
 
-    override fun initToolBar() = binding.run {
+    private fun initToolBar() = binding.run {
         setStatusbar(R.color.color_FFFFFF,true)
         ivBack.setOnClickListener {
             if (liveViewToolBar.isFullScreen) {
@@ -382,13 +382,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
 
-    override fun initMenu() {
-    }
-
-    override fun clickMenuEvent() {
-    }
-
-    override fun initBottomNavigation() {
+    private fun initBottomNavigation() {
 //
         binding.parlayFloatWindow.setBetText(getString(R.string.bet_slip))
         binding.parlayFloatWindow.onViewClick = {
@@ -512,12 +506,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             .addToBackStack(BetListFragment::class.java.simpleName).commit()
     }
 
-    override fun updateUiWithLogin(isLogin: Boolean) {
-    }
-
-    override fun updateOddsType(oddsType: OddsType) {
-    }
-
     override fun updateBetListCount(num: Int) {
         setUpBetBarVisible()
         binding.parlayFloatWindow.updateCount(num.toString())
@@ -538,10 +526,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             anchorView = binding.snackbarHolder
             show()
         }
-
-    }
-
-    override fun navOneSportPage(thirdGameCategory: HomeMenuBean?) {
 
     }
 

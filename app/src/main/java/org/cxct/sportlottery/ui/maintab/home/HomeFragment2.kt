@@ -1,17 +1,13 @@
 package org.cxct.sportlottery.ui.maintab.home
 
 
-import android.os.Bundle
 import android.content.Intent
-import android.graphics.Typeface
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.doOnLayout
+import androidx.core.view.doOnNextLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -27,8 +23,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
+import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.view.HomeMenuAdapter
@@ -40,22 +36,32 @@ import timber.log.Timber
 
 class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     private fun getMainTabActivity() = activity as MainTabActivity
-    private val fragmentHelper by lazy {
-        FragmentHelper(childFragmentManager, binding.flContent.id, arrayOf(
-            Param(HomeHotFragment::class.java),
-            Param(OKGamesFragment::class.java),
-            Param(NewsHomeFragment::class.java, needRemove = true),
-            Param(OKLiveFragment::class.java),
-        ))
+//    private val fragmentHelper by lazy {
+//        FragmentHelper(childFragmentManager, binding.flContent.id, arrayOf(
+//            Param(HomeHotFragment::class.java),
+//            Param(NewsHomeFragment::class.java, needRemove = true),
+//            Param(OKLiveFragment::class.java, needRemove = true),
+//            Param(GameVenueFragment::class.java, needRemove = true),
+//        ))
+//    }
+    private val fragmentHelper2 by lazy { FragmentHelper2(childFragmentManager, R.id.flContent) }
+    private lateinit var hotFragment: HomeHotFragment
+    private val homeMenuAdapter by lazy {
+        HomeMenuAdapter { view, item->
+            item.third?.let {
+                fragmentHelper2.show(it) { fragment, _ ->
+
+                }
+            }
+        }
     }
-    private val homeMenuAdapter = HomeMenuAdapter()
 
     override fun onInitView(view: View) {
         initToolBar()
         binding.rvMarquee.bindLifecycler(this)
         initMenu()
         initIndicate()
-        switchTabByPosition(0)
+
     }
 
     override fun onBindViewStatus(view: View) {
@@ -64,6 +70,8 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
         viewModel.getConfigData()
         viewModel.getAnnouncement()
     }
+
+
 
     private fun initObservable() {
         ConfigRepository.onNewConfig(this) {
@@ -86,7 +94,7 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
         }
     }
 
-    fun initToolBar() = binding.run {
+    private fun initToolBar() = binding.run {
         homeToolbar.attach(this@HomeFragment2, getMainTabActivity(), viewModel)
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
@@ -136,38 +144,38 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
         }
         xbanner.setBannerData(images.toMutableList())
     }
-    private fun setupAnnouncement(titleList: List<String>)=binding.linAnnouncement.run {
+
+    private fun setupAnnouncement(titleList: List<String>) = binding.linAnnouncement.run {
         if (titleList.isEmpty()) {
             visibility = View.GONE
-        } else {
-            visibility = View.VISIBLE
-            var marqueeAdapter = MarqueeAdapter()
-            setOnClickListener {
-                startActivity(Intent(requireActivity(), NewsActivity::class.java))
-            }
-            val rv_marquee = binding.rvMarquee
-            rv_marquee.apply {
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter = marqueeAdapter
-            }
+            return@run
+        }
 
-            marqueeAdapter.setData(titleList.toMutableList())
-            if (titleList.isNotEmpty()) {
-                rv_marquee.startAuto(false) //啟動跑馬燈
-            } else {
-                rv_marquee.stopAuto(true) //停止跑馬燈
-            }
+        visibility = View.VISIBLE
+        var marqueeAdapter = MarqueeAdapter()
+        setOnClickListener {
+            startActivity(Intent(requireActivity(), NewsActivity::class.java))
+        }
+        val rvMarquee = binding.rvMarquee
+        rvMarquee.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rvMarquee.adapter = marqueeAdapter
+        marqueeAdapter.setData(titleList.toMutableList())
+        if (titleList.isNotEmpty()) {
+            rvMarquee.startAuto(false) //啟動跑馬燈
+        } else {
+            rvMarquee.stopAuto(true) //停止跑馬燈
         }
     }
-    private fun initMenu() = binding.rvMenu.run{
-       layoutManager = LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
+
+    private fun initMenu() = binding.rvMenu.run {
+        layoutManager = LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
         adapter = homeMenuAdapter
-        homeMenuAdapter.setOnItemClickListener{_,_,position->
-            homeMenuAdapter.selectPos = position
+        fragmentHelper2.show(HomeHotFragment::class.java) { frament, _ ->
+            hotFragment = frament
         }
 //       PagerSnapHelper().attachToRecyclerView(this)
     }
+
     private fun initIndicate(){
         binding.hIndicator.run {
             setIndicatorColor(context.getColor(R.color.color_E0E3EE), context.getColor(R.color.color_025BE8))
@@ -178,6 +186,7 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
             setSpacing(height)
             itemClickListener = { binding.rvMenu.smoothScrollToPosition(it) }
         }
+
         binding.rvMenu.doOnLayout {
             binding.rvMenu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 val itemWidth = binding.rvMenu.measuredWidth.toFloat() // 这个很重要，item的宽度要刚好等于recyclerview的宽度，不然PagerSnapHelper翻页会存在滑动偏差导致指示器位置计算的不准
@@ -191,19 +200,18 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
             })
         }
     }
-    private fun switchTabByPosition(position: Int) {
-        if(isAdded) {
-            fragmentHelper.showFragment(position)
+
+
+    fun backMainHome() {
+        fragmentHelper2.show(HomeHotFragment::class.java) { frgment, _ ->
+            hotFragment = frgment
         }
     }
 
-    fun backMainHome() = switchTabByPosition(0)
 
-    fun jumpToOKGames() = switchTabByPosition(1)
+    fun jumpToNews() {}
 
-    fun jumpToNews() = switchTabByPosition(2)
-
-    fun jumpToOKLive() = switchTabByPosition(3)
+    fun jumpToOKLive() { }
 
 
     fun jumpToInplaySport() {
@@ -218,16 +226,16 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
         (activity as MainTabActivity).jumpToEarlySport()
     }
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        fragmentHelper.getFragmentList().find {
-            it != null && it.isAdded && it.isVisible
-        }?.let {
-            it.onHiddenChanged(hidden)
-        }
-    }
+//    override fun onHiddenChanged(hidden: Boolean) {
+//        super.onHiddenChanged(hidden)
+//        fragmentHelper.getFragmentList().find {
+//            it != null && it.isAdded && it.isVisible
+//        }?.let {
+//            it.onHiddenChanged(hidden)
+//        }
+//    }
 
-    open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
+    fun getCurrentFragment() = fragmentHelper2.currentFragment()
 
 
     override fun onResume() {
