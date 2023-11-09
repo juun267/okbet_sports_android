@@ -42,7 +42,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         fun of(parent: ViewGroup, pool: RecyclerView.RecycledViewPool,
                onOddClick: OnOddClickListener,
                lifecycleOwner: LifecycleOwner,
-               onFavoriteClick: (String) -> Unit): SportMatchVH {
+               onFavoriteClick: (String) -> Unit,
+               esportTheme: Boolean = false): SportMatchVH {
 
             val context = parent.context
             val biding = ItemSportOdd2Binding.inflate(LayoutInflater.from(context), parent, false)
@@ -61,7 +62,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                 setSpacing(height)
                 biding.hIndicator.itemClickListener = { rcv.smoothScrollToPosition(it) }
             }
-            val oddPageAdapter = OddButtonPagerAdapter2(context, onOddClick)
+            val oddPageAdapter = OddButtonPagerAdapter2(context, onOddClick,esportTheme)
             oddPageAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
             rcv.doOnLayout {
                 rcv.addOnScrollListener(object : RecyclerView.OnScrollListener() {

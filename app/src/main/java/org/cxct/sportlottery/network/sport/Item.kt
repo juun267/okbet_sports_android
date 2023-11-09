@@ -16,7 +16,9 @@ open class Item(
     @Json(name = "num")
     val num: Int,
     @Json(name = "sortNum")
-    val sortNum: Int
+    val sortNum: Int,
+    @Json(name = "categoryList")
+    var categoryList: MutableList<CategoryItem>?=null
 ) {
     var isSelected: Boolean = false
     var playCateNum: Int? = null

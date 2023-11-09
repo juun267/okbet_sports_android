@@ -26,6 +26,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -33,7 +34,7 @@ import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
-import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
+import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
@@ -43,13 +44,25 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.greenrobot.eventbus.Subscribe
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.util.*
+import kotlin.reflect.KClass
 
+/**
+ * 2023/11/03 anderson
+ * 1.优化sport/menu的请求，将请求代码放在了SportFragment上面
+ * 2.除了首次需要先加载menu接口外，之后都是simple/list接口和menu并发执行，并更新上下各自相关的布局
+ * 3.updateSportType的时候，需要判断是否需要更新列表
+ */
 abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListViewModel, FragmentSportList2Binding>() {
+
+    override fun createVM(clazz: KClass<SportListViewModel>) = getViewModel(clazz = clazz)
 
     protected abstract var matchType: MatchType
     open fun getCurGameType() = GameType.getGameType(gameType) ?: GameType.ALL
-    protected var gameType: String = GameType.BK.key
+    open var gameType: String = GameType.BK.key
+    private var categoryCodeList: List<String>? = null
+    protected var currentItem:Item? = null
 
     protected val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
     private val loadingHolder by lazy { Gloading.wrapView(binding.gameList) }
@@ -67,18 +80,33 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     fun currentMatchType(): MatchType = matchType
     fun currentGameType(): String = gameType
 
-    protected fun scrollBackTop() = binding.appbarLayout.run {
-        ((layoutParams as CoordinatorLayout.LayoutParams).behavior as AppBarLayout.Behavior?)?.setTopAndBottomOffset(0)
+    protected fun scrollBackTop() = binding.run {
+        //解决到顶部无法滑动的问题
+        gameList.scrollToPosition(0)
+        //拿到 appbar 的 behavior,让 appbar 滚动
+        val layoutParams: ViewGroup.LayoutParams = appbarLayout.getLayoutParams()
+        val behavior = (layoutParams as CoordinatorLayout.LayoutParams).behavior
+        if (behavior is AppBarLayout.Behavior) {
+            val appBarLayoutBehavior = behavior
+            //拿到下方tabs的y坐标，即为我要的偏移量
+            val topAndBottomOffset = appBarLayoutBehavior.topAndBottomOffset
+            if (topAndBottomOffset != 0) {
+                appBarLayoutBehavior.topAndBottomOffset = 0
+                appbarLayout.setExpanded(true, true)
+            }
+        }
     }
 
     override fun onInitView(view: View){
         initToolbar()
         initSportTypeList()
         initGameListView()
-
     }
 
     override fun onBindViewStatus(view: View) {
+        scrollBackTop()
+        currentItem = null
+        gameTypeAdapter.setNewInstance(null)
         EventBusUtil.targetLifecycle(this)
         setupOddsChangeListener()
         _initObserver()
@@ -112,20 +140,14 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 return@observe
             }
         }
-
-        viewModel.sportMenuApiResult.observe(viewLifecycleOwner) {
-            (parentFragment as SportFragment2?)?.updateSportMenuResult(it)
-        }
     }
 
-    protected fun updateSportType(gameTypeList: List<Item>) {
-
+    open fun updateSportType(gameTypeList: List<Item>) {
         if (gameTypeList.isEmpty()) {
             setSportDataList(null)
             return
         }
         //处理默认不选中的情况
-
         var targetGameType: Item? = null
         gameTypeList.forEach {
             it.isSelected = false
@@ -133,8 +155,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 targetGameType = it
             }
         }
-
-
         //篮球世界杯界面
         if (gameTypeList.size==1&&gameTypeList.first().code==FIBAUtil.fibaCode){
             binding.sportTypeList.gone()
@@ -150,10 +170,21 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 targetGameType = gameTypeList.first()
             }
         }
-        gameType = targetGameType!!.code
-        targetGameType!!.isSelected = true
-        load(targetGameType!!)
+        if (currentItem==null){
+            gameType = targetGameType!!.code
+            currentItem = targetGameType
+            currentItem!!.isSelected = true
+            load(currentItem!!)
+        }else{
+            val existItem = gameTypeList.firstOrNull { it.code == currentItem!!.code }
+            currentItem = existItem?:targetGameType
+            currentItem?.isSelected = true
+            if (existItem!=targetGameType){
+                load(currentItem!!)
+            }
+        }
         gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
+        scrollBackTop()
         (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             binding.sportTypeList,
             RecyclerView.State(),
@@ -163,7 +194,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     fun resetFooterView(footerView: View) {
 
-        footerView.gone()
         val adapter = getGameListAdapter()
         if (footerView.tag == adapter) {
             return
@@ -191,6 +221,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 requireContext(),
                 gameType,
                 matchType,
+                categoryCodeList = categoryCodeList,
             )
         }
 
@@ -208,12 +239,14 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     private fun initGameListView() = binding.gameList.run {
-
         setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue, scrollTopFunc = {
-            (parentFragment as SportFragment2).onScrollTop(it ==0)
+            if(isVisibleToUser()) {
+             //todo
+            }
         })
         layoutManager = getGameLayoutManger()
         adapter = getGameListAdapter().apply { setEmptyView(EmptySportGamesView(context())) }
+        scrollBackTop()
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -248,13 +281,17 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         }
     }
 
-    protected open fun onGameTypeChanged(item: Item, position: Int) {
+    open fun onGameTypeChanged(item: Item, position: Int) {
         if (item.code == FIBAUtil.fibaCode){
-            (parentFragment as SportFragment2).setJumpSport(MatchType.FIBA)
+            when(parentFragment){
+                is SportFragment2->(parentFragment as SportFragment2).setJumpSport(MatchType.FIBA)
+                is ESportFragment ->(parentFragment as ESportFragment).setJumpSport(MatchType.FIBA)
+            }
             return
         }
         //日期圖示選取狀態下，切換球種要重置UI狀態
         gameType = item.code
+        currentItem = item
         clearData()
         val layoutManager = binding.sportTypeList.layoutManager as ScrollCenterLayoutManager
         layoutManager.smoothScrollToPosition(binding.sportTypeList, RecyclerView.State(), position)
@@ -262,11 +299,24 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         load(item)
     }
 
-    protected open fun load(item: Item, selectLeagueIdList: ArrayList<String> = arrayListOf(),selectMatchIdList: ArrayList<String> = arrayListOf()) {
+    protected open fun load(
+        item: Item,
+        selectLeagueIdList:
+        ArrayList<String> = arrayListOf(),
+        selectMatchIdList: ArrayList<String> = arrayListOf(),
+        categoryCodeList: List<String>? = null,
+    ) {
         resetArrow()
         showLoading()
-        setMatchInfo(item.name, "")
-        viewModel.switchGameType(matchType, item, selectLeagueIdList,selectMatchIdList)
+        if(categoryCodeList==null){
+            setMatchInfo(item.name, "")
+        }else{
+            //电竞主页的情况，名称要换成游戏名字
+            val name = item.categoryList?.firstOrNull { it.categoryCodeList == categoryCodeList }?.name?:item.name
+            setMatchInfo(name, "")
+        }
+        this.categoryCodeList =categoryCodeList
+        viewModel.switchGameType(matchType, item, selectLeagueIdList,selectMatchIdList,categoryCodeList)
     }
 
     protected fun setMatchInfo(name: String, num: String) {
@@ -285,10 +335,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected fun setSportDataList(list: MutableList<BaseNode>?, sizeNumber: String? = null) {
         val adapter = getGameListAdapter()
-        // 这个方法是最终显示数据的，已经处于数据结果状态。在这显示loading的时机不对，暂且先就这么处理，后面在优化
-        if(list.isNullOrEmpty() && this !is FavoriteFragment2) {
-            showLoading()
-        }
         adapter.setNewInstance(list)
         if (sizeNumber == null) setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "") else setMatchNum(sizeNumber)
         if (!list.isNullOrEmpty()) {
@@ -296,7 +342,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             binding.linOpt.visible()
         }
         val footerLayout = adapter.footerLayout?.getChildAt(0) as SportFooterGamesView? ?: return
-        footerLayout.visible()
+//        footerLayout.visible()
         footerLayout.sportNoMoreEnable(!list.isNullOrEmpty())
     }
 
@@ -357,9 +403,9 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         matchInfo: MatchInfo,
         odd: Odd,
         playCateCode: String,
-        betPlayCateName:String? = null,
+        betPlayCateName: String? = null,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-        outRightMatchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd? = null  // 冠军时必传
+        outRightMatchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd? = null,  // 冠军时必传
     ) {
        val playCateName=when(matchType){
            MatchType.END_SCORE-> getString(R.string.home_tab_end_score)
@@ -378,6 +424,15 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             subscribeChannelType = ChannelType.HALL,
             betPlayCateNameMap = betPlayCateNameMap)
         )
+    }
+    /**
+     * 通过父fragment来加载sport/menu 接口数据
+     */
+    protected fun getMenuDataByParent(){
+        val sportParentFrament = (parentFragment as BaseFragment<SportTabViewModel>)
+        if (sportParentFrament != null) {
+            sportParentFrament.viewModel.sportMenuResult.value?.let { viewModel.loadSportMenu(it, matchType) }
+        }
     }
 
 

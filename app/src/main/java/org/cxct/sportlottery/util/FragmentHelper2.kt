@@ -33,13 +33,21 @@ class FragmentHelper2(
             block?.invoke(fragmentInstance!!, false)
         }
 
-        current = fragmentInstance!!
         val transaction = fragmentManager.beginTransaction()
-        transaction.replace(viewId, fragmentInstance!!).commitAllowingStateLoss()
-
+        current?.let { transaction.remove(it) }
+        current = fragmentInstance!!
+        transaction.add(viewId, fragmentInstance!!).commitAllowingStateLoss()
         return current as T
     }
 
     fun currentFragment() = current
+
+    fun destory() {
+        if (current != null) {
+            val transaction = fragmentManager.beginTransaction()
+            transaction.remove(current!!).commitAllowingStateLoss()
+            current = null
+        }
+    }
 
 }

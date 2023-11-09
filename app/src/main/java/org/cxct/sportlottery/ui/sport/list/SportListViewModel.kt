@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.sport.SportRepository
@@ -19,8 +20,10 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
+import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
@@ -63,12 +66,14 @@ open class SportListViewModel(
 
             if (result?.success != true) {
                 sportTypeMenuData.value = Triple(listOf(), false, "${result?.msg}")
+                esportTypeMenuData.value = Triple(null, false, "${result?.msg}")
                 return@doRequest
             }
 
             val favoriteList = result.rows
             if (favoriteList.isNullOrEmpty()) {
                 sportTypeMenuData.value = Triple(listOf(), true, "")
+                esportTypeMenuData.value = Triple(null, true, "")
                 return@doRequest
             }
 
@@ -78,7 +83,8 @@ open class SportListViewModel(
                 val item = Item(it.gameType,
                     GameType.getGameTypeString(androidContext, it.gameType),
                     it.leagueOddsList.size,
-                    0)
+                    0
+                )
                 item.leagueOddsList = it.leagueOddsList
                 gameItems.add(item)
 
@@ -115,8 +121,11 @@ open class SportListViewModel(
                     }
                 }
             }
-
             sportTypeMenuData.value = Triple(gameItems, true, "")
+            gameItems.firstOrNull { it.code == GameType.ES.key }.let {
+                it?.let { it1 -> rebuildForESport(it1,true) }
+                esportTypeMenuData.value = Triple(it, true, "")
+            }
         }
     }
 
@@ -134,6 +143,7 @@ open class SportListViewModel(
                     matchInfo.startDateDisplay = TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
                     matchOdd.matchInfo.startTimeDisplay = TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
                     matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+                    matchInfo.categoryCode = leagueOdd.league.categoryCode
 
                     matchOdd.oddsMap?.forEach { map ->
                         map.value?.updateOddSelectState()
@@ -166,9 +176,9 @@ open class SportListViewModel(
         matchType: MatchType,
         gameType: String,
         selectLeagueIdList: ArrayList<String> = arrayListOf(),
-        selectMatchIdList: ArrayList<String> = arrayListOf()
+        selectMatchIdList: ArrayList<String> = arrayListOf(),
+        categoryCodeList: List<String>?=null
     ) {
-
         when (matchType) {
             MatchType.IN_PLAY -> {
                 getOddsList(
@@ -176,6 +186,7 @@ open class SportListViewModel(
                     matchType.postValue,
                     leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
+                    categoryCodeList = categoryCodeList
                 )
             }
             MatchType.AT_START -> {
@@ -185,6 +196,7 @@ open class SportListViewModel(
                     TimeUtil.getAtStartTimeRangeParams(),
                     leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
+                    categoryCodeList = categoryCodeList
                 )
             }
             MatchType.IN12HR -> {
@@ -194,6 +206,7 @@ open class SportListViewModel(
                     TimeUtil.getInHrRangeParams(12),
                     leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
+                    categoryCodeList = categoryCodeList
                 )
             }
             MatchType.IN24HR -> {
@@ -203,6 +216,7 @@ open class SportListViewModel(
                     TimeUtil.getInHrRangeParams(24),
                     leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
+                    categoryCodeList = categoryCodeList
                 )
             }
             MatchType.TODAY -> {
@@ -211,6 +225,7 @@ open class SportListViewModel(
                     matchType.postValue,
                     leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
+                    categoryCodeList = categoryCodeList
                 )
             }
             MatchType.EARLY -> {
@@ -219,6 +234,7 @@ open class SportListViewModel(
                     matchType.postValue,
                     leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
+                    categoryCodeList = categoryCodeList
                 )
             }
             MatchType.CS -> {
@@ -235,6 +251,7 @@ open class SportListViewModel(
                     matchType.postValue,
                     leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
+                    categoryCodeList = categoryCodeList
                 )
 
             }
@@ -246,13 +263,13 @@ open class SportListViewModel(
                     leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
                 )
-
             }
             MatchType.OUTRIGHT -> {
                 getOutrightOddsList(
                     gameType,
                     leagueIdList = selectLeagueIdList,
-                    selectMatchIdList = selectMatchIdList
+                    selectMatchIdList = selectMatchIdList,
+                    categoryCodeList = categoryCodeList
                 )
             }
             MatchType.MY_EVENT -> {
@@ -269,16 +286,19 @@ open class SportListViewModel(
         }
     }
 
-    fun switchGameType(matchType: MatchType, item: Item, selectLeagueIdList: ArrayList<String>,selectMatchIdList: ArrayList<String>) {
+    fun switchGameType(matchType: MatchType,
+                       item: Item,
+                       selectLeagueIdList: ArrayList<String>,
+                       selectMatchIdList: ArrayList<String>,
+                       categoryCodeList: List<String>?=null) {
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
-
         jobSwitchGameType = viewModelScope.launch {
             if (matchType == MatchType.FIBA) {
                 getOddsList(GameType.BK.key, item.code, null, selectLeagueIdList, selectMatchIdList)
             } else {
-                getGameHallList(matchType, item.code, selectLeagueIdList, selectMatchIdList)
+                getGameHallList(matchType, item.code, selectLeagueIdList, selectMatchIdList,categoryCodeList)
             }
         }
     }
@@ -292,6 +312,7 @@ open class SportListViewModel(
         timeRangeParams: TimeRangeParams? = null,
         leagueIdList: List<String>? = null,
         matchIdList: List<String>? = null,
+        categoryCodeList: List<String>? = null,//电竞会用到的具体游戏的分类
     ) {
         val requestTag = Any()
         oddsListRequestTag = requestTag
@@ -366,7 +387,8 @@ open class SportListViewModel(
                             leagueIdList = emptyFilter(leagueIdList),
                             startTime = startTime,
                             endTime = endTime,
-                            playCateMenuCode = playCateMenuCode
+                            playCateMenuCode = playCateMenuCode,
+                            categoryCodeList = categoryCodeList
                         )
                     )
                 }
@@ -383,7 +405,7 @@ open class SportListViewModel(
     }
 
     private lateinit var outrightOddsListRequestTag: Any
-    private fun getOutrightOddsList(gameType: String, leagueIdList: List<String>? = null, selectMatchIdList: ArrayList<String>? = null) {
+    private fun getOutrightOddsList(gameType: String, leagueIdList: List<String>? = null, selectMatchIdList: ArrayList<String>? = null,categoryCodeList: List<String>?=null) {
         val requestTag = Any()
         outrightOddsListRequestTag = requestTag
         viewModelScope.launch(Dispatchers.IO) {
@@ -394,14 +416,16 @@ open class SportListViewModel(
                         OutrightOddsListRequest(
                             gameType,
                             matchType = MatchType.OUTRIGHT.postValue,
-                            matchIdList = selectMatchIdList
+                            matchIdList = selectMatchIdList ,
+                            categoryCodeList = categoryCodeList
                         )
                     } else {
                         OutrightOddsListRequest(
                             gameType,
                             matchType = MatchType.OUTRIGHT.postValue,
                             leagueIdList = leagueIdList,
-                            matchIdList = selectMatchIdList
+                            matchIdList = selectMatchIdList,
+                            categoryCodeList = categoryCodeList
                         )
                     }
                 )
@@ -521,19 +545,14 @@ open class SportListViewModel(
 
     val sportTypeMenuData by lazy { SingleLiveEvent<Triple<List<Item>, Boolean, String>>() }
     val sportMenuApiResult = SingleLiveEvent<ApiResult<SportMenuData>>()
+    val esportTypeMenuData by lazy { SingleLiveEvent<Triple<Item?, Boolean, String>>() }
 
-    fun loadMatchType(matchType: MatchType) = callApi({
-        SportRepository.getSportMenu(
-            TimeUtil.getNowTimeStamp().toString(),
-            TimeUtil.getTodayStartTimeStamp().toString())
-    }) { sportMenuResult->
+    fun loadSportMenu(sportMenuResult: ApiResult<SportMenuData>, matchType: MatchType) {
         val menuData = sportMenuResult.getData()
-
         if(!sportMenuResult.succeeded() || menuData == null) {
             sportTypeMenuData.value = Triple(listOf(), sportMenuResult.succeeded(), sportMenuResult.msg)
-            return@callApi
+            return
         }
-
         var itemList = when (matchType) {
             MatchType.IN_PLAY ->  menuData.menu.inPlay.items
             MatchType.TODAY -> menuData.menu.today.items
@@ -568,5 +587,100 @@ open class SportListViewModel(
 
         sportTypeMenuData.value = Triple(itemList, sportMenuResult.succeeded(), sportMenuResult.msg)
         sportMenuApiResult.value = sportMenuResult
+
+        itemList.firstOrNull { it.code == GameType.ES.key }.let {
+            it?.let { it1 -> rebuildForESport(it1) }
+            esportTypeMenuData.value = Triple(it, sportMenuResult.succeeded(), sportMenuResult.msg)
+        }
+    }
+
+    /**
+     * 电竞others需要前端自己拼装数据
+     */
+    private fun rebuildForESport(item: Item, isFavorite: Boolean =false){
+        var otherCodeArr = mutableListOf<String>()
+        var otherNum = 0
+        val newCategoryList = mutableListOf<CategoryItem>()
+        val allCategoryItem = CategoryItem(
+            id = ESportType.ALL.key,
+            code = ESportType.ALL.key,
+            name = androidContext.getString(R.string.label_all),
+            icon = "",
+            num = item.num,
+            sort = 0,
+        ).apply {
+            categoryCodeList = mutableListOf()
+        }
+        newCategoryList.add(allCategoryItem)
+        if (isFavorite){
+            item.leagueOddsList?.groupBy { it.league.categoryCode }?.forEach {
+                when(it.key){
+                    ESportType.DOTA.key,
+                    ESportType.LOL.key,
+                    ESportType.CS.key,
+                    ESportType.KOG.key,
+                    ESportType.LOLWR.key,
+                    ESportType.VLR.key,
+                    ESportType.ML.key,
+                    ESportType.COD.key,
+                    ESportType.PUBG.key,
+                    ESportType.APL.key,
+                    ->{
+                        val categoryItem = CategoryItem(
+                            id = it.key,
+                            code = it.key,
+                            name = it.value.first().league.category,
+                            icon = "",
+                            num = it.value.sumOf { it.matchOdds.size },
+                            sort = 0,
+                        ).apply {
+                            categoryCodeList = mutableListOf(it.key)
+                        }
+                        newCategoryList.add(categoryItem)
+                    }
+                    else-> {
+                        otherCodeArr.add(it.key)
+                        otherNum += it.value.sumOf { it.matchOdds.size }
+                    }
+                }
+            }
+        }else{
+         item.categoryList?.forEach{
+            when(it.code){
+                ESportType.DOTA.key,
+                ESportType.LOL.key,
+                ESportType.CS.key,
+                ESportType.KOG.key,
+                ESportType.LOLWR.key,
+                ESportType.VLR.key,
+                ESportType.ML.key,
+                ESportType.COD.key,
+                ESportType.PUBG.key,
+                ESportType.APL.key,
+                ->{
+                    it.categoryCodeList = mutableListOf(it.code)
+                    newCategoryList.add(it)
+                }
+                else-> {
+                    otherCodeArr.add(it.code)
+                    otherNum += it.num
+                }
+            }
+        }
+        }
+        if (otherNum>0){
+            val othersCategoryItem = CategoryItem(
+                id = ESportType.OTHERS.key,
+                code = ESportType.OTHERS.key,
+                name = androidContext.getString(R.string.other),
+                icon = "",
+                num = otherNum,
+                sort = 999,
+            ).apply {
+                categoryCodeList = otherCodeArr.toList()
+            }
+            newCategoryList.add(othersCategoryItem)
+        }
+        item.categoryList = newCategoryList
     }
 }

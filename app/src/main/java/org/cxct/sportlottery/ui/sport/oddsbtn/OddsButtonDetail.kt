@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -24,14 +25,11 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.adapter.TypeOneListAdapter
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
-import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
-import org.cxct.sportlottery.util.QuickListManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
 
 
 /**
@@ -155,6 +153,10 @@ class OddsButtonDetail @JvmOverloads constructor(
             tv_odds.text = tv_name.text.toString().split(" ")?.last()
             lin_name.isVisible = false
         }
+        (fl_odd_detail.layoutParams as LinearLayout.LayoutParams).apply {
+            width = if(lin_name.isVisible) -2 else -1
+            fl_odd_detail.layoutParams = this
+        }
     }
 
     //常駐顯示按鈕 依狀態隱藏鎖頭
@@ -194,7 +196,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                 )
                 iv_arrow.apply {
                     setImageResource(R.drawable.icon_odds_up)
-                    (layoutParams as LinearLayout.LayoutParams).gravity = Gravity.TOP
+                    (layoutParams as FrameLayout.LayoutParams).gravity = Gravity.TOP or Gravity.RIGHT
                     visibility = View.VISIBLE
 
                 }
@@ -210,7 +212,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                 )
                 iv_arrow.apply {
                     setImageResource(R.drawable.icon_odds_down)
-                    (layoutParams as LinearLayout.LayoutParams).gravity = Gravity.BOTTOM
+                    (layoutParams as FrameLayout.LayoutParams).gravity = Gravity.BOTTOM or Gravity.RIGHT
                     visibility = View.VISIBLE
                 }
                 status = true
@@ -231,7 +233,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                 isActivated = false
             }
         }
-        val animator = ll_odd_detail.tag
+        val animator = fl_odd_detail.tag
         if (animator is Animator) {
             animator.cancel()
             if (status) {
@@ -241,7 +243,7 @@ class OddsButtonDetail @JvmOverloads constructor(
         }
 
         if (status) {
-            ll_odd_detail.tag = ll_odd_detail.flashAnimation(1000,2,0.3f)
+            fl_odd_detail.tag = fl_odd_detail.flashAnimation(1000,2,0.3f)
         }
 //        updateOddsTextColor()
     }

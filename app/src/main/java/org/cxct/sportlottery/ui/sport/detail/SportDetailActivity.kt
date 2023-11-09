@@ -550,6 +550,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         matchInfo?.let {
             tv_game_title.text = it.leagueName
             startTime = (it.leagueTime?:0).toLong()
+            if (it.gameType == GameType.ES.key){
+                setESportTheme()
+            }
             updateMenu(it)
         }
         tabCode?.let {
@@ -673,8 +676,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 sportCode = GameType.getGameType(matchInfo?.gameType)
             }
         rv_detail.apply {
-            if (itemDecorationCount==0)
-            addItemDecoration(SpaceItemDecoration(context,R.dimen.margin_4))
+            if (itemDecorationCount==0) {
+                addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_4))
+            }
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             setLinearLayoutManager()
@@ -1164,6 +1168,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         listOf(binding.ivLiveStream,binding.ivVideo,binding.ivAnim).forEachIndexed { index, imageView ->
             imageView.isSelected = position==index
         }
+    }
+
+    /**
+     * 设置电竞主题样式
+     */
+    private fun setESportTheme()=binding.run{
+        clToolContent.setBackgroundResource(R.color.color_EEF3FC)
+        viewToolCenter.setBackgroundResource(R.color.color_D4E1F1)
+        linCategroy.setBackgroundResource(R.drawable.bg_gradient_detail_tab)
     }
 
 }

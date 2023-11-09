@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.Menu
 import org.cxct.sportlottery.network.sport.SportMenuData
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -39,9 +40,13 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.reflect.KClass
 
 class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
+
+    override fun createVM(clazz: KClass<SportTabViewModel>) = getViewModel(clazz = clazz)
 
     private val matchTypeTab = mutableListOf(
         MatchType.END_SCORE,
@@ -56,6 +61,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             add(1,MatchType.FIBA)
         }
     }
+    private val todayMatchPosition = 2
     private val matchTypeTodayTab = mutableListOf(
         MatchType.TODAY,
         MatchType.AT_START,
@@ -69,8 +75,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private val mianViewModel: OKGamesViewModel by viewModel()
     private var todayTabItem:TabLayout.Tab?=null
     private val todayMenuPop by lazy { TodayMenuPop(requireActivity(), onItemClickListener = { position ->
-           matchTypeTab[2] = matchTypeTodayTab[position]
-           binding.tabLayout.getTabAt(2)?.select()
+           matchTypeTab[todayMatchPosition] = matchTypeTodayTab[position]
+           binding.tabLayout.getTabAt(todayMatchPosition)?.select()
       })
     }
 
@@ -100,7 +106,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     override fun onBindViewStatus(view: View) {
         footView.setUp(this, mianViewModel)
-        viewModel.getMatchData()
+        getMenuData(true)
         jumpMatchType?.let { navGameFragment(it) }
         favoriteDelayRunable.doOnDelay(0)
 
@@ -154,9 +160,10 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private var sportMenu: Menu? = null
+    private var sportMenuData: SportMenuData? = null
     private fun refreshTabLayout(sportMenuResult: ApiResult<SportMenuData>) {
 
-        val sportMenuData = sportMenuResult.getData()
+        sportMenuData = sportMenuResult.getData()
         sportMenuData?.menu?.let { sportMenu = it }
         val countInPlay = sportMenuData?.menu?.inPlay?.items?.sumOf { it.num } ?: 0
         val countAtStart = sportMenuData?.atStart?.items?.sumOf { it.num } ?: 0
@@ -181,7 +188,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
         addTab(getString(R.string.home_tab_in_play), countInPlay, ++position)
 //        addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
-        when (matchTypeTab[2]){
+        when (matchTypeTab[todayMatchPosition]){
             MatchType.TODAY-> addTab(getString(R.string.home_tab_today), countToday, ++position,true)
             MatchType.AT_START-> addTab(getString(R.string.home_tab_at_start), countAtStart, ++position,true)
             MatchType.IN12HR-> addTab(getString(R.string.P228), countAtStart, ++position,true)
@@ -247,6 +254,10 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     private fun selectTab(position: Int) {
         var matchType =  matchTypeTab.getOrNull(position) ?: return
+        //排除之前未选中matchType的情况
+        if (currentMatchType!=null){
+            getMenuData(true)
+        }
         currentMatchType = matchType
         navGameFragment(matchType)
     }
@@ -265,7 +276,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         val args = Bundle()
         args.putSerializable("matchType", matchType)
         args.putString("gameType", gameType)
-        onScrollTop(true)
         when (matchType) {
             MatchType.OUTRIGHT -> {
                 fragmentHelper.show(SportOutrightFragment::class.java, args) { fragment, newInstance ->
@@ -308,22 +318,28 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             navGameSport = gameType
             return
         }
-
-        val menuData = sportMenu!!
-        val matchType = findMatchType(menuData, gameType)
+        val matchType = findMatchType(sportMenuData, gameType)
         setJumpSport(matchType, gameType = gameType)
     }
 
-    private fun findMatchType(menu: Menu, gameType: GameType): MatchType {
-        val matchType = findESport(menu.inPlay.items, MatchType.IN_PLAY, gameType)
-            ?: findESport(menu.today.items, MatchType.TODAY, gameType)
-            ?: findESport(menu.early.items, MatchType.EARLY, gameType)
-
+    private fun findMatchType(sportMenuData: SportMenuData?, gameType: GameType): MatchType {
+        var matchType: MatchType? = null
+        if (sportMenuData!=null){
+            val menu = sportMenuData?.menu
+            matchType = findESport(menu.inPlay.items, MatchType.IN_PLAY, gameType)
+                ?: findESport(menu.today.items, MatchType.TODAY, gameType)
+                ?: findESport(sportMenuData.atStart.items, MatchType.AT_START, gameType)
+                ?: findESport(sportMenuData.in12hr.items, MatchType.IN12HR, gameType)
+                ?: findESport(sportMenuData.in24hr.items, MatchType.IN24HR, gameType)
+                ?: findESport(menu.early.items, MatchType.EARLY, gameType)
+            if (matchType!=null){
+                return matchType
+            }
+        }
         if (matchType == null) {
             if (gameType == GameType.ES) { // 仅电竞的时候提示
                 showPromptDialog(getString(R.string.prompt), getString(R.string.P172)) { }
             }
-//            ToastUtil.showToast(context(), R.string.P172)
             return MatchType.EARLY
         }
         return matchType
@@ -345,7 +361,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         if (isAdded) {
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
             jumpMatchType = jumpMatchType ?: defaultMatchType
-            binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
+            matchType?.let { tabLayoutSelect(it) }
         }
     }
 
@@ -397,28 +413,26 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
         val isFirstSwitch = defaultMatchType == null
         refreshTabLayout(sportMenuResult)
-        EventBusUtil.post(sportMenuResult)
         if (!isFirstSwitch) {
             navGameSport = null
             return
         }
-        val menuData = sportMenuResult.getData()!!.menu
         val matchType = if (navGameSport != null) {
-            findMatchType(menuData, navGameSport!!)
+            findMatchType(sportMenuResult.getData(), navGameSport!!)
         } else {
             jumpMatchType ?: defaultMatchType
         }
         if (matchType != null) {
             // 加post, 避免选中的tab不 能滚动到中间
             post{
-                binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
+                tabLayoutSelect(matchType)
                 navGameSport = null
             }
         }
     }
-
-    fun updateSportMenuResult(sportMenuResult: ApiResult<SportMenuData>) {
-        viewModel.setSportMenuResult(sportMenuResult)
+    //是否拿最新的sportMenu数据
+    private fun getMenuData(newData: Boolean) {
+        viewModel.getSportMenuData()
     }
 
     private fun showSportDialog(){
@@ -431,10 +445,33 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             }
         }
     }
-    fun onScrollTop(isTop: Boolean){
-        binding.tabShadow.layoutParams.apply {
-            height = if(isTop) 0 else 1.dp
-            binding.tabShadow.layoutParams = this
+    private fun tabLayoutSelect(matchType: MatchType){
+       val todayIndex= matchTypeTodayTab.indexOf(matchType)
+        if (todayIndex>=0){
+            matchTypeTab[todayMatchPosition] = matchTypeTodayTab[todayIndex]
+            todayTabItem?.customView?.apply {
+                when (matchType){
+                    MatchType.TODAY-> {
+                        tv_title.text = getString(R.string.home_tab_today)
+                        tv_number.text = sportMenu?.today?.num.toString()
+                    }
+                    MatchType.AT_START-> {
+                        tv_title.text = getString(R.string.home_tab_at_start)
+                        tv_number.text = sportMenuData?.atStart?.num.toString()
+                    }
+                    MatchType.IN12HR-> {
+                        tv_title.text = getString(R.string.P228)
+                        tv_number.text = sportMenuData?.in12hr?.num.toString()
+                    }
+                    MatchType.IN24HR-> {
+                        tv_title.text = getString(R.string.P229)
+                        tv_number.text = sportMenuData?.in24hr?.num.toString()
+                    }
+                }
+            }
+            binding.tabLayout.getTabAt(todayMatchPosition)?.select()
+        }else{
+            binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
         }
     }
 }

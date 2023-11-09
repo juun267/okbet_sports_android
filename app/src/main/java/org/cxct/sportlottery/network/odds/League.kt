@@ -14,6 +14,8 @@ data class League(
     val name: String,
     @Json(name = "category")
     val category: String,
+    @Json(name = "categoryCode")
+    val categoryCode: String,
     @Json(name = "categoryIcon")
     val categoryIcon: String,
 ){

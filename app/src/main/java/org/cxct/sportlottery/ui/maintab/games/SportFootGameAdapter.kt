@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -31,7 +32,8 @@ import org.cxct.sportlottery.view.setTextColorGradient
 class SportFootGameAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
                            val moreClick: (() -> Unit)? = null,
                            val gameEntryType: String = GameEntryType.OKGAMES,
-                           val showFavorite: Boolean = true) : BindingAdapter<OKGameBean, ItemSportFootGameBinding>() {
+                           val showFavorite: Boolean = true,
+                           val esportTheme: Boolean = false) : BindingAdapter<OKGameBean, ItemSportFootGameBinding>() {
 
     private val GAME_MAINTAIN = Any()
 
@@ -78,6 +80,9 @@ class SportFootGameAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
     }
 
     override fun onBinding(position: Int, binding: ItemSportFootGameBinding, item: OKGameBean) {
+        if (esportTheme){
+            binding.root.setCardBackgroundColor(ContextCompat.getColor(context,R.color.transparent_white_90))
+        }
         binding.apply {
             // //关闭jackpot ==0
             if(item.jackpotOpen==0){

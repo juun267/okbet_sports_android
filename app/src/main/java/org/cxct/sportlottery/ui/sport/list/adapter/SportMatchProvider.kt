@@ -12,6 +12,7 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 
 const val ODDS_ITEM_TYPE = 99
 class SportMatchProvider(private val adapter: SportLeagueAdapter2,
+                         val esportTheme: Boolean = false,
                          private val onOddClick: OnOddClickListener,
                          private val onFavoriteClick: (String) -> Unit,
                          override val itemViewType: Int = 2,
@@ -26,7 +27,9 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        return SportMatchVH.of(parent, oddBtnCachePool, onOddClick, adapter.lifecycleOwner, onFavoriteClick)
+        return SportMatchVH.of(parent, oddBtnCachePool, onOddClick, adapter.lifecycleOwner, onFavoriteClick,esportTheme).apply {
+            itemView.setBackgroundResource(if(esportTheme) R.color.transparent_white_50 else R.color.color_FFFFFF)
+        }
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) {
