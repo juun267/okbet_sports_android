@@ -24,6 +24,7 @@ object Constants {
     val SERVER_URL_LIST = listOf("56wwwkvo.com", "66abnmho.com", "pukckq23.com", "tyiksa89.com")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     var currentFilename: String? = null //當前選擇的apk name
+    var isVersonControl: Boolean = false //是否审核中版本，通过ftp配置来判断
     private var mBaseUrl = ""
         set(value) {
             field = value
