@@ -49,6 +49,7 @@ const val LOGIN_SRC: Long = 2 //登录来源，WEB(0), MOBILE_BROWSER(1), ANDROI
 
 const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
+const val APP_NAME = "okbet" //okgame的包需要加一些特定的参数
 
 var sConfigData: ConfigData? = null
     set(value) {
@@ -73,6 +74,11 @@ val showCurrencySign: String?
 
 private fun getLoginCurrency(): String? =
     MultiLanguagesApplication.mInstance.userInfo.value?.currencySign
+
+// 通过应用商店升级应用
+inline fun upgradeFromMarket(): Boolean {
+    return BuildConfig.FLAVOR.startsWith("google_", true)
+}
 
 /**
  * 紀錄是否第一次開啟app取得configData
