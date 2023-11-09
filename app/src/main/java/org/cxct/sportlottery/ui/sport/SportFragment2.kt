@@ -276,7 +276,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         val args = Bundle()
         args.putSerializable("matchType", matchType)
         args.putString("gameType", gameType)
-        onScrollTop(true)
         when (matchType) {
             MatchType.OUTRIGHT -> {
                 fragmentHelper.show(SportOutrightFragment::class.java, args) { fragment, newInstance ->
@@ -444,12 +443,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                     putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_SPORT.code)
                 }).show(childFragmentManager, PopImageDialog::class.simpleName)
             }
-        }
-    }
-    fun onScrollTop(isTop: Boolean){
-        binding.tabShadow.layoutParams.apply {
-            height = if(isTop) 0 else 1.dp
-            binding.tabShadow.layoutParams = this
         }
     }
     private fun tabLayoutSelect(matchType: MatchType){

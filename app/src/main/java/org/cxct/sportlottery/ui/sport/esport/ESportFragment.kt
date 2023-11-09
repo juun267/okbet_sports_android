@@ -275,7 +275,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         val args = Bundle()
         args.putSerializable("matchType", matchType)
         args.putString("gameType", gameType)
-        onScrollTop(true)
         when (matchType) {
             MatchType.OUTRIGHT -> {
                 fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, newInstance ->
@@ -424,13 +423,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private fun getMenuData(newData:Boolean) {
         if (newData){
             viewModel.getSportMenuData()
-        }
-    }
-
-    fun onScrollTop(isTop: Boolean){
-        binding.tabShadow.layoutParams.apply {
-            height = if(isTop) 0 else 1.dp
-            binding.tabShadow.layoutParams = this
         }
     }
 

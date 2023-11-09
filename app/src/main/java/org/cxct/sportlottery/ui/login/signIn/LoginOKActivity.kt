@@ -302,6 +302,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     if (event.login){
                         viewModel.dealWithLoginData(loginResult!!,it)
                     }else{
+                        var inviteCode = binding.eetRecommendCode.text.toString()
                         //新的注册接口
                         val deviceSn = JPushInterface.getRegistrationID(this@LoginOKActivity)
                         val deviceId = Settings.Secure.getString(
@@ -315,6 +316,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                             deviceSn = deviceSn,
                             appVersion = appVersion,
                             loginEnvInfo = deviceId,
+                            inviteCode = inviteCode,
                         )
                         viewModel.regPlatformUser(it.token?:"",loginRequest)
                     }
