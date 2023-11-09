@@ -73,15 +73,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dividePayment" />
 
-    <ImageView
-        android:id="@+id/ivaWardsH"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/dividePayment"
-        app:layout_constraintEnd_toEndOf="@+id/layoutPayment"
-        android:src="@drawable/img_halloween_awards"
-        android:visibility="gone"/>
-
     <LinearLayout
         android:id="@+id/linAward"
         android:layout_width="match_parent"
@@ -326,7 +317,7 @@
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:layout_marginStart="22dp"
-                    android:src="@drawable/img_bmm_h" />
+                    android:src="@drawable/ic_bmm_testlabs" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

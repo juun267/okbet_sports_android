@@ -133,14 +133,15 @@
                         android:id="@+id/iv_pagcor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/img_pagcor_h" />
+                        android:src="@drawable/ic_pagcor" />
 
                     <ImageView
                         android:id="@+id/iv_pagcor_21"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
-                        android:src="@drawable/img_keep21_h" />
+                        android:visibility="gone"
+                        android:src="@drawable/ic_pagcor_21" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

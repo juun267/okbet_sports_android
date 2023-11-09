@@ -13,7 +13,6 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsHotButtonHome
 import org.cxct.sportlottery.util.*
 
@@ -36,9 +35,7 @@ class ItemHotMatchHolder(
         update(oddsType)
         setupMatchScore(data)
         val matchId = data.id
-        if (lifecycleOwner is MainHomeFragment) {
-            binding.ivTitle.setImageResource(R.drawable.bg_hot_game_title_h)
-        }
+
     }
 
     fun update(oddsType: OddsType) {
