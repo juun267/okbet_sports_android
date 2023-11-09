@@ -199,7 +199,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             return
         }
 
-        footerView.gone()
         (footerView.parent as ViewGroup?)?.let { it.removeView(footerView) }
         footerView.tag = adapter
         adapter.addFooterView(footerView)
@@ -345,7 +344,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             binding.linOpt.visible()
         }
         val footerLayout = adapter.footerLayout?.getChildAt(0) as SportFooterGamesView? ?: return
-        footerLayout.visible()
+//        footerLayout.visible()
         footerLayout.sportNoMoreEnable(!list.isNullOrEmpty())
     }
 
