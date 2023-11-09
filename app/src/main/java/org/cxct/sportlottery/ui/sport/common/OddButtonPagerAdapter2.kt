@@ -18,7 +18,8 @@ import org.cxct.sportlottery.util.LanguageManager
 
 
 class OddButtonPagerAdapter2(val context: Context,
-                             private val onOddClick: OnOddClickListener)
+                             private val onOddClick: OnOddClickListener,
+                             val esportTheme: Boolean = false)
     :RecyclerView.Adapter<OddButtonPagerViewHolder2>() {
 
     private var oddsSort: String?= null
@@ -39,7 +40,7 @@ class OddButtonPagerAdapter2(val context: Context,
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OddButtonPagerViewHolder2 {
-        return OddButtonPagerViewHolder2(PlayCateView(parent.context))
+        return OddButtonPagerViewHolder2(PlayCateView(parent.context,esportTheme = esportTheme))
     }
 
     override fun onViewRecycled(holder: OddButtonPagerViewHolder2) {

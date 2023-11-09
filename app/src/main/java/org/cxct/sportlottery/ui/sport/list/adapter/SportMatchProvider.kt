@@ -27,7 +27,7 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        return SportMatchVH.of(parent, oddBtnCachePool, onOddClick, adapter.lifecycleOwner, onFavoriteClick).apply {
+        return SportMatchVH.of(parent, oddBtnCachePool, onOddClick, adapter.lifecycleOwner, onFavoriteClick,esportTheme).apply {
             itemView.setBackgroundResource(if(esportTheme) R.color.transparent_white_50 else R.color.color_FFFFFF)
         }
     }

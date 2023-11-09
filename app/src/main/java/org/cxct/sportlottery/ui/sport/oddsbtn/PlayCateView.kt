@@ -19,6 +19,7 @@ class PlayCateView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
+    val esportTheme: Boolean = false
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     open val nameLayout: LinearLayout
@@ -91,7 +92,7 @@ class PlayCateView @JvmOverloads constructor(
     }
 
     private fun createOddBtn(): OddsButton2 {
-        return OddsButton2(context)
+        return OddsButton2(context,esportTheme = esportTheme)
     }
 
     fun setOddsInvisible() {
