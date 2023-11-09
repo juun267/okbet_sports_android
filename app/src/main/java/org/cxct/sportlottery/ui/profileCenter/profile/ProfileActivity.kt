@@ -382,7 +382,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 }
             }
         }
-        ll_cancel_account.isVisible = !Constants.isVersonControl
+        ll_cancel_account.isVisible = Constants.isVersonControl
         //注销账号
         ll_cancel_account.setOnClickListener { startActivity(CancelAccountActivity::class.java) }
         llBirthday.setOnClickListener { dateTimePicker?.show() }
