@@ -193,9 +193,19 @@ class LoginViewModel(
             return
         }
         if (loginData.ifnew != false) {
-            AFInAppEventUtil.register("username")
+            AFInAppEventUtil.register("username",HashMap<String, Any>().apply {
+                put("userId",loginData.userId.toString())
+                put("userName",loginData.userName.toString())
+                put("phone",loginData.phone.toString())
+                put("email",loginData.email.toString())
+            })
         } else {
-            AFInAppEventUtil.login(loginData.uid.toString())
+            AFInAppEventUtil.login(loginData.uid.toString(),HashMap<String, Any>().apply {
+                put("userId",loginData.userId.toString())
+                put("userName",loginData.userName.toString())
+                put("phone",loginData.phone.toString())
+                put("email",loginData.email.toString())
+            })
         }
         loginRepository.setUpLoginData(loginData)
         checkBasicInfo(loginResult) {

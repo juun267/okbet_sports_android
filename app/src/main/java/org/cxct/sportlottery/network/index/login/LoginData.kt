@@ -63,4 +63,6 @@ data class LoginData(
     var msg: String?,   //错误信息提示，需要判断
     @Json(name = "isCreateAccount")
     var isCreateAccount: Int?, // 提醒创建平台用户(如果登录用户为glife用户) 0-否 1-是
+    val phone: String?,         // 账号长时间未登陆需要验证手机号时会返回
+    val email: String?,
 ) : java.io.Serializable
