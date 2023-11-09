@@ -258,11 +258,21 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     if (event.login){
                         viewModel.dealWithLoginData(loginResult!!,it)
                     }else{
+
                         var inviteCode = binding.eetRecommendCode.text.toString()
                         //新的注册接口
+                        val deviceSn = JPushInterface.getRegistrationID(this@LoginOKActivity)
+                        val deviceId = Settings.Secure.getString(
+                            applicationContext.contentResolver,
+                            Settings.Secure.ANDROID_ID
+                        )
+                        var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
                         val loginRequest = LoginRequest(
                             account = it.userName?:"",
                             loginSrc = LOGIN_SRC,
+                            deviceSn = deviceSn,
+                            appVersion = appVersion,
+                            loginEnvInfo = deviceId,
                             inviteCode = inviteCode,
                         )
                         viewModel.regPlatformUser(it.token?:"",loginRequest)

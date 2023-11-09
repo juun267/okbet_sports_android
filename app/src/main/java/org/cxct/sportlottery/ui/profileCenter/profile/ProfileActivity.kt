@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.include_user_profile.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
@@ -381,7 +382,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 }
             }
         }
-
+        ll_cancel_account.isVisible = !Constants.isVersonControl
         //注销账号
         ll_cancel_account.setOnClickListener { startActivity(CancelAccountActivity::class.java) }
         llBirthday.setOnClickListener { dateTimePicker?.show() }

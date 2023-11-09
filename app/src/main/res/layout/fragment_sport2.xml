@@ -34,11 +34,6 @@
             app:tabRippleColor="@null"
             tools:layout="@layout/home_cate_tab" />
     </LinearLayout>
-    <View
-        android:id="@+id/tabShadow"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/color_E1EDFF" />
     <FrameLayout
         android:id="@+id/fl_content"
         android:layout_width="match_parent"

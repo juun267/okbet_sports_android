@@ -42,4 +42,5 @@ data class LoginData(
     val needOTPLogin: Boolean, // 账号长时间未登陆需要验证手机号
     val phone: String?,         // 账号长时间未登陆需要验证手机号时会返回
     val firstPhoneGiveMoney: Boolean?// 注册绑定手机送金额
+    val email: String?,
 ) : java.io.Serializable

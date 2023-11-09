@@ -241,14 +241,12 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     private fun initGameListView() = binding.gameList.run {
         setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue, scrollTopFunc = {
             if(isVisibleToUser()) {
-                when (parentFragment) {
-                    is SportFragment2 -> (parentFragment as SportFragment2).onScrollTop(it == 0)
-                    is ESportFragment -> (parentFragment as ESportFragment).onScrollTop(it == 0)
-                }
+             //todo
             }
         })
         layoutManager = getGameLayoutManger()
         adapter = getGameListAdapter().apply { setEmptyView(EmptySportGamesView(context())) }
+        scrollBackTop()
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
