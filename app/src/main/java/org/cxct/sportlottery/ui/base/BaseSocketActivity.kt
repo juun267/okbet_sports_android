@@ -7,8 +7,8 @@ import android.text.SpannableStringBuilder
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.repository.KEY_USER_LEVEL_ID
 import org.cxct.sportlottery.repository.NAME_LOGIN
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
@@ -108,11 +108,9 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
 
         receiver.userMaxBetMoneyChange.observe(this) {
-            if (viewModel.isLogin.value == true && sharedPref.getInt(
-                    KEY_USER_LEVEL_ID,
-                    -1
-                ) == it?.userLevelConfigList?.firstOrNull()?.id
-            ) {
+            if (viewModel.isLogin.value == true &&
+                UserInfoRepository.getUserLevelId() == it?.userLevelConfigList?.firstOrNull()?.id) {
+
                 GameConfigManager.maxBetMoney =
                     it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 9999999
                 GameConfigManager.maxParlayBetMoney =

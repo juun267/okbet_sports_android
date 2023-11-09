@@ -26,11 +26,8 @@
     <string name="login_account">Login account</string>
     <string name="please_input_account">Paki lagay ang inyong account number</string>
     <string name="login_password">Login password</string>
-    <string name="recommend_code">推荐代码(非必填)</string>
     <string name="hint_recommend_code">Pakilagay ang referral code</string>
-    <string name="error_recommend_code">没有该投注站，请确认代码</string>
     <string name="member_account">Account ng miyembro</string>
-    <string name="hint_member_account">长度需4-Haba ay kailangang 4-16 na character kasama ang mga English at numero</string>
     <string name="error_member_account">Account number ay kumbinasyon ng 4~16 numero at letra</string>
     <string name="error_member_nickname">Ang palayaw ay %1$d-%2$d mga kumbinasyong Tsino at Ingles</string>
     <string name="error_register_id_exist">Account na ito ay may ibang kapareho</string>
@@ -50,7 +47,7 @@
     <string name="register_jump">Ire-redirect ka sa %s sa loob ng 5 segundo....</string>
     <string name="register_recharge_now">Deposito ngayon</string>
     <string name="confirm_password">Kumpirmahin ang password</string>
-    <string name="hint_confirm_password">Kumpirmahin ang password</string>
+    <string name="hint_confirm_password">Paki ulit ang password</string>
     <string name="error_confirm_password">Ang dalawang password na nilagay ay hindi tugma</string>
     <string name="withdrawal_pwd">Withdrawal password</string>
     <string name="hint_withdrawal_pwd">Password ay 4 na numero</string>
@@ -63,8 +60,6 @@
     <string name="e_mail">Email</string>
     <string name="hint_e_mail">Paki lagay ang email</string>
     <string name="error_e_mail">Mali ang inyong email</string>
-    <string name="postal_code">邮递区号</string>
-    <string name="hint_postal_code">请输入邮递区号</string>
     <string name="province">Lalawigan</string>
     <string name="hint_province">Paki lagay ang kung saan ang inyong provinsya</string>
     <string name="city">Lungsod</string>
@@ -1299,7 +1294,7 @@
     <string name="chat_good_luck">Good luck</string>
     <string name="chat_enter_password">Ilagay ang password</string>
     <string name="chat_error_input">Error sa pag-input</string>
-    <string name="chat_confirm">kumpirmahin</string>
+    <string name="chat_confirm">Kumpirmahin</string>
     <string name="chat_automatically_added_red_packet">Ang pulang sobre ay awtomatikong idaragdag sa balanse ng account</string>
     <string name="chat_get_the_red_packet_now">Kunin mo na ngayon ang pulang sobre</string>
     <string name="chat_try_your_luck">Subukan mo ang swerte mo</string>
@@ -1491,5 +1486,8 @@
     <string name="P235">I-set ang phone number para makakuha ng %s</string>
     <string name="P236">Salamat sa pagrehistro sa amin.</string>
     <string name="P237">Nakatanggap ka ng %s bilang welcome gift!</string>
+    <string name="P231">Magpapadala kami ng OTP verification code sa iyong mobile number:</string>
+    <string name="P239">Bagong withdrawal password</string>
+    <string name="J169">Ang dalawang password na nilagay ay hindi tugma</string>
 </resources>
 

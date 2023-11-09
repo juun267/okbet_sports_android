@@ -337,7 +337,6 @@ object Constants {
     const val INDEX_VALIDATE_CODE = "/api/front/index/getvalidatecode" //获取验证码
     const val INDEX_REGISTER = "/api/front/index/register" //注册用户
     const val INDEX_SEND_SMS = "/api/front/index/sendSms" //发送验证码
-    const val INDEX_CHECK_EXIST = "/api/front/index/checkexist/{userName}" //检查账号名称是否已存在
     const val INDEX_CHECK_TOKEN = "/api/front/index/checktoken" //验证token 是否过期
     const val LOGIN_FOR_GUEST = "/api/front/index/loginforguest" //游客登录
     const val INDEX_PROMOTENOTICE =
@@ -360,6 +359,12 @@ object Constants {
 
     //登录或注册获取验证码(新版优化登录注册->使用)
     const val LOGIN_OR_REG_SEND_VALIDCODE = "/api/front/index/loginOrRegSendValidCode"
+
+    // 校验/api/front/index/loginOrRegSendValidCode这个接口发出的短信验证码
+    const val VERIFY_SMS_CODE = "/api/front/index/onlyVerifySms"
+
+    // 重制提款密码
+    const val RRESET_WITHDRAW = "/api/front/user/timesFundPwd"
 
     // facebook登录或注册(新版优化登录注册->使用)
     const val FACEBOOK_LOGIN = "/api/front/index/facebookLogin"

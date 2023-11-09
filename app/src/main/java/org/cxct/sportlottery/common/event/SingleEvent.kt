@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
+@Deprecated("请使用SingleLiveEvent")
 class SingleEvent<T> ( ){
 
     private val event: LiveData<T>

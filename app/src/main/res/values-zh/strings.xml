@@ -26,11 +26,8 @@
     <string name="login_account">登录账号</string>
     <string name="please_input_account">请输入您的会员账号</string>
     <string name="login_password">登录密码</string>
-    <string name="recommend_code">推荐代码(非必填)</string>
     <string name="hint_recommend_code">请输入推荐代码</string>
-    <string name="error_recommend_code">没有该投注站，请确认代码</string>
     <string name="member_account">会员账号</string>
-    <string name="hint_member_account">长度需4-16个字符含英数</string>
     <string name="error_member_account">账号为4~16位数字字母组合</string>
     <string name="error_member_nickname">昵称为%1$d-%2$d个中英文组合</string>
     <string name="error_register_id_exist">已有此账户名</string>
@@ -64,8 +61,6 @@
     <string name="e_mail">邮箱</string>
     <string name="hint_e_mail">请输入邮箱</string>
     <string name="error_e_mail">邮箱格式错误</string>
-    <string name="postal_code">邮递区号</string>
-    <string name="hint_postal_code">请输入邮递区号</string>
     <string name="province">省</string>
     <string name="hint_province">请输入所在省份</string>
     <string name="city">城市</string>
@@ -1571,4 +1566,7 @@
     <string name="P235">设置手机号码奖励%s</string>
     <string name="P236">感谢您的注册</string>
     <string name="P237">您已经获得%s的欢迎礼金!</string>
+    <string name="P231">我们将发送短信验证码到您的手机号码:</string>
+    <string name="P239">新提款密码</string>
+    <string name="J169">两次密码输入不一致</string>
 </resources>

@@ -21,7 +21,7 @@ class BindInfoViewModel(
     val sendCodeResult = MutableLiveData<ApiResult<SendCodeRespnose>>()                 // 发送验证码
     val verifyResult = MutableLiveData<ApiResult<SendCodeRespnose>>()                   // 验证验证码
     val resetResult =
-        MutableLiveData<ApiResult<SendCodeRespnose>>()                    // 修改手机号或者邮箱后
+        MutableLiveData<Pair<String, ApiResult<SendCodeRespnose>>>()                    // 修改手机号或者邮箱后
 
     fun sendSMSOrEmailCode(phoneNumOrEmail: String, identity: String, validCode: String) {
         callApi({ UserRepository.sendEmailOrPhoneCode(phoneNumOrEmail, identity, validCode) }) {
@@ -37,7 +37,7 @@ class BindInfoViewModel(
 
     fun resetEmailOrPhone(phoneNumOrEmail: String, code: String) {
         callApi({ UserRepository.resetEmailOrPhone(phoneNumOrEmail, code) }) {
-            resetResult.postValue(it)
+            resetResult.postValue(Pair(phoneNumOrEmail, it))
         }
     }
 
