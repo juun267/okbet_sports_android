@@ -70,7 +70,7 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
         binding.ivFilter.gone()
         arguments?.getString("gameType")?.let { gameType = it }
         initObserve()
-        showLoading()
+        loading()
         viewModel.loadMatchType(matchType)
     }
 
@@ -119,11 +119,11 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
             data.forEach { it.matchOdds?.let { list.addAll(it) } }
 
             if (list.isEmpty()) {
-                dismissLoading()
+                hideLoading()
                 return@observe
             }
             setSportDataList(list as MutableList<BaseNode>, list.size.toString())
-            dismissLoading()
+            hideLoading()
         }
 
     }

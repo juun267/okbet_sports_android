@@ -54,8 +54,8 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
     private val loadingHolder by lazy { Gloading.wrapView(binding.gameList) }
 
-    override fun dismissLoading() = loadingHolder.showLoadSuccess()
-    override fun showLoading() = loadingHolder.showLoading()
+    override fun loading(message: String?) = loadingHolder.showLoadSuccess()
+    override fun hideLoading() = loadingHolder.showLoading()
 
     protected abstract fun getGameListAdapter(): ExpanableOddsAdapter<*>
     protected abstract val oddsChangeListener: ServiceBroadcastReceiver.OddsChangeListener
@@ -264,7 +264,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected open fun load(item: Item, selectLeagueIdList: ArrayList<String> = arrayListOf(),selectMatchIdList: ArrayList<String> = arrayListOf()) {
         resetArrow()
-        showLoading()
+        loading()
         setMatchInfo(item.name, "")
         viewModel.switchGameType(matchType, item, selectLeagueIdList,selectMatchIdList)
     }
@@ -285,10 +285,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected fun setSportDataList(list: MutableList<BaseNode>?, sizeNumber: String? = null) {
         val adapter = getGameListAdapter()
-        // 这个方法是最终显示数据的，已经处于数据结果状态。在这显示loading的时机不对，暂且先就这么处理，后面在优化
-        if(list.isNullOrEmpty() && this !is FavoriteFragment2) {
-            showLoading()
-        }
         adapter.setNewInstance(list)
         if (sizeNumber == null) setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "") else setMatchNum(sizeNumber)
         if (!list.isNullOrEmpty()) {

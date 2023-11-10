@@ -338,7 +338,7 @@ class BetReceiptFragment :
         }
     }
 
-    override fun showLoading() {
+    override fun loading(message: String?) {
         btn_complete.isVisible = false
         lin_loading.isVisible = true
     }

@@ -72,7 +72,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         scrollBackTop()
         binding.appbarLayout.scrollBy(0, 0)
         viewModel.loadMatchType(matchType)
-        showLoading()
+        loading()
     }
 
     override fun onBindViewStatus(view: View) {
@@ -103,7 +103,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
 
             val oddsListData = it.getContentIfNotHandled()?.oddsListData ?: return@observe
-            dismissLoading()
+            hideLoading()
             val leagueOdds: List<LeagueOdd>? = oddsListData.leagueOdds
             if (leagueOdds.isNullOrEmpty()) {
                 return@observe
