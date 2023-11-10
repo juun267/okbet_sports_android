@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardCover"
     android:layout_width="170dp"
     android:layout_height="190dp"
+    android:layout_marginRight="8dp"
     app:cardCornerRadius="8dp"
     android:foreground="@drawable/fg_ripple">
 
@@ -13,10 +14,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:cardCornerRadius="@dimen/margin_8"
+        app:cardElevation="0dp">
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/blurView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:blurOverlayColor="@color/color_FFFFFF"
+        tools:ignore="MissingClass">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_48"
-        android:layout_gravity="bottom"
         android:gravity="center"
         android:orientation="vertical"
         android:background="@color/transparent_black_60">
@@ -42,6 +54,27 @@
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>
+    </eightbitlab.com.blurview.BlurView>
+    </androidx.cardview.widget.CardView>
+<LinearLayout
+    android:id="@+id/linMaintenance"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:visibility="gone"
+    android:background="@color/transparent_black_70">
+    <ImageView
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:src="@drawable/ic_home_maintenance"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_12"
+        android:textSize="@dimen/textSize16sp"
+        android:textColor="@color/color_FFFFFF"
+        android:text="@string/N257"/>
 
-
+</LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
@@ -56,6 +57,9 @@ open class MainHomeViewModel(
     private val _publicityRecommend = MutableLiveData<Event<List<Recommend>>>()
     val publicityRecommend: LiveData<Event<List<Recommend>>>
         get() = _publicityRecommend
+    private val _hotESportMatch = SingleLiveEvent<Pair<String,List<Recommend>>>()
+    val hotESportMatch: LiveData<Pair<String,List<Recommend>>>
+        get() = _hotESportMatch
     val gotConfig: LiveData<Event<Boolean>>
         get() = _gotConfig
     private val _gotConfig = MutableLiveData<Event<Boolean>>()
@@ -101,9 +105,14 @@ open class MainHomeViewModel(
 
 
     //okgames游戏列表
-    val homeGamesList: LiveData< List<OKGameBean>>
-        get() = _homeGamesList
-    private val _homeGamesList = MutableLiveData< List<OKGameBean>>()
+    val homeOKGamesList: LiveData< List<OKGameBean>>
+        get() = _homeOKGamesList
+    private val _homeOKGamesList = MutableLiveData< List<OKGameBean>>()
+
+    //oklive游戏列表
+    val homeOKLiveList: LiveData< List<OKGameBean>>
+        get() = _homeOKLiveList
+    private val _homeOKLiveList = MutableLiveData< List<OKGameBean>>()
 
 
     private val _recordBetHttp = MutableLiveData<List<RecordNewEvent>>()
@@ -126,7 +135,7 @@ open class MainHomeViewModel(
     private val _activityApply = MutableLiveData<String>()
 
     //region 宣傳頁用
-    fun getRecommend() {
+    fun getRecommend(gameType: GameType?=null) {
         viewModelScope.launch {
             val resultRecommend = doNetwork(androidContext) {
                 val currentTimeMillis = System.currentTimeMillis()
@@ -141,7 +150,8 @@ open class MainHomeViewModel(
                 OneBoSportApi.sportService.getPublicityRecommend(
                     PublicityRecommendRequest(
                         currentTimeMillis.toString(),
-                        startTimeStamp.toString()
+                        startTimeStamp.toString(),
+                        gameType=gameType?.key
                     )
                 )
             } ?: return@launch
@@ -174,8 +184,11 @@ open class MainHomeViewModel(
                         setupSocketMatchStatus()
                     }
                 }
-                _publicityRecommend.postValue(Event(resultRecommend.result.recommendList))
-
+                if (gameType==null){
+                    _publicityRecommend.postValue(Event(resultRecommend.result.recommendList))
+                }else{
+                    _hotESportMatch.postValue(Pair(gameType.key,resultRecommend.result.recommendList))
+                }
                 notifyFavorite(FavoriteType.MATCH)
             }
         }
@@ -219,7 +232,7 @@ open class MainHomeViewModel(
     }) {
         if (it.getData() == null) {
             //hide loading
-            _homeGamesList.value = arrayListOf()
+            _homeOKGamesList.value = arrayListOf()
         } else {
             totalCountLiveData.value = it.total
             val totalCount = totalCountLiveData.value ?: 0
@@ -230,7 +243,7 @@ open class MainHomeViewModel(
                     totalPageLiveData.value = (totalPageLiveData.value ?: 0) + 1
                 }
             }
-            _homeGamesList.value=it.getData()
+            _homeOKGamesList.value=it.getData()
         }
     }
     fun getOkLiveOKGamesList(
@@ -242,7 +255,7 @@ open class MainHomeViewModel(
     }) {
         if (it.getData() == null) {
             //hide loading
-            _homeGamesList.value = arrayListOf()
+            _homeOKLiveList.value = arrayListOf()
         } else {
             totalCountLiveData.value = it.total
             val totalCount = totalCountLiveData.value ?: 0
@@ -253,7 +266,7 @@ open class MainHomeViewModel(
                     totalPageLiveData.value = (totalPageLiveData.value ?: 0) + 1
                 }
             }
-            _homeGamesList.value=it.getData()
+            _homeOKLiveList.value=it.getData()
         }
     }
 

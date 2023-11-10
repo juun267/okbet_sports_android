@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginRight="8dp"
+    android:background="@drawable/bg_item_home_hot_match"
+    tools:ignore="MissingDefaultResource">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_margin="@dimen/margin_12">
+        <ImageView
+            android:id="@+id/iv_league_logo"
+            android:layout_width="@dimen/margin_16"
+            android:layout_height="@dimen/margin_16"
+            android:src="@drawable/ic_team_default" />
+        <TextView
+            android:id="@+id/tvGameType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:lines="1"
+            tools:text="Football"
+            android:textColor="@color/color_6D7693"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"/>
+        <View
+            android:layout_width="@dimen/margin_0.5"
+            android:layout_height="@dimen/margin_12"
+            android:background="@color/color_E0E3EE"
+            android:layout_marginHorizontal="@dimen/margin_4"/>
+        <TextView
+            android:id="@+id/tvLeagueName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Siêu giải Trung Quốc"
+            android:textColor="@color/color_6D7693"
+            android:textSize="@dimen/textSize14sp" />
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/margin_4">
+            <org.cxct.sportlottery.view.CircleImageView
+                android:id="@+id/ivHomeIcon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="38dp"
+                android:layout_marginRight="@dimen/margin_30"
+                app:civ_border_color="@color/color_E0E3EE"
+                android:src="@drawable/ic_team_default" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/tv_home_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:fontFamily="@font/inter_bold"
+                        android:textColor="@color/color_0D2245"
+                        android:textSize="@dimen/textSize18sp"
+                        tools:text="1"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginHorizontal="@dimen/margin_12"
+                        android:text="VS"
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize14sp" />
+                    <TextView
+                        android:id="@+id/tv_away_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_bold"
+                        android:textColor="@color/color_0D2245"
+                        android:textSize="@dimen/textSize18sp"
+                        tools:text="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tvGameStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:text="---"
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize12sp" />
+                    <TextView
+                        android:id="@+id/tvGamePlayTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:text="---"
+                        android:textColor="@color/color_025BE8"
+                        android:textSize="@dimen/textSize12sp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <org.cxct.sportlottery.view.CircleImageView
+                android:id="@+id/ivAwayIcon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:layout_marginRight="38dp"
+                app:civ_border_color="@color/color_E0E3EE"
+                android:src="@drawable/ic_team_default" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_12">
+
+
+            <TextView
+                android:id="@+id/tv_home_name"
+                android:layout_width="112dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/color_0D2245"
+                android:textStyle="bold"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="Chelsea"/>
+
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/tv_away_name"
+                android:layout_width="112dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/color_0D2245"
+                android:textStyle="bold"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="Chelsea"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_12"
+            android:layout_marginHorizontal="@dimen/margin_12">
+
+            <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHomeHotButton
+                android:id="@+id/oddBtn1"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1" />
+
+            <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHomeHotButton
+                android:id="@+id/oddBtn2"
+                android:layout_width="0dp"
+                android:layout_marginRight="4dp"
+                android:layout_height="36dp"
+                android:layout_weight="1" />
+
+            <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHomeHotButton
+                android:id="@+id/oddBtn3"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+</LinearLayout>

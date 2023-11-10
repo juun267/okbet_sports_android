@@ -11,6 +11,7 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.BindPhoneDialog
@@ -40,6 +41,9 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             if (hotMatchView.isVisible) {
                 hotMatchView.resubscribe()
             }
+            if (hotEsportView.isVisible) {
+                hotEsportView.resubscribe()
+            }
         }
         homeBottumView.bindServiceClick(childFragmentManager)
         EventBusUtil.targetLifecycle(this@HomeHotFragment)
@@ -61,7 +65,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
     override fun onBindViewStatus(view: View) = binding.run {
         hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@HomeHotFragment)
         okGamesView.setUp(this@HomeHotFragment)
-        hotEsportView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@HomeHotFragment)
+        hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType,this@HomeHotFragment)
         okLiveView.setUp(this@HomeHotFragment)
         promotionView.setup(this@HomeHotFragment)
         newsView.setup(this@HomeHotFragment)
@@ -129,7 +133,9 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
     //hot match
     private fun refreshHotMatch() {
         binding.hotMatchView.onResume(this@HomeHotFragment)
+        binding.hotEsportView.onResume(this@HomeHotFragment)
         viewModel.getRecommend()
+        viewModel.getRecommend(GameType.ES)
     }
 
     /**
@@ -145,11 +151,10 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             if(binding.hotMatchView.isVisible&&isVisibleToUser()){
                 viewModel.getRecommend()
             }
-            //关闭/显示   热门赛事
             binding.hotEsportView.goneWithSportSwitch()
             //判断当前fragment是否可见
             if(binding.hotEsportView.isVisible&&isVisibleToUser()){
-                viewModel.getRecommend()
+                viewModel.getRecommend(GameType.ES)
             }
         }
     }

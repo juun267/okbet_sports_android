@@ -29,7 +29,7 @@ import splitties.systemservices.layoutInflater
 
 class HomeOkLiveView(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
 
-    private val binding  = ViewHomeOkliveBinding.inflate(layoutInflater,this)
+    private val binding  = ViewHomeOkliveBinding.inflate(layoutInflater,this,true)
     private val gameAdapter = RecyclerHomeOkGamesAdapter()
 
     init {
@@ -49,7 +49,7 @@ class HomeOkLiveView(context: Context, attrs: AttributeSet) : RelativeLayout(con
         }
         //请求games数据
         fragment.viewModel.getOkLiveOKGamesList()
-        fragment.viewModel.homeGamesList.observe(fragment.viewLifecycleOwner) {
+        fragment.viewModel.homeOKLiveList.observe(fragment.viewLifecycleOwner) {
             fragment.hideLoading()
             gameAdapter.setList(it)
         }

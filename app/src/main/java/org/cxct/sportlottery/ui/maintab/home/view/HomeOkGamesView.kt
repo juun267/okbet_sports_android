@@ -30,7 +30,7 @@ import splitties.systemservices.layoutInflater
 
 class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
 
-    private val binding  = ViewHomeOkgameBinding.inflate(layoutInflater,this)
+    private val binding  = ViewHomeOkgameBinding.inflate(layoutInflater,this,true)
     private val gameAdapter = RecyclerHomeOkGamesAdapter()
 
     init {
@@ -50,7 +50,7 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
         }
         //请求games数据
         fragment.viewModel.getHomeOKGamesList()
-        fragment.viewModel.homeGamesList.observe(fragment.viewLifecycleOwner) {
+        fragment.viewModel.homeOKGamesList.observe(fragment.viewLifecycleOwner) {
             fragment.hideLoading()
             //缓存这一页数据到map
             gameAdapter.setList(it)
