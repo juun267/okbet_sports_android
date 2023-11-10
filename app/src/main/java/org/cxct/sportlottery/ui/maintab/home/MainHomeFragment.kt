@@ -16,8 +16,6 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.view_home_bettingstation.*
 import kotlinx.android.synthetic.main.view_home_news.*
-import kotlinx.android.synthetic.main.item_sport_news.view.*
-import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -121,10 +119,6 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     fun initToolBar() = binding.run {
         homeToolbar.attach(this@MainHomeFragment, getMainTabActivity(), viewModel)
-        homeToolbar.ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            getMainTabActivity().showMainLeftMenu(null)
-        }
         homeToolbar.tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true,Gravity.RIGHT))
             getMainTabActivity().showMainRightMenu()

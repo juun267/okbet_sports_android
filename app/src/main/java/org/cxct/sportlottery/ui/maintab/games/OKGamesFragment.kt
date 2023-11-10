@@ -96,10 +96,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
     private fun initToolBar() = binding.homeToolbar.run {
         attach(this@OKGamesFragment, mainTabActivity(), viewModel)
-        ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showMainLeftMenu(this@OKGamesFragment.javaClass)
-        }
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
             mainTabActivity().showMainRightMenu()
