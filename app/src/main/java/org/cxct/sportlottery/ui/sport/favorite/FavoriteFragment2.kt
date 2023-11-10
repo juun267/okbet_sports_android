@@ -27,7 +27,7 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
         if (haveData) {
             updateSportType(currentFavoriteList)
         } else {
-            showLoading()
+            loading()
         }
     }
 
@@ -39,7 +39,7 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
     fun setFavoriteData(favoriteLeagues: List<Item>) {
         currentFavoriteList = favoriteLeagues
         if (!haveData && isAdded) {
-            dismissLoading()
+            hideLoading()
             updateSportType(favoriteLeagues)
         }
         haveData = true
