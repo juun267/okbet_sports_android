@@ -4,13 +4,16 @@ package org.cxct.sportlottery.ui.maintab.home
 import android.content.Intent
 import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.core.view.doOnLayout
 import androidx.core.view.doOnNextLayout
+import androidx.core.view.marginLeft
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHome2Binding
@@ -96,10 +99,17 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
 
     private fun initToolBar() = binding.run {
         homeToolbar.attach(this@HomeFragment2, getMainTabActivity(), viewModel)
-        homeToolbar.ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            getMainTabActivity().showMainLeftMenu(null)
+        homeToolbar.apply {
+            ivMenuLeft.gone()
+            (ivLogo.layoutParams as FrameLayout.LayoutParams).apply {
+                leftMargin = 6.dp
+                ivLogo.layoutParams = this
+            }
         }
+//        homeToolbar.ivMenuLeft.setOnClickListener {
+//            EventBusUtil.post(MenuEvent(true))
+//            getMainTabActivity().showMainLeftMenu(null)
+//        }
         homeToolbar.tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true,Gravity.RIGHT))
             getMainTabActivity().showMainRightMenu()

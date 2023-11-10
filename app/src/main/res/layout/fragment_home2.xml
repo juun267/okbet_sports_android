@@ -11,6 +11,7 @@
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_FFFFFF"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -44,7 +45,6 @@
             android:background="@drawable/bg_home_top_radius_8"
             android:gravity="center"
             android:orientation="vertical"
-            android:elevation="@dimen/margin_1"
             android:layout_marginBottom="@dimen/margin_12"
             app:layout_collapseMode="parallax"
             app:layout_collapseParallaxMultiplier="0.6">
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     android:elevation="0dp"
-                    app:cardElevation="0dp"
+                    app:cardElevation="@dimen/margin_0.5"
                     app:cardCornerRadius="@dimen/margin_8">
 
                     <com.stx.xhb.androidx.XBanner
@@ -65,10 +65,11 @@
                         android:background="@android:color/white"
                         app:AutoPlayTime="3500"
                         app:pageChangeDuration="800"
-                        app:pointLeftRightPadding="1dp"
-                        app:pointNormal="@drawable/dot_4_4c326bff"
-                        app:pointSelect="@drawable/indicator_30_blue"
-                        app:pointTopBottomPadding="2dp" />
+                        app:pointLeftRightPadding="2dp"
+                        app:pointNormal="@drawable/dot_6_trans_white"
+                        app:pointSelect="@drawable/dot_6_white"
+                        app:showIndicatorInCenter="false"
+                        app:pointsPosition="RIGHT"/>
 
                 </androidx.cardview.widget.CardView>
 
@@ -110,7 +111,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_12"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/color_FFFFFF">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMenu"
@@ -120,11 +122,12 @@
             tools:itemCount="6"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_home_menu"/>
-
         <org.cxct.sportlottery.view.indicator.RadiusIndicator
             android:id="@+id/hIndicator"
             android:layout_width="@dimen/margin_24"
             android:layout_height="@dimen/margin_6"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorRedLight"
             app:hi_bgColor="@color/color_E0E3EE"
             app:hi_indicatorColor="@color/color_025BE8"/>
 
