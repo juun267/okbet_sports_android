@@ -37,7 +37,9 @@
         <LinearLayout
             android:id="@+id/linTab"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="-5dp"
+            android:paddingHorizontal="5dp"
             android:background="@drawable/bg_icon_bottom_bar"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"/>

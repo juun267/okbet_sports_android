@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -115,10 +114,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             loginedRun(it.context) {
                 startActivity(BetRecordActivity::class.java)
             }
-        }
-        ivMenuLeft.setOnClickListener {
-            getMainTabActivity().showSportLeftMenu()
-            EventBusUtil.post(MenuEvent(true))
         }
     }
 

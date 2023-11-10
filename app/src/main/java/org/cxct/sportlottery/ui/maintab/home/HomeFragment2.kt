@@ -1,12 +1,10 @@
 package org.cxct.sportlottery.ui.maintab.home
 
-
 import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import androidx.core.view.doOnLayout
-import androidx.core.view.doOnNextLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -23,10 +21,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
-import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
-import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.view.HomeMenuAdapter
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
@@ -36,14 +31,6 @@ import timber.log.Timber
 
 class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     private fun getMainTabActivity() = activity as MainTabActivity
-//    private val fragmentHelper by lazy {
-//        FragmentHelper(childFragmentManager, binding.flContent.id, arrayOf(
-//            Param(HomeHotFragment::class.java),
-//            Param(NewsHomeFragment::class.java, needRemove = true),
-//            Param(OKLiveFragment::class.java, needRemove = true),
-//            Param(GameVenueFragment::class.java, needRemove = true),
-//        ))
-//    }
     private val fragmentHelper2 by lazy { FragmentHelper2(childFragmentManager, R.id.flContent) }
     private lateinit var hotFragment: HomeHotFragment
     private val homeMenuAdapter by lazy {
@@ -96,10 +83,6 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
 
     private fun initToolBar() = binding.run {
         homeToolbar.attach(this@HomeFragment2, getMainTabActivity(), viewModel)
-        homeToolbar.ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            getMainTabActivity().showMainLeftMenu(null)
-        }
         homeToolbar.tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true,Gravity.RIGHT))
             getMainTabActivity().showMainRightMenu()

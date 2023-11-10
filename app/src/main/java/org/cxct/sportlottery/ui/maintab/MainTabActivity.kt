@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.KeyEvent
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.event.ShowInPlayEvent
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.screenWidth
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
@@ -45,6 +47,7 @@ import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
@@ -170,6 +173,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
         if (result) {
             homeFragment().backMainHome()
+            setupBetBarVisiblity()
         }
 
         return result
@@ -422,21 +426,20 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         val needShowBetBar = fragmentHelper.getCurrentPosition() >= 0
                 && (fragmentHelper.getCurrentFragment() is HomeFragment2 || fragmentHelper.getCurrentFragment() is SportFragment2)
 
-        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
-            == BetListFragment.SINGLE
-        ) {
-//            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
+        if (betListCount == 0
+            || !needShowBetBar
+            || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
             parlayFloatWindow.gone()
-        } else {
-            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY
-            ) {
-                parlayFloatWindow.setBetText(getString(R.string.conspire))
-                parlayFloatWindow.updateCount(betListCount.toString())
-            } else {
-                parlayFloatWindow.setBetText(getString(R.string.bet_slip))
-            }
-            parlayFloatWindow.visible()
+            return
         }
+
+        if (BetInfoRepository.currentBetType == BetListFragment.PARLAY) {
+            parlayFloatWindow.setBetText(getString(R.string.conspire))
+            parlayFloatWindow.updateCount(betListCount.toString())
+        } else {
+            parlayFloatWindow.setBetText(getString(R.string.bet_slip))
+        }
+        parlayFloatWindow.visible()
     }
 
     override fun showLoginNotify() {
@@ -456,6 +459,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private fun initBottomNavigation() {
         binding.parlayFloatWindow.onViewClick = { showBetListPage() }
+        val radius = 15.dp.toFloat()
+        binding.linTab.background = ShapeDrawable()
+            .setWidth(screenWidth + 15.dp)
+            .setHeight(58.dp)
+            .setSolidColor(Color.WHITE)
+            .setShadowColor(getColor(R.color.color_A9B2D3))
+            .setShadowSize(5.dp)
+            .setShadowOffsetY(-10.dp)
+            .setRadius(radius, radius, 0F, 0F)
     }
 
     override fun showBetListPage() {
@@ -492,17 +504,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment2
 
     fun backMainHome() {
-        enableSelectBottomNav(true)
+        tabHelper.clearSelected()
         homeFragment().backMainHome()
         navToPosition(INDEX_HOME)
-
     }
 
     fun jumpToOKGames() {
         if (getMarketSwitch()) {
             return
         }
-        navToPosition(INDEX_HOME)
+        navToPosition(INDEX_GAMES)
     }
 
     fun jumpToOkLive(){
