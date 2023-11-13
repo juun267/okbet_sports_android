@@ -60,12 +60,7 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : Visibilit
         onBindView(view)
     }
 
-    /*弹出加载界面*/
-    open fun loading() {
-        loading(null)
-    }
-
-    open fun loading(message: String?) {
+    open fun loading(message: String? = null) {
         if (activity is BaseActivity<*>)
             (activity as BaseActivity<*>).loading(message)
     }
