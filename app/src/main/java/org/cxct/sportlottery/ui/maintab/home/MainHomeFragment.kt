@@ -180,9 +180,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                 BindPhoneDialog().show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
             }
             if (viewModel.isLogin.value==true&&RegisterSuccessDialog.needShow()){
-                RegisterSuccessDialog{
-                    viewModel.checkRechargeKYCVerify()
-                }.show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
+                RegisterSuccessDialog().show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
             }
         }
         //体育服务开关监听
