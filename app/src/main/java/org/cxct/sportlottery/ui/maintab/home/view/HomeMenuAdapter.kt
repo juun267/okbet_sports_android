@@ -34,7 +34,8 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
     private var selectItem: Triple<Int, Int, Class<BaseFragment<*>>?>?=null
 
     init {
-       setNewInstance(datas as MutableList<Array<Triple<Int, Int, Class<BaseFragment<*>>?>>>)
+        selectItem = datas[0][0] as Triple<Int, Int, Class<BaseFragment<*>>?>
+        setNewInstance(datas as MutableList<Array<Triple<Int, Int, Class<BaseFragment<*>>?>>>)
     }
 
     override fun onBinding(
@@ -75,4 +76,5 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
             }
         }
     }
+
 }
