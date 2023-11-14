@@ -53,6 +53,8 @@ data class OKGamesFirm(
     val id: Int,
     val firmName: String?,//厂商名称
     val img: String?,//厂商图
+    val imgMobile: String?,
+    val remark: String?,
 ): OKGameLabel {
 
     override fun getKey() = id

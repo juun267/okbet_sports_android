@@ -45,7 +45,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
                 hotEsportView.resubscribe()
             }
         }
-        homeBottumView.bindServiceClick(childFragmentManager)
+        bottomView.bindServiceClick(childFragmentManager)
         EventBusUtil.targetLifecycle(this@HomeHotFragment)
         ToGcashDialog.showByLogin()
     }
@@ -67,6 +67,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         okGamesView.setUp(this@HomeHotFragment)
         hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType,this@HomeHotFragment)
         okLiveView.setUp(this@HomeHotFragment)
+        providerView.setup(this@HomeHotFragment)
         promotionView.setup(this@HomeHotFragment)
         newsView.setup(this@HomeHotFragment)
         winsRankView.setUp(this@HomeHotFragment, { viewModel.getBetRecord() }, { viewModel.getWinRecord() })

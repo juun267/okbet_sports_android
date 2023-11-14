@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"/>
                 <include
                     android:id="@+id/includeNews"
-                    layout="@layout/view_home_news"
+                    layout="@layout/include_home_news"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"/>
@@ -93,8 +93,8 @@
 
             </FrameLayout>
 
-            <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
-                android:id="@+id/homeBottumView"
+            <org.cxct.sportlottery.ui.maintab.home.view.HomeBottomView
+                android:id="@+id/bottomView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

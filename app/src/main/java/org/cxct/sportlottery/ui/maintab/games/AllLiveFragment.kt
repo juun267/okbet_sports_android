@@ -324,7 +324,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
     }
 
     private fun onBindPart5View() {
-        binding.homeBottumView.bindServiceClick(childFragmentManager)
+        binding.bottomView.bindServiceClick(childFragmentManager)
     }
 
 

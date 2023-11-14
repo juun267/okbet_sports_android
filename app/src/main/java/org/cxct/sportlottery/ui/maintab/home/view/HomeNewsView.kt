@@ -8,20 +8,24 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ViewHomeNewsBinding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.home.HomeFragment2
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
-import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
+import org.cxct.sportlottery.util.LogUtil
 import splitties.systemservices.layoutInflater
 
 class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
     val binding: ViewHomeNewsBinding = ViewHomeNewsBinding.inflate(layoutInflater,this,true)
     lateinit var viewModel:MainHomeViewModel
-    private val homeNewsAdapter = HomeNewsAdapter().apply {
+    val pageSize = 3
+    private val homeHotNewsAdapter = HomeHotNewsAdapter().apply {
         setOnItemClickListener{ adapter, view, position ->
             NewsDetailActivity.start(
                 context,
@@ -34,33 +38,23 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
     }
 
     private fun initView() =binding.run {
-        tabNews.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                (tab.view.getChildAt(1) as TextView).typeface = Typeface.DEFAULT_BOLD
-                val categoryId = if (tab.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
-                viewModel.getHomeNews(1, 5, listOf(categoryId))
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-                (tab.view.getChildAt(1) as TextView).typeface = Typeface.DEFAULT
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-        })
-        linTab.setOnClickListener {
-//            getHomeFragment().jumpToNews()
+        rgTitle.setOnCheckedChangeListener { group, checkedId ->
+            val categoryId = if (checkedId == R.id.rbtnOkbet) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
+            viewModel.getHomeNews(1, pageSize, listOf(categoryId))
         }
         binding.rvNews.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        binding.rvNews.adapter = homeNewsAdapter
+        binding.rvNews.adapter = homeHotNewsAdapter
     }
     fun setup(fragment: HomeHotFragment) {
         viewModel = fragment.viewModel
         viewModel.homeNewsList.observe(fragment) {
-            val dataList = if (it.size > 4) it.subList(0, 4) else it
-            homeNewsAdapter.setList(dataList)
+            val dataList = if (it.size > pageSize) it.subList(0, pageSize) else it
+            homeHotNewsAdapter.setList(dataList)
         }
-        viewModel.getHomeNews(1, 5, listOf(NewsRepository.NEWS_OKBET_ID))
+        binding.tvMore.setOnClickListener {
+            (fragment.parentFragment as HomeFragment2).jumpToNews()
+        }
+        viewModel.getHomeNews(1, pageSize, listOf(NewsRepository.NEWS_OKBET_ID))
     }
 
 }

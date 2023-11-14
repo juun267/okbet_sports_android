@@ -1,11 +1,8 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.gyf.immersionbar.ImmersionBar
-import eightbitlab.com.blurview.RenderScriptBlur
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.collectWith
@@ -14,7 +11,7 @@ import org.cxct.sportlottery.databinding.ItemHomeOkgameBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 
-class RecyclerHomeOkGamesAdapter : BindingAdapter<OKGameBean, ItemHomeOkgameBinding>() {
+class HomeOkGamesAdapter : BindingAdapter<OKGameBean, ItemHomeOkgameBinding>() {
 
     fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner) {
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleOwner.lifecycleScope) { gamesMaintain ->
@@ -27,11 +24,12 @@ class RecyclerHomeOkGamesAdapter : BindingAdapter<OKGameBean, ItemHomeOkgameBind
         }
     }
     override fun onBinding(position: Int, binding: ItemHomeOkgameBinding, item: OKGameBean) {
-        binding.blurView.setupWith(binding.root, RenderScriptBlur(context))
-            .setBlurRadius(20f)
         binding.tvGameName.text = item.gameName
         binding.tvGameType.text = item.firmName
         binding.ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
+        binding.blurView.setupWith(binding.root)
+            .setFrameClearDrawable(binding.root.background)
+            .setBlurRadius(1.3f)
         binding.linMaintenance.isVisible = item.isMaintain()
     }
 

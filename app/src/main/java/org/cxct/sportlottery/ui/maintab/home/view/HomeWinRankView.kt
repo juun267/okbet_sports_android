@@ -1,67 +1,55 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
+import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.doOnDestory
+import org.cxct.sportlottery.databinding.ViewHomeWinRankBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.RCVDecoration
-import org.cxct.sportlottery.util.toJson
-import splitties.coroutines.repeatWhileActive
+import org.cxct.sportlottery.util.setTextTypeFace
+import splitties.systemservices.layoutInflater
 import kotlin.random.Random
 
 class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle), OnItemClickListener {
 
+    val binding: ViewHomeWinRankBinding = ViewHomeWinRankBinding.inflate(layoutInflater,this,true)
+    val pageSize = 5
+
     private var winsRequest: (() -> Unit)? = null
     private var betRequest: (() -> Unit)? = null
 
-    private val rbtnLb by lazy { findViewById<RadioButton>(R.id.rbtn_lb) }
-    private val rbtnLbw by lazy { findViewById<RadioButton>(R.id.rbtn_lbw) }
-    private val rvOkgameRecord by lazy { findViewById<RecyclerView>(R.id.rv_okgame_record) }
-
-    private val gameRecordAdapter by lazy { OkGameRecordAdapter().apply { setOnItemClickListener(this@HomeWinRankView) } }
+    private val gameRecordAdapter by lazy { HomeWinRankAdapter().apply { setOnItemClickListener(this@HomeWinRankView) } }
     private val httpBetDataList: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
     private val httpWinsDataList: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新大奖
     private lateinit var fragment: BaseFragment<out MainHomeViewModel>
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.layout_wins_rank, this, true)
-        orientation = VERTICAL
-        minimumHeight = 453.dp
         initViews()
     }
 
     private var recordHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             var newItem: RecordNewEvent? = null
-            if (rbtnLb.isChecked) {
+            if (binding.rbtnLb.isChecked) {
                 if (httpBetDataList.isNotEmpty()) {
                     newItem = httpBetDataList.removeAt(0)
                 }
-            } else if (rbtnLbw.isChecked) {
+            } else if (binding.rbtnLbw.isChecked) {
                  if (httpWinsDataList.isNotEmpty()) {
                     newItem = httpWinsDataList.removeAt(0)
                 }
@@ -76,9 +64,9 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
     private var callApiHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
-            if (rbtnLb.isChecked) {
+            if (binding.rbtnLb.isChecked) {
                 betRequest?.invoke()
-            } else if (rbtnLbw.isChecked) {
+            } else if (binding.rbtnLbw.isChecked) {
                 winsRequest?.invoke()
             }
             postCallApiLoop()
@@ -134,21 +122,24 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
         recordHandler.removeCallbacksAndMessages(null)
     }
 
-    fun setTipsIcon(@DrawableRes icon: Int) {
-        findViewById<ImageView>(R.id.ivTipsIcon).setImageResource(icon)
-    }
-
-    private fun initViews() {
+    private fun initViews() = binding.run{
         // 暂时保持原样
 //        rvOkgameRecord.itemAnimator = null
         rvOkgameRecord.adapter = gameRecordAdapter
-        rvOkgameRecord.addItemDecoration(RCVDecoration()
-            .setDividerHeight(2f)
-            .setColor(rvOkgameRecord.context.getColor(R.color.color_EEF3FC))
-            .setMargin(10.dp.toFloat())
-        )
+//        rvOkgameRecord.addItemDecoration(RCVDecoration()
+//            .setDividerHeight(2f)
+//            .setColor(rvOkgameRecord.context.getColor(R.color.color_EEF3FC))
+//            .setMargin(10.dp.toFloat())
+//        )
 
-        findViewById<RadioGroup>(R.id.rGroupRecord).setOnCheckedChangeListener { _, checkedId ->
+        rGroupRecord.setOnCheckedChangeListener { _, checkedId ->
+            if (rbtnLb.id== checkedId){
+                rbtnLb.setTextTypeFace(Typeface.BOLD)
+                rbtnLbw.setTextTypeFace(Typeface.NORMAL)
+            }else{
+                rbtnLb.setTextTypeFace(Typeface.NORMAL)
+                rbtnLbw.setTextTypeFace(Typeface.BOLD)
+            }
             if (winsRequest == null || betRequest == null) {
                 return@setOnCheckedChangeListener
             }
@@ -181,7 +172,7 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private fun reecordAdapterNotify(it: RecordNewEvent) {
-        if (gameRecordAdapter.data.size >= 10) {
+        if (gameRecordAdapter.data.size >= pageSize) {
             gameRecordAdapter.removeAt(gameRecordAdapter.data.size - 1)
         }
         gameRecordAdapter.addData(0, it)

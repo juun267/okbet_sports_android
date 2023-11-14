@@ -26,7 +26,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.games.GameChildAdapter
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.games.SportFootGameAdapter
-import org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
+import org.cxct.sportlottery.ui.maintab.home.view.HomeBottomView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
@@ -44,7 +44,7 @@ class SportFooterGamesView @JvmOverloads constructor(
     private lateinit var okGamesViewModel: OKGamesViewModel
     private lateinit var noMoreText: TextView
     private lateinit var moreLabelLayout: LinearLayout
-    private lateinit var homeButtomView: HomeButtomView
+    private lateinit var homeBottomView: HomeBottomView
     private val gameItemViewPool by lazy {
         RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(0, 20) }
     }
@@ -101,14 +101,12 @@ class SportFooterGamesView @JvmOverloads constructor(
         recyclerView.setRecycledViewPool(gameItemViewPool)
         addView(recyclerView)
     }
-    private val bgDrawable by lazy {
 
-    }
     private fun initBottomView() {
         setBackgroundResource(R.color.color_FFFFFF)
-        homeButtomView = HomeButtomView(context)
-        homeButtomView.apply {
-            findViewById<View>(R.id.layoutPayment).gone()
+        homeBottomView = HomeBottomView(context)
+        homeBottomView.apply {
+            findViewById<View>(R.id.linPayment).gone()
             findViewById<View>(R.id.homeFollowView).gone()
             setBackgroundResource(R.color.color_FFFFFF)
             DrawableCreator.Builder()
@@ -119,14 +117,14 @@ class SportFooterGamesView @JvmOverloads constructor(
                 }
 
         }
-        addView(homeButtomView)
+        addView(homeBottomView)
     }
     fun setUp(fragment: BaseFragment<*>, viewmodel: OKGamesViewModel) {
         this.fragment = fragment
         this.okGamesViewModel = viewmodel
         initObserver(fragment, viewmodel)
         viewmodel.getFooterGames()
-        homeButtomView.bindServiceClick(fragment.parentFragmentManager)
+        homeBottomView.bindServiceClick(fragment.parentFragmentManager)
         okGamesAdapter.bindLifecycleOwner(fragment)
     }
 

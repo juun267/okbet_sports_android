@@ -3,7 +3,11 @@ package org.cxct.sportlottery.ui.maintab.home.news
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
+import kotlinx.android.synthetic.main.include_home_news.*
 import kotlinx.android.synthetic.main.view_home_news.*
+import kotlinx.android.synthetic.main.view_home_news.rvNews
+import kotlinx.android.synthetic.main.view_home_news.tvCateName
+import kotlinx.android.synthetic.main.view_home_news.tvMore
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
@@ -75,7 +79,7 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
         binding.tvShowMore.setOnClickListener {
             viewModel.getPageNews(currentPage + 1, PAGE_SIZE, categoryId)
         }
-        binding.homeBottumView.bindServiceClick(childFragmentManager)
+        binding.bottomView.bindServiceClick(childFragmentManager)
     }
 
     private fun setupNews(pageNum: Int, newsList: List<NewsItem>) {

@@ -13,6 +13,9 @@ import org.cxct.sportlottery.net.PageInfo
 import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.net.games.data.OKGamesFirm
+import org.cxct.sportlottery.net.games.data.OKGamesHall
+import org.cxct.sportlottery.net.live.OKLiveRepository
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
@@ -134,6 +137,10 @@ open class MainHomeViewModel(
         get() = _activityApply
     private val _activityApply = MutableLiveData<String>()
 
+    val homeAllProvider: LiveData<List<OKGamesFirm>>
+        get() = _homeAllProvider
+    private val _homeAllProvider = MutableLiveData<List<OKGamesFirm>>()
+
     //region 宣傳頁用
     fun getRecommend(gameType: GameType?=null) {
         viewModelScope.launch {
@@ -207,7 +214,15 @@ open class MainHomeViewModel(
             }
         }
     }
-
+    /**
+     * 获取游戏厂商列表
+     */
+    fun getGamesALl() {
+        callApi({ OKGamesRepository.getGamesALL() }) {
+            val data = it.getData() ?: return@callApi
+            _homeAllProvider.postValue(data.firmList?: listOf())
+        }
+    }
 
     /**
      * 获取首页okgames列表

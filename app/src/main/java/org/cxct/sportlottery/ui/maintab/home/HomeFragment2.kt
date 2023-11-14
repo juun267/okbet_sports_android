@@ -23,6 +23,7 @@ import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
+import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.view.HomeMenuAdapter
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
@@ -34,6 +35,7 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     private fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper2 by lazy { FragmentHelper2(childFragmentManager, R.id.flContent) }
     private lateinit var hotFragment: HomeHotFragment
+    private lateinit var newsHomeFragment: NewsHomeFragment
     private val homeMenuAdapter by lazy {
         HomeMenuAdapter { view, item->
             item.third?.let {
@@ -172,9 +174,13 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     }
 
 
-    fun jumpToNews() {}
+    fun jumpToNews() {
+        (activity as MainTabActivity).jumpToNews()
+    }
 
-    fun jumpToOKLive() { }
+    fun jumpToOKLive() {
+        (activity as MainTabActivity).jumpToOKGames()
+    }
 
 
     fun jumpToInplaySport() {

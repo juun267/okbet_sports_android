@@ -3,23 +3,14 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.widget.RelativeLayout
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.drake.spannable.addSpan
-import com.drake.spannable.setSpan
-import com.drake.spannable.span.ColorSpan
 import kotlinx.android.synthetic.main.view_home_okgame.view.*
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ViewHomeOkliveBinding
-import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.games.AllLiveFragment
-import org.cxct.sportlottery.ui.maintab.games.OKLiveViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
@@ -30,7 +21,7 @@ import splitties.systemservices.layoutInflater
 class HomeOkLiveView(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
 
     private val binding  = ViewHomeOkliveBinding.inflate(layoutInflater,this,true)
-    private val gameAdapter = RecyclerHomeOkGamesAdapter()
+    private val gameAdapter = HomeOkGamesAdapter()
 
     init {
         initView()

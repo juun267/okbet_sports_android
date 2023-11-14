@@ -18,7 +18,7 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
     : BindingAdapter<Array<Triple<Int, Int, Class<BaseFragment<*>>?>>, ItemHomeMenuPageBinding>() {
     private val datas = mutableListOf(
         arrayOf(
-            Triple(R.drawable.selector_home_menu_home, R.string.bottom_nav_home, HomeHotFragment::class.java),
+//            Triple(R.drawable.selector_home_menu_home, R.string.bottom_nav_home, HomeHotFragment::class.java),
             Triple(R.drawable.selector_home_menu_hot, R.string.home_recommend, SportVenueFragment::class.java),
             Triple(R.drawable.selector_home_menu_sport, R.string.main_tab_sport, null),
             Triple(R.drawable.selector_home_menu_casino, R.string.P230, ElecGamesFragement::class.java),

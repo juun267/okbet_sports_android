@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ViewHomeBettingstationBinding
 import org.cxct.sportlottery.databinding.ViewHomeNewsBinding
 import org.cxct.sportlottery.net.news.NewsRepository
@@ -42,7 +43,7 @@ class HomeBettingStationView(context: Context, attrs: AttributeSet) : LinearLayo
 
     private fun initView() =binding.run {
         rvBettingStation.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        rvBettingStation.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+        rvBettingStation.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
         PagerSnapHelper().attachToRecyclerView(rvBettingStation)
         rvBettingStation.adapter = homeBettingStationAdapter
     }

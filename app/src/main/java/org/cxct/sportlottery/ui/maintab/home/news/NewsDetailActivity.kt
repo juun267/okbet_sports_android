@@ -54,7 +54,7 @@ class NewsDetailActivity :
                 }
             }
         }
-        binding.homeBottumView.bindServiceClick(supportFragmentManager)
+        binding.bottomView.bindServiceClick(supportFragmentManager)
         initRecyclerView()
         initObservable()
         reload(intent)
