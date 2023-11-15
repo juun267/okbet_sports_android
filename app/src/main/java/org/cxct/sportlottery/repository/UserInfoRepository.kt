@@ -6,7 +6,10 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.safeApi
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
@@ -56,6 +59,12 @@ object UserInfoRepository {
             }
         }
         return userInfoResponse
+    }
+
+    fun loadUserInfo() {
+        if (LoginRepository.isLogined()) {
+            GlobalScope.launch { runWithCatch { getUserInfo() } }
+        }
     }
 
     @WorkerThread

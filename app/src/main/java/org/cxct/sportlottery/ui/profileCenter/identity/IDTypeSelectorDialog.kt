@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.databinding.DialogIdtypeSelectorBinding
 import org.cxct.sportlottery.network.index.config.IdentityType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.RCVDecoration
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
@@ -114,7 +116,8 @@ class IDTypeSelectorDialog(private val context: FragmentActivity, private val li
         RxPermissions(context).request(Manifest.permission.CAMERA).subscribe { onNext ->
             if (onNext) {
                 val item = idAdapter.getItem(position)
-                TakeIDPhotoActivity.start(context, item.id, item.name)
+                Log.e("For Test", "======>> onItemClick ${JsonUtil.toJson(item)}")
+                TakeIDPhotoActivity.start(context, item.id, item.type, item.name)
             } else {
                 ToastUtil.showToast(context, context.getString(R.string.N980))
             }
