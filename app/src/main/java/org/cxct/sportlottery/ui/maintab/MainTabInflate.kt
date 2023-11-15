@@ -82,5 +82,11 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
         currentItem?.let { setChangeSelected(it, false) }
         currentItem = null
     }
+    fun selected(position:Int) {
+        clearSelected()
+        currentItem = parent.getChildAt(position) as LinearLayout
+        currentItem?.let { setChangeSelected(it, true) }
+        currentItem = null
+    }
 
 }

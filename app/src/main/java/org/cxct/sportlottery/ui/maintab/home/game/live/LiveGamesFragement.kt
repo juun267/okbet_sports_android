@@ -1,20 +1,21 @@
-package org.cxct.sportlottery.ui.maintab.home.game.slot
+package org.cxct.sportlottery.ui.maintab.home.game.live
 
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
+import org.cxct.sportlottery.ui.maintab.games.OKLiveViewModel
 import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
+import org.cxct.sportlottery.ui.maintab.home.game.slot.ElecGameAdapter
+import org.cxct.sportlottery.ui.maintab.home.game.slot.ElecTabAdapter
 import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
-class ElecGamesFragement: GameVenueFragment<OKGamesViewModel, FragmentGamevenueBinding>() {
+class LiveGamesFragement: GameVenueFragment<OKLiveViewModel, FragmentGamevenueBinding>() {
 
     private val tabAdapter = ElecTabAdapter()
     private val gameAdapter = ElecGameAdapter()
@@ -39,7 +40,7 @@ class ElecGamesFragement: GameVenueFragment<OKGamesViewModel, FragmentGamevenueB
             gameAdapter.setOnItemClickListener{ _, _, position ->
                 val okGameBean = gameAdapter.data[position].second
                 if (okGameBean.isShowMore){
-                    (activity as MainTabActivity).jumpToOKGames()
+                    (activity as MainTabActivity).jumpToOkLive()
                     return@setOnItemClickListener
                 }
                 if (okGameBean.isShowBlank){
@@ -48,7 +49,7 @@ class ElecGamesFragement: GameVenueFragment<OKGamesViewModel, FragmentGamevenueB
                 if(LoginRepository.isLogined()){
                     loginedRun(requireContext()) {
                         okGameBean.let {okGameBean->
-                            viewModel.homeOkGamesEnterThirdGame(okGameBean, this@ElecGamesFragement)
+                            viewModel.homeOkGamesEnterThirdGame(okGameBean, this@LiveGamesFragement)
                             viewModel.homeOkGameAddRecentPlay(okGameBean)
                         }
                     }
@@ -81,7 +82,7 @@ class ElecGamesFragement: GameVenueFragment<OKGamesViewModel, FragmentGamevenueB
 
     override fun onInitData() {
         loading()
-        viewModel.getOKGamesHall()
+        viewModel.getOKLiveHall()
     }
 
     private fun initObserver() {
@@ -102,7 +103,8 @@ class ElecGamesFragement: GameVenueFragment<OKGamesViewModel, FragmentGamevenueB
                 maxSizeSubList.forEach { bean->
                     itemList.add(Pair(category.id,bean))
                 }
-             }
+            }
+            it.firmList?.forEach { it.img }
             gameAdapter.firmList = it.firmList
             gameAdapter.setNewInstance(itemList)
             }

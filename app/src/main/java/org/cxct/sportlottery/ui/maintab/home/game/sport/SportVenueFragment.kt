@@ -51,7 +51,6 @@ class SportVenueFragment: GameVenueFragment<SportTabViewModel, FragmentGamevenue
                     val pair=matchTabAdapter.data.firstOrNull { it.second.items.contains(selectItem) }
                     val matchType = if (pair==null) MatchType.IN_PLAY else MatchType.getMatchTypeByStringId(pair.first)
                     val gameType = GameType.getGameType(selectItem.code)
-                    LogUtil.d("jumpToTheSport="+matchType.postValue+","+gameType?.key)
                     (activity as MainTabActivity).jumpToTheSport(matchType,gameType)
                 }
             }

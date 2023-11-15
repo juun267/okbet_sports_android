@@ -32,10 +32,6 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
     private fun getMainTabActivity() = activity as MainTabActivity
     private fun getHomeFragment() = parentFragment as HomeFragment2
 
-    fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
-    fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
-    fun jumpToOKLive() = getMainTabActivity().jumpToOkLive()
-
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
             if (hotMatchView.isVisible) {

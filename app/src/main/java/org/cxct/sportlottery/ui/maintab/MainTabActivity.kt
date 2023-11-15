@@ -520,7 +520,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
         if(StaticData.okGameOpened()){
             navToPosition(INDEX_OKGAMES)
-            enableSelectBottomNav(true)
+            tabHelper.selected(INDEX_OKGAMES)
         }else{
             ToastUtil.showToast(this,getString(R.string.N700))
         }
@@ -532,29 +532,19 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
         if(StaticData.okLiveOpened()){
             navToPosition(INDEX_OKLIVE)
-            enableSelectBottomNav(false)
+            tabHelper.clearSelected()
         }else{
             ToastUtil.showToast(this,getString(R.string.N700))
         }
     }
     fun jumpToNews() {
         navToPosition(INDEX_NEWS)
-        enableSelectBottomNav(false)
+        tabHelper.clearSelected()
     }
     private fun navToPosition(position: Int) {
         fragmentHelper.showFragment(position)
     }
 
-    /**
-     * 清除选中状态，由于组件必须选中一个，就默认选中第一个，并且设置未选中的样式
-     */
-    private fun enableSelectBottomNav(enable: Boolean) {
-        if (enable){
-
-        }else{
-            tabHelper.clearSelected()
-        }
-    }
 
     fun jumpToESport() {
         checkSportStatus(this) {

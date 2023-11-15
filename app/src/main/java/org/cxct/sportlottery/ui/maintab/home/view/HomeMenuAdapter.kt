@@ -10,6 +10,7 @@ import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHomeMenuPageBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragement
 import org.cxct.sportlottery.ui.maintab.home.game.slot.ElecGamesFragement
 import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
@@ -22,7 +23,7 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
             Triple(R.drawable.selector_home_menu_hot, R.string.home_recommend, HomeHotFragment::class.java),
             Triple(R.drawable.selector_home_menu_sport, R.string.main_tab_sport, SportVenueFragment::class.java),
             Triple(R.drawable.selector_home_menu_casino, R.string.P230, ElecGamesFragement::class.java),
-            Triple(R.drawable.selector_home_menu_live, R.string.home_live, ElecGamesFragement::class.java),
+            Triple(R.drawable.selector_home_menu_live, R.string.home_live, LiveGamesFragement::class.java),
             Triple(R.drawable.selector_home_menu_esport, R.string.esports, SportVenueFragment::class.java),
             Triple(R.drawable.selector_home_menu_promotion, R.string.promotion, SportVenueFragment::class.java),
         ),

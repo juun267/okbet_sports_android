@@ -11,17 +11,21 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.net.games.data.OKGamesCategory
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class ElecTabAdapter: BaseQuickAdapter<Pair<String, String>, BaseViewHolder>(0) {
+class ElecTabAdapter: BaseQuickAdapter<OKGamesCategory, BaseViewHolder>(0) {
 
     private val iconId = View.generateViewId()
     private val nameId = View.generateViewId()
     private val lp = LinearLayout.LayoutParams(-1, 68.dp)
     private val iconLp = LinearLayout.LayoutParams(32.dp, 32.dp).apply { topMargin = 12.dp }
     private val nameLp = LinearLayout.LayoutParams(-2, -2).apply { topMargin = 5.dp }
+    private var selectPosition = 0
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val lin = LinearLayout(parent.context)
         lin.orientation = LinearLayout.VERTICAL
@@ -44,9 +48,26 @@ class ElecTabAdapter: BaseQuickAdapter<Pair<String, String>, BaseViewHolder>(0) 
         return BaseViewHolder(lin)
     }
 
-    override fun convert(holder: BaseViewHolder, item: Pair<String, String>) {
-        holder.getView<ImageView>(iconId).load(item.first)
-        holder.getView<TextView>(nameId).text = item.second
+    override fun convert(holder: BaseViewHolder, item: OKGamesCategory) {
+        holder.getView<ImageView>(iconId).let {
+            item.bindTabIcon(it,false)
+        }
+        holder.getView<TextView>(nameId).let {
+            item.bindNameText(it)
+        }
+        if (selectPosition == holder.layoutPosition) {
+            holder.itemView.setBackgroundResource(R.drawable.bg_sportvenue_type)
+        } else {
+            holder.itemView.background = null
+        }
+    }
+
+    fun setSelected(position: Int) {
+       if (selectPosition == position){
+           return
+       }
+        selectPosition = position
+        notifyDataSetChanged()
     }
 
 }

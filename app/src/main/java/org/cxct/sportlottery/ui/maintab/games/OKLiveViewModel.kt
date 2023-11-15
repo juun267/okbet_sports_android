@@ -78,13 +78,13 @@ class OKLiveViewModel(
     /**
      * 获取游戏大厅数据（包含，厂商列表，收藏列表）
      */
-    fun getOKGamesHall() {
+    fun getOKLiveHall() {
         if (isLoadingOKGamesHall) {
             return
         }
 
         isLoadingOKGamesHall = true
-        callApi({ OKLiveRepository.okGamesHall() }) {
+        callApi({ OKLiveRepository.okLiveHall() }) {
 
             isLoadingOKGamesHall = false
             val data = it.getData() ?: return@callApi
@@ -130,7 +130,7 @@ class OKLiveViewModel(
      * 收藏游戏
      */
     fun collectGame(gameData: OKGameBean) =
-        callApi({ OKLiveRepository.collectOkGames(gameData.id, !gameData.markCollect) }) {
+        callApi({ OKLiveRepository.collectOkLive(gameData.id, !gameData.markCollect) }) {
             if (!it.succeeded()) {
                 ToastUtil.showToast(MultiLanguagesApplication.appContext, it.msg)
                 return@callApi

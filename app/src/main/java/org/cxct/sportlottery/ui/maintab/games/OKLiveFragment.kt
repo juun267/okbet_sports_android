@@ -79,7 +79,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         initTopView()
         showGameAll()
         initObservable()
-        viewModel.getOKGamesHall()
+        viewModel.getOKLiveHall()
 //        showOkGameDialog()
     }
 

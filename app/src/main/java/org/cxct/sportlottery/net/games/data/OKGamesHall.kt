@@ -64,7 +64,7 @@ data class OKGamesFirm(
     }
 
     override fun bindLabelName(textView: TextView) {
-        textView.setText(firmName)
+        textView.text = firmName
     }
     fun isMaintain() = 1 == maintain
 
@@ -92,4 +92,6 @@ data class OKGameBean(
     override val childNode: MutableList<BaseNode> = mutableListOf()
 
     fun isMaintain() = maintain == 1
+    var isShowMore = false
+    var isShowBlank = true
 }
