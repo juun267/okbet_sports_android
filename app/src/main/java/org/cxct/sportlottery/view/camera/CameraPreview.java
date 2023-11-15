@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -59,6 +60,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     private void addSurfaceCallback() {
         if (!isAddedCallback) {
+            Log.e("For Test", "======>>> TakeIDPhotoActivity 4444");
             isAddedCallback = true;
             mSurfaceHolder.addCallback(this);
             mSurfaceHolder.setKeepScreenOn(true);
@@ -82,6 +84,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private void initCamera(SurfaceHolder holder) {
         camera = CameraUtils.openCamera();
         if (camera != null) {
+            Log.e("For Test", "======>>> TakeIDPhotoActivity 5555");
             try {
                 camera.setPreviewDisplay(holder);
 
@@ -229,6 +232,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void startPreview() {
         addSurfaceCallback();
         if (camera == null) {
+            Log.e("For Test", "======>>> TakeIDPhotoActivity 4444");
             initCamera(getHolder());
         }
     }
