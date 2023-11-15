@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 import android.view.View
 import com.drake.spannable.replaceSpan
 import com.drake.spannable.span.CenterImageSpan
-import com.google.common.eventbus.Subscribe
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.KYCEvent
 import org.cxct.sportlottery.databinding.FragmentVerifyIdentityKyc2Binding
