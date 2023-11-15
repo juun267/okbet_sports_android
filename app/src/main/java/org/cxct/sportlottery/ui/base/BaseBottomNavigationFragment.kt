@@ -63,6 +63,15 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         fun onAfterAnimate() = onAfterAnimate.invoke()
     }
 
+    fun clickMenu() {
+        when (activity) {
+            is BaseBottomNavActivity<*> -> {
+                (activity as BaseBottomNavActivity<*>).clickMenuEvent()
+            }
+            else -> Timber.i("$this 尚未實作關閉菜單方法")
+        }
+    }
+
     private var dataSourceChangeEven: (() -> Unit)? = null
 
     /**

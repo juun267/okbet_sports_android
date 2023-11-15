@@ -20,14 +20,12 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.doOnResume
-import org.cxct.sportlottery.common.extentions.fitsSystemStatus
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
@@ -51,6 +49,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         addChildView()
     }
 
+    lateinit var ivMenuLeft: ImageView
     lateinit var ivLogo: ImageView
     private lateinit var searchView: View
     lateinit var searchIcon: View
@@ -71,17 +70,32 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private var onlyShowSeach = true
 
     private fun addChildView() {
+        ivMenuLeft = AppCompatImageView(context)
+        ivMenuLeft.setImageResource(R.drawable.ic_home_menu)
+
+        val wh = 24.dp
+        addView(ivMenuLeft, LayoutParams(wh, wh).apply {
+            gravity = Gravity.BOTTOM
+            leftMargin = 6.dp
+        })
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
         addView(ivLogo, LayoutParams(-2, 36.dp).apply {
-            leftMargin = 6.dp
+            leftMargin = 36.dp
         })
 
         addSearchView()
         addUserView()
         addLoginBtn()
         fitsSystemStatus()
+    }
+    fun hideLeftMenu(){
+        ivMenuLeft.gone()
+        (ivLogo.layoutParams as FrameLayout.LayoutParams).apply {
+            leftMargin =  6.dp
+            ivLogo.layoutParams = this
+        }
     }
 
     private fun addSearchView() {

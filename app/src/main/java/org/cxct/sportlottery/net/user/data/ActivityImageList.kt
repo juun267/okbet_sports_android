@@ -28,7 +28,7 @@ data class ActivityImageList(
     val titleText: String?=null,
     val frontPageShow: Int,
     val imageLink: String?=null,
-):Parcelable,BaseBannerInfo {
+):Parcelable, BaseBannerInfo {
     override fun getXBannerUrl(): String {
         return indexImage?:""
     }

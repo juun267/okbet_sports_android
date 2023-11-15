@@ -37,7 +37,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         sportLeagueAdapter2.onOddsChangeEvent(it)
     }
 
-    private val sportLeagueAdapter2 by lazy {
+    open val sportLeagueAdapter2 by lazy {
         SportLeagueAdapter2(matchType,
             this,
             onNodeExpand = { resubscribeChannel(200) },
@@ -62,17 +62,18 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         clearSubscribeChannels()
         setupSportTypeList()
         setupToolbarStatus()
+        currentItem = null
     }
 
-    fun reload(matchType: MatchType, gameType: String?) {
+    open fun reload(matchType: MatchType, gameType: String?) {
         this.matchType = matchType
         this.gameType = gameType ?: GameType.BK.key
         sportLeagueAdapter2.matchType = this.matchType
         reset()
         scrollBackTop()
         binding.appbarLayout.scrollBy(0, 0)
-        viewModel.loadMatchType(matchType)
-        loading()
+        showLoading()
+        getMenuDataByParent()
     }
 
     override fun onBindViewStatus(view: View) {
@@ -100,10 +101,13 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
     protected open fun observeSportList() = viewModel.run {
 
         oddsListGameHallResult.observe(this@SportListFragment2.viewLifecycleOwner) {
+            if (it.tag != gameType) {
+                return@observe
+            }
 
 
             val oddsListData = it.getContentIfNotHandled()?.oddsListData ?: return@observe
-            hideLoading()
+            dismissLoading()
             val leagueOdds: List<LeagueOdd>? = oddsListData.leagueOdds
             if (leagueOdds.isNullOrEmpty()) {
                 return@observe

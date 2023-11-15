@@ -215,9 +215,14 @@ class VerifyKYCFragment :
 
         if (userInfo.hasFullName()) {
             eetFirstName.setText(userInfo.firstName)
-            eedtMiddleName.setText(userInfo.middleName)
-            cbNoMiddleName.isChecked = userInfo.middleName.isEmptyStr() or "N/A".equals(userInfo.middleName, true)
-            eedtMiddleName.isEnabled = !cbNoMiddleName.isChecked
+            val noneMiddleName = userInfo.noneMiddleName()
+            if (noneMiddleName) {
+                eedtMiddleName.setText("N/A")
+            } else {
+                eedtMiddleName.setText(userInfo.middleName)
+            }
+            cbNoMiddleName.isChecked = noneMiddleName
+            eedtMiddleName.isEnabled = !noneMiddleName
             eedtLastName.setText(userInfo.lastName)
             et_birthday.setText(userInfo.birthday)
         }

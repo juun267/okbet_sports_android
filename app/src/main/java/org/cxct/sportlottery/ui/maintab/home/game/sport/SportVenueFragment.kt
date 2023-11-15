@@ -83,7 +83,7 @@ class SportVenueFragment: GameVenueFragment<SportTabViewModel, FragmentGamevenue
 
     override fun onInitData() {
         loading()
-        viewModel.getMatchData()
+        viewModel.getSportMenuData()
     }
 
     private fun initObserver() {

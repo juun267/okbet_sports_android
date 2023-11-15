@@ -110,7 +110,6 @@ class LoginVerifyActivity: BindingActivity<LoginViewModel, ActivityLoginVerifyBi
             countDownGoing = true
             binding.btnSend.setBtnEnable(false)
         }, {
-            binding.btnSend.setBtnEnable(false)
             binding.btnSend.text = "${it}s"
         }, {
             countDownGoing = false

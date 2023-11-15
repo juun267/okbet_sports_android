@@ -7,6 +7,7 @@ import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.interceptor.*
 import org.cxct.sportlottery.repository.ChatRepository
@@ -105,11 +106,23 @@ object RetrofitHolder {
     }
 
     fun changeHost(baseUrl: String) {
-        RetrofitUrlManager.getInstance().setGlobalDomain(baseUrl)
+        try {
+            RetrofitUrlManager.getInstance().setGlobalDomain(baseUrl)
+        } catch (e: Exception) {
+            if (!baseUrl.startsWith("http", true)) {
+                runWithCatch { RetrofitUrlManager.getInstance().setGlobalDomain("http://$baseUrl") }
+            }
+        }
     }
 
     fun changeChatHost(host: String) {
-        chatUrlManager.setGlobalDomain(host)
+        try {
+            chatUrlManager.setGlobalDomain(host)
+        } catch (e: Exception) {
+            if (!host.startsWith("http", true)) {
+                runWithCatch { chatUrlManager.setGlobalDomain("http://$host") }
+            }
+        }
     }
 
     private fun getHttpClient(block: (OkHttpClient.Builder) -> Unit): OkHttpClient {

@@ -18,6 +18,8 @@ open class Item(
     val num: Int,
     @Json(name = "sortNum")
     val sortNum: Int,
+    @Json(name = "categoryList")
+    var categoryList: MutableList<CategoryItem>?=null
 ): BaseNode() {
     override val childNode: MutableList<BaseNode>? = null
     var isSelected: Boolean = false

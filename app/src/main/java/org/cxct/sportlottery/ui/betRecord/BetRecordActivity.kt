@@ -11,6 +11,7 @@ import org.cxct.sportlottery.databinding.ActivityBetRecordBinding
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.bindSportMaintenance
 import org.cxct.sportlottery.util.setTextTypeFace
 
 class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>() {
@@ -52,6 +53,7 @@ class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>(
                     }
             }
         }
+        bindSportMaintenance()
     }
 
     override fun onInitData() {

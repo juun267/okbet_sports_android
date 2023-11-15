@@ -104,13 +104,13 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
     }
 
     private fun loadData() {
-        loading()
+        showLoading()
         viewModel.getGameHallList(matchType, gameType)
     }
 
     override fun setSelectMatch(leagueIdList: ArrayList<String>,matchIdList: ArrayList<String>) {
         clearData()
-        loading()
+        showLoading()
         viewModel.getGameHallList(matchType, gameType, leagueIdList,matchIdList)
     }
 
@@ -139,7 +139,7 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
 
             val result = it.getContentIfNotHandled()
             if (result == null) {
-                hideLoading()
+                dismissLoading()
                 return@observe
             }
             val list = result.oddsListData?.leagueOdds as MutableList<BaseNode>?
@@ -149,7 +149,7 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
                 baseNode.childNode?.forEach { (it as BaseExpandNode).isExpanded = false }
             }
             setSportDataList(list)
-            hideLoading()
+            dismissLoading()
         }
 
     }

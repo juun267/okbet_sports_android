@@ -87,6 +87,10 @@
 }
 #====== EventBus ============ end
 
+-keepclasseswithmembers class com.google.android.material.bottomnavigation.BottomNavigationItemView {*;}
+-keepclasseswithmembers class com.google.android.material.bottomnavigation.BottomNavigationView {*;}
+-keepclasseswithmembers class com.google.android.material.bottomnavigation.BottomNavigationMenuView {*;}
+
 -keepclassmembers class androidx.fragment.app.DialogFragment {  <fields>; }
 
 # 所有的类都不混淆（不得已，不要使用）

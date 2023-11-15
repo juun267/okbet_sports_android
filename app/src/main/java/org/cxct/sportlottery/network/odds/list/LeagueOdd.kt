@@ -36,6 +36,7 @@ data class LeagueOdd(
                 if (matchInfo.leagueName.isEmptyStr()) {
                     matchInfo.leagueName = league.name
                 }
+                matchInfo.categoryCode = league.categoryCode
             }
         }
         return@lazy list

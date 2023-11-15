@@ -1,25 +1,14 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.common.extentions.callApi
-import org.cxct.sportlottery.common.extentions.safeApi
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.sport.SportRepository
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.MenuCode
-import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
-import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
-import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TimeUtil
 
 class SportTabViewModel(
@@ -42,9 +31,15 @@ class SportTabViewModel(
 
     val sportMenuResult: LiveData<ApiResult<SportMenuData>>
         get() = _sportMenuResult
-    private val _sportMenuResult = SingleLiveEvent<ApiResult<SportMenuData>>()
+    private val _sportMenuResult = MutableLiveData<ApiResult<SportMenuData>>()
 
-    fun getMatchData() {
+    private var lastMenuTag = 0L
+    private var menuLoading = false
+    fun getSportMenuData() {
+        if (menuLoading || System.currentTimeMillis() - lastMenuTag < 10_000) {
+            return
+        }
+        menuLoading = true
         callApi({
             SportRepository.getSportMenu(
                 TimeUtil.getNowTimeStamp().toString(),
@@ -54,6 +49,8 @@ class SportTabViewModel(
                 it.getData()?.sortSport()
                 _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
             }
+            menuLoading = false
+            lastMenuTag = System.currentTimeMillis()
         }
     }
 
@@ -86,7 +83,4 @@ class SportTabViewModel(
         return this
     }
 
-    fun setSportMenuResult(sportMenuResult: ApiResult<SportMenuData>) {
-        _sportMenuResult.postValue(sportMenuResult)
-    }
 }

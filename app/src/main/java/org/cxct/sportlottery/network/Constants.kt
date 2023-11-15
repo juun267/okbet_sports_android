@@ -6,9 +6,7 @@ import android.content.pm.PackageManager
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -24,6 +22,7 @@ object Constants {
     val SERVER_URL_LIST = listOf("56wwwkvo.com", "66abnmho.com", "pukckq23.com", "tyiksa89.com")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     var currentFilename: String? = null //當前選擇的apk name
+    var isVersonControl: Boolean = false //是否审核中版本，通过ftp配置来判断
     private var mBaseUrl = ""
         set(value) {
             field = value
@@ -310,7 +309,7 @@ object Constants {
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
-        return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (BuildConfig.FLAVOR != "google") "" else "-${BuildConfig.FLAVOR}") + ".json"
+        return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (upgradeFromMarket()) "-${BuildConfig.FLAVOR}" else "") + ".json"
     }
 
     //.apk 下載 url
@@ -319,7 +318,7 @@ object Constants {
     }
 
     fun getHostListUrl(serverUrl: String?): String {
-        return "https://${BuildConfig.CHANNEL_NAME}.$serverUrl/api/front/domainconfig/appdomain/${BuildConfig.CHANNEL_NAME}.json"
+        return "https://${BuildConfig.CHANNEL_NAME}.$serverUrl/api/front/domainconfig/appdomainV2/${APP_NAME}/${BuildConfig.CHANNEL_NAME}.json"
     }
 
     //bet
@@ -337,7 +336,6 @@ object Constants {
     const val INDEX_VALIDATE_CODE = "/api/front/index/getvalidatecode" //获取验证码
     const val INDEX_REGISTER = "/api/front/index/register" //注册用户
     const val INDEX_SEND_SMS = "/api/front/index/sendSms" //发送验证码
-    const val INDEX_CHECK_EXIST = "/api/front/index/checkexist/{userName}" //检查账号名称是否已存在
     const val INDEX_CHECK_TOKEN = "/api/front/index/checktoken" //验证token 是否过期
     const val LOGIN_FOR_GUEST = "/api/front/index/loginforguest" //游客登录
     const val INDEX_PROMOTENOTICE =
@@ -360,6 +358,12 @@ object Constants {
 
     //登录或注册获取验证码(新版优化登录注册->使用)
     const val LOGIN_OR_REG_SEND_VALIDCODE = "/api/front/index/loginOrRegSendValidCode"
+
+    // 校验/api/front/index/loginOrRegSendValidCode这个接口发出的短信验证码
+    const val VERIFY_SMS_CODE = "/api/front/index/onlyVerifySms"
+
+    // 重制提款密码
+    const val RRESET_WITHDRAW = "/api/front/user/timesFundPwd"
 
     // facebook登录或注册(新版优化登录注册->使用)
     const val FACEBOOK_LOGIN = "/api/front/index/facebookLogin"

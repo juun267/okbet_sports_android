@@ -346,9 +346,9 @@ fun EditText.checkRegisterListener(onCheck: (String) -> Unit) {
 fun EditText.checkPhoneNum(textFieldBoxes: FrameLayout?, onResult: ((String?) -> Unit)?) {
     checkRegisterListener { phoneNum->
         val msg = when {
-            phoneNum.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            phoneNum.isBlank() -> context.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPhone(phoneNum) -> {
-                LocalUtils.getString(R.string.phone_no_error)
+                context.getString(R.string.phone_no_error)
             }
             else -> null
         }
@@ -363,9 +363,9 @@ fun EditText.checkPhoneNum(textFieldBoxes: FrameLayout?, onResult: ((String?) ->
 fun EditText.checkSMSCode(textFieldBoxes: FrameLayout?, onResult: ((String?) -> Unit)?) {
     checkRegisterListener { smsCode->
         val msg = when {
-            smsCode.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            smsCode.isNullOrEmpty() -> context.getString(R.string.error_input_empty)
             smsCode.length < 4 -> context.getString(R.string.sms_code_length_error)
-            !VerifyConstUtil.verifySMSCode(smsCode, 4) -> LocalUtils.getString(R.string.error_verification_code_by_sms)
+            !VerifyConstUtil.verifySMSCode(smsCode, 4) -> context.getString(R.string.error_verification_code_by_sms)
             else -> null
         }
         when(textFieldBoxes){
@@ -379,8 +379,8 @@ fun EditText.checkSMSCode(textFieldBoxes: FrameLayout?, onResult: ((String?) -> 
 fun EditText.checkEmail(textFieldBoxes: FrameLayout, onResult: ((String?) -> Unit)?) {
     checkRegisterListener { email->
         val msg = when {
-            email.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyMail(email) -> LocalUtils.getString(R.string.pls_enter_correct_email)
+            email.isNullOrEmpty() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyMail(email) -> context.getString(R.string.pls_enter_correct_email)
             else -> null
         }
 
@@ -389,5 +389,22 @@ fun EditText.checkEmail(textFieldBoxes: FrameLayout, onResult: ((String?) -> Uni
             is LoginFormFieldView -> textFieldBoxes.setError(msg, false)
         }
         onResult?.invoke(if (msg == null) email else null)
+    }
+}
+
+fun EditText.checkWithdrawPassword(textFieldBoxes: FrameLayout, other: EditText? = null, onResult: ((String?) -> Unit)?) {
+    checkRegisterListener { text->
+        val msg = when {
+            text.isNullOrEmpty() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPayPwd(text) -> context.getString(R.string.error_withdraw_password_for_new)
+            (other != null && other.text.toString() != text) -> context.getString(R.string.J169)
+            else -> null
+        }
+
+        when(textFieldBoxes){
+            is TextFormFieldBoxes-> textFieldBoxes.setError(msg, false)
+            is LoginFormFieldView -> textFieldBoxes.setError(msg, false)
+        }
+        onResult?.invoke(if (msg == null) text else null)
     }
 }

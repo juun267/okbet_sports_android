@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.webkit.*
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
@@ -47,6 +48,7 @@ import org.cxct.sportlottery.network.matchLiveInfo.ChatLiveLoginData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -54,7 +56,6 @@ import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetListFragment
-import org.cxct.sportlottery.ui.maintab.entity.HomeMenuBean
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.adapter.*
 import org.cxct.sportlottery.ui.sport.detail.fragment.SportChartFragment
@@ -64,6 +65,7 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.DetailSportGuideView
+import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import splitties.bundle.put
 import timber.log.Timber
@@ -187,7 +189,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
 
-    private fun initToolBar() = binding.run {
+    override fun initToolBar() = binding.run {
         setStatusbar(R.color.color_FFFFFF,true)
         ivBack.setOnClickListener {
             if (liveViewToolBar.isFullScreen) {
@@ -382,7 +384,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
 
-    private fun initBottomNavigation() {
+    override fun initMenu() {
+    }
+
+    override fun clickMenuEvent() {
+    }
+
+    override fun initBottomNavigation() {
 //
         binding.parlayFloatWindow.setBetText(getString(R.string.bet_slip))
         binding.parlayFloatWindow.onViewClick = {
@@ -506,6 +514,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             .addToBackStack(BetListFragment::class.java.simpleName).commit()
     }
 
+    override fun updateUiWithLogin(isLogin: Boolean) {
+    }
+
+    override fun updateOddsType(oddsType: OddsType) {
+    }
+
     override fun updateBetListCount(num: Int) {
         setUpBetBarVisible()
         binding.parlayFloatWindow.updateCount(num.toString())
@@ -536,6 +550,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         matchInfo?.let {
             tv_game_title.text = it.leagueName
             startTime = (it.leagueTime?:0).toLong()
+            if (it.gameType == GameType.ES.key){
+                setESportTheme()
+            }
             updateMenu(it)
         }
         tabCode?.let {
@@ -659,8 +676,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 sportCode = GameType.getGameType(matchInfo?.gameType)
             }
         rv_detail.apply {
-            if (itemDecorationCount==0)
-            addItemDecoration(SpaceItemDecoration(context,R.dimen.margin_4))
+            if (itemDecorationCount==0) {
+                addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_4))
+            }
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             setLinearLayoutManager()
@@ -1150,6 +1168,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         listOf(binding.ivLiveStream,binding.ivVideo,binding.ivAnim).forEachIndexed { index, imageView ->
             imageView.isSelected = position==index
         }
+    }
+
+    /**
+     * 设置电竞主题样式
+     */
+    private fun setESportTheme()=binding.run{
+        clToolContent.setBackgroundResource(R.color.color_EEF3FC)
+        viewToolCenter.setBackgroundResource(R.color.color_D4E1F1)
+        linCategroy.setBackgroundResource(R.drawable.bg_gradient_detail_tab)
     }
 
 }

@@ -84,9 +84,10 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
         }
     }
 
-    private fun initToolBar() = binding.run {
-        homeToolbar.attach(this@HomeFragment2, getMainTabActivity(), viewModel)
-        homeToolbar.tvUserMoney.setOnClickListener {
+    private fun initToolBar() = binding.homeToolbar.run {
+        hideLeftMenu()
+        attach(this@HomeFragment2, getMainTabActivity(), viewModel)
+        tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true,Gravity.RIGHT))
             getMainTabActivity().showMainRightMenu()
         }

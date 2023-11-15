@@ -5,12 +5,14 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
 import org.cxct.sportlottery.net.user.data.VerifyConfig
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.ACTIVITY_APPLY
 import org.cxct.sportlottery.network.Constants.ACTIVITY_DETAIL_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
 import org.cxct.sportlottery.network.Constants.LOGIN_CHECK_NEED_CODE
+import org.cxct.sportlottery.network.Constants.RRESET_WITHDRAW
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.UPLOAD_REVIEW_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_VERIFY_CONFIG
@@ -58,6 +60,12 @@ interface UserApiService {
 
     @POST(USER_LOGIN)
     suspend fun userLoginV3(@Body params: LoginRequest): ApiResult<LoginData>
+
+    @POST(Constants.VERIFY_SMS_CODE)
+    suspend fun verifySMSCode(@Body params: Map<String, String>): ApiResult<String>
+
+    @POST(RRESET_WITHDRAW)
+    suspend fun resetWithdraw(@Body params : JsonObject) : ApiResult<String>
 
 
 }

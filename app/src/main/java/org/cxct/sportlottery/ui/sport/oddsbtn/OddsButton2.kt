@@ -35,6 +35,7 @@ class OddsButton2 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
+    val esportTheme: Boolean = false
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
     companion object {
@@ -235,7 +236,7 @@ class OddsButton2 @JvmOverloads constructor(
             oddsValue = addOddView(oddsValueCaches.removeAt(0), params1)
             return oddsValue!!
         }
-        oddsValue = OddsValueView(context)
+        oddsValue = OddsValueView(context,esportTheme = esportTheme)
         addOddView(oddsValue!!, params1)
         return oddsValue!!
     }

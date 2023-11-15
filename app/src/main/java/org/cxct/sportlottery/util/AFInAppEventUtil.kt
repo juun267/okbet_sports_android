@@ -6,16 +6,14 @@ import com.appsflyer.AppsFlyerLib
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 
 object AFInAppEventUtil {
-    fun login(uid: String) {
-        val eventValues = HashMap<String, Any>()
+    fun login(uid: String,eventValues: HashMap<String, Any>) {
         eventValues.put(AFInAppEventParameterName.ACHIEVEMENT_ID, uid)
         AppsFlyerLib.getInstance().logEvent(
             MultiLanguagesApplication.getInstance(),
             AFInAppEventType.LOGIN, eventValues)
     }
 
-    fun register(method: String) {
-        val eventValues = HashMap<String, Any>()
+    fun register(method: String,eventValues: HashMap<String, Any>) {
         eventValues.put(AFInAppEventParameterName.REGSITRATION_METHOD, method)
         AppsFlyerLib.getInstance().logEvent(
             MultiLanguagesApplication.getInstance(),

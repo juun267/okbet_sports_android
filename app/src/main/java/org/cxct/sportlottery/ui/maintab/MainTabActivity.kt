@@ -12,16 +12,14 @@ import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.event.ShowInPlayEvent
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.screenWidth
-import org.cxct.sportlottery.common.extentions.startActivity
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -46,6 +44,7 @@ import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.SportFragment2
+import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -75,7 +74,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private val INDEX_HOME = 0
     private val INDEX_SPORT = 1
-    private val INDEX_GAMES = 2
+    private val INDEX_OKGAMES = 2
     private val INDEX_PROFILE = 3
     private val INDEX_OKLIVE = 4
     private val INDEX_NEWS = 5
@@ -154,7 +153,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     ToastUtil.showToast(this@MainTabActivity,getString(R.string.N700))
                     false
                 } else {
-                    navToPosition(INDEX_GAMES)
+                    navToPosition(INDEX_OKGAMES)
                     true
                 }
             }
@@ -178,10 +177,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
 
         if (result) {
-            fragmentHelper.showFragment(INDEX_HOME)
             setupBetBarVisiblity()
         }
-
         return result
     }
 
@@ -250,7 +247,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (fragment is SportFragment2) {
             return true
         }
-
+        if (fragment is ESportFragment) {
+            return true
+        }
         return false
     }
 
@@ -308,7 +307,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
 
-    private fun initMenu() {
+    override fun initMenu() {
         try {
             //關閉側邊欄滑動行為
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -463,7 +462,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    private fun initBottomNavigation() {
+    override fun initBottomNavigation() {
         binding.parlayFloatWindow.onViewClick = { showBetListPage() }
         val radius = 15.dp.toFloat()
         binding.linTab.background = ShapeDrawable()
@@ -520,7 +519,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             return
         }
         if(StaticData.okGameOpened()){
-            navToPosition(INDEX_OKLIVE)
+            navToPosition(INDEX_OKGAMES)
             enableSelectBottomNav(true)
         }else{
             ToastUtil.showToast(this,getString(R.string.N700))
@@ -603,5 +602,23 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
 
     fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
+    override fun initToolBar() {
+    }
+
+    override fun clickMenuEvent() {
+    }
+
+    override fun updateUiWithLogin(isLogin: Boolean) {
+        if (isLogin) {
+
+
+        } else {
+
+
+        }
+    }
+    override fun updateOddsType(oddsType: OddsType) {
+
+    }
 
 }

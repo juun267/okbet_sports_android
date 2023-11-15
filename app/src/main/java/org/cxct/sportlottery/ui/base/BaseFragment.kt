@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -13,21 +14,38 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.getKClass
+import org.cxct.sportlottery.net.flow.IUiView
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
 
 @SuppressLint("InflateParams")
 // 不需要传入参数了，通过反射获取类型
-open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : VisibilityFragment() {
+open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null) : VisibilityFragment() ,IUiView{
 
-    val viewModel: T by sharedViewModel(clazz = clazz ?: getKClass(0) as KClass<T>)
+    private lateinit var _viewModel: T
+    val viewModel: T
+    get() {
+        if (!::_viewModel.isInitialized) {
+            _viewModel = createVM(clazz = clazz ?: getKClass(0) as KClass<T>)
+        }
+        return _viewModel
+    }
+
     var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
+
+    protected open fun createVM(clazz: KClass<T>): T {
+        return getViewModel(clazz = clazz, owner = { ViewModelOwner.from(requireActivity(), requireActivity()) })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +59,7 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : Visibilit
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _viewModel = createVM(clazz = clazz ?: getKClass(0) as KClass<T>)
         return createRootView(inflater, container, savedInstanceState)
     }
 
@@ -60,7 +79,12 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : Visibilit
         onBindView(view)
     }
 
-    open fun loading(message: String? = null) {
+    /*弹出加载界面*/
+    open fun loading() {
+        loading(null)
+    }
+
+    open fun loading(message: String?) {
         if (activity is BaseActivity<*>)
             (activity as BaseActivity<*>).loading(message)
     }
@@ -84,6 +108,18 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : Visibilit
             e.printStackTrace()
         }
 
+    }
+
+    private var progressDialog: ProgressDialog? = null
+
+    override fun showLoading() {
+        if (progressDialog == null)
+            progressDialog = ProgressDialog(requireActivity())
+        progressDialog?.show()
+    }
+
+    override fun dismissLoading() {
+        progressDialog?.takeIf { it.isShowing }?.dismiss()
     }
 
     protected fun clearFocus() {

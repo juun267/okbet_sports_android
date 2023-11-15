@@ -428,6 +428,10 @@ public class LoginFormFieldView extends FrameLayout {
 
     }
 
+    public void setBottomLineLeftMargin(int margin) {
+        ((MarginLayoutParams) bottomLine.getLayoutParams()).leftMargin = margin;
+    }
+
     private void initOnClick() {
 
         final FrameLayout mainBody = this;
@@ -1268,6 +1272,10 @@ public class LoginFormFieldView extends FrameLayout {
 
     public AppCompatTextView getHelperLabel() {
         return this.helperLabel;
+    }
+
+    public View getBottomPart() {
+        return bottomPart;
     }
 
     public AppCompatTextView getCounterLabel() {

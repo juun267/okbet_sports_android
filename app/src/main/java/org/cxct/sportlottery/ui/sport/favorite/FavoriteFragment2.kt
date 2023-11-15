@@ -27,11 +27,16 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
         if (haveData) {
             updateSportType(currentFavoriteList)
         } else {
-            loading()
+            showLoading()
         }
     }
 
-    override fun load(item: Item, selectLeagueIdList: ArrayList<String>,selectMatchIdList: ArrayList<String>) {
+    override fun load(
+        item: Item,
+        selectLeagueIdList: ArrayList<String>,
+        selectMatchIdList: ArrayList<String>,
+        categoryCodeList: List<String>?
+    ) {
         setMatchInfo(item.name, "")
         setSportDataList(item.leagueOddsList?.toMutableList())
     }
@@ -39,7 +44,7 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
     fun setFavoriteData(favoriteLeagues: List<Item>) {
         currentFavoriteList = favoriteLeagues
         if (!haveData && isAdded) {
-            hideLoading()
+            dismissLoading()
             updateSportType(favoriteLeagues)
         }
         haveData = true

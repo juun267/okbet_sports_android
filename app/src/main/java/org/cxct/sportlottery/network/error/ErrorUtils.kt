@@ -18,14 +18,12 @@ import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_SMS
 import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_VALIDATE_EMAIL
 import org.cxct.sportlottery.network.Constants.GET_TWO_FACTOR_STATUS
 import org.cxct.sportlottery.network.Constants.GOOGLE_LOGIN
-import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.INDEX_PROMOTENOTICE
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
-import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG
@@ -79,7 +77,6 @@ import org.cxct.sportlottery.network.bet.settledDetailList.BetInfoResult
 import org.cxct.sportlottery.network.bet.settledList.RemarkBetResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
-import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
@@ -180,14 +177,6 @@ object ErrorUtils {
                     (url.contains(INDEX_VALIDATE_CODE)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return ValidCodeResult(it.code, it.msg, it.success, null) as T
-                    }
-                    (url.contains(INDEX_SEND_SMS)) -> {
-                        @Suppress("UNCHECKED_CAST")
-                        return NetResult(it.code, it.msg, it.success) as T
-                    }
-                    (url.contains(INDEX_CHECK_EXIST)) -> {
-                        @Suppress("UNCHECKED_CAST")
-                        return CheckAccountResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(INDEX_PROMOTENOTICE)) -> {
                         @Suppress("UNCHECKED_CAST")
