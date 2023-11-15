@@ -5,18 +5,39 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.roundOf
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHomeProviderPageBinding
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : BindingAdapter<List<OKGamesFirm>, ItemHomeProviderPageBinding>() {
 
-    private val maintenanceIds = mutableListOf<Int>()
+    fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner) {
+        ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleOwner.lifecycleScope) { gamesMaintain ->
+            data.forEachIndexed { index, okGamesFirms ->
+                val changedPosition = mutableListOf<Pair<Int, OKGamesFirm>>()
+
+                okGamesFirms.forEachIndexed { position, gameFirm->
+                    if (gameFirm.isMaintain() != gamesMaintain.isMaintain() && gameFirm.firmName == gamesMaintain.firmName) {
+                        gameFirm.maintain = gamesMaintain.maintain
+                        changedPosition.add(Pair(position, gameFirm))
+                    }
+                }
+                if (changedPosition.isNotEmpty()) {
+                    notifyItemChanged(index, changedPosition)
+                }
+            }
+        }
+    }
     override fun onBinding(
         position: Int,
         vb: ItemHomeProviderPageBinding,
@@ -33,7 +54,7 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
         }
     }
     private fun setUpItemView(view: View, item: OKGamesFirm){
-        val isMaintenance = maintenanceIds.contains(item.id)
+        val isMaintenance = item.isMaintain()
         view.findViewById<ImageView>(R.id.ivLogo).apply {
                 roundOf(item.img,8.dp,R.drawable.img_banner01)
                alpha = if(isMaintenance) 0.5f else 1f

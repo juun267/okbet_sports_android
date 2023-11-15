@@ -46,7 +46,32 @@ enum class MatchType private constructor(val postValue: String, @StringRes val r
                 OTHER_EPS.postValue -> OTHER_EPS.resId
                 DETAIL.postValue -> DETAIL.resId
                 SINGLE.postValue -> SINGLE.resId
+                IN12HR.postValue -> IN12HR.resId
+                IN24HR.postValue -> IN24HR.resId
                 else -> R.string.unknown_name
+            }
+        }
+        fun getMatchTypeByStringId(@StringRes stringId: Int): MatchType {
+            return when (stringId) {
+                MAIN.resId -> MAIN
+                IN_PLAY.resId -> IN_PLAY
+                TODAY.resId -> TODAY
+                EARLY.resId -> EARLY
+                CS.resId -> CS
+                PARLAY.resId -> PARLAY
+                OUTRIGHT.resId -> OUTRIGHT
+                AT_START.resId -> AT_START
+                EPS.resId -> EPS
+                MY_EVENT.resId -> MY_EVENT
+                OTHER.resId -> OTHER
+                OTHER_OUTRIGHT.resId -> OTHER_OUTRIGHT
+                OTHER_EPS.resId -> OTHER_EPS
+                OTHER_EPS.resId -> OTHER_EPS
+                DETAIL.resId -> DETAIL
+                SINGLE.resId -> SINGLE
+                IN12HR.resId -> IN12HR
+                IN24HR.resId -> IN24HR
+                else -> IN_PLAY
             }
         }
     }

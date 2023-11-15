@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -67,6 +68,15 @@ class MatchTableAdapter: BaseQuickAdapter<Pair<Int, Sport>, BaseViewHolder>(0) {
     override fun setNewInstance(list: MutableList<Pair<Int, Sport>>?) {
         currentItem = list?.first()
         super.setNewInstance(list)
+    }
+    fun setSelected(position:Int){
+        if (currentItem == data[position]){
+            return
+        }
+       kotlin.runCatching {
+           currentItem = data[position]
+       }
+        notifyDataSetChanged()
     }
 
 

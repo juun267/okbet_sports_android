@@ -38,6 +38,7 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
         if (fragment == null) {
             return
         }
+        gameAdapter.bindLifecycleOwner(fragment)
         //请求games数据
         fragment.viewModel.getHomeOKGamesList()
         fragment.viewModel.homeOKGamesList.observe(fragment.viewLifecycleOwner) {

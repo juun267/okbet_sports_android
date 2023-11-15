@@ -43,7 +43,7 @@ class SportTypeAdapter : BaseNodeAdapter() {
 
 }
 
-private data class SportGroup(val name: Int,
+ data class SportGroup(val name: Int,
                               val items: MutableList<Item>,
                               override val childNode: MutableList<BaseNode>? = items as MutableList<BaseNode>?): BaseNode()
 

@@ -55,6 +55,7 @@ data class OKGamesFirm(
     val img: String?,//厂商图
     val imgMobile: String?,
     val remark: String?,
+    var maintain: Int?, // 0:游戏正常开启, 1: 维护状态
 ): OKGameLabel {
 
     override fun getKey() = id
@@ -65,6 +66,7 @@ data class OKGamesFirm(
     override fun bindLabelName(textView: TextView) {
         textView.setText(firmName)
     }
+    fun isMaintain() = 1 == maintain
 
 }
 

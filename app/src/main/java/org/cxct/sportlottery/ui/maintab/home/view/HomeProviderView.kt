@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,7 @@ class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(con
     }
     fun setup(fragment: HomeHotFragment) {
         viewModel = fragment.viewModel
+        homeProviderAdapter.bindLifecycleOwner(fragment)
         viewModel.homeAllProvider.observe(fragment) { resultData ->
             val buildList = mutableListOf<MutableList<OKGamesFirm>>()
             resultData.forEachIndexed { index, okGamesFirm ->
@@ -56,5 +58,7 @@ class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(con
         }
         viewModel.getGamesALl()
     }
-
+    fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner) {
+        homeProviderAdapter.bindLifecycleOwner(lifecycleOwner)
+    }
 }
