@@ -5,6 +5,7 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.user.api.UserApiService
 import org.cxct.sportlottery.net.user.data.ActivityImageList
+import org.cxct.sportlottery.net.user.data.OCRInfo
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
 import org.cxct.sportlottery.net.user.data.VerifyConfig
 import org.cxct.sportlottery.network.index.login.LoginData
@@ -105,5 +106,26 @@ object UserRepository {
         params.addProperty("newPassword", MD5Util.MD5Encode(newPassword))
         return userApi.resetWithdraw(params)
     }
+
+    suspend fun getOCRInfo(idType: Int, imgUrl: String): ApiResult<OCRInfo> {
+        val params = JsonObject()
+        params.addProperty("ocrTypeId", idType)
+        params.addProperty("imageUrl", sConfigData?.resServerHost + imgUrl)
+        return RetrofitHolder.createNewRetrofit("https://id-scan.cxsport.net/").create(UserApiService::class.java).getOCRInfo(params)
+    }
+
+    suspend fun uploadKYCInfo(idType: Int, idNumber: String?, idImageUrl: String,
+                              firstName: String, middleName: String, lastName: String, birthday: String): ApiResult<String> {
+        val params = JsonObject()
+        params.addProperty("identityType", idType)
+        idNumber?.let { params.addProperty("identityNumber", it) }
+        params.addProperty("verifyPhoto1", idImageUrl)
+        params.addProperty("firstName", firstName)
+        params.addProperty("middleName", middleName)
+        params.addProperty("lastName", lastName)
+        params.addProperty("birthday", birthday)
+        return userApi.uploadKYCInfo(params)
+    }
+
 
 }

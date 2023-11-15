@@ -3,6 +3,7 @@ package org.cxct.sportlottery.net.user.api
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.user.data.ActivityImageList
+import org.cxct.sportlottery.net.user.data.OCRInfo
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
 import org.cxct.sportlottery.net.user.data.VerifyConfig
 import org.cxct.sportlottery.network.Constants
@@ -12,18 +13,20 @@ import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
 import org.cxct.sportlottery.network.Constants.LOGIN_CHECK_NEED_CODE
+import org.cxct.sportlottery.network.Constants.OCR_INFO
 import org.cxct.sportlottery.network.Constants.RRESET_WITHDRAW
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.UPLOAD_REVIEW_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_VERIFY_CONFIG
 import org.cxct.sportlottery.network.Constants.SET_USERNAME
+import org.cxct.sportlottery.network.Constants.UPLOAD_VERIFY_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_LOGIN
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import org.cxct.sportlottery.network.uploadImg.UploadVerifyPhotoKYCRequest
+import org.cxct.sportlottery.network.uploadImg.UploadVerifyPhotoResult
+import retrofit2.Response
+import retrofit2.http.*
 
 //用户账户相关Api
 interface UserApiService {
@@ -67,5 +70,10 @@ interface UserApiService {
     @POST(RRESET_WITHDRAW)
     suspend fun resetWithdraw(@Body params : JsonObject) : ApiResult<String>
 
+    @POST(OCR_INFO)
+    suspend fun getOCRInfo(@Body params : JsonObject) : ApiResult<OCRInfo>
+
+    @POST(UPLOAD_VERIFY_PHOTO)
+    suspend fun uploadKYCInfo(@Body params : JsonObject): ApiResult<String>
 
 }

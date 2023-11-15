@@ -1647,4 +1647,24 @@
     <string name="P231">We will send an OTP verification code to your mobile number:</string>
     <string name="P239">New withdraw password</string>
     <string name="J169">Confirm password don\'t match</string>
+    <string name="P243">Verify Process</string>
+    <string name="P244">Step 1</string>
+    <string name="P245">Step 2</string>
+    <string name="P246">Step 3</string>
+    <string name="P247">Choose A Valid ID Type</string>
+    <string name="P248">Take Photo Or Upload Of ID</string>
+    <string name="P249">Information Confirm</string>
+    <string name="P250">Recommended IDs get verified in 3mins</string>
+    <string name="P251">Other IDs get verified in 24hrs</string>
+    <string name="P252">Make sure information below is clear on your ID</string>
+    <string name="P253">ID Photo</string>
+    <string name="P254">Double check the informations scan from your ID</string>
+    <string name="P255">Take a photo or choose one form your albums of your ID and put well in the frame</string>
+    <string name="P256">Take ID Photo</string>
+    <string name="P257">Oops Invalid ID</string>
+    <string name="P258">Start Now</string>
+    <string name="P259">Select ID</string>
+    <string name="P260">Recomended IDs</string>
+    <string name="P261">Others IDs</string>
+    <string name="P262">Upload</string>
 </resources>

@@ -452,7 +452,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
 //        super.attachBaseContext(MultiLanguages.attach(newBase))
 //    }
 
-    open fun setStatusbar(bgColor: Int, darkFont: Boolean) {
+    open fun setStatusbar(bgColor: Int = R.color.color_232C4F_FFFFFF, darkFont: Boolean = true) {
         ImmersionBar.with(this).statusBarColor(bgColor)
             .statusBarDarkFont(darkFont)
             .fitsSystemWindows(true)
