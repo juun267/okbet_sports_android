@@ -118,14 +118,13 @@ object UserRepository {
                               firstName: String, middleName: String, lastName: String, birthday: String): ApiResult<String> {
         val params = JsonObject()
         params.addProperty("identityType", idType)
-        idNumber?.let { params.addProperty("identityNumber", it) }
-        params.addProperty("verifyPhoto1", idImageUrl)
+        params.addProperty("identityNumber", "$idNumber")
+        params.addProperty("identityPhoto", idImageUrl)
         params.addProperty("firstName", firstName)
         params.addProperty("middleName", middleName)
         params.addProperty("lastName", lastName)
         params.addProperty("birthday", birthday)
         return userApi.uploadKYCInfo(params)
     }
-
 
 }

@@ -7,7 +7,6 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
@@ -46,7 +45,7 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
         }
     }
 
-    private val maxSize = 300
+    private val maxSize = 200
     private var mSensorManager: SensorManager? = null
     private var mDefaultSensor: Sensor? = null
     private var mSensorRotation = 0
@@ -92,20 +91,23 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
     private fun initObserver() {
         viewModel.ocrResult.observe(this) {
             hideLoading()
-
             val url = it.second
+            ocrInfo = it.third
+
             if (url.isEmptyStr()) {
                 toast(getString(R.string.chat_connection_error))
                 return@observe
             }
 
-            ocrInfo = it.third
+            if (idType != 1) {
+                toEditInfo(url)
+                return@observe
+            }
+
             if (it.first && it.third != null) {
                 toEditInfo(url)
             } else {
-                val failedDialog = OCRFailedDialog(this)
-                failedDialog.setOnDismissListener { toEditInfo(url) }
-                failedDialog.show()
+                OCRFailedDialog(this).show()
             }
         }
     }
@@ -125,10 +127,12 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
         if (mDefaultSensor != null) {
             mSensorManager?.registerListener(this, mDefaultSensor, SensorManager.SENSOR_DELAY_NORMAL)
         }
-        if (binding.cameraPreview.tag != null && binding.cameraPreview.isVisible()) {
-            binding.cameraPreview.startPreview()
-        }
-        binding.cameraPreview.tag = Any()
+//        Log.e("For Test", "======>>> TakeIDPhotoActivity 1111")
+//        if (binding.cameraPreview.tag != null && binding.cameraPreview.isVisible()) {
+//            Log.e("For Test", "======>>> TakeIDPhotoActivity 2222")
+//            binding.cameraPreview.startPreview()
+//        }
+//        binding.cameraPreview.tag = Any()
     }
 
     override fun onPause() {
