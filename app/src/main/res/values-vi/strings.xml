@@ -1513,4 +1513,24 @@
     <string name="P231">Chúng tôi sẽ gửi OTP qua tin nhắn đến sđt của bạn:</string>
     <string name="P239">Mật khẩu rút tiền mới</string>
     <string name="J169">Mật khẩu nhập 2 lần không trùng khớp</string>
+    <string name="P243">Đang xác minh</string>
+    <string name="P244">Bước 1</string>
+    <string name="P245">Bước 2</string>
+    <string name="P246">Bước 3</string>
+    <string name="P247">Mời chọn giấy tờ hợp lệ</string>
+    <string name="P248">Chụo hoặc tải lên giấy tờ</string>
+    <string name="P249">Xác nhận thông tin</string>
+    <string name="P250">Giấy tờ được đề xuất hoàn thành xác thực trong 3 phút</string>
+    <string name="P251">Các giấy tờ khác sẽ được xác thực trong 24h</string>
+    <string name="P252">Vui lòng xác nhận thông tin dưới đây hiển thị rõ ràng trong ảnh</string>
+    <string name="P253">Ảnh trên giấy tờ</string>
+    <string name="P254">Xác nhận 2 lần về thông tin giấy tờ đã quét</string>
+    <string name="P255">Chụp ảnh hoặc từ album ảnh và chọn ảnh căn cước của bạn rồi đưa vào khung một cách chính xác</string>
+    <string name="P256">Chụp ảnh giấy tờ</string>
+    <string name="P257">Không thể nhận dạng giấy tờ</string>
+    <string name="P258">Bắt đầu bây giờ</string>
+    <string name="P259">Chọn giấy tờ</string>
+    <string name="P260">Giấy tờ được đề xuất</string>
+    <string name="P261">Các giấy tờ khác</string>
+    <string name="P262">Tải lên</string>
 </resources>

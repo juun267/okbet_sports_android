@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolBar"
+        layout="@layout/view_base_tool_bar_no_drawer"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black">
+
+        <!--相机预览-->
+        <org.cxct.sportlottery.view.camera.CameraPreview
+            android:id="@+id/cameraPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--相机裁剪区域 设置高度和宽度的比例 在代码中进行设置-->
+        <ImageView
+            android:id="@+id/ivCameraCrop"
+            android:layout_width="340dp"
+            android:layout_height="196dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="126dp"/>
+
+        <!--提示-->
+        <TextView
+            android:layout_below="@+id/ivCameraCrop"
+            android:id="@+id/view_camera_crop_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivCameraCrop"
+            android:layout_marginTop="24dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/P255"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize14sp" />
+
+        <!--底部操作布局-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/black" >
+
+            <ImageView
+                android:id="@+id/ivChooseImage"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="50dp"
+                android:src="@drawable/ic_choose_img" />
+
+            <ImageView
+                android:id="@+id/ivCameraTake"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_take_photo" />
+
+            <Button
+                android:id="@+id/btnUpload"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bg_blue_radius_8"
+                android:textSize="@dimen/textSize16sp"
+                android:textColor="@color/white"
+                android:text="@string/P262"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frLoading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="false"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:indeterminateDrawable="@drawable/rotate_bet_loading_view_yellow" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

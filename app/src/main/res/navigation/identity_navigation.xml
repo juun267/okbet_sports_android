@@ -30,9 +30,9 @@
 
     <fragment
         android:id="@+id/verifyKYCFragment"
-        android:name="org.cxct.sportlottery.ui.profileCenter.identity.VerifyKYCFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.identity.VerifyKYCFragment2"
         android:label="VerifyKYCFragment"
-        tools:layout="@layout/fragment_verify_identity_kyc">
+        tools:layout="@layout/fragment_verify_identity_kyc2">
 
         <action
             android:id="@+id/action_verifyKYCFragment_to_verifyStatusFragment"

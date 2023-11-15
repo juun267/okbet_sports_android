@@ -1489,5 +1489,25 @@
     <string name="P231">Magpapadala kami ng OTP verification code sa iyong mobile number:</string>
     <string name="P239">Bagong withdrawal password</string>
     <string name="J169">Ang dalawang password na nilagay ay hindi tugma</string>
+    <string name="P243">Proseso sa pag-verify</string>
+    <string name="P244">Step 1</string>
+    <string name="P245">Step 2</string>
+    <string name="P246">Step 3</string>
+    <string name="P247">Pumili ng Wastong Uri ng ID</string>
+    <string name="P248">Kumuha ng Larawan o Mag-upload ng ID</string>
+    <string name="P249">Kumpirmahin ang Impormasyon</string>
+    <string name="P250">Mabe-verify ang mga inirerekomendang ID sa loob ng 3 minuto</string>
+    <string name="P251">Mabe-verify ang iba pang mga ID sa loob ng 24 na oras</string>
+    <string name="P252">Tiyaking malinaw ang impormasyon sa ibaba sa iyong ID</string>
+    <string name="P253">Larawan ng ID</string>
+    <string name="P254">I-double check ang informations scan mula sa iyong ID</string>
+    <string name="P255">Kumuha ng larawan o pumili sa iyong mga album ng iyong ID at ilagay nang maayos sa frame</string>
+    <string name="P256">Kumuha ng Larawan ng ID</string>
+    <string name="P257">Oops Di-wastong ID</string>
+    <string name="P258">Magsimula na</string>
+    <string name="P259">Pumili ng ID</string>
+    <string name="P260">Inirerekomendang mga ID</string>
+    <string name="P261">Iba pang mga ID</string>
+    <string name="P262">Mag- upload</string>
 </resources>
 

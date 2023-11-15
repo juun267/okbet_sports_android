@@ -7,8 +7,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.safeApi
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.OCRInfo
 import org.cxct.sportlottery.net.user.data.VerifyConfig
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.uploadImg.*
@@ -59,6 +62,8 @@ class ProfileCenterViewModel(
     val imgUpdated = SingleLiveEvent<Pair<File, ImgData?>>()
     val uploadReview = SingleLiveEvent<ApiResult<String>>()
     val userInfoEvent = SingleLiveEvent<Any>()
+    val ocrResult = SingleLiveEvent<Triple<Boolean, String, OCRInfo?>>()
+    val kycResult = SingleLiveEvent<ApiResult<String>>()
 
     fun getUserInfo() {
         viewModelScope.launch {
@@ -297,5 +302,25 @@ class ProfileCenterViewModel(
 
     fun updateReverifyInfo(selfImgUrl: String?, proofImgUrl: String?) {
         callApi({ UserRepository.uploadReviewPhoto(selfImgUrl, proofImgUrl) }) { uploadReview .value = it }
+    }
+
+    fun startOCR(photo: File, idType: Int) = viewModelScope.launch {
+
+        val uploadImgRequest = UploadVerifyDocRequest(userInfo.value?.userId.toString(), photo).toPars()
+        val uploadResult = OneBoSportApi.uploadImgService.uploadImg(uploadImgRequest)
+        val url = uploadResult?.body()?.imgData?.path
+        if (url.isEmptyStr()) {
+            ocrResult.postValue(Triple(false, "", null))
+            return@launch
+        }
+        val ocrResponse = safeApi { UserRepository.getOCRInfo(idType, url!!) }
+        ocrResult.postValue(Triple(ocrResponse.succeeded(), url!!, ocrResponse.getData()))
+    }
+
+    fun putKYCInfo(idType: Int, idNumber: String?, idImageUrl: String,
+                   firstName: String, middleName: String, lastName: String, birthday: String) {
+        callApi({ UserRepository.uploadKYCInfo(idType, idNumber, idImageUrl, firstName, middleName, lastName, birthday) }) {
+            kycResult.value = it
+        }
     }
 }
