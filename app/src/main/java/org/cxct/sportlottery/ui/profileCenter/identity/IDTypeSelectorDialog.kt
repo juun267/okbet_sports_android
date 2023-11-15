@@ -100,7 +100,7 @@ class IDTypeSelectorDialog(private val context: FragmentActivity, private val li
 
             val iv = ImageView(context)
             val drawable = context.getDrawable(R.drawable.icon_arrow07)!!.mutate()
-            drawable.setTint(context.getColor(R.color.color_6D7693))
+            drawable.setTint(context.getColor(R.color.color_d6dbe3))
             iv.setImageDrawable(drawable)
             lin.addView(iv, 16.dp.let { LinearLayout.LayoutParams(it, it) })
             return BaseViewHolder(lin)
@@ -116,7 +116,6 @@ class IDTypeSelectorDialog(private val context: FragmentActivity, private val li
         RxPermissions(context).request(Manifest.permission.CAMERA).subscribe { onNext ->
             if (onNext) {
                 val item = idAdapter.getItem(position)
-                Log.e("For Test", "======>> onItemClick ${JsonUtil.toJson(item)}")
                 TakeIDPhotoActivity.start(context, item.id, item.type, item.name)
             } else {
                 ToastUtil.showToast(context, context.getString(R.string.N980))

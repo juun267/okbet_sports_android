@@ -67,7 +67,7 @@
     <string name="city">City</string>
     <string name="hint_city">Please enter city</string>
     <string name="we_chat">Wechat</string>
-    <string name="identity">ID Verification</string>
+    <string name="identity">KYC Verify</string>
     <string name="hint_we_chat_number">Wechat ID</string>
     <string name="zalo">Zalo</string>
     <string name="hint_zalo">Zalo Account</string>
@@ -779,7 +779,7 @@
     <string name="self_limit_froze_impotent_5">During the self-exclusion time, you will be unable to deactivate your self-exclusion until the expiration of the minimum exclusion time frame.</string>
     <string name="self_limit_froze_impotent_6">After the self-exclusion expires, your account will be automatically reactivated.</string>
     <!-- 複式串關詳情 -->
-    <string name="submit_success">submitted successfully</string>
+    <string name="submit_success">Submitted successfully</string>
     <!-- 搜尋 -->
     <string name="text_search">Search</string>
     <string name="text_clear">Clear</string>

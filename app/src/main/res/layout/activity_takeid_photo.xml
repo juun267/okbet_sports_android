@@ -20,24 +20,72 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <!--相机裁剪区域 设置高度和宽度的比例 在代码中进行设置-->
         <ImageView
-            android:id="@+id/ivCameraCrop"
+            android:id="@+id/ivCropImage"
             android:layout_width="340dp"
-            android:layout_height="196dp"
+            android:layout_height="200dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="126dp"/>
 
+        <!--相机裁剪区域 设置高度和宽度的比例 在代码中进行设置-->
+        <ImageView
+            android:id="@+id/ivCameraCrop"
+            android:layout_width="340dp"
+            android:layout_height="200dp"
+            android:elevation="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="126dp"
+            android:background="@drawable/bg_cover_takeid_photo"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/ivCameraCrop"
+            android:background="@color/transparent_black_60"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toTopOf="@+id/ivCameraCrop"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCameraCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivCameraCrop"
+            android:background="@color/black"
+            android:alpha="0.6"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toTopOf="@+id/ivCameraCrop"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCameraCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivCameraCrop"
+            android:background="@color/black"
+            android:alpha="0.6"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/ivCameraCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/black"
+            android:alpha="0.6"/>
+
         <!--提示-->
         <TextView
             android:layout_below="@+id/ivCameraCrop"
             android:id="@+id/view_camera_crop_hint"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ivCameraCrop"
+            app:layout_constraintEnd_toEndOf="@+id/ivCameraCrop"
             app:layout_constraintTop_toBottomOf="@+id/ivCameraCrop"
             android:layout_marginTop="24dp"
             android:layout_centerHorizontal="true"

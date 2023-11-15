@@ -552,7 +552,7 @@
     <string name="match_invalid_status">Trận đấu không thể đặt cược</string>
     <string name="odds_locked">Cách chơi này không thể đặt cược</string>
     <string name="parlay_un_support">Trận đấu này không hỗ trợ cược xiên</string>
-    <string name="identity">Xác minh danh tính</string>
+    <string name="identity">Xác minh KYC</string>
     <string name="odds_id_not_allow_bet">Tỷ lệ cược này không cho phép đặt cược</string>
     <string name="odds_have_changed">Tỷ lệ cược chấp đã được thay đổi, vui lòng đặt cược lại</string>
     <string name="bet_info_content_has_been_changed">Tỷ lệ cược hoặc trạng thái trò chơi bạn chọn đã được thay đổi, vui lòng đặt cược lại</string>
@@ -807,7 +807,7 @@
     <string name="self_limit_froze_impotent_5">Trong thời gian tự loại trừ, bạn sẽ không thể tắt tính năng này cho đến khi hết thời gian loại trừ tối thiểu.</string>
     <string name="self_limit_froze_impotent_6">Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại.</string>
     <!-- 複式串關詳情 -->
-    <string name="submit_success">gửi thành công</string>
+    <string name="submit_success">Gửi thành công</string>
     <!-- 搜尋 -->
     <string name="text_search">Tìm trận đấu</string>
     <string name="text_clear">Xóa</string>
