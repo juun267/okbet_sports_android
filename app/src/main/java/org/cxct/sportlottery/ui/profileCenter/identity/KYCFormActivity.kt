@@ -79,6 +79,7 @@ class KYCFormActivity: BindingActivity<ProfileCenterViewModel, ActivityKycFormBi
     private fun initEvent() = binding.run {
         tvIdType.text = idTypeName
         frBirthday.setOnClickListener { showDateTimePicker() }
+        toolBar.btnToolbarBack.setOnClickListener { finish() }
         llMiddleName.setOnClickListener {
             val isSelected = !it.isSelected
             it.isSelected = isSelected

@@ -3,19 +3,10 @@ package org.cxct.sportlottery.view.camera;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
-import android.graphics.Matrix;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.Surface;
 
-import com.didichuxing.doraemonkit.util.ImageUtils;
-
-import java.io.ByteArrayOutputStream;
 
 /**
  * 相机工具类
