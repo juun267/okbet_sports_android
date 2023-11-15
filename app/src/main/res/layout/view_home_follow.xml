@@ -19,7 +19,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
             android:text="@string/N902"
             android:textColor="@color/color_0D2245"
             android:textSize="16sp"

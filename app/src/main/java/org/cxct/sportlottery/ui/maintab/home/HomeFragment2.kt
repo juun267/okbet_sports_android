@@ -167,43 +167,6 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     }
 
 
-    fun backMainHome() {
-        fragmentHelper2.show(HomeHotFragment::class.java) { frgment, _ ->
-            hotFragment = frgment
-        }
-    }
-
-
-    fun jumpToNews() {
-        (activity as MainTabActivity).jumpToNews()
-    }
-
-    fun jumpToOKLive() {
-        (activity as MainTabActivity).jumpToOKGames()
-    }
-
-
-    fun jumpToInplaySport() {
-        (activity as MainTabActivity).jumpToInplaySport()
-    }
-
-    fun jumpToDefaultSport() {
-        (activity as MainTabActivity).jumpToTheSport()
-    }
-
-    fun jumpToEarlySport() {
-        (activity as MainTabActivity).jumpToEarlySport()
-    }
-
-//    override fun onHiddenChanged(hidden: Boolean) {
-//        super.onHiddenChanged(hidden)
-//        fragmentHelper.getFragmentList().find {
-//            it != null && it.isAdded && it.isVisible
-//        }?.let {
-//            it.onHiddenChanged(hidden)
-//        }
-//    }
-
     fun getCurrentFragment() = fragmentHelper2.currentFragment()
 
 

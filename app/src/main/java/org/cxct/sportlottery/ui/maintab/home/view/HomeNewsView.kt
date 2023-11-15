@@ -52,7 +52,7 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
             homeHotNewsAdapter.setList(dataList)
         }
         binding.tvMore.setOnClickListener {
-            (fragment.parentFragment as HomeFragment2).jumpToNews()
+            (fragment.activity as MainTabActivity).jumpToNews()
         }
         viewModel.getHomeNews(1, pageSize, listOf(NewsRepository.NEWS_OKBET_ID))
     }

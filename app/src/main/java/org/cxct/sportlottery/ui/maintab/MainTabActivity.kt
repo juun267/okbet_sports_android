@@ -38,7 +38,9 @@ import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment2
+import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
@@ -65,6 +67,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Param(SportFragment2::class.java),
                 Param(OKGamesFragment::class.java),
                 Param(ProfileCenterFragment::class.java),
+                Param(OKLiveFragment::class.java),
+                Param(NewsHomeFragment::class.java),
             )
         )
     }
@@ -73,6 +77,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val INDEX_SPORT = 1
     private val INDEX_GAMES = 2
     private val INDEX_PROFILE = 3
+    private val INDEX_OKLIVE = 4
+    private val INDEX_NEWS = 5
 
     private var betListFragment: BetListFragment? = null
 
@@ -172,7 +178,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
 
         if (result) {
-            homeFragment().backMainHome()
+            fragmentHelper.showFragment(INDEX_HOME)
             setupBetBarVisiblity()
         }
 
@@ -505,7 +511,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun backMainHome() {
         tabHelper.clearSelected()
-        homeFragment().backMainHome()
+        fragmentHelper.showFragment(INDEX_HOME)
         navToPosition(INDEX_HOME)
     }
 
@@ -513,20 +519,29 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (getMarketSwitch()) {
             return
         }
-        navToPosition(INDEX_GAMES)
+        if(StaticData.okGameOpened()){
+            navToPosition(INDEX_OKLIVE)
+            enableSelectBottomNav(true)
+        }else{
+            ToastUtil.showToast(this,getString(R.string.N700))
+        }
     }
 
     fun jumpToOkLive(){
+        if (getMarketSwitch()) {
+            return
+        }
         if(StaticData.okLiveOpened()){
-            backMainHome()
-            homeFragment().jumpToOKLive()
+            navToPosition(INDEX_OKLIVE)
             enableSelectBottomNav(false)
         }else{
             ToastUtil.showToast(this,getString(R.string.N700))
         }
-
     }
-
+    fun jumpToNews() {
+        navToPosition(INDEX_NEWS)
+        enableSelectBottomNav(false)
+    }
     private fun navToPosition(position: Int) {
         fragmentHelper.showFragment(position)
     }
@@ -556,10 +571,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    fun jumpToNews() {
-        backMainHome()
-        homeFragment().jumpToNews()
-    }
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         (fragmentHelper.getFragment(1) as SportFragment2).setJumpSport(matchType, gameType)
         navToPosition(INDEX_SPORT)
