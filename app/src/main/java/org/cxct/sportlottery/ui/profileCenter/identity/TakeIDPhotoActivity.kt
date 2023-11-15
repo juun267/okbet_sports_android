@@ -19,8 +19,7 @@ import org.cxct.sportlottery.net.user.data.OCRInfo
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.MD5Util
-import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
-import org.cxct.sportlottery.view.PictureSelectUtil
+import org.cxct.sportlottery.util.selectpicture.PictureSelectorUtils
 import org.cxct.sportlottery.view.camera.BitmapUtil
 import org.cxct.sportlottery.view.isVisible
 import top.zibin.luban.Luban
@@ -49,7 +48,6 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
     private var mSensorManager: SensorManager? = null
     private var mDefaultSensor: Sensor? = null
     private var mSensorRotation = 0
-    private val cropDrawable = DrawableCreatorUtils.getCommonBackgroundStyle(16, R.color.transparent, R.color.white)
     private var photoFile: File? = null
     private val id by lazy { intent.getIntExtra("id", 0) }
     private val idType by lazy { intent.getIntExtra("idType", 0) }
@@ -62,7 +60,6 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
         initObserver()
 
         toolBar.tvToolbarTitle.setText(R.string.P256)
-        ivCameraCrop.setImageDrawable(cropDrawable)
         ivCameraTake.setOnClickListener { takePhoto() }
         btnUpload.setOnClickListener { uploadPhoto() }
         toolBar.btnToolbarBack.setOnClickListener {
@@ -73,10 +70,12 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
             }
         }
         ivChooseImage.setOnClickListener {
-            PictureSelectUtil.pictureSelect(this@TakeIDPhotoActivity, object : OnResultCallbackListener<LocalMedia> {
+            PictureSelectorUtils.selectPiture(this@TakeIDPhotoActivity, ratio_x = 17, ratio_y = 10, selectMediaListener = object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: ArrayList<LocalMedia>?) {
                     result?.first()?.compressPath?.let {
                         photoFile = File(it)
+                        ivCropImage.load(photoFile)
+                        enablePhotoPreview(null)
                         uploadPhoto()
                     }
                 }
@@ -177,8 +176,9 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
         if (cameraPreview.isVisible()) {
             return@run
         }
-        ivCameraCrop.setImageDrawable(cropDrawable)
+        ivCropImage.setImageBitmap(null)
         cameraPreview.visible()
+        ivCameraCrop.visible()
         ivChooseImage.visible()
         ivCameraTake.visible()
         btnUpload.gone()
@@ -186,10 +186,11 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
         cameraPreview.startPreview()
     }
 
-    private fun enablePhotoPreview(photo: Bitmap) = binding.run {
-        ivCameraCrop.setImageBitmap(photo)
+    private fun enablePhotoPreview(photo: Bitmap?) = binding.run {
+        photo?.let { ivCropImage.setImageBitmap(it) }
         cameraPreview.isEnabled = false
         cameraPreview.gone()
+        ivCameraCrop.gone()
         ivChooseImage.gone()
         ivCameraTake.gone()
         btnUpload.visible()

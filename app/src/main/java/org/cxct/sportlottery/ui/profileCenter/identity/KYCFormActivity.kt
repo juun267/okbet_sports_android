@@ -71,11 +71,7 @@ class KYCFormActivity: BindingActivity<ProfileCenterViewModel, ActivityKycFormBi
         edtFirstName.setText(ocr.firstName)
         edtLastName.setText(ocr.lastName)
         tvBirthday.text = ocr.birthday?.replace("/", "-")
-        if (ocr.middleName.isEmptyStr()) {
-            llMiddleName.performClick()
-        } else {
-            edtMiddleName.setText(ocr.middleName)
-        }
+        edtMiddleName.setText(ocr.middleName)
     }
 
     private fun initEvent() = binding.run {
@@ -123,7 +119,7 @@ class KYCFormActivity: BindingActivity<ProfileCenterViewModel, ActivityKycFormBi
 
     private fun initStyle() = binding.run {
         toolBar.tvToolbarTitle.setText(R.string.identity)
-        frIdType.background = defaultBg
+        frIdType.background = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_F9FAFD)
         frFirstName.background = defaultBg
         frMiddleName.background = defaultBg
         frLastName.background = defaultBg

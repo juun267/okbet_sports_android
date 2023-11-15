@@ -20,14 +20,14 @@ class VerifyKYCFragment2: BindingFragment<ProfileCenterViewModel, FragmentVerify
         val bg = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_F8F9FD)
         val bg1 = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_dbdeeb)
         binding.layout1.background = bg
-        binding.layout2.background = bg
+        binding.layout2.background = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_F8F9FD)
         binding.layout3.background = bg
         binding.ivImg1.background = bg1
         binding.ivImg2.background = bg1
         binding.ivImg3.background = bg1
 
         val dp4 = 4.dp.toFloat()
-        binding.text2.text = "* ${getString(R.string.real_name)}  * ${getString(R.string.P253)}  * ${getString(R.string.J902)}".replaceSpan("*") {
+        binding.text2.text = "* ${getString(R.string.real_name)}  \n* ${getString(R.string.P253)}  \n* ${getString(R.string.J902)}".replaceSpan("*") {
             CenterImageSpan(DrawableCreator.Builder()
                 .setSizeHeight(dp4)
                 .setSizeWidth(dp4)

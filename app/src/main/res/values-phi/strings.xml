@@ -65,7 +65,7 @@
     <string name="city">Lungsod</string>
     <string name="hint_city">Paki lagay ang inyong lungsod</string>
     <string name="we_chat">Wechat</string>
-    <string name="identity">Pagpapatunay ng ID</string>
+    <string name="identity">KYC Verify</string>
     <string name="hint_we_chat_number">Paki lagay ang wechat ID</string>
     <string name="zalo">Zalo</string>
     <string name="hint_zalo">Pakilagay ang Zalo account number</string>
