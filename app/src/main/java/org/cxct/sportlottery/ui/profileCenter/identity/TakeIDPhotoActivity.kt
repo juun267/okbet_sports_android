@@ -29,7 +29,6 @@ import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
-import java.util.ArrayList
 import kotlin.math.abs
 
 class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakeidPhotoBinding>()
@@ -37,9 +36,10 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
 
     companion object {
 
-        fun start(context: Context, idType: Int, idTypeName: String) {
+        fun start(context: Context, id: Int, type: Int, idTypeName: String) {
             val intent = Intent(context, TakeIDPhotoActivity::class.java)
-            intent.putExtra("idType", idType)
+            intent.putExtra("id", id)
+            intent.putExtra("idType", type)
             intent.putExtra("idTypeName", idTypeName)
             context.startActivity(intent)
         }
@@ -51,6 +51,7 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
     private var mSensorRotation = 0
     private val cropDrawable = DrawableCreatorUtils.getCommonBackgroundStyle(16, R.color.transparent, R.color.white)
     private var photoFile: File? = null
+    private val id by lazy { intent.getIntExtra("id", 0) }
     private val idType by lazy { intent.getIntExtra("idType", 0) }
     private val idTypeName by lazy { intent.getStringExtra("idTypeName")!! }
     private var ocrInfo: OCRInfo? = null
@@ -104,16 +105,18 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
                 return@observe
             }
 
-            if (it.first && it.third != null) {
-                toEditInfo(url)
+            if (ocrInfo == null) {
+                val ocrFailedDialog = OCRFailedDialog(this)
+                ocrFailedDialog.setOnDismissListener { enableCameraPreview() }
+                ocrFailedDialog.show()
             } else {
-                OCRFailedDialog(this).show()
+                toEditInfo(url)
             }
         }
     }
 
     private fun toEditInfo(imgUrl: String) {
-        KYCFormActivity.start(this, idType, idTypeName, imgUrl, ocrInfo)
+        KYCFormActivity.start(this, id, idTypeName, imgUrl, ocrInfo)
         finish()
     }
 
@@ -127,17 +130,18 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
         if (mDefaultSensor != null) {
             mSensorManager?.registerListener(this, mDefaultSensor, SensorManager.SENSOR_DELAY_NORMAL)
         }
-//        Log.e("For Test", "======>>> TakeIDPhotoActivity 1111")
-//        if (binding.cameraPreview.tag != null && binding.cameraPreview.isVisible()) {
-//            Log.e("For Test", "======>>> TakeIDPhotoActivity 2222")
-//            binding.cameraPreview.startPreview()
-//        }
-//        binding.cameraPreview.tag = Any()
     }
 
     override fun onPause() {
         super.onPause()
         mSensorManager?.unregisterListener(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (binding.cameraPreview.isVisible()) {
+            binding.cameraPreview.onStart()
+        }
     }
 
     private fun takePhoto() {
@@ -170,6 +174,9 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
     }
 
     private fun enableCameraPreview() = binding.run {
+        if (cameraPreview.isVisible()) {
+            return@run
+        }
         ivCameraCrop.setImageDrawable(cropDrawable)
         cameraPreview.visible()
         ivChooseImage.visible()
@@ -197,7 +204,7 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
         }
 
         loading()
-        viewModel.startOCR(photoFile!!, idType)
+        viewModel.startOCR(photoFile!!, idType, id)
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }

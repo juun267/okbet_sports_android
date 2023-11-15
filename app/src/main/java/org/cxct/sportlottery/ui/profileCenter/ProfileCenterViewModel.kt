@@ -304,7 +304,7 @@ class ProfileCenterViewModel(
         callApi({ UserRepository.uploadReviewPhoto(selfImgUrl, proofImgUrl) }) { uploadReview .value = it }
     }
 
-    fun startOCR(photo: File, idType: Int) = viewModelScope.launch {
+    fun startOCR(photo: File, idType: Int, id: Int) = viewModelScope.launch {
 
         val uploadImgRequest = UploadVerifyDocRequest(userInfo.value?.userId.toString(), photo).toPars()
         val uploadResult = kotlin.runCatching { OneBoSportApi.uploadImgService.uploadImg(uploadImgRequest) }.getOrNull()
@@ -318,7 +318,7 @@ class ProfileCenterViewModel(
             ocrResult.postValue(Triple(false, url!!, null))
             return@launch
         }
-        val ocrResponse = safeApi { UserRepository.getOCRInfo(idType, url!!) }
+        val ocrResponse = safeApi { UserRepository.getOCRInfo(id, url!!) }
         ocrResult.postValue(Triple(ocrResponse.succeeded(), url!!, ocrResponse.getData()))
     }
 
