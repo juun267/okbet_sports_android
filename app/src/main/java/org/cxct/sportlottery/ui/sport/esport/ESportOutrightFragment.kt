@@ -83,6 +83,8 @@ class ESportOutrightFragment: BaseSportListFragment<SportListViewModel, Fragment
         setESportType()
     }
     override fun onBindViewStatus(view: View) {
+        currentItem = null
+        currentCategoryItem = null
         super.onBindViewStatus(view)
         arguments?.getString("gameType")?.let { gameType = it }
         initObserve()
