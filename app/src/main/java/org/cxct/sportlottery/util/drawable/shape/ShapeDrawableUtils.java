@@ -7,8 +7,8 @@ import android.os.Build;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntRange;
+import androidx.annotation.Nullable;
 
-import javax.annotation.Nullable;
 
 final class ShapeDrawableUtils {
    
