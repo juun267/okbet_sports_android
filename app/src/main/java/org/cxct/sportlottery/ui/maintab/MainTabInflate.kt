@@ -4,6 +4,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.opensource.svgaplayer.SVGAImageView
 import org.cxct.sportlottery.R
@@ -23,18 +24,19 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
     init {
         val lp = LinearLayout.LayoutParams(0, -1, 1f)
         val lpIcon = 28.dp.let { LinearLayout.LayoutParams(it, it) }
-        addItem(lp, lpIcon, "svga/home_tab_menu.svga", R.string.menu)
-        addItem(lp, lpIcon,"svga/home_tab_sports.svga", R.string.main_tab_sport)
+        addItem(lp, lpIcon, "svga/home_tab_menu.svga", R.drawable.ic_tab_menu_nor, R.string.menu)
+        addItem(lp, lpIcon,"svga/home_tab_sports.svga", R.drawable.ic_tab_sport_nor, R.string.main_tab_sport)
         if (!getMarketSwitch()) {
-            addItem(lp, lpIcon, "svga/home_tab_game.svga", R.string.news_tab_game)
+            addItem(lp, lpIcon, "svga/home_tab_game.svga", R.drawable.ic_tab_game_nor, R.string.news_tab_game)
         }
-        addItem(lp, lpIcon, "svga/home_tab_chat.svga", R.string.N984)
-        addItem(lp, lpIcon,"svga/home_tab_mine.svga", R.string.main_tab_mine)
+        addItem(lp, lpIcon, "svga/home_tab_chat.svga", R.drawable.ic_tab_chat_nor, R.string.N984)
+        addItem(lp, lpIcon,"svga/home_tab_mine.svga", R.drawable.ic_tab_user_nor, R.string.main_tab_mine)
     }
 
     private fun addItem(lpItem: LinearLayout.LayoutParams,
                         lpIcon: LinearLayout.LayoutParams,
                         icon: String,
+                        @DrawableRes norDrawableRes: Int,
                         @StringRes name: Int) {
 
         val item = LinearLayout(parent.context)
@@ -73,7 +75,15 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
     }
 
     private fun setChangeSelected(item: LinearLayout, isSelected: Boolean) {
-        item.findViewById<SVGAImageView>(iconId).stepToFrame(0, isSelected)
+        item.findViewById<SVGAImageView>(iconId).apply {
+            stepToFrame(0, isSelected)
+//            if (isSelected){
+//                clearAnimation()
+//                setImageResource()
+//            }else{
+//                stepToFrame(0, true)
+//            }
+        }
         item.findViewById<TextView>(nameId).setTextColor(if (isSelected) selColor else unSelColor)
         item.isSelected = isSelected
     }
