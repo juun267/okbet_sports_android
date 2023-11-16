@@ -194,6 +194,6 @@ class KYCFormActivity: BindingActivity<ProfileCenterViewModel, ActivityKycFormBi
     }
 
     private fun toastError(filed: String) {
-        toast("$filed:${getString(R.string.N280)}")
+        toast("$filed: ${getString(R.string.N280)}")
     }
 }
