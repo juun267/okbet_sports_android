@@ -146,8 +146,8 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
     private fun takePhoto() {
         binding.frLoading.visible()
         binding.cameraPreview.takePhoto{ bytes, camera ->
-            val size = camera.parameters.previewSize //获取预览大小
             lifecycleScope.launch(Dispatchers.IO) {
+                val size = camera.parameters.previewSize //获取预览大小
                 val w = size.width
                 val h = size.height
                 val rightRotationBitmap: Bitmap = BitmapUtil.setRightRotationBitmap(this@TakeIDPhotoActivity, mSensorRotation, bytes, w, h)

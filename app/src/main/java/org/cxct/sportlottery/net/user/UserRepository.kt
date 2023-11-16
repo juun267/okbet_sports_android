@@ -3,6 +3,7 @@ package org.cxct.sportlottery.net.user
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
+import org.cxct.sportlottery.net.user.api.OCRApiService
 import org.cxct.sportlottery.net.user.api.UserApiService
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.net.user.data.OCRInfo
@@ -19,6 +20,7 @@ import retrofit2.http.Body
 object UserRepository {
 
     val userApi by lazy { RetrofitHolder.createApiService(UserApiService::class.java) }
+    val ocrApi by lazy { RetrofitHolder.createOCRApiService(OCRApiService::class.java) }
 
     suspend fun sendEmailForget(email: String, validCodeIdentity :String, validCode: String): ApiResult<SendCodeRespnose> {
         val params = mapOf("email" to email, "validCodeIdentity" to validCodeIdentity, "validCode" to validCode)
@@ -111,7 +113,7 @@ object UserRepository {
         val params = JsonObject()
         params.addProperty("ocrTypeId", idType)
         params.addProperty("imageUrl", sConfigData?.resServerHost + imgUrl)
-        return RetrofitHolder.createNewRetrofit("https://id-scan.cxsport.net/").create(UserApiService::class.java).getOCRInfo(params)
+        return ocrApi.getOCRInfo(params)
     }
 
     suspend fun uploadKYCInfo(idType: Int, idNumber: String?, idImageUrl: String,

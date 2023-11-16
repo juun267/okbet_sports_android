@@ -70,9 +70,6 @@ interface UserApiService {
     @POST(RRESET_WITHDRAW)
     suspend fun resetWithdraw(@Body params : JsonObject) : ApiResult<String>
 
-    @POST(OCR_INFO)
-    suspend fun getOCRInfo(@Body params : JsonObject) : ApiResult<OCRInfo>
-
     @POST(UPLOAD_VERIFY_PHOTO)
     suspend fun uploadKYCInfo(@Body params : JsonObject): ApiResult<String>
 
