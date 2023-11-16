@@ -9,7 +9,9 @@ import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.SportStatusEvent
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
@@ -117,14 +119,16 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
                 }.show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
             }
         }
-        //体育服务开关监听
-//        receiver.sportMaintenance.observe(this){
-//            it?.let {
-//                sConfigData?.sportMaintainStatus="${it.status}"
-//                binding.homeTopView.initSportEnterStatus()
-//            }
-//        }
-
+        setupSportStatusChange(this){
+            if (it){
+                binding.hotMatchView.visible()
+                binding.hotEsportView.visible()
+                refreshHotMatch()
+            }else{
+                binding.hotMatchView.gone()
+                binding.hotEsportView.gone()
+            }
+        }
     }
 
     //hot match

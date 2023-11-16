@@ -86,6 +86,7 @@ class SportVenueFragment: GameVenueFragment<SportTabViewModel, FragmentGamevenue
     }
 
     private fun initObserver() {
+
         viewModel.sportMenuResult.observe(viewLifecycleOwner) {
             hideLoading()
             val menu = it.getData()?.menu?: return@observe
