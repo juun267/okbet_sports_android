@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
+    android:layout_weight="1">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="@dimen/margin_5"
@@ -23,3 +28,28 @@
         android:textSize="@dimen/textSize10sp"
         android:text="hot"/>
 </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linMaintenance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/margin_5"
+        android:visibility="gone"
+        android:clickable="true"
+        android:background="@drawable/bg_home_menu_maintenance">
+        <ImageView
+            android:layout_width="@dimen/margin_24"
+            android:layout_height="@dimen/margin_24"
+            android:src="@drawable/ic_home_menu_maintenance"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_3"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/color_FF6F6F"
+            android:textSize="@dimen/textSize10sp"
+            android:text="@string/N257"/>
+    </LinearLayout>
+</FrameLayout>

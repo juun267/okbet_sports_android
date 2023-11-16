@@ -19,10 +19,16 @@ import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
+import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragement
+import org.cxct.sportlottery.ui.maintab.home.game.slot.ElecGamesFragement
+import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.view.HomeMenuAdapter
@@ -40,8 +46,11 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     private lateinit var newsHomeFragment: NewsHomeFragment
     private val homeMenuAdapter by lazy {
         HomeMenuAdapter { view, item->
-            val fragmentClass = item.third?.let {
-                fragmentHelper2.show(it) { fragment, _ -> }
+            item.third?.let { fragmentClass->
+                fragmentClass.checkMenuStatus {
+                    if (it)
+                    fragmentHelper2.show(fragmentClass) { fragment, _ -> }
+                }
             }
         }
     }
@@ -81,6 +90,9 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
                 }
             }
             setupAnnouncement(titleList)
+        }
+        setupSportStatusChange(this){
+            homeMenuAdapter.notifyItemChanged(0)
         }
     }
 
@@ -175,5 +187,18 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
         super.onResume()
         viewModel.getConfigData()
     }
-
+    fun Class<BaseFragment<*>>.checkMenuStatus(block: ((Boolean) -> Unit)? = null){
+        when(this){
+            SportVenueFragment::class.java, ESportVenueFragment::class.java->{
+                StaticData.okSportOpened()
+            }
+            ElecGamesFragement::class.java->{
+                StaticData.okGameOpened()
+            }
+            LiveGamesFragement::class.java->{
+                StaticData.okLiveOpened()
+            }
+            else->true
+        }
+    }
 }

@@ -309,9 +309,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private var navGameSport: GameType? = null
-    fun setJumpESport() {
-        jumpToSport(GameType.ES)
-    }
 
     fun jumpToSport(gameType: GameType) {
         if (sportMenu == null) {

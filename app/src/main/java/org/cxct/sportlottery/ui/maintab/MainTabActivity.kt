@@ -24,6 +24,7 @@ import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.ESportType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -68,6 +69,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Param(ProfileCenterFragment::class.java),
                 Param(OKLiveFragment::class.java),
                 Param(NewsHomeFragment::class.java),
+                Param(ESportFragment::class.java),
             )
         )
     }
@@ -78,6 +80,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val INDEX_PROFILE = 3
     private val INDEX_OKLIVE = 4
     private val INDEX_NEWS = 5
+    private val INDEX_ESPORT = 6
 
     private var betListFragment: BetListFragment? = null
 
@@ -545,11 +548,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         fragmentHelper.showFragment(position)
     }
 
-
-    fun jumpToESport() {
+    fun jumpToESport(matchType: MatchType? = null) {
         checkSportStatus(this) {
-            (fragmentHelper.getFragment(1) as SportFragment2).setJumpESport()
-            navToPosition(INDEX_SPORT)
+            navToPosition(INDEX_ESPORT)
+            (fragmentHelper.getCurrentFragment() as ESportFragment)?.setJumpSport(matchType = matchType,null)
+            tabHelper.clearSelected()
         }
     }
 

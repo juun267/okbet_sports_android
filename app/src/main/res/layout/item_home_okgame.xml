@@ -72,6 +72,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:clickable="true"
     android:visibility="gone"
     android:background="@color/transparent_black_70">
     <ImageView
