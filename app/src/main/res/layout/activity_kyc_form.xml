@@ -202,16 +202,19 @@
                 android:textSize="@dimen/textSize14sp"
                 android:text="@string/J902"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/tvBirthday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="40dp"
                 android:layout_gravity="bottom"
                 android:background="@null"
+                android:editable="false"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textColorHint="@color/color_667085"
+                android:hint="YYYY-MM-DD"/>
 
             <ImageView
                 android:id="@+id/ivDate"

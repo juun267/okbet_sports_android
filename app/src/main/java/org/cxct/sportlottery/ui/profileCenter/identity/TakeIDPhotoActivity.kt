@@ -177,10 +177,7 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
             return@run
         }
         ivCropImage.setImageBitmap(null)
-        cameraPreview.visible()
-        ivCameraCrop.visible()
-        ivChooseImage.visible()
-        ivCameraTake.visible()
+        setViewVisible(cameraPreview, ivCameraCrop, ivChooseImage, ivCameraTake, vCover1, vCover2, vCover3, vCover4)
         btnUpload.gone()
         binding.frLoading.gone()
         cameraPreview.startPreview()
@@ -189,12 +186,8 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
     private fun enablePhotoPreview(photo: Bitmap?) = binding.run {
         photo?.let { ivCropImage.setImageBitmap(it) }
         cameraPreview.isEnabled = false
-        cameraPreview.gone()
-        ivCameraCrop.gone()
-        ivChooseImage.gone()
-        ivCameraTake.gone()
+        setViewGone(cameraPreview, ivCameraCrop, ivChooseImage, ivCameraTake, vCover1, vCover2, vCover3, vCover4, frLoading)
         btnUpload.visible()
-        binding.frLoading.gone()
     }
 
     private fun uploadPhoto() {

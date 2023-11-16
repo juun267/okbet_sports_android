@@ -70,13 +70,14 @@ class KYCFormActivity: BindingActivity<ProfileCenterViewModel, ActivityKycFormBi
 //        eetFirstName.setText(ocr.firstName)
         edtFirstName.setText(ocr.firstName)
         edtLastName.setText(ocr.lastName)
-        tvBirthday.text = ocr.birthday?.replace("/", "-")
+        tvBirthday.setText(ocr.birthday?.replace("/", "-"))
         edtMiddleName.setText(ocr.middleName)
     }
 
     private fun initEvent() = binding.run {
         tvIdType.text = idTypeName
         frBirthday.setOnClickListener { showDateTimePicker() }
+        tvBirthday.setOnClickListener { showDateTimePicker() }
         toolBar.btnToolbarBack.setOnClickListener { finish() }
         llMiddleName.setOnClickListener {
             val isSelected = !it.isSelected
@@ -159,7 +160,7 @@ class KYCFormActivity: BindingActivity<ProfileCenterViewModel, ActivityKycFormBi
         tomorrow.add(Calendar.DAY_OF_MONTH, -1)
         dateTimePicker = DateTimePickerOptions(this).getBuilder { date, _ ->
             TimeUtil.dateToStringFormatYMD(date)?.let {
-                binding.tvBirthday.text = it
+                binding.tvBirthday.setText(it)
             }
         }
             .setRangDate(yesterday, tomorrow)
