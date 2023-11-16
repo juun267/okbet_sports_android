@@ -750,7 +750,7 @@
     <string name="self_limit_froze_impotent_5">Sa panahon ng self-exclusion period, hindi mo magagawang i-disable ang feature na ito hanggang sa mag-expire ang minimum exclusion period.</string>
     <string name="self_limit_froze_impotent_6">Pagkatapos mag-expire ang self-exclusion, awtomatikong muling maa-activate ang iyong account.</string>
     <!-- 複式串關詳情 -->
-    <string name="submit_success">Matagumpay na naisumite ang feedback</string>
+    <string name="submit_success">Matagumpay ang pag submit</string>
     <!-- 搜尋 -->
     <string name="text_search">Search matches</string>
     <string name="text_clear">I- clear</string>
@@ -1508,6 +1508,6 @@
     <string name="P259">Pumili ng ID</string>
     <string name="P260">Inirerekomendang mga ID</string>
     <string name="P261">Iba pang mga ID</string>
-    <string name="P262">Mag- upload</string>
+    <string name="P262">Mag-upload</string>
 </resources>
 
