@@ -50,5 +50,38 @@ enum class ESportType(val key: String) {
                 else -> R.drawable.img_egame_mobile02
             }
         }
+        fun getHomeESportIcon(code: String): Int {
+            return when (code) {
+                ALL.key -> R.drawable.ic_home_esport_other
+                DOTA.key -> R.drawable.ic_home_esport_dota
+                LOL.key -> R.drawable.ic_home_esport_lol
+                CS.key -> R.drawable.ic_home_esport_cs
+                KOG.key -> R.drawable.ic_home_esport_kog
+                LOLWR.key -> R.drawable.ic_home_esport_lolwr
+                VLR.key -> R.drawable.ic_home_esport_vlr
+                ML.key -> R.drawable.ic_home_esport_ml
+                COD.key -> R.drawable.ic_home_esport_cod
+                PUBG.key -> R.drawable.ic_home_esport_pubg
+                APL.key -> R.drawable.ic_home_esport_apl
+                else -> R.drawable.ic_home_esport_other
+            }
+        }
+        fun getHomeESportBg(code: String): Int {
+            return when (code) {
+                ALL.key -> R.drawable.bg_home_esport_other
+                DOTA.key -> R.drawable.bg_home_esport_dota
+                LOL.key -> R.drawable.bg_home_esport_lol
+                CS.key -> R.drawable.bg_home_esport_cs
+                KOG.key -> R.drawable.bg_home_esport_kog
+                LOLWR.key -> R.drawable.bg_home_esport_lolwr
+                VLR.key -> R.drawable.bg_home_esport_vlr
+                ML.key -> R.drawable.bg_home_esport_ml
+                COD.key -> R.drawable.bg_home_esport_cod
+                PUBG.key -> R.drawable.bg_home_esport_pubg
+                APL.key -> R.drawable.bg_home_esport_apl
+                else -> R.drawable.bg_home_esport_other
+            }
+        }
     }
+
 }

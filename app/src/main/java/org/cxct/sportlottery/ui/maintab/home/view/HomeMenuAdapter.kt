@@ -7,13 +7,20 @@ import androidx.core.view.children
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.inVisible
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHomeMenuPageBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragement
 import org.cxct.sportlottery.ui.maintab.home.game.slot.ElecGamesFragement
 import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
+import org.cxct.sportlottery.util.AppManager
+import org.cxct.sportlottery.util.bindPromoClick
+import org.cxct.sportlottery.util.setServiceClick
 
 class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseFragment<*>>?>) -> Unit)
     : BindingAdapter<Array<Triple<Int, Int, Class<BaseFragment<*>>?>>, ItemHomeMenuPageBinding>() {
@@ -23,12 +30,12 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
             Triple(R.drawable.selector_home_menu_hot, R.string.home_recommend, HomeHotFragment::class.java),
             Triple(R.drawable.selector_home_menu_sport, R.string.main_tab_sport, SportVenueFragment::class.java),
             Triple(R.drawable.selector_home_menu_casino, R.string.P230, ElecGamesFragement::class.java),
-            Triple(R.drawable.selector_home_menu_live, R.string.home_live, LiveGamesFragement::class.java),
-            Triple(R.drawable.selector_home_menu_esport, R.string.esports, SportVenueFragment::class.java),
-            Triple(R.drawable.selector_home_menu_promotion, R.string.promotion, SportVenueFragment::class.java),
+            Triple(R.drawable.selector_home_menu_live, R.string.P160, LiveGamesFragement::class.java),
+            Triple(R.drawable.selector_home_menu_esport, R.string.esports, ESportVenueFragment::class.java),
+            Triple(R.drawable.selector_home_menu_promotion, R.string.B005, null),
         ),
         arrayOf(
-            Triple(R.drawable.selector_home_menu_service, R.string.btn_service, SportVenueFragment::class.java),
+            Triple(R.drawable.selector_home_menu_service, R.string.LT050, null),
         ),
     )
 
@@ -66,10 +73,17 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
             }else{
                 val itemChild = item[index]
                 view.visible()
-                view.setOnClickListener {
-                    selectItem  = itemChild
-                    notifyDataSetChanged()
-                    itemClick(it, itemChild)
+                if (itemChild.third!=null){
+                    view.setOnClickListener {
+                        selectItem  = itemChild
+                        notifyDataSetChanged()
+                        itemClick(it, itemChild)
+                    }
+                }else{
+                    when(itemChild.second){
+                        R.string.B005->view.bindPromoClick {  }
+                        R.string.LT050->view.setServiceClick((AppManager.currentActivity() as MainTabActivity).supportFragmentManager) {  }
+                    }
                 }
                 view.findViewById<ImageView>(R.id.ivIcon).setImageResource(itemChild.first)
                 view.findViewById<TextView>(R.id.tvName).setText(itemChild.second)
@@ -77,5 +91,4 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
             }
         }
     }
-
 }

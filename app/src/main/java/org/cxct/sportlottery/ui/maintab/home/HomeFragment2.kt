@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHome2Binding
 import org.cxct.sportlottery.network.Constants
@@ -27,6 +28,7 @@ import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.view.HomeMenuAdapter
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
@@ -38,10 +40,8 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     private lateinit var newsHomeFragment: NewsHomeFragment
     private val homeMenuAdapter by lazy {
         HomeMenuAdapter { view, item->
-            item.third?.let {
-                fragmentHelper2.show(it) { fragment, _ ->
-
-                }
+            val fragmentClass = item.third?.let {
+                fragmentHelper2.show(it) { fragment, _ -> }
             }
         }
     }

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.game.slot
 
+import android.view.ViewOutlineProvider
 import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
@@ -26,6 +27,8 @@ class ElecGameAdapter: BindingAdapter<Pair<Int, OKGameBean>, ItemElecGameBinding
         when{
             bean.isShowMore->{
                 root.visible()
+                ivCover.visible()
+                ivCover.load(bean.imgGame, R.drawable.ic_okgames_nodata)
                 blurviewMore.visible()
                 blurviewMore
                     .setupWith(binding.root)
@@ -49,7 +52,11 @@ class ElecGameAdapter: BindingAdapter<Pair<Int, OKGameBean>, ItemElecGameBinding
                 tvGameType.text = bean.firmName
                 ivCover.visible()
                 ivCover.load(bean.imgGame, R.drawable.ic_okgames_nodata)
-                val firmImg = firmList?.firstOrNull { bean.firmName == it.firmName }?.img
+                blurView
+                    .setupWith(binding.root)
+                    .setFrameClearDrawable(binding.root.background)
+                    .setBlurRadius(8f)
+                val firmImg = firmList?.firstOrNull { bean.firmType == it.firmName }?.img
                 ivGameIcon.isVisible = !firmImg.isNullOrEmpty()
                 if (!firmImg.isNullOrEmpty()) {
                     ivGameIcon.load(firmImg, R.drawable.ic_okgames_nodata)

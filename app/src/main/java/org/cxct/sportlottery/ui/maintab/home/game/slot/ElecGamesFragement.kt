@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.game.slot
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -10,6 +11,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.transform.TransformInDialog
@@ -35,6 +37,7 @@ class ElecGamesFragement: GameVenueFragment<OKGamesViewModel, FragmentGamevenueB
         }
         binding.rvcGameList.apply {
             layoutManager = rightManager
+            binding.rvcGameList.addItemDecoration(GridSpacingItemDecoration(2,8.dp,false))
             adapter = gameAdapter
             gameAdapter.setOnItemClickListener{ _, _, position ->
                 val okGameBean = gameAdapter.data[position].second
@@ -91,8 +94,8 @@ class ElecGamesFragement: GameVenueFragment<OKGamesViewModel, FragmentGamevenueB
             val itemList = mutableListOf<Pair<Int,OKGameBean>>()
             it.categoryList?.forEach { category->
                 val maxSizeSubList =
-                    (if (category.gameList?.size?:0>8) category.gameList?.subList(0,8) else category.gameList)?.toMutableList()?: mutableListOf()
-                if (maxSizeSubList.size==8){
+                    (if (category.gameList?.size?:0>12) category.gameList?.subList(0,12) else category.gameList)?.toMutableList()?: mutableListOf()
+                if (maxSizeSubList.size==12){
                     maxSizeSubList.last().isShowMore = true
                 }else if(maxSizeSubList.size%2==1){
                     val empty = maxSizeSubList.last().copy()

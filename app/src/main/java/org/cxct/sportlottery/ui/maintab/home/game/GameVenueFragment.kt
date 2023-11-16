@@ -40,6 +40,5 @@ abstract class GameVenueFragment<VM : BaseViewModel, VB>: BindingFragment<VM, Fr
             .setMargin(12.dp.toFloat())
             .setColor(view.context.getColor(R.color.color_CCCBD3F0))
             .setDividerHeight(1.dp.toFloat()))
-        binding.rvcGameList.addItemDecoration(GridSpacingItemDecoration(2,8.dp,false))
     }
 }

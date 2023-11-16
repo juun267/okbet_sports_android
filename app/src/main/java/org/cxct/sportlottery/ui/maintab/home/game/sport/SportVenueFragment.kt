@@ -88,12 +88,14 @@ class SportVenueFragment: GameVenueFragment<SportTabViewModel, FragmentGamevenue
     private fun initObserver() {
         viewModel.sportMenuResult.observe(viewLifecycleOwner) {
             hideLoading()
-            val menu = it.getData()?.menu ?: return@observe
+            val menu = it.getData()?.menu?: return@observe
 
             val datas = mutableListOf<Pair<Int, Sport>>()
-            menu.bkEnd?.let { datas.add(Pair(R.string.home_tab_end_score, it)) }
             menu.inPlay?.let { datas.add(Pair(R.string.home_tab_in_play, it)) }
+            it.getData()?.atStart?.let { datas.add(Pair(R.string.home_tab_at_start, it)) }
             menu.today?.let { datas.add(Pair(R.string.home_tab_today, it)) }
+            it.getData()?.in12hr?.let { datas.add(Pair(R.string.P228, it)) }
+            it.getData()?.in24hr?.let { datas.add(Pair(R.string.P229, it)) }
             menu.early?.let { datas.add(Pair(R.string.home_tab_early, it)) }
             menu.parlay?.let { datas.add(Pair(R.string.home_tab_parlay, it)) }
             menu.outright?.let { datas.add(Pair(R.string.home_tab_outright, it)) }
