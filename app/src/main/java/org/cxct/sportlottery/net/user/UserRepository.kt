@@ -3,8 +3,10 @@ package org.cxct.sportlottery.net.user
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
+import org.cxct.sportlottery.net.user.api.OCRApiService
 import org.cxct.sportlottery.net.user.api.UserApiService
 import org.cxct.sportlottery.net.user.data.ActivityImageList
+import org.cxct.sportlottery.net.user.data.OCRInfo
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
 import org.cxct.sportlottery.net.user.data.VerifyConfig
 import org.cxct.sportlottery.network.index.login.LoginData
@@ -18,6 +20,7 @@ import retrofit2.http.Body
 object UserRepository {
 
     val userApi by lazy { RetrofitHolder.createApiService(UserApiService::class.java) }
+    val ocrApi by lazy { RetrofitHolder.createOCRApiService(OCRApiService::class.java) }
 
     suspend fun sendEmailForget(email: String, validCodeIdentity :String, validCode: String): ApiResult<SendCodeRespnose> {
         val params = mapOf("email" to email, "validCodeIdentity" to validCodeIdentity, "validCode" to validCode)
@@ -104,6 +107,26 @@ object UserRepository {
         params.addProperty("platformId", sConfigData?.platformId ?: 1)
         params.addProperty("newPassword", MD5Util.MD5Encode(newPassword))
         return userApi.resetWithdraw(params)
+    }
+
+    suspend fun getOCRInfo(idType: Int, imgUrl: String): ApiResult<OCRInfo> {
+        val params = JsonObject()
+        params.addProperty("ocrTypeId", idType)
+        params.addProperty("imageUrl", sConfigData?.resServerHost + imgUrl)
+        return ocrApi.getOCRInfo(params)
+    }
+
+    suspend fun uploadKYCInfo(idType: Int, idNumber: String?, idImageUrl: String,
+                              firstName: String, middleName: String, lastName: String, birthday: String): ApiResult<String> {
+        val params = JsonObject()
+        params.addProperty("identityType", idType)
+        params.addProperty("identityNumber", "$idNumber")
+        params.addProperty("identityPhoto", idImageUrl)
+        params.addProperty("firstName", firstName)
+        params.addProperty("middleName", middleName)
+        params.addProperty("lastName", lastName)
+        params.addProperty("birthday", birthday)
+        return userApi.uploadKYCInfo(params)
     }
 
 }

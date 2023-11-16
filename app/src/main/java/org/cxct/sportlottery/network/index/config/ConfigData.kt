@@ -151,7 +151,9 @@ data class ConfigData(
     val isNeedOTPBank: Int = 0, // 添加删除编辑 银行卡时 是否需要验证码 0-否 1-是
     val customerServiceEmailAddress: String?, // 客服邮箱
     val firstPhoneGiveMoney: Int = 0,// 注册绑定手机送金额
-    val enableRetrieveWithdrawPassword: String? // 是否开启找回提款密码(0-关｜1-开)
+    val enableRetrieveWithdrawPassword: String?, // 是否开启找回提款密码(0-关｜1-开)
+    val identityTabTypeList: List<IdentityType>?,
+    val idScanHost: String?
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
