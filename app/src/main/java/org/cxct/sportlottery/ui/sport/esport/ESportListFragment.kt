@@ -27,11 +27,8 @@ import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.list.adapter.SportLeagueAdapter2
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import java.util.ArrayList
 

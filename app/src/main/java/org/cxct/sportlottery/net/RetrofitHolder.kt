@@ -55,7 +55,7 @@ object RetrofitHolder {
         }
 
         Retrofit.Builder()
-            .baseUrl(sConfigData?.chatHost)
+            .baseUrl(sConfigData?.chatHost ?: Constants.getBaseUrl())
             .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
             .build()
@@ -74,11 +74,30 @@ object RetrofitHolder {
             .build()
     }
 
-    private val chatUrlManager by lazy {
-        var constructor = RetrofitUrlManager::class.java.getDeclaredConstructor()
-        constructor.isAccessible = true
-        constructor.newInstance()
+    private val ocrRetrofit by lazy {
+        val httpClient = getHttpClient { builder ->
+            builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken)) // 给header添加token和语言
+            builder.addInterceptor(HttpStatusInterceptor()) // 处理token过期
+            ocrUrlManager = newUrlManager()
+            ocrUrlManager!!.with(builder) // 通过拦截器实现的动态切换域名
+        }
+
+        Retrofit.Builder()
+            .baseUrl(sConfigData?.idScanHost ?: Constants.getBaseUrl())
+            .client(httpClient)
+            .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
+            .build()
     }
+
+    private val chatUrlManager by lazy { newUrlManager() }
+
+    private fun newUrlManager(): RetrofitUrlManager{
+        val constructor = RetrofitUrlManager::class.java.getDeclaredConstructor()
+        constructor.isAccessible = true
+        return constructor.newInstance()
+    }
+
+    private var ocrUrlManager: RetrofitUrlManager? = null
 
     fun <T> createApiService(service: Class<T>): T {
         return retrofit.create(service)
@@ -90,6 +109,10 @@ object RetrofitHolder {
 
     fun <T> createSignApiService(service: Class<T>): T {
         return signRetrofit.create(service)
+    }
+
+    fun <T> createOCRApiService(service: Class<T>): T {
+        return ocrRetrofit.create(service)
     }
 
     fun createNewRetrofit(baseUrl: String): Retrofit {
@@ -106,21 +129,23 @@ object RetrofitHolder {
     }
 
     fun changeHost(baseUrl: String) {
-        try {
-            RetrofitUrlManager.getInstance().setGlobalDomain(baseUrl)
-        } catch (e: Exception) {
-            if (!baseUrl.startsWith("http", true)) {
-                runWithCatch { RetrofitUrlManager.getInstance().setGlobalDomain("http://$baseUrl") }
-            }
-        }
+        changeUrl(RetrofitUrlManager.getInstance(), baseUrl)
     }
 
     fun changeChatHost(host: String) {
+        changeUrl(chatUrlManager, host)
+    }
+
+    fun changeORCHost(host: String) {
+        ocrUrlManager?.let { changeUrl(it, host) }
+    }
+
+    private fun changeUrl(urlManger: RetrofitUrlManager, host: String) {
         try {
-            chatUrlManager.setGlobalDomain(host)
+            urlManger.setGlobalDomain(host)
         } catch (e: Exception) {
             if (!host.startsWith("http", true)) {
-                runWithCatch { chatUrlManager.setGlobalDomain("http://$host") }
+                runWithCatch { urlManger.setGlobalDomain("http://$host") }
             }
         }
     }

@@ -56,6 +56,7 @@ var sConfigData: ConfigData? = null
         KvUtils.putObject(ConfigData::class.java.name, value)
         field = value
         value?.chatHost?.let { RetrofitHolder.changeChatHost(it) }
+        value?.idScanHost?.let { RetrofitHolder.changeORCHost(it) }
     }
     get() {
         if (field == null) {

@@ -1569,4 +1569,24 @@
     <string name="P231">我们将发送短信验证码到您的手机号码:</string>
     <string name="P239">新提款密码</string>
     <string name="J169">两次密码输入不一致</string>
+    <string name="P243">验证进程</string>
+    <string name="P244">第一步</string>
+    <string name="P245">第二步</string>
+    <string name="P246">第三步</string>
+    <string name="P247">选择有效证件类型</string>
+    <string name="P248">拍照或上传证件</string>
+    <string name="P249">确认信息</string>
+    <string name="P250">推荐证件3分钟内完成认证</string>
+    <string name="P251">其他证件24小时内完成认证</string>
+    <string name="P252">请确认图片中的以下信息清晰</string>
+    <string name="P253">证件上的照片</string>
+    <string name="P254">"二次确认证件扫描信息 "</string>
+    <string name="P255">拍照或从相册冲选择您的证件照片并正确放入到框内</string>
+    <string name="P256">拍证件照片</string>
+    <string name="P257">无法识别证件</string>
+    <string name="P258">"现在开始 "</string>
+    <string name="P259">"选择证件 "</string>
+    <string name="P260">推荐证件</string>
+    <string name="P261">其他证件</string>
+    <string name="P262">上传</string>
 </resources>

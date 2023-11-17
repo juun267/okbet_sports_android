@@ -144,4 +144,10 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/color_FFFFFF</item>
     </style>
+
+    <style name="AnimBottom" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/pickerview_slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/pickerview_slide_out_bottom</item>
+    </style>
+
 </resources>

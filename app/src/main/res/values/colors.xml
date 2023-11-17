@@ -73,6 +73,7 @@
     <color name="color_20b8d2f8">#20b8d2f8</color>
     <color name="color_0082f9">#0082f9</color>
     <color name="color_0050e6">#0050e6</color>
+    <color name="color_edf3f9">#edf3f9</color>
 
     <color name="color_7F7F7F">#7F7F7F</color>
     <color name="color_909090">#909090</color>
@@ -97,6 +98,9 @@
     <color name="color_806FA6FF">#806FA6FF</color>
     <color name="color_326BFF">#326BFF</color>
     <color name="color_4C326BFF">#4c326BFF</color>
+    <color name="color_dbdeeb">#dbdeeb</color>
+    <color name="color_b4bed6">#b4bed6</color>
+    <color name="color_d6dbe3">#d6dbe3</color>
 
     <color name="color_FFF27C">#FFF27C</color>
     <!--以下部分，是系统中的白天的色值 -->

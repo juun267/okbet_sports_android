@@ -116,7 +116,7 @@ fun Activity.bindFinish(vararg views: View) {
 }
 
 fun toast(str: String) {
-    ToastUtil.showToast(MultiLanguagesApplication.appContext, str, Toast.LENGTH_LONG)
+    ToastUtil.showToast(MultiLanguagesApplication.appContext, str, Toast.LENGTH_SHORT)
 }
 
 fun AppCompatActivity.addFragment(fragmentId: Int, fragment: Fragment) {
