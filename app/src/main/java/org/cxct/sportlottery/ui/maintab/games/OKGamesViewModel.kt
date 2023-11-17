@@ -18,6 +18,7 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
+import org.cxct.sportlottery.net.live.OKLiveRepository
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -278,6 +279,35 @@ class OKGamesViewModel(
                 newList.addAll(it)
             }
             sportFooterGames.postValue(newList)
+        }
+    }
+
+    /**
+     * 获取游戏大厅数据（包含，厂商列表，收藏列表）
+     */
+    fun getOKLiveHall() {
+        if (isLoadingOKGamesHall) {
+            return
+        }
+
+        isLoadingOKGamesHall = true
+        callApi({ OKLiveRepository.okLiveHall() }) {
+
+            isLoadingOKGamesHall = false
+            val data = it.getData() ?: return@callApi
+
+            _gameHall.postValue(data)
+            _collectList.postValue(Pair(true, data.collectList ?: listOf()))
+
+            data.categoryList?.forEach {
+                it.gameList?.forEach {
+                    allGamesMap[it.id] = it
+                }
+            }
+
+            if (data.firmList != null) {
+                _providerresult.postValue(data)
+            }
         }
     }
 

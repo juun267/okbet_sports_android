@@ -50,7 +50,7 @@ class ElecTabAdapter: BaseQuickAdapter<OKGamesCategory, BaseViewHolder>(0) {
 
     override fun convert(holder: BaseViewHolder, item: OKGamesCategory) {
         holder.getView<ImageView>(iconId).let {
-            item.bindTabIcon(it,false)
+            item.bindLabelIcon(it)
         }
         holder.getView<TextView>(nameId).let {
             item.bindNameText(it)

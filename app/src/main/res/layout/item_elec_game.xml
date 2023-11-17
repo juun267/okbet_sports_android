@@ -10,6 +10,7 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
     android:foreground="@drawable/fg_ripple">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -84,6 +85,7 @@
         </eightbitlab.com.blurview.BlurView>
 
     </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cvJackpot"
         android:layout_width="match_parent"
@@ -143,19 +145,17 @@
             android:text="@string/N257"/>
 
     </LinearLayout>
+
     <eightbitlab.com.blurview.BlurView
         android:id="@+id/blurview_More"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible">
-        <View
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#4D333333" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:background="#4D333333"
+            android:gravity="center"
             android:textSize="@dimen/textSize18sp"
             android:textColor="@color/color_FFFFFF"
             android:textStyle="bold"
