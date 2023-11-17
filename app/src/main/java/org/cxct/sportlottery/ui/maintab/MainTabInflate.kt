@@ -47,7 +47,9 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
         imageView.loops = 1
         imageView.clearsAfterStop = false
         imageView.id = iconId
-        imageView.setAssetSvgIcon(icon)
+        imageView.tag = Pair(norDrawableRes,icon)
+//        imageView.setAssetSvgIcon(icon)
+        imageView.setImageResource(norDrawableRes)
         item.addView(imageView, lpIcon)
 
         val textView = TextView(parent.context)
@@ -76,13 +78,11 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
 
     private fun setChangeSelected(item: LinearLayout, isSelected: Boolean) {
         item.findViewById<SVGAImageView>(iconId).apply {
-            stepToFrame(0, isSelected)
-//            if (isSelected){
-//                clearAnimation()
-//                setImageResource()
-//            }else{
-//                stepToFrame(0, true)
-//            }
+            if (isSelected){
+                setAssetSvgIcon((tag as Pair<Int,String>).second,true)
+            }else{
+                setImageResource((tag as Pair<Int,String>).first)
+            }
         }
         item.findViewById<TextView>(nameId).setTextColor(if (isSelected) selColor else unSelColor)
         item.isSelected = isSelected

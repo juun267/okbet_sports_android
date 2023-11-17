@@ -40,7 +40,7 @@ class OKGamesTopView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : LinearLayoutCompat(context, attrs, defStyle), XBanner.OnItemClickListener {
 
-    private val edtSearch: EditText by lazy { findViewById(R.id.edtSearchGames) }
+    val edtSearch: EditText by lazy { findViewById(R.id.edtSearchGames) }
     private val indicatorView: IndicatorWidget by lazy { findViewById(R.id.indicatorView) }
     private lateinit var gameTabAdapter: GamesTabAdapter
     private val rcvGamesTab by lazy { findViewById<RecyclerView>(R.id.rcvGamesTab) }

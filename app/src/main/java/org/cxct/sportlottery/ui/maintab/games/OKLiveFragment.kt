@@ -90,6 +90,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
+        hideLeftMenu()
         attach(this@OKLiveFragment, mainTabActivity(), viewModel)
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))

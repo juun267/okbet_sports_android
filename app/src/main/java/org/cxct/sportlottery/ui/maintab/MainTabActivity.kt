@@ -9,6 +9,7 @@ import android.view.KeyEvent
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
+import androidx.fragment.app.Fragment
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
@@ -595,6 +596,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
 
     fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
+    fun getCurrentFragment():Fragment  = fragmentHelper.getCurrentFragment()
     override fun initToolBar() {
     }
 

@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment2
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
@@ -65,7 +66,12 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         okGamesView.setUp(this@HomeHotFragment)
         hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType,this@HomeHotFragment)
         okLiveView.setUp(this@HomeHotFragment)
-        providerView.setup(this@HomeHotFragment)
+        providerView.setup(this@HomeHotFragment){
+           getMainTabActivity().jumpToOKGames()
+            providerView.postDelayed({
+                (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(it)
+            },500)
+        }
         promotionView.setup(this@HomeHotFragment)
         newsView.setup(this@HomeHotFragment)
         winsRankView.setUp(this@HomeHotFragment, { viewModel.getBetRecord() }, { viewModel.getWinRecord() })

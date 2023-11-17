@@ -24,9 +24,10 @@ class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(con
 
     val binding = ViewHomeProviderBinding.inflate(layoutInflater,this,true)
     lateinit var viewModel:MainHomeViewModel
+    lateinit var onProviderSelect:(OKGamesFirm)->Unit
     val pageSize = 3
     private val homeProviderAdapter = HomeProviderAdapter {
-
+        onProviderSelect.invoke(it)
     }
     init {
         initView()
@@ -34,12 +35,12 @@ class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(con
 
     private fun initView() =binding.run {
         rvProvider.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-//        rvProvider.addItemDecoration(SpaceItemDecoration(context,R.dimen.margin_24))
         rvProvider.adapter = homeProviderAdapter
         LeftLinearSnapHelper().attachToRecyclerView(rvProvider)
     }
-    fun setup(fragment: HomeHotFragment) {
+    fun setup(fragment: HomeHotFragment,onProviderSelect: (OKGamesFirm)->Unit) {
         viewModel = fragment.viewModel
+        this.onProviderSelect = onProviderSelect
         homeProviderAdapter.bindLifecycleOwner(fragment)
         viewModel.homeAllProvider.observe(fragment) { resultData ->
             val buildList = mutableListOf<MutableList<OKGamesFirm>>()
