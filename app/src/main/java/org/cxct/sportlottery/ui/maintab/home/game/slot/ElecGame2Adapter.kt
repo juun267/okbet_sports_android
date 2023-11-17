@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.home.game.slot
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
@@ -45,6 +46,7 @@ class ElecGame2Adapter: BaseNodeAdapter() {
             groupIndex[baseNode.id] = position
             position++
             baseNode.gameList.forEach {
+                it.parentNode = baseNode
                 it.categoryId = baseNode.id
                 position++
             }
@@ -89,6 +91,12 @@ private class ElecGameprovider(private val firmMap: MutableMap<Int, OKGamesFirm>
     override fun convert(helper: BaseViewHolder, item: BaseNode): Unit = (helper.itemView.tag as ItemElecGameBinding).run {
 
         val bean = item as OKGameBean
+        val childPosition = item.parentNode.childNode?.indexOf(item) ?: return@run
+        if (childPosition% 2==0){
+            setMargins(root,0,0, 8.dp, 8.dp)
+        }else{
+            setMargins(root,0,0,0, 8.dp)
+        }
         blurviewMore.gone()
         linMaintenance.gone()
         cvContent.gone()
@@ -135,6 +143,12 @@ private class ElecGameprovider(private val firmMap: MutableMap<Int, OKGamesFirm>
             cvJackpot.gone()
         }
     }
-
+    private fun setMargins(btn: View, left: Int, top: Int, right: Int, bottom: Int) {
+        val lParams = btn.layoutParams as ViewGroup.MarginLayoutParams
+        lParams.leftMargin = left
+        lParams.topMargin = top
+        lParams.rightMargin = right
+        lParams.bottomMargin = bottom
+    }
 }
 

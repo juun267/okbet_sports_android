@@ -4,6 +4,7 @@ package org.cxct.sportlottery.ui.maintab.home.hot
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import kotlinx.android.synthetic.main.item_sport_news.view.*
 import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
@@ -68,9 +69,9 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         okLiveView.setUp(this@HomeHotFragment)
         providerView.setup(this@HomeHotFragment){
            getMainTabActivity().jumpToOKGames()
-            providerView.postDelayed({
+            providerView.postDelayed(500){
                 (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(it)
-            },500)
+            }
         }
         promotionView.setup(this@HomeHotFragment)
         newsView.setup(this@HomeHotFragment)

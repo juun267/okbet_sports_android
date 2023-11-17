@@ -23,7 +23,7 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
 
     init {
         val lp = LinearLayout.LayoutParams(0, -1, 1f)
-        val lpIcon = 28.dp.let { LinearLayout.LayoutParams(it, it) }
+        val lpIcon = 32.dp.let { LinearLayout.LayoutParams(it, it) }
         addItem(lp, lpIcon, "svga/home_tab_menu.svga", R.drawable.ic_tab_menu_nor, R.string.menu)
         addItem(lp, lpIcon,"svga/home_tab_sports.svga", R.drawable.ic_tab_sport_nor, R.string.main_tab_sport)
         if (!getMarketSwitch()) {
@@ -93,10 +93,9 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
         currentItem = null
     }
     fun selected(position:Int) {
-        clearSelected()
+        currentItem?.let { setChangeSelected(it, false) }
         currentItem = parent.getChildAt(position) as LinearLayout
         currentItem?.let { setChangeSelected(it, true) }
-        currentItem = null
     }
 
 }

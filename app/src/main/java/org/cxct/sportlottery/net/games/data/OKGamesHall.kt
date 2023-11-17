@@ -58,7 +58,6 @@ data class OKGamesFirm(
     val remark: String?,
     var maintain: Int?  // 0:游戏正常开启, 1: 维护状态
 ): OKGameLabel {
-
     override fun getKey() = id
     override fun bindLabelIcon(imageView: ImageView) {
         imageView.setImageResource(R.drawable.ic_okgame_p)
@@ -90,6 +89,9 @@ data class OKGameBean(
     val jackpotAmount:Double, //0不显示1显示
     val jackpotOpen:Int,
 ): BaseNode() {
+    // 列表的父节点
+    @Transient
+    lateinit var parentNode: BaseNode
     override val childNode: MutableList<BaseNode> = mutableListOf()
     var categoryId = -1
     fun isMaintain() = maintain == 1

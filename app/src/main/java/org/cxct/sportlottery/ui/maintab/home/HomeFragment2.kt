@@ -199,6 +199,6 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
                 StaticData.okLiveOpened()
             }
             else->true
-        }
+        }.let { block?.invoke(it) }
     }
 }

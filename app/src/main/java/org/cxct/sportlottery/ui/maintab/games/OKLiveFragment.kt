@@ -288,4 +288,22 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
             }
         }
     }
+    fun search(key: String){
+        if (isAdded){
+            binding.topView.edtSearch.setText(key)
+            changePartGamesLabel(GameTab.TAB_SEARCH, key)
+            startLoad {
+                viewModel.searchGames(
+                    retagRequest(), key, it, PartGamesFragment.pageSize
+                )
+            }
+        }
+    }
+    fun showByProvider(okgamesFirm: OKGamesFirm){
+        if (isAdded){
+            backGameAll()
+            showGameAll()
+            changePartGames(okgamesFirm)
+        }
+    }
 }

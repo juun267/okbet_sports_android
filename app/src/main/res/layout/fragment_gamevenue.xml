@@ -12,10 +12,42 @@
         android:layout_width="58dp"
         android:layout_height="wrap_content"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvcGameList"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"/>
+        android:layout_marginStart="12dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/linSearch"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_gray_radius_8_stroke_66e3e0ee"
+            android:layout_marginBottom="@dimen/margin_8">
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/margin_12"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/N900"
+                android:singleLine="true"
+                android:maxLength="100"
+                android:textColor="@color/color_0D2245"
+                android:textSize="@dimen/textSize14sp"/>
+            <ImageView
+                android:id="@+id/ivSearch"
+                android:layout_width="@dimen/margin_24"
+                android:layout_height="@dimen/margin_24"
+                android:layout_marginRight="@dimen/margin_12"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_search_home"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvcGameList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
 </LinearLayout>

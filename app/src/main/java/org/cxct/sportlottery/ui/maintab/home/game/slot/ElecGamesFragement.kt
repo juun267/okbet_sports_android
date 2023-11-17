@@ -1,14 +1,17 @@
 package org.cxct.sportlottery.ui.maintab.home.game.slot
 
 import android.view.View
+import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
+import org.cxct.sportlottery.common.extentions.onConfirm
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
 import org.cxct.sportlottery.util.enterThirdGame
@@ -23,6 +26,14 @@ open class ElecGamesFragement<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
 
     override fun onInitView(view: View) {
         super.onInitView(view)
+        binding.etSearch.onConfirm {
+            (requireActivity() as MainTabActivity).apply {
+                jumpToOKGames()
+                binding.etSearch.postDelayed(500){
+                    (getCurrentFragment() as? OKGamesFragment)?.search(it)
+                }
+            }
+        }
         binding.rvcGameType.adapter = tabAdapter
         tabAdapter.setOnItemClickListener{ _, _, position ->
             tabAdapter.setSelected(position)
