@@ -20,6 +20,12 @@ object AFInAppEventUtil {
             AFInAppEventType.COMPLETE_REGISTRATION, eventValues)
     }
 
+    fun regAndLogin(eventValues: HashMap<String, Any>) {
+        AppsFlyerLib.getInstance().logEvent(
+            MultiLanguagesApplication.getInstance(),
+            "reportLoginInfo", eventValues)
+    }
+
     fun deposit(revenue: String, currency: String) {
 //        val eventValues = HashMap<String, Any>()
 //        eventValues.put(AFInAppEventParameterName.REVENUE, revenue)
