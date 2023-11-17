@@ -604,6 +604,8 @@ open class SportListViewModel(
         var otherCodeArr = mutableListOf<String>()
         var otherNum = 0
         val newCategoryList = mutableListOf<CategoryItem>()
+        //必须删除之前缓存的ALL数据，不然会导致拼装数据错误
+        item.categoryList?.removeAll { it.code == ESportType.ALL.key}
         val allCategoryItem = CategoryItem(
             id = ESportType.ALL.key,
             code = ESportType.ALL.key,
