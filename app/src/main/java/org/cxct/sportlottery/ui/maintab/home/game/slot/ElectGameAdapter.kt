@@ -23,7 +23,7 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 
-class ElecGame2Adapter: BaseNodeAdapter() {
+class ElectGameAdapter: BaseNodeAdapter() {
 
     private val groupIndex = mutableMapOf<Int, Int>()
     private val firmMap = mutableMapOf<Int, OKGamesFirm>()

@@ -15,6 +15,7 @@ import androidx.core.view.ViewPropertyAnimatorListenerAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import org.cxct.sportlottery.ui.chat.hideSoftInput
 import org.cxct.sportlottery.util.BreatheInterpolator
 import org.cxct.sportlottery.util.ScreenUtil
 import java.util.regex.Pattern
@@ -250,9 +251,10 @@ fun EditText.filterSpecialCharacters() {
 
 
 fun EditText.onConfirm(block: (String) -> Unit) {
-    imeOptions = EditorInfo.IME_ACTION_DONE
+    imeOptions = EditorInfo.IME_ACTION_DONE or EditorInfo.IME_ACTION_GO
     setOnEditorActionListener { _, actionId, _ ->
         if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO) {
+            hideSoftInput()
             block.invoke(text.toString())
             return@setOnEditorActionListener true
         }

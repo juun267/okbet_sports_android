@@ -40,4 +40,5 @@ abstract class GameVenueFragment<VM : BaseViewModel, VB>: BindingFragment<VM, Fr
             .setColor(view.context.getColor(R.color.color_CCCBD3F0))
             .setDividerHeight(1.dp.toFloat()))
     }
+
 }

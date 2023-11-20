@@ -5,13 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MissingDefaultResource">
+    android:background="@color/color_FFFFFF">
 
     <org.cxct.sportlottery.ui.maintab.home.view.HomeToolbarView
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_FFFFFF"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -62,7 +61,6 @@
                         android:id="@+id/topBanner"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
-                        android:background="@android:color/white"
                         app:AutoPlayTime="3500"
                         app:pageChangeDuration="800"
                         app:pointLeftRightPadding="2dp"
@@ -111,8 +109,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_12"
-        android:orientation="vertical"
-        android:background="@color/color_FFFFFF">
+        android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMenu"
@@ -126,6 +123,7 @@
             android:id="@+id/hIndicator"
             android:layout_width="@dimen/margin_24"
             android:layout_height="@dimen/margin_6"
+            android:layout_marginBottom="8dp"
             android:layout_gravity="center_horizontal"
             app:hi_bgColor="@color/color_E0E3EE"
             app:hi_indicatorColor="@color/color_025BE8"/>
