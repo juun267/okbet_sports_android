@@ -29,8 +29,8 @@ class ElectGameAdapter: BaseNodeAdapter() {
     private val firmMap = mutableMapOf<Int, OKGamesFirm>()
 
     init {
-        addFullSpanNodeProvider(GroupTitleProvider())
-        addNodeProvider(ElecGameprovider(firmMap))
+        addFullSpanNodeProvider(GroupTitleProvider(this))
+        addNodeProvider(ElectGameprovider(firmMap))
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -62,7 +62,7 @@ class ElectGameAdapter: BaseNodeAdapter() {
 
 }
 
-private class GroupTitleProvider(override val itemViewType: Int = 1, override val layoutId: Int = 0) : BaseNodeProvider() {
+private class GroupTitleProvider(val adapter: ElectGameAdapter, override val itemViewType: Int = 1, override val layoutId: Int = 0) : BaseNodeProvider() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val textView = AppCompatTextView(parent.context)
@@ -73,14 +73,16 @@ private class GroupTitleProvider(override val itemViewType: Int = 1, override va
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) {
-        (helper.itemView as TextView).text = (item as OKGamesCategory).categoryName
+        val textView = helper.itemView as TextView
+        textView.text = (item as OKGamesCategory).categoryName
+        textView.setPadding(0, if (adapter.getItemOrNull(0) == item) 0 else textView.paddingBottom, 0, textView.paddingBottom)
     }
 
 }
 
-private class ElecGameprovider(private val firmMap: MutableMap<Int, OKGamesFirm>,
-                               override val itemViewType: Int = 2,
-                               override val layoutId: Int = 0) : BaseNodeProvider() {
+private class ElectGameprovider(private val firmMap: MutableMap<Int, OKGamesFirm>,
+                                override val itemViewType: Int = 2,
+                                override val layoutId: Int = 0) : BaseNodeProvider() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val binding = ItemElecGameBinding.inflate(LayoutInflater.from(parent.context), parent, false)

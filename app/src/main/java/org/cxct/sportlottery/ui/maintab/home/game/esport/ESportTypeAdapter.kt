@@ -24,7 +24,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 class ESportTypeAdapter : BaseNodeAdapter() {
 
     init {
-        addFullSpanNodeProvider(ESportGroupProvider())
+        addFullSpanNodeProvider(ESportGroupProvider(this))
         addFullSpanNodeProvider(ESportMatchProvider())
     }
 
@@ -43,7 +43,7 @@ class ESportTypeAdapter : BaseNodeAdapter() {
                               val items: MutableList<ESportMatch>,
                               override val childNode: MutableList<BaseNode>? = items as MutableList<BaseNode>?): BaseNode()
 
-private class ESportGroupProvider(override val itemViewType: Int = 1, override val layoutId: Int = 0): BaseNodeProvider() {
+private class ESportGroupProvider(val adapter: BaseNodeAdapter, override val itemViewType: Int = 1, override val layoutId: Int = 0): BaseNodeProvider() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val textView = AppCompatTextView(parent.context)
@@ -53,7 +53,9 @@ private class ESportGroupProvider(override val itemViewType: Int = 1, override v
         return BaseViewHolder(textView)
     }
     override fun convert(helper: BaseViewHolder, item: BaseNode) {
-        (helper.itemView as TextView).setText((item as ESportGroup).name)
+        val textView = helper.itemView as TextView
+        textView.setText((item as ESportGroup).name)
+        textView.setPadding(0, if (adapter.getItemOrNull(0) == item) 0 else textView.paddingBottom, 0, textView.paddingBottom)
     }
 
 }
