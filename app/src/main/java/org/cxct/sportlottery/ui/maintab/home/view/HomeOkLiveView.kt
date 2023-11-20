@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.view_home_okgame.view.*
 import org.cxct.sportlottery.databinding.ViewHomeOkliveBinding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.AllLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.enterThirdGame
@@ -50,7 +51,7 @@ class HomeOkLiveView(context: Context, attrs: AttributeSet) : RelativeLayout(con
         initEnterGame(fragment)
 
         tvMore.onClick {
-            (fragment as AllLiveFragment).jumpToOKGames()
+            (fragment.activity as MainTabActivity).jumpToOKGames()
         }
 
         //item点击 进入游戏

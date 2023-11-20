@@ -140,7 +140,6 @@ class SportTabViewModel(
                 id = ESportType.OTHERS.key,
                 code = ESportType.OTHERS.key,
                 name = androidContext.getString(R.string.other),
-                icon = "",
                 num = otherNum,
                 sort = 999,
             ).apply {

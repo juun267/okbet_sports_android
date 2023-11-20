@@ -48,7 +48,7 @@ class HomeHotESportView(
         initRecyclerView()
         //查看更多
         tvHotMore.onClick {
-            (fragment?.activity as MainTabActivity).jumpToInplaySport()
+            (fragment?.activity as MainTabActivity).jumpToESport()
         }
 
     }
@@ -272,7 +272,8 @@ class HomeHotESportView(
                         odd = odd,
                         subscribeChannelType = ChannelType.HALL,
                         betPlayCateNameMap = betPlayCateNameMap,
-                        playCateMenuCode
+                        playCateMenuCode = playCateMenuCode,
+                        categoryCode = matchInfo.categoryCode
                     )
 
                     fragment.requireActivity().doOnStop(true) { // 延时加入注单，不然当前页面会弹出来注单列表

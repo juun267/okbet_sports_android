@@ -422,7 +422,9 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             matchOdd = outRightMatchOdd,
             odd = odd,
             subscribeChannelType = ChannelType.HALL,
-            betPlayCateNameMap = betPlayCateNameMap)
+            betPlayCateNameMap = betPlayCateNameMap,
+            categoryCode = matchInfo.categoryCode
+            )
         )
     }
     /**

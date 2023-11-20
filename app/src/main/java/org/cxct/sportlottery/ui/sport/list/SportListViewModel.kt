@@ -605,7 +605,6 @@ open class SportListViewModel(
             id = ESportType.ALL.key,
             code = ESportType.ALL.key,
             name = androidContext.getString(R.string.label_all),
-            icon = "",
             num = item.num,
             sort = 0,
         ).apply {
@@ -630,7 +629,6 @@ open class SportListViewModel(
                             id = it.key,
                             code = it.key,
                             name = it.value.first().league.category,
-                            icon = "",
                             num = it.value.sumOf { it.matchOdds.size },
                             sort = 0,
                         ).apply {
@@ -673,7 +671,6 @@ open class SportListViewModel(
                 id = ESportType.OTHERS.key,
                 code = ESportType.OTHERS.key,
                 name = androidContext.getString(R.string.other),
-                icon = "",
                 num = otherNum,
                 sort = 999,
             ).apply {

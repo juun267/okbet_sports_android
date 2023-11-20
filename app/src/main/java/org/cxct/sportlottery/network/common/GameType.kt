@@ -257,6 +257,27 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 else -> R.drawable.ic_game_champ
             }
         }
+        fun getRecentImg(code: String?): Int {
+            return when (code) {
+                FT.key -> R.drawable.bg_recent_football
+                BK.key -> R.drawable.bg_recent_basketball
+                TN.key -> R.drawable.bg_recent_tennis
+                VB.key -> R.drawable.bg_recent_volleyball
+                BM.key -> R.drawable.bg_recent_badminton
+                TT.key -> R.drawable.bg_recent_bingpong
+                IH.key -> R.drawable.bg_recent_icehockey
+                BX.key -> R.drawable.bg_recent_boxing
+                CB.key -> R.drawable.bg_recent_billiards
+                CK.key -> R.drawable.bg_recent_electronic
+                BB.key -> R.drawable.bg_recent_baseball
+                RB.key -> R.drawable.bg_recent_rubby
+                AFT.key -> R.drawable.bg_recent_american_football
+                MR.key-> R.drawable.bg_recent_racing
+                GF.key -> R.drawable.bg_recent_golf
+                ES.key -> R.drawable.bg_recent_esports
+                else -> R.drawable.bg_recent_rocket
+            }
+        }
     }
 
 }

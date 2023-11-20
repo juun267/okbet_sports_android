@@ -58,6 +58,7 @@ object MatchOddUtil {
                             isOnlyEUType = odd.isOnlyEUType
                             homeCornerKicks = matchInfo.homeCornerKicks
                             awayCornerKicks = matchInfo.awayCornerKicks
+                            categoryCode = matchInfo.categoryCode
                         }
 
                     }

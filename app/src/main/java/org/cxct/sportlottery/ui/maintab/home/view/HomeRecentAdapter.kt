@@ -4,6 +4,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.ItemHomeRecentBinding
+import org.cxct.sportlottery.network.common.ESportType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.util.RecentRecord
 
@@ -14,14 +15,33 @@ class HomeRecentAdapter : BindingAdapter<RecentRecord, ItemHomeRecentBinding>() 
         vb: ItemHomeRecentBinding,
         item: RecentRecord,
     ): Unit = vb.run {
+
         if (item.recordType==0){
-            ivCover.load(GameType.getSportHomeImg(item.gameType))
-            tvName.text = GameType.getGameTypeString(context,item.gameType)
+            val gameType =GameType.getGameType(item.gameType)
+            val esportType =ESportType.getGameType(item.gameType)
+            when{
+                gameType!=null-> {
+                    ivCover.load(GameType.getRecentImg(item.gameType))
+                    tvName.text = GameType.getGameTypeString(context,item.gameType)
+                }
+                esportType!=null-> {
+                    ivCover.load(ESportType.getRecentImg(item.gameType))
+                    tvName.text = context.getString(GameType.ES.string)
+                }
+                else ->{
+                    ivCover.load(R.drawable.bg_recent_rocket)
+                    tvName.text = ""
+                }
+            }
         }else{
             item.gameBean?.let {
                 ivCover.load(it.imgGame, R.drawable.ic_okgames_nodata)
                 tvName.text = it.gameName
             }
         }
+        blurView
+            .setupWith(root)
+            .setFrameClearDrawable(root.background)
+            .setBlurRadius(4f)
     }
 }

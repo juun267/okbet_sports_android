@@ -558,6 +558,7 @@ open class MainHomeViewModel(
      */
     private fun Recommend.setupLeagueName() {
         matchInfo?.leagueName = leagueName
+        matchInfo?.categoryCode = league.categoryCode
     }
 
     /**

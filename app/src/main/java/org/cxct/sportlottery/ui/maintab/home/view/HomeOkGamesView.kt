@@ -10,8 +10,10 @@ import kotlinx.android.synthetic.main.view_home_okgame.view.*
 import org.cxct.sportlottery.databinding.ViewHomeOkgameBinding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
@@ -52,7 +54,7 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
         initEnterGame(fragment)
 
         tvMore.onClick {
-            (fragment as MainHomeFragment).jumpToOKGames()
+            (fragment.activity as MainTabActivity).jumpToOKGames()
         }
 
         //item点击 进入游戏

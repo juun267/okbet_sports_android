@@ -470,7 +470,13 @@ abstract class BaseOddButtonViewModel(
             val parlayBets = result.receipt?.parlayBets
             val haveParlayItemFailed = parlayBets?.any { parlayIt -> parlayIt.status == 7 } ?: false
 
-            if (!normalBetList.isNullOrEmpty()){
+            val gameType = normalBetList.firstOrNull()?.matchOdd?.gameType
+            if (gameType==GameType.ES.key){
+                val categoryCodeList = normalBetList.groupBy { it.matchOdd.categoryCode }.keys.toList()
+                categoryCodeList.forEach {
+                    RecentDataManager.addRecent(RecentRecord(0,gameType = it))
+                }
+            }else{
                 RecentDataManager.addRecent(RecentRecord(0,gameType = normalBetList.first().matchOdd.gameType))
             }
 

@@ -55,7 +55,7 @@ class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(con
         }
 
         binding.tvMore.setOnClickListener {
-            (fragment.activity as MainTabActivity).jumpToOkLive()
+            (fragment.activity as MainTabActivity).jumpToOKGames()
         }
         viewModel.getGamesALl()
     }

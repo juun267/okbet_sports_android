@@ -22,6 +22,7 @@ object RecentDataManager {
 //        val first = recentList.firstOrNull()
 //        if (first!=null&&first.recordType==record.recordType&&first.gameBean?.firmType == record.gameBean?.firmType)
 //            return
+//        LogUtil.toJson(record)
         recentList.add(0,record)
         KvUtils.put(RECENT_RECORD,recentList.toJson())
         recentEvent.postValue(recentList)

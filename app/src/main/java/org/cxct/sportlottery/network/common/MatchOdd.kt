@@ -14,5 +14,4 @@ interface MatchOdd {
     val oddsSort: String?
     var quickPlayCateList: MutableList<QuickPlayCate>?
     val oddsEps: EpsOdd?
-
 }

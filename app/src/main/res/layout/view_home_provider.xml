@@ -35,6 +35,7 @@
             android:drawablePadding="@dimen/margin_4"
             android:drawableRight="@drawable/ic_home_more"
             android:gravity="center"
+            android:visibility="gone"
             android:text="@string/N702"
             android:textColor="@color/color_6D7693"
             android:textSize="14sp" />

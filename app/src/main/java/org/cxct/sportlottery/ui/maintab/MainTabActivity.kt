@@ -513,7 +513,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment2
 
     fun backMainHome() {
-        tabHelper.clearSelected()
         fragmentHelper.showFragment(INDEX_HOME)
         navToPosition(INDEX_HOME)
     }
@@ -524,7 +523,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
         if(StaticData.okGameOpened()){
             navToPosition(INDEX_OKGAMES)
-            tabHelper.selected(INDEX_OKGAMES)
         }else{
             ToastUtil.showToast(this,getString(R.string.N700))
         }
@@ -536,24 +534,22 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
         if(StaticData.okLiveOpened()){
             navToPosition(INDEX_OKLIVE)
-            tabHelper.clearSelected()
         }else{
             ToastUtil.showToast(this,getString(R.string.N700))
         }
     }
     fun jumpToNews() {
         navToPosition(INDEX_NEWS)
-        tabHelper.clearSelected()
     }
     private fun navToPosition(position: Int) {
         fragmentHelper.showFragment(position)
+        tabHelper.selected(position)
     }
 
     fun jumpToESport(matchType: MatchType? = null) {
         checkSportStatus(this) {
             navToPosition(INDEX_ESPORT)
             (fragmentHelper.getCurrentFragment() as ESportFragment)?.setJumpSport(matchType = matchType,null)
-            tabHelper.clearSelected()
         }
     }
 

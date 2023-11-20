@@ -9,6 +9,7 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.odds.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
@@ -58,6 +59,8 @@ data class Recommend(
     val trackerId: String?,
     @Json(name = "tvId")
     val tvId: String,
+    @Json(name = "league")
+    val league: League,
 ) : MatchOdd, Parcelable {
     var matchType: MatchType? = null
     override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null

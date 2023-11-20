@@ -11,10 +11,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewHomeRecentBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.RecentDataManager
-import org.cxct.sportlottery.util.enterThirdGame
-import org.cxct.sportlottery.util.toJson
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.transform.TransformInDialog
 import splitties.systemservices.layoutInflater
 
@@ -22,6 +19,7 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
 
     val binding = ViewHomeRecentBinding.inflate(layoutInflater,this,true)
     lateinit var fragment: HomeHotFragment
+    val maxItemCount = 20
     private val homeRecentAdapter = HomeRecentAdapter().apply {
         setOnItemClickListener{ adapter, view, position ->
             val item = data[position]
@@ -54,11 +52,14 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
                 }.show(childFragmentManager, null)
             }
             RecentDataManager.recentEvent.observe(fragment){
-                homeRecentAdapter.setList(it)
+                homeRecentAdapter.setList(subMaxCount(it))
                 this@HomeRecentView.isVisible = homeRecentAdapter.dataCount()!=0
             }
         }
-        homeRecentAdapter.setList(RecentDataManager.getRecentList())
+        homeRecentAdapter.setList(subMaxCount(RecentDataManager.getRecentList()))
         isVisible = homeRecentAdapter.dataCount()!=0
+    }
+    private fun subMaxCount(list: MutableList<RecentRecord>):MutableList<RecentRecord>{
+        return if (list.size>maxItemCount) list.subList(0,maxItemCount-1) else list
     }
 }
