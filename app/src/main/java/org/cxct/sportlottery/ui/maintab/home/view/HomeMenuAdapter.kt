@@ -8,18 +8,16 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.inVisible
-import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHomeMenuPageBinding
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
-import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragement
-import org.cxct.sportlottery.ui.maintab.home.game.slot.ElecGamesFragement
+import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragment
+import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragement
 import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
-import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.bindPromoClick
 import org.cxct.sportlottery.util.getSportEnterIsClose
@@ -32,8 +30,8 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
 //            Triple(R.drawable.selector_home_menu_home, R.string.bottom_nav_home, HomeHotFragment::class.java),
             Triple(R.drawable.selector_home_menu_hot, R.string.home_recommend, HomeHotFragment::class.java),
             Triple(R.drawable.selector_home_menu_sport, R.string.main_tab_sport, SportVenueFragment::class.java),
-            Triple(R.drawable.selector_home_menu_casino, R.string.P230, ElecGamesFragement::class.java),
-            Triple(R.drawable.selector_home_menu_live, R.string.P160, LiveGamesFragement::class.java),
+            Triple(R.drawable.selector_home_menu_casino, R.string.P230, ElectGamesFragement::class.java),
+            Triple(R.drawable.selector_home_menu_live, R.string.P160, LiveGamesFragment::class.java),
             Triple(R.drawable.selector_home_menu_esport, R.string.esports, ESportVenueFragment::class.java),
             Triple(R.drawable.selector_home_menu_promotion, R.string.B005, null),
         ),
@@ -107,7 +105,7 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
                     linMaintenance.visible()
                 }
             }
-            ElecGamesFragement::class.java->{
+            ElectGamesFragement::class.java->{
                 //判断体育维护是否开启
                 if(StaticData.okGameOpened()){
                     //展示维护中
@@ -116,7 +114,7 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
                     linMaintenance.visible()
                 }
             }
-            LiveGamesFragement::class.java->{
+            LiveGamesFragment::class.java->{
                 //判断体育维护是否开启
                 if(StaticData.okLiveOpened()){
                     //展示维护中

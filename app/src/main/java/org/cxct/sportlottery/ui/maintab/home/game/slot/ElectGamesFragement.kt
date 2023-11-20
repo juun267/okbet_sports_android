@@ -1,10 +1,16 @@
 package org.cxct.sportlottery.ui.maintab.home.game.slot
 
+import android.content.Context
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.luck.picture.lib.decoration.GridSpacingItemDecoration
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.onConfirm
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -14,26 +20,59 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.util.enterThirdGame
-import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
-open class ElecGamesFragement<M, VB>: GameVenueFragment<OKGamesViewModel, FragmentGamevenueBinding>() {
+open class ElectGamesFragement<M, VB>: GameVenueFragment<OKGamesViewModel, FragmentGamevenueBinding>() {
 
-    private val tabAdapter = ElecTabAdapter()
-    private val gameAdapter2 = ElecGame2Adapter()
+    private val tabAdapter = ElectTabAdapter()
+    private val gameAdapter2 = ElectGameAdapter()
     val rightManager by lazy { GridLayoutManager(requireContext(),2) }
+
+    protected fun applySearch(context: Context): EditText {
+        val etSearch = AppCompatEditText(context)
+        etSearch.layoutParams = LinearLayout.LayoutParams(-1, 32.dp).apply { bottomMargin = 8.dp }
+        12.dp.let { etSearch.setPadding(it, 0, it, 0) }
+        etSearch.textSize = 14f
+        etSearch.gravity = Gravity.CENTER_VERTICAL
+        etSearch.setHint(R.string.N900)
+        etSearch.setHintTextColor(context.getColor(R.color.color_BEC7DC))
+        etSearch.isSingleLine = true
+        val icon = context.getDrawable(R.drawable.ic_search_home)!!
+        icon.setTint(context.getColor(R.color.color_BEC7DC))
+        icon.setBounds(0, 0, 90.dp, 90.dp)
+        etSearch.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null)
+        etSearch.background = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.transparent, R.color.color_66E0E3EE)
+        etSearch.onConfirm(::onSearch)
+
+        val lin = LinearLayout(context)
+        lin.orientation = LinearLayout.VERTICAL
+        lin.addView(etSearch)
+
+        val parent = (binding.rvcGameList.parent as ViewGroup)
+        val index = parent.indexOfChild(binding.rvcGameList)
+        parent.addView(lin, index, binding.rvcGameList.layoutParams)
+
+        parent.removeView(binding.rvcGameList)
+        lin.addView(binding.rvcGameList, LinearLayout.LayoutParams(-1, -2))
+
+        return etSearch
+    }
+
+    protected open fun onSearch(key: String) {
+        (requireActivity() as MainTabActivity).apply {
+            jumpToOKGames()
+            binding.root.postDelayed(500){
+                (getCurrentFragment() as? OKGamesFragment)?.search(key)
+            }
+        }
+    }
 
     override fun onInitView(view: View) {
         super.onInitView(view)
-        binding.etSearch.onConfirm {
-            (requireActivity() as MainTabActivity).apply {
-                jumpToOKGames()
-                binding.etSearch.postDelayed(500){
-                    (getCurrentFragment() as? OKGamesFragment)?.search(it)
-                }
-            }
-        }
+        applySearch(view.context)
         binding.rvcGameType.adapter = tabAdapter
         tabAdapter.setOnItemClickListener{ _, _, position ->
             tabAdapter.setSelected(position)
@@ -54,7 +93,7 @@ open class ElecGamesFragement<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
             }
 
             if (LoginRepository.isLogined()) {
-                viewModel.homeOkGamesEnterThirdGame(okGameBean, this@ElecGamesFragement)
+                viewModel.homeOkGamesEnterThirdGame(okGameBean, this@ElectGamesFragement)
                 viewModel.homeOkGameAddRecentPlay(okGameBean)
             } else {
                 //请求试玩路线

@@ -4,14 +4,12 @@ import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
-import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHome2Binding
 import org.cxct.sportlottery.network.Constants
@@ -26,17 +24,15 @@ import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
-import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragement
-import org.cxct.sportlottery.ui.maintab.home.game.slot.ElecGamesFragement
+import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragment
+import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragement
 import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.view.HomeMenuAdapter
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
-import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
 
 class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
@@ -47,10 +43,11 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     private val homeMenuAdapter by lazy {
         HomeMenuAdapter { view, item->
             item.third?.let { fragmentClass->
-                fragmentClass.checkMenuStatus {
-                    if (it)
-                    fragmentHelper2.show(fragmentClass) { fragment, _ -> }
-                }
+                fragmentHelper2.show(fragmentClass) { fragment, _ -> }
+//                fragmentClass.checkMenuStatus {
+//                    if (it)
+//                    fragmentHelper2.show(fragmentClass) { fragment, _ -> }
+//                }
             }
         }
     }
@@ -192,10 +189,10 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
             SportVenueFragment::class.java, ESportVenueFragment::class.java->{
                 StaticData.okSportOpened()
             }
-            ElecGamesFragement::class.java->{
+            ElectGamesFragement::class.java->{
                 StaticData.okGameOpened()
             }
-            LiveGamesFragement::class.java->{
+            LiveGamesFragment::class.java->{
                 StaticData.okLiveOpened()
             }
             else->true

@@ -12,13 +12,11 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
-import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class ElecTabAdapter: BaseQuickAdapter<OKGamesCategory, BaseViewHolder>(0) {
+class ElectTabAdapter: BaseQuickAdapter<OKGamesCategory, BaseViewHolder>(0) {
 
     private val iconId = View.generateViewId()
     private val nameId = View.generateViewId()
