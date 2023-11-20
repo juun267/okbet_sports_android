@@ -87,7 +87,7 @@
                 android:id="@+id/tvRegist"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
-                android:background="@drawable/bg_orange_radius_15"
+                android:background="@drawable/bg_btn_home_register"
                 android:gravity="center"
                 android:minWidth="74dp"
                 android:paddingHorizontal="10dp"
