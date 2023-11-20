@@ -236,7 +236,27 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 else -> R.drawable.ic_game_champ
             }
         }
-
+        fun getSportHomeImg(code: String?): Int {
+            return when (code) {
+                FT.key -> R.drawable.img_game_sport_ft_2
+                BK.key -> R.drawable.img_game_sport_bk_2
+                TN.key -> R.drawable.img_game_sport_tn_2
+                VB.key -> R.drawable.img_game_sport_vb_2
+                BM.key -> R.drawable.img_game_sport_bm_2
+                TT.key -> R.drawable.img_game_sport_tt_2
+                IH.key -> R.drawable.img_game_sport_ih_2
+                BX.key -> R.drawable.img_game_sport_bx_2
+                CB.key -> R.drawable.img_game_sport_cb_2
+                CK.key -> R.drawable.img_game_sport_ck_2
+                BB.key -> R.drawable.img_game_sport_bb_2
+                RB.key -> R.drawable.img_game_sport_rb
+                AFT.key -> R.drawable.img_game_sport_aft_2
+                MR.key-> R.drawable.img_game_sport_mr
+                GF.key -> R.drawable.img_game_sport_gf_2
+                ES.key -> R.drawable.img_game_sport_es_2
+                else -> R.drawable.ic_game_champ
+            }
+        }
     }
 
 }

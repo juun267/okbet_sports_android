@@ -328,7 +328,7 @@ open class MainHomeViewModel(
      * 进入OKgame游戏
      */
     fun homeOkGamesEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {
-
+        RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         requestEnterThirdGame(
             "${gameData.firmType}",
             "${gameData.gameCode}",
@@ -407,6 +407,7 @@ open class MainHomeViewModel(
     }
 
     fun requestEnterThirdGameNoLogin(okGameBean: OKGameBean) {
+        RecentDataManager.addRecent(RecentRecord(1, gameBean = okGameBean))
         requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory, okGameBean.gameType)
     }
 
@@ -460,7 +461,6 @@ open class MainHomeViewModel(
         if (jumpingGame) {
             return
         }
-
         jumpingGame = true
         baseFragment.loading()
         viewModelScope.launch {

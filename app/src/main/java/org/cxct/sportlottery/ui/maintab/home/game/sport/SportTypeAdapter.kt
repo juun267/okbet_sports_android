@@ -108,28 +108,8 @@ private class SportMatchProvider(override val itemViewType: Int = 2, override va
         val bean = item as Item
         helper.setText(nameId, bean.name)
         helper.setText(numberId, bean.num.toString())
-        helper.setImageResource(imgId, getSportGroundImg("${bean.code}"))
+        helper.setImageResource(imgId, GameType.getSportHomeImg("${bean.code}"))
     }
 
-    private fun getSportGroundImg(code: String): Int {
-        return when (code) {
-            GameType.FT.key -> R.drawable.img_game_sport_ft_2
-            GameType.BK.key -> R.drawable.img_game_sport_bk_2
-            GameType.TN.key -> R.drawable.img_game_sport_tn_2
-            GameType.VB.key -> R.drawable.img_game_sport_vb_2
-            GameType.BM.key -> R.drawable.img_game_sport_bm_2
-            GameType.TT.key -> R.drawable.img_game_sport_tt_2
-            GameType.IH.key -> R.drawable.img_game_sport_ih_2
-            GameType.BX.key -> R.drawable.img_game_sport_bx_2
-            GameType.CB.key -> R.drawable.img_game_sport_cb_2
-            GameType.CK.key -> R.drawable.img_game_sport_ck_2
-            GameType.BB.key -> R.drawable.img_game_sport_bb_2
-            GameType.RB.key -> R.drawable.img_game_sport_rb
-            GameType.AFT.key -> R.drawable.img_game_sport_aft_2
-            GameType.MR.key-> R.drawable.img_game_sport_mr
-            GameType.GF.key -> R.drawable.img_game_sport_gf_2
-            GameType.ES.key -> R.drawable.img_game_sport_es_2
-            else -> R.drawable.ic_game_champ
-        }
-    }
+
 }

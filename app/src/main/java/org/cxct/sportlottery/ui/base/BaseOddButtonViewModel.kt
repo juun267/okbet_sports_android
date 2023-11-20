@@ -470,6 +470,10 @@ abstract class BaseOddButtonViewModel(
             val parlayBets = result.receipt?.parlayBets
             val haveParlayItemFailed = parlayBets?.any { parlayIt -> parlayIt.status == 7 } ?: false
 
+            if (!normalBetList.isNullOrEmpty()){
+                RecentDataManager.addRecent(RecentRecord(0,gameType = normalBetList.first().matchOdd.gameType))
+            }
+
             if (!haveSingleItemFailed && !haveParlayItemFailed) {
                 betInfoRepository.clear()
                 _betFailed.postValue(Pair(false, ""))
@@ -822,25 +826,6 @@ abstract class BaseOddButtonViewModel(
         betInfoRepository.notifyBetInfoChanged()
     }
 
-    private suspend fun getBetApi(
-        betAddRequest: BetAddRequest,
-    ): BetAddResult? {
-        //冠軍的投注要使用不同的api
-        //20210824確認 都使用相同api
-        return doNetwork(androidContext) {
-            OneBoSportApi.betService.addBet(betAddRequest)
-        }
-    }
-
-    private fun afterBet(matchType: MatchType?, result: BetAddResult?) {
-        if (matchType != MatchType.PARLAY) {
-            result?.receipt?.let { receipt ->
-                removeBetInfoItem(receipt.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()?.oddsId)
-            }
-        } else {
-            betInfoRepository.clear()
-        }
-    }
 }
 
 

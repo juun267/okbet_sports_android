@@ -33,8 +33,8 @@ import org.greenrobot.eventbus.ThreadMode
 
 class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
 
-    private fun getMainTabActivity() = activity as MainTabActivity
-    private fun getHomeFragment() = parentFragment as HomeFragment2
+     fun getMainTabActivity() = activity as MainTabActivity
+     fun getHomeFragment() = parentFragment as HomeFragment2
 
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
@@ -63,6 +63,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
     }
 
     override fun onBindViewStatus(view: View) = binding.run {
+        recentView.setup(this@HomeHotFragment)
         hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@HomeHotFragment)
         okGamesView.setUp(this@HomeHotFragment)
         hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType,this@HomeHotFragment)

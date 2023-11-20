@@ -23,6 +23,8 @@ import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.RecentDataManager
+import org.cxct.sportlottery.util.RecentRecord
 import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.ToastUtil
 
@@ -178,6 +180,7 @@ class OKGamesViewModel(
      * 进入OKgame游戏
      */
     fun requestEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {
+        RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         requestEnterThirdGame(
             "${gameData.firmType}",
             "${gameData.gameCode}",

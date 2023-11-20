@@ -14,12 +14,15 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.doOnDestory
 import org.cxct.sportlottery.databinding.ViewHomeWinRankBinding
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.RecentDataManager
+import org.cxct.sportlottery.util.RecentRecord
 import org.cxct.sportlottery.util.setTextTypeFace
 import splitties.systemservices.layoutInflater
 import kotlin.random.Random
@@ -191,7 +194,26 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         WinsDialog(adapter.getItem(position) as RecordNewEvent, context as AppCompatActivity) { betRecode ->
             if (!betRecode.isSportBet()) {
-                enterGame("${betRecode.firmType}", "${betRecode.gameCode}", "${betRecode.gameEntryType}")
+                val okGameBean = OKGameBean(
+                    id = 0,
+                    firmId = 0,
+                    firmCode = betRecode.gameCode,
+                    firmType = betRecode.firmType,
+                    firmName = betRecode.games,
+                    gameName = betRecode.games,
+                    gameCode = betRecode.gameCode,
+                    gameType = betRecode.firmType,
+                    gameEntryTagName = null,
+                    imgGame = betRecode.h5ImgGame ,
+                    thirdGameCategory = null,
+                    markCollect = false,
+                    maintain = 0,
+                    jackpotAmount = 0.0,
+                    jackpotOpen = 0,
+                    gameEntryType = betRecode.gameEntryType,
+                )
+                RecentDataManager.addRecent(RecentRecord(1, gameBean = okGameBean))
+                enterGame(betRecode)
                 return@WinsDialog
             }
             val activity = fragment.activity
@@ -202,7 +224,10 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
         }.show()
     }
 
-    private fun enterGame(firmType: String, gameCode: String, gameEntryTagName: String) {
+    private fun enterGame(recordNewEvent: RecordNewEvent) {
+        val firmType = "${recordNewEvent.firmType}"
+        val gameCode = "${recordNewEvent.gameCode}"
+        val gameEntryTagName = "${recordNewEvent.gameEntryType}"
         if (LoginRepository.isLogined()) {
             fragment.viewModel.requestEnterThirdGame(firmType, gameCode, firmType, gameEntryTagName, fragment)
         } else {

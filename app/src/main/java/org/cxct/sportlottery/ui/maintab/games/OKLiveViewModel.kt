@@ -15,6 +15,8 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.RecentDataManager
+import org.cxct.sportlottery.util.RecentRecord
 import org.cxct.sportlottery.util.ToastUtil
 
 class OKLiveViewModel(
@@ -166,6 +168,7 @@ class OKLiveViewModel(
             )
             return
         }
+        RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         requestEnterThirdGame(
             "${gameData.firmType}",
             "${gameData.gameCode}",

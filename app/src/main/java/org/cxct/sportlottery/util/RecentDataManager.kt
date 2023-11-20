@@ -1,45 +1,39 @@
 package org.cxct.sportlottery.util
 
-import android.app.Activity
-import android.content.Intent
-import com.didichuxing.doraemonkit.util.GsonUtils
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import kotlinx.android.parcel.Parcelize
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.net.games.data.OKGameBean
 
 object RecentDataManager {
-    const val SPORT_RECENT = "sportRecent"
-    const val GAME_RECENT = "gameRecent"
-
-   val sportRecord = mutableListOf<SportRecent>()
-   val gameRecord = mutableListOf<OKGameBean>()
+   private const val RECENT_RECORD = "recentRecord"
+   private val recentList = mutableListOf<RecentRecord>()
+   val recentEvent = SingleLiveEvent<MutableList<RecentRecord>>()
 
   init {
-      KvUtils.decodeString(SPORT_RECENT).let {
+      KvUtils.decodeString(RECENT_RECORD).let {
           if (!it.isNullOrEmpty()){
-              it.fromJson<List<SportRecent>>()?.let {
-                      it1 -> sportRecord.addAll(it1)
-              }
-          }
-      }
-      KvUtils.decodeString(GAME_RECENT).let {
-          if (!it.isNullOrEmpty()){
-              it.fromJson<List<OKGameBean>>()?.let {
-                      it1 -> gameRecord.addAll(it1)
+              it.fromJson<List<RecentRecord>>()?.let {
+                      it1 -> recentList.addAll(it1)
               }
           }
       }
   }
-
+    fun addRecent(record: RecentRecord){
+        //如果记录跟最新一个相同，则不重复记录
+//        val first = recentList.firstOrNull()
+//        if (first!=null&&first.recordType==record.recordType&&first.gameBean?.firmType == record.gameBean?.firmType)
+//            return
+        recentList.add(0,record)
+        KvUtils.put(RECENT_RECORD,recentList.toJson())
+        recentEvent.postValue(recentList)
+    }
+    fun getRecentList():MutableList<RecentRecord>{
+        return recentList
+    }
 }
+
+/**
+ * recordType 0体育 1游戏
+ */
 @KeepMembers
-@Parcelize
-data class SportRecent(val gameType: String,val timeStamp: Long)
+data class RecentRecord(val recordType: Int,val gameType: String?=null,val gameBean: OKGameBean?=null)
+
