@@ -27,11 +27,13 @@ import org.cxct.sportlottery.view.transform.TransformInDialog
 
 open class ElectGamesFragement<M, VB>: GameVenueFragment<OKGamesViewModel, FragmentGamevenueBinding>() {
 
-    private val tabAdapter = ElectTabAdapter()
+    private val tabAdapter = ElectTabAdapter() {
+        gameAdapter2.findFirmPosition(it.id)?.let { rightManager.scrollToPositionWithOffset(it, 0) }
+    }
     private val gameAdapter2 = ElectGameAdapter()
     val rightManager by lazy { GridLayoutManager(requireContext(),2) }
 
-    protected fun applySearch(context: Context): EditText {
+    private fun applySearch(context: Context): EditText {
         val etSearch = AppCompatEditText(context)
         etSearch.layoutParams = LinearLayout.LayoutParams(-1, 32.dp).apply { bottomMargin = 8.dp }
         12.dp.let { etSearch.setPadding(it, 0, it, 0) }
@@ -74,12 +76,6 @@ open class ElectGamesFragement<M, VB>: GameVenueFragment<OKGamesViewModel, Fragm
         super.onInitView(view)
         applySearch(view.context)
         binding.rvcGameType.adapter = tabAdapter
-        tabAdapter.setOnItemClickListener{ _, _, position ->
-            tabAdapter.setSelected(position)
-            val selectItem = tabAdapter.data[position]
-            gameAdapter2.findFirmPosition(selectItem.id)?.let { rightManager.scrollToPositionWithOffset(it, 0) }
-        }
-
         binding.rvcGameList.layoutManager = rightManager
         binding.rvcGameList.adapter = gameAdapter2
         gameAdapter2.setOnItemClickListener{ _, _, position ->

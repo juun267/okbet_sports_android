@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -27,7 +26,6 @@ class SportTypeAdapter : BaseNodeAdapter() {
     init {
         addFullSpanNodeProvider(SportGroupProvider())
         addFullSpanNodeProvider(SportMatchProvider())
-        setAnimationWithDefault(AnimationType.SlideInBottom)
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -82,6 +80,7 @@ private class SportMatchProvider(override val itemViewType: Int = 2, override va
         val frameLayout = FrameLayout(context)
         frameLayout.layoutParams = lp
         frameLayout.setBackgroundResource(R.drawable.bg_dz_fl_ty)
+        frameLayout.foreground = parent.context.getDrawable(R.drawable.fg_ripple)
         frameLayout.setPadding(24.dp, 0, 0, 0)
 
         val img = AppCompatImageView(context)

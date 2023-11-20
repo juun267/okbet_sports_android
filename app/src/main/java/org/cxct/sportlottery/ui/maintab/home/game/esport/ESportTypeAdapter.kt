@@ -26,7 +26,6 @@ class ESportTypeAdapter : BaseNodeAdapter() {
     init {
         addFullSpanNodeProvider(ESportGroupProvider())
         addFullSpanNodeProvider(ESportMatchProvider())
-        setAnimationWithDefault(AnimationType.SlideInBottom)
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -86,6 +85,7 @@ private class ESportMatchProvider(override val itemViewType: Int = 2, override v
         val frameLayout = FrameLayout(context)
         frameLayout.layoutParams = lp
         frameLayout.setBackgroundResource(R.drawable.bg_home_esport_card)
+        frameLayout.foreground = parent.context.getDrawable(R.drawable.fg_ripple)
         frameLayout.setPadding(24.dp, 0, 0, 0)
         val icon = AppCompatImageView(context)
         icon.id = iconId

@@ -10,8 +10,6 @@ import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.base.BindingFragment
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.RCVDecoration
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass
@@ -35,10 +33,6 @@ abstract class GameVenueFragment<VM : BaseViewModel, VB>: BindingFragment<VM, Fr
     override fun onInitView(view: View) {
         binding.rvcGameType.setLinearLayoutManager()
         binding.rvcGameType.background = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_f6faff, R.color.color_E0E3EE)
-        binding.rvcGameType.addItemDecoration(RCVDecoration()
-            .setMargin(12.dp.toFloat())
-            .setColor(view.context.getColor(R.color.color_CCCBD3F0))
-            .setDividerHeight(1.dp.toFloat()))
     }
 
 }
