@@ -356,7 +356,7 @@ fun loginedRun(context: Context, block: () -> Unit): Boolean {
             }
 
             if (context is MainTabActivity) {
-                setAnchorView(R.id.bottom_navigation_view)
+                setAnchorView(R.id.linTab)
             }
             show()
         }

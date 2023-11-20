@@ -2,6 +2,7 @@ package org.cxct.sportlottery.net.user.data
 
 
 import android.os.Parcelable
+import com.stx.xhb.androidx.entity.BaseBannerInfo
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
@@ -27,4 +28,12 @@ data class ActivityImageList(
     val titleText: String?=null,
     val frontPageShow: Int,
     val imageLink: String?=null,
-):Parcelable
+):Parcelable, BaseBannerInfo {
+    override fun getXBannerUrl(): String {
+        return indexImage?:""
+    }
+
+    override fun getXBannerTitle(): String {
+        return titleText?:""
+    }
+}

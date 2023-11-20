@@ -19,7 +19,6 @@ object OKGamesRepository {
         params.addProperty("gameEntryType", gameEntryType)
         return params
     }
-
     suspend fun collectOkGames(gameId: Int, markCollect: Boolean = true,gameEntryType: String = GameEntryType.OKGAMES): ApiResult<Any> {
         val params = JsonObject()
         params.addProperty("id", gameId)
@@ -30,6 +29,11 @@ object OKGamesRepository {
 
     suspend fun okGamesHall(): ApiResult<OKGamesHall> {
         return okGamesApi.getOKGamesHall(paramDevice())
+    }
+    suspend fun getGamesALL(): ApiResult<OKGamesHall> {
+        val params = paramDevice()
+        params.addProperty("device", 2)
+        return okGamesApi.getOKGamesHall(params)
     }
 
     suspend fun okGamesJackpot(): ApiResult<String> {

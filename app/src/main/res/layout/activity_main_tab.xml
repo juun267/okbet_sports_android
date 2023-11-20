@@ -32,22 +32,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
-            />
+            app:layout_constraintBottom_toTopOf="@+id/linTab" />
 
-        <org.cxct.sportlottery.view.bottomnavigationview.BottomNavigationViewEx
-            android:id="@+id/bottom_navigation_view"
+        <LinearLayout
+            android:id="@+id/linTab"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="-5dp"
+            android:paddingHorizontal="5dp"
             android:background="@drawable/bg_icon_bottom_bar"
-            app:elevation="3dp"
-            app:itemIconSize="24dp"
-            app:itemTextColor="@color/main_tab_text_selector"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/main_menu_navigation" />
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     <!-- 投注單列表 & 快捷投注單 -->
     <FrameLayout
         android:id="@+id/fl_bet_list"

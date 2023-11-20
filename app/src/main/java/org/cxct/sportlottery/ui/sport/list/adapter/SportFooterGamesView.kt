@@ -15,7 +15,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
-import kotlinx.android.synthetic.main.include_view_payment_method.view.*
+import kotlinx.android.synthetic.main.view_home_bottom.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.animDuang
@@ -27,7 +27,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.games.GameChildAdapter
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.games.SportFootGameAdapter
-import org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
+import org.cxct.sportlottery.ui.maintab.home.view.HomeBottomView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
@@ -46,7 +46,7 @@ class SportFooterGamesView @JvmOverloads constructor(
     private lateinit var okGamesViewModel: OKGamesViewModel
     private lateinit var noMoreText: TextView
     private lateinit var moreLabelLayout: LinearLayout
-    lateinit var homeButtomView: HomeButtomView
+    lateinit var homeBottomView: HomeBottomView
     private val gameItemViewPool by lazy {
         RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(0, 20) }
     }
@@ -59,7 +59,7 @@ class SportFooterGamesView @JvmOverloads constructor(
         initOKGameList()
         initBottomView()
         if (esportTheme){
-            homeButtomView.linAward.setBackgroundResource(R.drawable.bg_white_alpha90_radius_8)
+            homeBottomView.linAward.setBackgroundResource(R.drawable.bg_white_alpha90_radius_8)
         }
     }
 
@@ -108,9 +108,10 @@ class SportFooterGamesView @JvmOverloads constructor(
     }
 
     private fun initBottomView() {
-        homeButtomView = HomeButtomView(context)
-        homeButtomView.apply {
-            findViewById<View>(R.id.layoutPayment).gone()
+        setBackgroundResource(R.color.color_FFFFFF)
+        homeBottomView = HomeBottomView(context)
+        homeBottomView.apply {
+            findViewById<View>(R.id.linPayment).gone()
             findViewById<View>(R.id.homeFollowView).gone()
             setBackgroundResource(R.color.color_FFFFFF)
             DrawableCreator.Builder()
@@ -119,15 +120,16 @@ class SportFooterGamesView @JvmOverloads constructor(
                 .build().let {
                     findViewById<View>(R.id.linAward).background=it
                 }
+
         }
-        addView(homeButtomView)
+        addView(homeBottomView)
     }
     fun setUp(fragment: BaseFragment<*>, viewmodel: OKGamesViewModel) {
         this.fragment = fragment
         this.okGamesViewModel = viewmodel
         initObserver(fragment, viewmodel)
         viewmodel.getFooterGames()
-        homeButtomView.bindServiceClick(fragment.parentFragmentManager)
+        homeBottomView.bindServiceClick(fragment.parentFragmentManager)
         okGamesAdapter.bindLifecycleOwner(fragment)
     }
 

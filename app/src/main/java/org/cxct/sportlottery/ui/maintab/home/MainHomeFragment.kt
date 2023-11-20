@@ -14,10 +14,11 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.include_home_bettingstation.*
 import kotlinx.android.synthetic.main.include_home_news.*
-import kotlinx.android.synthetic.main.item_sport_news.view.*
-import kotlinx.android.synthetic.main.view_hot_game.view.*
+import kotlinx.android.synthetic.main.view_home_bettingstation.*
+import kotlinx.android.synthetic.main.view_home_news.*
+import kotlinx.android.synthetic.main.view_home_news.linTab
+import kotlinx.android.synthetic.main.view_home_news.rvNews
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -59,7 +60,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                 hotMatchView.resubscribe()
             }
         }
-        homeBottumView.bindServiceClick(childFragmentManager)
+        bottomView.bindServiceClick(childFragmentManager)
         binding.winsRankView.setTipsIcon(R.drawable.ic_okgame_p2)
         initToolBar()
         initNews()
@@ -120,11 +121,6 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     fun initToolBar() = binding.run {
         homeToolbar.attach(this@MainHomeFragment, getMainTabActivity(), viewModel)
-        homeToolbar.ivMenuLeft.setImageResource(R.drawable.ic_home_menu_2)
-        homeToolbar.ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            getMainTabActivity().showMainLeftMenu(null)
-        }
         homeToolbar.tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true,Gravity.RIGHT))
             getMainTabActivity().showMainRightMenu()

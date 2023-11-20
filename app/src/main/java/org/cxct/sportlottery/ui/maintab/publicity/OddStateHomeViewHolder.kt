@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.ui.sport.oddsbtn.OddsHomeHotButton
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsHotButtonHome
 
 abstract class OddStateHomeViewHolder(val lifecycleOwner: LifecycleOwner, itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -67,6 +68,45 @@ abstract class OddStateHomeViewHolder(val lifecycleOwner: LifecycleOwner, itemVi
     }
 
     private fun resetRunnable(oddsButton: OddsHotButtonHome, itemOdd: Odd) {
+        itemOdd.runnable?.let {
+            mHandler.removeCallbacks(it)
+        }
+        if (itemOdd.oddState == OddState.SAME.state) return
+        val runnable = highLightRunnable(oddsButton, itemOdd)
+        itemOdd.runnable = runnable
+        mHandler.postDelayed(runnable, HIGH_LIGHT_TIME)
+    }
+
+    protected fun setupOddState(oddsButton: OddsHomeHotButton, itemOdd: Odd?) {
+        itemOdd?.let { odd ->
+            if (oddsButton.oddStatus == odd.oddState) return
+            when (odd.oddState) {
+                OddState.SAME.state -> {
+                    oddsButton.oddStatus = OddState.SAME.state
+                }
+                OddState.LARGER.state -> {
+                    oddsButton.oddStatus = OddState.LARGER.state
+                    resetRunnable(oddsButton, odd)
+                }
+                OddState.SMALLER.state -> {
+                    oddsButton.oddStatus = OddState.SMALLER.state
+                    resetRunnable(oddsButton, odd)
+                }
+            }
+        }
+    }
+
+    private fun highLightRunnable(oddsButton: OddsHomeHotButton, itemOdd: Odd): Runnable {
+        return Runnable {
+            itemOdd.oddState = OddState.SAME.state
+            setupOddState(oddsButton, itemOdd)
+//            oddStateChangeListener.refreshOddButton(itemOdd)
+            itemOdd.runnable?.let { mHandler.removeCallbacks(it) }
+            itemOdd.runnable = null
+        }
+    }
+
+    private fun resetRunnable(oddsButton: OddsHomeHotButton, itemOdd: Odd) {
         itemOdd.runnable?.let {
             mHandler.removeCallbacks(it)
         }

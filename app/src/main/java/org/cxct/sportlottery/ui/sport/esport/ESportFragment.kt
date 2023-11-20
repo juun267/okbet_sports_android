@@ -103,7 +103,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         binding.linToolbar.setBackgroundResource(R.drawable.bg_esport_head)
         footView.apply {
             setBackgroundResource(R.color.transparent_white_50)
-            homeButtomView.setBackgroundResource(R.color.transparent_white_50)
+            homeBottomView.setBackgroundResource(R.color.transparent_white_50)
         }
     }
 

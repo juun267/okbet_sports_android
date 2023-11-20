@@ -18,7 +18,6 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
@@ -128,9 +127,6 @@ class ProfileCenterFragment :
             .statusBarDarkFont(true)
             .init()
 //        v_statusbar?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        iv_menu.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-        }
 
     }
 

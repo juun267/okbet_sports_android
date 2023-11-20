@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/margin_8"
+        android:layout_marginHorizontal="@dimen/margin_12"
+        android:layout_marginVertical="@dimen/margin_8">
+        <com.stx.xhb.androidx.XBanner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="142dp"
+            android:background="@android:color/white"
+            app:AutoPlayTime="3500"
+            app:pageChangeDuration="800"
+            app:pointLeftRightPadding="2dp"
+            app:pointNormal="@drawable/dot_6_trans_white"
+            app:pointSelect="@drawable/dot_6_white"
+            app:showIndicatorInCenter="true"
+            app:pointsPosition="CENTER"/>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

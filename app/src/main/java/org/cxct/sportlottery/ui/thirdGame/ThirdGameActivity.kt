@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.thirdGame
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.webkit.WebView
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.BarHide

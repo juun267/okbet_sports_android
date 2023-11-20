@@ -114,7 +114,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         //重新设置赔率监听
         binding.hotMatchView.onResume(this)
         viewModel.getRecommend()
-        okLiveFragment().viewModel.getOKGamesHall()
+        okLiveFragment().viewModel.getOKLiveHall()
         binding.winsRankView.loadData()
     }
 
@@ -324,7 +324,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
     }
 
     private fun onBindPart5View() {
-        binding.homeBottumView.bindServiceClick(childFragmentManager)
+        binding.bottomView.bindServiceClick(childFragmentManager)
     }
 
 

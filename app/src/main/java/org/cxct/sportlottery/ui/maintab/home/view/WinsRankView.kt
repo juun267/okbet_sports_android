@@ -18,6 +18,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.doOnDestory
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.LoginRepository
@@ -25,10 +26,8 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.RCVDecoration
-import org.cxct.sportlottery.util.toJson
 import splitties.coroutines.repeatWhileActive
 import kotlin.random.Random
 
@@ -189,24 +188,40 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         WinsDialog(adapter.getItem(position) as RecordNewEvent, context as AppCompatActivity) { betRecode ->
             if (!betRecode.isSportBet()) {
-                enterGame("${betRecode.firmType}", "${betRecode.gameCode}", "${betRecode.gameEntryType}")
+                val okGameBean = OKGameBean(
+                    id = 0,
+                    firmId = 0,
+                    firmCode = betRecode.gameCode,
+                    firmType = betRecode.firmType,
+                    firmName = betRecode.games,
+                    gameName = betRecode.games,
+                    gameCode = betRecode.gameCode,
+                    gameType = betRecode.firmType,
+                    gameEntryTagName = null,
+                    imgGame = betRecode.h5ImgGame ,
+                    thirdGameCategory = null,
+                    markCollect = false,
+                    maintain = 0,
+                    jackpotAmount = 0.0,
+                    jackpotOpen = 0,
+                    gameEntryType = betRecode.gameEntryType,
+                )
+                RecentDataManager.addRecent(RecentRecord(1, gameBean = okGameBean))
+                enterGame(betRecode)
                 return@WinsDialog
             }
             val activity = fragment.activity
             if (activity is MainTabActivity) {
-                GameType.getGameType(betRecode.firmType)?.let {
-                    if (it == GameType.ES){
-                        activity.jumpToESport()
-                    }else{
-                        activity.jumpToSport(it)
-                    }
-                }
+                GameType.getGameType(betRecode.firmType)?.let { activity.jumpToSport(it) }
             }
 
         }.show()
     }
 
-    private fun enterGame(firmType: String, gameCode: String, gameEntryTagName: String) {
+    private fun enterGame(recordNewEvent: RecordNewEvent) {
+        val firmType = "${recordNewEvent.firmType}"
+        val gameCode = "${recordNewEvent.gameCode}"
+        val gameEntryTagName = "${recordNewEvent.gameEntryType}"
         if (LoginRepository.isLogined()) {
             fragment.viewModel.requestEnterThirdGame(firmType, gameCode, firmType, gameEntryTagName, fragment)
         } else {
@@ -214,6 +229,5 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
             fragment.viewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType, gameEntryTagName)
         }
     }
-
 
 }

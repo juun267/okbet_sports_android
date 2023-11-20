@@ -95,11 +95,8 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
+        hideLeftMenu()
         attach(this@OKGamesFragment, mainTabActivity(), viewModel)
-        ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showMainLeftMenu(this@OKGamesFragment.javaClass)
-        }
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
             mainTabActivity().showMainRightMenu()
@@ -323,5 +320,23 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         setProviderItems(firmList)
         setProviderVisible(firmList.isNotEmpty())
         setProviderArrowVisible(firmList.size > 3)
+    }
+    fun search(key: String){
+        if (isAdded){
+            binding.topView.edtSearch.setText(key)
+            changePartGamesLabel(GameTab.TAB_SEARCH, key)
+            startLoad {
+                viewModel.searchGames(
+                    retagRequest(), key, it, PartGamesFragment.pageSize
+                )
+            }
+        }
+    }
+    fun showByProvider(okgamesFirm: OKGamesFirm){
+        if (isAdded){
+            backGameAll()
+            showGameAll()
+            changePartGames(okgamesFirm)
+        }
     }
 }

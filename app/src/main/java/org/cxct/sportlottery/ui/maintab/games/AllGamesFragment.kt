@@ -230,7 +230,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     private fun onBindPart5View() {
-       binding.homeBottumView.bindServiceClick(childFragmentManager)
+       binding.bottomView.bindServiceClick(childFragmentManager)
     }
 
 
