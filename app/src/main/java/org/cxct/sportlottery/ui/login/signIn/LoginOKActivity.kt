@@ -34,6 +34,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.SelfLimitFrozeErrorDialog
+import org.cxct.sportlottery.ui.login.CaptchaDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
@@ -181,13 +182,10 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupValidCode() {
         binding.btnSendSms.setOnClickListener {
-            VerifyCodeDialog().run {
-                callBack = { identity, validCode ->
+            showCaptchaDialog(supportFragmentManager){ identity, validCode ->
                     updateValidCode(identity, validCode)
                 }
-                show(supportFragmentManager, null)
             }
-        }
     }
 
     private fun setupLoginButton() {
@@ -197,9 +195,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.btnLogin.setTitleLetterSpacing()
     }
 
-    private fun updateValidCode(validCodeIdentity: String?, validCode: String) {
+    private fun updateValidCode(validCodeIdentity: String, validCode: String) {
         val account = binding.eetAccount.text.toString()
-        viewModel.loginOrRegSendValidCode(LoginCodeRequest(account, validCodeIdentity, validCode))
+        viewModel.loginOrRegSendValidCode(LoginCodeRequest(account).apply { buildParams(validCodeIdentity,validCode) })
         binding.eetVerificationCode.apply {
             if (text.isNotBlank()) {
                 text = null
@@ -217,18 +215,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             viewModel.loginOrReg(account, smsCode, inviteCode)
             return
         }
-
-
-        val verifyCodeDialog = VerifyCodeDialog()
-        verifyCodeDialog.callBack = { identity, validCode ->
+        showCaptchaDialog(supportFragmentManager){ ticket, randstr ->
             val account = binding.eetUsername.text.toString()
             val password = binding.eetPassword.text.toString()
-            viewModel.loginV3(account, password, "$identity", validCode) {
+            viewModel.login(account, password, "$ticket", randstr) {
                 LoginVerifyActivity.startLoginVerify(this@LoginOKActivity, it)
             }
         }
-
-        verifyCodeDialog.show(supportFragmentManager, null)
     }
 
     /**

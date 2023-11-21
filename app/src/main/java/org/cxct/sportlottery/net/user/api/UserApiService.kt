@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.Constants.ACTIVITY_DETAIL_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
+import org.cxct.sportlottery.network.Constants.LOGIN
 import org.cxct.sportlottery.network.Constants.LOGIN_CHECK_NEED_CODE
 import org.cxct.sportlottery.network.Constants.OCR_INFO
 import org.cxct.sportlottery.network.Constants.RRESET_WITHDRAW
@@ -20,7 +21,6 @@ import org.cxct.sportlottery.network.Constants.UPLOAD_REVIEW_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_VERIFY_CONFIG
 import org.cxct.sportlottery.network.Constants.SET_USERNAME
 import org.cxct.sportlottery.network.Constants.UPLOAD_VERIFY_PHOTO
-import org.cxct.sportlottery.network.Constants.USER_LOGIN
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.uploadImg.UploadVerifyPhotoKYCRequest
@@ -61,8 +61,8 @@ interface UserApiService {
     @POST(LOGIN_CHECK_NEED_CODE)
     suspend fun checkUserLoginNeedCode(@Body params: Map<String, String>): ApiResult<Boolean>
 
-    @POST(USER_LOGIN)
-    suspend fun userLoginV3(@Body params: LoginRequest): ApiResult<LoginData>
+    @POST(LOGIN)
+    suspend fun login(@Body params: LoginRequest): ApiResult<LoginData>
 
     @POST(Constants.VERIFY_SMS_CODE)
     suspend fun verifySMSCode(@Body params: Map<String, String>): ApiResult<String>

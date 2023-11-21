@@ -175,12 +175,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 ToastUtil.showToast(context, R.string.set_phone_no)
                 return@setOnClickListener
             }
-            val verifyCodeDialog = VerifyCodeDialog()
-            verifyCodeDialog.callBack = { identity, validCode ->
+            showCaptchaDialog(childFragmentManager){ identity, validCode ->
                 loading()
                 viewModel.senEmsCode(phoneNo!!, "$identity", validCode)
             }
-            verifyCodeDialog.show(childFragmentManager, null)
         }
 
 
