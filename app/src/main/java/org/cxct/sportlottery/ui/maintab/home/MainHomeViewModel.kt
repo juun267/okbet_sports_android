@@ -195,6 +195,20 @@ open class MainHomeViewModel(
         }
     }
 
+    fun getIndexResourceJson() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.sportService.getIndexResourceJson()
+            }
+
+            if (result?.success == true) {
+                result.indexResourceList?.let {
+                    GamePlayNameRepository.postResourceList(it)
+                }
+            }
+        }
+    }
+
 
     /**
      * 获取首页okgames列表

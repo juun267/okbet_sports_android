@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -167,6 +168,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
+            viewModel.getIndexResourceJson()
             if (PopImageDialog.showHomeDialog) {
                 PopImageDialog.showHomeDialog = false
                 MultiLanguagesApplication.showPromotionPopupDialog(getMainTabActivity()){}
