@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.dialog_verify_code.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.databinding.DialogVerifyCodeBinding
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
@@ -22,29 +22,29 @@ import org.cxct.sportlottery.view.checkSMSCode
 /**
  * 顯示棋牌彈窗
  */
-class VerifyCodeDialog: BaseDialog<LoginViewModel>(LoginViewModel::class) {
+class VerifyCodeDialog(val callBack: (identity: String, validCode: String) -> Unit): BaseDialog<LoginViewModel>(LoginViewModel::class) {
 
     init {
         setStyle(R.style.CustomDialogStyle)
     }
-
-    var callBack: ((identity: String?, validCode: String) -> Unit)? = null
-    var onClick: (() -> Unit)? = null
-    var onDismiss: (() -> Unit)? = null
+    lateinit var binding: DialogVerifyCodeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.dialog_verify_code, container, false)
-
+        binding = DialogVerifyCodeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        eet_verification_code.requestFocus()
-        eet_verification_code.checkSMSCode(et_verification_code) { btn_sure.setBtnEnable(!it.isEmptyStr()) }
+        binding.apply {
+            eetVerificationCode.requestFocus()
+            eetVerificationCode.checkSMSCode(etVerificationCode) { btnSure.setBtnEnable(!it.isEmptyStr()) }
+        }
+
 
         //不分手机上弹窗宽度会撑满，需重新设置下左右间距
         (view.layoutParams as MarginLayoutParams?)?.run {
@@ -57,25 +57,20 @@ class VerifyCodeDialog: BaseDialog<LoginViewModel>(LoginViewModel::class) {
         initClick()
     }
 
-    private fun initClick() {
-        btn_sure.setOnClickListener {
-            callBack?.invoke(viewModel.validCodeResult.value?.validCodeData?.identity,
-                eet_verification_code.text.toString())
+    private fun initClick() =binding.run{
+        btnSure.setOnClickListener {
+            viewModel.validCodeResult.value?.validCodeData?.identity?.let { it1 ->
+                callBack?.invoke(it1, eetVerificationCode.text.toString())
+            }
             dismiss()
         }
-        iv_close.setOnClickListener {
+        ivClose.setOnClickListener {
             dismiss()
         }
     }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        onDismiss?.invoke()
-    }
-
     private fun initObserve() {
         viewModel.validateCodeMsg.observe(this) {
-            et_verification_code.setError(
+            binding.etVerificationCode.setError(
                 it.first,
                 false
             )
@@ -88,7 +83,7 @@ class VerifyCodeDialog: BaseDialog<LoginViewModel>(LoginViewModel::class) {
     private fun updateValidCode() {
         val data = viewModel.validCodeResult.value?.validCodeData
         viewModel.getValidCode(data?.identity)
-        eet_verification_code.apply {
+        binding.eetVerificationCode.apply {
             if (text.isNotBlank()) {
                 text = null
             }
@@ -97,7 +92,7 @@ class VerifyCodeDialog: BaseDialog<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupValidCode() {
         updateValidCode()
-        ivReturn.setOnClickListener { updateValidCode() }
+        binding.ivReturn.setOnClickListener { updateValidCode() }
     }
 
     private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
@@ -105,7 +100,7 @@ class VerifyCodeDialog: BaseDialog<LoginViewModel>(LoginViewModel::class) {
             val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
             Glide.with(this)
                 .load(bitmap)
-                .into(ivVerification)
+                .into(binding.ivVerification)
         } else {
             ToastUtil.showToast(
                 context,

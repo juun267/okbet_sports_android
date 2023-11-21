@@ -328,7 +328,6 @@ object Constants {
     const val MATCH_BET_LIST = "/api/front/match/bet/list"
 
     //index
-    const val INDEX_LOGIN = "/api/front/index/loginV2"
     const val INDEX_SEND_LOGIN_DEVICE_SMS = "/api/front/index/sendLoginDeviceSms"
     const val INDEX_VALIDATE_LOGIN_DEVICE_SMS = "/api/front/index/validateLoginDeviceSms"
     const val INDEX_LOGOUT = "/api/front/index/logout"
@@ -358,7 +357,7 @@ object Constants {
     const val LOGIN_OR_REG = "/api/front/index/loginOrRegV3"
 
     //登录或注册获取验证码(新版优化登录注册->使用)
-    const val LOGIN_OR_REG_SEND_VALIDCODE = "/api/front/index/loginOrRegSendValidCode"
+    const val LOGIN_OR_REG_SEND_VALIDCODE = "/api/front/index/loginOrRegSendValidCodeV2"
 
     // 校验/api/front/index/loginOrRegSendValidCode这个接口发出的短信验证码
     const val VERIFY_SMS_CODE = "/api/front/index/onlyVerifySms"
@@ -373,7 +372,7 @@ object Constants {
     const val GOOGLE_LOGIN = "/api/front/index/googleLogin"
 
     // 发送邮箱验证码(新版优化登录注册->使用)
-    const val SEND_EMAIL_CODE = "/api/front/index/sendEmailCode"
+    const val SEND_EMAIL_CODE = "/api/front/index/sendEmailCodeV2"
 
     // 校验邮箱验证码
     const val VALIDATE_EMAIL_CODE = "/api/front/index/validateEmailCode"
@@ -454,7 +453,7 @@ object Constants {
     const val UPLOAD_REVIEW_PHOTO = "/api/front/user/uploadReviewPhoto" //上传复审资料
     const val SET_USERNAME = "/api/front/user/fullname" // 修改用户名称
     const val LOGIN_CHECK_NEED_CODE = "/api/front/index/checkUserNeedCode"   // loginV3登陆前检查是否需要校验短信验证码
-    const val USER_LOGIN = "/api/front/index/loginV3"   // 用户登陆  2023.10.24
+    const val LOGIN = "/api/front/index/loginV4"   // 用户登陆  2023.10.24
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
@@ -541,10 +540,9 @@ object Constants {
     //忘记密码 发送短信
     const val FORGET_PASSWORD_SMS = "/api/front/index/validateForgotPasswordSMS"
     const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
-    const val RESET_FORGET_PASSWORD_BY_EMAIL =
-        "/api/front/index/resetForgotPasswordByEmail" // 通过邮箱验证后重设密码
-    const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPasswordV2" //找回密码-获取短信验证码
-    const val SEND_EMAIL_FORGET = "/api/front/index/sendEmailCode" //找回密码-获取邮箱验证码
+    const val RESET_FORGET_PASSWORD_BY_EMAIL = "/api/front/index/resetForgotPasswordByEmail" // 通过邮箱验证后重设密码
+    const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPasswordV3" //找回密码-获取短信验证码
+    const val SEND_EMAIL_FORGET = "/api/front/index/sendEmailCodeV2" //找回密码-获取邮箱验证码
     const val FORGET_PASSWORD_VALIDATE_EMAIL = "/api/front/index/validateEmailCode"//找回密码-验证邮箱验证码
 
     //全局抽奖活动

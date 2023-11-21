@@ -53,14 +53,12 @@ class ResetWithdrawActivity: BindingActivity<LoginViewModel, ActivityVerifyPhone
         }
         btnSendSms.setOnClickListener {
             hideSoftKeyboard(this@ResetWithdrawActivity)
-            VerifyCodeDialog().run {
-                callBack = { identity, validCode ->
+            showCaptchaDialog(supportFragmentManager)
+                { identity, validCode ->
                     loading()
                     eetSmsCode.requestFocus()
-                    viewModel.loginOrRegSendValidCode(LoginCodeRequest(phoneNo, identity, validCode))
+                    viewModel.loginOrRegSendValidCode(LoginCodeRequest(phoneNo).apply { buildParams(identity, validCode) })
                 }
-                show(supportFragmentManager, null)
-            }
         }
 
         btnConfirm.setOnClickListener {

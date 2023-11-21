@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.index.forgetPassword.*
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 
@@ -34,7 +35,15 @@ class ForgetViewModel(
     private val _resetPasswordResult = MutableLiveData<ResetPasswordResult?>()
 
     fun sendEmail(email: String,  identity: String, validCode: String) {
-        val params = mapOf("email" to email, "validCodeIdentity" to identity, "validCode" to validCode)
+        val params = mutableMapOf("email" to email).apply {
+            if (sConfigData?.captchaType==1){
+                put("ticket",identity)
+                put("randstr",validCode)
+            }else{
+                put("validCodeIdentity",identity)
+                put("validCode",validCode)
+            }
+        }
         doRequest({ OneBoSportApi.indexService.sendEmailForget(params) }) {
             _smsResult.value = it
         }
@@ -63,7 +72,7 @@ class ForgetViewModel(
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.sendSmsForget(
-                    SendSmsRequest(phone, identity, validCode)
+                    SendSmsRequest(phone).apply { buildParams(identity, validCode) }
                 )
             }
             _smsResult.postValue(result)

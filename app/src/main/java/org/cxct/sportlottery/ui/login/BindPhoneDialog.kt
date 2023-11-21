@@ -83,12 +83,9 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
             }
             if (errorMsg.isNullOrEmpty()){
                 hideSoftKeyboard(requireActivity())
-                VerifyCodeDialog().run {
-                    callBack = { identity, validCode ->
+                showCaptchaDialog(this@BindPhoneDialog.childFragmentManager){ identity, validCode ->
                         sendCode(identity, validCode)
                         etVerificationCode.requestFocus()
-                    }
-                    show(this@BindPhoneDialog.childFragmentManager, null)
                 }
             }else{
                 ToastUtil.showToast(requireContext(),errorMsg)
