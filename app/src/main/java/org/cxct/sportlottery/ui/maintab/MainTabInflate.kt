@@ -20,6 +20,8 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
     private val nameId = View.generateViewId()
     private val selColor = parent.context.getColor(R.color.color_025BE8)
     private val unSelColor = parent.context.getColor(R.color.color_6C7BA8)
+    private val INDEX_SPORT = 1
+    private val INDEX_GAMES = 2
 
     init {
         val lp = LinearLayout.LayoutParams(0, -1, 1f)
@@ -88,18 +90,35 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
         item.isSelected = isSelected
     }
 
+    private fun changeSelected(tabIndex: Int) {
+        if (currentItem != null && parent.indexOfChild(currentItem) == tabIndex) {
+            return
+        }
+        clearSelected()
+        setSelected(parent.getChildAt(INDEX_SPORT) as LinearLayout)
+    }
+
     fun clearSelected() {
         currentItem?.let { setChangeSelected(it, false) }
         currentItem = null
     }
-    fun selected(position:Int) {
-        if (position>0&&position<parent.childCount) {
-            currentItem?.let { setChangeSelected(it, false) }
-            currentItem = parent.getChildAt(position) as LinearLayout
-            currentItem?.let { setChangeSelected(it, true) }
-        }else{
-            clearSelected()
+
+    fun selectedSport() {
+        changeSelected(INDEX_SPORT)
+    }
+
+    fun selectedGames() {
+        if (!getMarketSwitch()) {
+            changeSelected(INDEX_GAMES)
         }
     }
+
+    fun selectedProfile() {
+        if (!getMarketSwitch()) {
+            changeSelected(parent.childCount - 1)
+        }
+    }
+
+
 
 }

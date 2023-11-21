@@ -38,7 +38,7 @@ class ElectGameAdapter: BaseNodeAdapter() {
     }
 
     fun setupData(list: MutableList<OKGamesCategory>?, firmList: List<OKGamesFirm>?) {
-        firmList?.forEach { firmMap[it.id] = it }
+//        firmList?.forEach { firmMap[it.id] = it }
         groupIndex.clear()
         val groupList = list ?: return
         var position = 0
@@ -129,11 +129,11 @@ private class ElectGameprovider(private val firmMap: MutableMap<Int, OKGamesFirm
         blurView.setupWith(root)
             .setFrameClearDrawable(root.background)
             .setBlurRadius(8f)
-        val firmImg = firmMap[bean.firmId]?.img
-        ivGameIcon.isVisible = !firmImg.isNullOrEmpty()
-        if (!firmImg.isNullOrEmpty()) {
-            ivGameIcon.load(firmImg, R.drawable.ic_okgames_nodata)
-        }
+//        val firmImg = firmMap[bean.firmId]?.img
+//        ivGameIcon.isVisible = !firmImg.isNullOrEmpty()
+//        if (!firmImg.isNullOrEmpty()) {
+//            ivGameIcon.load(firmImg, R.drawable.ic_okgames_nodata)
+//        }
         if (bean.jackpotOpen == 1) {
             cvJackpot.visible()
             blurviewJackpot

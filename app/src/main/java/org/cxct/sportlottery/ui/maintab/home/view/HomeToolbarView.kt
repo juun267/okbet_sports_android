@@ -48,7 +48,6 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         addChildView()
     }
 
-    lateinit var ivMenuLeft: ImageView
     lateinit var ivLogo: ImageView
     private lateinit var searchView: View
     lateinit var searchIcon: View
@@ -69,32 +68,18 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private var onlyShowSeach = true
 
     private fun addChildView() {
-        ivMenuLeft = AppCompatImageView(context)
-        ivMenuLeft.setImageResource(R.drawable.ic_home_menu)
 
-        val wh = 24.dp
-        addView(ivMenuLeft, LayoutParams(wh, wh).apply {
-            gravity = Gravity.BOTTOM
-            leftMargin = 6.dp
-        })
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
         addView(ivLogo, LayoutParams(-2, 36.dp).apply {
-            leftMargin = 36.dp
+            leftMargin = 6.dp
         })
 
         addSearchView()
         addUserView()
         addLoginBtn()
         fitsSystemStatus()
-    }
-    fun hideLeftMenu(){
-        ivMenuLeft.gone()
-        (ivLogo.layoutParams as FrameLayout.LayoutParams).apply {
-            leftMargin =  6.dp
-            ivLogo.layoutParams = this
-        }
     }
 
     private fun addSearchView() {
@@ -241,7 +226,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             userMoneyView.gone()
             return
         }
-        if (viewModel.isLogin.value != true) {
+        if (!LoginRepository.isLogined()) {
             loginLayout.visible()
             searchView.gone()
             userMoneyView.gone()
@@ -252,9 +237,9 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         if (userModelEnable) {
             searchView.gone()
             userMoneyView.visible()
-            bindMoneyText(viewModel.userMoney?.value ?: 0.0)
+            bindMoneyText(LoginRepository.userMoney())
             btnDeposit.setOnClickListener {
-                ToGcashDialog.showByClick{ viewModel.checkRechargeKYCVerify() }
+                ToGcashDialog.showByClick{ activity.checkRechargeKYCVerify() }
             }
         } else {
             searchView.visible()

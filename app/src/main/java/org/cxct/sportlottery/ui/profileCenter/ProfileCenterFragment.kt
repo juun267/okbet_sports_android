@@ -5,9 +5,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -30,7 +28,7 @@ import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.money.withdraw.BankActivity
 import org.cxct.sportlottery.ui.money.withdraw.WithdrawActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
@@ -196,9 +194,7 @@ class ProfileCenterFragment :
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-            ToGcashDialog.showByClick{
-                viewModel.checkRechargeKYCVerify()
-            }
+            (activity as MainTabActivity).checkRechargeKYCVerify()
         }
     }
 
@@ -378,20 +374,6 @@ class ProfileCenterFragment :
             }
         }
 
-        viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
-            hideLoading()
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    startActivity(Intent(requireActivity(), MoneyRechargeActivity::class.java))
-                } else {
-                    showPromptDialog(
-                        getString(R.string.prompt),
-                        getString(R.string.message_recharge_maintain)
-                    ) {}
-                }
-            }
-        }
-
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
 
             it.getContentIfNotHandled()?.let { b ->
@@ -562,16 +544,6 @@ class ProfileCenterFragment :
         viewModel.userInfo.observe(viewLifecycleOwner) {
             //是否测试用户（0-正常用户，1-游客，2-内部测试）
             updateUserIdentity(it?.testFlag)
-        }
-
-
-        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
-            }
         }
 
         viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {

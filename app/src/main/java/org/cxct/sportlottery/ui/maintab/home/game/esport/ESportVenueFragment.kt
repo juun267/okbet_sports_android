@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.game.esport
 
+import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
@@ -24,8 +25,8 @@ class ESportVenueFragment: SportVenueFragment<SportTabViewModel, FragmentGameven
             val selectItem = esportTypeAdapter.data[position]
             if (selectItem is ESportMatch){
                 val pair = matchTabAdapter.data.firstOrNull { it.first == selectItem.name }
-                val matchType = if (pair==null) MatchType.IN_PLAY else MatchType.getMatchTypeByStringId(pair.first)
-                (activity as MainTabActivity).jumpToTheSport(matchType,GameType.ES)
+                val matchType = if (pair == null) MatchType.IN_PLAY else MatchType.getMatchTypeByStringId(pair.first)
+                (activity as MainTabActivity).jumpToESport(matchType)
             }
         }
 
@@ -52,42 +53,34 @@ class ESportVenueFragment: SportVenueFragment<SportTabViewModel, FragmentGameven
     override fun onMenuResult(menuResult: SportMenuData) {
         val menu = menuResult.menu ?: return
         val datas = mutableListOf<Pair<Int, Sport>>()
-        val categoryDatas = mutableListOf<Pair<Int, Item?>>()
-        menu.inPlay?.let {
-            datas.add(Pair(R.string.home_tab_in_play, it))
-            categoryDatas.add(Pair(R.string.home_tab_in_play, it.filterESportItem()))
-        }
-        menuResult.atStart?.let {
-            datas.add(Pair(R.string.home_tab_at_start, it))
-            categoryDatas.add(Pair(R.string.home_tab_at_start, it.filterESportItem()))
-        }
-        menu.today?.let {
-            datas.add(Pair(R.string.home_tab_today, it))
-            categoryDatas.add(Pair(R.string.home_tab_today, it.filterESportItem()))
-        }
-        menuResult.in12hr?.let {
-            datas.add(Pair(R.string.P228, it))
-            categoryDatas.add(Pair(R.string.P228, it.filterESportItem()))
-        }
-        menuResult.in24hr?.let {
-            datas.add(Pair(R.string.P229, it))
-            categoryDatas.add(Pair(R.string.P229, it.filterESportItem()))
-        }
-        menu.early?.let {
-            datas.add(Pair(R.string.home_tab_early, it))
-            categoryDatas.add(Pair(R.string.home_tab_early, it.filterESportItem()))
-        }
-        menu.parlay?.let {
-            datas.add(Pair(R.string.home_tab_parlay, it))
-            categoryDatas.add(Pair(R.string.home_tab_parlay, it.filterESportItem()))
-        }
-        menu.outright?.let {
-            datas.add(Pair(R.string.home_tab_outright, it))
-            categoryDatas.add(Pair(R.string.home_tab_outright, it.filterESportItem()))
-        }
+        val categoryDatas = mutableListOf<Pair<Int, Item>>()
+
+        menu.inPlay?.let { assembleData(R.string.home_tab_in_play, it, datas, categoryDatas) }
+        menuResult.atStart?.let { assembleData(R.string.home_tab_at_start, it, datas, categoryDatas) }
+        menu.today?.let { assembleData(R.string.home_tab_today, it, datas, categoryDatas) }
+        menuResult.in12hr?.let { assembleData(R.string.P228, it, datas, categoryDatas) }
+        menuResult.in24hr?.let { assembleData(R.string.P229, it, datas, categoryDatas) }
+        menu.early?.let { assembleData(R.string.home_tab_early, it, datas, categoryDatas) }
+        menu.parlay?.let { assembleData(R.string.home_tab_parlay, it, datas, categoryDatas) }
+        menu.outright?.let { assembleData(R.string.home_tab_outright, it, datas, categoryDatas) }
 
         matchTabAdapter.setNewInstance(datas)
         esportTypeAdapter.setUp(categoryDatas)
+    }
+
+
+    private fun assembleData(@StringRes name: Int,
+                             sport: Sport,
+                             tabs: MutableList<Pair<Int, Sport>>,
+                             categoryDatas: MutableList<Pair<Int, Item>>) {
+
+        val eSport = sport.items.firstOrNull { it.code == GameType.ES.key }
+        if (eSport == null || eSport.num <= 0) {
+            return
+        }
+        sport.num = eSport.num
+        tabs.add(Pair(name, sport))
+        categoryDatas.add(Pair(name, eSport))
     }
 
     override fun onTabClick(selectItem: Pair<Int, Sport>) {
@@ -97,10 +90,5 @@ class ESportVenueFragment: SportVenueFragment<SportTabViewModel, FragmentGameven
                 return@forEachIndexed
             }
         }
-    }
-
-
-    private fun Sport.filterESportItem():Item?{
-        return items.firstOrNull { it.code ==GameType.ES.key }
     }
 }

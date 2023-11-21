@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport.esport
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -80,7 +81,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private var jumpMatchType: MatchType? = null
-    private var jumpGameType: GameType? = null
+    private var jumpGameType: String? = null
     //根据赛事数量判断默认的分类
     private var defaultMatchType: MatchType? = null
     private var curFavoriteItem: Item? = null
@@ -129,10 +130,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             loginedRun(it.context) {
                 startActivity(BetRecordActivity::class.java)
             }
-        }
-        ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            getMainTabActivity().showMainLeftMenu(this@ESportFragment.javaClass)
         }
     }
 
@@ -264,7 +261,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
 
     private fun navGameFragment(matchType: MatchType) {
-        var gameType = navGameSport?.key ?: jumpGameType?.key
+        var gameType = navGameSport?.key ?: jumpGameType
         jumpMatchType = null
         jumpGameType = null
 
@@ -293,6 +290,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 fragmentHelper.show(ESportListFragment::class.java, args) { fragment, newInstance ->
                     fragment.resetFooterView(footView)
                     if (!newInstance && fragment.isAdded) {
+                        Log.e("For Test", "=========>>> ESportListFragment reload 000000" )
                         fragment.reload(matchType, gameType)
                     }
                 }
@@ -302,9 +300,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private var navGameSport: GameType? = null
-    fun setJumpESport() {
-        jumpToSport(GameType.ES)
-    }
 
     fun jumpToSport(gameType: GameType) {
         if (sportMenu == null) {
@@ -314,7 +309,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
         val menuData = sportMenu!!
         val matchType = findMatchType(menuData, gameType)
-        setJumpSport(matchType, gameType = gameType)
+        setJumpSport(matchType, gameType = gameType.key)
     }
 
     private fun findMatchType(menu: Menu, gameType: GameType): MatchType {
@@ -342,7 +337,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         return null
     }
 
-    fun setJumpSport(matchType: MatchType? = null, gameType: GameType? = null) {
+    fun setJumpSport(matchType: MatchType? = null, gameType: String? = null) {
         jumpMatchType = matchType
         jumpGameType = gameType
         if (isAdded) {

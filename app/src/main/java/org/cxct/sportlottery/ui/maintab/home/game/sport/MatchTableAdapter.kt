@@ -56,7 +56,7 @@ class MatchTableAdapter(private val onSelected:(Pair<Int, Sport>) -> Unit)
         nameText.typeface = AppFont.helvetica
         nameText.gravity = Gravity.CENTER_HORIZONTAL
         4.dp.let { nameText.setPadding(it, 0, it, 0) }
-        nameText.maxLines = 1
+        nameText.maxLines = 2
         nameText.ellipsize = TextUtils.TruncateAt.END
         lin.addView(nameText)
 
@@ -85,7 +85,7 @@ class MatchTableAdapter(private val onSelected:(Pair<Int, Sport>) -> Unit)
         val isSelected = item == currentItem
         val textColor = if (isSelected) selColor else norColor
         val numText = holder.getView<TextView>(numberId)
-        numText.text = (item.second.items.firstOrNull { it.code== GameType.ES.key }?.num?:0).toString()
+        numText.text = item.second.num.toString()
         numText.setTextColor(textColor)
         val nameText = holder.getView<TextView>(nameId)
         nameText.setText(item.first)

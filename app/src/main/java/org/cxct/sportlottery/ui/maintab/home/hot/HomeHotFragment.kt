@@ -123,7 +123,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             }
             if (viewModel.isLogin.value==true&&RegisterSuccessDialog.needShow()){
                 RegisterSuccessDialog{
-                    viewModel.checkRechargeKYCVerify()
+                    getMainTabActivity().checkRechargeKYCVerify()
                 }.show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
             }
         }
