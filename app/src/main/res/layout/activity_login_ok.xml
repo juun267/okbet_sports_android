@@ -45,7 +45,6 @@
         android:layout_height="0dp"
         android:layout_marginVertical="16dp"
         android:elevation="1dp"
-        android:layout_marginHorizontal="15dp"
         android:overScrollMode="never"
         android:scrollbars="none"
         android:fadingEdge="none"
@@ -60,6 +59,7 @@
                 android:id="@+id/fl_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
                 android:paddingHorizontal="@dimen/margin_12"
                 android:paddingBottom="@dimen/margin_20"
                 android:background="@drawable/bg_white_radius_8"
@@ -235,6 +235,7 @@
                 android:id="@+id/linLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
                 app:layout_constraintTop_toBottomOf="@id/fl_input">
 
                 <TextView
@@ -304,6 +305,7 @@
                 android:orientation="vertical"
                 android:visibility="visible"
                 android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginHorizontal="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linLogin">
@@ -382,6 +384,7 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/margin_10"
                 android:paddingVertical="@dimen/margin_12"
+                android:layout_marginHorizontal="15dp"
                 android:background="@drawable/bg_white_radius_16_stoke_blue"
                 app:layout_constraintTop_toBottomOf="@id/lin_third">
                 <TextView

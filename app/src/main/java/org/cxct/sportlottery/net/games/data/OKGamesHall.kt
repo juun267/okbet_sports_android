@@ -96,5 +96,4 @@ data class OKGameBean(
     var categoryId = -1
     fun isMaintain() = maintain == 1
     var isShowMore = false
-    var isShowBlank = true
 }

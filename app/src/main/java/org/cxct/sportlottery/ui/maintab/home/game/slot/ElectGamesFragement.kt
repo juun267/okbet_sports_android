@@ -80,7 +80,7 @@ open class ElectGamesFragement<M, VB>: GameVenueFragment<OKGamesViewModel, Fragm
         binding.rvcGameList.adapter = gameAdapter2
         gameAdapter2.setOnItemClickListener{ _, _, position ->
             val okGameBean = gameAdapter2.getItem(position)
-            if (okGameBean !is OKGameBean) {
+            if (okGameBean !is OKGameBean || okGameBean.isMaintain()) {
                 return@setOnItemClickListener
             }
             if (okGameBean.isShowMore){

@@ -122,10 +122,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 startActivity(BetRecordActivity::class.java)
             }
         }
-        ivMenuLeft.setOnClickListener {
-            getMainTabActivity().showSportLeftMenu()
-            EventBusUtil.post(MenuEvent(true))
-        }
     }
 
     private fun initTabLayout() = binding.tabLayout.run {

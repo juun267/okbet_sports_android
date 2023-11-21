@@ -15,6 +15,7 @@ import org.cxct.sportlottery.repository.UserInfoRepository.userInfo
 import org.cxct.sportlottery.repository.WithdrawRepository
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.isKYCVerifyRechargeOpen
 import org.cxct.sportlottery.util.isKYCVerifyWithdrawOpen
 
@@ -80,12 +81,12 @@ abstract class BaseWithdrawViewModel(
     private var checkWithdraw = false
 
     //判斷提現是否需要KYC認證
-    private var _isWithdrawShowVerifyDialog = MutableLiveData<Event<Boolean>>()
+    private var _isWithdrawShowVerifyDialog = SingleLiveEvent<Event<Boolean>>()
     val isWithdrawShowVerifyDialog: LiveData<Event<Boolean>>
         get() = _isWithdrawShowVerifyDialog
 
     //判斷充值是否需要KYC認證
-    private var _isRechargeShowVerifyDialog = MutableLiveData<Event<Boolean>>()
+    private var _isRechargeShowVerifyDialog = SingleLiveEvent<Event<Boolean>>()
     val isRechargeShowVerifyDialog: LiveData<Event<Boolean>>
         get() = _isRechargeShowVerifyDialog
 
