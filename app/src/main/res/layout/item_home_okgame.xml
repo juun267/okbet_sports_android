@@ -39,7 +39,7 @@
             android:gravity="center"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tvGameType"
+                android:id="@+id/tvGameName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="three card pokerthre"
@@ -51,7 +51,7 @@
                 android:ellipsize="end"
                 />
             <TextView
-                android:id="@+id/tvGameName"
+                android:id="@+id/tvGameType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="- casino -"
