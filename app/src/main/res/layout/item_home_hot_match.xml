@@ -22,17 +22,19 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_margin="@dimen/margin_12">
-            <org.cxct.sportlottery.view.CircleImageView
+            <ImageView
                 android:id="@+id/ivHomeIcon"
                 android:layout_width="@dimen/margin_40"
                 android:layout_height="@dimen/margin_40"
-                app:civ_border_color="@color/color_E0E3EE"
+                android:padding="@dimen/margin_6"
+                android:background="@drawable/bg_home_team_logo"
                 android:src="@drawable/ic_team_default" />
-            <org.cxct.sportlottery.view.CircleImageView
+            <ImageView
                 android:id="@+id/ivAwayIcon"
                 android:layout_width="@dimen/margin_40"
                 android:layout_height="@dimen/margin_40"
-                app:civ_border_color="@color/color_E0E3EE"
+                android:padding="@dimen/margin_6"
+                android:background="@drawable/bg_home_team_logo"
                 android:layout_marginLeft="-6dp"
                 android:src="@drawable/ic_team_default" />
             <androidx.legacy.widget.Space

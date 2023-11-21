@@ -56,5 +56,5 @@
         android:textColor="@color/color_025BE8"
         android:textSize="@dimen/textSize12sp"
         android:textStyle="bold"
-        android:text="play" />
+        android:text="@string/P263" />
 </LinearLayout>

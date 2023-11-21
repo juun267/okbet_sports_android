@@ -56,7 +56,7 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
     private fun setUpItemView(view: View, item: OKGamesFirm){
         val isMaintenance = item.isMaintain()
         view.findViewById<ImageView>(R.id.ivLogo).apply {
-                roundOf(item.img,8.dp,R.drawable.img_banner01)
+                roundOf(item.imgMobile,8.dp,R.drawable.img_banner01)
                alpha = if(isMaintenance) 0.5f else 1f
         }
         view.findViewById<TextView>(R.id.tvName).apply {
