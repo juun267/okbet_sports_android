@@ -68,7 +68,9 @@
                         android:layout_height="@dimen/margin_16"
                         android:layout_marginRight="@dimen/margin_4"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/ic_okgames_nodata" />
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        tools:src="@drawable/ic_okgames_nodata" />
 
                     <TextView
                         android:id="@+id/tvGameName"

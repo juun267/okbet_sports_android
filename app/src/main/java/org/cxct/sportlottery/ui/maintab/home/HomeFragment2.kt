@@ -25,7 +25,7 @@ import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragment
-import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragement
+import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
@@ -188,7 +188,7 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
             SportVenueFragment::class.java, ESportVenueFragment::class.java->{
                 StaticData.okSportOpened()
             }
-            ElectGamesFragement::class.java->{
+            ElectGamesFragment::class.java->{
                 StaticData.okGameOpened()
             }
             LiveGamesFragment::class.java->{
