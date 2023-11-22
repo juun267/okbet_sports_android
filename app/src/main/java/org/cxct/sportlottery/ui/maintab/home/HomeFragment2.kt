@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
@@ -93,6 +94,9 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
             setUpBanner()
             viewModel.getActivityImageListH5()
             homeMenuAdapter.reload()
+            if (homeMenuAdapter.dataCount() < 7) {
+                binding.hIndicator.gone()
+            }
         }
         //新版宣傳頁
         viewModel.messageListResult.observe(viewLifecycleOwner) {

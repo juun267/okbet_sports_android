@@ -85,7 +85,7 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
         val datas = mutableListOf<Pair<Int, Sport>>()
         assembleData(R.string.home_tab_in_play, menu.inPlay, datas)
         assembleData(R.string.home_tab_at_start, menuResult.atStart, datas)
-//        assembleData(R.string.home_tab_today, menu.today, datas)
+        assembleData(R.string.home_tab_today, menu.today, datas)
 //        assembleData(R.string.P228, menuResult.in24hr, datas)
 //        assembleData(R.string.P229, menuResult.in12hr, datas)
         assembleData(R.string.home_tab_early, menu.early, datas)
