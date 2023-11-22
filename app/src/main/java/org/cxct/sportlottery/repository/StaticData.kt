@@ -111,7 +111,6 @@ class StaticData {
             sConfigData?.homeGamesList?.forEach {
                 if(it.uniqueName== HomeTopView.OkGame){
                     //status==1  为开启
-                    LogUtil.d("HomeTopView="+it.status)
                     return it.status==1
                 }
             }
