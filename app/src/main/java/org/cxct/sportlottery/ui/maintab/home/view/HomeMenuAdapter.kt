@@ -31,7 +31,6 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
         Triple(R.drawable.selector_home_menu_promotion, R.string.promo, null),
         Triple(R.drawable.selector_home_menu_service, R.string.LT050, null)
     )
-    private val itemWith by lazy { (ScreenUtil.getScreenWidth(context)-12.dp*2)/6 }
     private var selectItem: Triple<Int, Int, Class<BaseFragment<*>>?>?=null
 
     init {
@@ -56,10 +55,6 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
         position: Int,
         binding: ItemHomeMenuBinding,
         item: Triple<Int, Int, Class<BaseFragment<*>>?>) = binding.run {
-        root.layoutParams.apply {
-            width = itemWith
-            height = itemWith
-        }
         ivIcon.setImageResource(item.first)
         tvName.text = context.getString(item.second)
         root.isSelected = item == selectItem
