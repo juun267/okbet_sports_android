@@ -128,3 +128,6 @@
 -keep class com.squareup.wire.** { *; }
 -keep class com.opensource.svgaplayer.proto.** { *; }
 
+#protobuf
+-keepclassmembers public class * extends com.google.protobuf.** {*;}
+
