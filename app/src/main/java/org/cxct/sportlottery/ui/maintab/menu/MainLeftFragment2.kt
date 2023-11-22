@@ -224,7 +224,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.string.esports,
             true
         ) { getMainTabActivity().jumpToESport() }
-        eSportGamesItem.group.isVisible=!getMarketSwitch() && StaticData.okBingoOpened()
+        eSportGamesItem.group.isVisible= StaticData.okSportOpened()
 
 //
         okLiveItem = addMenu(index1++,
@@ -236,7 +236,8 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.string.P160,
             true
         ) {
-            getMainTabActivity().jumpToOkLive() }
+            getMainTabActivity().jumpToOkLive()
+        }
 
         okLiveItem.group.isVisible = !getMarketSwitch() && StaticData.okLiveOpened()
 

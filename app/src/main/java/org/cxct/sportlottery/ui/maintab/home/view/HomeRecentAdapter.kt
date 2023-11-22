@@ -17,16 +17,17 @@ class HomeRecentAdapter : BindingAdapter<RecentRecord, ItemHomeRecentBinding>() 
     ): Unit = vb.run {
 
         if (item.recordType==0){
-            val gameType =GameType.getGameType(item.gameType)
-            val esportType =ESportType.getGameType(item.gameType)
+            val gameType = GameType.getGameType(item.gameType)
             when{
                 gameType!=null-> {
-                    ivCover.load(GameType.getRecentImg(item.gameType))
-                    tvName.text = GameType.getGameTypeString(context,item.gameType)
-                }
-                esportType!=null-> {
-                    ivCover.load(ESportType.getRecentImg(item.gameType))
-                    tvName.text = context.getString(GameType.ES.string)
+                    if (item.gameType == GameType.ES.key){
+                        val esportType = ESportType.getGameType(item.categoryCode)?:ESportType.OTHERS
+                        ivCover.load(ESportType.getRecentImg(esportType.key))
+                        tvName.text = context.getString(GameType.ES.string)
+                    }else{
+                        ivCover.load(GameType.getRecentImg(item.gameType))
+                        tvName.text = GameType.getGameTypeString(context,item.gameType)
+                    }
                 }
                 else ->{
                     ivCover.load(R.drawable.bg_recent_rocket)

@@ -10,6 +10,7 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewHomeRecentBinding
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.transform.TransformInDialog
@@ -24,8 +25,13 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
         setOnItemClickListener{ adapter, view, position ->
             val item = data[position]
             if (item.recordType==0){
-                GameType.getGameType(item.gameType)
-                    ?.let { fragment.getMainTabActivity().jumpToSport(it) }
+                GameType.getGameType(item.gameType)?.let {
+                        if (item.gameType==GameType.ES.key){
+                            fragment.getMainTabActivity().jumpToESport(gameType = item.categoryCode)
+                        }else{
+                            fragment.getMainTabActivity().jumpToSport(gameType = it)
+                        }
+                    }
             }else{
                 item.gameBean?.let { fragment.viewModel.homeOkGamesEnterThirdGame(it, fragment) }
             }
@@ -53,13 +59,16 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
             }
             RecentDataManager.recentEvent.observe(fragment){
                 homeRecentAdapter.setList(subMaxCount(it))
-                this@HomeRecentView.isVisible = homeRecentAdapter.dataCount()!=0
+                this@HomeRecentView.isVisible = visibleRecent()
             }
         }
         homeRecentAdapter.setList(subMaxCount(RecentDataManager.getRecentList()))
-        isVisible = homeRecentAdapter.dataCount()!=0
+        isVisible = visibleRecent()
     }
     private fun subMaxCount(list: MutableList<RecentRecord>):MutableList<RecentRecord>{
         return if (list.size>maxItemCount) list.subList(0,maxItemCount-1) else list
+    }
+    private fun visibleRecent():Boolean{
+        return homeRecentAdapter.dataCount()!=0&&LoginRepository.isLogined()
     }
 }

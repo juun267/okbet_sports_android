@@ -217,10 +217,9 @@ open class MainHomeViewModel(
     /**
      * 获取游戏厂商列表
      */
-    fun getGamesALl() {
-        callApi({ OKGamesRepository.getGamesALL() }) {
-            val data = it.getData() ?: return@callApi
-            _homeAllProvider.postValue(data.firmList?: listOf())
+    fun getGameFirms() {
+        callApi({ OKGamesRepository.getGameFirms() }) {
+            _homeAllProvider.postValue(it.getData()?.sortedByDescending { it.sort?:0 }?: listOf())
         }
     }
 

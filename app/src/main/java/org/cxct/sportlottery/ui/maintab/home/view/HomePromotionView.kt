@@ -4,30 +4,16 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewHomePromotionBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
-import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.index.config.ImageData
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.common.bean.XBannerImage
-import org.cxct.sportlottery.ui.maintab.home.HomeBettingStationAdapter
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.ui.promotion.PromotionDetailActivity
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.getMarketSwitch
 import splitties.systemservices.layoutInflater
-import timber.log.Timber
 
 class HomePromotionView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 

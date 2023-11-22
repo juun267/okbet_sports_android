@@ -202,7 +202,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     }
 
     fun changePartGames(okgamesFirm: OKGamesFirm) {
-        changePartGamesLabel(okgamesFirm)
+        changePartGamesLabel(okgamesFirm,okgamesFirm.firmName)
         val firmId = okgamesFirm.getKey().toString()
         startLoad {
             viewModel.getOKGamesList(

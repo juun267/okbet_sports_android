@@ -31,7 +31,7 @@ class HomeOkGamesAdapter : BindingAdapter<OKGameBean, ItemHomeOkgameBinding>() {
     }
     override fun onBinding(position: Int, binding: ItemHomeOkgameBinding, item: OKGameBean) {
         binding.tvGameName.text = item.gameName
-        binding.tvGameType.text = item.firmName
+        binding.tvGameType.text = "- ${item.firmName} -"
         binding.ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
         binding.blurView
             .setupWith(binding.root)

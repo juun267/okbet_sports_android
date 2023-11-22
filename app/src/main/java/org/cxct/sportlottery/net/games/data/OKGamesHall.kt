@@ -56,7 +56,8 @@ data class OKGamesFirm(
     val img: String?,//厂商图
     val imgMobile: String?,
     val remark: String?,
-    var maintain: Int?  // 0:游戏正常开启, 1: 维护状态
+    var maintain: Int?,  // 0:游戏正常开启, 1: 维护状态
+    val sort:Int?
 ): OKGameLabel {
     override fun getKey() = id
     override fun bindLabelIcon(imageView: ImageView) {
@@ -64,7 +65,7 @@ data class OKGamesFirm(
     }
 
     override fun bindLabelName(textView: TextView) {
-        textView.text = firmName
+        textView.text = textView.context.getString(R.string.N880)
     }
     fun isMaintain() = 1 == maintain
 

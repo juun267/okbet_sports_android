@@ -49,7 +49,6 @@
             android:drawableBottom="@drawable/selector_indicate_trans_blue"
             android:button="@null"
             android:gravity="center"
-            android:checked="true"
             android:text="@string/N708"
             android:textStyle="bold"
             android:textColor="@color/color_black_6d7693"
@@ -68,7 +67,8 @@
             android:maxLines="1"
             android:text="@string/N709"
             android:textColor="@color/color_black_6d7693"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize14sp"
+            android:checked="true"/>
     </RadioGroup>
 
     <androidx.recyclerview.widget.RecyclerView

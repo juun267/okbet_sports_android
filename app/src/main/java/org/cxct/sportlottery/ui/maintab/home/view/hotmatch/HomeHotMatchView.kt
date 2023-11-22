@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
@@ -21,6 +22,8 @@ import org.cxct.sportlottery.databinding.ViewHomeHotMatchBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.*
@@ -48,7 +51,11 @@ class HomeHotMatchView(
         initRecyclerView()
         //查看更多
         tvHotMore.onClick {
-            (fragment?.activity as MainTabActivity).jumpToInplaySport()
+            if(StaticData.okSportOpened()) {
+                (fragment?.activity as MainTabActivity).jumpToInplaySport()
+            }else{
+                ToastUtil.showToast(context,context.getString(R.string.N700))
+            }
         }
 
     }
@@ -64,6 +71,21 @@ class HomeHotMatchView(
         )
         itemAnimator?.changeDuration = 0
         PagerSnapHelper().attachToRecyclerView(this)
+        //滚动监听
+        recycler_hot_game.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (RecyclerView.SCROLL_STATE_DRAGGING == newState) { // 开始滑动
+                    fragment?.let {
+                        unSubscribeChannelHall(it)
+                    }
+                } else if (RecyclerView.SCROLL_STATE_IDLE == newState) { // 滑动停止
+                    fragment?.let {
+                        firstVisibleRange()
+                    }
+                }
+            }
+        })
     }
 
 
@@ -240,12 +262,8 @@ class HomeHotMatchView(
     private fun initAdapter(fragment: BaseFragment<*>) {
         setUpAdapter(fragment,
             HomeRecommendListener(onItemClickListener = { matchInfo ->
-                if (fragment.viewModel.isLogin.value != true) {
-                    (fragment.requireActivity() as MainTabActivity).showLoginNotify()
-                } else {
-                    matchInfo?.let {
-                        SportDetailActivity.startActivity(context, it)
-                    }
+                matchInfo?.let {
+                    SportDetailActivity.startActivity(context, it)
                 }
             },
 
@@ -254,10 +272,6 @@ class HomeHotMatchView(
                         return@HomeRecommendListener
                     }
                     fragment.avoidFastDoubleClick()
-                    if (fragment.viewModel.isLogin.value != true) {
-                        (fragment.requireActivity() as MainTabActivity).showLoginNotify()
-                        return@HomeRecommendListener
-                    }
                     val gameType = GameType.getGameType(gameTypeCode)
                     if (gameType == null || matchInfo == null || fragment.requireActivity() !is MainTabActivity) {
                         return@HomeRecommendListener

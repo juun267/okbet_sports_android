@@ -32,7 +32,7 @@
         <TextView
             android:id="@+id/tvHotMore"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:drawableRight="@drawable/ic_home_more"
             android:drawablePadding="@dimen/margin_4"

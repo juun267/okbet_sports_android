@@ -23,9 +23,9 @@ import splitties.systemservices.layoutInflater
 class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
     val binding = ViewHomeProviderBinding.inflate(layoutInflater,this,true)
-    lateinit var viewModel:MainHomeViewModel
-    lateinit var onProviderSelect:(OKGamesFirm)->Unit
-    val pageSize = 3
+    private lateinit var viewModel:MainHomeViewModel
+    private lateinit var onProviderSelect:(OKGamesFirm)->Unit
+    private val pageSize = 3
     private val homeProviderAdapter = HomeProviderAdapter {
         onProviderSelect.invoke(it)
     }
@@ -45,7 +45,7 @@ class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(con
         viewModel.homeAllProvider.observe(fragment) { resultData ->
             val buildList = mutableListOf<MutableList<OKGamesFirm>>()
             resultData.forEachIndexed { index, okGamesFirm ->
-               if(index%3==0){
+               if(index%pageSize==0){
                    buildList.add(mutableListOf())
                }
                 buildList.last().add(okGamesFirm)
@@ -57,7 +57,7 @@ class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(con
         binding.tvMore.setOnClickListener {
             (fragment.activity as MainTabActivity).jumpToOKGames()
         }
-        viewModel.getGamesALl()
+        viewModel.getGameFirms()
     }
     fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner) {
         homeProviderAdapter.bindLifecycleOwner(lifecycleOwner)
