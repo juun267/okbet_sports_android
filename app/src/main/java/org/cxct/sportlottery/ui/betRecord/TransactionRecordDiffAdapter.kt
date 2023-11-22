@@ -23,7 +23,6 @@ import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
-import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
@@ -49,14 +48,6 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
             betListData.row.isEmpty() -> listOf(DataItem.NoData)
 //            else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount))
             else -> betListData.row.map { DataItem.Item(it) }
-        }
-        submitList(itemList)
-    }
-
-    fun updateListStatus(sportBet: SportBet) {
-        itemList.forEach { dataItem ->
-            if (dataItem.orderNo == sportBet.orderNo) (dataItem as DataItem.Item).row.status =
-                sportBet.status ?: 999
         }
         submitList(itemList)
     }

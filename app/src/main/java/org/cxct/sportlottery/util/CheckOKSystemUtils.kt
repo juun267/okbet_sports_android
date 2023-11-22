@@ -71,7 +71,7 @@ fun MainTabActivity.checkMainPosition(position:Int):Boolean{
 
 fun BaseActivity<*>.bindSportMaintenance() {
     ServiceBroadcastReceiver.sportMaintenance.observe(this){
-        if (it.isMaintenance()) {
+        if (it.status == 1) {
             showPromptDialogNoCancel(message = getString(R.string.N969)) { finish() }
         }
     }

@@ -122,6 +122,7 @@ message BaseSportBet {
     string grossWin = 8;
     string win = 9;
     int32 status = 10;
+    string cancelReason=11;
 }
 
 /**

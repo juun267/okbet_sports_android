@@ -18,12 +18,9 @@ import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEv
 import org.cxct.sportlottery.network.service.match_odds_change.transferMatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.transferOddsChangeEvent
-import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
-import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.*
-import org.json.JSONObject
 import timber.log.Timber
 import java.math.BigDecimal
 
@@ -38,7 +35,7 @@ object ServiceBroadcastReceiver {
     val notice: LiveData<FrontWsEvent.NoticeEvent?>
         get() = _notice
 
-    val orderSettlement: LiveData<OrderSettlementEvent?>
+    val orderSettlement: LiveData<FrontWsEvent.BetSettlementEvent?>
         get() = _orderSettlement
 
     val producerUp: LiveData<FrontWsEvent.ProducerUpEvent?>
@@ -83,7 +80,7 @@ object ServiceBroadcastReceiver {
     private val _globalStop = MutableLiveData<FrontWsEvent.GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<FrontWsEvent.MatchClockEvent?>()
     private val _notice = MutableLiveData<FrontWsEvent.NoticeEvent?>()
-    private val _orderSettlement = MutableLiveData<OrderSettlementEvent?>()
+    private val _orderSettlement = MutableLiveData<FrontWsEvent.BetSettlementEvent?>()
     private val _pingPong = MutableLiveData<FrontWsEvent.PingPongEvent?>()
     private val _producerUp = MutableLiveData<FrontWsEvent.ProducerUpEvent?>()
     private val _userMoney = MutableLiveData<Double?>()
@@ -99,7 +96,7 @@ object ServiceBroadcastReceiver {
     private val _userInfoChange = MutableLiveData<Boolean?>()
     private val _closePlayCate = MutableLiveData<Event<FrontWsEvent.ClosePlayCateEvent?>>()
 
-    val sportMaintenance: LiveData<SportMaintenanceEvent> = MutableLiveData()
+    val sportMaintenance: LiveData<FrontWsEvent.SportMaintainEvent> = MutableLiveData()
     val jackpotChange: LiveData<String?> = MutableLiveData()
     val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
 
@@ -239,32 +236,20 @@ object ServiceBroadcastReceiver {
                 }
                 BetInfoRepository.updateMatchOdd(data)
             }
+            //体育服务开关
+            EventType.SPORT_MAINTAIN_STATUS -> {
+                (sportMaintenance as MutableLiveData<FrontWsEvent.SportMaintainEvent>)
+                    .postValue(event.sportMaintainEvent)
+            }
+
+            EventType.ORDER_SETTLEMENT -> {
+                _orderSettlement.postValue(event.betSettlementEvent)
+            }
 
             else -> {
                 Timber.i("Receive UnKnown EventType : $eventType")
             }
         }
-    }
-
-    private suspend fun handleEvent(jObj: JSONObject, jObjStr: String, channelStr: String) {
-        when (val eventType = jObj.optString("eventType")) {
-            //体育服务开关
-            EventType.SPORT_MAINTAIN_STATUS -> {
-                ServiceMessage.getSportMaintenance(jObjStr)?.let {
-                    (sportMaintenance as MutableLiveData<SportMaintenanceEvent>).postValue(it)
-                }
-                //TODO: proto 缺 SPORT_MAINTAIN_STATUS
-            }
-            EventType.ORDER_SETTLEMENT -> {
-                val data = ServiceMessage.getOrderSettlement(jObjStr)
-                _orderSettlement.postValue(data)
-                //TODO: proto 缺 BetSettlementEvent.BaseSportBet.cancelReason
-            }
-
-            else -> {  }
-
-        }
-
     }
 
     private suspend fun onOddsEvent(socketEvent: OddsChangeEvent) {

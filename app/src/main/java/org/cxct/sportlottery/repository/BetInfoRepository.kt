@@ -3,6 +3,7 @@ package org.cxct.sportlottery.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
@@ -19,7 +20,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
@@ -116,11 +116,11 @@ object BetInfoRepository {
     private val _hasBetPlatClose = MutableLiveData<Boolean>()
 
     //注单结算通知
-    val settlementNotificationMsg: LiveData<Event<SportBet>>
+    val settlementNotificationMsg: LiveData<Event<FrontWsEvent.BaseSportBet>>
         get() = _settlementNotificationMsg
-    private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
+    private val _settlementNotificationMsg = MutableLiveData<Event<FrontWsEvent.BaseSportBet>>()
 
-    fun postSettlementNotificationMsg(sportBet: SportBet) {
+    fun postSettlementNotificationMsg(sportBet: FrontWsEvent.BaseSportBet) {
         _settlementNotificationMsg.postValue(Event(sportBet))
     }
 
