@@ -437,6 +437,7 @@ open class SportListViewModel(
 
             result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds?.forEach { matchOdd ->
+                    matchOdd.matchInfo?.categoryCode = leagueOdd.league?.categoryCode
                     matchOdd?.oddsMap?.values?.forEach { oddList ->
                         oddList?.updateOddSelectState()
                     }

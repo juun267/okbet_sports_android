@@ -39,7 +39,6 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     private fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper2 by lazy { FragmentHelper2(childFragmentManager, R.id.flContent) }
     private lateinit var hotFragment: HomeHotFragment
-    private lateinit var newsHomeFragment: NewsHomeFragment
     private val homeMenuAdapter by lazy {
         HomeMenuAdapter { view, item->
             item.third?.let { fragmentClass->
@@ -89,7 +88,7 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
             setupAnnouncement(titleList)
         }
         setupSportStatusChange(this){
-            homeMenuAdapter.notifyItemChanged(0)
+            homeMenuAdapter.notifyDataSetChanged()
         }
     }
 
@@ -168,7 +167,7 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
         fragmentHelper2.show(HomeHotFragment::class.java) { frament, _ ->
             hotFragment = frament
         }
-        PagerSnapHelper().attachToRecyclerView(this)
+        LeftLinearSnapHelper().attachToRecyclerView(this)
     }
 
     private fun initIndicate(){

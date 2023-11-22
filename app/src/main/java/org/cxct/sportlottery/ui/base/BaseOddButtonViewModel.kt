@@ -474,7 +474,7 @@ abstract class BaseOddButtonViewModel(
             if (gameType==GameType.ES.key){
                 val categoryCodeList = normalBetList.groupBy { it.matchOdd.categoryCode }.keys.toList()
                 categoryCodeList.forEach {
-                    RecentDataManager.addRecent(RecentRecord(0,gameType = it))
+                    RecentDataManager.addRecent(RecentRecord(0,gameType = gameType,categoryCode = it))
                 }
             }else{
                 RecentDataManager.addRecent(RecentRecord(0,gameType = normalBetList.first().matchOdd.gameType))

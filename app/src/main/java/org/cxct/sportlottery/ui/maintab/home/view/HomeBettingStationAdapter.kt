@@ -1,7 +1,6 @@
-package org.cxct.sportlottery.ui.maintab.home
+package org.cxct.sportlottery.ui.maintab.home.view
 
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.roundOf
 import org.cxct.sportlottery.databinding.ItemHomeBettingstationBinding
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.repository.sConfigData

@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.util
 
+import com.didichuxing.doraemonkit.util.GsonUtils
 import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import java.util.Timer
 
 object RecentDataManager {
    private const val RECENT_RECORD = "recentRecord"
@@ -19,11 +21,21 @@ object RecentDataManager {
   }
     fun addRecent(record: RecentRecord){
         //如果记录跟最新一个相同，则不重复记录
-//        val first = recentList.firstOrNull()
-//        if (first!=null&&first.recordType==record.recordType&&first.gameBean?.firmType == record.gameBean?.firmType)
+        val first = recentList.firstOrNull()
+        val isRepeat = when{
+            first==null-> false
+            (record.recordType==0&&!first.gameType.isNullOrEmpty()&&first.gameType == record.gameType)->true
+            (record.recordType==1&&!first.gameBean?.firmType.isNullOrEmpty()&&first.gameBean?.firmType == record.gameBean?.firmType)->true
+            else->false
+        }
+        if (isRepeat){
+            LogUtil.e("isRepeat ="+GsonUtils.toJson(record))
+            recentList[0] = record
+        }else{
+            recentList.add(0,record)
+        }
 //            return
 //        LogUtil.toJson(record)
-        recentList.add(0,record)
         KvUtils.put(RECENT_RECORD,recentList.toJson())
         recentEvent.postValue(recentList)
     }
@@ -36,5 +48,5 @@ object RecentDataManager {
  * recordType 0体育 1游戏
  */
 @KeepMembers
-data class RecentRecord(val recordType: Int,val gameType: String?=null,val gameBean: OKGameBean?=null)
+data class RecentRecord(val recordType: Int,val gameType: String?=null,val categoryCode: String?=null,val gameBean: OKGameBean?=null)
 

@@ -7,19 +7,23 @@ import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_home_okgame.view.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ViewHomeOkgameBinding
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.transform.TransformInDialog
 import splitties.systemservices.layoutInflater
+import splitties.toast.toast
 
 class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
 
@@ -54,7 +58,11 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
         initEnterGame(fragment)
 
         tvMore.onClick {
-            (fragment.activity as MainTabActivity).jumpToOKGames()
+            if(StaticData.okGameOpened()){
+               (fragment.activity as MainTabActivity).jumpToOKGames()
+            }else{
+                ToastUtil.showToast(context,context.getString(R.string.N700))
+            }
         }
 
         //item点击 进入游戏

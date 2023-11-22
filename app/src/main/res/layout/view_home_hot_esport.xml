@@ -24,7 +24,7 @@
             android:textSize="18sp"
             android:layout_weight="1"
             android:paddingLeft="4dp"
-            android:text="@string/N881"
+            android:text="@string/P241"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
 
@@ -51,5 +51,5 @@
         android:paddingLeft="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="3"
-        tools:listitem="@layout/item_home_hot_match" />
+        tools:listitem="@layout/item_home_hot_esport" />
 </androidx.appcompat.widget.LinearLayoutCompat>

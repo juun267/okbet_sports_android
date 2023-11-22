@@ -18,6 +18,7 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.ScreenUtil
 
 class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : BindingAdapter<List<OKGamesFirm>, ItemHomeProviderPageBinding>() {
 
@@ -71,6 +72,6 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
             isVisible = !isMaintenance
             setOnClickListener { itemClick(item) }
         }
-        view.setBackgroundResource(if(isMaintenance) R.color.color_F9FAFD else R.color.color_FFFFFF)
+        view.setBackgroundResource(if(isMaintenance) R.drawable.bg_gray_radius_8_f9fafd else R.color.color_FFFFFF)
     }
 }
