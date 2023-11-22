@@ -1,17 +1,15 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.view.View
-import android.view.ViewGroup
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
-import org.cxct.sportlottery.common.adapter.BindingVH
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHomeMenuBinding
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragment
@@ -20,8 +18,8 @@ import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseFragment<*>>?>) -> Unit)
-    : BindingAdapter<Triple<Int, Int, Class<BaseFragment<*>>?>, ItemHomeMenuBinding>() {
+class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseFragment<*>>?>) -> Boolean)
+    : BindingAdapter<Triple<Int, Int, Class<BaseFragment<*>>?>, ItemHomeMenuBinding>(), OnItemClickListener {
 
     private val datas = mutableListOf<Triple<Int, Int, Class<BaseFragment<*>>?>>()
     private val cache = arrayOf(
@@ -39,6 +37,7 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
         buildItem()
         selectItem = datas[0]
         setList(datas)
+        setOnItemClickListener(this)
     }
 
     override fun onBinding(
@@ -59,19 +58,7 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
         ivIcon.setImageResource(item.first)
         tvName.text = context.getString(item.second)
         root.isSelected = item == selectItem
-        if (item.third!=null){
-            setMaintanence(linMaintenance,item.third)
-            root.setOnClickListener {
-                selectItem  = item
-                notifyDataSetChanged()
-                itemClick(it, item)
-            }
-        }else{
-            when(item.second){
-                R.string.B005->root.bindPromoClick {  }
-                R.string.LT050->root.setServiceClick((AppManager.currentActivity() as MainTabActivity).supportFragmentManager) {  }
-            }
-        }
+        setMaintanence(linMaintenance, item.third)
     }
     private fun setMaintanence(linMaintenance: View, fragmentClass: Class<BaseFragment<*>>?){
         when(fragmentClass){
@@ -110,5 +97,18 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
     fun reload(){
         buildItem()
         setList(datas)
+    }
+
+    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        val item = getItem(position)
+        if (itemClick.invoke(view, getItem(position))) {
+            val lastPosition = getItemPosition(selectItem)
+            selectItem = item
+            if (lastPosition >= 0) {
+                notifyItemChanged(lastPosition, lastPosition)
+            }
+            notifyItemChanged(position, position)
+        }
+
     }
 }

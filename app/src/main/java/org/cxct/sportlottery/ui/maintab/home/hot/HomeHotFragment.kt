@@ -30,7 +30,6 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
-import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -61,8 +60,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
     override fun onInitData() {
         //设置监听游戏试玩
         setTrialPlayGameDataObserve()
-        binding.ivService.setOnTouchListener(SuckEdgeTouch())
-        binding.ivService.setServiceClick(childFragmentManager)
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

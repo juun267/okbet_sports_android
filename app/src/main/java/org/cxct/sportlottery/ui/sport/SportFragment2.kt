@@ -107,7 +107,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     override fun onBindViewStatus(view: View) {
         footView.setUp(this, mianViewModel)
         getMenuData(true)
-        jumpMatchType?.let { navGameFragment(it) }
         favoriteDelayRunable.doOnDelay(0)
 
         initObserve()

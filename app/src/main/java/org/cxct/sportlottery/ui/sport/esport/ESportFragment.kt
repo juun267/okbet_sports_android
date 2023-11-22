@@ -2,19 +2,13 @@ package org.cxct.sportlottery.ui.sport.esport
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
@@ -24,23 +18,18 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.Menu
 import org.cxct.sportlottery.network.sport.SportMenuData
-import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
-import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
-import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
 import org.cxct.sportlottery.ui.sport.list.TodayMenuPop
 import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -116,7 +105,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         footView.setUp(this, mianViewModel)
         binding.homeToolbar.attach(this@ESportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         getMenuData(true)
-        jumpMatchType?.let { navGameFragment(it) }
         favoriteDelayRunable.doOnDelay(0)
 
         initObserve()
@@ -274,13 +262,13 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         args.putString("gameType", gameType)
         when (matchType) {
             MatchType.OUTRIGHT -> {
-                fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, newInstance ->
+                fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, _ ->
                     fragment.resetFooterView(footView)
                 }
             }
 
             MatchType.MY_EVENT -> {
-                fragmentHelper.show(ESportFavoriteFragment::class.java, args) { fragment, newInstance ->
+                fragmentHelper.show(ESportFavoriteFragment::class.java, args) { fragment, _ ->
                     fragment.resetFooterView(footView)
                     fragment.setFavoriteData(curFavoriteItem)
                 }
@@ -290,7 +278,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 fragmentHelper.show(ESportListFragment::class.java, args) { fragment, newInstance ->
                     fragment.resetFooterView(footView)
                     if (!newInstance && fragment.isAdded) {
-                        Log.e("For Test", "=========>>> ESportListFragment reload 000000" )
                         fragment.reload(matchType, gameType)
                     }
                 }

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home.game.esport
 
 import android.graphics.Color
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import splitties.views.backgroundColor
 
 
 class ESportTypeAdapter : BaseNodeAdapter() {
@@ -70,17 +72,14 @@ private class ESportMatchProvider(override val itemViewType: Int = 2, override v
     private val iconId = View.generateViewId()
     private val imgId = View.generateViewId()
     private val lp = LinearLayout.LayoutParams(-1, 100.dp).apply { bottomMargin = 8.dp }
-    private val nameLp = FrameLayout.LayoutParams(-2, -2).apply { topMargin = 44.dp }
-    private val iconLp = FrameLayout.LayoutParams(20.dp, 20.dp).apply {
-        topMargin = 16.dp
+    private val nameLp = LinearLayout.LayoutParams(140.dp, -2).apply { topMargin = 5.dp }
+    private val iconLp = LinearLayout.LayoutParams(20.dp, 20.dp).apply {
+        topMargin = 14.dp
     }
     private val imgLp = FrameLayout.LayoutParams(-2, -2).apply {
         gravity = Gravity.RIGHT or Gravity.BOTTOM
     }
-    private val numLp = FrameLayout.LayoutParams(-2, -2).apply {
-        gravity = Gravity.BOTTOM
-        bottomMargin = 15.dp
-    }
+    private val numLp = LinearLayout.LayoutParams(-2, -2).apply { topMargin = 3.dp }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val context = parent.context
@@ -89,9 +88,14 @@ private class ESportMatchProvider(override val itemViewType: Int = 2, override v
         frameLayout.setBackgroundResource(R.drawable.bg_home_esport_card)
         frameLayout.foreground = parent.context.getDrawable(R.drawable.fg_ripple)
         frameLayout.setPadding(24.dp, 0, 0, 0)
+
+        val lin = LinearLayout(context)
+        lin.orientation = LinearLayout.VERTICAL
+        frameLayout.addView(lin)
+
         val icon = AppCompatImageView(context)
         icon.id = iconId
-        frameLayout.addView(icon, iconLp)
+        lin.addView(icon, iconLp)
 
         val img = AppCompatImageView(context)
         img.id = imgId
@@ -99,17 +103,20 @@ private class ESportMatchProvider(override val itemViewType: Int = 2, override v
 
         val nameText = AppCompatTextView(context)
         nameText.id = nameId
+        nameText.setLineSpacing(-5.dp.toFloat(), 1f)
         nameText.setTextColor(context.getColor(R.color.color_025BE8))
         nameText.textSize = 16f
+        nameText.maxLines = 2
         nameText.typeface = AppFont.inter_bold
-        frameLayout.addView(nameText, nameLp)
+        nameText.ellipsize = TextUtils.TruncateAt.END
+        lin.addView(nameText, nameLp)
 
         val numText = AppCompatTextView(context)
         numText.id = numberId
         numText.setTextColor(context.getColor(R.color.color_0D2245))
         numText.textSize = 14f
         numText.typeface = AppFont.inter_bold
-        frameLayout.addView(numText, numLp)
+        lin.addView(numText, numLp)
 
         return BaseViewHolder(frameLayout)
     }

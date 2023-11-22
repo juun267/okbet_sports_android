@@ -10,6 +10,7 @@ import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
@@ -145,8 +146,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
 
             R.string.main_tab_sport -> { // 体育
-                if (!StaticData.okSportOpened()) {
-                    ToastUtil.showToast(this@MainTabActivity, getString(R.string.N700))
+                if (checkSportMaintain(true)) {
                     false
                 } else {
                     navToPosition(INDEX_SPORT)
@@ -193,12 +193,22 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         reStart(this)
     }
 
+    fun checkSportMaintain(isSport: Boolean = checkSportFragment()): Boolean {
+        if (isSport && getSportEnterIsClose()) {
+            if (lifecycle.currentState == Lifecycle.State.RESUMED) {
+                showPromptDialogNoCancel(message = getString(R.string.N969)) { }
+            }
+            return true
+        }
+        return false
+    }
+
     private fun initObserve() {
 
         //设置体育服务监听
         setupSportStatusChange(this) {
             //如果维护开启，当前在体育相关fragment， 退回到首页
-            if (checkMainPosition(getCurrentPosition())) {
+            if (checkSportMaintain()) {
                 //关闭已选中的投注
                 closeBetFragment()
                 //回到首页
@@ -273,8 +283,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     /**
      * 检查是否为体育相关的fragment
      */
-    fun checkSportFragment(position: Int): Boolean {
-        val fragment = fragmentHelper.getFragment(position)
+    fun checkSportFragment(): Boolean {
+        val fragment = fragmentHelper.getCurrentFragment()
         if (fragment is SportFragment2) {
             return true
         }

@@ -959,21 +959,24 @@ fun View.setServiceClick(fragmentManager: FragmentManager, block: (() -> Unit)? 
 fun serviceClickListener(fragmentManager: FragmentManager, block: (() -> Unit)? = null) : View.OnClickListener {
     return View.OnClickListener {
         block?.invoke()
+        serviceEvent(it.context, fragmentManager)
+    }
+}
 
-        val serviceUrl = sConfigData?.customerServiceUrl
-        val serviceUrl2 = sConfigData?.customerServiceUrl2
-        when {
-            !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                ServiceDialog().show(fragmentManager, ServiceDialog::class.java.simpleName)
-            }
+fun serviceEvent(context: Context, fragmentManager: FragmentManager) {
+    val serviceUrl = sConfigData?.customerServiceUrl
+    val serviceUrl2 = sConfigData?.customerServiceUrl2
+    when {
+        !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+            ServiceDialog().show(fragmentManager, ServiceDialog::class.java.simpleName)
+        }
 
-            serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                JumpUtil.toExternalWeb(it.context, serviceUrl2)
-            }
+        serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+            JumpUtil.toExternalWeb(context, serviceUrl2)
+        }
 
-            !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                JumpUtil.toExternalWeb(it.context, serviceUrl)
-            }
+        !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+            JumpUtil.toExternalWeb(context, serviceUrl)
         }
     }
 }

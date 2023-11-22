@@ -87,7 +87,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
     override fun onResume() {
         super.onResume()
         if ((activity as MainTabActivity).getCurrentPosition() == 0
-            && (okLiveFragment().parentFragment as HomeFragment).getCurrentFragment() == okLiveFragment()
+            && (okLiveFragment().parentFragment as HomeFragment?)?.getCurrentFragment() == okLiveFragment()
             && okLiveFragment().getCurrentFragment() == this
         ) {
             unSubscribeChannelHallAll()
