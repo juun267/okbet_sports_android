@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport.esport
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -249,7 +248,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
 
     private fun navGameFragment(matchType: MatchType) {
-        var gameType = navGameSport?.key ?: jumpGameType
+        var gameType = navGameSport ?: jumpGameType
         jumpMatchType = null
         jumpGameType = null
 
@@ -262,8 +261,11 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         args.putString("gameType", gameType)
         when (matchType) {
             MatchType.OUTRIGHT -> {
-                fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, _ ->
+                fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, newInstance ->
                     fragment.resetFooterView(footView)
+                    if (!newInstance && fragment.isAdded) {
+                        gameType?.let { fragment.reload(it) }
+                    }
                 }
             }
 
@@ -286,9 +288,9 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     }
 
-    private var navGameSport: GameType? = null
+    private var navGameSport: String? = null
 
-    fun jumpToSport(gameType: GameType) {
+    fun jumpToSport(gameType: String) {
         if (sportMenu == null) {
             navGameSport = gameType
             return
@@ -296,26 +298,17 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
         val menuData = sportMenu!!
         val matchType = findMatchType(menuData, gameType)
-        setJumpSport(matchType, gameType = gameType.key)
+        setJumpSport(matchType, gameType = gameType)
     }
 
-    private fun findMatchType(menu: Menu, gameType: GameType): MatchType {
-        val matchType = findESport(menu.inPlay.items, MatchType.IN_PLAY, gameType)
+    private fun findMatchType(menu: Menu, gameType: String): MatchType {
+        return findESport(menu.inPlay.items, MatchType.IN_PLAY, gameType)
             ?: findESport(menu.today.items, MatchType.TODAY, gameType)
-            ?: findESport(menu.early.items, MatchType.EARLY, gameType)
-
-        if (matchType == null) {
-            if (gameType == GameType.ES) { // 仅电竞的时候提示
-                showPromptDialog(getString(R.string.prompt), getString(R.string.P172)) { }
-            }
-//            ToastUtil.showToast(context(), R.string.P172)
-            return MatchType.EARLY
-        }
-        return matchType
+            ?: findESport(menu.early.items, MatchType.EARLY, gameType) ?: MatchType.EARLY
     }
-    private fun findESport(items: List<Item>, matchType: MatchType, gameType: GameType): MatchType? {
+    private fun findESport(items: List<Item>, matchType: MatchType, gameType: String): MatchType? {
         items.forEach {
-            if (gameType.key == it.code) {
+            if (gameType == it.code) {
                 jumpMatchType = matchType
                 return matchType
             }

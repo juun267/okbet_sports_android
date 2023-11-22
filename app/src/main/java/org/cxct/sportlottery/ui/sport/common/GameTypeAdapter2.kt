@@ -109,5 +109,32 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
         super.setNewInstance(list)
     }
 
+    fun selectGameType(gameType: String) {
+        if (gameType == currentItem?.code) {
+            return
+        }
+
+        data.forEachIndexed { index, item ->
+            if (item.code == gameType) {
+                val vh = recyclerView.findViewHolderForAdapterPosition(index)
+                if (vh != null) {
+                    vh.itemView.performClick()
+                } else {
+                    currentItem?.let {
+                        it.isSelected = false
+                        val position = getItemPosition(it)
+                        notifyItemChanged(position, position)
+                    }
+
+                    item.isSelected = true
+                    currentItem = item
+                    itemClick.invoke(currentItem!!, index)
+                    notifyItemChanged(index, index)
+                }
+                return
+            }
+        }
+    }
+
 }
 

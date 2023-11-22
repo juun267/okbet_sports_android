@@ -275,6 +275,9 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             MatchType.OUTRIGHT -> {
                 fragmentHelper.show(SportOutrightFragment::class.java, args) { fragment, newInstance ->
                     fragment.resetFooterView(footView)
+                    if (!newInstance && fragment.isAdded) {
+                        gameType?.let { fragment.reload(it) }
+                    }
                 }
             }
 
