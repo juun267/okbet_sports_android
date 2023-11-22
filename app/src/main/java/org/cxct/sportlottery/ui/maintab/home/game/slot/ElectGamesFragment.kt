@@ -91,6 +91,10 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
         }
     }
 
+    protected open fun showMoreGames(okGameBean: OKGameBean) {
+        (activity as MainTabActivity).jumpToOKGames()
+    }
+
     override fun onInitView(view: View) {
         super.onInitView(view)
         applySearch(view.context)
@@ -99,11 +103,11 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
         binding.rvcGameList.adapter = gameAdapter2
         gameAdapter2.setOnItemClickListener{ _, _, position ->
             val okGameBean = gameAdapter2.getItem(position)
-            if (okGameBean !is OKGameBean || okGameBean.isMaintain()) {
+            if (okGameBean !is OKGameBean || (!okGameBean.isShowMore && okGameBean.isMaintain())) {
                 return@setOnItemClickListener
             }
             if (okGameBean.isShowMore){
-                (activity as MainTabActivity).jumpToOKGames()
+                showMoreGames(okGameBean)
                 return@setOnItemClickListener
             }
 
@@ -157,10 +161,11 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
                 hideLoading()
                 return@observe
             }
-            
+
             gameAdapter2.setupData(categoryList, it.firmList)
             tabAdapter.setNewInstance(categoryList)
             hideLoading()
+
         }
 
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {

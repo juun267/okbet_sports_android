@@ -61,7 +61,7 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
                alpha = if(isMaintenance) 0.5f else 1f
         }
         view.findViewById<TextView>(R.id.tvName).apply {
-            text = item.firmName
+            text = item.firmShowName?:item.firmName
             setTextColor(resources.getColor(if(isMaintenance) R.color.color_BEC7DC  else R.color.color_0D2245))
         }
         view.findViewById<TextView>(R.id.tvDesp).apply {

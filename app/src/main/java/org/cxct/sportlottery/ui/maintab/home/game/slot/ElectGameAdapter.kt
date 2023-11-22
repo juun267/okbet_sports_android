@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.view.isVisible
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -25,12 +24,13 @@ import org.cxct.sportlottery.util.TextUtil
 
 class ElectGameAdapter: BaseNodeAdapter() {
 
+    private val MORE_LIMIT = 12
     private val groupIndex = mutableMapOf<Int, Int>()
     private val firmMap = mutableMapOf<Int, OKGamesFirm>()
 
     init {
         addFullSpanNodeProvider(GroupTitleProvider(this))
-        addNodeProvider(ElectGameprovider(firmMap))
+        addNodeProvider(ElectGameProvider(firmMap))
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -45,9 +45,13 @@ class ElectGameAdapter: BaseNodeAdapter() {
         groupList.forEach { baseNode ->
             groupIndex[baseNode.id] = position
             position++
-            baseNode.gameList.forEach {
-                it.parentNode = baseNode
-                it.categoryId = baseNode.id
+            if (baseNode.gameList.size > MORE_LIMIT) {
+                baseNode.gameList = baseNode.gameList.take(MORE_LIMIT)
+                baseNode.gameList.last().isShowMore = true
+            }
+            baseNode.gameList.forEachIndexed { index, okGameBean ->
+                okGameBean.parentNode = baseNode
+                okGameBean.categoryId = baseNode.id
                 position++
             }
         }
@@ -80,7 +84,7 @@ private class GroupTitleProvider(val adapter: ElectGameAdapter, override val ite
 
 }
 
-private class ElectGameprovider(private val firmMap: MutableMap<Int, OKGamesFirm>,
+private class ElectGameProvider(private val firmMap: MutableMap<Int, OKGamesFirm>,
                                 override val itemViewType: Int = 2,
                                 override val layoutId: Int = 0) : BaseNodeProvider() {
 
@@ -90,23 +94,24 @@ private class ElectGameprovider(private val firmMap: MutableMap<Int, OKGamesFirm
         return BaseViewHolder(binding.root)
     }
 
+    private val dp4 = 4.dp
+    private val dp8 = 8.dp
     override fun convert(helper: BaseViewHolder, item: BaseNode): Unit = (helper.itemView.tag as ItemElecGameBinding).run {
 
         val bean = item as OKGameBean
         val childPosition = item.parentNode.childNode?.indexOf(item) ?: return@run
-        if (childPosition% 2==0){
-            setMargins(root,0,0, 8.dp, 8.dp)
+        if (childPosition% 2 == 0){
+            setMargins(root, 0, 0, dp4, dp8)
         }else{
-            setMargins(root,0,0,0, 8.dp)
+            setMargins(root, dp4, 0, 0, dp8)
         }
-        blurviewMore.gone()
+
         linMaintenance.gone()
         cvContent.gone()
         cvJackpot.gone()
+        ivCover.load(bean.imgGame, R.drawable.ic_okgames_nodata)
 
         if (bean.isShowMore) {
-            ivCover.visible()
-            ivCover.load(bean.imgGame, R.drawable.ic_okgames_nodata)
             blurviewMore.visible()
             blurviewMore
                 .setupWith(root)
@@ -115,17 +120,14 @@ private class ElectGameprovider(private val firmMap: MutableMap<Int, OKGamesFirm
             return@run
         }
 
+        blurviewMore.gone()
         if (bean.isMaintain()) {
-            ivCover.visible()
-            ivCover.load(bean.imgGame, R.drawable.ic_okgames_nodata)
             linMaintenance.visible()
         }
 
         cvContent.visible()
         tvGameName.text = bean.gameName
         tvGameType.text = bean.firmName
-        ivCover.visible()
-        ivCover.load(bean.imgGame, R.drawable.ic_okgames_nodata)
         blurView.setupWith(root)
             .setFrameClearDrawable(root.background)
             .setBlurRadius(8f)

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.game.esport
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -26,7 +27,7 @@ class ESportVenueFragment: SportVenueFragment<SportTabViewModel, FragmentGameven
             if (selectItem is ESportMatch){
                 val pair = matchTabAdapter.data.firstOrNull { it.first == selectItem.name }
                 val matchType = if (pair == null) MatchType.IN_PLAY else MatchType.getMatchTypeByStringId(pair.first)
-                (activity as MainTabActivity).jumpToESport(matchType,selectItem.item.code)
+                (activity as MainTabActivity).jumpToESport(matchType, selectItem.item.code)
             }
         }
 
@@ -58,8 +59,8 @@ class ESportVenueFragment: SportVenueFragment<SportTabViewModel, FragmentGameven
         menu.inPlay?.let { assembleData(R.string.home_tab_in_play, it, datas, categoryDatas) }
         menuResult.atStart?.let { assembleData(R.string.home_tab_at_start, it, datas, categoryDatas) }
         menu.today?.let { assembleData(R.string.home_tab_today, it, datas, categoryDatas) }
-        menuResult.in12hr?.let { assembleData(R.string.P228, it, datas, categoryDatas) }
-        menuResult.in24hr?.let { assembleData(R.string.P229, it, datas, categoryDatas) }
+//        menuResult.in12hr?.let { assembleData(R.string.P228, it, datas, categoryDatas) }
+//        menuResult.in24hr?.let { assembleData(R.string.P229, it, datas, categoryDatas) }
         menu.early?.let { assembleData(R.string.home_tab_early, it, datas, categoryDatas) }
         menu.parlay?.let { assembleData(R.string.home_tab_parlay, it, datas, categoryDatas) }
         menu.outright?.let { assembleData(R.string.home_tab_outright, it, datas, categoryDatas) }

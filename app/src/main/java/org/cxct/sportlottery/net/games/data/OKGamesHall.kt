@@ -23,7 +23,7 @@ data class OKGamesCategory(
     val icon: String?,
     val iconSelected: String?,
     val iconUnselected: String?,
-    val gameList: List<OKGameBean>
+    var gameList: List<OKGameBean>
 ): OKGameTab, BaseNode() {
 
     override val childNode: MutableList<BaseNode>?
@@ -57,7 +57,8 @@ data class OKGamesFirm(
     val imgMobile: String?,
     val remark: String?,
     var maintain: Int?,  // 0:游戏正常开启, 1: 维护状态
-    val sort:Int?
+    val sort:Int?,
+    val firmShowName: String?, //对应中文名
 ): OKGameLabel {
     override fun getKey() = id
     override fun bindLabelIcon(imageView: ImageView) {

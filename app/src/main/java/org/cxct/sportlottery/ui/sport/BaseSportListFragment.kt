@@ -87,11 +87,10 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         val layoutParams: ViewGroup.LayoutParams = appbarLayout.getLayoutParams()
         val behavior = (layoutParams as CoordinatorLayout.LayoutParams).behavior
         if (behavior is AppBarLayout.Behavior) {
-            val appBarLayoutBehavior = behavior
             //拿到下方tabs的y坐标，即为我要的偏移量
-            val topAndBottomOffset = appBarLayoutBehavior.topAndBottomOffset
+            val topAndBottomOffset = behavior.topAndBottomOffset
             if (topAndBottomOffset != 0) {
-                appBarLayoutBehavior.topAndBottomOffset = 0
+                behavior.topAndBottomOffset = 0
                 appbarLayout.setExpanded(true, true)
             }
         }

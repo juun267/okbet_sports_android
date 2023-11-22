@@ -139,4 +139,21 @@
             app:layout_behavior="org.cxct.sportlottery.util.FixScrollingFooterBehavior" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="right|bottom">
+
+        <ImageView
+            android:id="@+id/ivService"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="80dp"
+            android:src="@drawable/ic_service_blue" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

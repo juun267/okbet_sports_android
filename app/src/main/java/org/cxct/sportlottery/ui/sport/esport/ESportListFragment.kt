@@ -27,6 +27,9 @@ import org.cxct.sportlottery.ui.sport.list.adapter.SportLeagueAdapter2
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.SocketUpdateUtil
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import java.util.ArrayList
 
@@ -50,8 +53,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
                 loginedRun(context()) { viewModel.pinFavorite(FavoriteType.MATCH, matchId) }
             })
     }
-    //电竞自己的内容
-    override var gameType = GameType.ES.key
+
     protected val esportTypeAdapter by lazy { ESportTypeAdapter(::onESportTypeChanged) }
     var currentCategoryItem :CategoryItem? =null
 
@@ -83,7 +85,6 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
     open fun reload(matchType: MatchType, gameType: String?) {
         this.matchType = matchType
         this.gameType = gameType ?: GameType.ES.key
-        Log.e("For Test", "=========>>> ESportListFragment reload matchType=${matchType.postValue}  gameType=$gameType--${this.gameType}")
         sportLeagueAdapter2.matchType = this.matchType
         reset()
         scrollBackTop()
@@ -99,7 +100,6 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
     }
 
     override fun onInitData() {
-        Log.e("For Test", "=========>>> ESportListFragment reload 111111" )
         reload((arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY, arguments?.getString("gameType"))
     }
 
@@ -118,11 +118,6 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
     protected open fun observeSportList() = viewModel.run {
 
         oddsListGameHallResult.observe(this@ESportListFragment.viewLifecycleOwner) {
-            if (it.tag != gameType) {
-                return@observe
-            }
-
-
             val oddsListData = it.getContentIfNotHandled()?.oddsListData ?: return@observe
             dismissLoading()
             val leagueOdds: List<LeagueOdd>? = oddsListData.leagueOdds
@@ -132,6 +127,9 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
             val mLeagueOddList = (oddsListData.leagueOddsFilter ?: leagueOdds).toMutableList()
             setSportDataList(mLeagueOddList as MutableList<BaseNode>)
         }
+    }
+
+    override fun observerMenuData() {
         viewModel.esportTypeMenuData.observe(this@ESportListFragment.viewLifecycleOwner){
             it.first?.let {
                 updateESportType(it)
@@ -281,33 +279,30 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
 
     }, delay)
 
-    override fun updateSportType(gameTypeList: List<Item>) {
-        //这里是体育大厅的结果显示，电竞用 updateESportType 方法，
-    }
-
     open fun updateESportType(item: Item) {
-        if (item?.categoryList.isNullOrEmpty()) {
+
+        val categoryList = item.categoryList
+        if (categoryList.isNullOrEmpty()) {
             dismissLoading()
             setSportDataList(null)
             return
         }
+
         currentItem = item
         //处理默认不选中的情况
         var targetItem: CategoryItem? = null
-        item.categoryList?.forEach {
-            it.isSelected = false
-        }
+        categoryList.forEach { it.isSelected = false }
         binding.sportTypeList.show()
-        targetItem = item.categoryList?.first()
-        if (currentCategoryItem==null){
+        targetItem = categoryList.find { it.code == gameType } ?: categoryList.first()
+        if (currentCategoryItem == null){
             currentCategoryItem = targetItem
-            currentCategoryItem?.isSelected = true
+            currentCategoryItem!!.isSelected = true
             load(item, categoryCodeList = currentCategoryItem!!.categoryCodeList)
-        }else{
-            val existItem = item.categoryList?.firstOrNull { it.code == currentCategoryItem!!.code }
-            currentCategoryItem = existItem?:targetItem
+        } else {
+            val existItem = categoryList.firstOrNull { it.code == currentCategoryItem!!.code }
+            currentCategoryItem = existItem ?: targetItem
             currentCategoryItem?.isSelected = true
-            if (existItem!=currentCategoryItem){
+            if (existItem!=currentCategoryItem) {
                 load(item, categoryCodeList = currentCategoryItem!!.categoryCodeList)
             }
         }
@@ -318,6 +313,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
             esportTypeAdapter.data.indexOfFirst { it.isSelected })
 
     }
+
     override fun setSelectMatch(leagueIdList: ArrayList<String>,matchIdList: ArrayList<String>) {
         esportTypeAdapter.currentItem?.let {
             clearData()
@@ -326,6 +322,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
             }
         }
     }
+
    open fun onESportTypeChanged(item: CategoryItem, position: Int){
         currentCategoryItem = item
         clearData()

@@ -51,15 +51,17 @@ class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(con
                 buildList.last().add(okGamesFirm)
             }
            val list=buildList.map { it.toList() }.toMutableList()
-            homeProviderAdapter.setNewInstance(list)
+            homeProviderAdapter.setList(list)
         }
 
         binding.tvMore.setOnClickListener {
             (fragment.activity as MainTabActivity).jumpToOKGames()
         }
-        viewModel.getGameFirms()
     }
     fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner) {
         homeProviderAdapter.bindLifecycleOwner(lifecycleOwner)
+    }
+    fun loadData(){
+        viewModel.getGameFirms()
     }
 }
