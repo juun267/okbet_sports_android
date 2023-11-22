@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
+import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import androidx.fragment.app.Fragment
@@ -592,15 +593,19 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         checkSportStatus(this) {
             tabHelper.clearSelected()
             navToPosition(INDEX_ESPORT)
-            (fragmentHelper.getCurrentFragment() as ESportFragment)?.setJumpSport(matchType,gameType)
+            binding.root.postDelayed(200){
+                (fragmentHelper.getCurrentFragment() as ESportFragment)?.setJumpSport(matchType,gameType)
+            }
         }
     }
 
     fun jumpToSport(gameType: GameType) {
         checkSportStatus(this) {
             tabHelper.selectedSport()
-            (fragmentHelper.getFragment(INDEX_SPORT) as SportFragment2).jumpToSport(gameType)
             navToPosition(INDEX_SPORT)
+            binding.root.postDelayed(200){
+                (fragmentHelper.getFragment(INDEX_SPORT) as SportFragment2).jumpToSport(gameType)
+            }
         }
     }
 
