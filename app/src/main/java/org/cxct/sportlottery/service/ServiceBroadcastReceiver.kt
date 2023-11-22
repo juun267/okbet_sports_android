@@ -16,7 +16,9 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.match_odds_change.transferMatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.service.odds_change.transferOddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.repository.*
@@ -223,7 +225,45 @@ object ServiceBroadcastReceiver {
             EventType.THIRD_GAME_STATU_CHANGED -> { // 三方游戏维护状态
                 thirdGamesMaintain.emit(event.gameFirmMaintainEvent)
             }
+            EventType.ODDS_CHANGE -> {
+                val data = event.oddsChangeEvent.transferOddsChangeEvent()
+                data.channel = channelStr
 
+                data.oddsList.forEach { // 过滤掉空odd(2023.05.30)
+                    if (it.oddsList != null) {
+                        val iterator = it.oddsList?.iterator()
+                        while (iterator.hasNext()) {
+                            if (iterator.next() == null) {
+                                iterator.remove()
+                            }
+                        }
+                    }
+                }
+
+                // 登陆的用户计算赔率折扣
+                if (LoginRepository.isLogined()) {
+                    data.setupOddDiscount(UserInfoRepository.getDiscount())
+                }
+                data.oddsListToOddsMap()
+                data.updateOddsSelectedState()
+                data.sortOddsMap()
+                onOddsEvent(data)
+
+            }
+
+            EventType.MATCH_ODDS_CHANGE -> {
+                val data = event.matchOddsChangeEvent.transferMatchOddsChangeEvent()
+
+                // 登陆的用户计算赔率折扣
+                if (LoginRepository.isLogined()) {
+                    data.setupOddDiscount(UserInfoRepository.getDiscount())
+                }
+                data.updateOddsSelectedState()
+                post{
+                    MatchOddsRepository.onMatchOdds(data)
+                }
+                BetInfoRepository.updateMatchOdd(data)
+            }
             else -> {
                 Timber.i("Receive UnKnown EventType : $eventType")
             }
@@ -252,44 +292,7 @@ object ServiceBroadcastReceiver {
                 }
                 //TODO: proto 缺 statusNameI18n 需從 /api/front/index/resource.json 取得更新翻譯
             }
-            EventType.ODDS_CHANGE -> {
-                val data = ServiceMessage.getOddsChange(jObjStr) ?: return
-                data.channel = channelStr
 
-                data.oddsList.forEach { // 过滤掉空odd(2023.05.30)
-                    if (it.oddsList != null) {
-                        val iterator = it.oddsList?.iterator()
-                        while (iterator.hasNext()) {
-                            if (iterator.next() == null) {
-                                iterator.remove()
-                            }
-                        }
-                    }
-                }
-
-                // 登陆的用户计算赔率折扣
-                if (LoginRepository.isLogined()) {
-                    data.setupOddDiscount(UserInfoRepository.getDiscount())
-                }
-                data.oddsListToOddsMap()
-                data.updateOddsSelectedState()
-                data.sortOddsMap()
-                onOddsEvent(data)
-
-            }
-            //具体赛事/赛季频道
-            EventType.MATCH_ODDS_CHANGE -> {
-                val data = ServiceMessage.getMatchOddsChange(jObjStr)?:return
-                // 登陆的用户计算赔率折扣
-                if (LoginRepository.isLogined()) {
-                    data.setupOddDiscount(UserInfoRepository.getDiscount())
-                }
-                data.updateOddsSelectedState()
-                post{
-                    MatchOddsRepository.onMatchOdds(data)
-                }
-                BetInfoRepository.updateMatchOdd(data)
-            }
             else -> {  }
 
         }
