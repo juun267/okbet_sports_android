@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import cn.jpush.android.api.JPushInterface
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,7 +31,6 @@ import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -294,7 +294,7 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
-    fun updateLockMatchOdd(matchOddsLock: MatchOddsLockEvent) {
+    fun updateLockMatchOdd(matchOddsLock: FrontWsEvent.MatchOddsLockEvent) {
         betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.matchId == matchOddsLock.matchId }?.matchOdd?.status =
             BetStatus.LOCKED.code

@@ -192,7 +192,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         }
 
         receiver.matchClock.observe(this@ESportListFragment.viewLifecycleOwner) { event->
-            val matchId =  event?.matchClockCO?.matchId ?: return@observe
+            val matchId =  event?.matchId ?: return@observe
             if (sportLeagueAdapter2.getCount() < 1) {
                 return@observe
             }

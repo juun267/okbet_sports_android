@@ -21,7 +21,9 @@ import java.util.concurrent.TimeUnit
 
  object BackService {
 
-    private const val WS_END_TYPE = "encrypted"
+     //TODO: 全部格式轉換完畢後，替換為 proto
+//     private const val WS_END_TYPE = "proto" //ws proto 路徑
+     private const val WS_END_TYPE = "encrypted" //ws 舊格式路徑
 
     private val URL_SOCKET_HOST_AND_PORT: String get() = "${Constants.getSocketUrl()}/api/ws/app/im" //app连接端点,无sockjs
 

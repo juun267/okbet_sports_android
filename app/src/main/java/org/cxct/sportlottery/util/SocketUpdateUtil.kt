@@ -1,15 +1,13 @@
 package org.cxct.sportlottery.util
 
 import android.content.Context
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
-import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -509,7 +507,7 @@ object SocketUpdateUtil {
         else -> false
     }
 
-    fun updateMatchClock(matchOdd: MatchOdd, matchClockEvent: MatchClockEvent): Boolean {
+    fun updateMatchClock(matchOdd: MatchOdd, matchClockEvent: FrontWsEvent.MatchClockEvent): Boolean {
         return if (matchOdd.matchInfo == null) {
             false
         } else {
@@ -517,8 +515,8 @@ object SocketUpdateUtil {
         }
     }
 
-    fun updateMatchClockStatus(matchInfo: MatchInfo, matchClockEvent: MatchClockEvent): Boolean {
-        val matchClockCO = matchClockEvent.matchClockCO ?: return false
+    fun updateMatchClockStatus(matchInfo: MatchInfo, matchClockEvent: FrontWsEvent.MatchClockEvent): Boolean {
+        val matchClockCO = matchClockEvent ?: return false
 
         var isNeedRefresh = false
 
@@ -545,29 +543,10 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
-    fun updateOddStatus2(matchOdd: MatchOdd, matchOddsLockEvent: MatchOddsLockEvent): Boolean {
+    private fun updateMatchInfoClock(matchInfo: MatchInfo, matchClockEvent: FrontWsEvent.MatchClockEvent): Boolean {
         var isNeedRefresh = false
 
-        if (matchOdd.matchInfo?.id == matchOddsLockEvent.matchId) {
-            matchOdd.oddsMap?.values?.forEach { odd ->
-                odd?.forEach {
-                    it?.status = BetStatus.LOCKED.code
-                    isNeedRefresh = true
-                }
-            }
-
-            matchOdd.oddsEps?.eps?.forEach { odd ->
-                odd?.status = BetStatus.LOCKED.code
-            }
-        }
-
-        return isNeedRefresh
-    }
-
-    private fun updateMatchInfoClock(matchInfo: MatchInfo, matchClockEvent: MatchClockEvent): Boolean {
-        var isNeedRefresh = false
-
-        matchClockEvent.matchClockCO?.let { matchClockCO ->
+        matchClockEvent.let { matchClockCO ->
 
             if (matchClockCO.matchId != null && matchClockCO.matchId == matchInfo.id) {
 
@@ -601,11 +580,11 @@ object SocketUpdateUtil {
 
     fun updateMatchInfoClockByDetail(
         matchInfo: org.cxct.sportlottery.network.odds.MatchInfo,
-        matchClockEvent: MatchClockEvent,
+        matchClockEvent: FrontWsEvent.MatchClockEvent,
     ): Boolean {
         var isNeedRefresh = false
 
-        matchClockEvent.matchClockCO?.let { matchClockCO ->
+        matchClockEvent.let { matchClockCO ->
 
             if (matchClockCO.matchId != null && matchClockCO.matchId == matchInfo.id) {
 
@@ -1046,12 +1025,12 @@ object SocketUpdateUtil {
     }
 
 
-    fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: GlobalStopEvent): Boolean {
+    fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: FrontWsEvent.GlobalStopEvent): Boolean {
         var isNeedRefresh = false
 
         matchOdd.oddsMap?.values?.forEach { odds ->
             odds?.filter { odd ->
-                globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
+                globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString()
             }?.forEach { odd ->
                 if (odd?.status != BetStatus.DEACTIVATED.code) {
                     odd?.status = BetStatus.DEACTIVATED.code
@@ -1060,7 +1039,7 @@ object SocketUpdateUtil {
             }
         }
 
-        matchOdd.oddsEps?.eps?.filter { odd -> globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId }
+        matchOdd.oddsEps?.eps?.filter { odd -> globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString() }
             ?.forEach { odd ->
                 if (odd?.status != BetStatus.DEACTIVATED.code) {
                     odd?.status = BetStatus.DEACTIVATED.code
@@ -1076,12 +1055,12 @@ object SocketUpdateUtil {
     }
 
     fun updateOddStatus(
-        oddsDetailListData: OddsDetailListData, globalStopEvent: GlobalStopEvent
+        oddsDetailListData: OddsDetailListData, globalStopEvent: FrontWsEvent.GlobalStopEvent
     ): Boolean {
         var isNeedRefresh = false
 
         oddsDetailListData.oddArrayList.filter { odd ->
-            globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
+            globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString()
         }.forEach { odd ->
             if (odd?.status != BetStatus.DEACTIVATED.code) {
                 odd?.status = BetStatus.DEACTIVATED.code
@@ -1124,7 +1103,7 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
-    fun updateOddStatus(matchOdd: MatchOdd, matchOddsLockEvent: MatchOddsLockEvent): Boolean {
+    fun updateOddStatus(matchOdd: MatchOdd, matchOddsLockEvent: FrontWsEvent.MatchOddsLockEvent): Boolean {
         var isNeedRefresh = false
 
         if (matchOdd.matchInfo?.id == matchOddsLockEvent.matchId) {

@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
@@ -52,7 +53,6 @@ import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
@@ -813,7 +813,7 @@ fun getCompressFile(path: String?): File? {
     return null
 }
 
-fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: ClosePlayCateEvent) {
+fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: FrontWsEvent.ClosePlayCateEvent) {
     forEach { leagueOdd ->
         leagueOdd.matchOdds.forEach { matchOdd ->
             matchOdd.oddsMap?.forEach { map ->

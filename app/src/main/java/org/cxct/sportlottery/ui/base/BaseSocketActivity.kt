@@ -82,13 +82,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
 
         receiver.userNotice.observe(this, Observer {
-            it?.userNoticeList?.let { list ->
+            it?.userNoticeListList?.let { list ->
                 viewModel.setUserNoticeList(list)
             }
         })
 
         receiver.userDiscountChange.observe(this) {
-            viewModel.updateDiscount(it?.discount)
+            viewModel.updateDiscount(it?.discount?.toDoubleOrNull())
         }
 
         receiver.dataSourceChange.observe(this) {
@@ -109,14 +109,14 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
         receiver.userMaxBetMoneyChange.observe(this) {
             if (viewModel.isLogin.value == true &&
-                UserInfoRepository.getUserLevelId() == it?.userLevelConfigList?.firstOrNull()?.id) {
+                UserInfoRepository.getUserLevelId().toString() == it?.userLevelConfigListList?.firstOrNull()?.id.toString()) {
 
                 GameConfigManager.maxBetMoney =
-                    it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 9999999
+                    it?.userLevelConfigListList?.firstOrNull()?.maxBetMoney ?: 9999999
                 GameConfigManager.maxParlayBetMoney =
-                    it.userLevelConfigList.firstOrNull()?.maxParlayBetMoney ?: 99999
+                    it?.userLevelConfigListList?.firstOrNull()?.maxParlayBetMoney ?: 99999
                 GameConfigManager.maxCpBetMoney =
-                    it.userLevelConfigList.firstOrNull()?.maxCpBetMoney ?: 99999
+                    it?.userLevelConfigListList?.firstOrNull()?.maxCpBetMoney ?: 99999
             }
         }
     }

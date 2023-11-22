@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import android.util.Base64;
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 
 object EncryptUtil {
     private const val BUFFER_SIZE = 1024
@@ -17,7 +18,7 @@ object EncryptUtil {
      * @return
      */
     fun encryptBASE64(str: String?): String? {
-        if (str == null || str.length == 0) {
+        if (str.isNullOrEmpty()) {
             return null
         }
         try {
@@ -36,7 +37,7 @@ object EncryptUtil {
      * @return
      */
     fun decryptBASE64(str: String?): String? {
-        if (str == null || str.length == 0) {
+        if (str.isNullOrEmpty()) {
             return null
         }
         try {
@@ -56,7 +57,7 @@ object EncryptUtil {
      * @return
      */
     fun encryptGZIP(str: String?): ByteArray? {
-        if (str == null || str.length == 0) {
+        if (str.isNullOrEmpty()) {
             return null
         }
 
@@ -91,7 +92,7 @@ object EncryptUtil {
      * @return
      */
     fun decryptGZIP(str: String?): String? {
-        if (str == null || str.length == 0) {
+        if (str.isNullOrEmpty()) {
             return null
         }
 
@@ -103,7 +104,7 @@ object EncryptUtil {
             val bais = ByteArrayInputStream(decode)
             gzip = GZIPInputStream(bais)
             val buf = ByteArray(BUFFER_SIZE)
-            var len = 0
+            var len: Int
             val baos = ByteArrayOutputStream()
             while (gzip.read(buf, 0, BUFFER_SIZE).also { len = it } != -1) {
                 baos.write(buf, 0, len)
@@ -125,7 +126,7 @@ object EncryptUtil {
 
     @Throws(IOException::class)
     fun uncompress(str: String?): String? {
-        if (str == null || str.length == 0) {
+        if (str.isNullOrEmpty()) {
             return str
         }
         val src = Base64.decode(str.toByteArray(charset("ISO-8859-1")), Base64.DEFAULT)
@@ -144,4 +145,29 @@ object EncryptUtil {
 
         return result
     }
+
+    @Throws(IOException::class)
+    fun uncompressProto(str: String?): FrontWsEvent.Events? {
+        if (str.isNullOrEmpty()) {
+            return null
+        }
+        return try {
+            val src = Base64.decode(str.toByteArray(charset(Charsets.UTF_8.name())), Base64.DEFAULT)
+            val out = ByteArrayOutputStream()
+            val `in` = ByteArrayInputStream(src)
+            val gZip = GZIPInputStream(`in`)
+            val buffer = ByteArray(256)
+            var n: Int
+            while (gZip.read(buffer).also { n = it } >= 0) {
+                out.write(buffer, 0, n)
+            }
+            val result = out.toByteArray()
+            gZip.close()
+            FrontWsEvent.Events.parseFrom(result)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 }
