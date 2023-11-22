@@ -27,7 +27,7 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
             if (item.recordType==0){
                 GameType.getGameType(item.gameType)?.let {
                         if (item.gameType==GameType.ES.key){
-                            fragment.getMainTabActivity().jumpToESport(gameType = it)
+                            fragment.getMainTabActivity().jumpToESport(gameType = item.categoryCode)
                         }else{
                             fragment.getMainTabActivity().jumpToSport(gameType = it)
                         }
