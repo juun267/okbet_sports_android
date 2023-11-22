@@ -23,7 +23,7 @@ data class OKGamesCategory(
     val icon: String?,
     val iconSelected: String?,
     val iconUnselected: String?,
-    val gameList: List<OKGameBean>
+    var gameList: List<OKGameBean>
 ): OKGameTab, BaseNode() {
 
     override val childNode: MutableList<BaseNode>?

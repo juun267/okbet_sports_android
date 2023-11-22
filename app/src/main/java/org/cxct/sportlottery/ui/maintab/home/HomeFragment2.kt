@@ -5,11 +5,11 @@ import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHome2Binding
 import org.cxct.sportlottery.network.Constants
@@ -18,6 +18,8 @@ import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
+import org.cxct.sportlottery.repository.StaticData.Companion.okGameOpened
+import org.cxct.sportlottery.repository.StaticData.Companion.okLiveOpened
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
@@ -28,23 +30,45 @@ import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
-import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.view.HomeMenuAdapter
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
 import timber.log.Timber
 
 class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     private fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper2 by lazy { FragmentHelper2(childFragmentManager, R.id.flContent) }
     private lateinit var hotFragment: HomeHotFragment
-    private val homeMenuAdapter by lazy {
-        HomeMenuAdapter { view, item->
-            item.third?.let { fragmentClass->
-                fragmentHelper2.show(fragmentClass) { fragment, _ -> }
+    private val homeMenuAdapter = HomeMenuAdapter { view, item->
+        val fragmentClass = item.third
+        if (fragmentClass == null) {
+            if (item.second == R.string.promo) {
+                startActivity(PromotionListActivity::class.java)
+            } else if (item.second == R.string.LT050) {
+                serviceEvent(view.context, childFragmentManager)
             }
+
+            return@HomeMenuAdapter false
         }
+        if ((fragmentClass == SportVenueFragment::class.java || fragmentClass == ESportVenueFragment::class.java)
+            && getMainTabActivity().checkSportMaintain(true)) {
+            return@HomeMenuAdapter false
+        }
+        if (fragmentClass == ElectGamesFragment::class.java && !okGameOpened()) {
+            return@HomeMenuAdapter false
+        }
+        if (fragmentClass == LiveGamesFragment::class.java && !okLiveOpened()) {
+            return@HomeMenuAdapter false
+        }
+
+        fragmentHelper2.show(fragmentClass) { fragment, _ ->
+
+        }
+
+        return@HomeMenuAdapter true
     }
 
     override fun onInitView(view: View) {
@@ -52,7 +76,8 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
         binding.rvMarquee.bindLifecycler(this)
         initMenu()
         initIndicate()
-
+        binding.ivService.setOnTouchListener(SuckEdgeTouch())
+        binding.ivService.setServiceClick(childFragmentManager)
     }
 
     override fun onBindViewStatus(view: View) {
