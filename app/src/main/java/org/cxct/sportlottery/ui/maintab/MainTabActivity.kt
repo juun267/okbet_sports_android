@@ -589,6 +589,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         fragmentHelper.showFragment(position)
     }
 
+    fun jumpToESport(gameType: String) {
+        checkSportStatus(this) {
+            tabHelper.clearSelected()
+            navToPosition(INDEX_ESPORT)
+            (fragmentHelper.getCurrentFragment() as ESportFragment)?.jumpToSport(gameType)
+        }
+    }
+
     fun jumpToESport(matchType: MatchType? = null, gameType: String? = null) {
         checkSportStatus(this) {
             tabHelper.clearSelected()

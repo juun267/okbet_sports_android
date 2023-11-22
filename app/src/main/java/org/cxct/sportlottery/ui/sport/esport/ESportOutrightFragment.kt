@@ -91,6 +91,11 @@ class ESportOutrightFragment: BaseSportListFragment<SportListViewModel, Fragment
         getMenuDataByParent()
     }
 
+    fun reload(gameType: String) {
+        this.gameType = gameType
+        gameTypeAdapter.selectGameType(gameType)
+    }
+
     private fun setupSportTypeList() {
         binding.sportTypeList.visible()
         binding.sportTypeList.adapter = esportTypeAdapter
