@@ -225,6 +225,11 @@ object ServiceBroadcastReceiver {
             EventType.THIRD_GAME_STATU_CHANGED -> { // 三方游戏维护状态
                 thirdGamesMaintain.emit(event.gameFirmMaintainEvent)
             }
+            //賽事狀態
+            EventType.MATCH_STATUS_CHANGE -> {
+                post { MatchOddsRepository.onMatchStatus(event.matchStatusChangeEvent) }
+            }
+            //大廳賠率
             EventType.ODDS_CHANGE -> {
                 val data = event.oddsChangeEvent.transferOddsChangeEvent()
                 data.channel = channelStr
@@ -250,7 +255,7 @@ object ServiceBroadcastReceiver {
                 onOddsEvent(data)
 
             }
-
+            //詳情頁賠率
             EventType.MATCH_ODDS_CHANGE -> {
                 val data = event.matchOddsChangeEvent.transferMatchOddsChangeEvent()
 
@@ -264,6 +269,7 @@ object ServiceBroadcastReceiver {
                 }
                 BetInfoRepository.updateMatchOdd(data)
             }
+
             else -> {
                 Timber.i("Receive UnKnown EventType : $eventType")
             }
@@ -283,14 +289,6 @@ object ServiceBroadcastReceiver {
                 val data = ServiceMessage.getOrderSettlement(jObjStr)
                 _orderSettlement.postValue(data)
                 //TODO: proto 缺 BetSettlementEvent.BaseSportBet.cancelReason
-            }
-
-            //大廳賠率
-            EventType.MATCH_STATUS_CHANGE -> {
-                ServiceMessage.getMatchStatusChange(jObjStr)?.let {
-                    post { MatchOddsRepository.onMatchStatus(it) }
-                }
-                //TODO: proto 缺 statusNameI18n 需從 /api/front/index/resource.json 取得更新翻譯
             }
 
             else -> {  }

@@ -15,12 +15,3 @@ data class SportMaintenanceEvent(
 ) : ServiceEventType {
     fun isMaintenance() = 1 == status
 }
-
-@JsonClass(generateAdapter = true) @KeepMembers
-data class JackpotEvent(
-    @Json(name = "eventType")
-    override val eventType: String? = EventType.RECORD_RESULT_JACKPOT_OK_GAMES,
-    @Json(name = "amount")
-    var amount: String = "" //金额
-) : ServiceEventType
-
