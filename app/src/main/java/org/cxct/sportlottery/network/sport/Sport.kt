@@ -8,7 +8,7 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 @KeepMembers
 data class Sport(
     @Json(name = "num")
-    val num: Int,
+    var num: Int,
     @Json(name = "items")
     val items: List<Item>
 )

@@ -32,9 +32,9 @@ class ESportTypeAdapter : BaseNodeAdapter() {
         return if (data[position] is ESportGroup) 1 else 2
     }
 
-    fun setUp(datas: MutableList<Pair<Int, Item?>>) {
+    fun setUp(datas: MutableList<Pair<Int, Item>>) {
         val list = mutableListOf<ESportGroup>()
-        datas.forEach { list.add(ESportGroup(it.first, it.second?.categoryList?.map { categoryItem-> ESportMatch(it.first,categoryItem,null) }?.toMutableList()?: mutableListOf())) }
+        datas.forEach { list.add(ESportGroup(it.first, it.second.categoryList?.map { categoryItem-> ESportMatch(it.first,categoryItem,null) }?.toMutableList()?: mutableListOf())) }
         setNewInstance(list as MutableList<BaseNode>)
     }
 }

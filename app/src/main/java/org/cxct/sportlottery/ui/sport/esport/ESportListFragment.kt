@@ -45,7 +45,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         sportLeagueAdapter2.onOddsChangeEvent(it)
     }
 
-    val sportLeagueAdapter2 by lazy {
+    private val sportLeagueAdapter2 by lazy {
         SportLeagueAdapter2(matchType,
             this,
             esportTheme = true,
@@ -87,7 +87,8 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
 
     open fun reload(matchType: MatchType, gameType: String?) {
         this.matchType = matchType
-        this.gameType = GameType.ES.key
+        this.gameType = gameType ?: GameType.ES.key
+        Log.e("For Test", "=========>>> ESportListFragment reload matchType=${matchType.postValue}  gameType=$gameType--${this.gameType}")
         sportLeagueAdapter2.matchType = this.matchType
         reset()
         scrollBackTop()
@@ -103,6 +104,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
     }
 
     override fun onInitData() {
+        Log.e("For Test", "=========>>> ESportListFragment reload 111111" )
         reload((arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY, arguments?.getString("gameType"))
     }
 
