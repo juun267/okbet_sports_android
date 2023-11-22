@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -24,17 +23,9 @@ import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEve
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
-import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
-import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
-import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
-import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
-import org.cxct.sportlottery.util.OddsUtil.updateBetStatus
-import org.cxct.sportlottery.util.OddsUtil.updateBetStatus_1
-import org.json.JSONArray
 import org.json.JSONObject
-import org.json.JSONTokener
 import timber.log.Timber
+import java.math.BigDecimal
 
 object ServiceBroadcastReceiver {
 
@@ -124,34 +115,14 @@ object ServiceBroadcastReceiver {
         CoroutineScope(Dispatchers.IO).launch {
 
             try {
-
-                val decryptMessage = EncryptUtil.uncompress(messageStr)
-                if (decryptMessage.isNullOrEmpty()) {
-                    return@launch
-                }
-
-                val json = JSONTokener(decryptMessage).nextValue()
-                if (json is JSONArray) {
-                    var jsonArray = JSONArray(decryptMessage)
-                    for (i in 0 until jsonArray.length()) {
-                        var jObj = jsonArray.optJSONObject(i)
-                        val jObjStr = jObj.toString()
-                        handleEvent(jObj, jObjStr, channelStr)
+                val decryptProtoMessage = EncryptUtil.uncompressProto(messageStr) ?: return@launch
+                decryptProtoMessage.let {
+                    if (it.eventsList.isNotEmpty()) {
+                        it.eventsList.forEach { event ->
+                            handleEvent(event, channelStr)
+                        }
                     }
-                } else if (json is JSONObject) {
-                    val jObjStr = json.toString()
-                    handleEvent(json, jObjStr, channelStr)
                 }
-
-//                //TODO: 全部格式轉換完畢後，替換為 uncompressProto
-//                val decryptProtoMessage = EncryptUtil.uncompressProto(messageStr) ?: return@launch
-//                decryptProtoMessage.let {
-//                    if (it.eventsList.isNotEmpty()) {
-//                        it.eventsList.forEach { event ->
-//                            handleEvent(event, channelStr)
-//                        }
-//                    }
-//                }
 
             } catch (e: Exception) {
                 Timber.e("JSONException WS格式出問題 $messageStr")
@@ -235,8 +206,8 @@ object ServiceBroadcastReceiver {
                 data.channel = channelStr
 
                 data.oddsList.forEach { // 过滤掉空odd(2023.05.30)
-                    if (it.oddsList != null) {
-                        val iterator = it.oddsList?.iterator()
+                    if (it.oddsListList != null) {
+                        val iterator = it.oddsListList.iterator()
                         while (iterator.hasNext()) {
                             if (iterator.next() == null) {
                                 iterator.remove()
@@ -247,9 +218,8 @@ object ServiceBroadcastReceiver {
 
                 // 登陆的用户计算赔率折扣
                 if (LoginRepository.isLogined()) {
-                    data.setupOddDiscount(UserInfoRepository.getDiscount())
+                    data.setupOddDiscount(UserInfoRepository.getDiscount().toBigDecimal())
                 }
-                data.oddsListToOddsMap()
                 data.updateOddsSelectedState()
                 data.sortOddsMap()
                 onOddsEvent(data)
@@ -261,7 +231,7 @@ object ServiceBroadcastReceiver {
 
                 // 登陆的用户计算赔率折扣
                 if (LoginRepository.isLogined()) {
-                    data.setupOddDiscount(UserInfoRepository.getDiscount())
+                    data.setupOddDiscount(UserInfoRepository.getDiscount().toBigDecimal())
                 }
                 data.updateOddsSelectedState()
                 post{
@@ -305,85 +275,34 @@ object ServiceBroadcastReceiver {
         }
         BetInfoRepository.updateMatchOdd(socketEvent)
     }
-    private fun OddsChangeEvent.oddsListToOddsMap() {
-        odds = oddsList.associateBy(
-            keySelector = { it.playCateCode.toString() },
-            valueTransform = { it.oddsList?.filter { it != null }?.toMutableList() }).toMutableMap()
-    }
-    private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
-        if (1.0f == discount) {
-            return this
-        }
-        this.oddsList.let { oddTypeSocketList ->
-            oddTypeSocketList.forEach { oddsList ->
-                if (oddsList.playCateCode == PlayCate.LCS.value) {
-                    oddsList.oddsList?.setupOddsDiscount(true,
-                        oddsList.playCateCode,
-                        discount)
-                } else {
-                    oddsList.oddsList?.setupOddsDiscount(false,
-                        oddsList.playCateCode,
-                        discount)
+
+    private fun OddsChangeEvent.setupOddDiscount(discount: BigDecimal): OddsChangeEvent {
+        this.odds.let { oddsMap ->
+            oddsMap.forEach { (key, value) ->
+                if (key != PlayCate.LCS.value) {
+                    value?.forEach { odd ->
+                        odd.updateDiscount(discount)
+                    }
                 }
             }
         }
 
         return this
     }
-    private fun List<Odd?>.setupOddsDiscount(
-        isLCS: Boolean,
-        playCateCode: String?,
-        discount: Float,
-    ) {
-        this.forEach { odd ->
-            odd.setupOddsDiscount(isLCS, playCateCode, discount)
-        }
-        this?.toMutableList().updateBetStatus()
-    }
-    /**
-     * 得在所有賠率折扣率, 水位計算完畢後再去判斷更新盤口狀態
-     */
-    private fun MatchOddsChangeEvent.updateBetStatus(): MatchOddsChangeEvent {
-        this.odds?.let { oddsMap ->
-            oddsMap.forEach { (_, value) ->
-                value.odds?.updateBetStatus()
-            }
-        }
-        return this
-    }
 
-    private fun MatchOddsChangeEvent.setupOddDiscount(discount: Float): MatchOddsChangeEvent {
-        if (discount == 1.0f) {
-            return this
-        }
+    private fun MatchOddsChangeEvent.setupOddDiscount(discount: BigDecimal): MatchOddsChangeEvent {
         this.odds?.let { oddsMap ->
             oddsMap.forEach { (key, value) ->
-                if (!key.contains(PlayCate.LCS.value)) {//反波膽不處理折扣
+                if (!key.contains(PlayCate.LCS.value)) {
                     value.odds?.forEach { odd ->
-                        odd?.odds = odd?.odds?.applyDiscount(discount)
-                        odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
-                        odd?.malayOdds = odd?.hkOdds?.convertToMYOdds()
-                        odd?.indoOdds = odd?.hkOdds?.convertToIndoOdds()
-
-                        if (key == PlayCate.EPS.value) {
-                            odd?.extInfo =
-                                odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
-                        }
+                        odd?.updateDiscount(discount)
                     }
                 }
             }
         }
         return this
     }
-    /**
-     * 得在所有賠率折扣率, 水位計算完畢後再去判斷更新盤口狀態
-     */
-    private fun OddsChangeEvent.updateBetStatus(): OddsChangeEvent {
-        oddsList.forEach { oddsList ->
-            oddsList.oddsList?.updateBetStatus_1()
-        }
-        return this
-    }
+
     private fun OddsChangeEvent.sortOddsMap() {
         this.odds.sortOddsMap()
     }

@@ -73,6 +73,7 @@ class RequestManager private constructor(private val context: Context) {
 
 
     private val mMoshi: Moshi = Moshi.Builder()
+        .add(BigDecimalAdapter)
         .add(KotlinJsonAdapterFactory())
         .add(NullValueAdapter())
         .build()

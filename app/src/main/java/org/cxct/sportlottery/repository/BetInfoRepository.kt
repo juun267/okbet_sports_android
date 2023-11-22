@@ -3,7 +3,6 @@ package org.cxct.sportlottery.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
@@ -25,6 +24,8 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
+import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 import timber.log.Timber
 import java.math.BigDecimal
@@ -721,20 +722,8 @@ object BetInfoRepository {
                 changeEvent.odds.toMap().forEach { map ->
                     val value = map.value
                     value?.forEach { odd ->
-                        if (odd != null) {
-                            val newOdd = Odd(
-                                extInfoMap = null,
-                                id = odd.id,
-                                name = null,
-                                odds = odd.odds,
-                                hkOdds = odd.hkOdds,
-                                malayOdds = odd.malayOdds,
-                                indoOdds = odd.indoOdds,
-                                producerId = odd.producerId,
-                                spread = odd.spread,
-                                status = odd.status,
-                            )
-                            newList.add(newOdd)
+                        odd.let {
+                            newList.add(it)
                         }
                     }
                 }
@@ -815,12 +804,10 @@ object BetInfoRepository {
         var newMalayOdds = 0.0
         var newIndoOdds = 0.0
 
-        newOdd.hkOdds?.let {
-            newMalayOdds =
-                if (newOdd.hkOdds ?: 0.0 > 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
-                    .toDouble() else newOdd.hkOdds ?: 0.0
-            newIndoOdds = if (newOdd.hkOdds ?: 0.0 < 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
-                .toDouble() else newOdd.hkOdds ?: 0.0
+        newOdd.hkOdds?.let {hkOddsNotNull ->
+            newMalayOdds = hkOddsNotNull.convertToMYOdds()
+
+            newIndoOdds = hkOddsNotNull.convertToIndoOdds()
         }
 
         val odds = when (MultiLanguagesApplication.mInstance.mOddsType.value) {

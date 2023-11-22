@@ -2,8 +2,6 @@ package org.cxct.sportlottery.service
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.util.fastjson.FastJsonUtils
@@ -16,20 +14,6 @@ object ServiceMessage {
     fun getSportMaintenance(messageStr: String): SportMaintenanceEvent? {
 //        val adapter = moshi.adapter(SysMaintenanceEvent::class.java)
         return FastJsonUtils.jsonToObject(messageStr,SportMaintenanceEvent::class.java)
-    }
-
-    fun getMatchOddsChange(messageStr: String): MatchOddsChangeEvent? {
-//        val adapter = moshi.adapter(MatchOddsChangeEvent::class.java)
-//        return adapter.fromJson(messageStr)
-        return  FastJsonUtils.jsonToObject(messageStr,MatchOddsChangeEvent::class.java)
-    }
-
-    fun getOddsChange(messageStr: String): OddsChangeEvent? {
-//        val adapter = moshi.adapter(OddsChangeEvent::class.java)
-//        return adapter.fromJson(messageStr)
-
-        return  FastJsonUtils.jsonToObject(messageStr,OddsChangeEvent::class.java)
-
     }
 
     fun getOrderSettlement(messageStr: String): OrderSettlementEvent? {

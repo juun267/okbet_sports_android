@@ -21,9 +21,8 @@ import java.util.concurrent.TimeUnit
 
  object BackService {
 
-     //TODO: 全部格式轉換完畢後，替換為 proto
-//     private const val WS_END_TYPE = "proto" //ws proto 路徑
-     private const val WS_END_TYPE = "encrypted" //ws 舊格式路徑
+     private const val WS_END_TYPE = "proto" //ws proto 路徑
+//     private const val WS_END_TYPE = "encrypted" //ws 舊格式路徑
 
     private val URL_SOCKET_HOST_AND_PORT: String get() = "${Constants.getSocketUrl()}/api/ws/app/im" //app连接端点,无sockjs
 
@@ -258,7 +257,7 @@ import java.util.concurrent.TimeUnit
             .subscribeOn(Schedulers.io())
             .subscribe({ topicMessage ->
                 if (BuildConfig.DEBUG) { // 仅开发模式执行，该段代码会进行数据解密会对性能有所影响
-                    Timber.v("[$url] 訂閱接收訊息: ${EncryptUtil.uncompress(topicMessage.payload)}")
+                    Timber.v("[$url] 訂閱接收訊息: ${EncryptUtil.uncompressProto(topicMessage.payload)}")
                 }
                 sendMessageToActivity(url, topicMessage.payload)
             }, { throwable ->

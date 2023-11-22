@@ -8,13 +8,15 @@ import com.squareup.moshi.internal.Util.canonicalize
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okio.Buffer
 import okio.BufferedSource
+import org.cxct.sportlottery.network.manager.BigDecimalAdapter
 import java.io.InputStream
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 object MoshiUtil {
 
-    val moshiBuild: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    val moshiBuild: Moshi =
+        Moshi.Builder().add(BigDecimalAdapter).add(KotlinJsonAdapterFactory()).build()
 
     //普通序列化
     fun <T> fromJson(json: String, type: Type): T? = getAdapter<T>(type).fromJson(json)

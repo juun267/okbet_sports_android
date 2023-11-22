@@ -96,7 +96,7 @@ fun List<FrontWsEvent.NullableOddsWithPlayNameVO>.transferOddList(
                         id = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.id,
                         name = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.name,
                         spread = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.spread,
-                        odds = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.odds.toDouble(),
+                        originalOdds = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.odds,
                         marketSort = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.marketSort,
                         status = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.status,
                         producerId = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.producerId,

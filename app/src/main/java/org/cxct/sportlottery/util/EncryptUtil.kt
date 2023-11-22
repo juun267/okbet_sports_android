@@ -162,7 +162,7 @@ object EncryptUtil {
                 out.write(buffer, 0, n)
             }
             val result = out.toByteArray()
-            gZip.close()
+            kotlin.runCatching { gZip.close() }
             FrontWsEvent.Events.parseFrom(result)
         } catch (e: Exception) {
             e.printStackTrace()
