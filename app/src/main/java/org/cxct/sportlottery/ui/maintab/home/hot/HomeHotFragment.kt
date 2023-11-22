@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
+import kotlinx.android.synthetic.main.fragment_home_hot.*
 import kotlinx.android.synthetic.main.item_sport_news.view.*
 import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
@@ -16,6 +17,8 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
@@ -35,7 +38,12 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
 
      fun getMainTabActivity() = activity as MainTabActivity
      fun getHomeFragment() = parentFragment as HomeFragment2
-
+     private val mOddsChangeListener by lazy {
+        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+             hotMatchView.updateOddChange(oddsChangeEvent)
+             hotEsportView.updateOddChange(oddsChangeEvent)
+        }
+    }
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
             if (hotMatchView.isVisible) {
@@ -87,7 +95,9 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         //返回页面时，刷新体育相关view状态
         checkToCloseView()
         if (getMainTabActivity().getCurrentPosition() == 0 && getHomeFragment().getCurrentFragment() == this) {
+            receiver.addOddsChangeListener(this, mOddsChangeListener)
             refreshHotMatch()
+            providerView.loadData()
         }
     }
 
@@ -98,6 +108,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             unSubscribeChannelHallAll()
         } else {
             binding.scrollView.smoothScrollTo(0, 0)
+            receiver.addOddsChangeListener(this, mOddsChangeListener)
             refreshHotMatch()
             //返回页面时，刷新体育相关view状态
             checkToCloseView()
@@ -106,7 +117,6 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
     }
 
     private fun initObservable() {
-
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
             if (PopImageDialog.showHomeDialog) {
@@ -131,6 +141,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             if (it){
                 binding.hotMatchView.visible()
                 binding.hotEsportView.visible()
+                receiver.addOddsChangeListener(this, mOddsChangeListener)
                 refreshHotMatch()
             }else{
                 binding.hotMatchView.gone()
@@ -167,7 +178,6 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             }
         }
     }
-
 
 
 }

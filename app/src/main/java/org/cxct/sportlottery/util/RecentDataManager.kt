@@ -22,8 +22,8 @@ object RecentDataManager {
         val first = recentList.firstOrNull()
         val isRepeat = when{
             first==null-> false
-            (record.recordType==0&&!first.gameType.isNullOrEmpty()&&first.gameType == record.gameType)->true
-            (record.recordType==1&&!first.gameBean?.firmType.isNullOrEmpty()&&first.gameBean?.firmType == record.gameBean?.firmType)->true
+            (record.recordType==0&&(!first.gameType.isNullOrEmpty()&&first.gameType == record.gameType) && (!first.categoryCode.isNullOrEmpty()&&first.categoryCode == record.categoryCode))->true
+            (record.recordType==1&&(!first.gameBean?.firmType.isNullOrEmpty()&&first.gameBean?.firmType == record.gameBean?.firmType))->true
             else->false
         }
         if (isRepeat){
@@ -32,8 +32,6 @@ object RecentDataManager {
         }else{
             recentList.add(0,record)
         }
-//            return
-//        LogUtil.toJson(record)
         KvUtils.put(RECENT_RECORD,recentList.toJson())
         recentEvent.postValue(recentList)
     }

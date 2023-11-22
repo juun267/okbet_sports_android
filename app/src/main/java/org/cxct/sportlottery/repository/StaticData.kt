@@ -8,6 +8,7 @@ import org.cxct.sportlottery.repository.HandicapType.NULL
 import org.cxct.sportlottery.repository.ImageType.PROMOTION
 import org.cxct.sportlottery.ui.maintab.home.view.HomeTopView
 import org.cxct.sportlottery.util.KvUtils
+import org.cxct.sportlottery.util.LogUtil
 
 const val FLAG_OPEN = "1"
 const val FLAG_CLOSE = "0"
@@ -110,6 +111,7 @@ class StaticData {
             sConfigData?.homeGamesList?.forEach {
                 if(it.uniqueName== HomeTopView.OkGame){
                     //status==1  为开启
+                    LogUtil.d("HomeTopView="+it.status)
                     return it.status==1
                 }
             }

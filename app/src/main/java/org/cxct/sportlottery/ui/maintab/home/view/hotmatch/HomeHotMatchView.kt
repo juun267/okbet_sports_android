@@ -21,6 +21,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewHomeHotMatchBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
@@ -203,7 +204,6 @@ class HomeHotMatchView(
 
             }
         }
-        receiver.addOddsChangeListener(viewLifecycleOwner, mOddsChangeListener)
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
@@ -334,35 +334,26 @@ class HomeHotMatchView(
     fun onResume(fragment: BaseFragment<*>) {
         //关闭/显示   热门赛事
         goneWithSportSwitch()
-        if (fragment is BaseSocketFragment) {
-            fragment.receiver.addOddsChangeListener(fragment, mOddsChangeListener)
-        }
-        if (fragment is BindingSocketFragment<*, *>) {
-            fragment.receiver.addOddsChangeListener(fragment, mOddsChangeListener)
-        }
         adapter?.notifyDataSetChanged()
     }
-
-    private val mOddsChangeListener by lazy {
-        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            val targetList = adapter?.data
-            targetList?.forEachIndexed { index, recommend ->
-                if (recommend.matchInfo?.id == oddsChangeEvent.eventId) {
-                    recommend.sortOddsMap()
-                    //region 翻譯更新
-                    oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
-                        recommend.playCateNameMap?.putAll(playCateNameMap)
-                    }
-                    oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
-                        recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
-                    }
-                    //endregion
-                    if (SocketUpdateUtil.updateMatchOdds(
-                            context, recommend, oddsChangeEvent
-                        )
-                    ) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
+    fun updateOddChange(oddsChangeEvent: OddsChangeEvent){
+        val targetList = adapter?.data
+        targetList?.forEachIndexed { index, recommend ->
+            if (recommend.matchInfo?.id == oddsChangeEvent.eventId) {
+                recommend.sortOddsMap()
+                //region 翻譯更新
+                oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
+                    recommend.playCateNameMap?.putAll(playCateNameMap)
+                }
+                oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
+                    recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
+                }
+                //endregion
+                if (SocketUpdateUtil.updateMatchOdds(
+                        context, recommend, oddsChangeEvent
+                    )
+                ) {
+                    adapter?.notifyItemChanged(index, recommend)
                 }
             }
         }

@@ -43,10 +43,6 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
         HomeMenuAdapter { view, item->
             item.third?.let { fragmentClass->
                 fragmentHelper2.show(fragmentClass) { fragment, _ -> }
-//                fragmentClass.checkMenuStatus {
-//                    if (it)
-//                    fragmentHelper2.show(fragmentClass) { fragment, _ -> }
-//                }
             }
         }
     }
@@ -67,11 +63,11 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
     }
 
 
-
     private fun initObservable() {
         ConfigRepository.onNewConfig(this) {
             setUpBanner()
             viewModel.getActivityImageListH5()
+            homeMenuAdapter.reload()
         }
         //新版宣傳頁
         viewModel.messageListResult.observe(viewLifecycleOwner) {
