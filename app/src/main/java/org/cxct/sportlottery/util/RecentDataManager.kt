@@ -1,9 +1,7 @@
 package org.cxct.sportlottery.util
 
-import com.didichuxing.doraemonkit.util.GsonUtils
 import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.net.games.data.OKGameBean
-import java.util.Timer
 
 object RecentDataManager {
    private const val RECENT_RECORD = "recentRecord"
@@ -29,7 +27,7 @@ object RecentDataManager {
             else->false
         }
         if (isRepeat){
-            LogUtil.e("isRepeat ="+GsonUtils.toJson(record))
+            LogUtil.e("isRepeat ="+record.toJson())
             recentList[0] = record
         }else{
             recentList.add(0,record)
