@@ -105,7 +105,6 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         gameHall.observe(viewLifecycleOwner) {
             binding.topView.setTabsData(it?.categoryList?.toMutableList())
         }
-
         gamesList.observe(viewLifecycleOwner) {
             if (it.first == requestTag) {
                 showPartGameList(it.third, it.second)
@@ -153,6 +152,11 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
 
     private fun initTopView() = binding.topView.run {
         setup(this@OKLiveFragment, 18, gameType = "oklive")
+        setProviderSelect {
+            backGameAll()
+            showGameAll()
+            changePartGames(it)
+        }
         setProviderVisible(false)
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
@@ -290,5 +294,10 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
                 }).show(childFragmentManager, PopImageDialog::class.simpleName)
             }
         }
+    }
+    fun setupProvider(firmList:MutableList<OKGamesFirm>)=binding.topView.run{
+        setProviderItems(firmList)
+        setProviderVisible(firmList.isNotEmpty())
+        setProviderArrowVisible(firmList.size > 3)
     }
 }
