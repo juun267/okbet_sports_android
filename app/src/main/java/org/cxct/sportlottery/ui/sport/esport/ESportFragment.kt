@@ -62,10 +62,10 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private val footView by lazy { SportFooterGamesView(binding.root.context,esportTheme = true) }
     private val mianViewModel: OKGamesViewModel by viewModel()
     private var todayTabItem:TabLayout.Tab?=null
-    private val todayMenuPop by lazy { TodayMenuPop(requireActivity(), onItemClickListener = { position ->
+    private val todayMenuPop by lazy { TodayMenuPop(requireActivity(), Math.max(0, todayMenuPosition)) { position ->
            matchTypeTab[todayMatchPosition] = matchTypeTodayTab[position]
            binding.tabLayout.getTabAt(todayMatchPosition)?.select()
-      })
+      }
     }
 
     private var jumpMatchType: MatchType? = null
@@ -317,19 +317,19 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         return null
     }
 
+    var todayMenuPosition = 0
     fun setJumpSport(matchType: MatchType? = null, gameType: String? = null) {
         LogUtil.d("setJumpSport= "+gameType)
         jumpMatchType = matchType
         jumpGameType = gameType
+
         //如果是今日，即将，12，24小时，则要标记上选中位置
-        matchTypeTodayTab.indexOf(matchType).let {
-            if (it >= 0){
-                runWithCatch {
-                    todayMenuPop.lastSelectPosition = it
-                }
-            }
-        }
+        todayMenuPosition = matchTypeTodayTab.indexOf(matchType)
+
         if (isAdded) {
+            if (todayMenuPosition >= 0){
+                todayMenuPop.lastSelectPosition = todayMenuPosition
+            }
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
             jumpMatchType = jumpMatchType ?: defaultMatchType
             matchType?.let { tabLayoutSelect(it) }
