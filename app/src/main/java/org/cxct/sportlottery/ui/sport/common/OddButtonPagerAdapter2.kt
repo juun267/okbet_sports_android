@@ -70,7 +70,6 @@ class OddButtonPagerAdapter2(val context: Context,
     }
 
     private fun setOddValues(value: MutableMap<String, MutableList<Odd>?>, matchOdd: MatchOdd) {
-        this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
         val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
         val matchInfo = matchOdd.matchInfo
 
@@ -381,29 +380,6 @@ class OddButtonPagerAdapter2(val context: Context,
      * */
     private fun Map<String, List<Odd?>?>.filterOddsStatus(): Map<String, List<Odd?>?> {
         return filterValues { it?.firstOrNull()?.status != BetStatus.DEACTIVATED.code }
-    }
-
-    //SINGLE_OU、SINGLE_BTS兩種玩法要特殊處理，後端API沒給翻譯
-    private fun MutableMap<String?, Map<String?, String?>?>?.addSplitPlayCateTranslation(): MutableMap<String?, Map<String?, String?>?> {
-        val translationMap = mutableMapOf<String?, Map<String?, String?>?>()
-
-        this?.let { translationMap.putAll(it) }
-
-        val ou_o_Map: MutableMap<String, String> = mutableMapOf()
-        val ou_u_Map: MutableMap<String, String> = mutableMapOf()
-        val bts_y_Map: MutableMap<String, String> = mutableMapOf()
-        val bts_n_Map: MutableMap<String, String> = mutableMapOf()
-        for (language in LanguageManager.Language.values()) {
-            ou_o_Map[language.key] = context.getString(R.string.J801)
-            ou_u_Map[language.key] = context.getString(R.string.J802)
-            bts_y_Map[language.key] = context.getString(R.string.J803)
-            bts_n_Map[language.key] = context.getString(R.string.J804)
-        }
-        translationMap[PlayCate.SINGLE_OU_O.value] = ou_o_Map.toMap()
-        translationMap[PlayCate.SINGLE_OU_U.value] = ou_u_Map.toMap()
-        translationMap[PlayCate.SINGLE_BTS_Y.value] = bts_y_Map.toMap()
-        translationMap[PlayCate.SINGLE_BTS_N.value] = bts_n_Map.toMap()
-        return translationMap
     }
 
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(gameType: String?): Map<String, List<Odd?>?> = this.mapValues { map ->
