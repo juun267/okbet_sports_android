@@ -16,9 +16,8 @@ import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseFragment<*>>?>) -> Boolean)
+class HomeMenuAdapter(private val itemClick: (Triple<Int, Int, Class<BaseFragment<*>>?>) -> Boolean)
     : BindingAdapter<Triple<Int, Int, Class<BaseFragment<*>>?>, ItemHomeMenuBinding>(), OnItemClickListener {
 
     private val datas = mutableListOf<Triple<Int, Int, Class<BaseFragment<*>>?>>()
@@ -100,8 +99,15 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        setSelected(position)
+    }
+
+    private fun setSelected(position: Int) {
         val item = getItem(position)
-        if (itemClick.invoke(view, getItem(position))) {
+        if (item == selectItem) {
+            return
+        }
+        if (itemClick.invoke(item)) {
             val lastPosition = getItemPosition(selectItem)
             selectItem = item
             if (lastPosition >= 0) {
@@ -109,6 +115,7 @@ class HomeMenuAdapter(private val itemClick: (View, Triple<Int, Int, Class<BaseF
             }
             notifyItemChanged(position, position)
         }
-
     }
+
+    fun selectedRecommend() = setSelected(0)
 }

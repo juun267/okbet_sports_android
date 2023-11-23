@@ -39,17 +39,17 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
 import timber.log.Timber
 
-class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
+class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>() {
     private fun getMainTabActivity() = activity as MainTabActivity
-    private val fragmentHelper2 by lazy { FragmentHelper2(childFragmentManager, R.id.flContent) }
+    private val fragmentHelper2: FragmentHelper2 by lazy { FragmentHelper2(childFragmentManager, R.id.flContent) }
     private lateinit var hotFragment: HomeHotFragment
-    private val homeMenuAdapter = HomeMenuAdapter { view, item->
+    private val homeMenuAdapter = HomeMenuAdapter { item->
         val fragmentClass = item.third
         if (fragmentClass == null) {
             if (item.second == R.string.promo) {
                 startActivity(PromotionListActivity::class.java)
             } else if (item.second == R.string.LT050) {
-                serviceEvent(view.context, childFragmentManager)
+                serviceEvent(context(), childFragmentManager)
             }
 
             return@HomeMenuAdapter false
@@ -70,6 +70,20 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>(){
         }
 
         return@HomeMenuAdapter true
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (hidden) {
+            binding.appBarLayout.expand(false)
+        } else {
+            homeMenuAdapter.selectedRecommend()
+        }
+        fragmentHelper2.currentFragment()?.let {
+            if (it.isAdded) {
+                it.onHiddenChanged(hidden)
+            }
+        }
     }
 
     override fun onInitView(view: View) {

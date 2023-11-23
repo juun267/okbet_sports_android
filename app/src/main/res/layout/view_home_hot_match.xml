@@ -21,11 +21,11 @@
             android:id="@+id/tvHotTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_weight="1"
             android:paddingLeft="4dp"
             android:text="@string/N881"
-            android:textColor="@android:color/black"
+            android:textColor="@color/color_313F56"
             android:textStyle="bold" />
 
 
