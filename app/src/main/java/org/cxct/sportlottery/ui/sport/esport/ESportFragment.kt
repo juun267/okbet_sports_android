@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport.esport
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -10,14 +9,14 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.post
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.Menu
-import org.cxct.sportlottery.network.sport.SportMenuData
+import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
@@ -157,14 +156,14 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private fun refreshTabLayout(sportMenuResult: ApiResult<SportMenuData>) {
         sportMenuData = sportMenuResult.getData()
         sportMenuData?.menu?.let { sportMenu = it }
-        val countInPlay = sportMenuData?.menu?.inPlay?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countAtStart = sportMenuData?.atStart?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countIn12hr = sportMenuData?.in12hr?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countIn24hr = sportMenuData?.in24hr?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countToday = sportMenuData?.menu?.today?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countEarly = sportMenuData?.menu?.early?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countOutright = sportMenuData?.menu?.outright?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countParlay = sportMenuData?.menu?.parlay?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+        val countInPlay = sportMenuData?.menu?.inPlay?.numOfESport()?:0
+        val countAtStart = sportMenuData?.atStart?.numOfESport()?:0
+        val countIn12hr = sportMenuData?.in12hr?.numOfESport()?:0
+        val countIn24hr = sportMenuData?.in24hr?.numOfESport()?:0
+        val countToday = sportMenuData?.menu?.today?.numOfESport()?:0
+        val countEarly = sportMenuData?.menu?.early?.numOfESport()?:0
+        val countOutright = sportMenuData?.menu?.outright?.numOfESport()?:0
+        val countParlay = sportMenuData?.menu?.parlay?.numOfESport()?:0
         defaultMatchType = when {
             countInPlay > 0 -> MatchType.IN_PLAY
 //            countAtStart > 0 -> MatchType.AT_START
@@ -249,7 +248,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
 
     private fun navGameFragment(matchType: MatchType) {
-        var gameType = navGameSport?.key ?: jumpGameType
+        var gameType = navGameSport ?: jumpGameType
         jumpMatchType = null
         jumpGameType = null
 
@@ -262,8 +261,11 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         args.putString("gameType", gameType)
         when (matchType) {
             MatchType.OUTRIGHT -> {
-                fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, _ ->
+                fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, newInstance ->
                     fragment.resetFooterView(footView)
+                    if (!newInstance && fragment.isAdded) {
+                        gameType?.let { fragment.reload(it) }
+                    }
                 }
             }
 
@@ -286,9 +288,9 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     }
 
-    private var navGameSport: GameType? = null
+    private var navGameSport: String? = null
 
-    fun jumpToSport(gameType: GameType) {
+    fun jumpToSport(gameType: String) {
         if (sportMenu == null) {
             navGameSport = gameType
             return
@@ -296,26 +298,17 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
         val menuData = sportMenu!!
         val matchType = findMatchType(menuData, gameType)
-        setJumpSport(matchType, gameType = gameType.key)
+        setJumpSport(matchType, gameType = gameType)
     }
 
-    private fun findMatchType(menu: Menu, gameType: GameType): MatchType {
-        val matchType = findESport(menu.inPlay.items, MatchType.IN_PLAY, gameType)
+    private fun findMatchType(menu: Menu, gameType: String): MatchType {
+        return findESport(menu.inPlay.items, MatchType.IN_PLAY, gameType)
             ?: findESport(menu.today.items, MatchType.TODAY, gameType)
-            ?: findESport(menu.early.items, MatchType.EARLY, gameType)
-
-        if (matchType == null) {
-            if (gameType == GameType.ES) { // 仅电竞的时候提示
-                showPromptDialog(getString(R.string.prompt), getString(R.string.P172)) { }
-            }
-//            ToastUtil.showToast(context(), R.string.P172)
-            return MatchType.EARLY
-        }
-        return matchType
+            ?: findESport(menu.early.items, MatchType.EARLY, gameType) ?: MatchType.EARLY
     }
-    private fun findESport(items: List<Item>, matchType: MatchType, gameType: GameType): MatchType? {
+    private fun findESport(items: List<Item>, matchType: MatchType, gameType: String): MatchType? {
         items.forEach {
-            if (gameType.key == it.code) {
+            if (gameType == it.code) {
                 jumpMatchType = matchType
                 return matchType
             }
@@ -325,8 +318,17 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     fun setJumpSport(matchType: MatchType? = null, gameType: String? = null) {
+        LogUtil.d("setJumpSport= "+gameType)
         jumpMatchType = matchType
         jumpGameType = gameType
+        //如果是今日，即将，12，24小时，则要标记上选中位置
+        matchTypeTodayTab.indexOf(matchType).let {
+            if (it >= 0){
+                runWithCatch {
+                    todayMenuPop.lastSelectPosition = it
+                }
+            }
+        }
         if (isAdded) {
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
             jumpMatchType = jumpMatchType ?: defaultMatchType
@@ -421,19 +423,19 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 when (matchType){
                     MatchType.TODAY-> {
                         tv_title.text = getString(R.string.home_tab_today)
-                        tv_number.text = sportMenu?.today?.num.toString()
+                        tv_number.text = sportMenu?.today?.numOfESport().toStringS("0")
                     }
                     MatchType.AT_START-> {
                         tv_title.text = getString(R.string.home_tab_at_start)
-                        tv_number.text = sportMenuData?.atStart?.num.toString()
+                        tv_number.text = sportMenuData?.atStart?.numOfESport().toStringS("0")
                     }
                     MatchType.IN12HR-> {
                         tv_title.text = getString(R.string.P228)
-                        tv_number.text = sportMenuData?.in12hr?.num.toString()
+                        tv_number.text = sportMenuData?.in12hr?.numOfESport().toStringS("0")
                     }
                     MatchType.IN24HR-> {
                         tv_title.text = getString(R.string.P229)
-                        tv_number.text = sportMenuData?.in24hr?.num.toString()
+                        tv_number.text = sportMenuData?.in24hr?.numOfESport().toStringS("0")
                     }
                 }
             }
@@ -442,4 +444,5 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
         }
     }
+
 }

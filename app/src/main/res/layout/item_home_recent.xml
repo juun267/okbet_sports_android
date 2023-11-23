@@ -42,7 +42,7 @@
                 tools:text="basketball"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize10sp"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:ellipsize="end" />
         </eightbitlab.com.blurview.BlurView>
 

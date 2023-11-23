@@ -6,8 +6,6 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewHomeRecentBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.LoginRepository
@@ -18,22 +16,23 @@ import splitties.systemservices.layoutInflater
 
 class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    val binding = ViewHomeRecentBinding.inflate(layoutInflater,this,true)
-    lateinit var fragment: HomeHotFragment
-    val maxItemCount = 20
+    private val binding = ViewHomeRecentBinding.inflate(layoutInflater,this,true)
+    private lateinit var fragment: HomeHotFragment
+    private val maxItemCount = 20
     private val homeRecentAdapter = HomeRecentAdapter().apply {
-        setOnItemClickListener{ adapter, view, position ->
+        setOnItemClickListener{ _, _, position ->
             val item = data[position]
-            if (item.recordType==0){
-                GameType.getGameType(item.gameType)?.let {
-                        if (item.gameType==GameType.ES.key){
-                            fragment.getMainTabActivity().jumpToESport(gameType = item.categoryCode)
-                        }else{
-                            fragment.getMainTabActivity().jumpToSport(gameType = it)
-                        }
-                    }
-            }else{
+            if (item.recordType != 0) {
                 item.gameBean?.let { fragment.viewModel.homeOkGamesEnterThirdGame(it, fragment) }
+                return@setOnItemClickListener
+            }
+
+            if (item.gameType == GameType.ES.key){
+                item.categoryCode?.let { fragment.getMainTabActivity().jumpToESport(it) }
+            } else {
+                GameType.getGameType(item.gameType)?.let {
+                    fragment.getMainTabActivity().jumpToSport(gameType = it)
+                }
             }
         }
     }

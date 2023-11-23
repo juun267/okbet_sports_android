@@ -469,7 +469,6 @@ abstract class BaseOddButtonViewModel(
             val haveSingleItemFailed = singleBets?.any { singleIt -> singleIt.status == 7 } ?: false
             val parlayBets = result.receipt?.parlayBets
             val haveParlayItemFailed = parlayBets?.any { parlayIt -> parlayIt.status == 7 } ?: false
-
             val gameType = normalBetList.firstOrNull()?.matchOdd?.gameType
             if (gameType==GameType.ES.key){
                 val categoryCodeList = normalBetList.groupBy { it.matchOdd.categoryCode }.keys.toList()
