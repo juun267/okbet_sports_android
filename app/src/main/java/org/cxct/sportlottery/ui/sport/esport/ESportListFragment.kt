@@ -36,6 +36,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
 
 
     override var matchType = MatchType.IN_PLAY
+    override var gameType = GameType.ES.key
 
     override fun getGameListAdapter() = sportLeagueAdapter2
     override val oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener {
