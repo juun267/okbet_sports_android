@@ -132,9 +132,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
                 BindPhoneDialog().show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
             }
             if (viewModel.isLogin.value==true&&RegisterSuccessDialog.needShow()){
-                RegisterSuccessDialog{
-                    getMainTabActivity().checkRechargeKYCVerify()
-                }.show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
+                RegisterSuccessDialog().show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
             }
         }
         setupSportStatusChange(this){
