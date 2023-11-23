@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightAdapter2
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
@@ -134,20 +135,14 @@ class ESportOutrightFragment: BaseSportListFragment<SportListViewModel, Fragment
         }
 
         outrightList.observe(viewLifecycleOwner) {
-            if (gameType != it.tag) {
-                return@observe
-            }
-
             val data = it?.getContentIfNotHandled()?.outrightOddsListData?.leagueOdds ?: return@observe
             val list = mutableListOf<MatchOdd>()
             data.forEach { it.matchOdds?.let { list.addAll(it) } }
-
+            dismissLoading()
             if (list.isEmpty()) {
-                dismissLoading()
                 return@observe
             }
             setSportDataList(list as MutableList<BaseNode>, list.size.toString())
-            dismissLoading()
         }
         viewModel.esportTypeMenuData.observe(this@ESportOutrightFragment.viewLifecycleOwner){
             it.first?.let {

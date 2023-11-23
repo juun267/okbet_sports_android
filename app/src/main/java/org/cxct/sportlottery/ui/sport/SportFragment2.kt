@@ -353,6 +353,12 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     fun setJumpSport(matchType: MatchType? = null, gameType: GameType? = null) {
         jumpMatchType = matchType
         jumpGameType = gameType
+        //如果是今日，即将，12，24小时，则要标记上选中位置
+        matchTypeTodayTab.indexOf(matchType).let {
+            if (it >= 0){
+                todayMenuPop.lastSelectPosition = it
+            }
+        }
         if (isAdded) {
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
             jumpMatchType = jumpMatchType ?: defaultMatchType
