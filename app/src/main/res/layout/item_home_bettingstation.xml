@@ -34,7 +34,7 @@
             android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_0D2245"
+            android:textColor="@color/color_313F56"
             android:textSize="@dimen/textSize14sp"
             android:lines="1"
             android:ellipsize="end"

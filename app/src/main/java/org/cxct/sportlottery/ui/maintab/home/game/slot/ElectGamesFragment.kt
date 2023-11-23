@@ -34,7 +34,7 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
     private val tabAdapter = ElectTabAdapter() {
         gameAdapter2.findFirmPosition(it.id)?.let { rightManager.scrollToPositionWithOffset(it, 0) }
     }
-    private val gameAdapter2 = ElectGameAdapter()
+    val gameAdapter2 = ElectGameAdapter()
     val rightManager by lazy { GridLayoutManager(requireContext(),2) }
 
     private fun applySearch(context: Context): EditText {
@@ -149,6 +149,7 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
     }
 
     override fun onInitData() {
+        if(gameAdapter2.itemCount==0)
         loading()
         viewModel.getOKGamesHall()
     }
