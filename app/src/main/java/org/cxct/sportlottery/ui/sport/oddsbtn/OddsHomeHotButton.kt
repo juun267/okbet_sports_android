@@ -373,7 +373,7 @@ class OddsHomeHotButton @JvmOverloads constructor(
             ContextCompat.getColorStateList(
                 context,
                 if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
-                else R.color.selector_button_odd_bottom_text
+                else R.color.selector_button_odd_bottom_text_hot
             )
         )
     }
