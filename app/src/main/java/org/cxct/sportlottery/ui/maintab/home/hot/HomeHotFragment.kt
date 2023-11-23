@@ -110,6 +110,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             refreshHotMatch()
             //返回页面时，刷新体育相关view状态
             checkToCloseView()
+            providerView.loadData()
         }
 
     }
