@@ -229,6 +229,9 @@ class LoginViewModel(
         loginRepository.setUpLoginData(loginData)
         RegisterSuccessDialog.ifNew = loginData.ifnew==true
         RegisterSuccessDialog.loginFirstPhoneGiveMoney = loginData.firstPhoneGiveMoney==true
+        AFInAppEventUtil.regAndLogin(HashMap<String, Any>().apply {
+            put("data",loginData.toJson())
+        })
         LogUtil.toJson(loginData)
         BindPhoneDialog.afterLoginOrRegist = (sConfigData?.firstPhoneGiveMoney?:0)>0 && loginData.phone.isNullOrEmpty()
         checkBasicInfo(loginResult) {
