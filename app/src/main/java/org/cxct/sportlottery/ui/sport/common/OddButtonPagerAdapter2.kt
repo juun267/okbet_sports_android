@@ -9,8 +9,10 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.repository.GamePlayNameRepository
 import org.cxct.sportlottery.ui.sport.list.adapter.ODDS_ITEM_TYPE
 import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.oddsbtn.PlayCateView
@@ -78,6 +80,8 @@ class OddButtonPagerAdapter2(val context: Context,
             .mappingCSList(matchOdd)
             .filterOddsStatus()
             .splitPlayCate()
+            .setupNameMap(matchOdd.matchInfo?.gameType)
+            .replaceNameMap(matchOdd.matchInfo)
             .filterPlayCateSpanned(matchInfo?.gameType)
             .sortPlayCate()
 
@@ -183,6 +187,48 @@ class OddButtonPagerAdapter2(val context: Context,
         }
 
         return splitMap
+    }
+
+    private fun Map<String, List<Odd?>?>.setupNameMap(gameType: String?): Map<String, List<Odd?>?> {
+        this.let { oddsMap ->
+            return oddsMap.onEach { (_, oddList) ->
+                oddList?.forEach { odd ->
+                    odd?.playCode?.let { playCode ->
+                        odd.nameMap = GamePlayNameRepository.getPlayNameMap(gameType, playCode)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 配置{H}, {C}, {S}翻譯取代文字
+     * 新增{E} -> 附加訊息(extInfo)
+     * 需在replaceScore已經配置之後執行此method才會替換{S}
+     *
+     * @see org.cxct.sportlottery.service.sortScores
+     */
+    private fun Map<String, List<Odd?>?>.replaceNameMap(matchInfo: MatchInfo?): Map<String, List<Odd?>?> {
+        this.toMap().forEach { (playCateCode, value) ->
+            value?.toList()?.forEach { odd ->
+                odd?.nameMap?.toMap()?.forEach { (playCode, translateName) ->
+
+                    val newNameMap = this[playCateCode]?.find { it == odd }?.nameMap?.toMutableMap()
+                    val replacedName = translateName?.replace("||", "\n")
+                        ?.replace("{S}", odd.replaceScore ?: "{S}")
+                        ?.replace("{H}", matchInfo?.homeName ?: "{H}")
+                        ?.replace("{C}", matchInfo?.awayName ?: "{C}")
+                        ?.replace("{E}", odd.extInfo ?: "{E}")
+                        ?.replace("{P}", odd.spread ?: "{P}")
+
+                    newNameMap?.put(playCode, replacedName)
+
+                    this[playCateCode]?.find { it == odd }?.nameMap = newNameMap
+                }
+            }
+        }
+
+        return this
     }
 
     /**
