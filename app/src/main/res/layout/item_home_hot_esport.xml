@@ -64,16 +64,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center">
+
                     <TextView
                         android:id="@+id/tv_home_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="right"
                         android:fontFamily="@font/inter_bold"
-                        android:textColor="@color/color_0D2245"
+                        android:gravity="right"
+                        android:textColor="@color/color_313F56"
                         android:textSize="@dimen/textSize18sp"
-                        tools:text="1"/>
+                        tools:text="1" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -90,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/inter_bold"
-                        android:textColor="@color/color_0D2245"
+                        android:textColor="@color/color_313F56"
                         android:textSize="@dimen/textSize18sp"
                         tools:text="1"/>
                 </LinearLayout>
@@ -148,7 +149,7 @@
                 android:gravity="center"
                 android:ellipsize="end"
                 android:lines="1"
-                android:textColor="@color/color_0D2245"
+                android:textColor="@color/color_313F56"
                 android:textStyle="bold"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="Chelsea"/>
@@ -165,7 +166,7 @@
                 android:gravity="center"
                 android:ellipsize="end"
                 android:lines="1"
-                android:textColor="@color/color_0D2245"
+                android:textColor="@color/color_313F56"
                 android:textStyle="bold"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="Chelsea"/>

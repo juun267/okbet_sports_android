@@ -16,7 +16,7 @@ import splitties.systemservices.layoutInflater
 
 class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    private val binding = ViewHomeRecentBinding.inflate(layoutInflater,this,true)
+    private val binding = ViewHomeRecentBinding.inflate(layoutInflater,this)
     private lateinit var fragment: HomeHotFragment
     private val maxItemCount = 20
     private val homeRecentAdapter = HomeRecentAdapter().apply {
@@ -37,6 +37,7 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
         }
     }
     init {
+        orientation = VERTICAL
         initView()
     }
 

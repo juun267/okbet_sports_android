@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:paddingBottom="50dp"
+    android:paddingTop="@dimen/margin_4"
     android:paddingHorizontal="12dp">
 
     <androidx.recyclerview.widget.RecyclerView

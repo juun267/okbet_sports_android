@@ -36,7 +36,8 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
     }
 
     override fun onInitData() {
-        loading()
+        if(matchTabAdapter.itemCount==0)
+            loading()
         viewModel.getSportMenuData()
     }
 
