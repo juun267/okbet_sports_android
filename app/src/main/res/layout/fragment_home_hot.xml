@@ -20,8 +20,7 @@
             <org.cxct.sportlottery.ui.maintab.home.view.HomeRecentView
                 android:id="@+id/recentView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_height="wrap_content"/>
             <org.cxct.sportlottery.ui.maintab.home.view.hotmatch.HomeHotMatchView
                 android:id="@+id/hotMatchView"
                 android:layout_width="match_parent"

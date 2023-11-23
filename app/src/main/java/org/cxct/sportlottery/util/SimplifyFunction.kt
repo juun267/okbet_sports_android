@@ -22,6 +22,7 @@ import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.ColorRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -79,6 +81,16 @@ import java.io.File
 import java.io.FileOutputStream
 import java.lang.reflect.Field
 
+fun AppBarLayout.expand(animate: Boolean) {
+    val behavior = (layoutParams as CoordinatorLayout.LayoutParams).behavior
+    if (behavior is AppBarLayout.Behavior) {
+        val topAndBottomOffset = behavior.topAndBottomOffset
+        if (topAndBottomOffset != 0) {
+            behavior.topAndBottomOffset = 0
+            setExpanded(true, animate)
+        }
+    }
+}
 
 fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String? = null,scrollTopFunc: ((yDistance: Int)->Unit)? = null ) {
 
