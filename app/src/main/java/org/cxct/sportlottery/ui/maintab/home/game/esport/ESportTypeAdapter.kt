@@ -113,7 +113,7 @@ private class ESportMatchProvider(override val itemViewType: Int = 2, override v
 
         val numText = AppCompatTextView(context)
         numText.id = numberId
-        numText.setTextColor(context.getColor(R.color.color_0D2245))
+        numText.setTextColor(context.getColor(R.color.color_313F56))
         numText.textSize = 14f
         numText.typeface = AppFont.inter_bold
         lin.addView(numText, numLp)

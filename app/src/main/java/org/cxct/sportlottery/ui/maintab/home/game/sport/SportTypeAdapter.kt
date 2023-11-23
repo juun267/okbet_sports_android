@@ -99,7 +99,7 @@ private class SportMatchProvider(override val itemViewType: Int = 2, override va
 
         val numText = AppCompatTextView(context)
         numText.id = numberId
-        numText.setTextColor(context.getColor(R.color.color_0D2245))
+        numText.setTextColor(context.getColor(R.color.color_313F56))
         numText.textSize = 20f
         numText.typeface = AppFont.inter_bold
         frameLayout.addView(numText, numLp)
