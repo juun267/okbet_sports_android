@@ -218,7 +218,11 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
             }
             val activity = fragment.activity
             if (activity is MainTabActivity) {
-                GameType.getGameType(betRecode.firmType)?.let { activity.jumpToSport(it) }
+                if ("ES".equals(betRecode.firmType, true)) {
+                    activity.jumpToESport()
+                } else {
+                    GameType.getGameType(betRecode.firmType)?.let { activity.jumpToSport(it) }
+                }
             }
 
         }.show()
