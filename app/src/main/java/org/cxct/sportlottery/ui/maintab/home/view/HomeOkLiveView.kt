@@ -55,7 +55,7 @@ class HomeOkLiveView(context: Context, attrs: AttributeSet) : RelativeLayout(con
 
         tvMore.onClick {
             if(StaticData.okLiveOpened()){
-                (fragment.activity as MainTabActivity).jumpToOKGames()
+                (fragment.activity as MainTabActivity).jumpToOkLive()
             }else{
                 ToastUtil.showToast(context,context.getString(R.string.N700))
             }

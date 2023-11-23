@@ -59,7 +59,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     override fun createVM(clazz: KClass<SportListViewModel>) = getViewModel(clazz = clazz)
 
     protected abstract var matchType: MatchType
-    open fun getCurGameType() = GameType.getGameType(gameType) ?: GameType.ALL
+    open fun getCurGameType() = GameType.getGameType(gameType) ?:GameType.ES
     open var gameType: String = GameType.BK.key
     private var categoryCodeList: List<String>? = null
     protected var currentItem:Item? = null

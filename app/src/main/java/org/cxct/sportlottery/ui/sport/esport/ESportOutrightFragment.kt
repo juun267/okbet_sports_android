@@ -33,10 +33,9 @@ import java.util.ArrayList
 class ESportOutrightFragment: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>() {
 
     override var matchType = MatchType.OUTRIGHT
+    override var gameType = GameType.ES.key
     override fun getGameListAdapter() = sportOutrightAdapter2
     override fun getGameLayoutManger() = SocketGridManager(context(), 2)
-    //电竞自己的内容
-    override var gameType = GameType.ES.key
     protected val esportTypeAdapter by lazy { ESportTypeAdapter(::onESportTypeChanged) }
     var currentCategoryItem :CategoryItem? =null
 

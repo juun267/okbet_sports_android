@@ -59,6 +59,7 @@ data class OKGamesFirm(
     var maintain: Int?,  // 0:游戏正常开启, 1: 维护状态
     val sort:Int?,
     val firmShowName: String?, //对应中文名
+    val open: Int?, //平台开关状态,0-关闭，1-开启
 ): OKGameLabel {
     override fun getKey() = id
     override fun bindLabelIcon(imageView: ImageView) {
