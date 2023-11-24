@@ -276,7 +276,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 MR.key-> R.drawable.bg_recent_racing
                 GF.key -> R.drawable.bg_recent_golf
                 ES.key -> R.drawable.bg_recent_esports
-                FB.key -> R.drawable.bg_recent_fb
+                FB.key -> R.drawable.bg_recent_finance
                 else -> R.drawable.bg_recent_rocket
             }
         }
