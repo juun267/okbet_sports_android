@@ -44,7 +44,12 @@ class HomeHotESportView(
     private var fragment: BaseFragment<*>? = null
 
     init {
+        gone()
         initView()
+    }
+
+    fun setVisible() {
+        isVisible = !getSportEnterIsClose() && adapter != null && adapter!!.itemCount > 0
     }
 
     private fun initView()=binding.run{
@@ -332,7 +337,7 @@ class HomeHotESportView(
 
     fun onResume(fragment: BaseFragment<*>) {
         //关闭/显示   热门赛事
-        goneWithSportSwitch()
+        setVisible()
         adapter?.notifyDataSetChanged()
     }
 

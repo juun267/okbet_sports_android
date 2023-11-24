@@ -17,11 +17,7 @@ class CrashHandler private constructor(private val context: Context) : Thread.Un
         }
     }
 
-    private val logFilePath: String
-
-    init {
-        logFilePath = context.getExternalFilesDir("crashlog")!!.absolutePath
-    }
+    private val logFilePath = context.getExternalFilesDir("crashlog")!!.absolutePath
 
     override fun uncaughtException(thread: Thread, ex: Throwable) {
         val stackTraceInfo = getStackTraceInfo(ex)
