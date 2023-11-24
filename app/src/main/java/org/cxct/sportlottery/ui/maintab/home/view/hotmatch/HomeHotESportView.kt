@@ -56,7 +56,7 @@ class HomeHotESportView(
         initRecyclerView()
         //查看更多
         tvHotMore.onClick {
-            if(StaticData.okSportOpened()) {
+            if(StaticData.okSportOpened()&&StaticData.okBingoOpened()) {
                 (fragment?.activity as MainTabActivity).jumpToESport()
             }else{
                 ToastUtil.showToast(context,context.getString(R.string.N700))

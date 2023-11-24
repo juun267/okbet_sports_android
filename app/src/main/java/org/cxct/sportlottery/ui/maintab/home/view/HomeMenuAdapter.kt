@@ -87,7 +87,7 @@ class HomeMenuAdapter(private val itemClick: (Triple<Int, Int, Class<BaseFragmen
         if (StaticData.okLiveOpened()){
             datas.add(cache[3] as Triple<Int, Int, Class<BaseFragment<*>>?>)
         }
-        if (StaticData.okSportOpened()){
+        if (StaticData.okBingoOpened()){
             datas.add(cache[4] as Triple<Int, Int, Class<BaseFragment<*>>?>)
         }
         datas.add(cache[5] as Triple<Int, Int, Class<BaseFragment<*>>?>)
