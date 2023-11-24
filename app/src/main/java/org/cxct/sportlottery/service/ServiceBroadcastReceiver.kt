@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.EventType
@@ -219,6 +220,15 @@ object ServiceBroadcastReceiver {
                 }
                 data.updateOddsSelectedState()
                 data.sortOddsMap()
+                data.apply {
+                    playCateNameMap.addSplitPlayCateTranslation()
+                    betPlayCateNameMap.addSplitPlayCateTranslation()
+
+                    val newPlayCateNameMap = playCateNameMap
+                    val newBetPlayCateNameMap = betPlayCateNameMap
+                    playCateNameMap = replaceTargetNameMap(newPlayCateNameMap)
+                    betPlayCateNameMap = replaceTargetNameMap(newBetPlayCateNameMap)
+                }
                 onOddsEvent(data)
 
             }
@@ -259,6 +269,53 @@ object ServiceBroadcastReceiver {
             }
         }
         BetInfoRepository.updateMatchOdd(socketEvent)
+    }
+
+    //SINGLE_OU、SINGLE_BTS兩種玩法要特殊處理，後端API沒給翻譯
+    private fun MutableMap<String?, MutableMap<String?, String?>?>?.addSplitPlayCateTranslation(): MutableMap<String?, Map<String?, String?>?> {
+        val translationMap = mutableMapOf<String?, Map<String?, String?>?>()
+
+        this?.let { translationMap.putAll(it) }
+
+        val ou_o_Map: MutableMap<String, String> = mutableMapOf()
+        val ou_u_Map: MutableMap<String, String> = mutableMapOf()
+        val bts_y_Map: MutableMap<String, String> = mutableMapOf()
+        val bts_n_Map: MutableMap<String, String> = mutableMapOf()
+        for (language in LanguageManager.Language.values()) {
+            ou_o_Map[language.key] = LocalUtils.getString(R.string.J801)
+            ou_u_Map[language.key] = LocalUtils.getString(R.string.J802)
+            bts_y_Map[language.key] = LocalUtils.getString(R.string.J803)
+            bts_n_Map[language.key] = LocalUtils.getString(R.string.J804)
+        }
+        translationMap[PlayCate.SINGLE_OU_O.value] = ou_o_Map.toMap()
+        translationMap[PlayCate.SINGLE_OU_U.value] = ou_u_Map.toMap()
+        translationMap[PlayCate.SINGLE_BTS_Y.value] = bts_y_Map.toMap()
+        translationMap[PlayCate.SINGLE_BTS_N.value] = bts_n_Map.toMap()
+        return translationMap
+    }
+
+    private fun OddsChangeEvent.replaceTargetNameMap(targetNameMap: MutableMap<String?, MutableMap<String?, String?>?>):
+            MutableMap<String?, MutableMap<String?, String?>?> {
+        val oddsMap = this.odds
+        oddsMap.forEach { odds ->
+            odds.value?.toList()?.forEach { odd ->
+                val extInfo = if (odd.extInfo.isNullOrEmpty()) "{E}" else odd.extInfo ?: "{E}"
+                targetNameMap.toMap().forEach { (playCode, values) ->
+                    val oddsKey = when {
+                        odds.key.contains(":") -> odds.key.split(":").firstOrNull()
+                        else -> odds.key
+                    }
+                    if (oddsKey == playCode) {
+                        values?.toList()?.forEach { (localCode, translateName) ->
+                            val replacedName = translateName?.replace("{E}", extInfo)
+                            values[localCode] = replacedName
+                        }
+                        targetNameMap[playCode] = values
+                    }
+                }
+            }
+        }
+        return targetNameMap
     }
 
     private fun OddsChangeEvent.setupOddDiscount(discount: BigDecimal): OddsChangeEvent {

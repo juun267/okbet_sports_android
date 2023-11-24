@@ -9,8 +9,10 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.repository.GamePlayNameRepository
 import org.cxct.sportlottery.ui.sport.list.adapter.ODDS_ITEM_TYPE
 import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.oddsbtn.PlayCateView
@@ -68,7 +70,6 @@ class OddButtonPagerAdapter2(val context: Context,
     }
 
     private fun setOddValues(value: MutableMap<String, MutableList<Odd>?>, matchOdd: MatchOdd) {
-        this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
         val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
         val matchInfo = matchOdd.matchInfo
 
@@ -78,6 +79,8 @@ class OddButtonPagerAdapter2(val context: Context,
             .mappingCSList(matchOdd)
             .filterOddsStatus()
             .splitPlayCate()
+            .setupNameMap(matchOdd.matchInfo?.gameType)
+            .replaceNameMap(matchOdd.matchInfo)
             .filterPlayCateSpanned(matchInfo?.gameType)
             .sortPlayCate()
 
@@ -183,6 +186,48 @@ class OddButtonPagerAdapter2(val context: Context,
         }
 
         return splitMap
+    }
+
+    private fun Map<String, List<Odd?>?>.setupNameMap(gameType: String?): Map<String, List<Odd?>?> {
+        this.let { oddsMap ->
+            return oddsMap.onEach { (_, oddList) ->
+                oddList?.forEach { odd ->
+                    odd?.playCode?.let { playCode ->
+                        odd.nameMap = GamePlayNameRepository.getPlayNameMap(gameType, playCode)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 配置{H}, {C}, {S}翻譯取代文字
+     * 新增{E} -> 附加訊息(extInfo)
+     * 需在replaceScore已經配置之後執行此method才會替換{S}
+     *
+     * @see org.cxct.sportlottery.service.sortScores
+     */
+    private fun Map<String, List<Odd?>?>.replaceNameMap(matchInfo: MatchInfo?): Map<String, List<Odd?>?> {
+        this.toMap().forEach { (playCateCode, value) ->
+            value?.toList()?.forEach { odd ->
+                odd?.nameMap?.toMap()?.forEach { (playCode, translateName) ->
+
+                    val newNameMap = this[playCateCode]?.find { it == odd }?.nameMap?.toMutableMap()
+                    val replacedName = translateName?.replace("||", "\n")
+                        ?.replace("{S}", odd.replaceScore ?: "{S}")
+                        ?.replace("{H}", matchInfo?.homeName ?: "{H}")
+                        ?.replace("{C}", matchInfo?.awayName ?: "{C}")
+                        ?.replace("{E}", odd.extInfo ?: "{E}")
+                        ?.replace("{P}", odd.spread ?: "{P}")
+
+                    newNameMap?.put(playCode, replacedName)
+
+                    this[playCateCode]?.find { it == odd }?.nameMap = newNameMap
+                }
+            }
+        }
+
+        return this
     }
 
     /**
@@ -335,29 +380,6 @@ class OddButtonPagerAdapter2(val context: Context,
      * */
     private fun Map<String, List<Odd?>?>.filterOddsStatus(): Map<String, List<Odd?>?> {
         return filterValues { it?.firstOrNull()?.status != BetStatus.DEACTIVATED.code }
-    }
-
-    //SINGLE_OU、SINGLE_BTS兩種玩法要特殊處理，後端API沒給翻譯
-    private fun MutableMap<String?, Map<String?, String?>?>?.addSplitPlayCateTranslation(): MutableMap<String?, Map<String?, String?>?> {
-        val translationMap = mutableMapOf<String?, Map<String?, String?>?>()
-
-        this?.let { translationMap.putAll(it) }
-
-        val ou_o_Map: MutableMap<String, String> = mutableMapOf()
-        val ou_u_Map: MutableMap<String, String> = mutableMapOf()
-        val bts_y_Map: MutableMap<String, String> = mutableMapOf()
-        val bts_n_Map: MutableMap<String, String> = mutableMapOf()
-        for (language in LanguageManager.Language.values()) {
-            ou_o_Map[language.key] = context.getString(R.string.J801)
-            ou_u_Map[language.key] = context.getString(R.string.J802)
-            bts_y_Map[language.key] = context.getString(R.string.J803)
-            bts_n_Map[language.key] = context.getString(R.string.J804)
-        }
-        translationMap[PlayCate.SINGLE_OU_O.value] = ou_o_Map.toMap()
-        translationMap[PlayCate.SINGLE_OU_U.value] = ou_u_Map.toMap()
-        translationMap[PlayCate.SINGLE_BTS_Y.value] = bts_y_Map.toMap()
-        translationMap[PlayCate.SINGLE_BTS_N.value] = bts_n_Map.toMap()
-        return translationMap
     }
 
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(gameType: String?): Map<String, List<Odd?>?> = this.mapValues { map ->

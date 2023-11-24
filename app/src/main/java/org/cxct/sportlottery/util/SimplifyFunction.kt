@@ -47,6 +47,7 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.money.config.MoneyRechCfg
 import org.cxct.sportlottery.network.money.config.RechCfg
@@ -882,8 +883,8 @@ fun ImageView.setLeagueLogo(icon: String?) {
     }
 }
 
-fun MutableMap<String, MutableList<Odd>?>.sortOddsMap(sizeCheck: Int = 3) {
-    forEach { (_, value) ->
+fun MutableMap<String, MutableList<Odd>?>.sortOddsMap(sizeCheck: Int = 0) {
+    forEach { (key, value) ->
         when (sizeCheck) {
             3 -> {
                 if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
@@ -895,6 +896,14 @@ fun MutableMap<String, MutableList<Odd>?>.sortOddsMap(sizeCheck: Int = 3) {
             2 -> {
                 if (value?.size ?: 0 > 2 && value?.first()?.marketSort != 0) {
                     value?.sortBy { it?.marketSort }
+                }
+            }
+            //維持原邏輯後去擴充
+            else -> {
+                when {
+                    key.contains(PlayCate.HDP.value) || key.contains(PlayCate.OU.value) -> {
+                        value?.sortBy { it?.marketSort }
+                    }
                 }
             }
         }

@@ -48,7 +48,7 @@ data class Odd(
     var producerId: Int? = null, //赔率生产者
 
     @Json(name = "nameMap")
-    val nameMap: Map<String?, String?>? = null, //保存各语系name对应值的map
+    var nameMap: Map<String?, String?>? = null, //保存各语系name对应值的map
 
     @Json(name = "extInfoMap")
     val extInfoMap: Map<String?, String?>? = null, //保存各语系extInfo对应值的map
