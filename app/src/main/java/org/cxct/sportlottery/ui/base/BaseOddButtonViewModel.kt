@@ -46,6 +46,7 @@ import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.OddsUtil.updateBetStatus
 import timber.log.Timber
+import java.math.RoundingMode
 
 
 abstract class BaseOddButtonViewModel(
@@ -397,7 +398,14 @@ abstract class BaseOddButtonViewModel(
                 matchList.add(
                     Odd(
                         it.matchOdd.oddsId,
-                        getOdds(it.matchOdd, currentOddsTypes),
+                        getOdds(it.matchOdd, currentOddsTypes)
+                            .toBigDecimal()
+                            .setScale(
+                                if (it.matchOdd.playCode.contains(PlayCate.LCS.value)) 4 else 2,
+                                RoundingMode.HALF_UP
+                            )
+                            .toDouble()
+                        ,
                         betAmount,
                         currentOddsTypes.code
                     )
