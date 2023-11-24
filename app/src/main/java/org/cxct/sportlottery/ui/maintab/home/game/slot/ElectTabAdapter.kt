@@ -87,11 +87,7 @@ class ElectTabAdapter(private val onSelected:(OKGamesCategory) -> Unit)
             holder.itemView.background = null
             nameText.setTextColor(norColor)
         }
-        if (isLast) {
-            (holder.itemView.layoutParams as MarginLayoutParams).bottomMargin = 55.dp
-        } else {
-            (holder.itemView.layoutParams as MarginLayoutParams).bottomMargin = 0
-        }
+
     }
 
     override fun convert(holder: BaseViewHolder, item: OKGamesCategory, payloads: List<Any>) {

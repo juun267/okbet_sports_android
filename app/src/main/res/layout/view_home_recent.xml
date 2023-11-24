@@ -13,9 +13,9 @@
         android:layout_marginLeft="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_2"
         android:layout_marginBottom="@dimen/margin_8"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/color_0D2245"
+        android:textColor="@color/color_313F56"
         android:text="@string/N874" />
 
     <androidx.recyclerview.widget.RecyclerView
