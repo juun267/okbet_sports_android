@@ -20,6 +20,7 @@ import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
 
 
@@ -128,7 +129,7 @@ class OtherBetRecordViewModel(
                 hideLoading()
                 isLoading = false
                 if (!result?.success){
-                    toast(result.msg)
+                    ToastUtil.showToast(androidContext,result.msg)
                     return@let
                 }
                 result.t?.orderList?.let {
@@ -173,7 +174,7 @@ class OtherBetRecordViewModel(
                 hideLoading()
                 isLoading = false
                 if (!result?.success){
-                    toast(result.msg)
+                    ToastUtil.showToast(androidContext,result.msg)
                     return@let
                 }
                 result.t?.orderList?.dataList?.let { recordDetailDataList.addAll(it) }
