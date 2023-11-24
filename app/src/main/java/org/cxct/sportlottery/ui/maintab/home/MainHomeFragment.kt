@@ -172,7 +172,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                 }
             }
             if (viewModel.isLogin.value==true&&BindPhoneDialog.needShow()){
-                BindPhoneDialog().show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
+                BindPhoneDialog().show(parentFragmentManager,BindPhoneDialog::class.simpleName)
             }
             if (viewModel.isLogin.value==true&&RegisterSuccessDialog.needShow()){
                 RegisterSuccessDialog{
