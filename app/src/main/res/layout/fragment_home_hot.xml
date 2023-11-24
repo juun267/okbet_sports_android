@@ -20,32 +20,33 @@
             <org.cxct.sportlottery.ui.maintab.home.view.HomeRecentView
                 android:id="@+id/recentView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.hotmatch.HomeHotMatchView
                 android:id="@+id/hotMatchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView
                 android:id="@+id/okGamesView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.hotmatch.HomeHotESportView
                 android:id="@+id/hotEsportView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.HomeOkLiveView
                 android:id="@+id/okLiveView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.HomeProviderView
                 android:id="@+id/providerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.HomePromotionView
                 android:id="@+id/promotionView"
                 android:layout_width="match_parent"
@@ -56,20 +57,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_12"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeWinRankView
                 android:id="@+id/winsRankView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_12"
                 android:layout_marginHorizontal="@dimen/margin_12"/>
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeBettingStationView
                 android:id="@+id/bettingStationView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"
                 android:layout_marginHorizontal="@dimen/margin_12"/>
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeBottomView

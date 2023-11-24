@@ -160,6 +160,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         tvLogin.setTextColor(resources.getColor(R.color.color_025BE8))
         loginLayout.addView(tvLogin, params)
 
+        params.rightMargin = 0.dp
         tvRegist = createRegistBtnText(R.string.J151, R.drawable.bg_btn_home_register)
         loginLayout.addView(tvRegist,params)
 

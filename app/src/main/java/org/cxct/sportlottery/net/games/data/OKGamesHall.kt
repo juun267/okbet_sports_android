@@ -60,6 +60,7 @@ data class OKGamesFirm(
     val sort:Int?,
     val firmShowName: String?, //对应中文名
     val open: Int?, //平台开关状态,0-关闭，1-开启
+    val gameEntryTypeEnum: String?
 ): OKGameLabel {
     override fun getKey() = id
     override fun bindLabelIcon(imageView: ImageView) {
