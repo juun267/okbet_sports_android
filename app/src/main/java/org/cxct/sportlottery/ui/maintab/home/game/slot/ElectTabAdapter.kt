@@ -4,6 +4,7 @@ import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -77,13 +78,19 @@ class ElectTabAdapter(private val onSelected:(OKGamesCategory) -> Unit)
         nameText.text = item.categoryName
         val position = holder.bindingAdapterPosition
         val isSelected = currentPosition == position
-        holder.setGone(dividerId, isSelected || position + 1 == currentPosition || position == itemCount - 1)
+        val isLast = position == itemCount - 1
+        holder.setGone(dividerId, isSelected || position + 1 == currentPosition || isLast)
         if (isSelected) {
             holder.itemView.setBackgroundResource(R.drawable.bg_sportvenue_type)
             nameText.setTextColor(selColor)
         } else {
             holder.itemView.background = null
             nameText.setTextColor(norColor)
+        }
+        if (isLast) {
+            (holder.itemView.layoutParams as MarginLayoutParams).bottomMargin = 55.dp
+        } else {
+            (holder.itemView.layoutParams as MarginLayoutParams).bottomMargin = 0
         }
     }
 

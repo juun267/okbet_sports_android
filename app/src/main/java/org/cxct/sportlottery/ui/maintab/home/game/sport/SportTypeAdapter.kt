@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -25,7 +26,7 @@ class SportTypeAdapter : BaseNodeAdapter() {
 
     init {
         addFullSpanNodeProvider(SportGroupProvider(this))
-        addFullSpanNodeProvider(SportMatchProvider())
+        addFullSpanNodeProvider(SportMatchProvider(this))
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -63,12 +64,13 @@ private class SportGroupProvider(val adapter: SportTypeAdapter, override val ite
 
 }
 
-private class SportMatchProvider(override val itemViewType: Int = 2, override val layoutId: Int = 0): BaseNodeProvider() {
+private class SportMatchProvider(val adapter: SportTypeAdapter, override val itemViewType: Int = 2, override val layoutId: Int = 0): BaseNodeProvider() {
 
     private val numberId = View.generateViewId()
     private val nameId = View.generateViewId()
     private val imgId = View.generateViewId()
-    private val lp = LinearLayout.LayoutParams(-1, 100.dp).apply { bottomMargin = 8.dp }
+    private val dp8 = 8.dp
+    private val lp = LinearLayout.LayoutParams(-1, 100.dp)
     private val nameLp = FrameLayout.LayoutParams(-2, -2).apply { topMargin = 24.dp }
     private val imgLp = FrameLayout.LayoutParams(-2, -2).apply {
         gravity = Gravity.RIGHT or Gravity.BOTTOM
@@ -111,6 +113,7 @@ private class SportMatchProvider(override val itemViewType: Int = 2, override va
         helper.setText(nameId, bean.name)
         helper.setText(numberId, bean.num.toString())
         helper.setImageResource(imgId, GameType.getSportHomeImg("${bean.code}"))
+        (helper.itemView.layoutParams as MarginLayoutParams).bottomMargin = if (item == adapter.data.last()) 20.dp else dp8
     }
 
 

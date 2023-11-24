@@ -30,7 +30,7 @@ class ElectGameAdapter: BaseNodeAdapter() {
 
     init {
         addFullSpanNodeProvider(GroupTitleProvider(this))
-        addNodeProvider(ElectGameProvider(firmMap))
+        addNodeProvider(ElectGameProvider(this))
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -84,7 +84,7 @@ private class GroupTitleProvider(val adapter: ElectGameAdapter, override val ite
 
 }
 
-private class ElectGameProvider(private val firmMap: MutableMap<Int, OKGamesFirm>,
+private class ElectGameProvider(val adapter: ElectGameAdapter,
                                 override val itemViewType: Int = 2,
                                 override val layoutId: Int = 0) : BaseNodeProvider() {
 
@@ -100,10 +100,11 @@ private class ElectGameProvider(private val firmMap: MutableMap<Int, OKGamesFirm
 
         val bean = item as OKGameBean
         val childPosition = item.parentNode.childNode?.indexOf(item) ?: return@run
-        if (childPosition% 2 == 0){
-            setMargins(root, 0, 0, dp4, dp8)
+        val bottomMargin = if (adapter.getItemOrNull(adapter.data.size - 2)  == item|| adapter.data.last() == item) 16.dp else dp8
+        if (childPosition % 2 == 0){
+            setMargins(root, 0, 0, dp4, bottomMargin)
         }else{
-            setMargins(root, dp4, 0, 0, dp8)
+            setMargins(root, dp4, 0, 0, bottomMargin)
         }
 
         linMaintenance.gone()
