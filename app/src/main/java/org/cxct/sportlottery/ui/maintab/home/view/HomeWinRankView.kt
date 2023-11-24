@@ -30,7 +30,7 @@ import kotlin.random.Random
 class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle), OnItemClickListener {
 
-    val binding: ViewHomeWinRankBinding = ViewHomeWinRankBinding.inflate(layoutInflater,this,true)
+    val binding: ViewHomeWinRankBinding = ViewHomeWinRankBinding.inflate(layoutInflater,this)
     val pageSize = 5
 
     private var winsRequest: (() -> Unit)? = null
@@ -42,6 +42,7 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
     private lateinit var fragment: BaseFragment<out MainHomeViewModel>
 
     init {
+        orientation = VERTICAL
         initViews()
     }
 

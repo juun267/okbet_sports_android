@@ -30,7 +30,7 @@ import org.greenrobot.eventbus.ThreadMode
 class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
 
      fun getMainTabActivity() = activity as MainTabActivity
-     fun getHomeFragment() = parentFragment as HomeFragment2
+     private fun getHomeFragment() = parentFragment as HomeFragment2
      private val mOddsChangeListener by lazy {
         ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
             binding.hotMatchView.updateOddChange(oddsChangeEvent)
@@ -150,7 +150,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         setupSportStatusChange(this){
             if (it){
                 binding.hotMatchView.setVisible()
-                binding.hotEsportView.visible()
+                binding.hotEsportView.setVisible()
                 receiver.addOddsChangeListener(this, mOddsChangeListener)
                 refreshHotMatch()
             }else{
@@ -171,21 +171,22 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
     /**
      * 检查体育服务状态
      */
-    private fun checkToCloseView(){
-        context?.let {
-            //关闭/显示 sports入口
-//            binding.homeTopView.initSportEnterStatus()
-            //关闭/显示   热门赛事
-            binding.hotMatchView.setVisible()
-            //判断当前fragment是否可见
-            if(binding.hotMatchView.isVisible&&isVisibleToUser()){
-                viewModel.getRecommend()
-            }
-            binding.hotEsportView.setVisible()
-            //判断当前fragment是否可见
-            if(binding.hotEsportView.isVisible&&isVisibleToUser()){
-                viewModel.getRecommend(GameType.ES)
-            }
+    private fun checkToCloseView() {
+        if (context == null) {
+            return
+        }
+
+        //关闭/显示 sports入口
+//      binding.homeTopView.initSportEnterStatus()
+        //关闭/显示   热门赛事
+        binding.hotMatchView.setVisible()
+        if(binding.hotMatchView.isVisible && isVisibleToUser()) { //判断当前fragment是否可见
+            viewModel.getRecommend()
+        }
+
+        binding.hotEsportView.setVisible()
+        if(binding.hotEsportView.isVisible && isVisibleToUser()) { //判断当前fragment是否可见
+            viewModel.getRecommend(GameType.ES)
         }
     }
 
