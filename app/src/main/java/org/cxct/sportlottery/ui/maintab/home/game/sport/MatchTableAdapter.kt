@@ -99,8 +99,6 @@ class MatchTableAdapter(private val onSelected:(Pair<Int, Sport>) -> Unit)
         } else {
             holder.itemView.background = null
         }
-
-        (holder.itemView.layoutParams as MarginLayoutParams).bottomMargin = if (isLast) 8.dp else 0
     }
 
     override fun setNewInstance(list: MutableList<Pair<Int, Sport>>?) {
