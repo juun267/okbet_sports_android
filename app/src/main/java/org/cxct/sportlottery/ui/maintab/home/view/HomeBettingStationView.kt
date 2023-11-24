@@ -16,8 +16,8 @@ import splitties.systemservices.layoutInflater
 
 class HomeBettingStationView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    val binding = ViewHomeBettingstationBinding.inflate(layoutInflater,this,true)
-    lateinit var viewModel:MainHomeViewModel
+    private val binding = ViewHomeBettingstationBinding.inflate(layoutInflater,this)
+    private lateinit var viewModel:MainHomeViewModel
     private val homeBettingStationAdapter = HomeBettingStationAdapter().apply {
         setOnItemChildClickListener { adapter, view, position ->
             val data = (adapter as HomeBettingStationAdapter).data[position]
@@ -28,6 +28,7 @@ class HomeBettingStationView(context: Context, attrs: AttributeSet) : LinearLayo
         }
     }
     init {
+        orientation = VERTICAL
         initView()
     }
 

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,9 +25,9 @@ import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.transform.TransformInDialog
 import splitties.systemservices.layoutInflater
 
-class HomeOkLiveView(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
+class HomeOkLiveView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    private val binding  = ViewHomeOkliveBinding.inflate(layoutInflater,this,true)
+    private val binding  = ViewHomeOkliveBinding.inflate(layoutInflater,this)
     private val gameAdapter = HomeOkGamesAdapter()
 
     init {
@@ -35,6 +36,7 @@ class HomeOkLiveView(context: Context, attrs: AttributeSet) : RelativeLayout(con
     }
 
     private fun initView() = binding.run{
+        orientation = VERTICAL
         recyclerGames.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL,false)
         recyclerGames.adapter = gameAdapter
     }

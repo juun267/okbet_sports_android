@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -21,10 +22,11 @@ import org.cxct.sportlottery.util.*
 import splitties.systemservices.layoutInflater
 
 class HomeBottomView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : ConstraintLayout(context, attrs, defStyle) {
+    : LinearLayout(context, attrs, defStyle) {
 
-    val binding = ViewHomeBottomBinding.inflate(layoutInflater,this,true)
+    val binding = ViewHomeBottomBinding.inflate(layoutInflater,this)
     init {
+        orientation = VERTICAL
         initView()
     }
 

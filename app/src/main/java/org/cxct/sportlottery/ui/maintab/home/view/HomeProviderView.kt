@@ -22,7 +22,7 @@ import splitties.systemservices.layoutInflater
 
 class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    val binding = ViewHomeProviderBinding.inflate(layoutInflater,this,true)
+    val binding = ViewHomeProviderBinding.inflate(layoutInflater,this)
     private lateinit var viewModel:MainHomeViewModel
     private lateinit var onProviderSelect:(OKGamesFirm)->Unit
     private val pageSize = 3
@@ -30,6 +30,7 @@ class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(con
         onProviderSelect.invoke(it)
     }
     init {
+        orientation = VERTICAL
         initView()
     }
 
