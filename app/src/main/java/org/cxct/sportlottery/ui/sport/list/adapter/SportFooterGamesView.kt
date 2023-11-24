@@ -139,7 +139,6 @@ class SportFooterGamesView @JvmOverloads constructor(
             if (it.isNullOrEmpty()) {
                 return@observe
             }
-
             moreLabelLayout.isVisible = it.isNotEmpty()
             okGamesAdapter.setNewInstance(it.toMutableList())
         }
