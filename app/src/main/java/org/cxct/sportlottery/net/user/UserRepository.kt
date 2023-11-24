@@ -43,8 +43,8 @@ object UserRepository {
         params.addProperty("verificationMethodValue", emailOrPhone)
         params.addProperty("resetPhase", false)
         if(sConfigData?.captchaType==1){
-            params.addProperty("ticket", validCode)
-            params.addProperty("randstr", validCodeIdentity)
+            params.addProperty("ticket", validCodeIdentity)
+            params.addProperty("randstr", validCode)
         }else{
             params.addProperty("code", validCode)
             params.addProperty("codeIdentity", validCodeIdentity)
