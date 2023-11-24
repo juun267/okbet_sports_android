@@ -397,7 +397,14 @@ class ProfileCenterFragment :
                 }
             }
         }
-
+        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
         viewModel.needToCompleteProfileInfo.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
