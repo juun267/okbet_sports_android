@@ -14,13 +14,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/color_FFFFFF"
+            android:layout_marginBottom="@dimen/margin_4"
             android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
             <org.cxct.sportlottery.ui.maintab.home.view.HomeRecentView
                 android:id="@+id/recentView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_height="wrap_content"/>
             <org.cxct.sportlottery.ui.maintab.home.view.hotmatch.HomeHotMatchView
                 android:id="@+id/hotMatchView"
                 android:layout_width="match_parent"
@@ -90,20 +90,5 @@
         android:adjustViewBounds="true"
         android:src="@drawable/icon_backtop_blue" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="40dp"
-        android:gravity="right|bottom">
-
-        <ImageView
-            android:id="@+id/ivService"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:adjustViewBounds="true"
-            android:layout_marginBottom="80dp"
-            android:src="@drawable/ic_service_blue" />
-
-    </LinearLayout>
 
 </RelativeLayout>

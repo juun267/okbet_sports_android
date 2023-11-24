@@ -3,17 +3,11 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -29,7 +23,6 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.index.config.HomeGameBean
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.ConfigRepository
@@ -39,8 +32,6 @@ import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.promotion.PromotionDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -199,7 +190,7 @@ class HomeTopView @JvmOverloads constructor(
     private fun initRechargeClick(fragment: MainHomeFragment) {
 
         val depositClick = OnClickListener {
-            ToGcashDialog.showByClick{ fragment.viewModel.checkRechargeKYCVerify() }
+            ToGcashDialog.showByClick{ (fragment.activity as MainTabActivity).checkRechargeKYCVerify() }
         }
 
         setOnClickListeners(
@@ -212,31 +203,6 @@ class HomeTopView @JvmOverloads constructor(
             depositClick.onClick(it)
         }
 
-
-        fragment.viewModel.isRechargeShowVerifyDialog.observe(fragment.viewLifecycleOwner) {
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                VerifyIdentityDialog().show(fragment.childFragmentManager, null)
-            } else {
-                fragment.loading()
-                fragment.viewModel.checkRechargeSystem()
-            }
-        }
-
-        fragment.viewModel.rechargeSystemOperation.observe(fragment.viewLifecycleOwner) {
-            fragment.hideLoading()
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                context.startActivity(Intent(context, MoneyRechargeActivity::class.java))
-                return@observe
-            }
-
-            fragment.showPromptDialog(
-                context.getString(R.string.prompt),
-                context.getString(R.string.message_recharge_maintain)
-            ) {}
-
-        }
 
     }
 

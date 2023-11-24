@@ -23,7 +23,7 @@ data class OKGamesCategory(
     val icon: String?,
     val iconSelected: String?,
     val iconUnselected: String?,
-    val gameList: List<OKGameBean>
+    var gameList: List<OKGameBean>
 ): OKGameTab, BaseNode() {
 
     override val childNode: MutableList<BaseNode>?
@@ -56,7 +56,10 @@ data class OKGamesFirm(
     val img: String?,//厂商图
     val imgMobile: String?,
     val remark: String?,
-    var maintain: Int?  // 0:游戏正常开启, 1: 维护状态
+    var maintain: Int?,  // 0:游戏正常开启, 1: 维护状态
+    val sort:Int?,
+    val firmShowName: String?, //对应中文名
+    val open: Int?, //平台开关状态,0-关闭，1-开启
 ): OKGameLabel {
     override fun getKey() = id
     override fun bindLabelIcon(imageView: ImageView) {
@@ -64,7 +67,7 @@ data class OKGamesFirm(
     }
 
     override fun bindLabelName(textView: TextView) {
-        textView.text = firmName
+        textView.text = textView.context.getString(R.string.N880)
     }
     fun isMaintain() = 1 == maintain
 
@@ -96,5 +99,4 @@ data class OKGameBean(
     var categoryId = -1
     fun isMaintain() = maintain == 1
     var isShowMore = false
-    var isShowBlank = true
 }

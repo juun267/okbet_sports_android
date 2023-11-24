@@ -1,21 +1,16 @@
 package org.cxct.sportlottery.ui.maintab.home.hot
 
-
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
-import kotlinx.android.synthetic.main.item_sport_news.view.*
-import kotlinx.android.synthetic.main.view_hot_game.view.*
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.SportStatusEvent
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.newInstanceFragment
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
@@ -27,7 +22,6 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
-import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -35,7 +29,12 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
 
      fun getMainTabActivity() = activity as MainTabActivity
      fun getHomeFragment() = parentFragment as HomeFragment2
-
+     private val mOddsChangeListener by lazy {
+        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+            binding.hotMatchView.updateOddChange(oddsChangeEvent)
+            binding.hotEsportView.updateOddChange(oddsChangeEvent)
+        }
+    }
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
             if (hotMatchView.isVisible) {
@@ -53,8 +52,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
     override fun onInitData() {
         //设置监听游戏试玩
         setTrialPlayGameDataObserve()
-        binding.ivService.setOnTouchListener(SuckEdgeTouch())
-        binding.ivService.setServiceClick(childFragmentManager)
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -62,7 +60,16 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         checkToCloseView()
     }
 
+    private fun backTop() {
+        if (binding.scrollView.scrollY != 0) {
+            binding.scrollView.scrollTo(0, 0)
+        }
+    }
+
     override fun onBindViewStatus(view: View) = binding.run {
+        if (binding.scrollView.scrollY != 0) {
+            binding.scrollView.postDelayed({ backTop() }, 50)
+        }
         recentView.setup(this@HomeHotFragment)
         hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@HomeHotFragment)
         okGamesView.setUp(this@HomeHotFragment)
@@ -87,26 +94,29 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         //返回页面时，刷新体育相关view状态
         checkToCloseView()
         if (getMainTabActivity().getCurrentPosition() == 0 && getHomeFragment().getCurrentFragment() == this) {
+            receiver.addOddsChangeListener(this, mOddsChangeListener)
             refreshHotMatch()
+            binding.providerView.loadData()
         }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
+        backTop()
         if (hidden) {
             //隐藏时取消赛事监听
             unSubscribeChannelHallAll()
         } else {
-            binding.scrollView.smoothScrollTo(0, 0)
+            receiver.addOddsChangeListener(this, mOddsChangeListener)
             refreshHotMatch()
             //返回页面时，刷新体育相关view状态
             checkToCloseView()
+            binding.providerView.loadData()
         }
 
     }
 
     private fun initObservable() {
-
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
             if (PopImageDialog.showHomeDialog) {
@@ -122,15 +132,14 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
                 BindPhoneDialog().show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
             }
             if (viewModel.isLogin.value==true&&RegisterSuccessDialog.needShow()){
-                RegisterSuccessDialog{
-                    viewModel.checkRechargeKYCVerify()
-                }.show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
+                RegisterSuccessDialog().show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
             }
         }
         setupSportStatusChange(this){
             if (it){
                 binding.hotMatchView.visible()
                 binding.hotEsportView.visible()
+                receiver.addOddsChangeListener(this, mOddsChangeListener)
                 refreshHotMatch()
             }else{
                 binding.hotMatchView.gone()
@@ -167,7 +176,6 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             }
         }
     }
-
 
 
 }

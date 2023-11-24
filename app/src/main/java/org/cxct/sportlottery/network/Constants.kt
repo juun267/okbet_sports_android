@@ -593,6 +593,7 @@ object Constants {
     // 安卓送审版本号
     const val GET_CONFIG_BY_NAME = "/api/agent/game/config/getConfigByName/{name}"
 
+    const val GET_GAMEFIRMS = "/api/front/gameEntryGames/getGameFirms"
     //chat
     const val ROOM_QUERY_LIST =
         "/api/chat/front/room/queryList" //------------------------------- 查询所有开放的房间

@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/color_0D2245"
+                android:textColor="@color/color_313F56"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 tools:text="bibia0299" />

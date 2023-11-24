@@ -36,11 +36,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:lines="1"
-            android:layout_marginTop="@dimen/margin_8"
+            android:maxLines="2"
+            android:layout_marginTop="@dimen/margin_4"
             android:textColor="@color/color_6D7693"
             android:textSize="12sp"
-            tools:text="bibia0299" />
+            tools:text="remark" />
 
     </LinearLayout>
 
@@ -56,5 +56,5 @@
         android:textColor="@color/color_025BE8"
         android:textSize="@dimen/textSize12sp"
         android:textStyle="bold"
-        android:text="play" />
+        android:text="@string/P263" />
 </LinearLayout>

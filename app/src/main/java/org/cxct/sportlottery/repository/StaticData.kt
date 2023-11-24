@@ -8,6 +8,7 @@ import org.cxct.sportlottery.repository.HandicapType.NULL
 import org.cxct.sportlottery.repository.ImageType.PROMOTION
 import org.cxct.sportlottery.ui.maintab.home.view.HomeTopView
 import org.cxct.sportlottery.util.KvUtils
+import org.cxct.sportlottery.util.LogUtil
 
 const val FLAG_OPEN = "1"
 const val FLAG_CLOSE = "0"
@@ -78,7 +79,7 @@ private fun getLoginCurrency(): String? =
 
 // 通过应用商店升级应用
 inline fun upgradeFromMarket(): Boolean {
-    return BuildConfig.FLAVOR.startsWith("google_", true)
+    return BuildConfig.FLAVOR.startsWith("google", true)
 }
 
 /**

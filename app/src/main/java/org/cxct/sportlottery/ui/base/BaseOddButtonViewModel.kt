@@ -469,12 +469,11 @@ abstract class BaseOddButtonViewModel(
             val haveSingleItemFailed = singleBets?.any { singleIt -> singleIt.status == 7 } ?: false
             val parlayBets = result.receipt?.parlayBets
             val haveParlayItemFailed = parlayBets?.any { parlayIt -> parlayIt.status == 7 } ?: false
-
             val gameType = normalBetList.firstOrNull()?.matchOdd?.gameType
             if (gameType==GameType.ES.key){
                 val categoryCodeList = normalBetList.groupBy { it.matchOdd.categoryCode }.keys.toList()
                 categoryCodeList.forEach {
-                    RecentDataManager.addRecent(RecentRecord(0,gameType = it))
+                    RecentDataManager.addRecent(RecentRecord(0,gameType = gameType,categoryCode = it))
                 }
             }else{
                 RecentDataManager.addRecent(RecentRecord(0,gameType = normalBetList.first().matchOdd.gameType))

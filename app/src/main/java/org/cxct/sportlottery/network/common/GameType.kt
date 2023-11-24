@@ -249,11 +249,12 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 CB.key -> R.drawable.img_game_sport_cb_2
                 CK.key -> R.drawable.img_game_sport_ck_2
                 BB.key -> R.drawable.img_game_sport_bb_2
-                RB.key -> R.drawable.img_game_sport_rb
+                RB.key -> R.drawable.img_game_sport_rb_2
                 AFT.key -> R.drawable.img_game_sport_aft_2
-                MR.key-> R.drawable.img_game_sport_mr
+                MR.key-> R.drawable.img_game_sport_mr_2
                 GF.key -> R.drawable.img_game_sport_gf_2
                 ES.key -> R.drawable.img_game_sport_es_2
+                FB.key -> R.drawable.img_game_sport_fb_2
                 else -> R.drawable.ic_game_champ
             }
         }
@@ -275,6 +276,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 MR.key-> R.drawable.bg_recent_racing
                 GF.key -> R.drawable.bg_recent_golf
                 ES.key -> R.drawable.bg_recent_esports
+                FB.key -> R.drawable.bg_recent_fb
                 else -> R.drawable.bg_recent_rocket
             }
         }

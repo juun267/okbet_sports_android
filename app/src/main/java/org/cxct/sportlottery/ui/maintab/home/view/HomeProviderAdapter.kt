@@ -18,6 +18,7 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.ScreenUtil
 
 class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : BindingAdapter<List<OKGamesFirm>, ItemHomeProviderPageBinding>() {
 
@@ -56,11 +57,11 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
     private fun setUpItemView(view: View, item: OKGamesFirm){
         val isMaintenance = item.isMaintain()
         view.findViewById<ImageView>(R.id.ivLogo).apply {
-                roundOf(item.img,8.dp,R.drawable.img_banner01)
+                roundOf(item.imgMobile,8.dp,R.drawable.img_banner01)
                alpha = if(isMaintenance) 0.5f else 1f
         }
         view.findViewById<TextView>(R.id.tvName).apply {
-            text = item.firmName
+            text = item.firmShowName?:item.firmName
             setTextColor(resources.getColor(if(isMaintenance) R.color.color_BEC7DC  else R.color.color_0D2245))
         }
         view.findViewById<TextView>(R.id.tvDesp).apply {
@@ -71,6 +72,6 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
             isVisible = !isMaintenance
             setOnClickListener { itemClick(item) }
         }
-        view.setBackgroundResource(if(isMaintenance) R.color.color_F9FAFD else R.color.color_FFFFFF)
+        view.setBackgroundResource(if(isMaintenance) R.drawable.bg_gray_radius_8_f9fafd else R.color.color_FFFFFF)
     }
 }

@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
@@ -20,7 +21,9 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewHomeHotEsportBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.*
@@ -48,7 +51,11 @@ class HomeHotESportView(
         initRecyclerView()
         //查看更多
         tvHotMore.onClick {
-            (fragment?.activity as MainTabActivity).jumpToESport()
+            if(StaticData.okSportOpened()) {
+                (fragment?.activity as MainTabActivity).jumpToESport()
+            }else{
+                ToastUtil.showToast(context,context.getString(R.string.N700))
+            }
         }
 
     }
@@ -64,6 +71,21 @@ class HomeHotESportView(
         )
         itemAnimator?.changeDuration = 0
         PagerSnapHelper().attachToRecyclerView(this)
+        //滚动监听
+        recycler_hot_game.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (RecyclerView.SCROLL_STATE_DRAGGING == newState) { // 开始滑动
+                    fragment?.let {
+                        unSubscribeChannelHall(it)
+                    }
+                } else if (RecyclerView.SCROLL_STATE_IDLE == newState) { // 滑动停止
+                    fragment?.let {
+                        firstVisibleRange()
+                    }
+                }
+            }
+        })
     }
 
 
@@ -181,7 +203,6 @@ class HomeHotESportView(
 
             }
         }
-        receiver.addOddsChangeListener(viewLifecycleOwner, mOddsChangeListener)
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
@@ -240,12 +261,8 @@ class HomeHotESportView(
     private fun initAdapter(fragment: BaseFragment<*>) {
         setUpAdapter(fragment,
             HomeRecommendListener(onItemClickListener = { matchInfo ->
-                if (fragment.viewModel.isLogin.value != true) {
-                    (fragment.requireActivity() as MainTabActivity).showLoginNotify()
-                } else {
-                    matchInfo?.let {
-                        SportDetailActivity.startActivity(context, it)
-                    }
+                matchInfo?.let {
+                    SportDetailActivity.startActivity(context, it)
                 }
             },
 
@@ -254,10 +271,6 @@ class HomeHotESportView(
                         return@HomeRecommendListener
                     }
                     fragment.avoidFastDoubleClick()
-                    if (fragment.viewModel.isLogin.value != true) {
-                        (fragment.requireActivity() as MainTabActivity).showLoginNotify()
-                        return@HomeRecommendListener
-                    }
                     val gameType = GameType.getGameType(gameTypeCode)
                     if (gameType == null || matchInfo == null || fragment.requireActivity() !is MainTabActivity) {
                         return@HomeRecommendListener
@@ -320,35 +333,27 @@ class HomeHotESportView(
     fun onResume(fragment: BaseFragment<*>) {
         //关闭/显示   热门赛事
         goneWithSportSwitch()
-        if (fragment is BaseSocketFragment) {
-            fragment.receiver.addOddsChangeListener(fragment, mOddsChangeListener)
-        }
-        if (fragment is BindingSocketFragment<*, *>) {
-            fragment.receiver.addOddsChangeListener(fragment, mOddsChangeListener)
-        }
         adapter?.notifyDataSetChanged()
     }
 
-    private val mOddsChangeListener by lazy {
-        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            val targetList = adapter?.data
-            targetList?.forEachIndexed { index, recommend ->
-                if (recommend.matchInfo?.id == oddsChangeEvent.eventId) {
-                    recommend.sortOddsMap()
-                    //region 翻譯更新
-                    oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
-                        recommend.playCateNameMap?.putAll(playCateNameMap)
-                    }
-                    oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
-                        recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
-                    }
-                    //endregion
-                    if (SocketUpdateUtil.updateMatchOdds(
-                            context, recommend, oddsChangeEvent
-                        )
-                    ) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
+    fun updateOddChange(oddsChangeEvent: OddsChangeEvent){
+        val targetList = adapter?.data
+        targetList?.forEachIndexed { index, recommend ->
+            if (recommend.matchInfo?.id == oddsChangeEvent.eventId) {
+                recommend.sortOddsMap()
+                //region 翻譯更新
+                oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
+                    recommend.playCateNameMap?.putAll(playCateNameMap)
+                }
+                oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
+                    recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
+                }
+                //endregion
+                if (SocketUpdateUtil.updateMatchOdds(
+                        context, recommend, oddsChangeEvent
+                    )
+                ) {
+                    adapter?.notifyItemChanged(index, recommend)
                 }
             }
         }

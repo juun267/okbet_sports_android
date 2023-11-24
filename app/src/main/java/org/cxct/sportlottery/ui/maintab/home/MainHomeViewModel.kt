@@ -217,70 +217,36 @@ open class MainHomeViewModel(
     /**
      * 获取游戏厂商列表
      */
-    fun getGamesALl() {
-        callApi({ OKGamesRepository.getGamesALL() }) {
-            val data = it.getData() ?: return@callApi
-            _homeAllProvider.postValue(data.firmList?: listOf())
+    fun getGameFirms() {
+        callApi({ OKGamesRepository.getGameFirms() }) {
+            _homeAllProvider.postValue(it.getData()?.filter { it.open==1 }?.sortedByDescending { it.sort?:0 }?: listOf())
         }
     }
 
-    /**
-     * 获取首页okgames列表
-     */
-//    var pageIndex = 1
-//    val pageSize = 6
-//    var totalCount = 0
-//    var totalPage = 0
-
-     val pageIndexLiveData = MutableLiveData(1)
-     val pageSizeLiveData = MutableLiveData(6)
-     val pageSizeOKLiveLD = MutableLiveData(6)
-     val totalCountLiveData = MutableLiveData(0)
-     val totalPageLiveData = MutableLiveData(0)
 
     fun getHomeOKGamesList(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
-            GameEntryType.OKGAMES,
-            pageIndexLiveData.value ?: 1, pageSizeLiveData.value ?: 1
+            GameEntryType.OKGAMES,1, 18
         )
     }) {
         if (it.getData() == null) {
             //hide loading
             _homeOKGamesList.value = arrayListOf()
         } else {
-            totalCountLiveData.value = it.total
-            val totalCount = totalCountLiveData.value ?: 0
-            val pageSize = pageSizeLiveData.value ?: 0
-            if (totalPageLiveData.value == 0) {
-                totalPageLiveData.value = totalCount / pageSize
-                if (totalCount % pageSize != 0) {
-                    totalPageLiveData.value = (totalPageLiveData.value ?: 0) + 1
-                }
-            }
             _homeOKGamesList.value=it.getData()
         }
     }
     fun getOkLiveOKGamesList(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
-            GameEntryType.OKLIVE,
-            pageIndexLiveData.value ?: 1, pageSizeOKLiveLD.value ?: 1
+            GameEntryType.OKLIVE,1, 18
         )
     }) {
         if (it.getData() == null) {
             //hide loading
             _homeOKLiveList.value = arrayListOf()
         } else {
-            totalCountLiveData.value = it.total
-            val totalCount = totalCountLiveData.value ?: 0
-            val pageSize = pageSizeOKLiveLD.value ?: 0
-            if (totalPageLiveData.value == 0) {
-                totalPageLiveData.value = totalCount / pageSize
-                if (totalCount % pageSize != 0) {
-                    totalPageLiveData.value = (totalPageLiveData.value ?: 0) + 1
-                }
-            }
             _homeOKLiveList.value=it.getData()
         }
     }

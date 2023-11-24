@@ -186,12 +186,10 @@ class ItemHomeHotESportHolder(
      */
     private fun setupGameInfo() {
         with(binding) {
-            tvGameType.text = GameType.getGameTypeString(binding.root.context,data.gameType)
             //region 隊伍名稱
             tvHomeName.text = data.matchInfo?.homeName
             tvAwayName.text = data.matchInfo?.awayName
-
-            ivLeagueLogo.setLeagueLogo(data.categoryIcon)
+            ivLeagueLogo.setImageResource(ESportType.getHomeESportIcon(data.league.categoryCode))
             //region 隊伍圖示
             ivHomeIcon.setTeamLogo(data.matchInfo?.homeIcon)
             ivAwayIcon.setTeamLogo(data.matchInfo?.awayIcon)

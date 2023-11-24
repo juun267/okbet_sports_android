@@ -6,8 +6,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.view.isGone
 import com.opensource.svgaplayer.SVGAImageView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.SvgUtil.setAssetSvgIcon
@@ -20,15 +22,15 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
     private val nameId = View.generateViewId()
     private val selColor = parent.context.getColor(R.color.color_025BE8)
     private val unSelColor = parent.context.getColor(R.color.color_6C7BA8)
+    private val INDEX_SPORT = 1
+    private val INDEX_GAMES = 2
 
     init {
         val lp = LinearLayout.LayoutParams(0, -1, 1f)
         val lpIcon = 32.dp.let { LinearLayout.LayoutParams(it, it) }
         addItem(lp, lpIcon, "svga/home_tab_menu.svga", R.drawable.ic_tab_menu_nor, R.string.menu)
         addItem(lp, lpIcon,"svga/home_tab_sports.svga", R.drawable.ic_tab_sport_nor, R.string.main_tab_sport)
-        if (!getMarketSwitch()) {
-            addItem(lp, lpIcon, "svga/home_tab_game.svga", R.drawable.ic_tab_game_nor, R.string.news_tab_game)
-        }
+        addItem(lp, lpIcon, "svga/home_tab_game.svga", R.drawable.ic_tab_game_nor, R.string.news_tab_game).isGone = getMarketSwitch()
         addItem(lp, lpIcon, "svga/home_tab_chat.svga", R.drawable.ic_tab_chat_nor, R.string.N984)
         addItem(lp, lpIcon,"svga/home_tab_mine.svga", R.drawable.ic_tab_user_nor, R.string.main_tab_mine)
     }
@@ -37,7 +39,7 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
                         lpIcon: LinearLayout.LayoutParams,
                         icon: String,
                         @DrawableRes norDrawableRes: Int,
-                        @StringRes name: Int) {
+                        @StringRes name: Int): LinearLayout {
 
         val item = LinearLayout(parent.context)
         item.orientation= LinearLayout.VERTICAL
@@ -68,6 +70,8 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
                 setSelected(item)
             }
         }
+
+        return item
     }
 
     private fun setSelected(item: LinearLayout) {
@@ -88,18 +92,34 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
         item.isSelected = isSelected
     }
 
+    private fun changeSelected(tabIndex: Int) {
+        if (currentItem != null && parent.indexOfChild(currentItem) == tabIndex) {
+            return
+        }
+        clearSelected()
+        setSelected(parent.getChildAt(tabIndex) as LinearLayout)
+    }
+
     fun clearSelected() {
         currentItem?.let { setChangeSelected(it, false) }
         currentItem = null
     }
-    fun selected(position:Int) {
-        if (position>0&&position<parent.childCount) {
-            currentItem?.let { setChangeSelected(it, false) }
-            currentItem = parent.getChildAt(position) as LinearLayout
-            currentItem?.let { setChangeSelected(it, true) }
-        }else{
-            clearSelected()
+
+    fun selectedSport() {
+        changeSelected(INDEX_SPORT)
+    }
+
+    fun selectedGames() {
+        changeSelected(INDEX_GAMES)
+        if (currentItem?.isGone == true) {
+            currentItem!!.visible()
         }
     }
+
+    fun selectedProfile() {
+        changeSelected(parent.childCount - 1)
+    }
+
+
 
 }

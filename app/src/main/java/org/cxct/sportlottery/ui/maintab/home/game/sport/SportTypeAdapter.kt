@@ -82,7 +82,7 @@ private class SportMatchProvider(override val itemViewType: Int = 2, override va
         val context = parent.context
         val frameLayout = FrameLayout(context)
         frameLayout.layoutParams = lp
-        frameLayout.setBackgroundResource(R.drawable.bg_dz_fl_ty)
+        frameLayout.setBackgroundResource(R.drawable.bg_home_sport_card)
         frameLayout.foreground = parent.context.getDrawable(R.drawable.fg_ripple)
         frameLayout.setPadding(24.dp, 0, 0, 0)
 
@@ -99,7 +99,7 @@ private class SportMatchProvider(override val itemViewType: Int = 2, override va
 
         val numText = AppCompatTextView(context)
         numText.id = numberId
-        numText.setTextColor(context.getColor(R.color.color_0D2245))
+        numText.setTextColor(context.getColor(R.color.color_313F56))
         numText.textSize = 20f
         numText.typeface = AppFont.inter_bold
         frameLayout.addView(numText, numLp)

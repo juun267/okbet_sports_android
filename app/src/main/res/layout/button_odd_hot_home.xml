@@ -84,7 +84,7 @@
                 android:id="@+id/tv_odds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/selector_button_odd_bottom_text"
+                android:textColor="@color/selector_button_odd_bottom_text_hot"
                 android:textSize="@dimen/textSize14sp"
                 android:fontFamily="@font/inter_bold"
                 tools:text="1.067" />

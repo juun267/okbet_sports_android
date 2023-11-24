@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
+import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
@@ -44,7 +46,9 @@ import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
@@ -134,17 +138,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             R.string.menu -> { // 菜单
                 val currentFragment = fragmentHelper.getCurrentFragment()
                 onMenuEvent(MenuEvent(true))
-                if (currentFragment is HomeFragment2 || currentFragment is ProfileCenterFragment) {
-                    showMainLeftMenu(null)
-                } else {
+                if (currentFragment is SportFragment2 || currentFragment is ESportFragment) {
                     showSportLeftMenu()
+                } else {
+                    showMainLeftMenu(currentFragment.javaClass as Class<BaseFragment<*>>?)
                 }
                 false
             }
 
             R.string.main_tab_sport -> { // 体育
-                if (!StaticData.okSportOpened()) {
-                    ToastUtil.showToast(this@MainTabActivity, getString(R.string.N700))
+                if (checkSportMaintain(true)) {
                     false
                 } else {
                     navToPosition(INDEX_SPORT)
@@ -191,12 +194,22 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         reStart(this)
     }
 
+    fun checkSportMaintain(isSport: Boolean = checkSportFragment()): Boolean {
+        if (isSport && getSportEnterIsClose()) {
+            if (lifecycle.currentState == Lifecycle.State.RESUMED) {
+                showPromptDialogNoCancel(message = getString(R.string.N969)) { }
+            }
+            return true
+        }
+        return false
+    }
+
     private fun initObserve() {
 
         //设置体育服务监听
         setupSportStatusChange(this) {
             //如果维护开启，当前在体育相关fragment， 退回到首页
-            if (checkMainPosition(getCurrentPosition())) {
+            if (checkSportMaintain()) {
                 //关闭已选中的投注
                 closeBetFragment()
                 //回到首页
@@ -225,6 +238,31 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 ).setAnchorView(R.id.parlayFloatWindow).show()
             }
         }
+
+        viewModel.isRechargeShowVerifyDialog.observe(this) {
+            val b = it.getContentIfNotHandled() ?: return@observe
+            if (b) {
+                VerifyIdentityDialog().show(supportFragmentManager, null)
+            } else {
+                loading()
+                viewModel.checkRechargeSystem()
+            }
+        }
+
+        viewModel.rechargeSystemOperation.observe(this) {
+            hideLoading()
+            val b = it.getContentIfNotHandled() ?: return@observe
+            if (b) {
+                startActivity(Intent(this, MoneyRechargeActivity::class.java))
+                return@observe
+            }
+
+            showPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.message_recharge_maintain)
+            ) {}
+
+        }
     }
 
 
@@ -246,8 +284,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     /**
      * 检查是否为体育相关的fragment
      */
-    fun checkSportFragment(position: Int): Boolean {
-        val fragment = fragmentHelper.getFragment(position)
+    fun checkSportFragment(): Boolean {
+        val fragment = fragmentHelper.getCurrentFragment()
         if (fragment is SportFragment2) {
             return true
         }
@@ -338,7 +376,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun onNetValidEvent(event: NetWorkEvent) {
         //网络恢复
         if (event.isValid) {
-            val fragment = fragmentHelper.getFragment(0)
+            val fragment = fragmentHelper.getFragment(INDEX_HOME)
             if (fragment is HomeFragment2) {
                 //更新config   刷新体育服务开关
                 fragment.viewModel.getConfigData()
@@ -467,7 +505,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun initBottomNavigation() {
-        binding.parlayFloatWindow.onViewClick = { showBetListPage() }
+        binding.parlayFloatWindow.onViewClick = ::showBetListPage
         val radius = 15.dp.toFloat()
         binding.linTab.background = ShapeDrawable()
             .setWidth(screenWidth + 15.dp)
@@ -510,11 +548,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment2
+    private inline fun homeFragment() = fragmentHelper.getFragment(INDEX_HOME) as HomeFragment2
 
     fun backMainHome() {
         fragmentHelper.showFragment(INDEX_HOME)
         navToPosition(INDEX_HOME)
+        tabHelper.clearSelected()
     }
 
     fun jumpToOKGames() {
@@ -522,6 +561,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             return
         }
         if(StaticData.okGameOpened()){
+            tabHelper.selectedGames()
             navToPosition(INDEX_OKGAMES)
         }else{
             ToastUtil.showToast(this,getString(R.string.N700))
@@ -533,35 +573,53 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             return
         }
         if(StaticData.okLiveOpened()){
+            tabHelper.clearSelected()
             navToPosition(INDEX_OKLIVE)
         }else{
             ToastUtil.showToast(this,getString(R.string.N700))
         }
     }
+
     fun jumpToNews() {
+        tabHelper.clearSelected()
         navToPosition(INDEX_NEWS)
     }
+
     private fun navToPosition(position: Int) {
         fragmentHelper.showFragment(position)
-        tabHelper.selected(position)
     }
 
-    fun jumpToESport(matchType: MatchType? = null) {
+    fun jumpToESport(gameType: String) {
         checkSportStatus(this) {
+            tabHelper.clearSelected()
             navToPosition(INDEX_ESPORT)
-            (fragmentHelper.getCurrentFragment() as ESportFragment)?.setJumpSport(matchType = matchType,null)
+            (fragmentHelper.getCurrentFragment() as ESportFragment)?.jumpToSport(gameType)
+        }
+    }
+
+    fun jumpToESport(matchType: MatchType? = null, gameType: String? = null) {
+        checkSportStatus(this) {
+            tabHelper.clearSelected()
+            navToPosition(INDEX_ESPORT)
+            binding.root.postDelayed(200){
+                (fragmentHelper.getCurrentFragment() as ESportFragment)?.setJumpSport(matchType,gameType)
+            }
         }
     }
 
     fun jumpToSport(gameType: GameType) {
         checkSportStatus(this) {
-            (fragmentHelper.getFragment(1) as SportFragment2).jumpToSport(gameType)
+            tabHelper.selectedSport()
             navToPosition(INDEX_SPORT)
+            binding.root.postDelayed(200){
+                (fragmentHelper.getFragment(INDEX_SPORT) as SportFragment2).jumpToSport(gameType)
+            }
         }
     }
 
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
-        (fragmentHelper.getFragment(1) as SportFragment2).setJumpSport(matchType, gameType)
+        tabHelper.selectedSport()
+        (fragmentHelper.getFragment(INDEX_SPORT) as SportFragment2).setJumpSport(matchType, gameType)
         navToPosition(INDEX_SPORT)
     }
 
@@ -608,8 +666,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
         }
     }
+
     override fun updateOddsType(oddsType: OddsType) {
 
+    }
+
+    fun checkRechargeKYCVerify() {
+        viewModel.checkRechargeKYCVerify()
     }
 
 }

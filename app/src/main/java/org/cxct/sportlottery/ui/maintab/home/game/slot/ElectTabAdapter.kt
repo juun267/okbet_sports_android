@@ -23,7 +23,7 @@ class ElectTabAdapter(private val onSelected:(OKGamesCategory) -> Unit)
     private val nameId = View.generateViewId()
     private val dividerId = View.generateViewId()
     private val lp = LinearLayout.LayoutParams(-1, -1)
-    private val iconLp = 32.dp.let { LinearLayout.LayoutParams(it, it).apply { topMargin = 12.dp } }
+    private val iconLp = 32.dp.let { LinearLayout.LayoutParams(it, it)}
     private val nameLp = LinearLayout.LayoutParams(-2, -2).apply { topMargin = 5.dp }
     private var currentPosition = 0
     private var currentItem: OKGamesCategory? = null
@@ -47,7 +47,7 @@ class ElectTabAdapter(private val onSelected:(OKGamesCategory) -> Unit)
         nameText.textSize = 10f
         nameText.typeface = AppFont.helvetica
         nameText.gravity = Gravity.CENTER_HORIZONTAL
-        nameText.maxLines = 1
+        nameText.maxLines = 2
         nameText.ellipsize = TextUtils.TruncateAt.END
         lin.addView(nameText, nameLp)
 

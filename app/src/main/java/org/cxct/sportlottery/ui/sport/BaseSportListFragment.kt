@@ -59,7 +59,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     override fun createVM(clazz: KClass<SportListViewModel>) = getViewModel(clazz = clazz)
 
     protected abstract var matchType: MatchType
-    open fun getCurGameType() = GameType.getGameType(gameType) ?: GameType.ALL
+    open fun getCurGameType() = GameType.getGameType(gameType) ?:GameType.ES
     open var gameType: String = GameType.BK.key
     private var categoryCodeList: List<String>? = null
     protected var currentItem:Item? = null
@@ -87,11 +87,10 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         val layoutParams: ViewGroup.LayoutParams = appbarLayout.getLayoutParams()
         val behavior = (layoutParams as CoordinatorLayout.LayoutParams).behavior
         if (behavior is AppBarLayout.Behavior) {
-            val appBarLayoutBehavior = behavior
             //拿到下方tabs的y坐标，即为我要的偏移量
-            val topAndBottomOffset = appBarLayoutBehavior.topAndBottomOffset
+            val topAndBottomOffset = behavior.topAndBottomOffset
             if (topAndBottomOffset != 0) {
-                appBarLayoutBehavior.topAndBottomOffset = 0
+                behavior.topAndBottomOffset = 0
                 appbarLayout.setExpanded(true, true)
             }
         }

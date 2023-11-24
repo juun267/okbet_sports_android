@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvCateName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_12"
-        android:gravity="center_vertical"
-        android:layout_marginVertical="@dimen/margin_8">
-
-        <TextView
-            android:id="@+id/tvCateName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_4"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/color_0D2245"
-            android:text="@string/N874" />
-    </LinearLayout>
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_2"
+        android:layout_marginBottom="@dimen/margin_8"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_0D2245"
+        android:text="@string/N874" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecent"
@@ -34,4 +28,4 @@
         tools:itemCount="6"
         tools:listitem="@layout/item_home_recent" />
 
-</LinearLayout>
+</merge>

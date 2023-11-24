@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home.game.sport
 
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -35,7 +36,8 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
     }
 
     override fun onInitData() {
-        loading()
+        if(matchTabAdapter.itemCount==0)
+            loading()
         viewModel.getSportMenuData()
     }
 
@@ -82,16 +84,21 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
     protected open fun onMenuResult(menuResult: SportMenuData) {
         val menu = menuResult.menu ?: return
         val datas = mutableListOf<Pair<Int, Sport>>()
-        menu.inPlay?.let { datas.add(Pair(R.string.home_tab_in_play, it)) }
-        menuResult.atStart?.let { datas.add(Pair(R.string.home_tab_at_start, it)) }
-        menu.today?.let { datas.add(Pair(R.string.home_tab_today, it)) }
-        menuResult.in12hr?.let { datas.add(Pair(R.string.P228, it)) }
-        menuResult.in24hr?.let { datas.add(Pair(R.string.P229, it)) }
-        menu.early?.let { datas.add(Pair(R.string.home_tab_early, it)) }
-        menu.parlay?.let { datas.add(Pair(R.string.home_tab_parlay, it)) }
-        menu.outright?.let { datas.add(Pair(R.string.home_tab_outright, it)) }
+        assembleData(R.string.home_tab_in_play, menu.inPlay, datas)
+        assembleData(R.string.home_tab_at_start, menuResult.atStart, datas)
+        assembleData(R.string.home_tab_today, menu.today, datas)
+//        assembleData(R.string.P228, menuResult.in24hr, datas)
+//        assembleData(R.string.P229, menuResult.in12hr, datas)
+        assembleData(R.string.home_tab_early, menu.early, datas)
+        assembleData(R.string.home_tab_parlay, menu.parlay, datas)
+        assembleData(R.string.home_tab_outright, menu.outright, datas)
+
         matchTabAdapter.setNewInstance(datas)
         (binding.rvcGameList.adapter as SportTypeAdapter).setUp(datas)
+    }
+
+    private fun assembleData(@StringRes name: Int, sport: Sport?, datas: MutableList<Pair<Int, Sport>>) {
+        sport?.let { if (it.num > 0) datas.add(Pair(name, it)) }
     }
 
     protected open fun onTabClick(selectItem: Pair<Int, Sport>) {

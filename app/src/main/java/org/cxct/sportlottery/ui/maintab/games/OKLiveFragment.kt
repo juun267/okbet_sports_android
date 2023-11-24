@@ -90,7 +90,6 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
-        hideLeftMenu()
         attach(this@OKLiveFragment, mainTabActivity(), viewModel)
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
@@ -102,7 +101,6 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         gameHall.observe(viewLifecycleOwner) {
             binding.topView.setTabsData(it?.categoryList?.toMutableList())
         }
-
         gamesList.observe(viewLifecycleOwner) {
             if (it.first == requestTag) {
                 showPartGameList(it.third, it.second)
@@ -121,35 +119,16 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
             }
         }
 
-        isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                VerifyIdentityDialog().show(childFragmentManager, null)
-            } else {
-                loading()
-                viewModel.checkRechargeSystem()
-            }
-        }
-
-        rechargeSystemOperation.observe(viewLifecycleOwner) {
-            hideLoading()
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                startActivity(Intent(context, MoneyRechargeActivity::class.java))
-                return@observe
-            }
-
-            showPromptDialog(
-                getString(R.string.prompt),
-                getString(R.string.message_recharge_maintain)
-            ) {}
-
-        }
     }
 
 
     private fun initTopView() = binding.topView.run {
         setup(this@OKLiveFragment, 18, gameType = "oklive")
+        setProviderSelect {
+            backGameAll()
+            showGameAll()
+            changePartGames(it)
+        }
         setProviderVisible(false)
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
@@ -227,7 +206,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     }
 
     fun changePartGames(okgamesFirm: OKGamesFirm) {
-        changePartGamesLabel(okgamesFirm)
+        changePartGamesLabel(okgamesFirm,okgamesFirm.firmName)
         val firmId = okgamesFirm.getKey().toString()
         startLoad {
             viewModel.getOKGamesList(
@@ -305,5 +284,10 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
             showGameAll()
             changePartGames(okgamesFirm)
         }
+    }
+    fun setupProvider(firmList:MutableList<OKGamesFirm>)=binding.topView.run{
+        setProviderItems(firmList)
+        setProviderVisible(firmList.isNotEmpty())
+        setProviderArrowVisible(firmList.size > 3)
     }
 }

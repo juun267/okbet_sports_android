@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +15,6 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.include_home_news.*
 import kotlinx.android.synthetic.main.view_home_bettingstation.*
-import kotlinx.android.synthetic.main.view_home_news.*
 import kotlinx.android.synthetic.main.view_home_news.linTab
 import kotlinx.android.synthetic.main.view_home_news.rvNews
 import org.cxct.sportlottery.R
@@ -36,6 +34,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
+import org.cxct.sportlottery.ui.maintab.home.view.HomeBettingStationAdapter
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.*
@@ -175,9 +174,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                 BindPhoneDialog().show(parentFragmentManager,BindPhoneDialog::class.simpleName)
             }
             if (viewModel.isLogin.value==true&&RegisterSuccessDialog.needShow()){
-                RegisterSuccessDialog{
-                    viewModel.checkRechargeKYCVerify()
-                }.show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
+                RegisterSuccessDialog().show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
             }
         }
         //体育服务开关监听

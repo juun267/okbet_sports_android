@@ -21,11 +21,11 @@
             android:id="@+id/tvHotTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_weight="1"
             android:paddingLeft="4dp"
-            android:text="@string/N881"
-            android:textColor="@android:color/black"
+            android:text="@string/P241"
+            android:textColor="@color/color_313F56"
             android:textStyle="bold" />
 
 
@@ -51,5 +51,5 @@
         android:paddingLeft="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="3"
-        tools:listitem="@layout/item_home_hot_match" />
+        tools:listitem="@layout/item_home_hot_esport" />
 </androidx.appcompat.widget.LinearLayoutCompat>
