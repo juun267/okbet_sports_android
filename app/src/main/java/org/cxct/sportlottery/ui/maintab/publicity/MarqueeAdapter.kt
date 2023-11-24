@@ -23,7 +23,7 @@ open class MarqueeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val textView = AppCompatTextView(viewGroup.context)
         textView.layoutParams = ViewGroup.LayoutParams(-2, -1)
         textView.gravity = Gravity.CENTER_VERTICAL
-        textView.textSize = 12.0f
+        textView.textSize = 14.0f
         textView.maxLines = 1
         textView.setTextColor(viewGroup.context.getColor(R.color.color_6D7693))
         //開頭結尾的空白過場，寬度設置跟 父層 Layout 一樣

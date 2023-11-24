@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment2
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
@@ -76,10 +78,18 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType,this@HomeHotFragment)
         okLiveView.setUp(this@HomeHotFragment)
         providerView.setup(this@HomeHotFragment){
-           getMainTabActivity().jumpToOKGames()
-            providerView.postDelayed(500){
-                (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(it)
+            if (it.gameEntryTypeEnum==GameEntryType.OKGAMES){
+                getMainTabActivity().jumpToOKGames()
+                providerView.postDelayed(500){
+                    (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(it)
+                }
+            }else{
+                getMainTabActivity().jumpToOkLive()
+                providerView.postDelayed(500){
+                    (getMainTabActivity().getCurrentFragment() as? OKLiveFragment)?.showByProvider(it)
+                }
             }
+
         }
         promotionView.setup(this@HomeHotFragment)
         newsView.setup(this@HomeHotFragment)

@@ -4,14 +4,17 @@ import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -22,9 +25,11 @@ class ElectTabAdapter(private val onSelected:(OKGamesCategory) -> Unit)
     private val iconId = View.generateViewId()
     private val nameId = View.generateViewId()
     private val dividerId = View.generateViewId()
+    private val selColor = MultiLanguagesApplication.appContext.getColor(R.color.color_025BE8)
+    private val norColor = MultiLanguagesApplication.appContext.getColor(R.color.color_6D7693)
     private val lp = LinearLayout.LayoutParams(-1, -1)
     private val iconLp = 32.dp.let { LinearLayout.LayoutParams(it, it)}
-    private val nameLp = LinearLayout.LayoutParams(-2, -2).apply { topMargin = 5.dp }
+    private val nameLp = LinearLayout.LayoutParams(-2, -2).apply { topMargin = 4.dp }
     private var currentPosition = 0
     private var currentItem: OKGamesCategory? = null
 
@@ -60,7 +65,7 @@ class ElectTabAdapter(private val onSelected:(OKGamesCategory) -> Unit)
         dividerLp.rightMargin = dividerLp.leftMargin
 
         val root = FrameLayout(context)
-        root.layoutParams = LinearLayout.LayoutParams(-1, 68.dp)
+        root.layoutParams = LinearLayout.LayoutParams(-1, 73.dp)
         root.addView(divider, dividerLp)
         root.addView(lin)
 
@@ -69,14 +74,23 @@ class ElectTabAdapter(private val onSelected:(OKGamesCategory) -> Unit)
 
     override fun convert(holder: BaseViewHolder, item: OKGamesCategory) {
         item.bindLabelIcon(holder.getView(iconId))
-        item.bindNameText(holder.getView(nameId))
+        val nameText = holder.getView<TextView>(nameId)
+        nameText.text = item.categoryName
         val position = holder.bindingAdapterPosition
         val isSelected = currentPosition == position
-        holder.setGone(dividerId, isSelected || position + 1 == currentPosition || position == itemCount - 1)
+        val isLast = position == itemCount - 1
+        holder.setGone(dividerId, isSelected || position + 1 == currentPosition || isLast)
         if (isSelected) {
             holder.itemView.setBackgroundResource(R.drawable.bg_sportvenue_type)
+            nameText.setTextColor(selColor)
         } else {
             holder.itemView.background = null
+            nameText.setTextColor(norColor)
+        }
+        if (isLast) {
+            (holder.itemView.layoutParams as MarginLayoutParams).bottomMargin = 55.dp
+        } else {
+            (holder.itemView.layoutParams as MarginLayoutParams).bottomMargin = 0
         }
     }
 

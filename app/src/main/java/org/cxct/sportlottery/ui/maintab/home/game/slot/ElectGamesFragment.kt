@@ -39,7 +39,7 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
 
     private fun applySearch(context: Context): EditText {
         val etSearch = AppCompatEditText(context)
-        etSearch.layoutParams = LinearLayout.LayoutParams(-1, 32.dp).apply { bottomMargin = 8.dp }
+        etSearch.layoutParams = LinearLayout.LayoutParams(-1, 32.dp).apply { bottomMargin = 10.dp }
         12.dp.let { etSearch.setPadding(it, 0, it, 0) }
         etSearch.textSize = 14f
         etSearch.gravity = Gravity.CENTER_VERTICAL
