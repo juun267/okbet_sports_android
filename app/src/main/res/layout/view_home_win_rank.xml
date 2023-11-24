@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/N707"
-            android:textColor="@color/color_0D2245"
+            android:textColor="@color/color_313F56"
             android:textSize="@dimen/textSize18sp"
             android:textStyle="bold" />
         <ImageView
