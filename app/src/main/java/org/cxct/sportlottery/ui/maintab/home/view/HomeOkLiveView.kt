@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.RelativeLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_home_okgame.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ViewHomeOkliveBinding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
@@ -28,6 +30,7 @@ class HomeOkLiveView(context: Context, attrs: AttributeSet) : RelativeLayout(con
     private val gameAdapter = HomeOkGamesAdapter()
 
     init {
+        gone()
         initView()
     }
 
@@ -48,6 +51,7 @@ class HomeOkLiveView(context: Context, attrs: AttributeSet) : RelativeLayout(con
         fragment.viewModel.homeOKLiveList.observe(fragment.viewLifecycleOwner) {
             fragment.hideLoading()
             gameAdapter.setList(it)
+            this@HomeOkLiveView.isVisible = gameAdapter.dataCount() > 0
         }
 
         //监听进入游戏

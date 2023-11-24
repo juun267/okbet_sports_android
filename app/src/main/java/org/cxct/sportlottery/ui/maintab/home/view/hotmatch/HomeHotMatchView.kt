@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.DividerItemDecorator
+import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.onClick
 import splitties.systemservices.layoutInflater
 
@@ -45,7 +46,12 @@ class HomeHotMatchView(
     private var fragment: BaseFragment<*>? = null
 
     init {
+        gone()
         initView()
+    }
+
+    fun setVisible() {
+        isVisible = !getSportEnterIsClose() && adapter != null && adapter!!.itemCount > 0
     }
 
     private fun initView()=binding.run{
@@ -333,7 +339,7 @@ class HomeHotMatchView(
 
     fun onResume(fragment: BaseFragment<*>) {
         //关闭/显示   热门赛事
-        goneWithSportSwitch()
+        setVisible()
         adapter?.notifyDataSetChanged()
     }
     fun updateOddChange(oddsChangeEvent: OddsChangeEvent){

@@ -149,7 +149,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         }
         setupSportStatusChange(this){
             if (it){
-                binding.hotMatchView.visible()
+                binding.hotMatchView.setVisible()
                 binding.hotEsportView.visible()
                 receiver.addOddsChangeListener(this, mOddsChangeListener)
                 refreshHotMatch()
@@ -176,12 +176,12 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             //关闭/显示 sports入口
 //            binding.homeTopView.initSportEnterStatus()
             //关闭/显示   热门赛事
-            binding.hotMatchView.goneWithSportSwitch()
+            binding.hotMatchView.setVisible()
             //判断当前fragment是否可见
             if(binding.hotMatchView.isVisible&&isVisibleToUser()){
                 viewModel.getRecommend()
             }
-            binding.hotEsportView.goneWithSportSwitch()
+            binding.hotEsportView.setVisible()
             //判断当前fragment是否可见
             if(binding.hotEsportView.isVisible&&isVisibleToUser()){
                 viewModel.getRecommend(GameType.ES)
