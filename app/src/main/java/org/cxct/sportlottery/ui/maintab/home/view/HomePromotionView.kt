@@ -17,7 +17,7 @@ import splitties.systemservices.layoutInflater
 
 class HomePromotionView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    val binding = ViewHomePromotionBinding.inflate(layoutInflater, this, true)
+    val binding = ViewHomePromotionBinding.inflate(layoutInflater, this)
     lateinit var viewModel: MainHomeViewModel
 
     init {

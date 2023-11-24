@@ -232,6 +232,9 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>() 
             LiveGamesFragment::class.java->{
                 StaticData.okLiveOpened()
             }
+            ESportVenueFragment::class.java->{
+                StaticData.okSportOpened()&&StaticData.okBingoOpened()
+            }
             else->true
         }.let { block?.invoke(it) }
     }
