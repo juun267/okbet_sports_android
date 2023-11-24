@@ -882,6 +882,11 @@ object SocketUpdateUtil {
             it == oddsDetailListData.gameType
         })
 
+        //更新玩法翻譯
+        odds?.nameMap?.let {
+            oddsDetailListData.nameMap = it
+        }
+
         oddsDetailListData.oddArrayList.forEach { odd ->
             val oddSocket = odds?.odds?.find { oddSocket ->
                 oddSocket?.id == odd?.id
