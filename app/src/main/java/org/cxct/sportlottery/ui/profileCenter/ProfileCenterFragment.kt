@@ -570,16 +570,6 @@ class ProfileCenterFragment :
                     viewModel.checkWithdrawSystem()
             }
         }
-
-        viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkRechargeSystem()
-            }
-        }
-
     }
 
     @SuppressLint("SetTextI18n")
