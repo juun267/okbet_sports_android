@@ -23,10 +23,7 @@ import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.util.RecentDataManager
-import org.cxct.sportlottery.util.RecentRecord
-import org.cxct.sportlottery.util.SingleLiveEvent
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 
 class OKGamesViewModel(
     androidContext: Application,
@@ -266,12 +263,8 @@ class OKGamesViewModel(
         viewModelScope.launch {
             var task1: Deferred<ApiResult<List<OKGameBean>>>? =null
             var task2: Deferred<ApiResult<List<OKGameBean>>>? =null
-            if (StaticData.okGameOpened()){
-                task1 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKGAMES) }
-            }
-            if (StaticData.okLiveOpened()){
-                task2 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKLIVE) }
-            }
+            task1 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKGAMES) }
+            task2 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKLIVE) }
             val result1 = task1?.await()
             val result2 = task2?.await()
             val newList = mutableListOf<OKGameBean>()
