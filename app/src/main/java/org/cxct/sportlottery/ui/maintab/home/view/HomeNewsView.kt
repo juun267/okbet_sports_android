@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ViewHomeNewsBinding
+import org.cxct.sportlottery.databinding.ViewHomeNewsChrisBinding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -22,7 +23,7 @@ import splitties.systemservices.layoutInflater
 
 class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    val binding: ViewHomeNewsBinding = ViewHomeNewsBinding.inflate(layoutInflater,this)
+    val binding = ViewHomeNewsChrisBinding.inflate(layoutInflater,this)
     lateinit var viewModel:MainHomeViewModel
     val pageSize = 3
     private val homeHotNewsAdapter = HomeHotNewsAdapter().apply {

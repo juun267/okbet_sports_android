@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginTop="-20dp"
-            android:layout_marginRight="100dp"
+            android:layout_marginRight="80dp"
             android:src="@drawable/ic_chris_redsuck"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBettingStation"

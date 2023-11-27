@@ -72,6 +72,6 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
             isVisible = !isMaintenance
             setOnClickListener { itemClick(item) }
         }
-        view.setBackgroundResource(if(isMaintenance) R.drawable.bg_gray_radius_8_f9fafd else R.color.color_FFFFFF)
+        view.setBackgroundResource(if(isMaintenance) R.drawable.bg_gray_radius_8_f9fafd else R.color.transparent)
     }
 }

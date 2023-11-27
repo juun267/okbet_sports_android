@@ -9,11 +9,18 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/bg_chris_home_hot"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_FFFFFF"
             android:layout_marginBottom="@dimen/margin_4"
             android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
@@ -25,18 +32,15 @@
             <org.cxct.sportlottery.ui.maintab.home.view.hotmatch.HomeHotMatchView
                 android:id="@+id/hotMatchView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_12"/>
+                android:layout_height="wrap_content"/>
             <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView
                 android:id="@+id/okGamesView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_12"/>
+                android:layout_height="wrap_content"/>
             <org.cxct.sportlottery.ui.maintab.home.view.hotmatch.HomeHotESportView
                 android:id="@+id/hotEsportView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_12"/>
+                android:layout_height="wrap_content"/>
             <org.cxct.sportlottery.ui.maintab.home.view.HomeOkLiveView
                 android:id="@+id/okLiveView"
                 android:layout_width="match_parent"
@@ -78,6 +82,7 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
+        </FrameLayout>
     </androidx.core.widget.NestedScrollView>
 
     <ImageView
