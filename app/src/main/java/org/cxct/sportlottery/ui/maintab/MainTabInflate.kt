@@ -25,14 +25,24 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
     private val INDEX_SPORT = 1
     private val INDEX_GAMES = 2
 
+//    init {
+//        val lp = LinearLayout.LayoutParams(0, -1, 1f)
+//        val lpIcon = 32.dp.let { LinearLayout.LayoutParams(it, it) }
+//        addItem(lp, lpIcon, "svga/home_tab_menu.svga", R.drawable.ic_tab_menu_nor, R.string.menu)
+//        addItem(lp, lpIcon,"svga/home_tab_sports.svga", R.drawable.ic_tab_sport_nor, R.string.main_tab_sport)
+//        addItem(lp, lpIcon, "svga/home_tab_game.svga", R.drawable.ic_tab_game_nor, R.string.news_tab_game).isGone = getMarketSwitch()
+//        addItem(lp, lpIcon, "svga/home_tab_chat.svga", R.drawable.ic_tab_chat_nor, R.string.N984)
+//        addItem(lp, lpIcon,"svga/home_tab_mine.svga", R.drawable.ic_tab_user_nor, R.string.main_tab_mine)
+//    }
+
     init {
         val lp = LinearLayout.LayoutParams(0, -1, 1f)
         val lpIcon = 32.dp.let { LinearLayout.LayoutParams(it, it) }
-        addItem(lp, lpIcon, "svga/home_tab_menu.svga", R.drawable.ic_tab_menu_nor, R.string.menu)
-        addItem(lp, lpIcon,"svga/home_tab_sports.svga", R.drawable.ic_tab_sport_nor, R.string.main_tab_sport)
-        addItem(lp, lpIcon, "svga/home_tab_game.svga", R.drawable.ic_tab_game_nor, R.string.news_tab_game).isGone = getMarketSwitch()
-        addItem(lp, lpIcon, "svga/home_tab_chat.svga", R.drawable.ic_tab_chat_nor, R.string.N984)
-        addItem(lp, lpIcon,"svga/home_tab_mine.svga", R.drawable.ic_tab_user_nor, R.string.main_tab_mine)
+        addItem(lp, lpIcon, "svga/home_tab_menu.svga", R.drawable.ic_tab_menu_nor_chris, R.string.menu)
+        addItem(lp, lpIcon,"svga/home_tab_sports.svga", R.drawable.ic_tab_sport_nor_chris, R.string.main_tab_sport)
+        addItem(lp, lpIcon, "svga/home_tab_game.svga", R.drawable.ic_tab_game_nor_chris, R.string.news_tab_game).isGone = getMarketSwitch()
+        addItem(lp, lpIcon, "svga/home_tab_chat.svga", R.drawable.ic_tab_chat_nor_chris, R.string.N984)
+        addItem(lp, lpIcon,"svga/home_tab_mine.svga", R.drawable.ic_tab_user_nor_chris, R.string.main_tab_mine)
     }
 
     private fun addItem(lpItem: LinearLayout.LayoutParams,

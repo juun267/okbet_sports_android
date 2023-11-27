@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
@@ -506,15 +507,24 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun initBottomNavigation() {
         binding.parlayFloatWindow.onViewClick = ::showBetListPage
-        val radius = 15.dp.toFloat()
-        binding.linTab.background = ShapeDrawable()
-            .setWidth(screenWidth + 15.dp)
-            .setHeight(58.dp)
-            .setSolidColor(Color.WHITE)
-            .setShadowColor(getColor(R.color.color_A9B2D3))
-            .setShadowSize(5.dp)
-            .setShadowOffsetY(-10.dp)
-            .setRadius(radius, radius, 0F, 0F)
+        setChristmasStyle()
+//        val radius = 15.dp.toFloat()
+//        binding.linTab.background = ShapeDrawable()
+//            .setWidth(screenWidth + 15.dp)
+//            .setHeight(58.dp)
+//            .setSolidColor(Color.WHITE)
+//            .setShadowColor(getColor(R.color.color_A9B2D3))
+//            .setShadowSize(5.dp)
+//            .setShadowOffsetY(-10.dp)
+//            .setRadius(radius, radius, 0F, 0F)
+    }
+
+    private fun setChristmasStyle() {
+        binding.linTab.setBackgroundResource(R.drawable.bg_main_nav_bar)
+        binding.linTab.setPadding(0, 0, 0, 0)
+        val params = binding.linTab.layoutParams as MarginLayoutParams
+        params.leftMargin = 0
+        params.rightMargin = 0
     }
 
     override fun showBetListPage() {
