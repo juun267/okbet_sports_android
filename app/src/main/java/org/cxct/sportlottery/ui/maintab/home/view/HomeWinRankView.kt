@@ -140,9 +140,11 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
             if (rbtnLb.id== checkedId){
                 rbtnLb.setTextTypeFace(Typeface.BOLD)
                 rbtnLbw.setTextTypeFace(Typeface.NORMAL)
+                rGroupRecord.setBackgroundResource(R.drawable.bg_chris_win_title_left)
             }else{
                 rbtnLb.setTextTypeFace(Typeface.NORMAL)
                 rbtnLbw.setTextTypeFace(Typeface.BOLD)
+                rGroupRecord.setBackgroundResource(R.drawable.bg_chris_win_title_right)
             }
             if (winsRequest == null || betRequest == null) {
                 return@setOnCheckedChangeListener

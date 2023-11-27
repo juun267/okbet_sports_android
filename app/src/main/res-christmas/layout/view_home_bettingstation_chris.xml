@@ -10,6 +10,19 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="-20dp"
+            android:layout_marginRight="80dp"
+            android:src="@drawable/ic_chris_redsuck"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/margin_12">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,23 +49,16 @@
                 android:textSize="14sp"
                 android:visibility="gone"/>
         </LinearLayout>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginTop="-20dp"
-            android:layout_marginRight="80dp"
-            android:src="@drawable/ic_chris_redsuck"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBettingStation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             android:clipChildren="false"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_home_bettingstation"
             tools:itemCount="5" />
+        </LinearLayout>
     </FrameLayout>
 
 
