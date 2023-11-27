@@ -98,11 +98,4 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
         tvContactUs.setServiceClick(fragmentManager)
     }
 
-    /**
-     * 底部显示社交view  首页需要
-     */
-//    fun showFollowView(){
-//        findViewById<HomeFollowView>(R.id.homeFollowView).showFollowView()
-//    }
-
 }

@@ -23,6 +23,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/margin_4"
             android:descendantFocusability="blocksDescendants"
+            android:background="@color/color_F4F6FB"
             android:orientation="vertical">
             <org.cxct.sportlottery.ui.maintab.home.view.HomeRecentView
                 android:id="@+id/recentView"
