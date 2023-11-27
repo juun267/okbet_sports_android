@@ -359,7 +359,7 @@ fun setBBStatusView(
 
     ivHalfStatus.apply {
         setImageResource(if (matchInfo.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
-        isVisible = matchInfo.halfStatus != null
+        isVisible = matchInfo.halfStatus != null && matchInfo.halfStatus != 2
     }
 
     ivBaseBag.apply {
