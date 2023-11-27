@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    tools:orientation="vertical"
+    tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/N707"
-            android:textColor="@color/color_0D2245"
+            android:textColor="@color/color_313F56"
             android:textSize="@dimen/textSize18sp"
             android:textStyle="bold" />
         <ImageView
@@ -50,7 +51,6 @@
             android:button="@null"
             android:gravity="center"
             android:text="@string/N708"
-            android:textStyle="bold"
             android:textColor="@color/color_black_6d7693"
             android:textSize="@dimen/textSize14sp" />
 
@@ -65,6 +65,7 @@
             android:button="@null"
             android:gravity="center"
             android:maxLines="1"
+            android:textStyle="bold"
             android:text="@string/N709"
             android:textColor="@color/color_black_6d7693"
             android:textSize="@dimen/textSize14sp"
@@ -81,4 +82,4 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_home_win_rank" />
     </LinearLayout>
-</LinearLayout>
+</merge>

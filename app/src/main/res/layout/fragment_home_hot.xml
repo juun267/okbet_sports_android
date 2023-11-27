@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,32 +20,33 @@
             <org.cxct.sportlottery.ui.maintab.home.view.HomeRecentView
                 android:id="@+id/recentView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.hotmatch.HomeHotMatchView
                 android:id="@+id/hotMatchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView
                 android:id="@+id/okGamesView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.hotmatch.HomeHotESportView
                 android:id="@+id/hotEsportView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.HomeOkLiveView
                 android:id="@+id/okLiveView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.HomeProviderView
                 android:id="@+id/providerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
             <org.cxct.sportlottery.ui.maintab.home.view.HomePromotionView
                 android:id="@+id/promotionView"
                 android:layout_width="match_parent"
@@ -56,20 +57,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_12"
-                android:layout_marginTop="@dimen/margin_12"/>
+                android:layout_marginBottom="@dimen/margin_12"/>
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeWinRankView
                 android:id="@+id/winsRankView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_12"
                 android:layout_marginHorizontal="@dimen/margin_12"/>
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeBettingStationView
                 android:id="@+id/bettingStationView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"
                 android:layout_marginHorizontal="@dimen/margin_12"/>
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeBottomView
@@ -84,11 +84,10 @@
         android:id="@+id/ivBackTop"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|right"
         android:layout_marginBottom="60dp"
         android:adjustViewBounds="true"
         android:src="@drawable/icon_backtop_blue" />
 
 
-</RelativeLayout>
+</FrameLayout>

@@ -6,7 +6,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.LinearLayout
+import android.widget.FrameLayout.LayoutParams
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -20,14 +20,13 @@ import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import splitties.views.backgroundColor
 
 
 class ESportTypeAdapter : BaseNodeAdapter() {
 
     init {
         addFullSpanNodeProvider(ESportGroupProvider(this))
-        addFullSpanNodeProvider(ESportMatchProvider())
+        addFullSpanNodeProvider(ESportMatchProvider(this))
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -65,21 +64,23 @@ data class ESportMatch(val name: Int,
                        val item: CategoryItem,
                        override val childNode: MutableList<BaseNode>?): BaseNode()
 
-private class ESportMatchProvider(override val itemViewType: Int = 2, override val layoutId: Int = 0): BaseNodeProvider() {
+private class ESportMatchProvider(val adapter: ESportTypeAdapter, override val itemViewType: Int = 2, override val layoutId: Int = 0): BaseNodeProvider() {
 
     private val numberId = View.generateViewId()
     private val nameId = View.generateViewId()
     private val iconId = View.generateViewId()
     private val imgId = View.generateViewId()
-    private val lp = LinearLayout.LayoutParams(-1, 100.dp).apply { bottomMargin = 8.dp }
-    private val nameLp = LinearLayout.LayoutParams(140.dp, -2).apply { topMargin = 5.dp }
-    private val iconLp = LinearLayout.LayoutParams(20.dp, 20.dp).apply {
-        topMargin = 14.dp
-    }
-    private val imgLp = FrameLayout.LayoutParams(-2, -2).apply {
+    private val dp8 = 8.dp
+    private val lp = LayoutParams(-1, 100.dp)
+    private val nameLp = LayoutParams(140.dp, -2).apply { gravity = Gravity.CENTER_VERTICAL }
+    private val iconLp = 20.dp.let { LayoutParams(it, it).apply { topMargin = 11.dp } }
+    private val imgLp = LayoutParams(-2, -2).apply {
         gravity = Gravity.RIGHT or Gravity.BOTTOM
     }
-    private val numLp = LinearLayout.LayoutParams(-2, -2).apply { topMargin = 3.dp }
+    private val numLp = LayoutParams(-2, -2).apply {
+        bottomMargin = 11.dp
+        gravity = Gravity.BOTTOM
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val context = parent.context
@@ -89,13 +90,9 @@ private class ESportMatchProvider(override val itemViewType: Int = 2, override v
         frameLayout.foreground = parent.context.getDrawable(R.drawable.fg_ripple)
         frameLayout.setPadding(24.dp, 0, 0, 0)
 
-        val lin = LinearLayout(context)
-        lin.orientation = LinearLayout.VERTICAL
-        frameLayout.addView(lin)
-
         val icon = AppCompatImageView(context)
         icon.id = iconId
-        lin.addView(icon, iconLp)
+        frameLayout.addView(icon, iconLp)
 
         val img = AppCompatImageView(context)
         img.id = imgId
@@ -109,14 +106,14 @@ private class ESportMatchProvider(override val itemViewType: Int = 2, override v
         nameText.maxLines = 2
         nameText.typeface = AppFont.inter_bold
         nameText.ellipsize = TextUtils.TruncateAt.END
-        lin.addView(nameText, nameLp)
+        frameLayout.addView(nameText, nameLp)
 
         val numText = AppCompatTextView(context)
         numText.id = numberId
         numText.setTextColor(context.getColor(R.color.color_313F56))
         numText.textSize = 14f
         numText.typeface = AppFont.inter_bold
-        lin.addView(numText, numLp)
+        frameLayout.addView(numText, numLp)
 
         return BaseViewHolder(frameLayout)
     }
@@ -126,6 +123,7 @@ private class ESportMatchProvider(override val itemViewType: Int = 2, override v
         helper.setText(numberId, bean.item.num.toString())
         helper.setImageResource(iconId,ESportType.getHomeESportIcon(bean.item.code))
         helper.setImageResource(imgId,ESportType.getHomeESportBg(bean.item.code))
+        (helper.itemView.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin = if (item == adapter.data.last()) 20.dp else dp8
     }
 
 }

@@ -3,7 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.view.hotmatch
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -17,7 +17,6 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.doOnStop
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewHomeHotEsportBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
@@ -37,21 +36,27 @@ import splitties.systemservices.layoutInflater
 
 class HomeHotESportView(
     context: Context, attrs: AttributeSet
-) : ConstraintLayout(context, attrs) {
+) : LinearLayout(context, attrs) {
 
-    val binding = ViewHomeHotEsportBinding.inflate(layoutInflater, this, true)
+    val binding = ViewHomeHotEsportBinding.inflate(layoutInflater, this)
     private var adapter: HomeHotESportAdapter? = null
     private var fragment: BaseFragment<*>? = null
 
     init {
+        orientation = VERTICAL
+        gone()
         initView()
+    }
+
+    fun setVisible() {
+        isVisible = !getSportEnterIsClose() && adapter != null && adapter!!.itemCount > 0
     }
 
     private fun initView()=binding.run{
         initRecyclerView()
         //查看更多
         tvHotMore.onClick {
-            if(StaticData.okSportOpened()) {
+            if(StaticData.okSportOpened()&&StaticData.okBingoOpened()) {
                 (fragment?.activity as MainTabActivity).jumpToESport()
             }else{
                 ToastUtil.showToast(context,context.getString(R.string.N700))
@@ -117,27 +122,23 @@ class HomeHotESportView(
      * 数据变量监听
      */
     private fun initDataObserve(data: LiveData<Pair<String,List<Recommend>>>, oddsTypeLiveData: LiveData<OddsType>,fragment: BaseFragment<*>) {
+
         data.observe(fragment.viewLifecycleOwner) {
 
-            //api获取热门赛事列表
-            it.second.let { data ->
-                    //如果没数据
-                    if(data.isEmpty()){
-                        //隐藏
-                        gone()
-                    }else{
-                        visible()
-                    }
-                    //如果体育服务关闭
-                    this.goneWithSportSwitch()
+            val data = it.second
+            if(data.isEmpty()){ //如果没数据
+                gone()
+            } else{
+                isVisible = !getSportEnterIsClose() //如果体育服务关闭
+            }
 
-                    unSubscribeChannelHall(fragment)
-                if (isVisible) {
-                    adapter?.data = data
-                    binding.recyclerHotGame.post { firstVisibleRange() }
-                }
+            unSubscribeChannelHall(fragment)
+            if (isVisible) {
+                adapter?.data = data
+                binding.recyclerHotGame.post { firstVisibleRange() }
             }
         }
+
         oddsTypeLiveData.observe(fragment.viewLifecycleOwner){
             adapter?.oddsType = it
         }
@@ -332,7 +333,7 @@ class HomeHotESportView(
 
     fun onResume(fragment: BaseFragment<*>) {
         //关闭/显示   热门赛事
-        goneWithSportSwitch()
+        setVisible()
         adapter?.notifyDataSetChanged()
     }
 

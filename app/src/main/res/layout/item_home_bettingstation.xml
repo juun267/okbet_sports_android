@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_313F56"
             android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
             android:lines="1"
             android:ellipsize="end"
             tools:text="OKBet supports Miss Grand PH for the upcoming. Max  lines..." />
@@ -58,9 +59,9 @@
             android:drawableLeft="@drawable/ic_home_call"
             android:lines="1"
             android:drawablePadding="@dimen/margin_4"
+            android:textStyle="bold"
             android:textColor="@color/color_0F61E2"
             android:textSize="@dimen/textSize14sp"
-            android:textFontWeight="500"
             tools:text="09167313767" />
     </LinearLayout>
 

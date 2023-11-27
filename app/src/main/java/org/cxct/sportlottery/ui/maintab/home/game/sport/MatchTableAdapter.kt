@@ -4,6 +4,7 @@ import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -91,7 +92,8 @@ class MatchTableAdapter(private val onSelected:(Pair<Int, Sport>) -> Unit)
         nameText.setText(item.first)
         nameText.setTextColor(textColor)
         val position = holder.bindingAdapterPosition
-        holder.setGone(dividerId, isSelected || position + 1 == currentPosition || position == itemCount - 1)
+        val isLast = position == itemCount - 1
+        holder.setGone(dividerId, isSelected || position + 1 == currentPosition || isLast)
         if (isSelected) {
             holder.itemView.setBackgroundResource(R.drawable.bg_sportvenue_type)
         } else {

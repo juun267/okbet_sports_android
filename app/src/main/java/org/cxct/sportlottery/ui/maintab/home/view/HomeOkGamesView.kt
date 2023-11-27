@@ -3,38 +3,39 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_home_okgame.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ViewHomeOkgameBinding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.transform.TransformInDialog
 import splitties.systemservices.layoutInflater
-import splitties.toast.toast
 
-class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
+class HomeOkGamesView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    private val binding  = ViewHomeOkgameBinding.inflate(layoutInflater,this,true)
+    private val binding  = ViewHomeOkgameBinding.inflate(layoutInflater,this)
     private val gameAdapter = HomeOkGamesAdapter()
 
     init {
+        gone()
         initView()
     }
 
     private fun initView() = binding.run {
+        orientation = VERTICAL
         recyclerGames.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL,false)
         recyclerGames.adapter = gameAdapter
     }
@@ -52,6 +53,7 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
             fragment.hideLoading()
             //缓存这一页数据到map
             gameAdapter.setList(it)
+            this@HomeOkGamesView.isVisible = gameAdapter.dataCount() > 0
         }
 
         //监听进入游戏

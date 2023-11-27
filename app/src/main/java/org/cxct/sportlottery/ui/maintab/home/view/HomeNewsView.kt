@@ -22,7 +22,7 @@ import splitties.systemservices.layoutInflater
 
 class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    val binding: ViewHomeNewsBinding = ViewHomeNewsBinding.inflate(layoutInflater,this,true)
+    val binding: ViewHomeNewsBinding = ViewHomeNewsBinding.inflate(layoutInflater,this)
     lateinit var viewModel:MainHomeViewModel
     val pageSize = 3
     private val homeHotNewsAdapter = HomeHotNewsAdapter().apply {
@@ -34,6 +34,7 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
         }
     }
     init {
+        orientation = VERTICAL
         initView()
     }
 
