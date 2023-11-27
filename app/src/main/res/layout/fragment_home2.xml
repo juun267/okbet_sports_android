@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/color_FFFFFF">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="172dp"
+        android:background="@drawable/bg_home_top"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <org.cxct.sportlottery.ui.maintab.home.view.HomeToolbarView
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
@@ -24,7 +30,7 @@
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_FFFFFF"
+            android:background="@color/transparent"
             app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
