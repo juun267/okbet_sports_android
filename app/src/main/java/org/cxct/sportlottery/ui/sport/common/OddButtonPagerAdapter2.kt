@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.sport.list.adapter.ODDS_ITEM_TYPE
 import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.oddsbtn.PlayCateView
 import org.cxct.sportlottery.util.LanguageManager
+import java.math.BigDecimal
 
 
 class OddButtonPagerAdapter2(val context: Context,
@@ -385,9 +386,13 @@ class OddButtonPagerAdapter2(val context: Context,
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(gameType: String?): Map<String, List<Odd?>?> = this.mapValues { map ->
         val playCateNum = when { //根據IOS給的規則判斷顯示數量
 
-            map.value?.size ?: 0 < 3 -> 2
+            (map.value?.size ?: 0) < 3 -> 2
 
-            (gameType == GameType.TT.key || gameType == GameType.BM.key) && map.key.contains(PlayCate.SINGLE.value) -> 2 //乒乓球獨贏特殊判斷 羽球獨贏特殊判斷
+            (gameType == GameType.TT.key || gameType == GameType.BM.key ||
+                    gameType == GameType.BK.key || gameType == GameType.TN.key ||
+                    gameType == GameType.BB.key) && map.key.contains(PlayCate.SINGLE.value) -> 2 //乒乓球獨贏特殊判斷 羽球獨贏特殊判斷
+
+            map.key.contains(PlayCate.GTD.value) && gameType == GameType.BX.key -> 2
 
             map.key.contains(PlayCate.HDP.value) || (map.key.contains(PlayCate.OU.value) && !map.key.contains(PlayCate.SINGLE_OU.value)) || map.key.contains(
                 PlayCate.CORNER_OU.value
