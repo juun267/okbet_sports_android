@@ -98,11 +98,11 @@ class OddsButton2 @JvmOverloads constructor(
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
         }
-        betStatus = BetStatus.DEACTIVATED.code
         addView(rootLin,LinearLayout.LayoutParams(-1,-1))
         buoyIcon = ImageView(context)
         buoyIcon.adjustViewBounds = true
         addView(buoyIcon, LayoutParams(12.dp, -2).apply {addRule(ALIGN_PARENT_RIGHT,TRUE)  })
+        betStatus = BetStatus.DEACTIVATED.code
     }
 
     private fun setBetStatus(status: Int) {
@@ -138,6 +138,12 @@ class OddsButton2 @JvmOverloads constructor(
         recyclerValuesView()
     }
 
+    private fun resetBuoyIcon() {
+        buoyIcon.gone()
+        buoyIcon.clearAnimation()
+        buoyIcon.tag = null
+    }
+
     private fun setupOddState(oddState: Int) {
         if (!isEnabled) return
 
@@ -165,9 +171,7 @@ class OddsButton2 @JvmOverloads constructor(
             }
             else -> {
                 oddView.setOdds(oddsValueText)
-                buoyIcon.gone()
-                buoyIcon.clearAnimation()
-                buoyIcon.tag = null
+                resetBuoyIcon()
             }
         }
 
@@ -256,6 +260,7 @@ class OddsButton2 @JvmOverloads constructor(
             setImageResource(R.drawable.ic_lock)
             setPadding(14.dp)
         }
+        resetBuoyIcon()
         addOddView(oddsLocked!!, params2)
         return oddsLocked!!
     }
@@ -278,7 +283,7 @@ class OddsButton2 @JvmOverloads constructor(
             setText(R.string.unknown_data)
             gravity = Gravity.CENTER
         }
-
+        resetBuoyIcon()
         addOddView(oddsUnknown!!, params2)
         return oddsUnknown!!
     }
