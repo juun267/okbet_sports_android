@@ -13,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewHomeFollowBinding
+import org.cxct.sportlottery.databinding.ViewHomeFollowChrisBinding
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerHomeFollowAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.FollowMenuBean
@@ -27,7 +28,7 @@ class HomeFollowView(
     private val menuList = arrayListOf<FollowMenuBean>()
     private val mAdapter = RecyclerHomeFollowAdapter()
 
-    val binding = ViewHomeFollowBinding.inflate(layoutInflater,this,true)
+    val binding = ViewHomeFollowChrisBinding.inflate(layoutInflater,this,true)
 
     init {
         initView()

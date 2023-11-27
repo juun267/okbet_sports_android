@@ -9,6 +9,4 @@ object AppFont {
     val helvetica by lazy { ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.helvetica_normal) }
 
     val inter_bold by lazy { ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.inter_bold) }
-
-    val CFChritsmasLetters by lazy { ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.CFChritsmasLetters) }
 }

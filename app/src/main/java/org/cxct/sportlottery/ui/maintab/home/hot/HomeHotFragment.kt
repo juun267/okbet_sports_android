@@ -9,6 +9,7 @@ import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
+import org.cxct.sportlottery.databinding.FragmentHomeHotChrisBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
@@ -27,7 +28,7 @@ import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
+class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHotChrisBinding>() {
 
      fun getMainTabActivity() = activity as MainTabActivity
      private fun getHomeFragment() = parentFragment as HomeFragment2
