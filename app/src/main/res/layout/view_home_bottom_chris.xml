@@ -27,14 +27,12 @@
                 android:layout_marginHorizontal="@dimen/margin_12"
                 android:orientation="vertical">
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/margin_24"
+                    android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/ic_chris_paymentmethod"
-                    android:textColor="@color/color_313F56"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:src="@drawable/ic_chris_paymentmethod" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcvPayment"
@@ -57,15 +55,22 @@
                 android:orientation="vertical"
                 android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="12dp">
-                <TextView
-                    android:id="@+id/tvAwardTitle"
+
+                <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_chris_okbet_awards"
-                    android:textColor="@color/color_313F56"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:layout_height="@dimen/margin_24"
+                    android:adjustViewBounds="true"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_chris_okbet_awards" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tvAwardTitle"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:background="@drawable/ic_chris_okbet_awards"-->
+<!--                    android:textColor="@color/color_313F56"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold" />-->
 
                 <LinearLayout
                     android:id="@+id/linAward"
@@ -131,20 +136,30 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="12dp"
                     tools:viewBindingIgnore="true"/>
-
-                <TextView
+                <ImageView
                     android:id="@+id/textView5"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/margin_24"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/ic_chris_aboutus"
-                    android:textColor="@color/color_313F56"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:viewBindingIgnore="true"
+                    android:adjustViewBounds="true"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_chris_aboutus"
                     app:layout_constraintTop_toBottomOf="@+id/view5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
+<!--                <TextView-->
+<!--                    android:id="@+id/textView5"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:background="@drawable/ic_chris_aboutus"-->
+<!--                    android:textColor="@color/color_313F56"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    tools:viewBindingIgnore="true"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/view5"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent" />-->
 
                 <com.zhy.view.flowlayout.FlowLayout
                     android:id="@+id/aboutLayout"
@@ -176,19 +191,30 @@
 
                 </com.zhy.view.flowlayout.FlowLayout>
 
-                <TextView
+                <ImageView
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
-                    android:background="@drawable/ic_chris_faq"
-                    android:textColor="@color/color_313F56"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:viewBindingIgnore="true"
+                    android:layout_height="@dimen/margin_24"
+                    android:layout_marginTop="16dp"
+                    android:adjustViewBounds="true"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_chris_faq"
                     app:layout_constraintTop_toBottomOf="@+id/aboutLayout"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
+<!--                <TextView-->
+<!--                    android:id="@+id/textView8"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="18dp"-->
+<!--                    android:background="@drawable/ic_chris_faq"-->
+<!--                    android:textColor="@color/color_313F56"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    tools:viewBindingIgnore="true"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/aboutLayout"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent" />-->
 
                 <com.zhy.view.flowlayout.FlowLayout
                     android:id="@+id/aboutFaqs"
@@ -261,19 +287,30 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.5" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/textView16"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:visibility="visible"
-                    android:background="@drawable/ic_chris_responsible_gaming"
-                    android:textColor="@color/color_313F56"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:layout_height="@dimen/margin_24"
+                    android:layout_marginTop="16dp"
+                    android:adjustViewBounds="true"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_chris_responsible_gaming"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view6" />
+<!--                <TextView-->
+<!--                    android:id="@+id/textView16"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="14dp"-->
+<!--                    android:visibility="visible"-->
+<!--                    android:background="@drawable/ic_chris_responsible_gaming"-->
+<!--                    android:textColor="@color/color_313F56"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/view6" />-->
 
                 <View
                     android:id="@+id/view4"
