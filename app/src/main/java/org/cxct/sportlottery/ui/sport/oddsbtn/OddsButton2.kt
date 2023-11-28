@@ -1,11 +1,11 @@
 package org.cxct.sportlottery.ui.sport.oddsbtn
 
 import android.content.Context
-import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.ImageView
@@ -16,13 +16,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
-import kotlinx.android.synthetic.main.activity_maintenance.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.*
@@ -72,8 +69,8 @@ class OddsButton2 @JvmOverloads constructor(
     private var oddsValueText: String = ""
 
     private val buoyIcon: ImageView
-    private val upAnim by lazy { AlphaAnimation(0f, 1f) }
-    private val downAnim by lazy { AlphaAnimation(0f, 1f) }
+    private val upAnim by lazy { getBuoyAnimation(0f, 1f) }
+    private val downAnim by lazy { getBuoyAnimation(0f, 1f) }
 
     var betStatus: Int? = null
         set(value) {
@@ -100,9 +97,21 @@ class OddsButton2 @JvmOverloads constructor(
         }
         addView(rootLin,LinearLayout.LayoutParams(-1,-1))
         buoyIcon = ImageView(context)
-        buoyIcon.adjustViewBounds = true
         addView(buoyIcon, LayoutParams(12.dp, -2).apply {addRule(ALIGN_PARENT_RIGHT,TRUE)  })
         betStatus = BetStatus.DEACTIVATED.code
+    }
+
+    private fun getBuoyAnimation(fromAlpha: Float, toAlpha: Float): Animation {
+        val alphaAnimation = AlphaAnimation(fromAlpha, toAlpha)
+        alphaAnimation.repeatCount = 3
+        alphaAnimation.repeatMode = Animation.RESTART
+        alphaAnimation.duration = 500
+        alphaAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) { }
+            override fun onAnimationRepeat(animation: Animation) { }
+            override fun onAnimationEnd(animation: Animation) { setupOddState(OddState.SAME.state) }
+        })
+        return alphaAnimation
     }
 
     private fun setBetStatus(status: Int) {
@@ -139,9 +148,11 @@ class OddsButton2 @JvmOverloads constructor(
     }
 
     private fun resetBuoyIcon() {
-        buoyIcon.gone()
         buoyIcon.clearAnimation()
         buoyIcon.tag = null
+        (buoyIcon.parent as ViewGroup?)?.let {
+            it.removeView(buoyIcon)
+        }
     }
 
     private fun setupOddState(oddState: Int) {
@@ -249,6 +260,8 @@ class OddsButton2 @JvmOverloads constructor(
         recyclerNameView()
         recyclerValuesView()
         recyclerUnknownView()
+        resetBuoyIcon()
+
         if (oddsLocked != null) {
             return oddsLocked!!
         }
@@ -260,7 +273,7 @@ class OddsButton2 @JvmOverloads constructor(
             setImageResource(R.drawable.ic_lock)
             setPadding(14.dp)
         }
-        resetBuoyIcon()
+
         addOddView(oddsLocked!!, params2)
         return oddsLocked!!
     }
@@ -269,6 +282,8 @@ class OddsButton2 @JvmOverloads constructor(
         recyclerNameView()
         recyclerValuesView()
         recyclerLockedView()
+        resetBuoyIcon()
+
         if (oddsUnknown != null) {
             return oddsUnknown!!
         }
@@ -283,7 +298,7 @@ class OddsButton2 @JvmOverloads constructor(
             setText(R.string.unknown_data)
             gravity = Gravity.CENTER
         }
-        resetBuoyIcon()
+
         addOddView(oddsUnknown!!, params2)
         return oddsUnknown!!
     }
@@ -399,7 +414,7 @@ class OddsButton2 @JvmOverloads constructor(
 
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
-        setEnabled(visibility == View.VISIBLE)
+        isEnabled = visibility == View.VISIBLE
     }
 
     /**
@@ -443,20 +458,11 @@ class OddsButton2 @JvmOverloads constructor(
         if (animation == buoyIcon.tag) {
             return
         }
-        animation.repeatCount = 3
-        animation.repeatMode = Animation.RESTART
-        animation.duration = 500
-        animation.setAnimationListener(object : Animation.AnimationListener {
 
-            override fun onAnimationStart(animation: Animation) { }
-            override fun onAnimationRepeat(animation: Animation) { }
-            override fun onAnimationEnd(animation: Animation) {
-               setupOddState(OddState.SAME.state)
-            }
-        })
-
+        if (buoyIcon.parent == null) {
+            addView(buoyIcon)
+        }
         buoyIcon.tag = animation
-        buoyIcon.visible()
         buoyIcon.setImageResource(icon)
         buoyIcon.startAnimation(animation)
     }
