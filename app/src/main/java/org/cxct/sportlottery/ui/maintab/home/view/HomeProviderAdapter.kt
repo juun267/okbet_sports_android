@@ -69,9 +69,12 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
             setTextColor(resources.getColor(if(isMaintenance) R.color.color_BEC7DC  else R.color.color_0D2245))
         }
         view.findViewById<TextView>(R.id.tvPlay).apply {
+            setBackgroundResource(R.drawable.ic_chris_play)
+            setTextColor(context.getColor(R.color.color_FFFFFF))
             isVisible = !isMaintenance
             setOnClickListener { itemClick(item) }
         }
-        view.setBackgroundResource(if(isMaintenance) R.drawable.bg_gray_radius_8_f9fafd else R.color.transparent)
+//        view.setBackgroundResource(if(isMaintenance) R.drawable.bg_gray_radius_8_f9fafd else R.color.color_FFFFFF)
+        view.setBackgroundResource(if(isMaintenance) R.drawable.bg_gray_radius_8_eef3fc else R.color.transparent)
     }
 }
