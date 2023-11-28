@@ -98,6 +98,7 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>() 
     }
 
     private fun setChristmasStyle() {
+        binding.root.setBackgroundResource(R.color.color_f2f4fa)
         homeMenuAdapter.setChristmasStyle()
         binding.ivBroadcast.setImageResource(R.drawable.ic_notice_blue)
     }
