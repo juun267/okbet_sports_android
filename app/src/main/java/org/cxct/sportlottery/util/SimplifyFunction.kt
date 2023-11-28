@@ -912,9 +912,7 @@ fun MutableMap<String, MutableList<Odd>?>.sortOddsMap(sizeCheck: Int = 0) {
 
 fun MutableMap<String, CateDetailData>.sortOddsMapByDetail() {
     forEach { (_, value) ->
-        if (value.odds.size > 3 && value.odds.first()?.marketSort != 0 && (value.odds.first()?.odds != value.odds.first()?.malayOdds)) {
-            value.odds.sortBy { it?.marketSort }
-        }
+        value.odds.sortWith(compareBy({ it?.marketSort }, { it?.rowSort }))
     }
 }
 

@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
 
 
 /**
@@ -358,6 +359,7 @@ fun setBBStatusView(
     }
 
     ivHalfStatus.apply {
+        Timber.d("matchInfo.halfStatus: ${matchInfo.halfStatus}")
         setImageResource(if (matchInfo.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
         isVisible = matchInfo.halfStatus != null && matchInfo.halfStatus != 2
     }
