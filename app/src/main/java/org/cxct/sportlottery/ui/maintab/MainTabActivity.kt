@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.KeyEvent
@@ -55,7 +54,6 @@ import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
@@ -114,7 +112,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private val binding by lazy { ActivityMainTabBinding.inflate(layoutInflater) }
-    private lateinit var tabHelper: MainTabInflate
+    private lateinit var tabHelper: MainTabInflate2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,7 +123,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .fitsSystemWindows(false).init()
         initDrawerLayout()
         initMenu()
-        tabHelper = MainTabInflate(binding.linTab, ::onTabClick)
+        tabHelper = MainTabInflate2(binding.linTab, ::onTabClick)
         navToPosition(INDEX_HOME)
         initBottomNavigation()
         initObserve()

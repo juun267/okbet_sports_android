@@ -12,10 +12,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.SvgUtil.setAssetSvgIcon
 import org.cxct.sportlottery.util.getMarketSwitch
 
-class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boolean) {
+class MainTabInflate2(private val parent: LinearLayout, val onClick: (Int) -> Boolean) {
 
     private var currentItem: LinearLayout? = null
     private val iconId = View.generateViewId()
@@ -28,17 +27,17 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
     init {
         val lp = LinearLayout.LayoutParams(0, -1, 1f)
         val lpIcon = 32.dp.let { LinearLayout.LayoutParams(it, it) }
-        addItem(lp, lpIcon, "svga/home_tab_menu.svga", R.drawable.ic_tab_menu_nor, R.string.menu)
-        addItem(lp, lpIcon,"svga/home_tab_sports.svga", R.drawable.ic_tab_sport_nor, R.string.main_tab_sport)
-        addItem(lp, lpIcon, "svga/home_tab_game.svga", R.drawable.ic_tab_game_nor, R.string.news_tab_game).isGone = getMarketSwitch()
-        addItem(lp, lpIcon, "svga/home_tab_chat.svga", R.drawable.ic_tab_chat_nor, R.string.N984)
-        addItem(lp, lpIcon,"svga/home_tab_mine.svga", R.drawable.ic_tab_user_nor, R.string.main_tab_mine)
+        addItem(lp, lpIcon, R.drawable.ic_tab_menu_nor_chris, R.drawable.ic_tab_menu_nor_chris, R.string.menu)
+        addItem(lp, lpIcon,R.drawable.ic_tab_sport_nor_chris, R.drawable.ic_tab_sport_sle_chris, R.string.main_tab_sport)
+        addItem(lp, lpIcon, R.drawable.ic_tab_game_nor_chris, R.drawable.ic_tab_game_sle_chris, R.string.news_tab_game).isGone = getMarketSwitch()
+        addItem(lp, lpIcon, R.drawable.ic_tab_chat_nor_chris, R.drawable.ic_tab_chat_sle_chris, R.string.N984)
+        addItem(lp, lpIcon,R.drawable.ic_tab_user_nor_chris, R.drawable.ic_tab_user_sle_chris, R.string.main_tab_mine)
     }
 
     private fun addItem(lpItem: LinearLayout.LayoutParams,
                         lpIcon: LinearLayout.LayoutParams,
-                        icon: String,
                         @DrawableRes norDrawableRes: Int,
+                        @DrawableRes selctedDrawableRes: Int,
                         @StringRes name: Int): LinearLayout {
 
         val item = LinearLayout(parent.context)
@@ -49,7 +48,7 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
         imageView.loops = 1
         imageView.clearsAfterStop = false
         imageView.id = iconId
-        imageView.tag = Pair(norDrawableRes,icon)
+        imageView.tag = Pair(norDrawableRes, selctedDrawableRes)
 //        imageView.setAssetSvgIcon(icon)
         imageView.setImageResource(norDrawableRes)
         item.addView(imageView, lpIcon)
@@ -82,10 +81,11 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
 
     private fun setChangeSelected(item: LinearLayout, isSelected: Boolean) {
         item.findViewById<SVGAImageView>(iconId).apply {
+            setImageResource((tag as Pair<Int,Int>).second)
             if (isSelected){
-                setAssetSvgIcon((tag as Pair<Int,String>).second,true)
+                setImageResource((tag as Pair<Int,Int>).second)
             }else{
-                setImageResource((tag as Pair<Int,String>).first)
+                setImageResource((tag as Pair<Int,Int>).first)
             }
         }
         item.findViewById<TextView>(nameId).setTextColor(if (isSelected) selColor else unSelColor)

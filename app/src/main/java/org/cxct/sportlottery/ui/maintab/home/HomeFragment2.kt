@@ -44,11 +44,12 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>() 
     private val fragmentHelper2: FragmentHelper2 by lazy { FragmentHelper2(childFragmentManager, R.id.flContent) }
     private lateinit var hotFragment: HomeHotFragment
     private val homeMenuAdapter = HomeMenuAdapter { item->
-        val fragmentClass = item.third
+        val fragmentClass = item.content
         if (fragmentClass == null) {
-            if (item.second == R.string.promo) {
+            if (item.name == R.string.promo) {
                 startActivity(PromotionListActivity::class.java)
-            } else if (item.second == R.string.LT050) {
+            } else if (item.name
+                == R.string.LT050) {
                 serviceEvent(context(), childFragmentManager)
             }
 
@@ -87,16 +88,17 @@ class HomeFragment2 : BindingFragment<MainHomeViewModel,FragmentHome2Binding>() 
     }
 
     override fun onInitView(view: View) {
+        setChristmasStyle()
         initToolBar()
         binding.rvMarquee.bindLifecycler(this)
         initMenu()
         initIndicate()
         binding.ivService.setOnTouchListener(SuckEdgeTouch())
         binding.ivService.setServiceClick(childFragmentManager)
-        setChristmasStyle()
     }
 
     private fun setChristmasStyle() {
+        homeMenuAdapter.setChristmasStyle()
         binding.ivBroadcast.setImageResource(R.drawable.ic_notice_blue)
     }
 

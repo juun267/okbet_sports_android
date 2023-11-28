@@ -1,6 +1,10 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.view.View
+import android.widget.ImageView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
@@ -17,20 +21,40 @@ import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
 
-class HomeMenuAdapter(private val itemClick: (Triple<Int, Int, Class<BaseFragment<*>>?>) -> Boolean)
-    : BindingAdapter<Triple<Int, Int, Class<BaseFragment<*>>?>, ItemHomeMenuBinding>(), OnItemClickListener {
+class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
+    : BindingAdapter<HomeMenuAdapter.MenuTab, ItemHomeMenuBinding>(), OnItemClickListener {
 
-    private val datas = mutableListOf<Triple<Int, Int, Class<BaseFragment<*>>?>>()
+    private var selectedBg = R.drawable.bg_home_menu_sel
+    private var normalBg = R.drawable.bg_home_menu_nor
+
+    data class MenuTab(@DrawableRes val selectedIcon: Int,
+                       @DrawableRes val norIcon: Int,
+                       @StringRes val name: Int,
+                       val content: Class<out BaseFragment<*>>?)
+
+    private val datas = mutableListOf<MenuTab>()
+
+//    private val cache = arrayOf(
+//        MenuTab(R.drawable.ic_home_menu_hot_sel, R.drawable.ic_home_menu_hot_nor, R.string.home_recommend, HomeHotFragment::class.java),
+//        MenuTab(R.drawable.ic_home_menu_sport_sel, R.drawable.ic_home_menu_sport_nor, R.string.main_tab_sport, SportVenueFragment::class.java),
+//        MenuTab(R.drawable.ic_home_menu_casino_sel, R.drawable.ic_home_menu_casino_nor, R.string.J203, ElectGamesFragment::class.java),
+//        MenuTab(R.drawable.ic_home_menu_live_sel, R.drawable.ic_home_menu_live_nor, R.string.P160, LiveGamesFragment::class.java),
+//        MenuTab(R.drawable.ic_home_menu_esport_sel, R.drawable.ic_home_menu_esport_nor, R.string.esports, ESportVenueFragment::class.java),
+//        MenuTab(R.drawable.ic_home_menu_promotion_sel, R.drawable.ic_home_menu_promotion_nor, R.string.promo, null),
+//        MenuTab(R.drawable.ic_home_menu_service_sel, R.drawable.ic_home_menu_service_nor, R.string.LT050, null),
+//    )
+
     private val cache = arrayOf(
-        Triple(R.drawable.selector_home_menu_hot, R.string.home_recommend, HomeHotFragment::class.java),
-        Triple(R.drawable.selector_home_menu_sport, R.string.main_tab_sport, SportVenueFragment::class.java),
-        Triple(R.drawable.selector_home_menu_casino, R.string.J203, ElectGamesFragment::class.java),
-        Triple(R.drawable.selector_home_menu_live, R.string.P160, LiveGamesFragment::class.java),
-        Triple(R.drawable.selector_home_menu_esport, R.string.esports, ESportVenueFragment::class.java),
-        Triple(R.drawable.selector_home_menu_promotion, R.string.promo, null),
-        Triple(R.drawable.selector_home_menu_service, R.string.LT050, null)
+        MenuTab(R.drawable.ic_chris_home_menu_hot_sel, R.drawable.ic_chris_home_menu_hot_nor, R.string.home_recommend, HomeHotFragment::class.java),
+        MenuTab(R.drawable.ic_chris_home_menu_sport_sel, R.drawable.ic_chris_home_menu_sport_nor, R.string.main_tab_sport, SportVenueFragment::class.java),
+        MenuTab(R.drawable.ic_chris_home_menu_casino_sel, R.drawable.ic_chris_home_menu_casino_nor, R.string.J203, ElectGamesFragment::class.java),
+        MenuTab(R.drawable.ic_chris_home_menu_live_sel, R.drawable.ic_chris_home_menu_live_nor, R.string.P160, LiveGamesFragment::class.java),
+        MenuTab(R.drawable.ic_chris_home_menu_esport_sel, R.drawable.ic_chris_home_menu_esport_nor, R.string.esports, ESportVenueFragment::class.java),
+        MenuTab(R.drawable.ic_chris_home_menu_promotion_sel, R.drawable.ic_chris_home_menu_promotion_nor, R.string.promo, null),
+        MenuTab(R.drawable.ic_chris_home_menu_service_nor, R.drawable.ic_chris_home_menu_service_nor, R.string.LT050, null),
     )
-    private var selectItem: Triple<Int, Int, Class<BaseFragment<*>>?>?=null
+
+    private var selectItem: MenuTab? = null
 
     init {
         buildItem()
@@ -39,27 +63,34 @@ class HomeMenuAdapter(private val itemClick: (Triple<Int, Int, Class<BaseFragmen
         setOnItemClickListener(this)
     }
 
-    override fun onBinding(
-        position: Int,
-        binding: ItemHomeMenuBinding,
-        item: Triple<Int, Int, Class<BaseFragment<*>>?>,
-        payloads: List<Any>
-    )=binding.run {
-        setMaintanence(binding.linMaintenance,item.third)
-        root.isSelected = item == selectItem
+    fun setChristmasStyle() {
+        selectedBg = R.drawable.bg_chris_home_menu_sel
+        normalBg = R.drawable.bg_chris_home_menu_nor
     }
 
-
-    override fun onBinding(
-        position: Int,
-        binding: ItemHomeMenuBinding,
-        item: Triple<Int, Int, Class<BaseFragment<*>>?>) = binding.run {
-        ivIcon.setImageResource(item.first)
-        tvName.text = context.getString(item.second)
-        root.isSelected = item == selectItem
-        setMaintanence(linMaintenance, item.third)
+    private fun setSelectedStyle(isSelected: Boolean, item: MenuTab, group: View, icon: ImageView) {
+        group.isSelected = isSelected
+        if (isSelected) {
+            group.setBackgroundResource(selectedBg)
+            icon.setImageResource(item.selectedIcon)
+        } else {
+            group.setBackgroundResource(normalBg)
+            icon.setImageResource(item.norIcon)
+        }
     }
-    private fun setMaintanence(linMaintenance: View, fragmentClass: Class<BaseFragment<*>>?){
+
+    override fun onBinding(position: Int, binding: ItemHomeMenuBinding, item: MenuTab, payloads: List<Any> ) = binding.run {
+        setMaintanence(binding.linMaintenance, item.content)
+        setSelectedStyle(item == selectItem, item, root.getChildAt(0), binding.ivIcon)
+    }
+
+    override fun onBinding(position: Int, binding: ItemHomeMenuBinding, item: MenuTab) = binding.run {
+        tvName.text = context.getString(item.name)
+        setSelectedStyle(item == selectItem, item, root.getChildAt(0), binding.ivIcon)
+        setMaintanence(binding.linMaintenance, item.content)
+    }
+
+    private fun setMaintanence(linMaintenance: View, fragmentClass: Class<out BaseFragment<*>>?){
         when(fragmentClass){
             SportVenueFragment::class.java,ESportVenueFragment::class.java->{
                 //判断体育维护是否开启
@@ -77,21 +108,21 @@ class HomeMenuAdapter(private val itemClick: (Triple<Int, Int, Class<BaseFragmen
     }
     private fun buildItem(){
         datas.clear()
-        datas.add(cache[0] as Triple<Int, Int, Class<BaseFragment<*>>?>)
+        datas.add(cache[0])
         if (StaticData.okSportOpened()){
-            datas.add(cache[1] as Triple<Int, Int, Class<BaseFragment<*>>?>)
+            datas.add(cache[1])
         }
         if (StaticData.okGameOpened()){
-            datas.add(cache[2] as Triple<Int, Int, Class<BaseFragment<*>>?>)
+            datas.add(cache[2])
         }
         if (StaticData.okLiveOpened()){
-            datas.add(cache[3] as Triple<Int, Int, Class<BaseFragment<*>>?>)
+            datas.add(cache[3])
         }
         if (StaticData.okBingoOpened()){
-            datas.add(cache[4] as Triple<Int, Int, Class<BaseFragment<*>>?>)
+            datas.add(cache[4])
         }
-        datas.add(cache[5] as Triple<Int, Int, Class<BaseFragment<*>>?>)
-        datas.add(cache[6] as Triple<Int, Int, Class<BaseFragment<*>>?>)
+        datas.add(cache[5])
+        datas.add(cache[6])
     }
     fun reload(){
         buildItem()
