@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab
 
+import android.graphics.Typeface
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
@@ -88,7 +89,15 @@ class MainTabInflate2(private val parent: LinearLayout, val onClick: (Int) -> Bo
                 setImageResource((tag as Pair<Int,Int>).first)
             }
         }
-        item.findViewById<TextView>(nameId).setTextColor(if (isSelected) selColor else unSelColor)
+        item.findViewById<TextView>(nameId).apply {
+            if (isSelected) {
+                typeface = AppFont.inter_bold
+                setTextColor(selColor)
+            } else {
+                typeface = AppFont.helvetica
+                setTextColor(unSelColor)
+            }
+        }
         item.isSelected = isSelected
     }
 

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_F4F6FB"
     tools:orientation="vertical"
     tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
     <FrameLayout
@@ -386,7 +385,7 @@
         <ImageView
             android:layout_width="73dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="-5dp"
+            android:layout_marginBottom="46dp"
             android:src="@drawable/bg_chris_bottom_tree"
             android:layout_gravity="bottom|left"/>
     </FrameLayout>
