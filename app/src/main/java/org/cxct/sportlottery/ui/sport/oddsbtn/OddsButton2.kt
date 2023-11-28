@@ -1,19 +1,22 @@
 package org.cxct.sportlottery.ui.sport.oddsbtn
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import org.cxct.sportlottery.R
@@ -69,8 +72,6 @@ class OddsButton2 @JvmOverloads constructor(
     private var oddsValueText: String = ""
 
     private val buoyIcon: ImageView
-    private val upAnim by lazy { getBuoyAnimation(0f, 1f) }
-    private val downAnim by lazy { getBuoyAnimation(0f, 1f) }
 
     var betStatus: Int? = null
         set(value) {
@@ -101,17 +102,16 @@ class OddsButton2 @JvmOverloads constructor(
         betStatus = BetStatus.DEACTIVATED.code
     }
 
-    private fun getBuoyAnimation(fromAlpha: Float, toAlpha: Float): Animation {
-        val alphaAnimation = AlphaAnimation(fromAlpha, toAlpha)
-        alphaAnimation.repeatCount = 3
-        alphaAnimation.repeatMode = Animation.RESTART
-        alphaAnimation.duration = 500
-        alphaAnimation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) { }
-            override fun onAnimationRepeat(animation: Animation) { }
-            override fun onAnimationEnd(animation: Animation) { setupOddState(OddState.SAME.state) }
+    private fun getBuoyAnimation(fromAlpha: Float, toAlpha: Float): ValueAnimator {
+        val alphaAnim = ObjectAnimator.ofFloat(buoyIcon, "alpha", fromAlpha, toAlpha)
+        alphaAnim.repeatCount = 3
+        alphaAnim.repeatMode = ValueAnimator.RESTART
+        alphaAnim.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                setupOddState(OddState.SAME.state)
+            }
         })
-        return alphaAnimation
+        return alphaAnim
     }
 
     private fun setBetStatus(status: Int) {
@@ -149,6 +149,7 @@ class OddsButton2 @JvmOverloads constructor(
 
     private fun resetBuoyIcon() {
         buoyIcon.clearAnimation()
+        (buoyIcon.tag as ValueAnimator?)?.let { it.cancel() }
         buoyIcon.tag = null
         (buoyIcon.parent as ViewGroup?)?.let {
             it.removeView(buoyIcon)
@@ -169,7 +170,7 @@ class OddsButton2 @JvmOverloads constructor(
                     addRule(ALIGN_PARENT_TOP,TRUE)
                     buoyIcon.layoutParams = this
                 }
-                playAnim(R.drawable.icon_odds_up, upAnim)
+                playAnim(R.drawable.icon_odds_up, getBuoyAnimation(0f, 1f))
             }
             OddState.SMALLER.state -> {
                 oddView.onFall(oddsValueText)
@@ -178,7 +179,7 @@ class OddsButton2 @JvmOverloads constructor(
                     addRule(ALIGN_PARENT_BOTTOM,TRUE)
                     buoyIcon.layoutParams = this
                 }
-                playAnim(R.drawable.icon_odds_down, downAnim)
+                playAnim(R.drawable.icon_odds_down, getBuoyAnimation(0f, 1f))
             }
             else -> {
                 oddView.setOdds(oddsValueText)
@@ -454,7 +455,7 @@ class OddsButton2 @JvmOverloads constructor(
             else -> "${number}th"
         }
     }
-    private fun playAnim(icon: Int, animation: Animation) {
+    private fun playAnim(icon: Int, animation: ValueAnimator) {
         if (animation == buoyIcon.tag) {
             return
         }
@@ -464,6 +465,6 @@ class OddsButton2 @JvmOverloads constructor(
         }
         buoyIcon.tag = animation
         buoyIcon.setImageResource(icon)
-        buoyIcon.startAnimation(animation)
+        animation.start()
     }
 }
