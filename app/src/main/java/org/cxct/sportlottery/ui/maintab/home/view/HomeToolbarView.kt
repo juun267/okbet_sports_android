@@ -302,6 +302,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         ivRefreshMoney.setImageResource(R.drawable.ic_refresh_green_christmas)
         ivLogo.setImageResource(R.drawable.logo_okbet_color_christmas)
         tvLogin.setBackgroundResource(R.drawable.bg_home_top_login)
+        tvLogin.setTextColor(context.getColor(R.color.color_FFFFFF))
         tvRegist.setBackgroundResource(R.drawable.bg_home_top_register)
         btnDeposit.setBackgroundResource(R.drawable.bg_home_top_deposit)
         banlanceView.background = ShapeDrawable()
