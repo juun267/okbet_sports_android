@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -137,7 +138,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             R.string.menu -> { // 菜单
                 val currentFragment = fragmentHelper.getCurrentFragment()
                 onMenuEvent(MenuEvent(true))
-                if (currentFragment is SportFragment2 || currentFragment is ESportFragment) {
+                Log.e("For Test", "=====>>> currentFragment=${currentFragment.javaClass}")
+                if (currentFragment is SportFragment2) {
                     showSportLeftMenu()
                 } else {
                     showMainLeftMenu(currentFragment.javaClass as Class<BaseFragment<*>>?)

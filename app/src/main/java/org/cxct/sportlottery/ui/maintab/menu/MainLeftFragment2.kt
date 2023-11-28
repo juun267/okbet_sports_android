@@ -41,6 +41,7 @@ import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
@@ -364,18 +365,11 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     private var currentContent: Class<BaseFragment<*>>? = null
 
     fun openWithFragment(menuContentFragment: Class<BaseFragment<*>>?) {
-        val isSame = currentContent == menuContentFragment
         currentContent = menuContentFragment
-        if (menuContentFragment == null) {
-            lastItem?.clearSelected()
+        lastItem?.clearSelected()
+        if (menuContentFragment == null || !::okGamesItem.isInitialized) {
             return
         }
-        if (isSame || !::okGamesItem.isInitialized) {
-            return
-        }
-//        if (isSame || !::okLiveItem.isInitialized) {
-//            return
-//        }
         binSelected()
     }
 
@@ -384,6 +378,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         OKGamesFragment::class.java -> okGamesItem.setSelected()
         OKLiveFragment::class.java -> okLiveItem.setSelected()
         NewsHomeFragment::class.java -> newsItem.setSelected()
+        ESportFragment::class.java -> eSportGamesItem.setSelected()
         else -> {}
 
     }
