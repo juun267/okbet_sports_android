@@ -26,7 +26,7 @@ class MainTabInflate2(private val parent: LinearLayout, val onClick: (Int) -> Bo
 
     init {
         val lp = LinearLayout.LayoutParams(0, -1, 1f)
-        val lpIcon = 32.dp.let { LinearLayout.LayoutParams(it, it) }
+        val lpIcon = 24.dp.let { LinearLayout.LayoutParams(it, it) }
         addItem(lp, lpIcon, R.drawable.ic_tab_menu_nor_chris, R.drawable.ic_tab_menu_nor_chris, R.string.menu)
         addItem(lp, lpIcon,R.drawable.ic_tab_sport_nor_chris, R.drawable.ic_tab_sport_sle_chris, R.string.main_tab_sport)
         addItem(lp, lpIcon, R.drawable.ic_tab_game_nor_chris, R.drawable.ic_tab_game_sle_chris, R.string.news_tab_game).isGone = getMarketSwitch()
