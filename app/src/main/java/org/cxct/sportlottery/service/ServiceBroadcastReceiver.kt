@@ -191,7 +191,6 @@ object ServiceBroadcastReceiver {
 
             }
             EventType.RECORD_RESULT_JACKPOT_OK_GAMES->{
-                Log.e("dachang","ws message: ${jObjStr}")
                 val data = ServiceMessage.getJackpotData(jObjStr)
                 (jackpotChange as MutableLiveData<String?>).postValue(data?.amount)
             }
