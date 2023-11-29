@@ -10,6 +10,7 @@ import org.cxct.sportlottery.databinding.DialogCaptchaBinding
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LogUtil
 
 /**
@@ -38,7 +39,13 @@ class CaptchaDialog(val callback: (ticket: String, randstr: String)-> Unit) : Ba
             setBackgroundColor(0);
             background.alpha = 0
             addJavascriptInterface(JsBridge(),"jsBridge")
-            loadUrl("file:///android_asset/captcha.html?appid=${sConfigData?.captchaAppId}")
+            val lang = when(LanguageManager.getSelectLanguage(context)){
+                LanguageManager.Language.ZH->"zh-cn"
+                LanguageManager.Language.ZHT->"zh-tw"
+                LanguageManager.Language.VI->"vi"
+                else->"en"
+            }
+            loadUrl("file:///android_asset/captcha.html?appid=${sConfigData?.captchaAppId}&lang=${lang}")
         }
 
     }
