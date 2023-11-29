@@ -216,7 +216,10 @@ object ServiceBroadcastReceiver {
 
                 // 登陆的用户计算赔率折扣
                 if (LoginRepository.isLogined()) {
-                    data.setupOddDiscount(UserInfoRepository.getDiscount().toBigDecimal())
+                    val discount = UserInfoRepository.getDiscount()
+                    if (discount != 1.0f) {
+                        data.setupOddDiscount(discount.toBigDecimal())
+                    }
                 }
                 data.updateOddsSelectedState()
                 data.sortOddsMap()
@@ -238,7 +241,10 @@ object ServiceBroadcastReceiver {
 
                 // 登陆的用户计算赔率折扣
                 if (LoginRepository.isLogined()) {
-                    data.setupOddDiscount(UserInfoRepository.getDiscount().toBigDecimal())
+                    val discount = UserInfoRepository.getDiscount()
+                    if (discount != 1.0f) {
+                        data.setupOddDiscount(discount.toBigDecimal())
+                    }
                 }
                 data.updateOddsSelectedState()
                 post{
