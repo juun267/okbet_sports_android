@@ -14,7 +14,7 @@ data class Odds(
     @Json(name = "odds")
     val odds: MutableList<Odd?>?,
     @Json(name = "nameMap")
-    val nameMap: Map<String?, String?>? = null, //保存各语系name对应值的map
+    var nameMap: Map<String?, String?>? = null, //保存各语系name对应值的map
     @Json(name = "rowSort")
     val rowSort: Int
 )
