@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,8 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.RCVDecoration
 import splitties.systemservices.layoutInflater
 
 class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
@@ -32,6 +35,13 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
     init {
         orientation = VERTICAL
         initView()
+    }
+
+    fun setChristmasStyle() {
+        binding.rvNews.addItemDecoration(RCVDecoration()
+            .setMargin(11.dp.toFloat())
+            .setDividerHeight(1.dp.toFloat())
+            .setColor(Color.parseColor("#e2ebfa")))
     }
 
     private fun initView() =binding.run {
