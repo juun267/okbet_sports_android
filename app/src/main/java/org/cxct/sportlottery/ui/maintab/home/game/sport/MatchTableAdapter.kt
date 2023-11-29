@@ -112,6 +112,9 @@ class MatchTableAdapter(private val onSelected:(Pair<Int, Sport>) -> Unit)
     }
 
     fun setSelected(position:Int): Pair<Int, Sport>? {
+        if (position == currentPosition) {
+            return null
+        }
         val item = getItemOrNull(position) ?: return null
         val lastPosition = currentPosition
         val lastPre = currentPosition - 1
