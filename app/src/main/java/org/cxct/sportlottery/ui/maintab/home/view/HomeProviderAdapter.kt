@@ -28,7 +28,7 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
                 val changedPosition = mutableListOf<Pair<Int, OKGamesFirm>>()
 
                 okGamesFirms.forEachIndexed { position, gameFirm->
-                    if (gameFirm.isMaintain() != gamesMaintain.isMaintain() && gameFirm.firmName == gamesMaintain.firmName) {
+                    if (gameFirm.maintain != gamesMaintain.maintain && gameFirm.firmName == gamesMaintain.firmName) {
                         gameFirm.maintain = gamesMaintain.maintain
                         changedPosition.add(Pair(position, gameFirm))
                     }
