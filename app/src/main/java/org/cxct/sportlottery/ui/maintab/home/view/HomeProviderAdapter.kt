@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.children
@@ -44,6 +45,9 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
         vb: ItemHomeProviderPageBinding,
         item: List<OKGamesFirm>,
     ) = vb.run {
+        (vb.root.layoutParams as ViewGroup.MarginLayoutParams).apply {
+            rightMargin = if (position==itemCount-1) 52.dp else 24.dp
+        }
         root.children.forEachIndexed { index, view ->
             if (index>=item.size){
                 view.inVisible()

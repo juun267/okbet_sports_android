@@ -11,10 +11,12 @@
         android:layout_height="match_parent">
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/color_F4F6FB">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-72dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/bg_chris_home_hot"/>
 
@@ -49,8 +51,7 @@
             <org.cxct.sportlottery.ui.maintab.home.view.HomeProviderView
                 android:id="@+id/providerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_12"/>
+                android:layout_height="wrap_content"/>
             <org.cxct.sportlottery.ui.maintab.home.view.HomePromotionView
                 android:id="@+id/promotionView"
                 android:layout_width="match_parent"

@@ -31,18 +31,18 @@
 
                 <ImageView
                     android:id="@+id/ivHomeIcon"
-                    android:layout_width="@dimen/margin_40"
-                    android:layout_height="match_parent"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:background="@drawable/bg_oval_transwhite_stroke_white"
-                    android:padding="@dimen/margin_6"
+                    android:padding="@dimen/margin_5"
                     android:src="@drawable/ic_team_default" />
                 <ImageView
                     android:id="@+id/ivAwayIcon"
-                    android:layout_width="@dimen/margin_40"
-                    android:layout_height="@dimen/margin_40"
-                    android:padding="@dimen/margin_6"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:padding="@dimen/margin_5"
                     android:background="@drawable/bg_oval_transwhite_stroke_white"
-                    android:layout_marginLeft="-6dp"
+                    android:layout_marginLeft="-3dp"
                     android:src="@drawable/ic_team_default" />
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
@@ -94,7 +94,7 @@
                     android:layout_width="@dimen/margin_0.5"
                     android:layout_height="@dimen/margin_12"
                     android:background="@color/transparent_white_60"
-                    android:layout_marginHorizontal="@dimen/margin_4"/>
+                    android:layout_marginHorizontal="@dimen/margin_8"/>
                 <TextView
                     android:id="@+id/tvLeagueName"
                     android:layout_width="match_parent"
@@ -127,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
+                android:includeFontPadding="false"
                 android:ellipsize="end"
                 android:layout_marginRight="@dimen/margin_16"
                 android:lines="1"
@@ -140,6 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:includeFontPadding="false"
                 android:fontFamily="@font/inter_bold"
                 android:textColor="@color/color_313F56"
                 android:textSize="@dimen/textSize16sp"
@@ -150,8 +152,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginHorizontal="@dimen/margin_12"
-            android:layout_marginTop="@dimen/margin_9"
-            android:layout_marginBottom="@dimen/margin_12">
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10">
 
 
             <TextView
@@ -163,6 +165,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:layout_marginRight="@dimen/margin_16"
+                android:includeFontPadding="false"
                 android:textColor="@color/color_313F56"
                 android:textStyle="bold"
                 android:textSize="@dimen/textSize14sp"
@@ -173,6 +176,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:includeFontPadding="false"
                 android:fontFamily="@font/inter_bold"
                 android:textColor="@color/color_313F56"
                 android:textSize="@dimen/textSize16sp"
@@ -189,21 +193,21 @@
                 android:id="@+id/oddBtn1"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
-                android:layout_marginRight="4dp"
                 android:layout_weight="1" />
 
             <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHomeHotButton
                 android:id="@+id/oddBtn2"
                 android:layout_width="0dp"
-                android:layout_marginRight="4dp"
                 android:layout_height="36dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"/>
 
             <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHomeHotButton
                 android:id="@+id/oddBtn3"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"/>
         </LinearLayout>
 </LinearLayout>
 </FrameLayout>
