@@ -583,7 +583,7 @@ message GameFirmMaintainEvent {
     string firmName = 1;
     string firmCode = 2;
     string firmType = 3;
-    int64 maintain = 4;
+    int32 maintain = 4;
     int64 PushType = 5;
     string gameType = 6;
 }

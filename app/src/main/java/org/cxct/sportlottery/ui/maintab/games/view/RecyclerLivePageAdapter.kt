@@ -55,7 +55,7 @@ class RecyclerLivePageAdapter:
                 val changedPosition = mutableListOf<Pair<Int, OKGameBean>>()
 
                 okGameBeans.forEachIndexed { position, gameBean->
-                    if (gameBean.isMaintain() != (gamesMaintain.maintain.toInt() == 1) && (gameBean.firmType == gamesMaintain.firmType)) {
+                    if (gameBean.isMaintain() != (gamesMaintain.maintain == 1) && (gameBean.firmType == gamesMaintain.firmType)) {
                         gameBean.maintain = gamesMaintain.maintain.toInt()
                         changedPosition.add(Pair(position, gameBean))
                     }
