@@ -44,11 +44,11 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
     private val fragmentHelper2: FragmentHelper2 by lazy { FragmentHelper2(childFragmentManager, R.id.flContent) }
     private lateinit var hotFragment: HomeHotFragment
     private val homeMenuAdapter = HomeMenuAdapter { item->
-        val fragmentClass = item.third
+        val fragmentClass = item.content
         if (fragmentClass == null) {
-            if (item.second == R.string.promo) {
+            if (item.name == R.string.promo) {
                 startActivity(PromotionListActivity::class.java)
-            } else if (item.second == R.string.LT050) {
+            } else if (item.name == R.string.LT050) {
                 serviceEvent(context(), childFragmentManager)
             }
 
@@ -108,6 +108,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
             setUpBanner()
             viewModel.getActivityImageListH5()
             homeMenuAdapter.reload()
+            homeMenuAdapter.checkMaintain()
             if (homeMenuAdapter.dataCount() < 7) {
                 binding.hIndicator.gone()
             }
@@ -128,6 +129,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
         }
         setupSportStatusChange(this){
             homeMenuAdapter.notifyDataSetChanged()
+            homeMenuAdapter.checkMaintain()
         }
     }
 
