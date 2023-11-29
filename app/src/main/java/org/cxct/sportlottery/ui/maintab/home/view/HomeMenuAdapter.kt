@@ -150,7 +150,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         }
 
         if (selectItem == okLiveGameItem) {
-            if (StaticData.okLiveOpened()) {
+            if (!StaticData.okLiveOpened()) {
                 selectedRecommend()
             }
             return
