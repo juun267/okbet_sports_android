@@ -5,19 +5,13 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ViewHomeProviderBinding
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.HomeFragment2
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.LeftLinearSnapHelper
-import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import splitties.systemservices.layoutInflater
 
 class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {

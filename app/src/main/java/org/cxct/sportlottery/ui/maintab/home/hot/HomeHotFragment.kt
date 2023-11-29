@@ -18,7 +18,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
-import org.cxct.sportlottery.ui.maintab.home.HomeFragment2
+import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -30,7 +30,7 @@ import org.greenrobot.eventbus.ThreadMode
 class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
 
      fun getMainTabActivity() = activity as MainTabActivity
-     private fun getHomeFragment() = parentFragment as HomeFragment2
+     private fun getHomeFragment() = parentFragment as HomeFragment
      private val mOddsChangeListener by lazy {
         ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
             binding.hotMatchView.updateOddChange(oddsChangeEvent)
