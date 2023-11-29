@@ -108,7 +108,6 @@ private class ElectGameProvider(val adapter: ElectGameAdapter,
         }
 
         linMaintenance.gone()
-        cvContent.gone()
         cvJackpot.gone()
         ivCover.load(bean.imgGame, R.drawable.ic_okgames_nodata)
 
@@ -126,17 +125,6 @@ private class ElectGameProvider(val adapter: ElectGameAdapter,
             linMaintenance.visible()
         }
 
-        cvContent.visible()
-        tvGameName.text = bean.gameName
-        tvGameType.text = bean.firmName
-        blurView.setupWith(root)
-            .setFrameClearDrawable(root.background)
-            .setBlurRadius(8f)
-//        val firmImg = firmMap[bean.firmId]?.img
-//        ivGameIcon.isVisible = !firmImg.isNullOrEmpty()
-//        if (!firmImg.isNullOrEmpty()) {
-//            ivGameIcon.load(firmImg, R.drawable.ic_okgames_nodata)
-//        }
         if (bean.jackpotOpen == 1) {
             cvJackpot.visible()
             blurviewJackpot
