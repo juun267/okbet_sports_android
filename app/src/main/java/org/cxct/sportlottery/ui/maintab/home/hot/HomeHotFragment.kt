@@ -129,6 +129,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
     private fun initObservable() {
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
+            viewModel.getIndexResourceJson()
             if (PopImageDialog.showHomeDialog) {
                 PopImageDialog.showHomeDialog = false
                 MultiLanguagesApplication.showPromotionPopupDialog(getMainTabActivity()){}
