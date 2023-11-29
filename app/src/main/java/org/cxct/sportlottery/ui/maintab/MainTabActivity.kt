@@ -28,7 +28,6 @@ import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.ESportType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -42,7 +41,7 @@ import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
-import org.cxct.sportlottery.ui.maintab.home.HomeFragment2
+import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
@@ -68,7 +67,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
-                Param(HomeFragment2::class.java),
+                Param(HomeFragment::class.java),
                 Param(SportFragment2::class.java),
                 Param(OKGamesFragment::class.java),
                 Param(ProfileCenterFragment::class.java),
@@ -378,7 +377,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         //网络恢复
         if (event.isValid) {
             val fragment = fragmentHelper.getFragment(INDEX_HOME)
-            if (fragment is HomeFragment2) {
+            if (fragment is HomeFragment) {
                 //更新config   刷新体育服务开关
                 fragment.viewModel.getConfigData()
             }
@@ -472,7 +471,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private fun setupBetBarVisiblity() {
 
         val needShowBetBar = fragmentHelper.getCurrentPosition() >= 0
-                && (fragmentHelper.getCurrentFragment() is HomeFragment2 || fragmentHelper.getCurrentFragment() is SportFragment2)
+                && (fragmentHelper.getCurrentFragment() is HomeFragment || fragmentHelper.getCurrentFragment() is SportFragment2)
 
         if (betListCount == 0
             || !needShowBetBar
@@ -558,7 +557,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    private inline fun homeFragment() = fragmentHelper.getFragment(INDEX_HOME) as HomeFragment2
+    private inline fun homeFragment() = fragmentHelper.getFragment(INDEX_HOME) as HomeFragment
 
     fun backMainHome() {
         fragmentHelper.showFragment(INDEX_HOME)

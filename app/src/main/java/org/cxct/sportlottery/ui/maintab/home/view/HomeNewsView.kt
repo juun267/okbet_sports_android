@@ -1,24 +1,19 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ViewHomeNewsBinding
 import org.cxct.sportlottery.databinding.ViewHomeNewsChrisBinding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.HomeFragment2
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
-import org.cxct.sportlottery.util.LogUtil
 import splitties.systemservices.layoutInflater
 
 class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {

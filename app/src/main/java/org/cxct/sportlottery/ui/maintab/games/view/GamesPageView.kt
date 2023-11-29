@@ -17,7 +17,6 @@ import org.cxct.sportlottery.databinding.ViewGamePageBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.enterThirdGame
@@ -269,48 +268,48 @@ class GamesPageView @JvmOverloads constructor(
     }
 
 
-    //首页okGames配置
-    fun initOkGames(fragment:MainHomeFragment){
-        initEnterGame(fragment)
-        //请求games数据
-        fragment.viewModel.getHomeOKGamesList300()
-        setIcon(R.drawable.ic_home_okgames_title)
-        setCategoryName(R.string.N704)
-        //数据监听
-        fragment.viewModel.homeGamesList300.observe(fragment.viewLifecycleOwner) {
-            this.visible()
-            mAdapter.setIsShoeCollect(false)
-            setListData(it,false)
-            setOnGameClick {okGameBean->
-                if(LoginRepository.isLogined()){
-                    loginedRun(fragment.requireContext()) {
-                        okGameBean.let {okGameBean->
-                            fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
-                            fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
-                        }
-                    }
-                }else{
-                    //请求试玩路线
-                    fragment.loading()
-                    fragment.viewModel.requestEnterThirdGameNoLogin(okGameBean)
-                }
-            }
-            setOnMoreClick {
-                fragment.jumpToOKGames()
-            }
-        }
-    }
-
-    private fun <T : MainHomeViewModel> initEnterGame(fragment: BindingSocketFragment<T, *>) {
-        fragment.viewModel.enterThirdGameResult.observe(fragment.viewLifecycleOwner) {
-            if (fragment.isVisible) fragment.enterThirdGame(it.second, it.first)
-        }
-        fragment.viewModel.gameBalanceResult.observe(fragment.viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { event ->
-                TransformInDialog(event.first, event.second, event.third) { enterResult ->
-                    fragment.enterThirdGame(enterResult, event.first)
-                }.show(fragment.childFragmentManager, null)
-            }
-        }
-    }
+//    //首页okGames配置
+//    fun initOkGames(fragment:MainHomeFragment){
+//        initEnterGame(fragment)
+//        //请求games数据
+//        fragment.viewModel.getHomeOKGamesList300()
+//        setIcon(R.drawable.ic_home_okgames_title)
+//        setCategoryName(R.string.N704)
+//        //数据监听
+//        fragment.viewModel.homeGamesList300.observe(fragment.viewLifecycleOwner) {
+//            this.visible()
+//            mAdapter.setIsShoeCollect(false)
+//            setListData(it,false)
+//            setOnGameClick {okGameBean->
+//                if(LoginRepository.isLogined()){
+//                    loginedRun(fragment.requireContext()) {
+//                        okGameBean.let {okGameBean->
+//                            fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
+//                            fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
+//                        }
+//                    }
+//                }else{
+//                    //请求试玩路线
+//                    fragment.loading()
+//                    fragment.viewModel.requestEnterThirdGameNoLogin(okGameBean)
+//                }
+//            }
+//            setOnMoreClick {
+//                fragment.jumpToOKGames()
+//            }
+//        }
+//    }
+//
+//    private fun <T : MainHomeViewModel> initEnterGame(fragment: BindingSocketFragment<T, *>) {
+//        fragment.viewModel.enterThirdGameResult.observe(fragment.viewLifecycleOwner) {
+//            if (fragment.isVisible) fragment.enterThirdGame(it.second, it.first)
+//        }
+//        fragment.viewModel.gameBalanceResult.observe(fragment.viewLifecycleOwner) {
+//            it.getContentIfNotHandled()?.let { event ->
+//                TransformInDialog(event.first, event.second, event.third) { enterResult ->
+//                    fragment.enterThirdGame(enterResult, event.first)
+//                }.show(fragment.childFragmentManager, null)
+//            }
+//        }
+//    }
 }
