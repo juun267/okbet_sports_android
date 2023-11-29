@@ -106,6 +106,9 @@ class ElectTabAdapter(private val onSelected:(OKGamesCategory) -> Unit)
     }
 
     fun setSelected(position:Int): OKGamesCategory? {
+        if (position == currentPosition) {
+            return null
+        }
         val item = getItemOrNull(position) ?: return null
         val lastPosition = currentPosition
         val lastPre = currentPosition - 1
