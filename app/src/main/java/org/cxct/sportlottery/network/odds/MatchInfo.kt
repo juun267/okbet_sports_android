@@ -67,6 +67,8 @@ data class MatchInfo(
     val streamerName: String? = null,//主播名字
     @Json(name = "frontCoverUrl")
     val frontCoverUrl: String? = null,//封面路径
+    @Json(name = "extInfo")
+    val extInfo: String? = null,
 ) : Parcelable, MatchInfo {
     //Live
     var isInPlay: Boolean? = false
