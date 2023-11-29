@@ -9,6 +9,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id('com.google.gms.google-services')
     id('com.google.firebase.crashlytics')
+    id('com.google.protobuf')
 }
 
 android {
@@ -340,7 +341,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    implementation "com.alibaba:fastjson:1.2.73"
+//    implementation "com.alibaba:fastjson:1.2.73"
 
     implementation 'cn.jiguang.sdk:jcore:4.0.0'
     implementation 'cn.jiguang.sdk:jpush:4.8.5'
@@ -382,7 +383,28 @@ dependencies {
 //    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
 //    implementation 'io.github.yidun:captcha:3.4.3' // 网易图形验证
+
+    //protobuf
+    implementation 'com.google.protobuf:protobuf-javalite:3.25.1'
 }
-repositories {
-    mavenCentral()
+
+protobuf {
+    //這裏配置protoc編譯器
+    protoc {
+        if (osdetector.os == "osx") {
+            artifact = 'com.google.protobuf:protoc:3.25.1:osx-x86_64'
+        } else {
+            artifact = 'com.google.protobuf:protoc:3.25.1'
+        }
+    }
+    //這裏配置生成目錄，編譯後會在build的目錄下生成對應的java文件
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    option "lite"
+                }
+            }
+        }
+    }
 }

@@ -51,7 +51,7 @@ open class ThirdGameActivity : WebActivity() {
         initObserve()
 
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
-            if (it.isMaintain() && firmCode == it.firmType /*&& gameType == it.gameType*/) {
+            if ((it.maintain.toInt() == 1) && firmCode == it.firmType /*&& gameType == it.gameType*/) {
                 motion_menu.gone()
                 showErrorPromptDialog(getString(R.string.error), getString(R.string.hint_game_maintenance)) {
                     finish()

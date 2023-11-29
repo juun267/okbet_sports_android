@@ -1,0 +1,646 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/struct.proto";
+
+
+option java_package = "com.lc.sports.ws.protocol.protobuf";
+option java_outer_classname = "FrontWsEvent";
+
+message StringMap {
+    map<string, string> value = 1;
+}
+/**
+* MATCH_PARLAY_CHANGE 赛事串关更改事件
+*/
+message SwitchParlayMatchEvent {
+    int32 status = 1;
+    string matchId = 2;
+}
+
+/**
+* STOP_BET_CONFIRM_MATCH，MTS风控后台专用，不涉及前端
+*/
+message BetConfirmMatchEvent {
+    int32 status = 1;
+    string matchId = 2;
+}
+
+message PlayOddsWithTypeVO {
+    string hkOdds = 1;
+    string malayOdds = 2;
+    string indoOdds = 3;
+    int32 marketSort = 4;
+    string hkOddsFromSource = 5;
+    string malayOddsFromSource = 6;
+    string indoOddsFromSource = 7;
+    string mtsSelections = 8;
+    int32 dynamicSpread = 9;
+    int32 dynamicExtInfo = 10;
+    string dynamicMarket = 11;
+    int32 eventType = 12;
+    string group = 13;
+    int32 matchTime = 14;
+    string id = 15;
+    string matchId = 16;
+    string leagueId = 17;
+    string gameType = 18;
+    int64 playCateId = 19;
+    string playCateCode = 20;
+    int64 playId = 21;
+    string playCode = 22;
+    string spread = 23;
+    string odds = 24;
+    string oddsFromSource = 25;
+    string oddsType = 26;
+    int32 rowSort = 27;
+    int64 addTime = 28;
+    int64 updateTime = 29;
+    int32 statusFromSource = 30;
+    int32 status = 31;
+    string extInfo = 32;
+    int32 parlay = 33;
+    int32 producerId = 34;
+    string rtScore = 35;
+}
+
+/**
+* MTS_PLAY_ODDS ， MTS风控后台专用，不涉及前端
+*/
+message MtsPlayOddsEvent {
+    string matchId = 1;
+    repeated PlayOddsWithTypeVO playOddsList = 2;
+}
+
+message OddsMarginConfig {
+    string id = 1;
+    string eventId = 2;
+    string playCateCode = 3;
+    string playCode = 4;
+    string oddsId = 5;
+    int32 margin = 6;
+    string oddsType = 7;
+    string spread = 8;
+    int32 priority = 9;
+}
+
+/**
+* ODDS_MARGIN_CHANGED， MTS风控后台专用，不涉及前端
+*/
+message OddsMarginChangedEvent {
+    repeated OddsMarginConfig configList = 1;
+    string matchId = 2;
+}
+
+message OddsSuspendConfig {
+    string id = 1;
+    string eventId = 2;
+    string playCateCode = 3;
+    string playCode = 4;
+    string oddsId = 5;
+    int32 marketSort = 7;
+    int32 type = 8;
+}
+
+/**
+* ODDS_SUSPEND_CHANGED， MTS风控后台专用，不涉及前端
+*/
+message OddsSuspendChangedEvent {
+    repeated OddsSuspendConfig configList = 1;
+    string matchId = 2;
+    string reason = 3;
+}
+
+
+message BaseSportBet {
+    string uniqNo = 1;
+    string orderNo = 2;
+    int64 userId = 3;
+    string userName = 4;
+    string stake = 5;
+    int32 num = 6;
+    string totalAmount = 7;
+    string grossWin = 8;
+    string win = 9;
+    int32 status = 10;
+    string cancelReason=11;
+}
+
+/**
+* ORDER_SETTLEMENT
+*/
+message BetSettlementEvent {
+    BaseSportBet sportBet = 1;
+    int32 isChampionship = 2;
+}
+
+/**
+* CLOSE_PLAY_CATE
+*/
+message ClosePlayCateEvent {
+    string gameType = 1;
+    string playCateCode = 2;
+}
+
+/**
+* DATA_SOURCE_CHANGE
+*/
+message DataSourceChangeEvent {
+}
+
+/**
+*   GLOBAL_STOP
+*/
+message GlobalStopEvent {
+    // probably be null
+    google.protobuf.Int32Value producerId = 1;
+}
+
+/**
+* LEAGUE_CHANGE
+*/
+message LeagueChangeEvent {
+    repeated string leagueIdList = 1;
+    repeated string matchIdList = 2;
+    string gameType = 3;
+}
+
+/**
+* MATCH_STATUS_SWITCH
+*/
+message MatchStatusSwitchEvent {
+    repeated string matchIdList = 1;
+    string gameType = 2;
+    bool isOpen = 3;
+}
+
+/**
+* MATCH_CLOCK
+*/
+message MatchClockEvent {
+    string matchId = 1;
+    int64 eventDate = 2;
+    int64 scheduledTime = 3;
+    int32 matchTime = 4;
+    int32 stoppageTime = 5;
+    int32 stoppageTimeAnnounced = 6;
+    int32 remainingTime = 7;
+    int32 remainingTimeInPeriod = 8;
+    int32 stopped = 9;
+    string gameType = 10;
+}
+
+message PlayCateTypeVO {
+    string code = 1;
+    string name = 2;
+    string gameType = 3;
+    int64 sort = 4;
+    string remark = 5;
+}
+
+message NullableOddsWithPlayNameVO {
+    oneof kind {
+        google.protobuf.NullValue null = 1;
+        OddsWithPlayNameVO oddsWithPlayNameVO = 2;
+    }
+}
+
+message OddsWithPlayNameVO {
+    string id = 1;
+    string name = 2;
+    string extInfo = 3;
+    string spread = 4;
+    string odds = 5;
+    int32 marketSort = 9;
+    int32 status = 10;
+    int32 producerId = 11;
+    string playCode = 12;
+    int32 rowSort = 13;
+    //仅球员等动态玩法保留该翻译
+    map<string, string> nameMap = 14;
+    map<string, string> extInfoMap = 15;
+}
+
+
+message OddsDetailVO {
+    string playCateCode = 1;
+    string typeCodes = 2;
+    string name = 3;
+    repeated NullableOddsWithPlayNameVO odds = 5;
+    int32 rowSort = 6;
+}
+
+/**
+* MATCH_ODDS_CHANGE
+*/
+message MatchOddsChangeEvent {
+    string eventId = 1;
+    int32 isLongTermEvent = 2;
+    repeated PlayCateTypeVO playCateTypeList = 3;
+    repeated OddsDetailVO oddsList = 5;
+    string gameType = 6;
+    string eventType = 7;
+}
+
+/**
+* MATCH_ODDS_LOCK
+*/
+message MatchOddsLockEvent {
+    string matchId = 1;
+    bool outright = 2;
+}
+
+message MatchStatusCO {
+    string dataId = 1;
+    string matchId = 2;
+    int32 status = 3;
+    string statusName = 4;
+    string gameType = 5;
+    string homeTotalScore = 6;
+    string awayTotalScore = 7;
+    string homeScore = 8;
+    string awayScore = 9;
+    string homeHalfScore = 10;
+    string awayHalfScore = 11;
+    string homePoints = 12;
+    string awayPoints = 13;
+    int32 homeCornerKicks = 14;
+    int32 awayCornerKicks = 15;
+    int32 homeCards = 16;
+    int32 awayCards = 17;
+    int32 homeYellowCards = 18;
+    int32 awayYellowCards = 19;
+    string homeOver = 20;
+    string awayOver = 21;
+    string homeOut = 22;
+    string awayOut = 23;
+    string attack = 24;
+    int32 halfStatus = 25;
+    string firstBaseBag = 26;
+    string secBaseBag = 27;
+    string thirdBaseBag = 28;
+    string outNumber = 29;
+    int64 time = 30;
+    int32 latestStatus = 31;
+    repeated Period periods = 33;
+    repeated Player players = 34;
+    //    map<string, string> statusNameI18n = 35;
+}
+
+
+message Period {
+    int32 status = 1;
+    string statusName = 2;
+    string homeScore = 3;
+    string awayScore = 4;
+    int32 homeCornerKicks = 5;
+    int32 awayCornerKicks = 6;
+    string homeCards = 7;
+    string awayCards = 8;
+    int32 homeYellowCards = 9;
+    int32 awayYellowCards = 10;
+}
+
+
+message Player {
+    string name = 1;
+    string score = 2;
+    int32 order = 3;
+}
+
+message SimpleMatchStatusVO {
+    int32 statusCode = 1;
+    string statusName = 2;
+    string homeScore = 4;
+    string awayScore = 5;
+}
+
+/**
+* MATCH_STATUS_CHANGE
+*/
+message MatchStatusChangeEvent {
+    MatchStatusCO matchStatusCO = 1;
+    repeated SimpleMatchStatusVO matchStatusList = 2;
+}
+
+/**
+* NOTICE
+*/
+message NoticeEvent {
+    string message = 1;
+}
+
+
+message NullableOddsVO {
+    oneof kind {
+        google.protobuf.NullValue null = 1;
+        OddsVO oddsVO = 2;
+    }
+}
+
+message OddsVO {
+    string id = 1;
+    string name = 2;
+    string spread = 3;
+    string extInfo = 4;
+    string odds = 5;
+    int32 marketSort = 9;
+    int32 status = 10;
+    int32 producerId = 11;
+    string gameType = 14;
+    int64 playCateId = 15;
+    string playCateCode = 16;
+    //仅球员等动态玩法保留翻译
+    map<string, string> nameMap = 17;
+    map<string, string> extInfoMap = 18;
+    //玩法编码
+    string playCode = 19;
+}
+
+
+message OddsMarketVO {
+    string playCateCode = 1;
+    repeated NullableOddsVO oddsList = 3;
+}
+
+message QuickPlayCateVO {
+    string gameType = 1;
+    string code = 2;
+    string name = 3;
+    int32 sort = 4;
+}
+
+/**
+* ODDS_CHANGE
+*/
+message OddsChangeEvent {
+    string eventId = 1;
+    int32 isLongTermEvent = 2;
+    repeated OddsMarketVO oddsList = 4;
+    string gameType = 6;
+    repeated QuickPlayCateVO quickPlayCateList = 7;
+    //仅冠军有效
+    map<string, StringMap> dynamicMarkets = 8;
+    int32 playCateNum = 10;
+}
+
+/**
+* PING_PONG
+*/
+message PingPongEvent {
+    string message = 1;
+}
+
+message PlayQuotaCom {
+    int64 id = 1;
+    string code = 2;
+    string name = 3;
+    string min = 4;
+    string max = 5;
+    int64 platformId = 6;
+    string gameType = 7;
+}
+/**
+* PLAY_QUOTA_CHANGE
+*/
+message PlayQuotaChangeEvent {
+    map<string, PlayQuotaCom> playQuotaComMap = 1;
+}
+
+/**
+*   PRODUCER_UP
+*/
+message ProducerUpEvent {
+    // probably be null
+    google.protobuf.Int32Value producerId = 1;
+}
+
+/**
+*   SYS_MAINTENANCE
+*/
+message SysMaintainEvent {
+    int32 status = 1;
+}
+/**
+* SPORT_MAINTENANCE
+*/
+message SportMaintainEvent {
+    int32 status = 1;
+}
+/**
+*   USER_DISCOUNT_CHANGE
+*/
+message UserDiscountChangeEvent {
+    string discount = 1;
+}
+
+/**
+*   USER_INFO_CHANGE
+*/
+message UserInfoChangeEvent {
+}
+
+message UserLevelConfig {
+    int64 id = 1;
+    string code = 2;
+    string name = 3;
+    int64 growthThreshold = 4;
+    int64 maxBetMoney = 5;
+    int64 maxParlayBetMoney = 6;
+    int64 maxCpBetMoney = 7;
+}
+
+/**
+*   USER_LEVEL_CONFIG_CHANGE
+*/
+message UserLevelConfigChangeEvent {
+    repeated UserLevelConfig userLevelConfigList = 1;
+}
+/**
+*   LOCK_MONEY
+*/
+message UserLockMoneyEvent {
+    string lockMoney = 1;
+    int64 uwEnableTime = 2;
+}
+/**
+*   USER_MONEY
+*/
+message UserMoneyEvent {
+    string money = 1;
+}
+
+message UserNotice {
+    int64 id = 1;
+    int64 userId = 2;
+    string userName = 3;
+    int64 addDate = 4;
+    string title = 5;
+    string content = 6;
+    int64 operatorId = 7;
+    string operatorName = 8;
+    int64 isRead = 9;
+    int64 tempId = 10;
+    int64 noticeType = 11;
+    int64 msgShowType = 12;
+    int64 status = 13;
+    int64 platformId = 14;
+}
+
+/**
+*   USER_NOTICE
+*/
+message UserNoticeEvent {
+    repeated UserNotice userNoticeList = 1;
+}
+
+/**
+*   USER_RECH_CFG
+*/
+message UserRechCfgEvent {
+}
+
+
+message League {
+    string id = 1;
+    string name = 2;
+    string categoryCode = 3;
+    string category = 4;
+    string categoryIcon = 5;
+}
+
+message MatchInfo {
+    string id = 1;
+    string leagueId = 2;
+    string leagueName = 3;
+    string homeId = 4;
+    string homeName = 5;
+    string awayId = 6;
+    string awayName = 7;
+    int64 startTime = 8;
+    int64 endTime = 9;
+    int32 status = 10;
+    int32 playCateNum = 11;
+    string name = 12;
+    string img = 13;
+    string msg = 14;
+    int32 parlay = 15;
+    int32 liveVideo = 16;
+    int32 neutral = 17;
+    int32 eps = 18;
+    int32 spt = 19;
+    string trackerId = 20;
+    string tvId = 21;
+    string streamId = 22;
+    string gameType = 23;
+    int32 source = 24;
+    string homeIcon = 25;
+    string homeIconSvg = 26;
+    string awayIcon = 27;
+    string awayIconSvg = 28;
+    int32 inplay = 29;
+    int32 isLive = 30;
+    string roundNo = 31;
+    string streamerIcon = 32;
+    string streamerName = 33;
+    string frontCoverUrl = 34;
+}
+
+
+message MobileHotHandicapVO {
+    League league = 1;
+    MatchInfo matchInfo = 2;
+    string oddsSort = 3;
+    string sportName = 5;
+}
+
+
+message MobileLiveRoundHallEvent {
+    repeated MobileHotHandicapVO mobileHotHandicapVOList = 1;
+}
+
+message RecordEvent {
+    string player = 1;
+    string iconUrl = 2;
+    string games = 3;
+    string betAmount = 4;
+    string profitAmount = 5;
+    string firmType = 6;
+    string gameCode= 7;
+    string pcImgGame = 8;
+    string h5ImgGame = 9;
+    string gameEntryType=10;
+    int64 betTime =11;
+}
+
+message BkShotEvent {
+    string nickname = 1;
+    string time = 2;
+    string type = 3;
+    string win = 4;
+}
+
+message GameFirmMaintainEvent {
+    string firmName = 1;
+    string firmCode = 2;
+    string firmType = 3;
+    int64 maintain = 4;
+    int64 PushType = 5;
+    string gameType = 6;
+}
+
+message JackpotEvent {
+    string amount = 1;
+}
+
+message Event {
+    /**
+     * 用于区分事件类型， 具体事件类型标记在各个定义的类型上方，例如： MatchClockEvent 对应 MATCH_CLOCK
+     */
+    string eventType = 1;
+    oneof differentEvents {
+        BetConfirmMatchEvent betConfirmMatchEvent = 2;
+        BetSettlementEvent betSettlementEvent = 3;
+        ClosePlayCateEvent closePlayCateEvent = 4;
+        DataSourceChangeEvent dataSourceChangeEvent = 5;
+        GlobalStopEvent globalStopEvent = 6;
+        LeagueChangeEvent leagueChangeEvent = 7;
+        MatchClockEvent matchClockEvent = 8;
+        MatchOddsChangeEvent matchOddsChangeEvent = 9;
+        MatchOddsLockEvent matchOddsLockEvent = 10;
+        MatchStatusChangeEvent matchStatusChangeEvent = 11;
+        MtsPlayOddsEvent mtsPlayOddsEvent = 12;
+        NoticeEvent noticeEvent = 13;
+        OddsChangeEvent oddsChangeEvent = 14;
+        OddsMarginChangedEvent oddsMarginChangedEvent = 15;
+        OddsSuspendChangedEvent oddsSuspendChangedEvent = 16;
+        PingPongEvent pingPongEvent = 17;
+        PlayQuotaChangeEvent playQuotaChangeEvent = 18;
+        ProducerUpEvent producerUpEvent = 19;
+        SysMaintainEvent sysMaintainEvent = 20;
+        UserDiscountChangeEvent userDiscountChangeEvent = 21;
+        UserInfoChangeEvent userInfoChangeEvent = 22;
+        UserLevelConfigChangeEvent userLevelConfigChangeEvent = 23;
+        UserLockMoneyEvent userLockMoneyEvent = 24;
+        UserMoneyEvent userMoneyEvent = 25;
+        UserNoticeEvent userNoticeEvent = 26;
+        UserRechCfgEvent userRechCfgEvent = 27;
+        MobileLiveRoundHallEvent mobileLiveRoundHallEvent = 28;
+        MatchStatusSwitchEvent matchStatusSwitchEvent = 29;
+        RecordEvent recordNewEvent = 30;
+        RecordEvent recordResultEvent = 31;
+        SwitchParlayMatchEvent switchParlayMatchEvent = 32;
+        RecordEvent recordNewOkGamesEvent = 33;
+        RecordEvent recordResultOkGamesEvent = 34;
+        BkShotEvent bkShotEvent=35;
+        GameFirmMaintainEvent gameFirmMaintainEvent=36;
+        JackpotEvent recordResultJackpotOkGamesEvent = 37;
+        SportMaintainEvent sportMaintainEvent = 38;
+    }
+}
+
+/**
+* 对外公开协议，统一为Events
+*/
+message Events {
+    repeated Event events = 1;
+}

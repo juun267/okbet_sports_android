@@ -110,13 +110,6 @@
 #-keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.network.** { *; }
 #-keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.ui.** { *; }
 
-#====== fastjson ============ start
-#-keepclassmembers class com.alibaba.fastjson.** { *; }
--keepclassmembers public class * {
-    public void set*(***);
-    public *** get*();
-}
-#====== fastjson ============ end
 -dontoptimize
 -dontpreverify
 
@@ -125,6 +118,7 @@
 -keep class * extends cn.jpush.android.service.JPushMessageReceiver { *; }
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
--keep class com.squareup.wire.** { *; }
--keep class com.opensource.svgaplayer.proto.** { *; }
+
+#protobuf
+-keepclassmembers public class * extends com.google.protobuf.** {*;}
 

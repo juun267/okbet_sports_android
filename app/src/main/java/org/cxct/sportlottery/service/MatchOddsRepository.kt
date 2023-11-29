@@ -2,20 +2,20 @@ package org.cxct.sportlottery.service
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.common.extentions.doOnDestory
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 
 
 object MatchOddsRepository {
-    private val matchStatuObservers = mutableListOf<Observer<MatchStatusChangeEvent>>()
+    private val matchStatuObservers = mutableListOf<Observer<FrontWsEvent.MatchStatusChangeEvent>>()
     private val matchOddsObservers = mutableListOf<Observer<MatchOddsChangeEvent>>()
 
-    fun onMatchStatus(statusEvent: MatchStatusChangeEvent) {
+    fun onMatchStatus(statusEvent: FrontWsEvent.MatchStatusChangeEvent) {
         matchStatuObservers.forEach { it.onChanged(statusEvent) }
     }
 
-    fun observerMatchStatus(lifecycleOwner: LifecycleOwner, observer: Observer<MatchStatusChangeEvent>) {
+    fun observerMatchStatus(lifecycleOwner: LifecycleOwner, observer: Observer<FrontWsEvent.MatchStatusChangeEvent>) {
         lifecycleOwner.doOnDestory { matchStatuObservers.remove(observer) }
         matchStatuObservers.add(observer)
     }

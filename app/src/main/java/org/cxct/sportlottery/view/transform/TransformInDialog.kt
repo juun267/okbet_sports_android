@@ -120,7 +120,7 @@ class TransformInDialog(val firmType: String,
         }
 
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
-            if (firmType == it.firmType && it.isMaintain()) {
+            if (firmType == it.firmType && (it.maintain.toInt() == 1)) {
 
                 if (context is BaseActivity<*>) {
                     val act = context as BaseActivity<*>

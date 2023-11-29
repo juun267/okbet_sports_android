@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.network.sport
+
 import org.cxct.sportlottery.network.Constants.SPORT_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.SPORT_PUBLICITY_RECOMMEND
 import org.cxct.sportlottery.network.Constants.SPORT_MENU_FILTER
 import org.cxct.sportlottery.network.Constants.SPORT_SEARCH_ENGINE
+import org.cxct.sportlottery.network.Constants.INDEX_RESOURCE_JSON
 import org.cxct.sportlottery.network.sport.list.SportListResponse
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendResult
@@ -42,4 +44,7 @@ interface SportService {
 
     @GET(SPORT_MENU_FILTER)
     suspend fun getSportListFilter(): Response<SportMenuFilterResult>
+
+    @GET(INDEX_RESOURCE_JSON)
+    suspend fun getIndexResourceJson(): Response<IndexResourceJsonResult>
 }

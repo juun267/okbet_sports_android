@@ -68,6 +68,8 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : RecyclerView.Vie
             ?.replace("||", "\n")
             ?.replace("{E}", extInfo)
             ?.replace("{extInfo}", extInfo)
+            ?.replace("{H}", "${matchInfo?.homeName}")
+            ?.replace("{C}", "${matchInfo?.awayName}")
             ?: ""
         var playCateCode = odds.first ?: ""
         //去掉mappingCS playCateCode的後綴

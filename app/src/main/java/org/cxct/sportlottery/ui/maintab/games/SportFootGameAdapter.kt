@@ -40,8 +40,8 @@ class SportFootGameAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
     fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner) {
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleOwner.lifecycleScope) { gamesMaintain ->
             data.forEachIndexed { index, okGameBean ->
-                if (okGameBean.isMaintain() != gamesMaintain.isMaintain() && (okGameBean.firmType == gamesMaintain.firmType)) {
-                    okGameBean.maintain = gamesMaintain.maintain
+                if (okGameBean.isMaintain() != (gamesMaintain.maintain.toInt() == 1) && (okGameBean.firmType == gamesMaintain.firmType)) {
+                    okGameBean.maintain = gamesMaintain.maintain.toInt()
                     notifyItemChanged(index, GAME_MAINTAIN)
                 }
             }

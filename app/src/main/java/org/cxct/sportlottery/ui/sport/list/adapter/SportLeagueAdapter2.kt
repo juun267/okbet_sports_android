@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport.list.adapter
 
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.entity.node.BaseNode
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.common.MatchType
@@ -10,7 +11,6 @@ import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.util.QuickListManager
@@ -213,7 +213,7 @@ class SportLeagueAdapter2(
         }
     }
 
-    fun closePlayCate(closeEvent: ClosePlayCateEvent) {
+    fun closePlayCate(closeEvent: FrontWsEvent.ClosePlayCateEvent) {
         if (getCount() < 1 || rootNodes.isNullOrEmpty()) {
             return
         }

@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
 import android.app.Application
-import org.cxct.sportlottery.network.service.user_notice.UserNotice
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -20,7 +20,7 @@ abstract class BaseNoticeViewModel(
     betInfoRepository,
     infoCenterRepository
 ) {
-    fun setUserNoticeList(userNoticeList: List<UserNotice>) {
+    fun setUserNoticeList(userNoticeList: List<FrontWsEvent.UserNotice>) {
         infoCenterRepository.setUserNoticeList(userNoticeList)
     }
 }

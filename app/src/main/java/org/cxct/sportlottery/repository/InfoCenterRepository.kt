@@ -2,11 +2,11 @@ package org.cxct.sportlottery.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
 import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
-import org.cxct.sportlottery.network.service.user_notice.UserNotice
 import retrofit2.Response
 import timber.log.Timber
 
@@ -55,7 +55,7 @@ class InfoCenterRepository {
                     response.body().let {
                         moreUnreadList = mutableListOf()
                         val newUnreadNoticeList = it?.infoCenterData?.filter { infoCenterData ->
-                            infoCenterData.isRead == MsgType.NOTICE_UNREAD.code
+                            infoCenterData.isRead.toString() == MsgType.NOTICE_UNREAD.code.toString()
                         } as MutableList<InfoCenterData>
 
                         if(infoCenterRequest.page !=1 ){
@@ -76,7 +76,7 @@ class InfoCenterRepository {
                 MsgType.NOTICE_READED.code -> {
                     response.body().let {
                         _readedList.postValue(it?.infoCenterData?.filter { infoCenterData ->
-                            infoCenterData.isRead == MsgType.NOTICE_READED.code
+                            infoCenterData.isRead.toString() == MsgType.NOTICE_READED.code.toString()
                         })
                         _totalReadMsgCount.postValue(it?.total?:0)
                     }
@@ -91,7 +91,7 @@ class InfoCenterRepository {
 
         if (response.isSuccessful) {
             val noticeList = _unreadList.value?.toMutableList()
-            noticeList?.find { it.id == msgId.toInt()}?.let { noticeList?.remove(it) }
+            noticeList?.find { it.id.toString() == msgId }?.let { noticeList?.remove(it) }
             _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())
 //            response.body()?.total?.let { _totalUnreadMsgCount.postValue(it) }
         }
@@ -120,7 +120,7 @@ class InfoCenterRepository {
         }
     }
 
-    fun setUserNoticeList(userNoticeList: List<UserNotice>) {
+    fun setUserNoticeList(userNoticeList: List<FrontWsEvent.UserNotice>) {
 
         val noticeList = _unreadNoticeList.value?.toMutableList()
         val unreadUserNoticeList = userNoticeList.map {
@@ -138,7 +138,7 @@ class InfoCenterRepository {
                 it.operatorName
             )
         }.filter {
-            it.isRead == MsgType.NOTICE_UNREAD.code
+            it.isRead.toString() == MsgType.NOTICE_UNREAD.code.toString()
         }
         unreadUserNoticeList.forEach {
             noticeList?.let { noticeList ->
