@@ -8,11 +8,13 @@ import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.match_odds_change.Odds
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.repository.GamePlayNameRepository
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
+import java.math.BigDecimal
 
 object SocketUpdateUtil {
     /**
@@ -670,6 +672,7 @@ object SocketUpdateUtil {
         //新玩法
         val newPlay = matchOddsChangeEvent.odds?.filter { socketOdds ->
             oddsDetailDataList.find { it.gameType == socketOdds.key } == null
+                    && socketOdds.value.odds?.all { it?.status != BetStatus.DEACTIVATED.code } ?: true //新玩法應過濾 DEACTIVATED odds
         }
 
         //加入新玩法
@@ -686,7 +689,7 @@ object SocketUpdateUtil {
                 value.name,
                 filteredOddList,
                 value.nameMap,
-                value.rowSort
+                value.rowSort, matchInfo = oddsDetailDataList.firstOrNull()?.matchInfo
             ).apply {
                 originPosition = newOddsDetailDataList.size
             })
@@ -840,7 +843,7 @@ object SocketUpdateUtil {
     private fun insertMatchOdds(
         oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent
     ): Boolean {
-        val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds.keys.find {
+        val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds?.keys?.find {
             it == oddsDetailListData.gameType
         })
 
@@ -872,15 +875,83 @@ object SocketUpdateUtil {
         return oddsChangeEvent.quickPlayCateList?.isNotEmpty() ?: false
     }
 
+    /**
+     * 置換玩法翻譯名稱
+     * 配置{H}, {C}翻譯取代文字
+     * 新增{E} -> 附加訊息(extInfo)
+     */
+    fun Map<String, Odds>?.replaceNameMap(matchInfo: org.cxct.sportlottery.network.odds.MatchInfo?): Map<String, Odds>? {
+        val newMap = this?.toMutableMap()
+        newMap?.forEach { (playCateCode, value) ->
+            value.nameMap?.toMap()?.forEach { (playCode, translateName) ->
+
+//                value.extInfoReplaced = translateName?.contains("{E}") == true
+
+                val newNameMap = this?.get(playCateCode)?.nameMap?.toMutableMap()
+                val replacedName =
+                    translateName?.replace("||", "\n")?.replace(
+                        "{S}",
+                        (if (playCateCode.contains(":")) playCateCode.split(":")
+                            .getOrNull(1) else value.odds?.firstOrNull()?.extInfo) ?: "{S}"
+                    )?.replace("{H}", matchInfo?.homeName ?: "{H}")?.replace("{C}", matchInfo?.awayName ?: "{C}")?.replace(
+                        "{E}",
+                        value.odds?.maxByOrNull { it?.extInfo?.toBigDecimalOrNull() ?: BigDecimal.ZERO }?.extInfo
+                            ?: matchInfo?.extInfo ?: "{E}"
+                    )
+
+                newNameMap?.put(playCode, replacedName)
+
+                newMap[playCateCode]?.nameMap = newNameMap
+            }
+
+            value.odds.replaceNameMap(matchInfo)
+        }
+
+        return newMap?.toMap()
+    }
+
+    /**
+     * 置換盤口訊息翻譯名稱
+     * 配置{H}, {C}, {S}翻譯取代文字
+     * 新增{E} -> 附加訊息(extInfo)
+     * {P} -> spread
+     * 需在replaceScore已經配置之後執行此method才會替換{S}
+     */
+    private fun MutableList<Odd?>?.replaceNameMap(matchInfo: org.cxct.sportlottery.network.odds.MatchInfo?) {
+        this?.toList()?.forEach { odd ->
+            odd?.nameMap?.toMap()?.forEach { (playCode, translateName) ->
+
+                val newNameMap = odd.nameMap?.toMutableMap()
+                val replacedName = translateName?.replace("||", "\n")?.replace("{S}", odd.replaceScore ?: "{S}")
+                    ?.replace("{H}", matchInfo?.homeName ?: "{H}")?.replace("{C}", matchInfo?.awayName ?: "{C}")
+                    ?.replace("{E}", matchInfo?.extInfo ?: "{E}")?.replace("{P}", odd.spread ?: "{P}")
+
+                newNameMap?.put(playCode, replacedName)
+
+                odd.nameMap = newNameMap
+
+            }
+        }
+    }
+
 
     private fun refreshMatchOdds(
         oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent
     ): Boolean {
         var isNeedRefresh = false
 
-        val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds.keys.find {
+        //置換玩法翻譯名稱
+        val newMatchOddsMap = matchOddsChangeEvent.odds.replaceNameMap(oddsDetailListData.matchInfo)
+        matchOddsChangeEvent.odds = newMatchOddsMap
+
+        val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds?.keys?.find {
             it == oddsDetailListData.gameType
         })
+
+        //更新玩法翻譯
+        odds?.nameMap?.let {
+            oddsDetailListData.nameMap = it
+        }
 
         oddsDetailListData.oddArrayList.forEach { odd ->
             val oddSocket = odds?.odds?.find { oddSocket ->
