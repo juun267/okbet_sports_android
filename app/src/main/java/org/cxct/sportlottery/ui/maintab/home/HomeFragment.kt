@@ -108,6 +108,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
             setUpBanner()
             viewModel.getActivityImageListH5()
             homeMenuAdapter.reload()
+            homeMenuAdapter.checkMaintain()
             if (homeMenuAdapter.dataCount() < 7) {
                 binding.hIndicator.gone()
             }
@@ -128,6 +129,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
         }
         setupSportStatusChange(this){
             homeMenuAdapter.notifyDataSetChanged()
+            homeMenuAdapter.checkMaintain()
         }
     }
 
