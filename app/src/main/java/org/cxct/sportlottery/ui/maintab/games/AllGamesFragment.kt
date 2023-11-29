@@ -26,10 +26,10 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private val gameListAdapter= RecyclerGameListAdapter()
     private var categoryList = mutableListOf<OKGamesCategory>()
 
-    private var lastRequestTimeStamp = 0L
-
 
     private fun okGamesFragment() = parentFragment as OKGamesFragment
+    private fun getMainTabActivity() = activity as MainTabActivity
+
     override fun createRootView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
@@ -71,9 +71,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     override fun onResume() {
         super.onResume()
-        if (okGamesFragment().activity is MainTabActivity
-            && okGamesFragment().getCurrentFragment() == this
-        ) {
+        if (getMainTabActivity().getCurrentFragment() == okGamesFragment()
+            && okGamesFragment().getCurrentFragment() == this) {
             unSubscribeChannelHallAll()
             //重新设置赔率监听
 
