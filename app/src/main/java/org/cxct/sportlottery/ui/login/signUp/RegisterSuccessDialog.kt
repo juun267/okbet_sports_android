@@ -12,10 +12,12 @@ import org.cxct.sportlottery.databinding.DialogRegisterSuccessBinding
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setupSummary
+import org.cxct.sportlottery.view.isVisible
 
-class RegisterSuccessDialog(): BaseDialog<MainHomeViewModel>(MainHomeViewModel::class) {
+class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>(BaseViewModel::class) {
 
     companion object{
         var ifNew = false
@@ -54,7 +56,7 @@ class RegisterSuccessDialog(): BaseDialog<MainHomeViewModel>(MainHomeViewModel::
         setupSummary(binding.tvSummary)
         binding.btnRecharge.setOnClickListener {
             dismissAllowingStateLoss()
-            viewModel.checkRechargeKYCVerify()
+            onRecharge.invoke()
         }
         setOnClickListeners(binding.ivClose,binding.btnConfirm){
             dismissAllowingStateLoss()

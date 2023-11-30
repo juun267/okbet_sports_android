@@ -27,8 +27,9 @@ class LiveGamesFragment: ElectGamesFragment<OKGamesViewModel, FragmentGamevenueB
 
 
     override fun onInitData() {
-        if(gameAdapter2.itemCount==0)
-            loading()
+        if(gameAdapter2.itemCount == 0) {
+            showLoadingView()
+        }
         viewModel.getOKLiveHall()
     }
 

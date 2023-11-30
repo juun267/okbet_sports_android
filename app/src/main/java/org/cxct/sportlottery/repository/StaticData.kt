@@ -88,7 +88,7 @@ private fun getLoginCurrency(): String? =
 
 // 通过应用商店升级应用
 inline fun upgradeFromMarket(): Boolean {
-    return BuildConfig.FLAVOR.startsWith("google", true)
+    return BuildConfig.FLAVOR.startsWith("google_", true)
 }
 
 /**

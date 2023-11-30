@@ -136,7 +136,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             R.string.menu -> { // 菜单
                 val currentFragment = fragmentHelper.getCurrentFragment()
                 onMenuEvent(MenuEvent(true))
-                Log.e("For Test", "=====>>> currentFragment=${currentFragment.javaClass}")
                 if (currentFragment is SportFragment2) {
                     showSportLeftMenu()
                 } else {
