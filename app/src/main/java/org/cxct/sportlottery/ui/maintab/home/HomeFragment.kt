@@ -87,12 +87,19 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
     }
 
     override fun onInitView(view: View) {
+        setChristmasStyle()
         initToolBar()
         binding.rvMarquee.bindLifecycler(this)
         initMenu()
         initIndicate()
         binding.ivService.setOnTouchListener(SuckEdgeTouch())
         binding.ivService.setServiceClick(childFragmentManager)
+    }
+
+    private fun setChristmasStyle() {
+        binding.root.setBackgroundResource(R.color.color_f2f4fa)
+        homeMenuAdapter.setChristmasStyle()
+        binding.ivBroadcast.setImageResource(R.drawable.ic_notice_blue)
     }
 
     override fun onBindViewStatus(view: View) {
@@ -108,6 +115,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
             setUpBanner()
             viewModel.getActivityImageListH5()
             homeMenuAdapter.reload()
+            homeMenuAdapter.checkMaintain()
             if (homeMenuAdapter.dataCount() < 7) {
                 binding.hIndicator.gone()
             }
@@ -128,6 +136,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
         }
         setupSportStatusChange(this){
             homeMenuAdapter.notifyDataSetChanged()
+            homeMenuAdapter.checkMaintain()
         }
     }
 
