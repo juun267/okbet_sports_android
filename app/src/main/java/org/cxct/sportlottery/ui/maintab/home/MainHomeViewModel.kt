@@ -219,7 +219,7 @@ open class MainHomeViewModel(
      */
     fun getGameFirms() {
         callApi({ OKGamesRepository.getGameFirms() }) {
-            _homeAllProvider.postValue(it.getData()?.filter { it.open==1 }?.sortedByDescending { it.sort?:0 }?: listOf())
+            _homeAllProvider.postValue(it.getData()?.filter { it.open==1 }?: listOf())
         }
     }
 
