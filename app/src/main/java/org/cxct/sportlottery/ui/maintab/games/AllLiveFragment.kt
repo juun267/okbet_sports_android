@@ -30,7 +30,6 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
     private fun getMainTabActivity() = activity as MainTabActivity
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
     private lateinit var binding: FragmentAllOkliveBinding
-    private val providersAdapter by lazy { OkGameProvidersAdapter() }
     private var categoryList = mutableListOf<OKGamesCategory>()
 
     private var p3ogProviderFirstPosi: Int = 0
@@ -121,7 +120,10 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
             gameListAdapter.setList(categoryList)
             viewModel.getRecentPlay()
         }
-
+        viewModel.providerResult.observe(viewLifecycleOwner) { resultData ->
+            val firmList = resultData?.firmList ?: return@observe
+            okLiveFragment().setupProvider(firmList.toMutableList())
+        }
         collectList.observe(viewLifecycleOwner) {
             if(viewModel.loginRepository.isLogined()){
                 if(it.second.isNullOrEmpty()){
@@ -218,60 +220,6 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
             { viewModel.getOKGamesRecordNew() },
             { viewModel.getOKGamesRecordResult() })
 
-        binding.ivProvidersLeft.alpha = 0.5F
-        providersAdapter.setOnItemClickListener { _, _, position ->
-            okLiveFragment().changePartGames(providersAdapter.getItem(position))
-        }
-
-        var okGameProLLM =
-            binding.rvOkLiveProviders.setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
-        binding.rvOkLiveProviders.adapter = providersAdapter
-        binding.rvOkLiveProviders.layoutManager = okGameProLLM
-        binding.rvOkLiveProviders.addOnScrollListener(object : OnScrollListener() {
-            override fun onScrollStateChanged(rvView: RecyclerView, newState: Int) {
-                // 获取当前滚动到的条目位置
-                p3ogProviderFirstPosi = okGameProLLM.findFirstVisibleItemPosition()
-                p3ogProviderLastPosi = okGameProLLM.findLastVisibleItemPosition()
-                binding.ivProvidersLeft.isClickable = p3ogProviderFirstPosi > 0
-
-                if (p3ogProviderFirstPosi > 0) {
-                    binding.ivProvidersLeft.alpha = 1F
-                } else {
-                    binding.ivProvidersLeft.alpha = 0.5F
-                }
-                if (p3ogProviderLastPosi == providersAdapter.data.size - 1) {
-                    binding.ivProvidersRight.alpha = 0.5F
-                } else {
-                    binding.ivProvidersRight.alpha = 1F
-                }
-
-                binding.ivProvidersRight.isClickable =
-                    p3ogProviderLastPosi != providersAdapter.data.size - 1
-            }
-        })
-
-        viewModel.providerResult.observe(viewLifecycleOwner) { resultData ->
-            val firmList = resultData?.firmList ?: return@observe
-            if (firmList.size < 2) {
-                binding.rvOkLiveProviders.isGone = true
-                binding.okLiveP3LayoutProvider.isGone = true
-                return@observe
-            }
-            binding.rvOkLiveProviders.isVisible = true
-            binding.okLiveP3LayoutProvider.isVisible = true
-            providersAdapter.setNewInstance(firmList.toMutableList())
-            if (firmList.isNotEmpty()) {
-                binding.run { setViewVisible(rvOkLiveProviders, okLiveP3LayoutProvider) }
-            } else {
-                binding.run { setViewGone(rvOkLiveProviders, okLiveP3LayoutProvider) }
-            }
-
-            if (firmList.size > 3) {
-                binding.run { setViewVisible(ivProvidersLeft, ivProvidersRight) }
-            } else {
-                binding.run { setViewGone(ivProvidersLeft, ivProvidersRight) }
-            }
-        }
 
         viewModel.recordNewBetHttpOkLive.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
@@ -281,37 +229,6 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         viewModel.recordResultWinsHttpOkLive.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpWinsData(it.reversed())
-            }
-        }
-
-        //供应商左滑按钮
-        binding.ivProvidersLeft.setOnClickListener {
-            if (p3ogProviderFirstPosi >= 3) {
-                binding.rvOkLiveProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkLiveProviders,
-                    RecyclerView.State(),
-                    p3ogProviderFirstPosi - 2
-                )
-            } else {
-                binding.rvOkLiveProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkLiveProviders, RecyclerView.State(), 0
-                )
-            }
-        }
-        //供应商右滑按钮
-        binding.ivProvidersRight.setOnClickListener {
-            if (p3ogProviderLastPosi < providersAdapter.data.size - 4) {
-                binding.rvOkLiveProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkLiveProviders,
-                    RecyclerView.State(),
-                    p3ogProviderLastPosi + 2
-                )
-            } else {
-                binding.rvOkLiveProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkLiveProviders,
-                    RecyclerView.State(),
-                    providersAdapter.data.size - 1
-                )
             }
         }
         //设置监听游戏试玩

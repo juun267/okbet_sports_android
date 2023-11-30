@@ -26,6 +26,8 @@ import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.util.enterThirdGame
+import org.cxct.sportlottery.util.startLogin
+import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 import splitties.views.rightPadding
 
@@ -149,8 +151,9 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
     }
 
     override fun onInitData() {
-        if(gameAdapter2.itemCount==0)
-        loading()
+        if(gameAdapter2.itemCount == 0) {
+            showLoadingView()
+        }
         viewModel.getOKGamesHall()
     }
 
@@ -159,13 +162,13 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
 
             val categoryList = it.categoryList?.toMutableList()
             if (categoryList.isNullOrEmpty()) {
-                hideLoading()
+                hideLoadingView()
                 return@observe
             }
 
             gameAdapter2.setupData(categoryList, it.firmList)
             tabAdapter.setNewInstance(categoryList)
-            hideLoading()
+            hideLoadingView()
 
         }
 
@@ -178,6 +181,20 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
             TransformInDialog(event.first, event.second, event.third) { enterResult ->
                 enterThirdGame(enterResult, event.first)
             }.show(childFragmentManager, null)
+        }
+
+        viewModel.enterTrialPlayGameResult.observe(this) {
+            hideLoading()
+            if (it == null) {
+                //不支持试玩
+                context().startLogin()
+            } else {
+                //试玩弹框
+                val trialDialog = TrialGameDialog(context(), it.first, it.second) { firmType, thirdGameResult->
+                    enterThirdGame(this@ElectGamesFragment, viewModel, thirdGameResult, firmType)
+                }
+                trialDialog.show()
+            }
         }
     }
 }

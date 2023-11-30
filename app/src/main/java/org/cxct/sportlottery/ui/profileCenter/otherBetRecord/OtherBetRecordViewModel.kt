@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
 
 
@@ -125,6 +126,10 @@ class OtherBetRecordViewModel(
             }?.let { result ->
                 hideLoading()
                 isLoading = false
+                if (!result?.success){
+                    ToastUtil.showToast(androidContext,result.msg)
+                    return@let
+                }
                 result.t?.orderList?.let {
                     recordDataList.addAll(it)
                 }
@@ -166,6 +171,10 @@ class OtherBetRecordViewModel(
             }?.let { result ->
                 hideLoading()
                 isLoading = false
+                if (!result?.success){
+                    ToastUtil.showToast(androidContext,result.msg)
+                    return@let
+                }
                 result.t?.orderList?.dataList?.let { recordDetailDataList.addAll(it) }
                 isLastPage = (recordDetailDataList.size >= (result.t?.totalCount ?: 0))
                 _lastPage.value = isLastPage

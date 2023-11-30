@@ -125,6 +125,11 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
 
     private fun initTopView() = binding.topView.run {
         setup(this@OKLiveFragment, 18, gameType = "oklive")
+        setProviderSelect {
+            backGameAll()
+            showGameAll()
+            changePartGames(it)
+        }
         setProviderVisible(false)
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
@@ -280,5 +285,10 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
             showGameAll()
             changePartGames(okgamesFirm)
         }
+    }
+    fun setupProvider(firmList:MutableList<OKGamesFirm>)=binding.topView.run{
+        setProviderItems(firmList)
+        setProviderVisible(firmList.isNotEmpty())
+        setProviderArrowVisible(firmList.size > 3)
     }
 }

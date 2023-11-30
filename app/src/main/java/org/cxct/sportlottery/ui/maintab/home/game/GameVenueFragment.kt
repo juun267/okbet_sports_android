@@ -23,8 +23,8 @@ abstract class GameVenueFragment<VM : BaseViewModel, VB>: BindingFragment<VM, Fr
 
     private val loadingHolder by lazy { Gloading.wrapView(binding.root) }
 
-    override fun loading(message: String?) = loadingHolder.showLoading()
-    override fun hideLoading() = loadingHolder.showLoadSuccess()
+    protected fun showLoadingView() = loadingHolder.showLoading()
+    protected fun hideLoadingView() = loadingHolder.showLoadSuccess()
 
     override fun createRootView(inflater: LayoutInflater,
                                 container: ViewGroup?,
