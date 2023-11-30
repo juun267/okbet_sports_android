@@ -2,6 +2,7 @@ package org.cxct.sportlottery.common.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -60,7 +61,7 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
             LayoutInflater::class.java,
             ViewGroup::class.java,
             Boolean::class.java)
-        return BindingVH(inflate.invoke(null, LayoutInflater.from(parent.context), parent, false) as VB)
+        return BindingVH.of(inflate.invoke(null, LayoutInflater.from(parent.context), parent, false) as VB)
     }
 
     override fun convert(helper: BindingVH<VB>, item: T) {
@@ -76,4 +77,16 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
     open fun onBinding(position: Int, binding: VB, item: T, payloads: List<Any>) { }
 }
 
-class BindingVH<VB : ViewBinding>(val vb: VB) : BaseViewHolder(vb.root)
+class BindingVH<VB : ViewBinding> (view: View) : BaseViewHolder(view) {
+    val vb: VB
+    get() = itemView.getTag(bindTag) as VB
+
+    companion object {
+
+        private const val bindTag = 90909988
+        fun <VB : ViewBinding> of(binding: VB): BindingVH<VB> {
+            binding.root.setTag(bindTag, binding)
+            return BindingVH(binding.root)
+        }
+    }
+}

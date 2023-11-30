@@ -112,7 +112,7 @@ class FooterGameAdapter(private val onFavoriteClick: (View, OKGameBean) -> Unit,
     private inner class GameProvider(override val itemViewType: Int = 2, override val layoutId: Int = 0) : BaseNodeProvider() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingVH<ItemGameChildBinding> {
-            return BindingVH(ItemGameChildBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            return BindingVH.of(ItemGameChildBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
 
         override fun convert(helper: BaseViewHolder, data: BaseNode) {
