@@ -32,6 +32,7 @@
             android:id="@+id/tvLeagueName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
             android:layout_marginLeft="@dimen/margin_8"
             android:ellipsize="end"
             android:maxLines="1"
@@ -148,6 +149,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:ellipsize="end"
+                android:includeFontPadding="false"
                 android:lines="1"
                 android:textColor="@color/color_313F56"
                 android:textStyle="bold"
@@ -165,6 +167,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:ellipsize="end"
+                android:includeFontPadding="false"
                 android:lines="1"
                 android:textColor="@color/color_313F56"
                 android:textStyle="bold"
@@ -182,13 +185,12 @@
                 android:id="@+id/oddBtn1"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
-                android:layout_marginRight="4dp"
                 android:layout_weight="1" />
 
             <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHomeHotButton
                 android:id="@+id/oddBtn2"
                 android:layout_width="0dp"
-                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_height="36dp"
                 android:layout_weight="1" />
 
@@ -196,6 +198,7 @@
                 android:id="@+id/oddBtn3"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
