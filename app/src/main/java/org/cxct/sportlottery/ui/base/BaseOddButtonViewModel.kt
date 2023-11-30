@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import cn.jpush.android.api.JPushInterface
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,7 +31,6 @@ import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -46,6 +46,7 @@ import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.OddsUtil.updateBetStatus
 import timber.log.Timber
+import java.math.RoundingMode
 
 
 abstract class BaseOddButtonViewModel(
@@ -294,7 +295,7 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
-    fun updateLockMatchOdd(matchOddsLock: MatchOddsLockEvent) {
+    fun updateLockMatchOdd(matchOddsLock: FrontWsEvent.MatchOddsLockEvent) {
         betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.matchId == matchOddsLock.matchId }?.matchOdd?.status =
             BetStatus.LOCKED.code
@@ -314,10 +315,7 @@ abstract class BaseOddButtonViewModel(
                                 extInfoMap = null,
                                 id = odd.id,
                                 name = null,
-                                odds = odd.odds,
-                                hkOdds = odd.hkOdds,
-                                malayOdds = odd.malayOdds,
-                                indoOdds = odd.indoOdds,
+                                originalOdds = odd.originalOdds,
                                 producerId = odd.producerId,
                                 spread = odd.spread,
                                 status = odd.status,
@@ -400,7 +398,14 @@ abstract class BaseOddButtonViewModel(
                 matchList.add(
                     Odd(
                         it.matchOdd.oddsId,
-                        getOdds(it.matchOdd, currentOddsTypes),
+                        getOdds(it.matchOdd, currentOddsTypes)
+                            .toBigDecimal()
+                            .setScale(
+                                if (it.matchOdd.playCode.contains(PlayCate.LCS.value)) 4 else 2,
+                                RoundingMode.HALF_UP
+                            )
+                            .toDouble()
+                        ,
                         betAmount,
                         currentOddsTypes.code
                     )

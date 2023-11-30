@@ -1,68 +1,45 @@
 package org.cxct.sportlottery.service
 
 
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
-import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
-import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
-import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
-import org.cxct.sportlottery.network.service.notice.NoticeEvent
+import org.cxct.sportlottery.network.service.match_odds_change.transferMatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
-import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
-import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
-import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
-import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
-import org.cxct.sportlottery.network.service.thirdgames.GamesMaintain
-import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
-import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
+import org.cxct.sportlottery.network.service.odds_change.transferOddsChangeEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
-import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
-import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
-import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
-import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
-import org.cxct.sportlottery.util.OddsUtil.updateBetStatus
-import org.cxct.sportlottery.util.OddsUtil.updateBetStatus_1
-import org.json.JSONArray
-import org.json.JSONObject
-import org.json.JSONTokener
 import timber.log.Timber
+import java.math.BigDecimal
 
 object ServiceBroadcastReceiver {
 
-
-    val globalStop: LiveData<GlobalStopEvent?>
+    val globalStop: LiveData<FrontWsEvent.GlobalStopEvent?>
         get() = _globalStop
 
-    val matchClock: LiveData<MatchClockEvent?>
+    val matchClock: LiveData<FrontWsEvent.MatchClockEvent?>
         get() = _matchClock
 
-    val notice: LiveData<NoticeEvent?>
+    val notice: LiveData<FrontWsEvent.NoticeEvent?>
         get() = _notice
 
-    val orderSettlement: LiveData<OrderSettlementEvent?>
+    val orderSettlement: LiveData<FrontWsEvent.BetSettlementEvent?>
         get() = _orderSettlement
 
-    val producerUp: LiveData<ProducerUpEvent?>
+    val producerUp: LiveData<FrontWsEvent.ProducerUpEvent?>
         get() = _producerUp
 
     val userMoney: LiveData<Double?>
@@ -71,25 +48,25 @@ object ServiceBroadcastReceiver {
     val lockMoney: LiveData<Double?>
         get() = _lockMoney
 
-    val userNotice: LiveData<UserNoticeEvent?>
+    val userNotice: LiveData<FrontWsEvent.UserNoticeEvent?>
         get() = _userNotice
 
-    val sysMaintenance: LiveData<SysMaintenanceEvent?>
+    val sysMaintenance: LiveData<FrontWsEvent.SysMaintainEvent?>
         get() = _sysMaintenance
 
     val serviceConnectStatus: LiveData<ServiceConnectStatus>
         get() = _serviceConnectStatus
 
-    val leagueChange: LiveData<LeagueChangeEvent?>
+    val leagueChange: LiveData<FrontWsEvent.LeagueChangeEvent?>
         get() = _leagueChange
 
-    val matchOddsLock: LiveData<MatchOddsLockEvent?>
+    val matchOddsLock: LiveData<FrontWsEvent.MatchOddsLockEvent?>
         get() = _matchOddsLock
 
-    val userDiscountChange: LiveData<UserDiscountChangeEvent?>
+    val userDiscountChange: LiveData<FrontWsEvent.UserDiscountChangeEvent?>
         get() = _userDiscountChange
 
-    val userMaxBetMoneyChange: LiveData<UserLevelConfigListEvent?>
+    val userMaxBetMoneyChange: LiveData<FrontWsEvent.UserLevelConfigChangeEvent?>
         get() = _userMaxBetMoneyChange
 
     val dataSourceChange: LiveData<Boolean?>
@@ -98,33 +75,33 @@ object ServiceBroadcastReceiver {
     val userInfoChange: LiveData<Boolean?>
         get() = _userInfoChange
 
-    val closePlayCate: LiveData<Event<ClosePlayCateEvent?>>
+    val closePlayCate: LiveData<Event<FrontWsEvent.ClosePlayCateEvent?>>
         get() = _closePlayCate
 
-    private val _globalStop = MutableLiveData<GlobalStopEvent?>()
-    private val _matchClock = MutableLiveData<MatchClockEvent?>()
-    private val _notice = MutableLiveData<NoticeEvent?>()
-    private val _orderSettlement = MutableLiveData<OrderSettlementEvent?>()
-    private val _pingPong = MutableLiveData<PingPongEvent?>()
-    private val _producerUp = MutableLiveData<ProducerUpEvent?>()
+    private val _globalStop = MutableLiveData<FrontWsEvent.GlobalStopEvent?>()
+    private val _matchClock = MutableLiveData<FrontWsEvent.MatchClockEvent?>()
+    private val _notice = MutableLiveData<FrontWsEvent.NoticeEvent?>()
+    private val _orderSettlement = MutableLiveData<FrontWsEvent.BetSettlementEvent?>()
+    private val _pingPong = MutableLiveData<FrontWsEvent.PingPongEvent?>()
+    private val _producerUp = MutableLiveData<FrontWsEvent.ProducerUpEvent?>()
     private val _userMoney = MutableLiveData<Double?>()
     private val _lockMoney = MutableLiveData<Double?>()
-    private val _userNotice = MutableLiveData<UserNoticeEvent?>()
-    private val _sysMaintenance = SingleLiveEvent<SysMaintenanceEvent?>()
+    private val _userNotice = MutableLiveData<FrontWsEvent.UserNoticeEvent?>()
+    private val _sysMaintenance = SingleLiveEvent<FrontWsEvent.SysMaintainEvent?>()
     private val _serviceConnectStatus = SingleLiveEvent<ServiceConnectStatus>()
-    private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
-    private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
-    private val _userDiscountChange = MutableLiveData<UserDiscountChangeEvent?>()
-    private val _userMaxBetMoneyChange = MutableLiveData<UserLevelConfigListEvent?>()
+    private val _leagueChange = MutableLiveData<FrontWsEvent.LeagueChangeEvent?>()
+    private val _matchOddsLock = MutableLiveData<FrontWsEvent.MatchOddsLockEvent?>()
+    private val _userDiscountChange = MutableLiveData<FrontWsEvent.UserDiscountChangeEvent?>()
+    private val _userMaxBetMoneyChange = MutableLiveData<FrontWsEvent.UserLevelConfigChangeEvent?>()
     private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
-    private val _closePlayCate = MutableLiveData<Event<ClosePlayCateEvent?>>()
+    private val _closePlayCate = MutableLiveData<Event<FrontWsEvent.ClosePlayCateEvent?>>()
 
-    val sportMaintenance: LiveData<SportMaintenanceEvent> = MutableLiveData()
+    val sportMaintenance: LiveData<FrontWsEvent.SportMaintainEvent> = MutableLiveData()
     val jackpotChange: LiveData<String?> = MutableLiveData()
     val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
 
-    val thirdGamesMaintain = MutableSharedFlow<GamesMaintain>(extraBufferCapacity= 3)
+    val thirdGamesMaintain = MutableSharedFlow<FrontWsEvent.GameFirmMaintainEvent>(extraBufferCapacity= 3)
 
 
     fun onConnectStatus(connectStatus: ServiceConnectStatus) {
@@ -136,62 +113,41 @@ object ServiceBroadcastReceiver {
         CoroutineScope(Dispatchers.IO).launch {
 
             try {
-
-                val decryptMessage = EncryptUtil.uncompress(messageStr)
-                if (decryptMessage.isNullOrEmpty()) {
-                    return@launch
-                }
-
-                val json = JSONTokener(decryptMessage).nextValue()
-                if (json is JSONArray) {
-                    var jsonArray = JSONArray(decryptMessage)
-                    for (i in 0 until jsonArray.length()) {
-                        var jObj = jsonArray.optJSONObject(i)
-                        val jObjStr = jObj.toString()
-                        handleEvent(jObj, jObjStr, channelStr)
+                val decryptProtoMessage = EncryptUtil.uncompressProto(messageStr) ?: return@launch
+                decryptProtoMessage.let {
+                    if (it.eventsList.isNotEmpty()) {
+                        it.eventsList.forEach { event ->
+                            handleEvent(event, channelStr)
+                        }
                     }
-                } else if (json is JSONObject) {
-                    val jObjStr = json.toString()
-                    handleEvent(json, jObjStr, channelStr)
                 }
 
             } catch (e: Exception) {
-                Log.e("JSONException", "WS格式出問題 $messageStr")
+                Timber.e("JSONException WS格式出問題 $messageStr")
                 e.printStackTrace()
             }
         }
     }
 
-    private suspend fun handleEvent(jObj: JSONObject, jObjStr: String, channelStr: String) {
-        when (val eventType = jObj.optString("eventType")) {
+    private suspend fun handleEvent(event: FrontWsEvent.Event, channelStr: String) {
+        when (val eventType = event.eventType) {
             EventType.NOTICE -> {
-                val data = ServiceMessage.getNotice(jObjStr)
-                _notice.postValue(data)
+                _notice.postValue(event.noticeEvent)
             }
             EventType.GLOBAL_STOP -> {
-                val data = ServiceMessage.getGlobalStop(jObjStr)
-                _globalStop.postValue(data)
+                _globalStop.postValue(event.globalStopEvent)
             }
             EventType.PRODUCER_UP -> {
-                val data = ServiceMessage.getProducerUp(jObjStr)
-                _producerUp.postValue(data)
+                _producerUp.postValue(event.producerUpEvent)
             }
-
             //公共频道(这个通道会通知主站平台维护)
             EventType.SYS_MAINTENANCE -> {
-                val data = ServiceMessage.getSysMaintenance(jObjStr)
-                _sysMaintenance.postValue(data)
-                (onSystemStatusChange as MutableLiveData<Boolean>).postValue(data?.status == 1)
-            }
-            //体育服务开关
-            EventType.SPORT_MAINTAIN_STATUS -> {
-                ServiceMessage.getSportMaintenance(jObjStr)?.let {
-                    (sportMaintenance as MutableLiveData<SportMaintenanceEvent>).postValue(it)
-                }
-
+                val sysMaintainEvent = event.sysMaintainEvent
+                _sysMaintenance.postValue(sysMaintainEvent)
+                (onSystemStatusChange as MutableLiveData<Boolean>).postValue(sysMaintainEvent.status == 1)
             }
             EventType.RECORD_RESULT_JACKPOT_OK_GAMES->{
-                val data = ServiceMessage.getJackpotData(jObjStr)
+                val data = event.recordResultJackpotOkGamesEvent
                 (jackpotChange as MutableLiveData<String?>).postValue(data?.amount)
             }
             //公共频道
@@ -199,49 +155,57 @@ object ServiceBroadcastReceiver {
                 _dataSourceChange.postValue(true)
             }
             EventType.CLOSE_PLAY_CATE -> {
-                _closePlayCate.postValue(Event(ServiceMessage.getClosePlayCate(jObjStr)))
+                _closePlayCate.postValue(Event(event.closePlayCateEvent))
             }
-
             //用户私人频道
             EventType.USER_MONEY -> {
-                val data = ServiceMessage.getUserMoney(jObjStr)
-                _userMoney.postValue(data?.money)
+                _userMoney.postValue(event.userMoneyEvent.money.toDoubleOrNull())
             }
             EventType.LOCK_MONEY -> {
-                val data = ServiceMessage.getLockMoney(jObjStr)
-                _lockMoney.postValue(data?.lockMoney)
+                _lockMoney.postValue(event.userLockMoneyEvent.lockMoney.toDoubleOrNull())
             }
             EventType.USER_NOTICE -> {
-                val data = ServiceMessage.getUserNotice(jObjStr)
-                _userNotice.postValue(data)
-            }
-            EventType.ORDER_SETTLEMENT -> {
-                val data = ServiceMessage.getOrderSettlement(jObjStr)
-                _orderSettlement.postValue(data)
+                _userNotice.postValue(event.userNoticeEvent)
             }
             EventType.PING_PONG -> {
-                val data = ServiceMessage.getPingPong(jObjStr)
-                _pingPong.postValue(data)
-            }
-
-            //大廳賠率
-            EventType.MATCH_STATUS_CHANGE -> {
-                ServiceMessage.getMatchStatusChange(jObjStr)?.let {
-                    post { MatchOddsRepository.onMatchStatus(it) }
-                }
-
+                _pingPong.postValue(event.pingPongEvent)
             }
             EventType.MATCH_CLOCK -> {
-                val data = ServiceMessage.getMatchClock(jObjStr)
-                _matchClock.postValue(data)
+                _matchClock.postValue(event.matchClockEvent)
             }
+            EventType.LEAGUE_CHANGE -> {
+                _leagueChange.postValue(event.leagueChangeEvent)
+            }
+            EventType.MATCH_ODDS_LOCK -> {
+                _matchOddsLock.postValue(event.matchOddsLockEvent)
+            }
+            //賠率折扣
+            EventType.USER_DISCOUNT_CHANGE -> {
+                _userDiscountChange.postValue(event.userDiscountChangeEvent)
+            }
+            //特定VIP层级的最新设定内容(會影響最大下注金額)
+            EventType.USER_LEVEL_CONFIG_CHANGE -> {
+                _userMaxBetMoneyChange.postValue(event.userLevelConfigChangeEvent)
+            }
+            //用戶資訊成功
+            EventType.USER_INFO_CHANGE -> {
+                _userInfoChange.postValue(true)
+            }
+            EventType.THIRD_GAME_STATU_CHANGED -> { // 三方游戏维护状态
+                thirdGamesMaintain.emit(event.gameFirmMaintainEvent)
+            }
+            //賽事狀態
+            EventType.MATCH_STATUS_CHANGE -> {
+                post { MatchOddsRepository.onMatchStatus(event.matchStatusChangeEvent) }
+            }
+            //大廳賠率
             EventType.ODDS_CHANGE -> {
-                val data = ServiceMessage.getOddsChange(jObjStr) ?: return
+                val data = event.oddsChangeEvent.transferOddsChangeEvent()
                 data.channel = channelStr
 
                 data.oddsList.forEach { // 过滤掉空odd(2023.05.30)
-                    if (it.oddsList != null) {
-                        val iterator = it.oddsList?.iterator()
+                    if (it.oddsListList != null) {
+                        val iterator = it.oddsListList.iterator()
                         while (iterator.hasNext()) {
                             if (iterator.next() == null) {
                                 iterator.remove()
@@ -252,28 +216,35 @@ object ServiceBroadcastReceiver {
 
                 // 登陆的用户计算赔率折扣
                 if (LoginRepository.isLogined()) {
-                    data.setupOddDiscount(UserInfoRepository.getDiscount())
+                    val discount = UserInfoRepository.getDiscount()
+                    if (discount != 1.0f) {
+                        data.setupOddDiscount(discount.toBigDecimal())
+                    }
                 }
-                data.oddsListToOddsMap()
                 data.updateOddsSelectedState()
                 data.sortOddsMap()
+                data.apply {
+                    playCateNameMap.addSplitPlayCateTranslation()
+                    betPlayCateNameMap.addSplitPlayCateTranslation()
+
+                    val newPlayCateNameMap = playCateNameMap
+                    val newBetPlayCateNameMap = betPlayCateNameMap
+                    playCateNameMap = replaceTargetNameMap(newPlayCateNameMap)
+                    betPlayCateNameMap = replaceTargetNameMap(newBetPlayCateNameMap)
+                }
                 onOddsEvent(data)
 
             }
-            EventType.LEAGUE_CHANGE -> {
-                val data = ServiceMessage.getLeagueChange(jObjStr)
-                _leagueChange.postValue(data)
-            }
-            EventType.MATCH_ODDS_LOCK -> {
-                val data = ServiceMessage.getMatchOddsLock(jObjStr)
-                _matchOddsLock.postValue(data)
-            }
-            //具体赛事/赛季频道
+            //詳情頁賠率
             EventType.MATCH_ODDS_CHANGE -> {
-                val data = ServiceMessage.getMatchOddsChange(jObjStr)?:return
+                val data = event.matchOddsChangeEvent.transferMatchOddsChangeEvent()
+
                 // 登陆的用户计算赔率折扣
                 if (LoginRepository.isLogined()) {
-                    data.setupOddDiscount(UserInfoRepository.getDiscount())
+                    val discount = UserInfoRepository.getDiscount()
+                    if (discount != 1.0f) {
+                        data.setupOddDiscount(discount.toBigDecimal())
+                    }
                 }
                 data.updateOddsSelectedState()
                 post{
@@ -281,31 +252,20 @@ object ServiceBroadcastReceiver {
                 }
                 BetInfoRepository.updateMatchOdd(data)
             }
-            //賠率折扣
-            EventType.USER_DISCOUNT_CHANGE -> {
-                val data = ServiceMessage.getUserDiscountChange(jObjStr)
-                _userDiscountChange.postValue(data)
+            //体育服务开关
+            EventType.SPORT_MAINTAIN_STATUS -> {
+                (sportMaintenance as MutableLiveData<FrontWsEvent.SportMaintainEvent>)
+                    .postValue(event.sportMaintainEvent)
             }
-            //特定VIP层级的最新设定内容(會影響最大下注金額)
-            EventType.USER_LEVEL_CONFIG_CHANGE -> {
-                val data = ServiceMessage.getUserMaxBetMoney(jObjStr)
-                _userMaxBetMoneyChange.postValue(data)
+
+            EventType.ORDER_SETTLEMENT -> {
+                _orderSettlement.postValue(event.betSettlementEvent)
             }
-            //用戶資訊成功
-            EventType.USER_INFO_CHANGE -> {
-                _userInfoChange.postValue(true)
-            }
-            EventType.UNKNOWN -> {
+
+            else -> {
                 Timber.i("Receive UnKnown EventType : $eventType")
             }
-            EventType.THIRD_GAME_STATU_CHANGED -> { // 三方游戏维护状态
-                ServiceMessage.parseResult(jObjStr, GamesMaintain::class.java)?.let { thirdGamesMaintain.emit(it) }
-            }
-
-            else -> {  }
-
         }
-
     }
 
     private suspend fun onOddsEvent(socketEvent: OddsChangeEvent) {
@@ -316,85 +276,81 @@ object ServiceBroadcastReceiver {
         }
         BetInfoRepository.updateMatchOdd(socketEvent)
     }
-    private fun OddsChangeEvent.oddsListToOddsMap() {
-        odds = oddsList.associateBy(
-            keySelector = { it.playCateCode.toString() },
-            valueTransform = { it.oddsList?.filter { it != null }?.toMutableList() }).toMutableMap()
-    }
-    private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
-        if (1.0f == discount) {
-            return this
+
+    //SINGLE_OU、SINGLE_BTS兩種玩法要特殊處理，後端API沒給翻譯
+    private fun MutableMap<String?, MutableMap<String?, String?>?>?.addSplitPlayCateTranslation(): MutableMap<String?, Map<String?, String?>?> {
+        val translationMap = mutableMapOf<String?, Map<String?, String?>?>()
+
+        this?.let { translationMap.putAll(it) }
+
+        val ou_o_Map: MutableMap<String, String> = mutableMapOf()
+        val ou_u_Map: MutableMap<String, String> = mutableMapOf()
+        val bts_y_Map: MutableMap<String, String> = mutableMapOf()
+        val bts_n_Map: MutableMap<String, String> = mutableMapOf()
+        for (language in LanguageManager.Language.values()) {
+            ou_o_Map[language.key] = LocalUtils.getString(R.string.J801)
+            ou_u_Map[language.key] = LocalUtils.getString(R.string.J802)
+            bts_y_Map[language.key] = LocalUtils.getString(R.string.J803)
+            bts_n_Map[language.key] = LocalUtils.getString(R.string.J804)
         }
-        this.oddsList.let { oddTypeSocketList ->
-            oddTypeSocketList.forEach { oddsList ->
-                if (oddsList.playCateCode == PlayCate.LCS.value) {
-                    oddsList.oddsList?.setupOddsDiscount(true,
-                        oddsList.playCateCode,
-                        discount)
-                } else {
-                    oddsList.oddsList?.setupOddsDiscount(false,
-                        oddsList.playCateCode,
-                        discount)
+        translationMap[PlayCate.SINGLE_OU_O.value] = ou_o_Map.toMap()
+        translationMap[PlayCate.SINGLE_OU_U.value] = ou_u_Map.toMap()
+        translationMap[PlayCate.SINGLE_BTS_Y.value] = bts_y_Map.toMap()
+        translationMap[PlayCate.SINGLE_BTS_N.value] = bts_n_Map.toMap()
+        return translationMap
+    }
+
+    private fun OddsChangeEvent.replaceTargetNameMap(targetNameMap: MutableMap<String?, MutableMap<String?, String?>?>):
+            MutableMap<String?, MutableMap<String?, String?>?> {
+        val oddsMap = this.odds
+        oddsMap.forEach { odds ->
+            odds.value?.toList()?.forEach { odd ->
+                val extInfo = if (odd.extInfo.isNullOrEmpty()) "{E}" else odd.extInfo ?: "{E}"
+                targetNameMap.toMap().forEach { (playCode, values) ->
+                    val oddsKey = when {
+                        odds.key.contains(":") -> odds.key.split(":").firstOrNull()
+                        else -> odds.key
+                    }
+                    if (oddsKey == playCode) {
+                        values?.toList()?.forEach { (localCode, translateName) ->
+                            val replacedName = translateName?.replace("{E}", extInfo)
+                            values[localCode] = replacedName
+                        }
+                        targetNameMap[playCode] = values
+                    }
+                }
+            }
+        }
+        return targetNameMap
+    }
+
+    private fun OddsChangeEvent.setupOddDiscount(discount: BigDecimal): OddsChangeEvent {
+        this.odds.let { oddsMap ->
+            oddsMap.forEach { (key, value) ->
+                if (key != PlayCate.LCS.value) {
+                    value?.forEach { odd ->
+                        odd.updateDiscount(discount)
+                    }
                 }
             }
         }
 
         return this
     }
-    private fun List<Odd?>.setupOddsDiscount(
-        isLCS: Boolean,
-        playCateCode: String?,
-        discount: Float,
-    ) {
-        this.forEach { odd ->
-            odd.setupOddsDiscount(isLCS, playCateCode, discount)
-        }
-        this?.toMutableList().updateBetStatus()
-    }
-    /**
-     * 得在所有賠率折扣率, 水位計算完畢後再去判斷更新盤口狀態
-     */
-    private fun MatchOddsChangeEvent.updateBetStatus(): MatchOddsChangeEvent {
-        this.odds?.let { oddsMap ->
-            oddsMap.forEach { (_, value) ->
-                value.odds?.updateBetStatus()
-            }
-        }
-        return this
-    }
 
-    private fun MatchOddsChangeEvent.setupOddDiscount(discount: Float): MatchOddsChangeEvent {
-        if (discount == 1.0f) {
-            return this
-        }
+    private fun MatchOddsChangeEvent.setupOddDiscount(discount: BigDecimal): MatchOddsChangeEvent {
         this.odds?.let { oddsMap ->
             oddsMap.forEach { (key, value) ->
-                if (!key.contains(PlayCate.LCS.value)) {//反波膽不處理折扣
+                if (!key.contains(PlayCate.LCS.value)) {
                     value.odds?.forEach { odd ->
-                        odd?.odds = odd?.odds?.applyDiscount(discount)
-                        odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
-                        odd?.malayOdds = odd?.hkOdds?.convertToMYOdds()
-                        odd?.indoOdds = odd?.hkOdds?.convertToIndoOdds()
-
-                        if (key == PlayCate.EPS.value) {
-                            odd?.extInfo =
-                                odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
-                        }
+                        odd?.updateDiscount(discount)
                     }
                 }
             }
         }
         return this
     }
-    /**
-     * 得在所有賠率折扣率, 水位計算完畢後再去判斷更新盤口狀態
-     */
-    private fun OddsChangeEvent.updateBetStatus(): OddsChangeEvent {
-        oddsList.forEach { oddsList ->
-            oddsList.oddsList?.updateBetStatus_1()
-        }
-        return this
-    }
+
     private fun OddsChangeEvent.sortOddsMap() {
         this.odds.sortOddsMap()
     }

@@ -67,6 +67,8 @@ data class MatchInfo(
     val streamerName: String? = null,//主播名字
     @Json(name = "frontCoverUrl")
     val frontCoverUrl: String? = null,//封面路径
+    @Json(name = "extInfo")
+    val extInfo: String? = null,
 ) : Parcelable, MatchInfo {
     //Live
     var isInPlay: Boolean? = false
@@ -109,7 +111,7 @@ data class MatchInfo(
 
     //BB
     override var attack: String? = null
-    override var halfStatus: Int? = null
+    override var halfStatus: Int? = null //棒球半場狀態: 0: 上半場, 1:下半場, 2:不顯示
     override var firstBaseBag: Int? = null
     override var secBaseBag: Int? = null
     override var thirdBaseBag: Int? = null

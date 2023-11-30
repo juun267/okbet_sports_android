@@ -37,7 +37,7 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
     fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner) {
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleOwner.lifecycleScope) { gamesMaintain ->
             data.forEachIndexed { index, okGameBean ->
-                if (okGameBean.isMaintain() != gamesMaintain.isMaintain() && (okGameBean.firmType == gamesMaintain.firmType)) {
+                if (okGameBean.maintain != gamesMaintain.maintain && (okGameBean.firmType == gamesMaintain.firmType)) {
                     okGameBean.maintain = gamesMaintain.maintain
                     notifyItemChanged(index, GAME_MAINTAIN)
                 }

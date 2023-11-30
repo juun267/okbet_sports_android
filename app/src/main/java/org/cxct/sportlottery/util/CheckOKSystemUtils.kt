@@ -58,7 +58,7 @@ fun setupSportStatusChange(lifecycleOwner: LifecycleOwner, block: (isOpen:Boolea
 
 fun BaseActivity<*>.bindSportMaintenance() {
     ServiceBroadcastReceiver.sportMaintenance.observe(this){
-        if (it.isMaintenance()) {
+        if (it.status == 1) {
             showPromptDialogNoCancel(message = getString(R.string.N969)) { finish() }
         }
     }

@@ -971,24 +971,24 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         receiver.matchClock.observe(this) {
             it?.let { matchClockEvent ->
-                if (matchClockEvent.matchClockCO?.matchId != matchInfo?.id) {
+                if (matchClockEvent.matchId != matchInfo?.id) {
                     return@let
                 }
                 val updateTime = when (matchInfo?.gameType) {
                     GameType.FT.key -> {
-                        matchClockEvent.matchClockCO?.matchTime
+                        matchClockEvent.matchTime
                     }
 
                     GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
-                        matchClockEvent.matchClockCO?.remainingTimeInPeriod
+                        matchClockEvent.remainingTimeInPeriod
                     }
 
                     else -> null
                 }
 
-                isGamePause = (matchClockEvent.matchClockCO?.stopped == 1)
+                isGamePause = (matchClockEvent.stopped == 1)
                 updateTime?.let { time ->
-                    startTime = time
+                    startTime = time.toLong()
                     matchType =
                         if (TimeUtil.isTimeInPlay(startTime)) MatchType.IN_PLAY else MatchType.DETAIL
                 }

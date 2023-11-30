@@ -105,6 +105,7 @@ object AppViewModel {
         single { WithdrawRepository }
         single { MyFavoriteRepository() }
         single { SelfLimitRepository() }
+        single { GamePlayNameRepository }
     }
 
 

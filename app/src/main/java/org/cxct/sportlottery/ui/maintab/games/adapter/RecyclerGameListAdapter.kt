@@ -37,7 +37,7 @@ class RecyclerGameListAdapter : BindingAdapter<OKGamesCategory, ItemGameViewList
 
                 var changed = false
                 okGamesCategory.gameList?.forEachIndexed { position, okGameBean->
-                    if (okGameBean.isMaintain() != gamesMaintain.isMaintain() && okGameBean.firmType == gamesMaintain.firmType) {
+                    if (okGameBean.maintain != gamesMaintain.maintain && (okGameBean.firmType == gamesMaintain.firmType)) {
                         okGameBean.maintain = gamesMaintain.maintain
                         changed = true
                     }

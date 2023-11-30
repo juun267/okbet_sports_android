@@ -8,7 +8,7 @@ data class OddsDetailListData(
     var typeCodes: MutableList<String>, //POPULAR,ALL,HDP&OU,GOAL,QATest
     var name: String, //大/小
     var oddArrayList: MutableList<Odd?>, //odds[]
-    val nameMap: Map<String?, String?>?, //保存各语系name对应值的map
+    var nameMap: Map<String?, String?>?, //保存各语系name对应值的map
     var rowSort: Int, //排序
     var matchInfo: MatchInfo? = null,
 ) {
