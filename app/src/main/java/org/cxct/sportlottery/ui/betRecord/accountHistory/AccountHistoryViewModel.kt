@@ -7,11 +7,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.StartupTime
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
+import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.bet.settledList.RemarkBetResult
@@ -81,117 +83,60 @@ class AccountHistoryViewModel(
         }
     }
 
-    val responseFailed: LiveData<Boolean>
-        get() = _responseFailed
-    private val _responseFailed = MutableLiveData<Boolean>()
 
     private var betListRequesting = false
 
-    val unsettledDataEvent = SingleLiveEvent<Triple<List<Row>, Boolean, String>>()
-    var pageIndex=1
+    val unSettledResult: LiveData<BetListResult>
+        get() = _unSettledResult
+    private val _unSettledResult = MutableLiveData<BetListResult>()
     private val pageSize=20
-    fun getUnsettledList() {
-        if (pageIndex == -1 || betListRequesting){
+    fun getUnsettledList(page: Int,startTime: Long?=null,endTime: Long?=null) {
+        if (betListRequesting){
             return
         }
         betListRequesting = true
         val betListRequest = BetListRequest(
             championOnly = 0,
             statusList = listOf(0,1), //全部注單，(0:待成立, 1:未結算)
-            page = pageIndex,
-            gameType = "",
-            pageSize = pageSize
+            page = page,
+            gameType = null,
+            pageSize = pageSize,
+            queryTimeType = null,
+            startTime = startTime?.toString(),
+            endTime = endTime?.toString()
         )
 
         viewModelScope.launch {
-            val resultData=doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
+            }.let {
+                betListRequesting = false
+                _unSettledResult.postValue(it)
             }
-            betListRequesting = false
-            if(resultData == null){
-                unsettledDataEvent.value = Triple(arrayListOf(), false, androidContext.getString(R.string.N655))
-                return@launch
-            }
-
-            if(resultData.rows.isNullOrEmpty()) {
-                pageIndex = -1
-            } else {
-                pageIndex++
-            }
-            unsettledDataEvent.value = Triple(resultData.rows ?: arrayListOf(), resultData.success, "${resultData.msg}")
         }
     }
 
 
-    val settledData: LiveData<List<Row>>
-        get() = _settledData
-    private val _settledData = MutableLiveData<List<Row>>()
+    val settledResult: LiveData<BetListResult>
+        get() = _settledResult
+    private val _settledResult = MutableLiveData<BetListResult>()
 
-    val errorEvent=SingleLiveEvent<String>()
-
-
-    var pageSettledIndex=1
-    var hasMore=true
-    //已结单数据 开始时间
-    var settledStartTime:Long?=0L
-    //已结单数据 结束时间
-    var settledEndTime:Long?=0L
-    //总盈亏
-    var totalReward:Double=0.0
-    //总投注额
-    var totalBet:Double=0.0
-    //有效投注额
-    var totalEfficient:Double=0.0
-    fun getSettledList() {
+    fun getSettledList(page: Int,startTime: Long?=null,endTime: Long?=null) {
         val betListRequest = BetListRequest(
             championOnly = 0,
             statusList = listOf(2,3,4,5,6,7), //234567 结算注单
-            page = pageSettledIndex,
+            page = page,
             gameType = "",
             pageSize = pageSize,
             queryTimeType="settleTime",
-            startTime = settledStartTime.toString(),
-            endTime = settledEndTime.toString()
+            startTime = startTime.toString(),
+            endTime = endTime.toString()
         )
-        if(pageSize==1){
-            totalReward=0.0
-            totalBet=0.0
-            totalEfficient=0.0
-        }
         viewModelScope.launch {
-            val resultData=doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
-            }
-
-            if(resultData==null){
-                _responseFailed.postValue(true)
-                return@launch
-            }
-
-            resultData.let { result ->
-                if (result.success) {
-                    pageSettledIndex++
-                    result.rows?.let {
-                        if(it.isEmpty()){
-                            hasMore=false
-                        }
-                        _settledData.postValue(it)
-                    }
-                    result.other?.totalAmount?.let {
-                        totalBet=it
-                    }
-
-                    result.other?.win?.let {
-                        totalReward=it
-                    }
-
-                    result.other?.valueBetAmount?.let {
-                        totalEfficient=it
-                    }
-
-                } else {
-                    errorEvent.postValue(result.msg)
-                }
+            }.let {
+                _settledResult.postValue(it)
             }
         }
     }
