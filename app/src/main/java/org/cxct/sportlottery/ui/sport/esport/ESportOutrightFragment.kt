@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightAdapter2
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
@@ -32,10 +33,9 @@ import java.util.ArrayList
 class ESportOutrightFragment: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>() {
 
     override var matchType = MatchType.OUTRIGHT
+    override var gameType = GameType.ES.key
     override fun getGameListAdapter() = sportOutrightAdapter2
     override fun getGameLayoutManger() = SocketGridManager(context(), 2)
-    //电竞自己的内容
-    override var gameType = GameType.ES.key
     protected val esportTypeAdapter by lazy { ESportTypeAdapter(::onESportTypeChanged) }
     var currentCategoryItem :CategoryItem? =null
 
@@ -92,6 +92,11 @@ class ESportOutrightFragment: BaseSportListFragment<SportListViewModel, Fragment
         getMenuDataByParent()
     }
 
+    fun reload(gameType: String) {
+        this.gameType = gameType
+        gameTypeAdapter.selectGameType(gameType)
+    }
+
     private fun setupSportTypeList() {
         binding.sportTypeList.visible()
         binding.sportTypeList.adapter = esportTypeAdapter
@@ -131,20 +136,14 @@ class ESportOutrightFragment: BaseSportListFragment<SportListViewModel, Fragment
         }
 
         outrightList.observe(viewLifecycleOwner) {
-            if (gameType != it.tag) {
-                return@observe
-            }
-
             val data = it?.getContentIfNotHandled()?.outrightOddsListData?.leagueOdds ?: return@observe
             val list = mutableListOf<MatchOdd>()
             data.forEach { it.matchOdds?.let { list.addAll(it) } }
-
+            dismissLoading()
             if (list.isEmpty()) {
-                dismissLoading()
                 return@observe
             }
             setSportDataList(list as MutableList<BaseNode>, list.size.toString())
-            dismissLoading()
         }
         viewModel.esportTypeMenuData.observe(this@ESportOutrightFragment.viewLifecycleOwner){
             it.first?.let {

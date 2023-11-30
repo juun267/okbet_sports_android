@@ -274,7 +274,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_cat"
-                        android:layout_width="346dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="@dimen/margin_10"

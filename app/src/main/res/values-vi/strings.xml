@@ -26,8 +26,11 @@
     <string name="login_account">Đăng nhập tài khoản</string>
     <string name="please_input_account">Vui lòng nhập tài khoản hội viên của bạn</string>
     <string name="login_password">Mật khẩu</string>
+    <string name="recommend_code">Mã giới thiệu</string>
     <string name="hint_recommend_code">Mời nhập mã giới thiệu</string>
+    <string name="error_recommend_code">Mã giới thiệu không tồn tại</string>
     <string name="member_account">Tài khoản</string>
+    <string name="hint_member_account">Độ dài từ 4-16 ký tự bao gồm chữ cái và số</string>
     <string name="error_member_account">Số tài khoản từ 4 ~ 16 bao gồm chữ số và chữ cái</string>
     <string name="error_member_nickname">Tên %1$d - %2$d kết hợp tiếng Trung và tiếng Anh</string>
     <string name="error_register_id_exist">Tên tài khoản đã tồn tại</string>
@@ -64,6 +67,8 @@
     <string name="e_mail">Email</string>
     <string name="hint_e_mail">Vui lòng nhập email</string>
     <string name="error_e_mail">Lỗi định dạng email</string>
+    <string name="postal_code">Mã bưu điện</string>
+    <string name="hint_postal_code">Vui lòng nhập mã bưu điện</string>
     <string name="province">Tỉnh</string>
     <string name="hint_province">Vui lòng nhập tỉnh</string>
     <string name="city">Thành phố</string>
@@ -1533,4 +1538,7 @@
     <string name="P260">Giấy tờ được đề xuất</string>
     <string name="P261">Các giấy tờ khác</string>
     <string name="P262">Tải lên</string>
+    <string name="menu">Danh sách</string>
+    <string name="P241">Hot Esports</string>
+    <string name="P263">Bắt đầu chơi</string>
 </resources>

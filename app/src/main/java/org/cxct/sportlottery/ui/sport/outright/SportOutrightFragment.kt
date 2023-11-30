@@ -74,7 +74,10 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
         getMenuDataByParent()
     }
 
-
+    fun reload(gameType: String) {
+        this.gameType = gameType
+        gameTypeAdapter.selectGameType(gameType)
+    }
 
 
     /**

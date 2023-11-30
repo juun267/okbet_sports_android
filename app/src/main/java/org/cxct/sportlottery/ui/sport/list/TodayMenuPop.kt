@@ -13,11 +13,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.databinding.ItemTodayMenuBinding
 
-class TodayMenuPop(val context: Activity,val onItemClickListener: (position:Int) -> Unit) : PopupWindow(context) {
+class TodayMenuPop(val context: Activity, var lastSelectPosition :Int = 0, val onItemClickListener: (position:Int) -> Unit) : PopupWindow(context) {
 
     private var parentView: View? = null
     private var rvMenu: RecyclerView? = null
-    var lastSelectPosition :Int = 0
+
     var todayTabItem:TabLayout.Tab? = null
     private var names = listOf(
         context.getString(R.string.home_tab_today),

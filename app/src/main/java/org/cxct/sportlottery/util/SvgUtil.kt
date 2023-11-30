@@ -38,11 +38,11 @@ object SvgUtil {
             svgDrawableCache.put(svgData, WeakReference(svgIcon))
         }
     }
-    fun SVGAImageView.setAssetSvgIcon(assetPath: String) {
+    fun SVGAImageView.setAssetSvgIcon(assetPath: String, autoPlay: Boolean = false) {
         val cache = svgVideoCache[assetPath]?.get()
         if (cache != null) {
             setVideoItem(cache)
-            stepToFrame(0, false)
+            stepToFrame(0, autoPlay)
             return
         }
         SVGAParser(context).decodeFromAssets(assetPath, object : SVGAParser.ParseCompletion {
@@ -50,7 +50,7 @@ object SvgUtil {
             override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
                 svgVideoCache.put(assetPath,WeakReference(videoItem))
                 setVideoItem(videoItem)
-                stepToFrame(0, false)
+                stepToFrame(0, autoPlay)
             }
             override fun onError() {
 

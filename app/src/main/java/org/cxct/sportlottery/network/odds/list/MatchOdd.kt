@@ -43,7 +43,6 @@ data class MatchOdd(
     override val childNode: MutableList<BaseNode> = mutableListOf()
 
     override val oddsEps: EpsOdd? = null
-
     var isSelected = true
 
     fun sortOddsMap() {

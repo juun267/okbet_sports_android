@@ -13,6 +13,9 @@ import org.cxct.sportlottery.net.PageInfo
 import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.net.games.data.OKGamesFirm
+import org.cxct.sportlottery.net.games.data.OKGamesHall
+import org.cxct.sportlottery.net.live.OKLiveRepository
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
@@ -22,6 +25,7 @@ import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
@@ -56,6 +60,9 @@ open class MainHomeViewModel(
     private val _publicityRecommend = MutableLiveData<Event<List<Recommend>>>()
     val publicityRecommend: LiveData<Event<List<Recommend>>>
         get() = _publicityRecommend
+    private val _hotESportMatch = SingleLiveEvent<Pair<String,List<Recommend>>>()
+    val hotESportMatch: LiveData<Pair<String,List<Recommend>>>
+        get() = _hotESportMatch
     val gotConfig: LiveData<Event<Boolean>>
         get() = _gotConfig
     private val _gotConfig = MutableLiveData<Event<Boolean>>()
@@ -101,9 +108,14 @@ open class MainHomeViewModel(
 
 
     //okgames游戏列表
-    val homeGamesList: LiveData< List<OKGameBean>>
-        get() = _homeGamesList
-    private val _homeGamesList = MutableLiveData< List<OKGameBean>>()
+    val homeOKGamesList: LiveData< List<OKGameBean>>
+        get() = _homeOKGamesList
+    private val _homeOKGamesList = MutableLiveData< List<OKGameBean>>()
+
+    //oklive游戏列表
+    val homeOKLiveList: LiveData< List<OKGameBean>>
+        get() = _homeOKLiveList
+    private val _homeOKLiveList = MutableLiveData< List<OKGameBean>>()
 
 
     private val _recordBetHttp = MutableLiveData<List<RecordNewEvent>>()
@@ -125,8 +137,12 @@ open class MainHomeViewModel(
         get() = _activityApply
     private val _activityApply = MutableLiveData<String>()
 
+    val homeAllProvider: LiveData<List<OKGamesFirm>>
+        get() = _homeAllProvider
+    private val _homeAllProvider = MutableLiveData<List<OKGamesFirm>>()
+
     //region 宣傳頁用
-    fun getRecommend() {
+    fun getRecommend(gameType: GameType?=null) {
         viewModelScope.launch {
             val resultRecommend = doNetwork(androidContext) {
                 val currentTimeMillis = System.currentTimeMillis()
@@ -141,7 +157,8 @@ open class MainHomeViewModel(
                 OneBoSportApi.sportService.getPublicityRecommend(
                     PublicityRecommendRequest(
                         currentTimeMillis.toString(),
-                        startTimeStamp.toString()
+                        startTimeStamp.toString(),
+                        gameType=gameType?.key
                     )
                 )
             } ?: return@launch
@@ -174,8 +191,11 @@ open class MainHomeViewModel(
                         setupSocketMatchStatus()
                     }
                 }
-                _publicityRecommend.postValue(Event(resultRecommend.result.recommendList))
-
+                if (gameType==null){
+                    _publicityRecommend.postValue(Event(resultRecommend.result.recommendList))
+                }else{
+                    _hotESportMatch.postValue(Pair(gameType.key,resultRecommend.result.recommendList))
+                }
                 notifyFavorite(FavoriteType.MATCH)
             }
         }
@@ -194,66 +214,40 @@ open class MainHomeViewModel(
             }
         }
     }
-
-
     /**
-     * 获取首页okgames列表
+     * 获取游戏厂商列表
      */
-//    var pageIndex = 1
-//    val pageSize = 6
-//    var totalCount = 0
-//    var totalPage = 0
+    fun getGameFirms() {
+        callApi({ OKGamesRepository.getGameFirms() }) {
+            _homeAllProvider.postValue(it.getData()?.filter { it.open==1 }?.sortedByDescending { it.sort?:0 }?: listOf())
+        }
+    }
 
-     val pageIndexLiveData = MutableLiveData(1)
-     val pageSizeLiveData = MutableLiveData(6)
-     val pageSizeOKLiveLD = MutableLiveData(6)
-     val totalCountLiveData = MutableLiveData(0)
-     val totalPageLiveData = MutableLiveData(0)
 
     fun getHomeOKGamesList(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
-            GameEntryType.OKGAMES,
-            pageIndexLiveData.value ?: 1, pageSizeLiveData.value ?: 1
+            GameEntryType.OKGAMES,1, 18
         )
     }) {
         if (it.getData() == null) {
             //hide loading
-            _homeGamesList.value = arrayListOf()
+            _homeOKGamesList.value = arrayListOf()
         } else {
-            totalCountLiveData.value = it.total
-            val totalCount = totalCountLiveData.value ?: 0
-            val pageSize = pageSizeLiveData.value ?: 0
-            if (totalPageLiveData.value == 0) {
-                totalPageLiveData.value = totalCount / pageSize
-                if (totalCount % pageSize != 0) {
-                    totalPageLiveData.value = (totalPageLiveData.value ?: 0) + 1
-                }
-            }
-            _homeGamesList.value=it.getData()
+            _homeOKGamesList.value=it.getData()
         }
     }
     fun getOkLiveOKGamesList(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
-            GameEntryType.OKLIVE,
-            pageIndexLiveData.value ?: 1, pageSizeOKLiveLD.value ?: 1
+            GameEntryType.OKLIVE,1, 18
         )
     }) {
         if (it.getData() == null) {
             //hide loading
-            _homeGamesList.value = arrayListOf()
+            _homeOKLiveList.value = arrayListOf()
         } else {
-            totalCountLiveData.value = it.total
-            val totalCount = totalCountLiveData.value ?: 0
-            val pageSize = pageSizeOKLiveLD.value ?: 0
-            if (totalPageLiveData.value == 0) {
-                totalPageLiveData.value = totalCount / pageSize
-                if (totalCount % pageSize != 0) {
-                    totalPageLiveData.value = (totalPageLiveData.value ?: 0) + 1
-                }
-            }
-            _homeGamesList.value=it.getData()
+            _homeOKLiveList.value=it.getData()
         }
     }
 
@@ -300,7 +294,7 @@ open class MainHomeViewModel(
      * 进入OKgame游戏
      */
     fun homeOkGamesEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {
-
+        RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         requestEnterThirdGame(
             "${gameData.firmType}",
             "${gameData.gameCode}",
@@ -379,6 +373,7 @@ open class MainHomeViewModel(
     }
 
     fun requestEnterThirdGameNoLogin(okGameBean: OKGameBean) {
+        RecentDataManager.addRecent(RecentRecord(1, gameBean = okGameBean))
         requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory, okGameBean.gameType)
     }
 
@@ -432,7 +427,6 @@ open class MainHomeViewModel(
         if (jumpingGame) {
             return
         }
-
         jumpingGame = true
         baseFragment.loading()
         viewModelScope.launch {
@@ -530,6 +524,7 @@ open class MainHomeViewModel(
      */
     private fun Recommend.setupLeagueName() {
         matchInfo?.leagueName = leagueName
+        matchInfo?.categoryCode = league.categoryCode
     }
 
     /**

@@ -256,7 +256,6 @@ object FileUtil {
 
     fun fileToBitmap(file:File?):Bitmap?{
         if(file==null){
-            Log.e("dachang","null")
             return null
         }
 //        if (!isFileExist(file) || !file.isDirectory) {

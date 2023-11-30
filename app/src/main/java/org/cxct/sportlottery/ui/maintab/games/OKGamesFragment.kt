@@ -96,10 +96,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
     private fun initToolBar() = binding.homeToolbar.run {
         attach(this@OKGamesFragment, mainTabActivity(), viewModel)
-        ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showMainLeftMenu(this@OKGamesFragment.javaClass)
-        }
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
             mainTabActivity().showMainRightMenu()
@@ -148,30 +144,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             }
         }
 
-        isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                VerifyIdentityDialog().show(childFragmentManager, null)
-            } else {
-                loading()
-                viewModel.checkRechargeSystem()
-            }
-        }
-
-        rechargeSystemOperation.observe(viewLifecycleOwner) {
-            hideLoading()
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                startActivity(Intent(context, MoneyRechargeActivity::class.java))
-                return@observe
-            }
-
-            showPromptDialog(
-                getString(R.string.prompt),
-                getString(R.string.message_recharge_maintain)
-            ) {}
-
-        }
     }
 
 
@@ -258,7 +230,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     }
 
     fun changePartGames(okgamesFirm: OKGamesFirm) {
-        changePartGamesLabel(okgamesFirm)
+        changePartGamesLabel(okgamesFirm,okgamesFirm.firmName)
         val firmId = okgamesFirm.getKey().toString()
         startLoad {
             viewModel.getOKGamesList(
@@ -323,5 +295,23 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         setProviderItems(firmList)
         setProviderVisible(firmList.isNotEmpty())
         setProviderArrowVisible(firmList.size > 3)
+    }
+    fun search(key: String){
+        if (isAdded){
+            binding.topView.edtSearch.setText(key)
+            changePartGamesLabel(GameTab.TAB_SEARCH, key)
+            startLoad {
+                viewModel.searchGames(
+                    retagRequest(), key, it, PartGamesFragment.pageSize
+                )
+            }
+        }
+    }
+    fun showByProvider(okgamesFirm: OKGamesFirm){
+        if (isAdded){
+            backGameAll()
+            showGameAll()
+            changePartGames(okgamesFirm)
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.maintab.entity.HomeMenuBean
 import org.cxct.sportlottery.util.Event
 
 abstract class BaseBottomNavViewModel(

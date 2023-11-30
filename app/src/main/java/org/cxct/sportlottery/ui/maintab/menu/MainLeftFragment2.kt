@@ -225,7 +225,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.string.esports,
             true
         ) { getMainTabActivity().jumpToESport() }
-        eSportGamesItem.group.isVisible=!getMarketSwitch() && StaticData.okBingoOpened()
+        eSportGamesItem.group.isVisible= StaticData.okSportOpened()&&StaticData.okBingoOpened()
 
 //
         okLiveItem = addMenu(index1++,
@@ -237,7 +237,8 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.string.P160,
             true
         ) {
-            getMainTabActivity().jumpToOkLive() }
+            getMainTabActivity().jumpToOkLive()
+        }
 
         okLiveItem.group.isVisible = !getMarketSwitch() && StaticData.okLiveOpened()
 
@@ -364,18 +365,11 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     private var currentContent: Class<BaseFragment<*>>? = null
 
     fun openWithFragment(menuContentFragment: Class<BaseFragment<*>>?) {
-        val isSame = currentContent == menuContentFragment
         currentContent = menuContentFragment
-        if (menuContentFragment == null) {
-            lastItem?.clearSelected()
+        lastItem?.clearSelected()
+        if (menuContentFragment == null || !::okGamesItem.isInitialized) {
             return
         }
-        if (isSame || !::okGamesItem.isInitialized) {
-            return
-        }
-//        if (isSame || !::okLiveItem.isInitialized) {
-//            return
-//        }
         binSelected()
     }
 

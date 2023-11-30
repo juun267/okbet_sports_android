@@ -24,16 +24,12 @@ import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.doOnResume
-import org.cxct.sportlottery.common.extentions.fitsSystemStatus
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
@@ -45,13 +41,12 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
 
     init {
         if (background == null) {
-            setBackgroundResource(R.color.color_F8F9FD)
+            setBackgroundResource(R.color.color_FFFFFF)
         }
         12.dp.let { setPadding(6.dp, 6.dp, it, it) }
         addChildView()
     }
 
-    lateinit var ivMenuLeft: ImageView
     lateinit var ivLogo: ImageView
     private lateinit var searchView: View
     lateinit var searchIcon: View
@@ -72,19 +67,12 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private var onlyShowSeach = true
 
     private fun addChildView() {
-        ivMenuLeft = AppCompatImageView(context)
-        ivMenuLeft.setImageResource(R.drawable.ic_home_menu)
 
-        val wh = 24.dp
-        addView(ivMenuLeft, LayoutParams(wh, wh).apply {
-            gravity = Gravity.BOTTOM
-            leftMargin = 6.dp
-        })
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
         addView(ivLogo, LayoutParams(-2, 36.dp).apply {
-            leftMargin = 36.dp
+            leftMargin = 6.dp
         })
 
         addSearchView()
@@ -152,7 +140,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         btnDeposit.minWidth = 72.dp
         btnDeposit.gravity = Gravity.CENTER
         btnDeposit.setText(R.string.J285)
-        btnDeposit.background = DrawableCreatorUtils.getGradientBackgroundStyle(20.dp, R.color.color_0082f9, R.color.color_0050e6)
+        btnDeposit.background = DrawableCreatorUtils.getGradientBackgroundStyle(20.dp, R.color.color_1DA0FF, R.color.color_0050e6)
         btnDeposit.setTextColor(Color.WHITE)
         userMoneyView.addView(btnDeposit, LayoutParams(-2, 32.dp).apply { leftMargin = 8.dp })
 
@@ -167,9 +155,12 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         val params = LayoutParams(-2, 30.dp)
         params.rightMargin = 8.dp
         tvLogin = createBtnText(R.string.J134, R.drawable.bg_blue_radius_15)
+        tvLogin.background = DrawableCreatorUtils.getCommonBackgroundStyle(20.dp, R.color.color_20b8d2f8, R.color.color_b8d2f8, 1)
+        tvLogin.setTextColor(resources.getColor(R.color.color_025BE8))
         loginLayout.addView(tvLogin, params)
 
-        tvRegist = createRegistBtnText(R.string.J151, R.drawable.bg_orange_radius_15)
+        params.rightMargin = 0.dp
+        tvRegist = createRegistBtnText(R.string.J151, R.drawable.bg_btn_home_register)
         loginLayout.addView(tvRegist,params)
 
         addView(loginLayout, LayoutParams(-2, -2, Gravity.RIGHT or Gravity.BOTTOM))
@@ -235,7 +226,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             userMoneyView.gone()
             return
         }
-        if (viewModel.isLogin.value != true) {
+        if (!LoginRepository.isLogined()) {
             loginLayout.visible()
             searchView.gone()
             userMoneyView.gone()
@@ -246,9 +237,9 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         if (userModelEnable) {
             searchView.gone()
             userMoneyView.visible()
-            bindMoneyText(viewModel.userMoney?.value ?: 0.0)
+            bindMoneyText(LoginRepository.userMoney())
             btnDeposit.setOnClickListener {
-                ToGcashDialog.showByClick{ viewModel.checkRechargeKYCVerify() }
+                ToGcashDialog.showByClick{ activity.checkRechargeKYCVerify() }
             }
         } else {
             searchView.visible()
@@ -281,9 +272,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         tvLogin.setOnClickListener { activity.startLogin() }
         tvRegist.setOnClickListener { LoginOKActivity.startRegist(context) }
         ivRefreshMoney.setOnClickListener { onRefreshMoney() }
-        if (fragment !is MainHomeFragment) {
-            ivLogo.setOnClickListener { activity.backMainHome() }
-        }
+        ivLogo.setOnClickListener { activity.backMainHome() }
     }
 
     private var refreshTimeTag = 0L

@@ -661,7 +661,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                             odd = odd,
                             subscribeChannelType = ChannelType.EVENT,
                             betPlayCateNameMap = matchOdd.betPlayCateNameMap,
-                            otherPlayCateName = scoPlayCateNameForBetInfo
+                            otherPlayCateName = scoPlayCateNameForBetInfo,
+                            categoryCode = matchInfo?.categoryCode
                         )
                         viewModel.updateMatchBetListData(fastBetDataBean)
                     }

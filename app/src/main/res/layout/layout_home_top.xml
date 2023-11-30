@@ -11,7 +11,7 @@
         app:AutoPlayTime="3500"
         app:pageChangeDuration="800"
         app:pointLeftRightPadding="1dp"
-        app:pointNormal="@drawable/dot_4_4c326bff"
+        app:pointNormal="@drawable/dot_6_trans_white"
         app:pointSelect="@drawable/indicator_30_blue"
         app:pointTopBottomPadding="2dp" />
 
@@ -87,7 +87,7 @@
                 android:id="@+id/tvRegist"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
-                android:background="@drawable/bg_orange_radius_15"
+                android:background="@drawable/bg_btn_home_register"
                 android:gravity="center"
                 android:minWidth="74dp"
                 android:paddingHorizontal="10dp"

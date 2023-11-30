@@ -110,6 +110,10 @@ object LoginRepository {
         mUserMoney.postValue(money)
     }
 
+    fun userMoney(): Double {
+        return if (isLogined()) mUserMoney.value ?: 0.0 else 0.0
+    }
+
     var lastMoneyTime = 0L
 
     /**

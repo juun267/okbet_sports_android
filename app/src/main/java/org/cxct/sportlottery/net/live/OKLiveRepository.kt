@@ -20,7 +20,7 @@ object OKLiveRepository {
         return params
     }
 
-    suspend fun collectOkGames(gameId: Int, markCollect: Boolean = true): ApiResult<Any> {
+    suspend fun collectOkLive(gameId: Int, markCollect: Boolean = true): ApiResult<Any> {
         val params = JsonObject()
         params.addProperty("id", gameId)
         params.addProperty("markCollect", markCollect)
@@ -28,7 +28,7 @@ object OKLiveRepository {
         return okLiveApi.okLivecollect(params)
     }
 
-    suspend fun okGamesHall(): ApiResult<OKGamesHall> {
+    suspend fun okLiveHall(): ApiResult<OKGamesHall> {
         return okLiveApi.getOKLiveHall(paramDevice())
     }
 

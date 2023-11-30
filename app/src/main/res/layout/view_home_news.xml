@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:orientation="vertical"
+    tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginVertical="@dimen/margin_8">
+
+        <TextView
+            android:id="@+id/tvCateName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_313F56"
+            android:text="@string/N909" />
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="@dimen/margin_8"
+        app:cardElevation="0dp">
+        <LinearLayout
+            android:id="@+id/linTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_home_new_title"
+            android:orientation="horizontal">
+            <RadioGroup
+                android:id="@+id/rgTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_12"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbtnOkbet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/margin_28"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/selector_tab_home_news"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:paddingHorizontal="12dp"
+                    android:text="@string/app_name"
+                    android:textColor="@color/selector_blue_606980"
+                    android:textSize="12sp" />
+
+                <RadioButton
+                    android:id="@+id/rbtnSport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/margin_28"
+                    android:background="@drawable/selector_tab_home_news"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="12dp"
+                    android:text="@string/B001"
+                    android:textColor="@color/selector_blue_606980"
+                    android:textSize="12sp" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tvMore"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:drawablePadding="@dimen/margin_4"
+                android:layout_marginRight="@dimen/margin_12"
+                android:layout_marginTop="@dimen/margin_13"
+                android:drawableRight="@drawable/ic_home_more"
+                android:gravity="center"
+                android:text="@string/N702"
+                android:textColor="@color/color_6D7693"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvNews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_gradient_home_news"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_home_news_1"
+            tools:itemCount="3" />
+    </androidx.cardview.widget.CardView>
+
+
+</merge>

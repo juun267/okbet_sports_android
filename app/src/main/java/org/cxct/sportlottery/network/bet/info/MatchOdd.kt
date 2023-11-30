@@ -80,5 +80,6 @@ data class MatchOdd(
     var isOnlyEUType: Boolean = false
     var homeCornerKicks: Int? = null
     var awayCornerKicks: Int? = null
+    var categoryCode: String? = null
 }
 

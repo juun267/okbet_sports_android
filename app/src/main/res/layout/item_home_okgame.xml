@@ -1,52 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginRight="10dp"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardCover"
+    android:layout_width="165dp"
+    android:layout_height="173dp"
+    android:layout_marginRight="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
+    android:foreground="@drawable/fg_ripple">
 
+    <ImageView
+        android:id="@+id/ivCover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardCover"
-        android:layout_width="wrap_content"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="@drawable/fg_ripple">
+        android:layout_gravity="bottom"
+        android:background="@color/transparent"
+        app:cardBackgroundColor="@color/transparent"
+        app:cardCornerRadius="@dimen/margin_8"
+        app:cardElevation="0dp">
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/blurView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_48"
+        android:layout_gravity="bottom">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.2"
+            android:background="@color/color_F7FAFE" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_48"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvGameName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="three card pokerthre"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/textSize14sp"
+                android:maxLines="1"
+                android:textStyle="bold"
+                android:visibility="visible"
+                android:ellipsize="end"
+                />
+            <TextView
+                android:id="@+id/tvGameType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- casino -"
+                android:textColor="@color/color_99FFFFFF"
+                android:textSize="@dimen/textSize10sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+    </eightbitlab.com.blurview.BlurView>
 
-        <ImageView
-            android:id="@+id/ivCover"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:scaleType="fitXY"/>
-
-        <TextView
-            android:id="@+id/tvGameType"
-            android:text=""
-            android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/textSize12sp"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_width="wrap_content"
-            android:maxLines="1"
-            android:textStyle="bold"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:visibility="gone"
-            android:ellipsize="end"
-            android:paddingBottom="8dp"
-            android:layout_height="wrap_content"/>
     </androidx.cardview.widget.CardView>
 
+
+
+<LinearLayout
+    android:id="@+id/linMaintenance"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:clickable="true"
+    android:visibility="gone"
+    android:background="@color/transparent_black_70">
+    <ImageView
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:src="@drawable/ic_home_maintenance"/>
     <TextView
-        android:id="@+id/tvGameName"
-        android:text=""
-        android:paddingTop="8dp"
-        android:textColor="@color/color_0D2245"
-        android:textSize="@dimen/textSize14sp"
-        android:layout_gravity="bottom|center_horizontal"
         android:layout_width="wrap_content"
-        android:paddingBottom="14dp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_12"
+        android:textSize="@dimen/textSize16sp"
+        android:textColor="@color/color_FFFFFF"
+        android:text="@string/N257"/>
+
 </LinearLayout>
+</androidx.cardview.widget.CardView>
