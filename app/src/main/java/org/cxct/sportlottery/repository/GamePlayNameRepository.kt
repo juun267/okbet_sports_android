@@ -1,6 +1,9 @@
 package org.cxct.sportlottery.repository
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.IndexResourceJsonResult
 import org.cxct.sportlottery.util.LanguageManager
@@ -168,5 +171,17 @@ object GamePlayNameRepository {
 
     fun getStatusName(statusCode: Int): String {
         return getMatchStatusResources(statusCode)?.nameMap?.get(LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key) ?: ""
+    }
+
+    fun getIndexResourceJson() {
+        GlobalScope.launch {
+            val result: IndexResourceJsonResult? = kotlin.runCatching {
+                OneBoSportApi.sportService.getIndexResourceJson()?.body()
+            }.getOrNull()
+
+            if (result?.success == true) {
+                result.indexResourceList?.let { postResourceList(it) }
+            }
+        }
     }
 }
