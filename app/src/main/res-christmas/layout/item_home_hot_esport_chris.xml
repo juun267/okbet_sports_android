@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/margin_10">
+            android:layout_marginTop="@dimen/margin_8">
             <org.cxct.sportlottery.view.CircleImageView
                 android:id="@+id/ivHomeIcon"
                 android:layout_width="60dp"
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginHorizontal="@dimen/margin_12"
-            android:layout_marginTop="@dimen/margin_12">
+            android:layout_marginTop="@dimen/margin_10">
 
 
             <TextView
@@ -147,7 +147,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:ellipsize="end"
-                android:includeFontPadding="false"
                 android:lines="1"
                 android:textColor="@color/color_313F56"
                 android:textStyle="bold"
@@ -165,7 +164,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:ellipsize="end"
-                android:includeFontPadding="false"
                 android:lines="1"
                 android:textColor="@color/color_313F56"
                 android:textStyle="bold"
@@ -176,8 +174,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_12"
-            android:layout_marginHorizontal="@dimen/margin_12">
+            android:layout_marginVertical="@dimen/margin_10"
+            android:layout_marginHorizontal="@dimen/margin_10">
 
             <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHomeHotButton
                 android:id="@+id/oddBtn1"
