@@ -142,6 +142,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
 
     private fun initToolBar() = binding.homeToolbar.run {
         attach(this@HomeFragment, getMainTabActivity(), viewModel)
+        setChristmasStyle()
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true,Gravity.RIGHT))
             getMainTabActivity().showMainRightMenu()
