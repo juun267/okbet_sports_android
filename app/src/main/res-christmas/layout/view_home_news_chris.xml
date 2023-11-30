@@ -89,6 +89,7 @@
                 android:id="@+id/rvNews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
                 android:layout_marginTop="50dp"
                 android:orientation="vertical"
                 android:background="@drawable/bg_chris_news"

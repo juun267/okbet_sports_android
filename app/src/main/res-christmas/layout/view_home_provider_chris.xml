@@ -47,6 +47,7 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginStart="@dimen/margin_12"
+           android:nestedScrollingEnabled="false"
            android:orientation="horizontal"
            android:background="@drawable/bg_chris_home_providers"
            tools:itemCount="3"
