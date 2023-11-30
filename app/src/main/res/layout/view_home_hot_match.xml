@@ -48,6 +48,7 @@
         android:id="@+id/recycler_hot_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

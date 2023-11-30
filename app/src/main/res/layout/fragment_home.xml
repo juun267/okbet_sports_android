@@ -34,7 +34,7 @@
             android:fitsSystemWindows="true"
             android:minHeight="0dp"
             app:contentScrim="@color/transparent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            app:layout_scrollFlags="scroll|snap">
 
         <LinearLayout
             android:layout_width="match_parent"
