@@ -27,7 +27,8 @@
             android:id="@+id/blurView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_30"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            android:background="@color/color_4D333333">
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
