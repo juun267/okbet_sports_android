@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
+import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
 // okgames主Fragment
@@ -117,6 +118,20 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
                 TransformInDialog(event.first, event.second, event.third) {
                     enterThirdGame(it, event.first)
                 }.show(childFragmentManager, null)
+            }
+        }
+
+        enterTrialPlayGameResult.observe(viewLifecycleOwner) {
+            hideLoading()
+            if (it == null) {
+                //不支持试玩
+                mainTabActivity().startLogin()
+            } else {
+                //试玩弹框
+                val trialDialog = TrialGameDialog(mainTabActivity(), it.first, it.second) { firmType, thirdGameResult->
+                    enterThirdGame(this@OKLiveFragment, viewModel, thirdGameResult, firmType)
+                }
+                trialDialog.show()
             }
         }
 

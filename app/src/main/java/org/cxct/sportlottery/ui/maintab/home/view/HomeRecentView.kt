@@ -48,15 +48,6 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
     fun setup(fragment: HomeHotFragment) {
         this.fragment = fragment
         fragment.apply {
-            viewModel.enterThirdGameResult.observe(this) {
-                if (isVisibleToUser()) enterThirdGame(it.second, it.first)
-            }
-            viewModel.gameBalanceResult.observe(this) {
-                val event = it.getContentIfNotHandled() ?: return@observe
-                TransformInDialog(event.first, event.second, event.third) { enterResult ->
-                    enterThirdGame(enterResult, event.first)
-                }.show(childFragmentManager, null)
-            }
             RecentDataManager.recentEvent.observe(fragment){
                 homeRecentAdapter.setList(subMaxCount(it))
                 this@HomeRecentView.isVisible = visibleRecent()
