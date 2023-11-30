@@ -36,7 +36,7 @@ class HomeOkGamesAdapter : BindingAdapter<OKGameBean, ItemHomeOkgameBinding>() {
         binding.blurView
             .setupWith(binding.root)
             .setFrameClearDrawable(binding.root.background)
-            .setBlurRadius(4f)
+            .setBlurRadius(8f)
         binding.linMaintenance.isVisible = item.isMaintain()
     }
 
