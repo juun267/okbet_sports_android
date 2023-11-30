@@ -78,15 +78,15 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
 }
 
 class BindingVH<VB : ViewBinding> (view: View) : BaseViewHolder(view) {
-    val vb: VB
-    get() = itemView.getTag(bindTag) as VB
+    lateinit var vb: VB
+    private set
 
     companion object {
 
-        private const val bindTag = 90909988
         fun <VB : ViewBinding> of(binding: VB): BindingVH<VB> {
-            binding.root.setTag(bindTag, binding)
-            return BindingVH(binding.root)
+            val vh = BindingVH<VB>(binding.root)
+            vh.vb = binding
+            return vh
         }
     }
 }
