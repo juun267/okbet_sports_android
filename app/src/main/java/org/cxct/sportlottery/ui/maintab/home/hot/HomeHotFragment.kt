@@ -24,6 +24,8 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import org.cxct.sportlottery.view.dialog.TrialGameDialog
+import org.cxct.sportlottery.view.transform.TransformInDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -156,6 +158,31 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             }else{
                 binding.hotMatchView.gone()
                 binding.hotEsportView.gone()
+            }
+        }
+
+        viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
+            if (isVisibleToUser()) enterThirdGame(it.second, it.first)
+        }
+
+        viewModel.gameBalanceResult.observe(viewLifecycleOwner) {
+            val event = it.getContentIfNotHandled() ?: return@observe
+            TransformInDialog(event.first, event.second, event.third) { enterResult ->
+                enterThirdGame(enterResult, event.first)
+            }.show(childFragmentManager, null)
+        }
+
+        viewModel.enterTrialPlayGameResult.observe(this) {
+            hideLoading()
+            if (it == null) {
+                //不支持试玩
+                context().startLogin()
+            } else {
+                //试玩弹框
+                val trialDialog = TrialGameDialog(context(), it.first, it.second) { firmType, thirdGameResult->
+                    enterThirdGame(this@HomeHotFragment, viewModel, thirdGameResult, firmType)
+                }
+                trialDialog.show()
             }
         }
     }
