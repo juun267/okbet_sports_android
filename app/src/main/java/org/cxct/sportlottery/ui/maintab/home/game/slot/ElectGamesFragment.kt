@@ -160,13 +160,13 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
     private fun initObserver() {
         viewModel.gameHall.observe(viewLifecycleOwner) {
 
-            val categoryList = it.categoryList?.toMutableList()
+            val categoryList = it.categoryList?.toMutableList()?.filter { !it.gameList?.isNullOrEmpty() }?.toMutableList()
             if (categoryList.isNullOrEmpty()) {
                 hideLoadingView()
                 return@observe
             }
 
-            gameAdapter2.setupData(categoryList, it.firmList)
+            gameAdapter2.setupData(categoryList)
             tabAdapter.setNewInstance(categoryList)
             hideLoadingView()
 

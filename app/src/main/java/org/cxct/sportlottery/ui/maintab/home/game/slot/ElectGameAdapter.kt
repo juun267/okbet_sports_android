@@ -37,7 +37,7 @@ class ElectGameAdapter: BaseNodeAdapter() {
         return if (data[position] is OKGamesCategory) 1 else 2
     }
 
-    fun setupData(list: MutableList<OKGamesCategory>?, firmList: List<OKGamesFirm>?) {
+    fun setupData(list: MutableList<OKGamesCategory>?) {
 //        firmList?.forEach { firmMap[it.id] = it }
         groupIndex.clear()
         val groupList = list ?: return
