@@ -23,7 +23,15 @@ object UserRepository {
     val ocrApi by lazy { RetrofitHolder.createOCRApiService(OCRApiService::class.java) }
 
     suspend fun sendEmailForget(email: String, validCodeIdentity :String, validCode: String): ApiResult<SendCodeRespnose> {
-        val params = mapOf("email" to email, "validCodeIdentity" to validCodeIdentity, "validCode" to validCode)
+        val params = mutableMapOf("email" to email).apply {
+            if (sConfigData?.captchaType==1){
+                put("ticket",validCodeIdentity)
+                put("randstr",validCode)
+            }else{
+                put("validCodeIdentity",validCodeIdentity)
+                put("validCode",validCode)
+            }
+        }
         return userApi.sendEmailForget(params)
     }
 
@@ -34,8 +42,13 @@ object UserRepository {
         val params = JsonObject()
         params.addProperty("verificationMethodValue", emailOrPhone)
         params.addProperty("resetPhase", false)
-        params.addProperty("code", validCode)
-        params.addProperty("codeIdentity", validCodeIdentity)
+        if(sConfigData?.captchaType==1){
+            params.addProperty("ticket", validCodeIdentity)
+            params.addProperty("randstr", validCode)
+        }else{
+            params.addProperty("code", validCode)
+            params.addProperty("codeIdentity", validCodeIdentity)
+        }
         params.addProperty("verificationMethod", if (emailOrPhone.contains("@")) "EMAIL" else "PHONE")
         return userApi.sendCode(params)
     }
@@ -93,8 +106,8 @@ object UserRepository {
         return userApi.checkUserLoginNeedCode(params)
     }
 
-    suspend fun userLoginV3(@Body params: LoginRequest): ApiResult<LoginData> {
-        return userApi.userLoginV3(params)
+    suspend fun login(@Body params: LoginRequest): ApiResult<LoginData> {
+        return userApi.login(params)
     }
 
     suspend fun verifySMSCode(phone: String, smsCode: String): ApiResult<String> {

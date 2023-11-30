@@ -62,6 +62,8 @@ import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
+import org.cxct.sportlottery.ui.login.CaptchaDialog
+import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
@@ -1245,4 +1247,11 @@ fun toSendEmail(context: Context, emailAddress: String) {
         toast("${context.getString(R.string.email_address)}, ${context.getString(R.string.text_money_copy_success)}")
     }
 
+}
+fun showCaptchaDialog(manager: FragmentManager,callback: (ticket: String, randstr: String)-> Unit){
+    if (sConfigData?.captchaType == 1){
+        CaptchaDialog(callback).show(manager,null)
+    }else{
+        VerifyCodeDialog(callback).show(manager, null)
+    }
 }

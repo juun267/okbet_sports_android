@@ -11,12 +11,12 @@ import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_VALIDATE_EMAIL
 import org.cxct.sportlottery.network.Constants.GOOGLE_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
-import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_LOGIN_DEVICE_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_LOGIN_DEVICE_SMS
+import org.cxct.sportlottery.network.Constants.LOGIN
 import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG
 import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG_SEND_VALIDCODE
@@ -47,11 +47,8 @@ import retrofit2.http.*
 
 interface IndexService {
 
-    @POST(INDEX_LOGIN)
-    suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResult>
-
-    @POST(Constants.USER_LOGIN)
-    suspend fun userLoginV3(@Body params: LoginRequest): Response<LoginResult>
+    @POST(LOGIN)
+    suspend fun login(@Body params: LoginRequest): Response<LoginResult>
 
     @POST(INDEX_SEND_LOGIN_DEVICE_SMS)
     suspend fun sendLoginDeviceSms(@Header("x-session-token") token: String): Response<NetResult>

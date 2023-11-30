@@ -190,13 +190,8 @@ object LoginRepository {
         return loginResponse
     }
 
-    suspend fun login(loginRequest: LoginRequest): Response<LoginResult> {
-
-        return OneBoSportApi.indexService.login(loginRequest)
-    }
-
-    suspend fun userLoginV3(@Body params: LoginRequest): Response<LoginResult> {
-        return OneBoSportApi.indexService.userLoginV3(params)
+    suspend fun login(@Body params: LoginRequest): Response<LoginResult> {
+        return OneBoSportApi.indexService.login(params)
     }
 
     /**
