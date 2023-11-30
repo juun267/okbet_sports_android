@@ -50,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_12"
         android:orientation="horizontal"
+        android:nestedScrollingEnabled="false"
         tools:itemCount="3"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_home_provider_page"/>
