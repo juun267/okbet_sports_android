@@ -17,7 +17,6 @@
         app:tabIndicatorGravity="center"
         app:tabPaddingStart="@dimen/margin_12"
         app:tabPaddingEnd="@dimen/margin_12"
-        app:tabGravity="center"
         app:tabMode="scrollable"
         app:tabRippleColor="@null"
         android:background="@color/color_F9FAFD"
@@ -38,11 +37,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/P128" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/PP128" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -175,7 +169,11 @@
         android:background="@color/color_F8F9FD"
         android:layout_width="match_parent"
         android:layout_height="2px"/>
-
+    <org.cxct.sportlottery.view.DateRangeSearchView
+        android:id="@+id/date_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSettled"
         android:background="@color/color_F8F9FD"
