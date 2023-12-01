@@ -140,8 +140,6 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
             }
         })
         dateSearchBar.timeZone = TimeZone.getTimeZone(TimeUtil.TIMEZONE_DEFAULT)
-        dateSearchBar.dateRange = -60
-        dateSearchBar.minusDays = 6
         dateSearchBar.setOnClickSearchListener {
             if((dateSearchBar.endTime?:0)-(dateSearchBar.startTime?:0)>7*24*3600*1000){
                 ToastUtil.showToast(requireContext(),R.string.P274)
