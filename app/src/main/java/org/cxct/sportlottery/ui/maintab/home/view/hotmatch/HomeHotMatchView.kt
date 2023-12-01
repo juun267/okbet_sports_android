@@ -17,6 +17,7 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.doOnStop
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ViewHomeHotMatchBinding
+import org.cxct.sportlottery.databinding.ViewHomeHotMatchChrisBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -37,7 +38,7 @@ class HomeHotMatchView(
     context: Context, attrs: AttributeSet
 ) : LinearLayout(context, attrs) {
 
-    val binding = ViewHomeHotMatchBinding.inflate(layoutInflater, this)
+    val binding = ViewHomeHotMatchChrisBinding.inflate(layoutInflater, this)
     private var adapter: HomeHotMatchAdapter? = null
     private var fragment: BaseFragment<*>? = null
 

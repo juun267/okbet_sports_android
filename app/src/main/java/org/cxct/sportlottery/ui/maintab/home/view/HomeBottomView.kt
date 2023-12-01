@@ -16,6 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewHomeBottomBinding
+import org.cxct.sportlottery.databinding.ViewHomeBottomChrisBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.*
@@ -24,7 +25,7 @@ import splitties.systemservices.layoutInflater
 class HomeBottomView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle) {
 
-    val binding = ViewHomeBottomBinding.inflate(layoutInflater,this)
+    val binding = ViewHomeBottomChrisBinding.inflate(layoutInflater,this)
     init {
         orientation = VERTICAL
         initView()
@@ -97,11 +98,9 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
         tvContactUs.setServiceClick(fragmentManager)
     }
 
-    /**
-     * 底部显示社交view  首页需要
-     */
-//    fun showFollowView(){
-//        findViewById<HomeFollowView>(R.id.homeFollowView).showFollowView()
-//    }
-
+    fun setChristmasStyle() {
+        val color = context.getColor(R.color.color_667085)
+        binding.textView17.setTextColor(color)
+        binding.textView15.setTextColor(color)
+    }
 }
