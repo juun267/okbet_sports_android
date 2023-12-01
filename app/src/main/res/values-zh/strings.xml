@@ -1589,4 +1589,5 @@
     <string name="P260">推荐证件</string>
     <string name="P261">其他证件</string>
     <string name="P262">上传</string>
+    <string name="P274">查询时间间隔不能大于7天</string>
 </resources>

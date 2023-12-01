@@ -17,7 +17,6 @@
         app:tabIndicatorGravity="center"
         app:tabPaddingStart="@dimen/margin_12"
         app:tabPaddingEnd="@dimen/margin_12"
-        app:tabGravity="center"
         app:tabMode="scrollable"
         app:tabRippleColor="@null"
         android:background="@color/color_F9FAFD"
@@ -46,12 +45,16 @@
 
     </com.google.android.material.tabs.TabLayout>
 
+    <org.cxct.sportlottery.view.DateRangeSearchView
+        android:id="@+id/date_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerUnsettled"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:background="@color/color_F8F9FD"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"

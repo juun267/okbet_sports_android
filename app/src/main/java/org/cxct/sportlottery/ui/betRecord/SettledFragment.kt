@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.betRecord
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
@@ -22,6 +23,7 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.rumWithSlowRequest
+import java.util.*
 
 /**
  * 已结单列表
@@ -119,12 +121,13 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
                         startTime = TimeUtil.getDefaultTimeStamp(6).startTime!!.toLong()
                         endTime = TimeUtil.getTodayEndTimeStamp()
                     }
-                    4 -> {
+                    3 -> {
                         //其他  最近90天内除开最近30天的前60天
-                        startTime = TimeUtil.getDefaultTimeStamp(89).startTime!!.toLong()
-                        endTime = TimeUtil.getDefaultTimeStamp(30).startTime!!.toLong()
+                        startTime = dateSearchBar.startTime
+                        endTime = dateSearchBar.endTime
                     }
                 }
+                dateSearchBar.isVisible = tab.position==3
                 //刷新数据
                 recyclerSettled.gone()
                 getSettledData()
@@ -136,6 +139,21 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+        dateSearchBar.timeZone = TimeZone.getTimeZone(TimeUtil.TIMEZONE_DEFAULT)
+        dateSearchBar.dateRange = -60
+        dateSearchBar.minusDays = 6
+        dateSearchBar.setOnClickSearchListener {
+            if((dateSearchBar.endTime?:0)-(dateSearchBar.startTime?:0)>7*24*3600*1000){
+                ToastUtil.showToast(requireContext(),R.string.P274)
+                return@setOnClickSearchListener
+            }
+            pageIndex=1
+            startTime = dateSearchBar.startTime
+            endTime = dateSearchBar.endTime
+            //刷新数据
+            recyclerSettled.gone()
+            getSettledData()
+        }
     }
 
     override fun onInitData() {

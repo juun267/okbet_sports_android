@@ -1509,5 +1509,6 @@
     <string name="P260">Inirerekomendang mga ID</string>
     <string name="P261">Iba pang mga ID</string>
     <string name="P262">Mag-upload</string>
+    <string name="P274">Ang pagitan ng query ay hindi maaaring lumampas sa 7 araw</string>
 </resources>
 

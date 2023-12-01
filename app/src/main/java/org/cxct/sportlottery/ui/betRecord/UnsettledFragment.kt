@@ -2,8 +2,12 @@ package org.cxct.sportlottery.ui.betRecord
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.view.*
+import kotlinx.android.synthetic.main.fragment_other_bet_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
@@ -17,8 +21,10 @@ import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.BetEmptyView
+import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.loadMore
 import org.cxct.sportlottery.view.rumWithSlowRequest
+import java.util.*
 
 /**
  * 未结单列表
@@ -79,6 +85,13 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
                 }
             }
         }
+        //待成立倒计时结束刷新数据
+        mAdapter.setOnCountTime {
+            pageIndex = 1
+            recyclerUnsettled.postDelayed({
+                getUnsettledData()
+            },600)
+        }
         //tab切换
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             @SuppressLint("NotifyDataSetChanged")
@@ -105,12 +118,13 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
                         startTime = TimeUtil.getDefaultTimeStamp(6).startTime!!.toLong()
                         endTime = TimeUtil.getTodayEndTimeStamp()
                     }
-                    4 -> {
+                    3 -> {
                         //其他  最近90天内除开最近30天的前60天
-                        startTime = TimeUtil.getDefaultTimeStamp(89).startTime!!.toLong()
-                        endTime = TimeUtil.getDefaultTimeStamp(30).startTime!!.toLong()
+                        startTime = dateSearchBar.startTime
+                        endTime = dateSearchBar.endTime
                     }
                 }
+                dateSearchBar.isVisible = tab.position==3
                 //刷新数据
                 recyclerUnsettled.gone()
                 getUnsettledData()
@@ -122,23 +136,20 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
-
-        //待成立倒计时结束刷新数据
-        mAdapter.setOnCountTime {
-            pageIndex = 1
-            recyclerUnsettled.postDelayed({
-                getUnsettledData()
-            },600)
-        }
-
-        viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
-            val it = event.getContentIfNotHandled() ?: return@observe
-            if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
-               recyclerUnsettled.postDelayed({
-                 pageIndex = 1
-                 getUnsettledData()
-            },500)
+        dateSearchBar.timeZone = TimeZone.getTimeZone(TimeUtil.TIMEZONE_DEFAULT)
+        dateSearchBar.dateRange = -60
+        dateSearchBar.minusDays = 6
+        dateSearchBar.setOnClickSearchListener {
+            if((dateSearchBar.endTime?:0)-(dateSearchBar.startTime?:0)>7*24*3600*1000){
+                ToastUtil.showToast(requireContext(),R.string.P274)
+                return@setOnClickSearchListener
             }
+            pageIndex=1
+            startTime = dateSearchBar.startTime
+            endTime = dateSearchBar.endTime
+            //刷新数据
+            recyclerUnsettled.gone()
+            getUnsettledData()
         }
     }
 
@@ -162,9 +173,9 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
                     refreshHelper.finishWithSuccess()
                     binding.recyclerUnsettled.visible()
                     if (pageIndex == 2) {
-                        mAdapter.setList(list = it)
+                        mAdapter.setList(it)
                     } else {
-                        mAdapter.addData(newData = it)
+                        mAdapter.addData(it)
                     }
                 }
 
@@ -172,9 +183,17 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
                 ToastUtil.showToast(requireContext(), it.msg)
             }
         }
+        viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
+            val it = event.getContentIfNotHandled() ?: return@observe
+            if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
+                binding.recyclerUnsettled.postDelayed({
+                    pageIndex = 1
+                    getUnsettledData()
+                },500)
+            }
+        }
     }
     private fun getUnsettledData() {
-        mAdapter.setList(arrayListOf())
         //获取结算数据
         rumWithSlowRequest(viewModel){
             viewModel.getUnsettledList(pageIndex,startTime,endTime)
