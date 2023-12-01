@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.text.Html
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
@@ -72,7 +73,10 @@ class PromotionDetailActivity :
         tvSubTitle.text = activityData.subTitleText
         val startTime = TimeUtil.timeFormat(activityData.startTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
         val endTime = TimeUtil.timeFormat(activityData.endTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
-        tvTime.text = "$startTime ${getString(R.string.J645)} $endTime"
+        tvTime.text = "${getString(R.string.N473)}:$startTime ${getString(R.string.J645)} $endTime"
+        val curTimestamp = System.currentTimeMillis()
+        //根据后台活动显示时间来判断是否显示活动
+        linActivity.isVisible = curTimestamp>activityData.startTime&&(curTimestamp<activityData.endTime||activityData.endTime==0L)
         okWebView.setBackgroundColor(ContextCompat.getColor(this@PromotionDetailActivity,R.color.color_F9FAFD))
         okWebView.loadDataWithBaseURL(null,(activityData.contentText?:"").formatHTML(), "text/html", "utf-8",null)
     }
