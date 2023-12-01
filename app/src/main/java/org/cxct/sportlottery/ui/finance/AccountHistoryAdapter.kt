@@ -67,6 +67,7 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.rech_log_date.text = item.rechDateStr
             itemView.rech_log_time.text = item.rechTimeStr
             itemView.rech_order_num.text = item.orderNo
+            itemView.tvTypeName.text = item.tranTypeName
             itemView.rech_balance.text = TextUtil.format(item.balance)
             if(item.money<0){
                 itemView.rech_amont.setTextColor(
