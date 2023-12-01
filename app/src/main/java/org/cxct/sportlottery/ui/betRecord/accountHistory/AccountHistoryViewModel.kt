@@ -86,9 +86,7 @@ class AccountHistoryViewModel(
 
     private var betListRequesting = false
 
-    val unSettledResult: LiveData<BetListResult>
-        get() = _unSettledResult
-    private val _unSettledResult = MutableLiveData<BetListResult>()
+    val unSettledResult = SingleLiveEvent<BetListResult>()
     private val pageSize=20
     fun getUnsettledList(page: Int,startTime: Long?=null,endTime: Long?=null) {
         if (betListRequesting){
@@ -111,17 +109,19 @@ class AccountHistoryViewModel(
                 OneBoSportApi.betService.getBetList(betListRequest)
             }.let {
                 betListRequesting = false
-                _unSettledResult.postValue(it)
+                unSettledResult.postValue(it)
             }
         }
     }
 
 
-    val settledResult: LiveData<BetListResult>
-        get() = _settledResult
-    private val _settledResult = MutableLiveData<BetListResult>()
+    val settledResult = SingleLiveEvent<BetListResult>()
 
     fun getSettledList(page: Int,startTime: Long?=null,endTime: Long?=null) {
+        if (betListRequesting){
+            return
+        }
+        betListRequesting = true
         val betListRequest = BetListRequest(
             championOnly = 0,
             statusList = listOf(2,3,4,5,6,7), //234567 结算注单
@@ -136,7 +136,8 @@ class AccountHistoryViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }.let {
-                _settledResult.postValue(it)
+                betListRequesting = false
+                settledResult.postValue(it)
             }
         }
     }
