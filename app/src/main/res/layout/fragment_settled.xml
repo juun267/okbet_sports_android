@@ -18,7 +18,6 @@
         app:tabIndicatorGravity="center"
         app:tabPaddingStart="@dimen/margin_12"
         app:tabPaddingEnd="@dimen/margin_12"
-        app:tabIndicatorFullWidth="false"
         app:tabMode="fixed"
         app:tabRippleColor="@null"
         android:background="@color/color_F9FAFD"
