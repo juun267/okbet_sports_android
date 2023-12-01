@@ -24,6 +24,7 @@ data class Uide(
     val salarySource: SalarySource? = null,
     var zipCode: String? = ""
 )
+
 @KeepMembers
 data class SalarySource(
     val id: Int? = -1,

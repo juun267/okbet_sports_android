@@ -936,7 +936,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             it?.let { globalStopEvent ->
                 val betRefactorList = betListRefactorAdapter?.betList
                 betRefactorList?.forEach { listData ->
-                    if (globalStopEvent.producerId == null || listData.matchOdd.producerId == globalStopEvent.producerId) {
+                    if (globalStopEvent.producerId == null || listData.matchOdd.producerId.toString() == it.producerId.toString()) {
                         listData.matchOdd.status = BetStatus.LOCKED.code
                     }
                 }

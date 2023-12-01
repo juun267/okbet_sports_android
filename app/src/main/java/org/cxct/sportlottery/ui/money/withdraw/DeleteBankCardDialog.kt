@@ -18,6 +18,7 @@ import org.cxct.sportlottery.util.CountDownUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
+import org.cxct.sportlottery.util.showCaptchaDialog
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.view.checkSMSCode
@@ -121,12 +122,10 @@ class DeleteBankCardDialog(private val phoneNo: String,
     private fun setUpBtn() = binding.run {
         tvCancel.setOnClickListener { dismiss() }
         btnSend.setOnClickListener {
-            val verifyCodeDialog = VerifyCodeDialog()
-            verifyCodeDialog.callBack = { identity, validCode ->
+            showCaptchaDialog(childFragmentManager) { identity, validCode ->
                 loading()
                 viewModel.senEmsCode(phoneNo, "$identity", validCode)
             }
-            verifyCodeDialog.show(childFragmentManager, null)
         }
 
         tvConfirm.setOnClickListener {

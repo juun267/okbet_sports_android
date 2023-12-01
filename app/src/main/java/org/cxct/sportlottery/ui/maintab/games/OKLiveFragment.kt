@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
+import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
 // okgames主Fragment
@@ -79,7 +80,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         initTopView()
         showGameAll()
         initObservable()
-        viewModel.getOKGamesHall()
+        viewModel.getOKLiveHall()
 //        showOkGameDialog()
     }
 
@@ -91,10 +92,6 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
 
     private fun initToolBar() = binding.homeToolbar.run {
         attach(this@OKLiveFragment, mainTabActivity(), viewModel)
-        ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showMainLeftMenu(this@OKLiveFragment.javaClass)
-        }
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
             mainTabActivity().showMainRightMenu()
@@ -105,6 +102,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         gameHall.observe(viewLifecycleOwner) {
             binding.topView.setTabsData(it?.categoryList?.toMutableList())
         }
+
         gamesList.observe(viewLifecycleOwner) {
             if (it.first == requestTag) {
                 showPartGameList(it.third, it.second)
@@ -123,30 +121,20 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
             }
         }
 
-        isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                VerifyIdentityDialog().show(childFragmentManager, null)
-            } else {
-                loading()
-                viewModel.checkRechargeSystem()
-            }
-        }
-
-        rechargeSystemOperation.observe(viewLifecycleOwner) {
+        enterTrialPlayGameResult.observe(viewLifecycleOwner) {
             hideLoading()
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                startActivity(Intent(context, MoneyRechargeActivity::class.java))
-                return@observe
+            if (it == null) {
+                //不支持试玩
+                mainTabActivity().startLogin()
+            } else {
+                //试玩弹框
+                val trialDialog = TrialGameDialog(mainTabActivity(), it.first, it.second) { firmType, thirdGameResult->
+                    enterThirdGame(this@OKLiveFragment, viewModel, thirdGameResult, firmType)
+                }
+                trialDialog.show()
             }
-
-            showPromptDialog(
-                getString(R.string.prompt),
-                getString(R.string.message_recharge_maintain)
-            ) {}
-
         }
+
     }
 
 
@@ -234,7 +222,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     }
 
     fun changePartGames(okgamesFirm: OKGamesFirm) {
-        changePartGamesLabel(okgamesFirm)
+        changePartGamesLabel(okgamesFirm,okgamesFirm.firmName)
         val firmId = okgamesFirm.getKey().toString()
         startLoad {
             viewModel.getOKGamesList(
@@ -293,6 +281,24 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
                     putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_OKLIVE.code)
                 }).show(childFragmentManager, PopImageDialog::class.simpleName)
             }
+        }
+    }
+    fun search(key: String){
+        if (isAdded){
+            binding.topView.edtSearch.setText(key)
+            changePartGamesLabel(GameTab.TAB_SEARCH, key)
+            startLoad {
+                viewModel.searchGames(
+                    retagRequest(), key, it, PartGamesFragment.pageSize
+                )
+            }
+        }
+    }
+    fun showByProvider(okgamesFirm: OKGamesFirm){
+        if (isAdded){
+            backGameAll()
+            showGameAll()
+            changePartGames(okgamesFirm)
         }
     }
     fun setupProvider(firmList:MutableList<OKGamesFirm>)=binding.topView.run{

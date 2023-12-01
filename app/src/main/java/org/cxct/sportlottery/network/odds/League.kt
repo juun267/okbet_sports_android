@@ -1,12 +1,15 @@
 package org.cxct.sportlottery.network.odds
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @JsonClass(generateAdapter = true)
 @KeepMembers
+@Parcelize
 data class League(
     @Json(name = "id")
     val id: String,
@@ -18,7 +21,7 @@ data class League(
     val categoryCode: String,
     @Json(name = "categoryIcon")
     val categoryIcon: String,
-){
+):Parcelable{
     var firstCap: String?=null
     var isSelected: Boolean=true
 }

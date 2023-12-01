@@ -2,8 +2,8 @@ package org.cxct.sportlottery.ui.base
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.repository.*
 
@@ -31,7 +31,7 @@ abstract class BaseSocketViewModel(
         mLockMoney.postValue(money)
     }
 
-    fun getSettlementNotification(event: OrderSettlementEvent?) {
+    fun getSettlementNotification(event: FrontWsEvent.BetSettlementEvent?) {
         event?.sportBet?.let {
             when (it.status) {
                 Status.UN_CHECK.code, Status.UN_DONE.code, Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code,  Status.LOSE.code,  Status.LOSE_HALF.code,  Status.DRAW.code -> {

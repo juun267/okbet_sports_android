@@ -1,24 +1,23 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
-import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_money_transfer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.databinding.FragmentMainRightBinding
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.adapter.GameBalanceAdapter
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
 class MainRightFragment : BindingFragment<MoneyTransferViewModel, FragmentMainRightBinding>() {
 
@@ -37,10 +36,6 @@ class MainRightFragment : BindingFragment<MoneyTransferViewModel, FragmentMainRi
     private fun initView() = binding.run {
         ivClose.setOnClickListener {
             EventBusUtil.post(MenuEvent(false,Gravity.RIGHT))
-        }
-        btnDeposit.setOnClickListener {
-            EventBusUtil.post(MenuEvent(false,Gravity.RIGHT))
-            ToGcashDialog.showByClick{ viewModel.checkRechargeKYCVerify() }
         }
         setOnClickListeners(tvTransfer,btnTransfer){
             viewModel.recycleAllMoney()
@@ -75,28 +70,6 @@ class MainRightFragment : BindingFragment<MoneyTransferViewModel, FragmentMainRi
         }
         viewModel.allBalanceResultList.observe(this) {
              adapter.setNewInstance(it.toMutableList())
-        }
-        viewModel.isRechargeShowVerifyDialog.observe(this) {
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                VerifyIdentityDialog().show(childFragmentManager, null)
-            } else {
-                loading()
-                viewModel.checkRechargeSystem()
-            }
-        }
-        viewModel.rechargeSystemOperation.observe(this) {
-            hideLoading()
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                requireContext().startActivity(Intent(requireContext(), MoneyRechargeActivity::class.java))
-                return@observe
-            }
-            showPromptDialog(
-                requireContext().getString(R.string.prompt),
-                requireContext().getString(R.string.message_recharge_maintain)
-            ) {}
-
         }
     }
     fun reloadData() {

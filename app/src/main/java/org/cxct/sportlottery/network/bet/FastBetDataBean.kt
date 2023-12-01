@@ -19,7 +19,8 @@ data class FastBetDataBean (
     val subscribeChannelType: ChannelType,
     val betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     val playCateMenuCode: String? = null,
-    val otherPlayCateName: String? = null
+    val otherPlayCateName: String? = null,
+    var categoryCode: String? = null,
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         TODO("matchType"),

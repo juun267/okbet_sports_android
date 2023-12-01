@@ -22,6 +22,7 @@ import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.ColorRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
@@ -32,8 +33,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
@@ -46,19 +49,21 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.money.config.MoneyRechCfg
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
+import org.cxct.sportlottery.ui.login.CaptchaDialog
+import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
@@ -79,6 +84,16 @@ import java.io.File
 import java.io.FileOutputStream
 import java.lang.reflect.Field
 
+fun AppBarLayout.expand(animate: Boolean) {
+    val behavior = (layoutParams as CoordinatorLayout.LayoutParams).behavior
+    if (behavior is AppBarLayout.Behavior) {
+        val topAndBottomOffset = behavior.topAndBottomOffset
+        if (topAndBottomOffset != 0) {
+            behavior.topAndBottomOffset = 0
+            setExpanded(true, animate)
+        }
+    }
+}
 
 fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String? = null,scrollTopFunc: ((yDistance: Int)->Unit)? = null ) {
 
@@ -356,7 +371,7 @@ fun loginedRun(context: Context, block: () -> Unit): Boolean {
             }
 
             if (context is MainTabActivity) {
-                setAnchorView(R.id.bottom_navigation_view)
+                setAnchorView(R.id.linTab)
             }
             show()
         }
@@ -813,7 +828,7 @@ fun getCompressFile(path: String?): File? {
     return null
 }
 
-fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: ClosePlayCateEvent) {
+fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: FrontWsEvent.ClosePlayCateEvent) {
     forEach { leagueOdd ->
         leagueOdd.matchOdds.forEach { matchOdd ->
             matchOdd.oddsMap?.forEach { map ->
@@ -882,8 +897,8 @@ fun ImageView.setLeagueLogo(icon: String?) {
     }
 }
 
-fun MutableMap<String, MutableList<Odd>?>.sortOddsMap(sizeCheck: Int = 3) {
-    forEach { (_, value) ->
+fun MutableMap<String, MutableList<Odd>?>.sortOddsMap(sizeCheck: Int = 0) {
+    forEach { (key, value) ->
         when (sizeCheck) {
             3 -> {
                 if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
@@ -897,15 +912,21 @@ fun MutableMap<String, MutableList<Odd>?>.sortOddsMap(sizeCheck: Int = 3) {
                     value?.sortBy { it?.marketSort }
                 }
             }
+            //維持原邏輯後去擴充
+            else -> {
+                when {
+                    key.contains(PlayCate.HDP.value) || key.contains(PlayCate.OU.value) -> {
+                        value?.sortBy { it?.marketSort }
+                    }
+                }
+            }
         }
     }
 }
 
 fun MutableMap<String, CateDetailData>.sortOddsMapByDetail() {
     forEach { (_, value) ->
-        if (value.odds.size > 3 && value.odds.first()?.marketSort != 0 && (value.odds.first()?.odds != value.odds.first()?.malayOdds)) {
-            value.odds.sortBy { it?.marketSort }
-        }
+        value.odds.sortWith(compareBy({ it?.marketSort }, { it?.rowSort }))
     }
 }
 
@@ -959,21 +980,24 @@ fun View.setServiceClick(fragmentManager: FragmentManager, block: (() -> Unit)? 
 fun serviceClickListener(fragmentManager: FragmentManager, block: (() -> Unit)? = null) : View.OnClickListener {
     return View.OnClickListener {
         block?.invoke()
+        serviceEvent(it.context, fragmentManager)
+    }
+}
 
-        val serviceUrl = sConfigData?.customerServiceUrl
-        val serviceUrl2 = sConfigData?.customerServiceUrl2
-        when {
-            !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                ServiceDialog().show(fragmentManager, ServiceDialog::class.java.simpleName)
-            }
+fun serviceEvent(context: Context, fragmentManager: FragmentManager) {
+    val serviceUrl = sConfigData?.customerServiceUrl
+    val serviceUrl2 = sConfigData?.customerServiceUrl2
+    when {
+        !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+            ServiceDialog().show(fragmentManager, ServiceDialog::class.java.simpleName)
+        }
 
-            serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                JumpUtil.toExternalWeb(it.context, serviceUrl2)
-            }
+        serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+            JumpUtil.toExternalWeb(context, serviceUrl2)
+        }
 
-            !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                JumpUtil.toExternalWeb(it.context, serviceUrl)
-            }
+        !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+            JumpUtil.toExternalWeb(context, serviceUrl)
         }
     }
 }
@@ -1223,4 +1247,11 @@ fun toSendEmail(context: Context, emailAddress: String) {
         toast("${context.getString(R.string.email_address)}, ${context.getString(R.string.text_money_copy_success)}")
     }
 
+}
+fun showCaptchaDialog(manager: FragmentManager,callback: (ticket: String, randstr: String)-> Unit){
+    if (sConfigData?.captchaType == 1){
+        CaptchaDialog(callback).show(manager,null)
+    }else{
+        VerifyCodeDialog(callback).show(manager, null)
+    }
 }

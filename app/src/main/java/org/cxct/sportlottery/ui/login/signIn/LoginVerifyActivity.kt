@@ -17,6 +17,7 @@ import org.cxct.sportlottery.util.CountDownUtil
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.util.setBtnEnable
+import org.cxct.sportlottery.util.showCaptchaDialog
 import org.cxct.sportlottery.view.checkRegisterListener
 
 class LoginVerifyActivity: BindingActivity<LoginViewModel, ActivityLoginVerifyBinding>() {
@@ -54,13 +55,11 @@ class LoginVerifyActivity: BindingActivity<LoginViewModel, ActivityLoginVerifyBi
         btnBack.setOnClickListener { finish() }
         btnLogin.setOnClickListener { viewModel.loginOrReg(phone, edtCode.text.toString(), "") }
         btnSend.setOnClickListener {
-            VerifyCodeDialog().run {
-                callBack = { identity, validCode ->
+            showCaptchaDialog(supportFragmentManager)
+                { identity, validCode ->
                     loading()
-                    viewModel.loginOrRegSendValidCode(LoginCodeRequest(phone!!, identity, validCode))
+                    viewModel.loginOrRegSendValidCode(LoginCodeRequest(phone!!).apply { buildParams(identity, validCode) })
                 }
-                show(supportFragmentManager, null)
-            }
         }
 
     }

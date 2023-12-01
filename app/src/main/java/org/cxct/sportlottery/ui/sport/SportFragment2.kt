@@ -3,13 +3,11 @@ package org.cxct.sportlottery.ui.sport
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -20,7 +18,6 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.Menu
 import org.cxct.sportlottery.network.sport.SportMenuData
-import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -37,7 +34,6 @@ import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -74,10 +70,10 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private val footView by lazy { SportFooterGamesView(binding.root.context) }
     private val mianViewModel: OKGamesViewModel by viewModel()
     private var todayTabItem:TabLayout.Tab?=null
-    private val todayMenuPop by lazy { TodayMenuPop(requireActivity(), onItemClickListener = { position ->
+    private val todayMenuPop by lazy { TodayMenuPop(requireActivity(), Math.max(0, todayMenuPosition)){ position ->
            matchTypeTab[todayMatchPosition] = matchTypeTodayTab[position]
            binding.tabLayout.getTabAt(todayMatchPosition)?.select()
-      })
+      }
     }
 
     private var jumpMatchType: MatchType? = null
@@ -107,7 +103,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     override fun onBindViewStatus(view: View) {
         footView.setUp(this, mianViewModel)
         getMenuData(true)
-        jumpMatchType?.let { navGameFragment(it) }
         favoriteDelayRunable.doOnDelay(0)
 
         initObserve()
@@ -121,10 +116,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             loginedRun(it.context) {
                 startActivity(BetRecordActivity::class.java)
             }
-        }
-        ivMenuLeft.setOnClickListener {
-            getMainTabActivity().showSportLeftMenu()
-            EventBusUtil.post(MenuEvent(true))
         }
     }
 
@@ -280,6 +271,9 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             MatchType.OUTRIGHT -> {
                 fragmentHelper.show(SportOutrightFragment::class.java, args) { fragment, newInstance ->
                     fragment.resetFooterView(footView)
+                    if (!newInstance && fragment.isAdded) {
+                        gameType?.let { fragment.reload(it) }
+                    }
                 }
             }
 
@@ -309,9 +303,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private var navGameSport: GameType? = null
-    fun setJumpESport() {
-        jumpToSport(GameType.ES)
-    }
 
     fun jumpToSport(gameType: GameType) {
         if (sportMenu == null) {
@@ -355,10 +346,18 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         return null
     }
 
+    var todayMenuPosition = 0
     fun setJumpSport(matchType: MatchType? = null, gameType: GameType? = null) {
         jumpMatchType = matchType
         jumpGameType = gameType
+
+        //如果是今日，即将，12，24小时，则要标记上选中位置
+        todayMenuPosition = matchTypeTodayTab.indexOf(matchType)
+
         if (isAdded) {
+            if (todayMenuPosition >= 0){
+                todayMenuPop.lastSelectPosition = todayMenuPosition
+            }
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
             jumpMatchType = jumpMatchType ?: defaultMatchType
             matchType?.let { tabLayoutSelect(it) }

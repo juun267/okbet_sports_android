@@ -20,7 +20,7 @@ import org.cxct.sportlottery.network.Constants.GET_TWO_FACTOR_STATUS
 import org.cxct.sportlottery.network.Constants.GOOGLE_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
-import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
+import org.cxct.sportlottery.network.Constants.LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.INDEX_PROMOTENOTICE
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
@@ -150,7 +150,7 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return SendSmsResult(it.code, it.msg, it.success, null) as T
                     }
-                    (url.endsWith(INDEX_LOGIN)) -> {
+                    (url.endsWith(LOGIN)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
                     }

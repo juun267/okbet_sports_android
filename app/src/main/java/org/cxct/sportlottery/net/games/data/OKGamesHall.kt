@@ -4,7 +4,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
@@ -24,10 +23,12 @@ data class OKGamesCategory(
     val icon: String?,
     val iconSelected: String?,
     val iconUnselected: String?,
-    var gameList: List<OKGameBean>?,
-    //标记gameList是否大于18个
-    var isMoreThan18:Boolean=false
-): OKGameTab {
+    var gameList: List<OKGameBean>
+): OKGameTab, BaseNode() {
+
+    override val childNode: MutableList<BaseNode>?
+        get() = gameList as MutableList<BaseNode>?
+
     override fun getKey() = id
 
     override fun bindNameText(textView: TextView) {
@@ -53,16 +54,23 @@ data class OKGamesFirm(
     val id: Int,
     val firmName: String?,//厂商名称
     val img: String?,//厂商图
+    val imgMobile: String?,
+    val remark: String?,
+    var maintain: Int?,  // 0:游戏正常开启, 1: 维护状态
+    val sort:Int?,
+    val firmShowName: String?, //对应中文名
+    val open: Int?, //平台开关状态,0-关闭，1-开启
+    val gameEntryTypeEnum: String?
 ): OKGameLabel {
-
     override fun getKey() = id
     override fun bindLabelIcon(imageView: ImageView) {
         imageView.setImageResource(R.drawable.ic_okgame_p)
     }
 
     override fun bindLabelName(textView: TextView) {
-        textView.setText(firmName)
+        textView.text = textView.context.getString(R.string.N880)
     }
+    fun isMaintain() = 1 == maintain
 
 }
 
@@ -85,7 +93,11 @@ data class OKGameBean(
     val jackpotAmount:Double, //0不显示1显示
     val jackpotOpen:Int,
 ): BaseNode() {
+    // 列表的父节点
+    @Transient
+    lateinit var parentNode: BaseNode
     override val childNode: MutableList<BaseNode> = mutableListOf()
-
+    var categoryId = -1
     fun isMaintain() = maintain == 1
+    var isShowMore = false
 }

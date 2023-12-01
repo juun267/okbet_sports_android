@@ -6,8 +6,8 @@ import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.HandicapType.NULL
 import org.cxct.sportlottery.repository.ImageType.PROMOTION
-import org.cxct.sportlottery.ui.maintab.home.view.HomeTopView
 import org.cxct.sportlottery.util.KvUtils
+import org.cxct.sportlottery.util.LogUtil
 
 const val FLAG_OPEN = "1"
 const val FLAG_CLOSE = "0"
@@ -51,6 +51,16 @@ const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
 const val APP_NAME = "okbet" //okgame的包需要加一些特定的参数
 
+enum class Home() {
+    EU, HK, MY, ID, NULL
+}
+enum class HomeGames(val value: String){
+    OkSport("pageOKSports"),
+    OkGame("pageOKGames"),
+    OkBingo("pageOKBingo"),// 实际对应的是ESport 2023.10.06
+    OkLive("pageOKLive"),
+}
+
 var sConfigData: ConfigData? = null
     set(value) {
         KvUtils.putObject(ConfigData::class.java.name, value)
@@ -78,7 +88,7 @@ private fun getLoginCurrency(): String? =
 
 // 通过应用商店升级应用
 inline fun upgradeFromMarket(): Boolean {
-    return BuildConfig.FLAVOR.startsWith("google", true)
+    return BuildConfig.FLAVOR.startsWith("google_", true)
 }
 
 /**
@@ -97,7 +107,7 @@ class StaticData {
         }
         fun okLiveOpened(): Boolean {
             sConfigData?.homeGamesList?.forEach {
-                if(it.uniqueName== HomeTopView.OkLive){
+                if(it.uniqueName== HomeGames.OkLive.value){
                     //status==1  为开启
                     return it.status==1
                 }
@@ -109,7 +119,7 @@ class StaticData {
         //获取okGame是否开启
         fun okGameOpened(): Boolean{
             sConfigData?.homeGamesList?.forEach {
-                if(it.uniqueName== HomeTopView.OkGame){
+                if(it.uniqueName== HomeGames.OkGame.value){
                     //status==1  为开启
                     return it.status==1
                 }
@@ -121,7 +131,7 @@ class StaticData {
         //获取okSport菜单是否开启
         fun okSportOpened():Boolean {
             sConfigData?.homeGamesList?.forEach {
-                if(it.uniqueName== HomeTopView.OkSport){
+                if(it.uniqueName== HomeGames.OkSport.value){
                     //status==1  为开启
                     return it.status==1
                 }
@@ -132,7 +142,7 @@ class StaticData {
         //获取okBingo是否开启
         fun okBingoOpened():Boolean {
             sConfigData?.homeGamesList?.forEach {
-                if(it.uniqueName== HomeTopView.OkBingo){
+                if(it.uniqueName== HomeGames.OkBingo.value){
                     //status==1  为开启
                     return it.status==1
                 }

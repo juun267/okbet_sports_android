@@ -3,6 +3,7 @@ package org.cxct.sportlottery.net.games.api
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
@@ -36,4 +37,6 @@ interface OKGamesApi {
     @GET(Constants.RECORD_RESULT)
     suspend fun getRecordResult(): ApiResult<List<RecordNewEvent>>
 
+    @GET(Constants.GET_GAMEFIRMS)
+    suspend fun getGameFirms(): ApiResult<List<OKGamesFirm>>
 }

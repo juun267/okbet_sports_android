@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
@@ -20,9 +19,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerLiveListAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
-import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setupSportStatusChange
@@ -85,10 +82,8 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
 
     override fun onResume() {
         super.onResume()
-        if ((activity as MainTabActivity).getCurrentPosition() == 0
-            && (okLiveFragment().parentFragment as HomeFragment).getCurrentFragment() == okLiveFragment()
-            && okLiveFragment().getCurrentFragment() == this
-        ) {
+        if (getMainTabActivity().getCurrentFragment() == okLiveFragment()
+            && okLiveFragment().getCurrentFragment() == this) {
             unSubscribeChannelHallAll()
             //重新设置赔率监听
             binding.hotMatchView.onResume(this)
@@ -113,7 +108,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         //重新设置赔率监听
         binding.hotMatchView.onResume(this)
         viewModel.getRecommend()
-        okLiveFragment().viewModel.getOKGamesHall()
+        okLiveFragment().viewModel.getOKLiveHall()
         binding.winsRankView.loadData()
     }
 
@@ -241,7 +236,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
     }
 
     private fun onBindPart5View() {
-        binding.homeBottumView.bindServiceClick(childFragmentManager)
+        binding.bottomView.bindServiceClick(childFragmentManager)
     }
 
 

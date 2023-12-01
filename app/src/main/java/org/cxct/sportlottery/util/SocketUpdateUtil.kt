@@ -1,19 +1,20 @@
 package org.cxct.sportlottery.util
 
 import android.content.Context
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
-import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
+import org.cxct.sportlottery.network.service.match_odds_change.Odds
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.repository.GamePlayNameRepository
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
+import java.math.BigDecimal
 
 object SocketUpdateUtil {
     /**
@@ -21,175 +22,9 @@ object SocketUpdateUtil {
      */
     fun updateMatchStatus(
         gameType: String?,
-        matchOddList: MutableList<MatchOdd>? = arrayListOf(),
-        matchStatusChangeEvent: MatchStatusChangeEvent,
-        context: Context?,
-    ): Boolean {
-
-        if (matchOddList == null || matchStatusChangeEvent.matchStatusCO == null) {
-            return false
-        }
-
-        var isNeedRefresh = false
-        val matchStatusCO = matchStatusChangeEvent.matchStatusCO!!
-
-        for (index in 0 until matchOddList.size) {
-            val matchOdd = matchOddList[index]
-            if (matchStatusCO.matchId == null || matchStatusCO.matchId != matchOdd.matchInfo?.id) {
-                continue
-            }
-
-            if (matchStatusCO.status != matchOdd.matchInfo?.socketMatchStatus) {
-                matchOdd.matchInfo?.socketMatchStatus = matchStatusCO.status
-                isNeedRefresh = true
-            }
-
-            val statusValue =
-                matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
-                    ?: matchStatusCO.statusName
-            if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
-                matchOdd.matchInfo?.statusName18n = statusValue
-                isNeedRefresh = true
-            }
-
-            //matchStatusList为空就用 periods
-            matchOdd.matchInfo?.matchStatusList =
-                matchStatusChangeEvent.matchStatusList ?: matchStatusCO.periods
-            if (matchStatusCO.gameType == GameType.CK.key) {
-
-                val homeTotal = matchStatusCO.homeTotalScore ?: 0
-                val homeOut = matchStatusCO.homeOut ?: 0
-                if (matchStatusCO.homeScore.toString() != "${homeTotal}/${homeOut}") {
-                    matchOdd.matchInfo?.homeScore = "${homeTotal}/${homeOut}"
-                    isNeedRefresh = true
-                }
-
-                val awayTotal = matchStatusCO.awayTotalScore ?: 0
-                val awayOut = matchStatusCO.awayOut ?: 0
-                if (matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
-                    matchOdd.matchInfo?.awayScore = "${awayTotal}/${awayOut}"
-                    isNeedRefresh = true
-                }
-                if (matchStatusCO.homeOver != null && matchStatusCO.homeOver != matchOdd.matchInfo?.homeOver) {
-                    matchOdd.matchInfo?.homeOver = matchStatusCO.homeOver
-                    isNeedRefresh = true
-                }
-                if (matchStatusCO.awayOver != null && matchStatusCO.awayOver != matchOdd.matchInfo?.awayOver) {
-                    matchOdd.matchInfo?.awayOver = matchStatusCO.awayOver
-                    isNeedRefresh = true
-                }
-            } else {
-                if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != matchOdd.matchInfo?.homeScore) {
-                    matchOdd.matchInfo?.homeScore = "${matchStatusCO.homeScore}"
-                    isNeedRefresh = true
-                }
-                if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != matchOdd.matchInfo?.awayScore) {
-                    matchOdd.matchInfo?.awayScore = "${matchStatusCO.awayScore}"
-                    isNeedRefresh = true
-                }
-            }
-
-            if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
-                matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
-                isNeedRefresh = true
-            }
-
-            if (needUpdateTotalScore(gameType) && matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
-                matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
-                isNeedRefresh = true
-            }
-
-            if (needUpdatePoints(gameType) && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) {
-                matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
-                isNeedRefresh = true
-            }
-
-            if (needUpdatePoints(gameType) && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) {
-                matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
-                isNeedRefresh = true
-            }
-            if (gameType == GameType.FT.key && matchStatusCO.homeCornerKicks != null && matchStatusCO.homeCornerKicks != matchOdd.matchInfo?.homeCornerKicks) {
-                matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
-                isNeedRefresh = true
-            }
-            if (gameType == GameType.FT.key && matchStatusCO.awayCornerKicks != null && matchStatusCO.awayCornerKicks != matchOdd.matchInfo?.awayCornerKicks) {
-                matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
-                isNeedRefresh = true
-            }
-            if (gameType == GameType.FT.key && matchStatusCO.homeCards != null && matchStatusCO.homeCards != matchOdd.matchInfo?.homeCards) {
-                matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
-                isNeedRefresh = true
-            }
-
-            if (gameType == GameType.FT.key && matchStatusCO.awayCards != null && matchStatusCO.awayCards != matchOdd.matchInfo?.awayCards) {
-                matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
-                isNeedRefresh = true
-            }
-            if (gameType == GameType.FT.key && matchStatusCO.homeYellowCards != null && matchStatusCO.homeYellowCards != matchOdd.matchInfo?.homeYellowCards) {
-                matchOdd.matchInfo?.homeYellowCards = matchStatusCO.homeYellowCards
-                isNeedRefresh = true
-            }
-
-            if (gameType == GameType.FT.key && matchStatusCO.awayYellowCards != null && matchStatusCO.awayYellowCards != matchOdd.matchInfo?.awayYellowCards) {
-                matchOdd.matchInfo?.awayYellowCards = matchStatusCO.awayYellowCards
-                isNeedRefresh = true
-            }
-            if (gameType == GameType.FT.key && matchStatusCO.homeHalfScore != null && matchStatusCO.homeHalfScore != matchOdd.matchInfo?.homeHalfScore) {
-                matchOdd.matchInfo?.homeHalfScore = matchStatusCO.homeHalfScore
-                isNeedRefresh = true
-            }
-
-            if (gameType == GameType.FT.key && matchStatusCO.awayHalfScore != null && matchStatusCO.awayHalfScore != matchOdd.matchInfo?.awayHalfScore) {
-                matchOdd.matchInfo?.awayHalfScore = matchStatusCO.awayHalfScore
-                isNeedRefresh = true
-            }
-
-            if (needAttack(gameType) && matchStatusCO.attack != null && matchStatusCO.attack != matchOdd.matchInfo?.attack) {
-                matchOdd.matchInfo?.attack = matchStatusCO.attack
-                isNeedRefresh = true
-            }
-            if (gameType == GameType.BB.key && matchStatusCO.halfStatus != null && matchStatusCO.halfStatus != matchOdd.matchInfo?.halfStatus) {
-                matchOdd.matchInfo?.halfStatus = matchStatusCO.halfStatus
-                isNeedRefresh = true
-            }
-            if (gameType == GameType.BB.key && matchStatusCO.firstBaseBag != null && matchStatusCO.firstBaseBag != matchOdd.matchInfo?.firstBaseBag) {
-                matchOdd.matchInfo?.firstBaseBag = matchStatusCO.firstBaseBag
-                isNeedRefresh = true
-            }
-            if (gameType == GameType.BB.key && matchStatusCO.secBaseBag != null && matchStatusCO.secBaseBag != matchOdd.matchInfo?.secBaseBag) {
-                matchOdd.matchInfo?.secBaseBag = matchStatusCO.secBaseBag
-                isNeedRefresh = true
-            }
-            if (gameType == GameType.BB.key && matchStatusCO.thirdBaseBag != null && matchStatusCO.thirdBaseBag != matchOdd.matchInfo?.thirdBaseBag) {
-                matchOdd.matchInfo?.thirdBaseBag = matchStatusCO.thirdBaseBag
-                isNeedRefresh = true
-            }
-            if (gameType == GameType.BB.key && matchStatusCO.outNumber != null && matchStatusCO.outNumber != matchOdd.matchInfo?.outNumber) {
-                matchOdd.matchInfo?.outNumber = matchStatusCO.outNumber
-                isNeedRefresh = true
-            }
-        }
-        //matchStatusChange status = 100時，賽事結束
-        if (matchStatusCO.status == GameMatchStatus.FINISH.value) {
-            val iterator = matchOddList.iterator()
-            while (iterator.hasNext()) {
-                val it = iterator.next()
-                if (it.matchInfo != null && it.matchInfo?.id == matchStatusCO.matchId) {
-                    iterator.remove()
-                    return true
-//                    isNeedRefresh = true
-//                    return isNeedRefresh
-                }
-            }
-        }
-        return isNeedRefresh
-    }
-
-    fun updateMatchStatus(
-        gameType: String?,
         matchOdd: MatchOdd,
-        matchStatusChangeEvent: MatchStatusChangeEvent,
-        context: Context?,
+        matchStatusChangeEvent: FrontWsEvent.MatchStatusChangeEvent,
+        @Suppress("UNUSED_PARAMETER") context: Context?,
     ): Boolean {
 
         if (matchStatusChangeEvent.matchStatusCO == null) {
@@ -197,7 +32,7 @@ object SocketUpdateUtil {
         }
 
         var isNeedRefresh = false
-        val matchStatusCO = matchStatusChangeEvent.matchStatusCO!!
+        val matchStatusCO = matchStatusChangeEvent.matchStatusCO
         if (matchStatusCO.matchId == null || matchStatusCO.matchId != matchOdd.matchInfo?.id) {
             return false
         }
@@ -206,17 +41,49 @@ object SocketUpdateUtil {
             matchOdd.matchInfo?.socketMatchStatus = matchStatusCO.status
             isNeedRefresh = true
         }
-        val statusValue = matchStatusCO.statusNameI18n?.get(
-            LanguageManager.getSelectLanguage(context).key
-        ) ?: matchStatusCO.statusName
-        if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
+        val statusValue = GamePlayNameRepository.getStatusName(matchStatusCO.status)
+        if (statusValue != matchOdd.matchInfo?.statusName18n) {
             matchOdd.matchInfo?.statusName18n = statusValue
             isNeedRefresh = true
         }
 
         //matchStatusList为空就用 periods
-        matchOdd.matchInfo?.matchStatusList =
-            matchStatusChangeEvent.matchStatusList ?: matchStatusCO.periods
+        val matchStatusList: MutableList<MatchStatus> = mutableListOf()
+        if (matchStatusChangeEvent.matchStatusListList.isNotEmpty()) {
+            matchStatusChangeEvent.matchStatusListList.forEach {
+                matchStatusList.add(
+                    MatchStatus(
+                        homeScore = it.homeScore.toIntOrNull(),
+                        awayScore = it.awayScore.toIntOrNull(),
+                        homePoints = matchStatusCO.homePoints,
+                        awayPoints = matchStatusCO.awayPoints,
+                        homeCards = matchStatusCO.homeCards,
+                        awayCards = matchStatusCO.awayCards,
+                        statusCode = matchStatusCO.status,
+                        statusName = GamePlayNameRepository.getStatusName(matchStatusCO.status),
+                        statusNameI18n = GamePlayNameRepository.getMatchStatusResources(matchStatusCO.status)?.nameMap
+                    )
+                )
+            }
+        } else {
+            matchStatusCO.periodsList.forEach {
+                matchStatusList.add(
+                    MatchStatus(
+                        homeScore = it.homeScore.toIntOrNull(),
+                        awayScore = it.awayScore.toIntOrNull(),
+                        homePoints = matchStatusCO.homePoints,
+                        awayPoints = matchStatusCO.awayPoints,
+                        homeCards = it.homeCards.toIntOrNull(),
+                        awayCards = it.awayCards.toIntOrNull(),
+                        statusCode = it.status,
+                        statusName = it.statusName,
+                        statusNameI18n = GamePlayNameRepository.getMatchStatusResources(matchStatusCO.status)?.nameMap
+                    )
+                )
+            }
+        }
+        matchOdd.matchInfo?.matchStatusList = matchStatusList
+
         if (matchStatusCO.gameType == GameType.CK.key) {
             val homeTotal = matchStatusCO.homeTotalScore ?: 0
             val homeOut = matchStatusCO.homeOut ?: 0
@@ -241,26 +108,26 @@ object SocketUpdateUtil {
             }
         } else {
             if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != matchOdd.matchInfo?.homeScore) {
-                matchOdd.matchInfo?.homeScore = "${matchStatusCO.homeScore}"
+                matchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
                 isNeedRefresh = true
             }
             if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != matchOdd.matchInfo?.awayScore) {
-                matchOdd.matchInfo?.awayScore = "${matchStatusCO.awayScore}"
+                matchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
                 isNeedRefresh = true
             }
         }
 
-        if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
-            matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
+        if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore.toIntOrNull() != matchOdd.matchInfo?.homeTotalScore) {
+            matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore.toIntOrNull()
             isNeedRefresh = true
         }
-        if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
-            matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
+        if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore.toIntOrNull() != matchOdd.matchInfo?.homeTotalScore) {
+            matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore.toIntOrNull()
             isNeedRefresh = true
         }
 
-        if (needUpdateTotalScore(gameType) && matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
-            matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
+        if (needUpdateTotalScore(gameType) && matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore.toIntOrNull() != matchOdd.matchInfo?.awayTotalScore) {
+            matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore.toIntOrNull()
             isNeedRefresh = true
         }
 
@@ -273,29 +140,29 @@ object SocketUpdateUtil {
             matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
             isNeedRefresh = true
         }
-        if (gameType == GameType.FT.key && matchStatusCO.homeCornerKicks != null && matchStatusCO.homeCornerKicks != matchOdd.matchInfo?.homeCornerKicks) {
+        if (gameType == GameType.FT.key && matchStatusCO.homeCornerKicks != matchOdd.matchInfo?.homeCornerKicks) {
             matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
             isNeedRefresh = true
         }
-        if (gameType == GameType.FT.key && matchStatusCO.awayCornerKicks != null && matchStatusCO.awayCornerKicks != matchOdd.matchInfo?.awayCornerKicks) {
+        if (gameType == GameType.FT.key && matchStatusCO.awayCornerKicks != matchOdd.matchInfo?.awayCornerKicks) {
             matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
             isNeedRefresh = true
         }
-        if (gameType == GameType.FT.key && matchStatusCO.homeCards != null && matchStatusCO.homeCards != matchOdd.matchInfo?.homeCards) {
+        if (gameType == GameType.FT.key && matchStatusCO.homeCards != matchOdd.matchInfo?.homeCards) {
             matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
             isNeedRefresh = true
         }
 
-        if (gameType == GameType.FT.key && matchStatusCO.awayCards != null && matchStatusCO.awayCards != matchOdd.matchInfo?.awayCards) {
+        if (gameType == GameType.FT.key && matchStatusCO.awayCards != matchOdd.matchInfo?.awayCards) {
             matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
             isNeedRefresh = true
         }
-        if (gameType == GameType.FT.key && matchStatusCO.homeYellowCards != null && matchStatusCO.homeYellowCards != matchOdd.matchInfo?.homeYellowCards) {
+        if (gameType == GameType.FT.key && matchStatusCO.homeYellowCards != matchOdd.matchInfo?.homeYellowCards) {
             matchOdd.matchInfo?.homeYellowCards = matchStatusCO.homeYellowCards
             isNeedRefresh = true
         }
 
-        if (gameType == GameType.FT.key && matchStatusCO.awayYellowCards != null && matchStatusCO.awayYellowCards != matchOdd.matchInfo?.awayYellowCards) {
+        if (gameType == GameType.FT.key && matchStatusCO.awayYellowCards != matchOdd.matchInfo?.awayYellowCards) {
             matchOdd.matchInfo?.awayYellowCards = matchStatusCO.awayYellowCards
             isNeedRefresh = true
         }
@@ -313,183 +180,29 @@ object SocketUpdateUtil {
             matchOdd.matchInfo?.attack = matchStatusCO.attack
             isNeedRefresh = true
         }
-        if (gameType == GameType.BB.key && matchStatusCO.halfStatus != null && matchStatusCO.halfStatus != matchOdd.matchInfo?.halfStatus) {
+        if (gameType == GameType.BB.key && matchStatusCO.halfStatus != matchOdd.matchInfo?.halfStatus) {
             matchOdd.matchInfo?.halfStatus = matchStatusCO.halfStatus
             isNeedRefresh = true
         }
-        if (gameType == GameType.BB.key && matchStatusCO.firstBaseBag != null && matchStatusCO.firstBaseBag != matchOdd.matchInfo?.firstBaseBag) {
-            matchOdd.matchInfo?.firstBaseBag = matchStatusCO.firstBaseBag
+        if (gameType == GameType.BB.key && matchStatusCO.firstBaseBag != null && matchStatusCO.firstBaseBag.toIntOrNull() != matchOdd.matchInfo?.firstBaseBag) {
+            matchOdd.matchInfo?.firstBaseBag = matchStatusCO.firstBaseBag.toIntOrNull()
             isNeedRefresh = true
         }
-        if (gameType == GameType.BB.key && matchStatusCO.secBaseBag != null && matchStatusCO.secBaseBag != matchOdd.matchInfo?.secBaseBag) {
-            matchOdd.matchInfo?.secBaseBag = matchStatusCO.secBaseBag
+        if (gameType == GameType.BB.key && matchStatusCO.secBaseBag != null && matchStatusCO.secBaseBag.toIntOrNull() != matchOdd.matchInfo?.secBaseBag) {
+            matchOdd.matchInfo?.secBaseBag = matchStatusCO.secBaseBag.toIntOrNull()
             isNeedRefresh = true
         }
-        if (gameType == GameType.BB.key && matchStatusCO.thirdBaseBag != null && matchStatusCO.thirdBaseBag != matchOdd.matchInfo?.thirdBaseBag) {
-            matchOdd.matchInfo?.thirdBaseBag = matchStatusCO.thirdBaseBag
+        if (gameType == GameType.BB.key && matchStatusCO.thirdBaseBag != null && matchStatusCO.thirdBaseBag.toIntOrNull() != matchOdd.matchInfo?.thirdBaseBag) {
+            matchOdd.matchInfo?.thirdBaseBag = matchStatusCO.thirdBaseBag.toIntOrNull()
             isNeedRefresh = true
         }
-        if (gameType == GameType.BB.key && matchStatusCO.outNumber != null && matchStatusCO.outNumber != matchOdd.matchInfo?.outNumber) {
-            matchOdd.matchInfo?.outNumber = matchStatusCO.outNumber
+        if (gameType == GameType.BB.key && matchStatusCO.outNumber != null && matchStatusCO.outNumber.toIntOrNull() != matchOdd.matchInfo?.outNumber) {
+            matchOdd.matchInfo?.outNumber = matchStatusCO.outNumber.toIntOrNull()
             isNeedRefresh = true
         }
         //matchStatusChange status = 100時，賽事結束
         if (matchStatusCO.status == GameMatchStatus.FINISH.value) {
             isNeedRefresh = true
-        }
-        return isNeedRefresh
-    }
-
-    @Synchronized
-    fun updateMatchStatus(
-        gameType: String?,
-        matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
-        matchStatusChangeEvent: MatchStatusChangeEvent,
-        context: Context?,
-    ): Boolean {
-        var isNeedRefresh = false
-
-        matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
-
-            if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
-
-                if (matchStatusCO.status != matchOdd.matchInfo?.socketMatchStatus) {
-                    matchOdd.matchInfo?.socketMatchStatus = matchStatusCO.status
-                    isNeedRefresh = true
-                }
-
-                //菲语要特殊处理
-                val statusValue = matchStatusCO.statusNameI18n?.get(
-                    LanguageManager.getSelectLanguage(context).key
-                ) ?: matchStatusCO.statusName
-
-                if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
-                    matchOdd.matchInfo?.statusName18n = statusValue
-                    isNeedRefresh = true
-                }
-                //matchStatusList为空就用 periods
-                matchOdd.matchInfo?.matchStatusList =
-                    matchStatusChangeEvent.matchStatusList ?: matchStatusCO.periods
-                if (matchStatusCO.gameType == GameType.CK.key) {
-
-                    val homeTotal = matchStatusCO.homeTotalScore ?: 0
-                    val homeOut = matchStatusCO.homeOut ?: 0
-                    if (matchStatusCO.homeScore.toString() != "${homeTotal}/${homeOut}") {
-                        matchOdd.matchInfo?.homeScore = "${homeTotal}/${homeOut}"
-                        isNeedRefresh = true
-                    }
-
-                    val awayTotal = matchStatusCO.awayTotalScore ?: 0
-                    val awayOut = matchStatusCO.awayOut ?: 0
-                    if (matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
-                        matchOdd.matchInfo?.awayScore = "${awayTotal}/${awayOut}"
-                        isNeedRefresh = true
-                    }
-                    if (matchStatusCO.homeOver != null && matchStatusCO.homeOver != matchOdd.matchInfo?.homeOver) {
-                        matchOdd.matchInfo?.homeOver = matchStatusCO.homeOver
-                        isNeedRefresh = true
-                    }
-                    if (matchStatusCO.awayOver != null && matchStatusCO.awayOver != matchOdd.matchInfo?.awayOver) {
-                        matchOdd.matchInfo?.awayOver = matchStatusCO.awayOver
-                        isNeedRefresh = true
-                    }
-                } else {
-                    if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != matchOdd.matchInfo?.homeScore) {
-                        matchOdd.matchInfo?.homeScore = "${matchStatusCO.homeScore}"
-                        isNeedRefresh = true
-                    }
-                    if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != matchOdd.matchInfo?.awayScore) {
-                        matchOdd.matchInfo?.awayScore = "${matchStatusCO.awayScore}"
-                        isNeedRefresh = true
-                    }
-                }
-
-                if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
-                    matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
-                    isNeedRefresh = true
-                }
-
-                if (needUpdateTotalScore(gameType) && matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
-                    matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
-                    isNeedRefresh = true
-                }
-
-                if (needUpdatePoints(gameType) && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) {
-                    matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
-                    isNeedRefresh = true
-                }
-
-                if (needUpdatePoints(gameType) && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) {
-                    matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
-                    isNeedRefresh = true
-                }
-                if (gameType == GameType.FT.key && matchStatusCO.homeCornerKicks != null && matchStatusCO.homeCornerKicks != matchOdd.matchInfo?.homeCornerKicks) {
-                    matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
-                    isNeedRefresh = true
-                }
-                if (gameType == GameType.FT.key && matchStatusCO.awayCornerKicks != null && matchStatusCO.awayCornerKicks != matchOdd.matchInfo?.awayCornerKicks) {
-                    matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
-                    isNeedRefresh = true
-                }
-                if (gameType == GameType.FT.key && matchStatusCO.homeCards != null && matchStatusCO.homeCards != matchOdd.matchInfo?.homeCards) {
-                    matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
-                    isNeedRefresh = true
-                }
-
-                if (gameType == GameType.FT.key && matchStatusCO.awayCards != null && matchStatusCO.awayCards != matchOdd.matchInfo?.awayCards) {
-                    matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
-                    isNeedRefresh = true
-                }
-                if (gameType == GameType.FT.key && matchStatusCO.homeYellowCards != null && matchStatusCO.homeYellowCards != matchOdd.matchInfo?.homeYellowCards) {
-                    matchOdd.matchInfo?.homeYellowCards = matchStatusCO.homeYellowCards
-                    isNeedRefresh = true
-                }
-
-                if (gameType == GameType.FT.key && matchStatusCO.awayYellowCards != null && matchStatusCO.awayYellowCards != matchOdd.matchInfo?.awayYellowCards) {
-                    matchOdd.matchInfo?.awayYellowCards = matchStatusCO.awayYellowCards
-                    isNeedRefresh = true
-                }
-                if (gameType == GameType.FT.key && matchStatusCO.homeHalfScore != null && matchStatusCO.homeHalfScore != matchOdd.matchInfo?.homeHalfScore) {
-                    matchOdd.matchInfo?.homeHalfScore = matchStatusCO.homeHalfScore
-                    isNeedRefresh = true
-                }
-
-                if (gameType == GameType.FT.key && matchStatusCO.awayHalfScore != null && matchStatusCO.awayHalfScore != matchOdd.matchInfo?.awayHalfScore) {
-                    matchOdd.matchInfo?.awayHalfScore = matchStatusCO.awayHalfScore
-                    isNeedRefresh = true
-                }
-
-                if (needAttack(gameType) && matchStatusCO.attack != null && matchStatusCO.attack != matchOdd.matchInfo?.attack) {
-                    matchOdd.matchInfo?.attack = matchStatusCO.attack
-                    isNeedRefresh = true
-                }
-                if (gameType == GameType.BB.key && matchStatusCO.halfStatus != null && matchStatusCO.halfStatus != matchOdd.matchInfo?.halfStatus) {
-                    matchOdd.matchInfo?.halfStatus = matchStatusCO.halfStatus
-                    isNeedRefresh = true
-                }
-                if (gameType == GameType.BB.key && matchStatusCO.firstBaseBag != null && matchStatusCO.firstBaseBag != matchOdd.matchInfo?.firstBaseBag) {
-                    matchOdd.matchInfo?.firstBaseBag = matchStatusCO.firstBaseBag
-                    isNeedRefresh = true
-                }
-                if (gameType == GameType.BB.key && matchStatusCO.secBaseBag != null && matchStatusCO.secBaseBag != matchOdd.matchInfo?.secBaseBag) {
-                    matchOdd.matchInfo?.secBaseBag = matchStatusCO.secBaseBag
-                    isNeedRefresh = true
-                }
-                if (gameType == GameType.BB.key && matchStatusCO.thirdBaseBag != null && matchStatusCO.thirdBaseBag != matchOdd.matchInfo?.thirdBaseBag) {
-                    matchOdd.matchInfo?.thirdBaseBag = matchStatusCO.thirdBaseBag
-                    isNeedRefresh = true
-                }
-                if (gameType == GameType.BB.key && matchStatusCO.outNumber != null && matchStatusCO.outNumber != matchOdd.matchInfo?.outNumber) {
-                    matchOdd.matchInfo?.outNumber = matchStatusCO.outNumber
-                    isNeedRefresh = true
-                }
-            }
-            //matchStatusChange status = 100時，賽事結束
-            if (matchStatusCO.status == GameMatchStatus.FINISH.value) {
-                matchOdd.apply {
-                    isNeedRefresh = this != null
-                }
-            }
         }
         return isNeedRefresh
     }
@@ -509,7 +222,7 @@ object SocketUpdateUtil {
         else -> false
     }
 
-    fun updateMatchClock(matchOdd: MatchOdd, matchClockEvent: MatchClockEvent): Boolean {
+    fun updateMatchClock(matchOdd: MatchOdd, matchClockEvent: FrontWsEvent.MatchClockEvent): Boolean {
         return if (matchOdd.matchInfo == null) {
             false
         } else {
@@ -517,8 +230,8 @@ object SocketUpdateUtil {
         }
     }
 
-    fun updateMatchClockStatus(matchInfo: MatchInfo, matchClockEvent: MatchClockEvent): Boolean {
-        val matchClockCO = matchClockEvent.matchClockCO ?: return false
+    fun updateMatchClockStatus(matchInfo: MatchInfo, matchClockEvent: FrontWsEvent.MatchClockEvent): Boolean {
+        val matchClockCO = matchClockEvent ?: return false
 
         var isNeedRefresh = false
 
@@ -545,29 +258,10 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
-    fun updateOddStatus2(matchOdd: MatchOdd, matchOddsLockEvent: MatchOddsLockEvent): Boolean {
+    private fun updateMatchInfoClock(matchInfo: MatchInfo, matchClockEvent: FrontWsEvent.MatchClockEvent): Boolean {
         var isNeedRefresh = false
 
-        if (matchOdd.matchInfo?.id == matchOddsLockEvent.matchId) {
-            matchOdd.oddsMap?.values?.forEach { odd ->
-                odd?.forEach {
-                    it?.status = BetStatus.LOCKED.code
-                    isNeedRefresh = true
-                }
-            }
-
-            matchOdd.oddsEps?.eps?.forEach { odd ->
-                odd?.status = BetStatus.LOCKED.code
-            }
-        }
-
-        return isNeedRefresh
-    }
-
-    private fun updateMatchInfoClock(matchInfo: MatchInfo, matchClockEvent: MatchClockEvent): Boolean {
-        var isNeedRefresh = false
-
-        matchClockEvent.matchClockCO?.let { matchClockCO ->
+        matchClockEvent.let { matchClockCO ->
 
             if (matchClockCO.matchId != null && matchClockCO.matchId == matchInfo.id) {
 
@@ -601,11 +295,11 @@ object SocketUpdateUtil {
 
     fun updateMatchInfoClockByDetail(
         matchInfo: org.cxct.sportlottery.network.odds.MatchInfo,
-        matchClockEvent: MatchClockEvent,
+        matchClockEvent: FrontWsEvent.MatchClockEvent,
     ): Boolean {
         var isNeedRefresh = false
 
-        matchClockEvent.matchClockCO?.let { matchClockCO ->
+        matchClockEvent.let { matchClockCO ->
 
             if (matchClockCO.matchId != null && matchClockCO.matchId == matchInfo.id) {
 
@@ -978,6 +672,7 @@ object SocketUpdateUtil {
         //新玩法
         val newPlay = matchOddsChangeEvent.odds?.filter { socketOdds ->
             oddsDetailDataList.find { it.gameType == socketOdds.key } == null
+                    && socketOdds.value.odds?.all { it?.status != BetStatus.DEACTIVATED.code } ?: true //新玩法應過濾 DEACTIVATED odds
         }
 
         //加入新玩法
@@ -994,7 +689,7 @@ object SocketUpdateUtil {
                 value.name,
                 filteredOddList,
                 value.nameMap,
-                value.rowSort
+                value.rowSort, matchInfo = oddsDetailDataList.firstOrNull()?.matchInfo
             ).apply {
                 originPosition = newOddsDetailDataList.size
             })
@@ -1046,12 +741,12 @@ object SocketUpdateUtil {
     }
 
 
-    fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: GlobalStopEvent): Boolean {
+    fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: FrontWsEvent.GlobalStopEvent): Boolean {
         var isNeedRefresh = false
 
         matchOdd.oddsMap?.values?.forEach { odds ->
             odds?.filter { odd ->
-                globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
+                globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString()
             }?.forEach { odd ->
                 if (odd?.status != BetStatus.DEACTIVATED.code) {
                     odd?.status = BetStatus.DEACTIVATED.code
@@ -1060,7 +755,7 @@ object SocketUpdateUtil {
             }
         }
 
-        matchOdd.oddsEps?.eps?.filter { odd -> globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId }
+        matchOdd.oddsEps?.eps?.filter { odd -> globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString() }
             ?.forEach { odd ->
                 if (odd?.status != BetStatus.DEACTIVATED.code) {
                     odd?.status = BetStatus.DEACTIVATED.code
@@ -1076,12 +771,12 @@ object SocketUpdateUtil {
     }
 
     fun updateOddStatus(
-        oddsDetailListData: OddsDetailListData, globalStopEvent: GlobalStopEvent
+        oddsDetailListData: OddsDetailListData, globalStopEvent: FrontWsEvent.GlobalStopEvent
     ): Boolean {
         var isNeedRefresh = false
 
         oddsDetailListData.oddArrayList.filter { odd ->
-            globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
+            globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString()
         }.forEach { odd ->
             if (odd?.status != BetStatus.DEACTIVATED.code) {
                 odd?.status = BetStatus.DEACTIVATED.code
@@ -1111,7 +806,7 @@ object SocketUpdateUtil {
     }
 
     fun updateOddStatus(
-        betInfoListData: BetInfoListData, matchStatusEvent: MatchStatusChangeEvent
+        betInfoListData: BetInfoListData, matchStatusEvent: FrontWsEvent.MatchStatusChangeEvent
     ): Boolean {
         var isNeedRefresh = false
 
@@ -1124,7 +819,7 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
-    fun updateOddStatus(matchOdd: MatchOdd, matchOddsLockEvent: MatchOddsLockEvent): Boolean {
+    fun updateOddStatus(matchOdd: MatchOdd, matchOddsLockEvent: FrontWsEvent.MatchOddsLockEvent): Boolean {
         var isNeedRefresh = false
 
         if (matchOdd.matchInfo?.id == matchOddsLockEvent.matchId) {
@@ -1148,7 +843,7 @@ object SocketUpdateUtil {
     private fun insertMatchOdds(
         oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent
     ): Boolean {
-        val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds.keys.find {
+        val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds?.keys?.find {
             it == oddsDetailListData.gameType
         })
 
@@ -1180,15 +875,83 @@ object SocketUpdateUtil {
         return oddsChangeEvent.quickPlayCateList?.isNotEmpty() ?: false
     }
 
+    /**
+     * 置換玩法翻譯名稱
+     * 配置{H}, {C}翻譯取代文字
+     * 新增{E} -> 附加訊息(extInfo)
+     */
+    fun Map<String, Odds>?.replaceNameMap(matchInfo: org.cxct.sportlottery.network.odds.MatchInfo?): Map<String, Odds>? {
+        val newMap = this?.toMutableMap()
+        newMap?.forEach { (playCateCode, value) ->
+            value.nameMap?.toMap()?.forEach { (playCode, translateName) ->
+
+//                value.extInfoReplaced = translateName?.contains("{E}") == true
+
+                val newNameMap = this?.get(playCateCode)?.nameMap?.toMutableMap()
+                val replacedName =
+                    translateName?.replace("||", "\n")?.replace(
+                        "{S}",
+                        (if (playCateCode.contains(":")) playCateCode.split(":")
+                            .getOrNull(1) else value.odds?.firstOrNull()?.extInfo) ?: "{S}"
+                    )?.replace("{H}", matchInfo?.homeName ?: "{H}")?.replace("{C}", matchInfo?.awayName ?: "{C}")?.replace(
+                        "{E}",
+                        value.odds?.maxByOrNull { it?.extInfo?.toBigDecimalOrNull() ?: BigDecimal.ZERO }?.extInfo
+                            ?: matchInfo?.extInfo ?: "{E}"
+                    )
+
+                newNameMap?.put(playCode, replacedName)
+
+                newMap[playCateCode]?.nameMap = newNameMap
+            }
+
+            value.odds.replaceNameMap(matchInfo)
+        }
+
+        return newMap?.toMap()
+    }
+
+    /**
+     * 置換盤口訊息翻譯名稱
+     * 配置{H}, {C}, {S}翻譯取代文字
+     * 新增{E} -> 附加訊息(extInfo)
+     * {P} -> spread
+     * 需在replaceScore已經配置之後執行此method才會替換{S}
+     */
+    private fun MutableList<Odd?>?.replaceNameMap(matchInfo: org.cxct.sportlottery.network.odds.MatchInfo?) {
+        this?.toList()?.forEach { odd ->
+            odd?.nameMap?.toMap()?.forEach { (playCode, translateName) ->
+
+                val newNameMap = odd.nameMap?.toMutableMap()
+                val replacedName = translateName?.replace("||", "\n")?.replace("{S}", odd.replaceScore ?: "{S}")
+                    ?.replace("{H}", matchInfo?.homeName ?: "{H}")?.replace("{C}", matchInfo?.awayName ?: "{C}")
+                    ?.replace("{E}", matchInfo?.extInfo ?: "{E}")?.replace("{P}", odd.spread ?: "{P}")
+
+                newNameMap?.put(playCode, replacedName)
+
+                odd.nameMap = newNameMap
+
+            }
+        }
+    }
+
 
     private fun refreshMatchOdds(
         oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent
     ): Boolean {
         var isNeedRefresh = false
 
-        val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds.keys.find {
+        //置換玩法翻譯名稱
+        val newMatchOddsMap = matchOddsChangeEvent.odds.replaceNameMap(oddsDetailListData.matchInfo)
+        matchOddsChangeEvent.odds = newMatchOddsMap
+
+        val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds?.keys?.find {
             it == oddsDetailListData.gameType
         })
+
+        //更新玩法翻譯
+        odds?.nameMap?.let {
+            oddsDetailListData.nameMap = it
+        }
 
         oddsDetailListData.oddArrayList.forEach { odd ->
             val oddSocket = odds?.odds?.find { oddSocket ->

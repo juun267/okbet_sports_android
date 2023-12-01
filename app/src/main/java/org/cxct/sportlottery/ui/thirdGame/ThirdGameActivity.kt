@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.thirdGame
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.webkit.WebView
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.BarHide
@@ -52,7 +51,7 @@ open class ThirdGameActivity : WebActivity() {
         initObserve()
 
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
-            if (it.isMaintain() && firmCode == it.firmType /*&& gameType == it.gameType*/) {
+            if (it.maintain == 1 && firmCode == it.firmType /*&& gameType == it.gameType*/) {
                 motion_menu.gone()
                 showErrorPromptDialog(getString(R.string.error), getString(R.string.hint_game_maintenance)) {
                     finish()

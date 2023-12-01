@@ -18,12 +18,12 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
+import org.cxct.sportlottery.net.live.OKLiveRepository
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.util.SingleLiveEvent
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 
 class OKGamesViewModel(
     androidContext: Application,
@@ -177,6 +177,7 @@ class OKGamesViewModel(
      * 进入OKgame游戏
      */
     fun requestEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {
+        RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         requestEnterThirdGame(
             "${gameData.firmType}",
             "${gameData.gameCode}",
@@ -262,12 +263,8 @@ class OKGamesViewModel(
         viewModelScope.launch {
             var task1: Deferred<ApiResult<List<OKGameBean>>>? =null
             var task2: Deferred<ApiResult<List<OKGameBean>>>? =null
-            if (StaticData.okGameOpened()){
-                task1 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKGAMES) }
-            }
-            if (StaticData.okLiveOpened()){
-                task2 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKLIVE) }
-            }
+            task1 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKGAMES) }
+            task2 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKLIVE) }
             val result1 = task1?.await()
             val result2 = task2?.await()
             val newList = mutableListOf<OKGameBean>()
@@ -278,6 +275,35 @@ class OKGamesViewModel(
                 newList.addAll(it)
             }
             sportFooterGames.postValue(newList)
+        }
+    }
+
+    /**
+     * 获取游戏大厅数据（包含，厂商列表，收藏列表）
+     */
+    fun getOKLiveHall() {
+        if (isLoadingOKGamesHall) {
+            return
+        }
+
+        isLoadingOKGamesHall = true
+        callApi({ OKLiveRepository.okLiveHall() }) {
+
+            isLoadingOKGamesHall = false
+            val data = it.getData() ?: return@callApi
+
+            _gameHall.postValue(data)
+            _collectList.postValue(Pair(true, data.collectList ?: listOf()))
+
+            data.categoryList?.forEach {
+                it.gameList?.forEach {
+                    allGamesMap[it.id] = it
+                }
+            }
+
+            if (data.firmList != null) {
+                _providerresult.postValue(data)
+            }
         }
     }
 

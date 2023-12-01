@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
+import org.cxct.sportlottery.repository.GamePlayNameRepository
 import org.cxct.sportlottery.util.sortOddsMapByDetail
 
 @Parcelize
@@ -29,6 +30,18 @@ data class MatchOdd(
 ) : Parcelable, org.cxct.sportlottery.network.common.MatchOdd {
     fun sortOddsMap() {
         this.odds.sortOddsMapByDetail()
+    }
+
+    fun setupIsOnlyEUType() {
+        this.odds.forEach { (playCateCode, cateDetailData) ->
+            val supportOddsTypeSwitch = GamePlayNameRepository.getPlayCateSupportOddsTypeSwitch(
+                matchInfo.gameType,
+                playCateCode
+            ) ?: false
+            cateDetailData.odds.forEach { odd ->
+                odd?.isOnlyEUType = !supportOddsTypeSwitch
+            }
+        }
     }
 
     override var oddsMap: MutableMap<String, MutableList<Odd>?>? = null

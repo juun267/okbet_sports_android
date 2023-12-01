@@ -1,45 +1,34 @@
 package org.cxct.sportlottery.ui.sport.esport
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.post
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.Menu
-import org.cxct.sportlottery.network.sport.SportMenuData
-import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
-import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
-import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
 import org.cxct.sportlottery.ui.sport.list.TodayMenuPop
 import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -73,14 +62,14 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private val footView by lazy { SportFooterGamesView(binding.root.context,esportTheme = true) }
     private val mianViewModel: OKGamesViewModel by viewModel()
     private var todayTabItem:TabLayout.Tab?=null
-    private val todayMenuPop by lazy { TodayMenuPop(requireActivity(), onItemClickListener = { position ->
+    private val todayMenuPop by lazy { TodayMenuPop(requireActivity(), Math.max(0, todayMenuPosition)) { position ->
            matchTypeTab[todayMatchPosition] = matchTypeTodayTab[position]
            binding.tabLayout.getTabAt(todayMatchPosition)?.select()
-      })
+      }
     }
 
     private var jumpMatchType: MatchType? = null
-    private var jumpGameType: GameType? = null
+    private var jumpGameType: String? = null
     //根据赛事数量判断默认的分类
     private var defaultMatchType: MatchType? = null
     private var curFavoriteItem: Item? = null
@@ -103,7 +92,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         binding.linToolbar.setBackgroundResource(R.drawable.bg_esport_head)
         footView.apply {
             setBackgroundResource(R.color.transparent_white_50)
-            homeButtomView.setBackgroundResource(R.color.transparent_white_50)
+            homeBottomView.setBackgroundResource(R.color.transparent_white_50)
         }
     }
 
@@ -115,7 +104,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         footView.setUp(this, mianViewModel)
         binding.homeToolbar.attach(this@ESportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         getMenuData(true)
-        jumpMatchType?.let { navGameFragment(it) }
         favoriteDelayRunable.doOnDelay(0)
 
         initObserve()
@@ -129,10 +117,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             loginedRun(it.context) {
                 startActivity(BetRecordActivity::class.java)
             }
-        }
-        ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            getMainTabActivity().showMainLeftMenu(this@ESportFragment.javaClass)
         }
     }
 
@@ -172,14 +156,14 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private fun refreshTabLayout(sportMenuResult: ApiResult<SportMenuData>) {
         sportMenuData = sportMenuResult.getData()
         sportMenuData?.menu?.let { sportMenu = it }
-        val countInPlay = sportMenuData?.menu?.inPlay?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countAtStart = sportMenuData?.atStart?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countIn12hr = sportMenuData?.in12hr?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countIn24hr = sportMenuData?.in24hr?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countToday = sportMenuData?.menu?.today?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countEarly = sportMenuData?.menu?.early?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countOutright = sportMenuData?.menu?.outright?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
-        val countParlay = sportMenuData?.menu?.parlay?.items?.firstOrNull { it.code==GameType.ES.key }?.num ?: 0
+        val countInPlay = sportMenuData?.menu?.inPlay?.numOfESport()?:0
+        val countAtStart = sportMenuData?.atStart?.numOfESport()?:0
+        val countIn12hr = sportMenuData?.in12hr?.numOfESport()?:0
+        val countIn24hr = sportMenuData?.in24hr?.numOfESport()?:0
+        val countToday = sportMenuData?.menu?.today?.numOfESport()?:0
+        val countEarly = sportMenuData?.menu?.early?.numOfESport()?:0
+        val countOutright = sportMenuData?.menu?.outright?.numOfESport()?:0
+        val countParlay = sportMenuData?.menu?.parlay?.numOfESport()?:0
         defaultMatchType = when {
             countInPlay > 0 -> MatchType.IN_PLAY
 //            countAtStart > 0 -> MatchType.AT_START
@@ -264,7 +248,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
 
     private fun navGameFragment(matchType: MatchType) {
-        var gameType = navGameSport?.key ?: jumpGameType?.key
+        var gameType = navGameSport ?: jumpGameType
         jumpMatchType = null
         jumpGameType = null
 
@@ -279,11 +263,14 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             MatchType.OUTRIGHT -> {
                 fragmentHelper.show(ESportOutrightFragment::class.java, args) { fragment, newInstance ->
                     fragment.resetFooterView(footView)
+                    if (!newInstance && fragment.isAdded) {
+                        gameType?.let { fragment.reload(it) }
+                    }
                 }
             }
 
             MatchType.MY_EVENT -> {
-                fragmentHelper.show(ESportFavoriteFragment::class.java, args) { fragment, newInstance ->
+                fragmentHelper.show(ESportFavoriteFragment::class.java, args) { fragment, _ ->
                     fragment.resetFooterView(footView)
                     fragment.setFavoriteData(curFavoriteItem)
                 }
@@ -301,12 +288,9 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     }
 
-    private var navGameSport: GameType? = null
-    fun setJumpESport() {
-        jumpToSport(GameType.ES)
-    }
+    private var navGameSport: String? = null
 
-    fun jumpToSport(gameType: GameType) {
+    fun jumpToSport(gameType: String) {
         if (sportMenu == null) {
             navGameSport = gameType
             return
@@ -317,23 +301,14 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         setJumpSport(matchType, gameType = gameType)
     }
 
-    private fun findMatchType(menu: Menu, gameType: GameType): MatchType {
-        val matchType = findESport(menu.inPlay.items, MatchType.IN_PLAY, gameType)
+    private fun findMatchType(menu: Menu, gameType: String): MatchType {
+        return findESport(menu.inPlay.items, MatchType.IN_PLAY, gameType)
             ?: findESport(menu.today.items, MatchType.TODAY, gameType)
-            ?: findESport(menu.early.items, MatchType.EARLY, gameType)
-
-        if (matchType == null) {
-            if (gameType == GameType.ES) { // 仅电竞的时候提示
-                showPromptDialog(getString(R.string.prompt), getString(R.string.P172)) { }
-            }
-//            ToastUtil.showToast(context(), R.string.P172)
-            return MatchType.EARLY
-        }
-        return matchType
+            ?: findESport(menu.early.items, MatchType.EARLY, gameType) ?: MatchType.EARLY
     }
-    private fun findESport(items: List<Item>, matchType: MatchType, gameType: GameType): MatchType? {
+    private fun findESport(items: List<Item>, matchType: MatchType, gameType: String): MatchType? {
         items.forEach {
-            if (gameType.key == it.code) {
+            if (gameType == it.code) {
                 jumpMatchType = matchType
                 return matchType
             }
@@ -342,10 +317,19 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         return null
     }
 
-    fun setJumpSport(matchType: MatchType? = null, gameType: GameType? = null) {
+    var todayMenuPosition = 0
+    fun setJumpSport(matchType: MatchType? = null, gameType: String? = null) {
+        LogUtil.d("setJumpSport= "+gameType)
         jumpMatchType = matchType
         jumpGameType = gameType
+
+        //如果是今日，即将，12，24小时，则要标记上选中位置
+        todayMenuPosition = matchTypeTodayTab.indexOf(matchType)
+
         if (isAdded) {
+            if (todayMenuPosition >= 0){
+                todayMenuPop.lastSelectPosition = todayMenuPosition
+            }
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
             jumpMatchType = jumpMatchType ?: defaultMatchType
             matchType?.let { tabLayoutSelect(it) }
@@ -439,19 +423,19 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 when (matchType){
                     MatchType.TODAY-> {
                         tv_title.text = getString(R.string.home_tab_today)
-                        tv_number.text = sportMenu?.today?.num.toString()
+                        tv_number.text = sportMenu?.today?.numOfESport().toStringS("0")
                     }
                     MatchType.AT_START-> {
                         tv_title.text = getString(R.string.home_tab_at_start)
-                        tv_number.text = sportMenuData?.atStart?.num.toString()
+                        tv_number.text = sportMenuData?.atStart?.numOfESport().toStringS("0")
                     }
                     MatchType.IN12HR-> {
                         tv_title.text = getString(R.string.P228)
-                        tv_number.text = sportMenuData?.in12hr?.num.toString()
+                        tv_number.text = sportMenuData?.in12hr?.numOfESport().toStringS("0")
                     }
                     MatchType.IN24HR-> {
                         tv_title.text = getString(R.string.P229)
-                        tv_number.text = sportMenuData?.in24hr?.num.toString()
+                        tv_number.text = sportMenuData?.in24hr?.numOfESport().toStringS("0")
                     }
                 }
             }
@@ -460,4 +444,5 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
         }
     }
+
 }

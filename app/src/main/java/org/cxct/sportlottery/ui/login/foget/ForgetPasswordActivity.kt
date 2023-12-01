@@ -72,12 +72,10 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::cla
 
         btnSendSms.setOnClickListener {
             hideSoftKeyboard(this@ForgetPasswordActivity)
-            VerifyCodeDialog().run {
-                callBack = { identity, validCode ->
+            showCaptchaDialog(supportFragmentManager) {
+                    identity, validCode ->
                     sendCode(identity, validCode)
                     eetSmsCode.requestFocus()
-                }
-                show(supportFragmentManager, null)
             }
         }
 

@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.ViewHomeFollowBinding
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerHomeFollowAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.FollowMenuBean
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import splitties.systemservices.layoutInflater
 import splitties.views.recyclerview.horizontalLayoutManager
 
 class HomeFollowView(
@@ -24,17 +26,15 @@ class HomeFollowView(
 ) : LinearLayout(context, attrs) {
     private val menuList = arrayListOf<FollowMenuBean>()
     private val mAdapter = RecyclerHomeFollowAdapter()
-    private var mRecyclerMenu: RecyclerView? = null
+
+    val binding = ViewHomeFollowBinding.inflate(layoutInflater,this,true)
 
     init {
-        orientation = VERTICAL
         initView()
     }
 
-    private fun initView() {
-        LayoutInflater.from(context).inflate(R.layout.view_home_follow, this, true)
-        mRecyclerMenu = findViewById(R.id.recyclerMenu)
-        mRecyclerMenu?.apply {
+    private fun initView() = binding.run{
+        rvFollow.apply {
             layoutManager = LinearLayoutManager(context,RecyclerView.HORIZONTAL,false)
             addItemDecoration(SpaceItemDecoration(context,R.dimen.margin_8))
             adapter = mAdapter
@@ -123,7 +123,7 @@ class HomeFollowView(
                 gone()
             }
             mAdapter.data = menuList
-            mRecyclerMenu?.adapter = mAdapter
+            binding.rvFollow.adapter = mAdapter
 
             //item点击跳转浏览器
             mAdapter.setOnItemClickListener { _, _, position ->

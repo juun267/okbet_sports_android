@@ -110,19 +110,17 @@ class LoginViewModel(
             focusChangeCheckAllInputComplete()
         }
 
-    fun loginV3(account: String, password: String, identity: String, validCode: String, onNeedVerifyPhone: (String) -> Unit) = launch {
+    fun login(account: String, password: String, identity: String, validCode: String, onNeedVerifyPhone: (String) -> Unit) = launch {
         loading()
-
         val loginRequest = LoginRequest(
             account = account,
             password = MD5Util.MD5Encode(password),
-            validCodeIdentity = identity,
-            validCode = validCode
-        )
+        ).apply { buildParams(identity,validCode) }
+
 
         //預設存帳號
         loginRepository.account = account
-        val loginResult = doNetwork { LoginRepository.userLoginV3(loginRequest) }
+        val loginResult = doNetwork { LoginRepository.login(loginRequest) }
 
         if (loginResult != null && !loginResult.success) {
             hideLoading()

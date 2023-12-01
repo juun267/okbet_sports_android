@@ -41,6 +41,11 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
             close()
         }
 
+        ivHome.onClick {
+            getMainTabActivity().backMainHome()
+            close()
+        }
+
         //click Sport betting
         linearBetting.onClick {
             replaceTab(0)

@@ -15,6 +15,8 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.RecentDataManager
+import org.cxct.sportlottery.util.RecentRecord
 import org.cxct.sportlottery.util.ToastUtil
 
 class OKLiveViewModel(
@@ -78,13 +80,13 @@ class OKLiveViewModel(
     /**
      * 获取游戏大厅数据（包含，厂商列表，收藏列表）
      */
-    fun getOKGamesHall() {
+    fun getOKLiveHall() {
         if (isLoadingOKGamesHall) {
             return
         }
 
         isLoadingOKGamesHall = true
-        callApi({ OKLiveRepository.okGamesHall() }) {
+        callApi({ OKLiveRepository.okLiveHall() }) {
 
             isLoadingOKGamesHall = false
             val data = it.getData() ?: return@callApi
@@ -130,7 +132,7 @@ class OKLiveViewModel(
      * 收藏游戏
      */
     fun collectGame(gameData: OKGameBean) =
-        callApi({ OKLiveRepository.collectOkGames(gameData.id, !gameData.markCollect) }) {
+        callApi({ OKLiveRepository.collectOkLive(gameData.id, !gameData.markCollect) }) {
             if (!it.succeeded()) {
                 ToastUtil.showToast(MultiLanguagesApplication.appContext, it.msg)
                 return@callApi
@@ -166,6 +168,7 @@ class OKLiveViewModel(
             )
             return
         }
+        RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         requestEnterThirdGame(
             "${gameData.firmType}",
             "${gameData.gameCode}",

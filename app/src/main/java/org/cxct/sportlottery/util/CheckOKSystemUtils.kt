@@ -54,24 +54,11 @@ fun setupSportStatusChange(lifecycleOwner: LifecycleOwner, block: (isOpen:Boolea
     }
 
 }
-/**
- * 如果mainActivity在体育相关页面，需要回退到首页
- */
-fun MainTabActivity.checkMainPosition(position:Int):Boolean{
-    //是否为体育页面
-    val result=checkSportFragment(position)
-    //在体育页面&&维护开启
-    val flag=result&&getSportEnterIsClose()
-    if(flag && lifecycle.currentState == androidx.lifecycle.Lifecycle.State.RESUMED){
-        showPromptDialogNoCancel(message = getString(R.string.N969)) { }
-//        ToastUtil.showToast(this, getString(R.string.N969))
-    }
-    return flag
-}
+
 
 fun BaseActivity<*>.bindSportMaintenance() {
     ServiceBroadcastReceiver.sportMaintenance.observe(this){
-        if (it.isMaintenance()) {
+        if (it.status == 1) {
             showPromptDialogNoCancel(message = getString(R.string.N969)) { finish() }
         }
     }

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.sport
 
 
+import com.chad.library.adapter.base.entity.node.BaseNode
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.common.proguards.KeepMembers
@@ -19,7 +20,8 @@ open class Item(
     val sortNum: Int,
     @Json(name = "categoryList")
     var categoryList: MutableList<CategoryItem>?=null
-) {
+): BaseNode() {
+    override val childNode: MutableList<BaseNode>? = null
     var isSelected: Boolean = false
     var playCateNum: Int? = null
 

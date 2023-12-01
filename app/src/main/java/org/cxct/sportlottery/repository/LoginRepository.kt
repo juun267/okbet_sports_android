@@ -110,6 +110,10 @@ object LoginRepository {
         mUserMoney.postValue(money)
     }
 
+    fun userMoney(): Double {
+        return if (isLogined()) mUserMoney.value ?: 0.0 else 0.0
+    }
+
     var lastMoneyTime = 0L
 
     /**
@@ -186,13 +190,8 @@ object LoginRepository {
         return loginResponse
     }
 
-    suspend fun login(loginRequest: LoginRequest): Response<LoginResult> {
-
-        return OneBoSportApi.indexService.login(loginRequest)
-    }
-
-    suspend fun userLoginV3(@Body params: LoginRequest): Response<LoginResult> {
-        return OneBoSportApi.indexService.userLoginV3(params)
+    suspend fun login(@Body params: LoginRequest): Response<LoginResult> {
+        return OneBoSportApi.indexService.login(params)
     }
 
     /**
