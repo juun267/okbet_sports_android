@@ -319,7 +319,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     var todayMenuPosition = 0
     fun setJumpSport(matchType: MatchType? = null, gameType: String? = null) {
-        LogUtil.d("setJumpSport= "+gameType)
         jumpMatchType = matchType
         jumpGameType = gameType
 

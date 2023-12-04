@@ -18,12 +18,10 @@ open class Item(
     val num: Int,
     @Json(name = "sortNum")
     val sortNum: Int,
-    @Json(name = "categoryList")
-    var categoryList: MutableList<CategoryItem>?=null
 ): BaseNode() {
     override val childNode: MutableList<BaseNode>? = null
     var isSelected: Boolean = false
     var playCateNum: Int? = null
-
+    var categoryList: MutableList<CategoryItem>?=null
     var leagueOddsList: List<LeagueOdd>? = null // 收藏赛事-该字段会手动负值
 }

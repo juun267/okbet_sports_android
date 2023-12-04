@@ -5,6 +5,7 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.sport.data.SportCouponItem
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteAllMatchItem
+import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.SportMenuData
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,6 +21,9 @@ interface SportService {
 
     @GET(Constants.SPORT_COUPON_MENU)
     suspend fun getCouponMenu(): ApiResult<List<SportCouponItem>>
+
+    @POST(Constants.SPORT_MENU_CATEGORYLIST)
+    suspend fun getMenuCategoryList(@Body params: JsonObject): ApiResult<List<CategoryItem>>
 
 
 
