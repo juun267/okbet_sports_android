@@ -139,7 +139,6 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
-        dateSearchBar.timeZone = TimeZone.getTimeZone(TimeUtil.TIMEZONE_DEFAULT)
         dateSearchBar.setOnClickSearchListener {
             if((dateSearchBar.endTime?:0)-(dateSearchBar.startTime?:0)>7*24*3600*1000){
                 ToastUtil.showToast(requireContext(),R.string.P274)
