@@ -109,32 +109,6 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
             }
         }
 
-        enterThirdGameResult.observe(viewLifecycleOwner) {
-            if (isVisible) enterThirdGame(it.second, it.first)
-        }
-
-        gameBalanceResult.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { event ->
-                TransformInDialog(event.first, event.second, event.third) {
-                    enterThirdGame(it, event.first)
-                }.show(childFragmentManager, null)
-            }
-        }
-
-        enterTrialPlayGameResult.observe(viewLifecycleOwner) {
-            hideLoading()
-            if (it == null) {
-                //不支持试玩
-                mainTabActivity().startLogin()
-            } else {
-                //试玩弹框
-                val trialDialog = TrialGameDialog(mainTabActivity(), it.first, it.second) { firmType, thirdGameResult->
-                    enterThirdGame(this@OKLiveFragment, viewModel, thirdGameResult, firmType)
-                }
-                trialDialog.show()
-            }
-        }
-
     }
 
 
@@ -206,9 +180,8 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     }
 
     fun enterGame(bean: OKGameBean) {
-
         loginedRun(binding.root.context) {
-            viewModel.requestEnterThirdGame(bean, this)
+            mainTabActivity().enterThirdGame(bean)
             viewModel.addRecentPlay(bean)
         }
     }

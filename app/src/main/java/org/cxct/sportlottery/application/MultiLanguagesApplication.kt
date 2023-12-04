@@ -9,6 +9,7 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
+import android.os.Build
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -106,6 +107,10 @@ class MultiLanguagesApplication : Application() {
         super.onCreate()
         appContext = applicationContext
         mInstance = this
+        // 非主进程不进行下面的初始化
+        if (BuildConfig.APPLICATION_ID != getAppProcessName()) {
+            return
+        }
         // 初始化语种切换框架
 //        MultiLanguages.init(this)
         asyncInit()
@@ -126,7 +131,16 @@ class MultiLanguagesApplication : Application() {
 
         // 修复PictureSelector V3.11.1 bug
         PictureSelectorFix.fixBug(this)
+
     }
+
+    private fun getAppProcessName(): String {
+        if (Build.VERSION.SDK_INT >= 28) return getProcessName()
+        val activityThread = Class.forName("android.app.ActivityThread")
+        val methodName = if (Build.VERSION.SDK_INT >= 18) "currentProcessName" else "currentPackageName"
+        return activityThread.getDeclaredMethod(methodName).invoke(null) as String
+    }
+
 
     // 不需要在主线程初始化的进行异步初始化
     private fun asyncInit() = GlobalScope.async {

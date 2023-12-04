@@ -24,6 +24,7 @@ import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.GameChildAdapter
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.games.SportFootGameAdapter
@@ -31,8 +32,6 @@ import org.cxct.sportlottery.ui.maintab.home.view.HomeBottomView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
-import org.cxct.sportlottery.view.dialog.TrialGameDialog
-import org.cxct.sportlottery.view.transform.TransformInDialog
 
 class SportFooterGamesView @JvmOverloads constructor(
     context: Context,
@@ -142,32 +141,6 @@ class SportFooterGamesView @JvmOverloads constructor(
             moreLabelLayout.isVisible = it.isNotEmpty()
             okGamesAdapter.setNewInstance(it.toMutableList())
         }
-
-        enterThirdGameResult.observe(lifecycleOwner) {
-            if (fragment.isVisible) enterThirdGame(fragment, viewmodel, it.second, it.first)
-        }
-
-        gameBalanceResult.observe(fragment) {
-            it.getContentIfNotHandled()?.let { event ->
-                TransformInDialog(event.first, event.second, event.third) {
-                    enterThirdGame(fragment, viewmodel,it, event.first)
-                }.show(fragment.childFragmentManager, null)
-            }
-        }
-
-        enterTrialPlayGameResult.observe(lifecycleOwner) {
-            lifecycleOwner.hideLoading()
-            if (it == null) {
-                //不支持试玩
-                context.startLogin()
-            } else {
-                //试玩弹框
-                val trialDialog = TrialGameDialog(context, it.first, it.second) { firmType, thirdGameResult->
-                    enterThirdGame(lifecycleOwner, viewmodel, thirdGameResult, firmType)
-                }
-                trialDialog.show()
-            }
-        }
     }
 
     private fun onFavoriteStatus(adapter: GameChildAdapter, gameData: OKGameBean) {
@@ -189,13 +162,7 @@ class SportFooterGamesView @JvmOverloads constructor(
     }
 
     private fun onGameClick(gameBean: OKGameBean) {
-        if (LoginRepository.isLogined()) {
-            okGamesViewModel.requestEnterThirdGame(gameBean, fragment)
-            okGamesViewModel.addRecentPlay(gameBean)
-        } else {
-            fragment.loading()
-            okGamesViewModel.requestEnterThirdGameNoLogin(gameBean)
-        }
+        (fragment.activity as MainTabActivity?)?.enterThirdGame(gameBean)
     }
     fun sportNoMoreEnable(enable: Boolean) {
         noMoreText.isVisible = enable

@@ -66,8 +66,6 @@ import org.cxct.sportlottery.ui.login.CaptchaDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
-import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -77,12 +75,10 @@ import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationM
 import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
 import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
-import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.reflect.Field
 
 fun AppBarLayout.expand(animate: Boolean) {
     val behavior = (layoutParams as CoordinatorLayout.LayoutParams).behavior
@@ -325,26 +321,6 @@ fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
     )
 }
 
-/**
- * 进入三方游戏，试玩检测
- */
-fun BaseFragment<out MainHomeViewModel>.setTrialPlayGameDataObserve() {
-    viewModel.enterTrialPlayGameResult.observe(viewLifecycleOwner) {
-        hideLoading()
-        if (it == null) {
-            //不支持试玩
-            loginedRun(requireContext()) {}
-        } else {
-            //试玩弹框
-            val trialDialog = TrialGameDialog(requireContext(), it.first, it.second) { firmType, thirdGameResult->
-                enterThirdGame(thirdGameResult, firmType)
-            }
-
-            trialDialog.show()
-        }
-    }
-
-}
 
 fun loginedRun(context: Context, block: () -> Unit): Boolean {
     if (LoginRepository.isLogined()) {
@@ -1060,40 +1036,6 @@ fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter<*>, block: ((Boolean) 
     }
 }
 
-fun enterThirdGame(
-    baseFragment: BaseFragment<*>,
-    viewModel: MainHomeViewModel,
-    result: EnterThirdGameResult,
-    firmType: String,
-) = baseFragment.run {
-    hideLoading()
-    when (result.resultType) {
-        EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
-            JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.thirdGameCategoryCode ?: "")
-        }
-
-        EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
-            getString(R.string.prompt), result.errorMsg ?: ""
-        ) {}
-
-        EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
-
-        EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
-            getString(R.string.error), result.errorMsg ?: ""
-        ) {}
-
-        EnterThirdGameResult.ResultType.NONE -> {
-        }
-    }
-    if (result.resultType != EnterThirdGameResult.ResultType.NONE) viewModel.clearThirdGame()
-}
-
-fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
-    result: EnterThirdGameResult,
-    firmType: String,
-) {
-    enterThirdGame(this, viewModel, result, firmType)
-}
 
 // 设置优惠活动点击事件
 fun View.bindPromoClick(click: (() -> Unit)? = null) = setOnClickListener {

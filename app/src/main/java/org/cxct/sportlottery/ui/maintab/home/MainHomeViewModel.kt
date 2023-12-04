@@ -33,6 +33,7 @@ import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
@@ -294,14 +295,14 @@ open class MainHomeViewModel(
     /**
      * 进入OKgame游戏
      */
-    fun homeOkGamesEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {
+    fun homeOkGamesEnterThirdGame(gameData: OKGameBean, baseActivity: BaseActivity<*>) {
         RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         requestEnterThirdGame(
             "${gameData.firmType}",
             "${gameData.gameCode}",
             "${gameData.gameCode}",
             "${gameData.gameType}",
-            baseFragment
+            baseActivity
         )
     }
 
@@ -416,7 +417,7 @@ open class MainHomeViewModel(
         gameCode: String,
         gameCategory: String,
         gameEntryTagName: String,
-        baseFragment: BaseFragment<*>,
+        baseActivity: BaseActivity<*>,
     ) {
 //        Timber.e("gameData: $gameData")
         if (loginRepository.isLogin.value != true) {
@@ -429,31 +430,31 @@ open class MainHomeViewModel(
             return
         }
         jumpingGame = true
-        baseFragment.loading()
+        baseActivity.loading()
         viewModelScope.launch {
             val thirdLoginResult = thirdGameLogin(firmType!!, gameCode!!)
             jumpingGame = false
             //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
             if (thirdLoginResult == null) {
-                baseFragment.hideLoading()
+                baseActivity.hideLoading()
                 return@launch
             }
 
             //先调用三方游戏的登入接口, 确认返回成功200之后再接著调用自动转换额度的接口, 如果没有登入成功, 后面就不做额度自动转换的调用了
             if (!thirdLoginResult.success) {
                 _enterThirdGameResult.postValue(Pair(firmType, EnterThirdGameResult(EnterThirdGameResult.ResultType.FAIL,  null, thirdLoginResult?.msg, gameEntryTagName)))
-                baseFragment.hideLoading()
+                baseActivity.hideLoading()
                 return@launch
             }
 
             val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory, gameEntryTagName)
             if (autoTransfer(firmType)) { //第三方自動轉換
                 _enterThirdGameResult.postValue(Pair(firmType, thirdGameResult))
-                baseFragment.hideLoading()
+                baseActivity.hideLoading()
                 return@launch
             }
 
-            getGameBalance(firmType, thirdGameResult, baseFragment)
+            getGameBalance(firmType, thirdGameResult, baseActivity)
         }
     }
 
@@ -545,10 +546,10 @@ open class MainHomeViewModel(
     private fun getGameBalance(
         firmType: String,
         thirdGameResult: EnterThirdGameResult,
-        baseFragment: BaseFragment<*>,
+        baseActivity: BaseActivity<*>,
     ) {
         doRequest({ OneBoSportApi.thirdGameService.getAllBalance() }) { result ->
-            baseFragment.hideLoading()
+            baseActivity.hideLoading()
             var balance: Double = result?.resultMap?.get(firmType)?.money ?: (0).toDouble()
             _gameBalanceResult.postValue(Event(Triple(firmType, thirdGameResult, balance)))
         }

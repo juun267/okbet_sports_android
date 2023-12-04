@@ -98,9 +98,4 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
         tvContactUs.setServiceClick(fragmentManager)
     }
 
-    fun setChristmasStyle() {
-        val color = context.getColor(R.color.color_667085)
-        binding.textView17.setTextColor(color)
-        binding.textView15.setTextColor(color)
-    }
 }
