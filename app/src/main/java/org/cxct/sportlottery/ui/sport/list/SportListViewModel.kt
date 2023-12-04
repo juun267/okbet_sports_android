@@ -121,10 +121,20 @@ open class SportListViewModel(
                     }
                 }
             }
-            sportTypeMenuData.value = Triple(gameItems, true, "")
-            gameItems.firstOrNull { it.code == GameType.ES.key }.let {
-                it?.let { it1 -> rebuildForESport(it1,true) }
-                esportTypeMenuData.value = Triple(it, true, "")
+            if (gameItems==null){
+                sportTypeMenuData.value = Triple(gameItems, true, "")
+                return@doRequest
+            }
+            gameItems.firstOrNull { it.code == GameType.ES.key }.let { item->
+                callApi({SportRepository.getMenuCatecoryList(GameType.ES.key,MatchType.MY_EVENT.postValue)}){
+                    if (item==null){
+                        esportTypeMenuData.value = Triple(item,true, "")
+                        return@callApi
+                    }
+                    item.categoryList = it.getData()?.toMutableList()
+                    rebuildForESport(item,true)
+                    esportTypeMenuData.value = Triple(item, true, "")
+                }
             }
         }
     }
@@ -548,7 +558,7 @@ open class SportListViewModel(
     val sportMenuApiResult = SingleLiveEvent<ApiResult<SportMenuData>>()
     val esportTypeMenuData by lazy { SingleLiveEvent<Triple<Item?, Boolean, String>>() }
 
-    fun loadSportMenu(sportMenuResult: ApiResult<SportMenuData>, matchType: MatchType) {
+    fun loadSportMenu(sportMenuResult: ApiResult<SportMenuData>, matchType: MatchType,isESportType: Boolean = false) {
         val menuData = sportMenuResult.getData()
         if(!sportMenuResult.succeeded() || menuData == null) {
             sportTypeMenuData.value = Triple(listOf(), sportMenuResult.succeeded(), sportMenuResult.msg)
@@ -588,10 +598,18 @@ open class SportListViewModel(
 
         sportTypeMenuData.value = Triple(itemList, sportMenuResult.succeeded(), sportMenuResult.msg)
         sportMenuApiResult.value = sportMenuResult
-
-        itemList.firstOrNull { it.code == GameType.ES.key }.let {
-            it?.let { it1 -> rebuildForESport(it1) }
-            esportTypeMenuData.value = Triple(it, sportMenuResult.succeeded(), sportMenuResult.msg)
+        if (isESportType){
+            itemList.firstOrNull { it.code == GameType.ES.key }.let { item->
+                if (item==null){
+                    esportTypeMenuData.value = Triple(item, sportMenuResult.succeeded(), sportMenuResult.msg)
+                    return@let
+                }
+                callApi({SportRepository.getMenuCatecoryList(GameType.ES.key,matchType.postValue)}){
+                    item.categoryList = it.getData()?.toMutableList()
+                    rebuildForESport(item)
+                    esportTypeMenuData.value = Triple(item, sportMenuResult.succeeded(), sportMenuResult.msg)
+                }
+            }
         }
     }
 

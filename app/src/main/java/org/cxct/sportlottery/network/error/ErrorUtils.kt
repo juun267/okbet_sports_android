@@ -45,6 +45,7 @@ import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
 import org.cxct.sportlottery.network.Constants.SEND_TWO_FACTOR
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.SPORT_MENU_CATEGORYLIST
 import org.cxct.sportlottery.network.Constants.SPORT_PUBLICITY_RECOMMEND
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_AUTO_TRANSFER
@@ -199,6 +200,10 @@ object ErrorUtils {
                     (url.contains(MATCH_ODDS_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return OddsListResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(SPORT_MENU_CATEGORYLIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SportMenuResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(SPORT_MENU)) -> {
                         @Suppress("UNCHECKED_CAST")

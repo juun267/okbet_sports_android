@@ -90,7 +90,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         scrollBackTop()
         binding.appbarLayout.scrollBy(0, 0)
         showLoading()
-        getMenuDataByParent()
+        getMenuDataByParent(true)
     }
 
     override fun onBindViewStatus(view: View) {
