@@ -73,7 +73,7 @@ class PromotionDetailActivity :
         tvSubTitle.text = activityData.subTitleText
         val startTime = TimeUtil.timeFormat(activityData.startTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
         val endTime = TimeUtil.timeFormat(activityData.endTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
-        tvTime.text = "${getString(R.string.N473)}:$startTime ${getString(R.string.J645)} $endTime"
+        tvTime.text = "${getString(R.string.N473)}: $startTime ${getString(R.string.J645)} $endTime"
         okWebView.setBackgroundColor(ContextCompat.getColor(this@PromotionDetailActivity,R.color.color_F9FAFD))
         okWebView.loadDataWithBaseURL(null,(activityData.contentText?:"").formatHTML(), "text/html", "utf-8",null)
     }
