@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:ignore="MissingDefaultResource">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:layout_margin="@dimen/margin_20"
+    android:orientation="vertical"
+    android:background="@drawable/bg_white_radius_16">
+    <ImageView
+        android:id="@+id/ivClose"
+        android:layout_width="@dimen/margin_24"
+        android:layout_height="@dimen/margin_24"
+        android:src="@drawable/ic_close_deduct"
+        android:layout_marginRight="@dimen/margin_12"
+        android:layout_marginTop="@dimen/margin_12"
+        android:layout_gravity="right"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_12"
+        android:layout_marginHorizontal="@dimen/margin_12"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/textSize18sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_0D2245"
+        android:text="Reward history"/>
+
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="@dimen/margin_40"
+         android:paddingHorizontal="@dimen/margin_12"
+         android:background="@color/color_F7FAFE">
+         <TextView
+             android:layout_width="80dp"
+             android:layout_height="match_parent"
+             android:gravity="center"
+             android:textColor="@color/color_0D2245"
+             android:textSize="@dimen/textSize14sp"
+             android:text="@string/J652"/>
+         <androidx.legacy.widget.Space
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"/>
+         <TextView
+             android:layout_width="100dp"
+             android:layout_height="match_parent"
+             android:gravity="center"
+             android:textColor="@color/color_0D2245"
+             android:textSize="@dimen/textSize14sp"
+             android:text="@string/transfer_money"/>
+         <androidx.legacy.widget.Space
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"/>
+         <TextView
+             android:layout_width="80dp"
+             android:layout_height="match_parent"
+             android:gravity="center"
+             android:textColor="@color/color_0D2245"
+             android:textSize="@dimen/textSize14sp"
+             android:text="@string/status"/>
+     </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRecord"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_reward_history"/>
+</LinearLayout>
+</LinearLayout>
+

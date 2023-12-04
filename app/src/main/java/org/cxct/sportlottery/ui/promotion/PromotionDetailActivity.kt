@@ -89,6 +89,9 @@ class PromotionDetailActivity :
                 else -> getString(R.string.deposits)//亏损金额
             }
             tvReward.text = TextUtil.formatMoney(activityDetail.reward)
+            linHistory.setOnClickListener {
+               RewardHistoryDialog().show(supportFragmentManager,null)
+            }
             if (activityDetail.reward == 0.0) {
                 linApply.isEnabled = false
                 linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
