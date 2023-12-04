@@ -54,7 +54,6 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
 
     private fun setChristmasStyle() {
         binding.newsView.setChristmasStyle()
-        binding.bottomView.setChristmasStyle()
     }
 
 
