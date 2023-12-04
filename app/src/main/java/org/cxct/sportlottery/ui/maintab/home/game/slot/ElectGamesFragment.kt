@@ -24,10 +24,6 @@ import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
-import org.cxct.sportlottery.util.enterThirdGame
-import org.cxct.sportlottery.util.startLogin
-import org.cxct.sportlottery.view.dialog.TrialGameDialog
-import org.cxct.sportlottery.view.transform.TransformInDialog
 import splitties.views.rightPadding
 
 open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, FragmentGamevenueBinding>() {
@@ -161,32 +157,6 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
             gameAdapter2.setupData(categoryList)
             tabAdapter.setNewInstance(categoryList)
             hideLoadingView()
-
-        }
-
-        viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
-            if (isVisibleToUser()) enterThirdGame(it.second, it.first)
-        }
-
-        viewModel.gameBalanceResult.observe(viewLifecycleOwner) {
-            val event = it.getContentIfNotHandled() ?: return@observe
-            TransformInDialog(event.first, event.second, event.third) { enterResult ->
-                enterThirdGame(enterResult, event.first)
-            }.show(childFragmentManager, null)
-        }
-
-        viewModel.enterTrialPlayGameResult.observe(this) {
-            hideLoading()
-            if (it == null) {
-                //不支持试玩
-                context().startLogin()
-            } else {
-                //试玩弹框
-                val trialDialog = TrialGameDialog(context(), it.first, it.second) { firmType, thirdGameResult->
-                    enterThirdGame(this@ElectGamesFragment, viewModel, thirdGameResult, firmType)
-                }
-                trialDialog.show()
-            }
         }
     }
 }

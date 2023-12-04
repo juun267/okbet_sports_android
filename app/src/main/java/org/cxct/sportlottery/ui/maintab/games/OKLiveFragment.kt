@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.games
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -22,12 +21,8 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
-import org.cxct.sportlottery.view.dialog.TrialGameDialog
-import org.cxct.sportlottery.view.transform.TransformInDialog
 
 // okgames主Fragment
 class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewModel::class) {

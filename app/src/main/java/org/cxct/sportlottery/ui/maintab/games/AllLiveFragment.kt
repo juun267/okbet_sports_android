@@ -4,11 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkliveBinding
@@ -229,8 +224,6 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
                 binding.winsRankView.onNewHttpWinsData(it.reversed())
             }
         }
-        //设置监听游戏试玩
-        setTrialPlayGameDataObserve()
     }
 
     private fun onBindPart5View() {
