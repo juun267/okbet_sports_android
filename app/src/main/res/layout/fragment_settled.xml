@@ -45,13 +45,19 @@
             android:text="@string/other" />
 
     </com.google.android.material.tabs.TabLayout>
-
+    <org.cxct.sportlottery.view.DateRangeSearchView
+        android:id="@+id/date_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dateRange="-60"
+        app:minusDays="6"
+        android:visibility="gone"/>
     <LinearLayout
         android:id="@+id/relativeBalance"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:paddingHorizontal="12dp"
-        android:paddingVertical="10dp"
+        android:paddingBottom="10dp"
         android:background="@color/color_FFFFFF"
         android:layout_height="wrap_content">
 
@@ -166,17 +172,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:background="@color/color_F8F9FD"
-        android:layout_width="match_parent"
-        android:layout_height="2px"/>
-    <org.cxct.sportlottery.view.DateRangeSearchView
-        android:id="@+id/date_search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:dateRange="-60"
-        app:minusDays="6"
-        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSettled"
         android:background="@color/color_F8F9FD"
@@ -185,5 +181,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-<!--    <include  android:id="@+id/empty" layout="@layout/view_bet_empty"/>-->
 </LinearLayout>
