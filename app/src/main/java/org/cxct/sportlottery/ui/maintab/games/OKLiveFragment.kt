@@ -108,18 +108,6 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
             }
         }
 
-        enterThirdGameResult.observe(viewLifecycleOwner) {
-            if (isVisible) enterThirdGame(it.second, it.first)
-        }
-
-        gameBalanceResult.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { event ->
-                TransformInDialog(event.first, event.second, event.third) {
-                    enterThirdGame(it, event.first)
-                }.show(childFragmentManager, null)
-            }
-        }
-
     }
 
 
@@ -186,9 +174,8 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     }
 
     fun enterGame(bean: OKGameBean) {
-
         loginedRun(binding.root.context) {
-            viewModel.requestEnterThirdGame(bean, this)
+            mainTabActivity().enterThirdGame(bean)
             viewModel.addRecentPlay(bean)
         }
     }

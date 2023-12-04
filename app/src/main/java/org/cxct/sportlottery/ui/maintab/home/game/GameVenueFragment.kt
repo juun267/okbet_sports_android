@@ -10,6 +10,7 @@ import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass
@@ -21,6 +22,7 @@ abstract class GameVenueFragment<VM : BaseViewModel, VB>: BindingFragment<VM, Fr
         return getViewModel(clazz = clazz)
     }
 
+    fun getMainTabActivity() = activity as MainTabActivity?
     private val loadingHolder by lazy { Gloading.wrapView(binding.root) }
 
     override fun loading(message: String?) = loadingHolder.showLoading()

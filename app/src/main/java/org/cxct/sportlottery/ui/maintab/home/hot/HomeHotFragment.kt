@@ -57,11 +57,6 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         binding.bottomView.setChristmasStyle()
     }
 
-    override fun onInitData() {
-        //设置监听游戏试玩
-        setTrialPlayGameDataObserve()
-
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSportStatusChange(event: SportStatusEvent) {
