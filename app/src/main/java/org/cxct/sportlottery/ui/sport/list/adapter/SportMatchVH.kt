@@ -198,6 +198,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             GameType.BM.key -> setBmScoreText(matchInfo, matchType)
             GameType.BB.key -> setBbScoreText(matchInfo, matchType)
             GameType.CK.key -> setCkScoreText(matchInfo)
+            GameType.IH.key -> setIHScoreText(matchInfo, matchType)
             else -> matchInfo?.let { setBkScoreText(it, matchType) }
         }
         updateCollse(matchInfo)
@@ -246,11 +247,18 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         setAllScoreTextAtBottom(matchInfo, matchType)
     }
 
+    private fun setIHScoreText(matchInfo: MatchInfo, matchType: MatchType) {
+        setScoreTextAtFront(matchInfo)
+        setAllScoreTextAtBottom(matchInfo, matchType)
+        setAttack(matchInfo)
+    }
+
     private fun setVbScoreText(matchInfo: MatchInfo, matchType: MatchType) {
         setAllScoreTextAtBottom(matchInfo, matchType)
         setScoreTextAtFront(matchInfo)
         setSptText(matchInfo)
         setCurrentPeroid(matchInfo)
+        setAttack(matchInfo)
     }
 
     private fun setTnScoreText(matchInfo: MatchInfo, matchType: MatchType) {
