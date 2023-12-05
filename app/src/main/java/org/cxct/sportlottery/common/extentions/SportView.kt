@@ -197,6 +197,7 @@ fun setMatchAttack(
             GameType.BB.key,
             GameType.VB.key,
             GameType.TT.key,
+            GameType.IH.key,
             GameType.BM.key,
             GameType.CK.key,
             -> {
