@@ -62,7 +62,7 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
             }
         })
 //        mAdapter.enableDefaultEmptyView(requireContext())
-        mAdapter.setEmptyView(BetEmptyView(requireContext()))
+        mAdapter.setEmptyView(BetEmptyView(requireContext()).apply { center() })
 
         //item打印点击
         mAdapter.setOnItemChildClickListener { _, view, position ->
