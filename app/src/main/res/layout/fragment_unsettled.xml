@@ -50,7 +50,7 @@
         android:id="@+id/date_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:dateRange="-60"
+        app:dateRange="-31"
         app:minusDays="6"
         android:visibility="gone"/>
 
