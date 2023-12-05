@@ -95,7 +95,10 @@ fun AppBarLayout.expand(animate: Boolean) {
     }
 }
 
-fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String? = null,scrollTopFunc: ((yDistance: Int)->Unit)? = null ) {
+fun RecyclerView.setupBackTop(targetView: View,
+                              offset: Int,
+                              tabCode: String? = null,
+                              onBackTop: (() -> Boolean)? = null ) {
 
     val b = tabCode == MatchType.END_SCORE.postValue
     var targetWidth = 0f
@@ -108,7 +111,9 @@ fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String? = 
 
     targetView.setOnClickListener {
         hideRunnable.invoke()
-        smoothScrollToPosition(0)
+        if (onBackTop?.invoke() != true) {
+            smoothScrollToPosition(0)
+        }
     }
 
     targetView.post {
@@ -136,7 +141,6 @@ fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String? = 
             }
 
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                scrollTopFunc?.invoke(computeVerticalScrollOffset().dp)
                 //如果是篮球末位比分,需要特殊处理
                 if (b) {
                     if (getScrollYDistance()) {

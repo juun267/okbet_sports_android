@@ -41,6 +41,7 @@ import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
 import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.greenrobot.eventbus.Subscribe
@@ -183,7 +184,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             }
         }
         gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
-        scrollBackTop()
         (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             binding.sportTypeList,
             RecyclerView.State(),
@@ -192,7 +192,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     fun resetFooterView(footerView: View) {
-
         val adapter = getGameListAdapter()
         if (footerView.tag == adapter) {
             return
@@ -238,14 +237,12 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     private fun initGameListView() = binding.gameList.run {
-        setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue, scrollTopFunc = {
-            if(isVisibleToUser()) {
-             //todo
-            }
-        })
+        setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue){
+            scrollBackTop()
+            return@setupBackTop true
+        }
         layoutManager = getGameLayoutManger()
         adapter = getGameListAdapter().apply { setEmptyView(EmptySportGamesView(context())) }
-        scrollBackTop()
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -281,6 +278,11 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     open fun onGameTypeChanged(item: Item, position: Int) {
+        if (binding.ivBackTop.isVisible()) {
+            binding.ivBackTop.performClick()
+        } else {
+            scrollBackTop()
+        }
         if (item.code == FIBAUtil.fibaCode){
             when(parentFragment){
                 is SportFragment2->(parentFragment as SportFragment2).setJumpSport(MatchType.FIBA)
