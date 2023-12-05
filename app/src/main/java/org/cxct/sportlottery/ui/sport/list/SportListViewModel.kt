@@ -123,10 +123,13 @@ open class SportListViewModel(
                     }
                 }
             }
-            if (gameItems==null){
-                sportTypeMenuData.value = Triple(gameItems, true, "")
+
+            sportTypeMenuData.value = Triple(gameItems, true, "")
+            if (gameItems.isEmpty()){
+                esportTypeMenuData.value = Triple(null, true, "")
                 return@doRequest
             }
+
             gameItems.firstOrNull { it.code == GameType.ES.key }.let { item->
                 callApi({SportRepository.getMenuCatecoryList(GameType.ES.key,MatchType.MY_EVENT.postValue)}){
                     if (item==null){
