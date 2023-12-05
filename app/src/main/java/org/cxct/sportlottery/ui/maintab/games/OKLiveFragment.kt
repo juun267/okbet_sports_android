@@ -91,6 +91,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
 
     private fun initToolBar() = binding.homeToolbar.run {
         attach(this@OKLiveFragment, mainTabActivity(), viewModel)
+        setChristmasStyle2()
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
             mainTabActivity().showMainRightMenu()
@@ -105,18 +106,6 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         gamesList.observe(viewLifecycleOwner) {
             if (it.first == requestTag) {
                 showPartGameList(it.third, it.second)
-            }
-        }
-
-        enterThirdGameResult.observe(viewLifecycleOwner) {
-            if (isVisible) enterThirdGame(it.second, it.first)
-        }
-
-        gameBalanceResult.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { event ->
-                TransformInDialog(event.first, event.second, event.third) {
-                    enterThirdGame(it, event.first)
-                }.show(childFragmentManager, null)
             }
         }
 
@@ -186,9 +175,8 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     }
 
     fun enterGame(bean: OKGameBean) {
-
         loginedRun(binding.root.context) {
-            viewModel.requestEnterThirdGame(bean, this)
+            mainTabActivity().enterThirdGame(bean)
             viewModel.addRecentPlay(bean)
         }
     }
