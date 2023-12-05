@@ -13,9 +13,7 @@ class BetEmptyView(context: Context): LinearLayout(context) {
     val binding: ViewBetEmptyBinding
 
     init {
-        orientation = VERTICAL
-        gravity=Gravity.CENTER_HORIZONTAL
-        binding =ViewBetEmptyBinding.inflate(LayoutInflater.from(context), this)
+        binding =ViewBetEmptyBinding.inflate(LayoutInflater.from(context), this,true)
         initView()
     }
 
@@ -27,5 +25,19 @@ class BetEmptyView(context: Context): LinearLayout(context) {
             }
         }
     }
+    fun marginTop(top: Int){
+        (binding.ivEmpty.layoutParams as MarginLayoutParams).apply {
+            topMargin = top
+            binding.ivEmpty.layoutParams = this
+        }
+    }
+    fun center(){
+        (binding.ivEmpty.layoutParams as MarginLayoutParams).apply {
+            topMargin = 0
+            binding.ivEmpty.layoutParams = this
+        }
+        binding.root.gravity = Gravity.CENTER
+    }
+
 
 }

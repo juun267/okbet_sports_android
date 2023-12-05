@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <ImageView
+        android:id="@+id/ivEmpty"
         android:src="@drawable/ic_bet_empty"
         android:layout_marginTop="100dp"
         android:layout_width="160dp"
@@ -41,6 +44,6 @@
     </androidx.cardview.widget.CardView>
 
 
-</merge>
+</LinearLayout>
 
 
