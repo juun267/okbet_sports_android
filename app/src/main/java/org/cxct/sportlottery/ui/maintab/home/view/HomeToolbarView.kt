@@ -275,7 +275,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     private var refreshTimeTag = 0L
-    fun onRefreshMoney() {
+    private fun onRefreshMoney() {
         val time = System.currentTimeMillis()
         if (!LoginRepository.isLogined() && time - refreshTimeTag < 1500) {
             return
@@ -309,5 +309,10 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             .setStrokeColor(Color.WHITE)
             .setStrokeSize(1.dp)
 
+    }
+
+    fun setChristmasStyle2() {
+        setChristmasStyle()
+        setBackgroundResource(R.drawable.bg_home_top2)
     }
 }

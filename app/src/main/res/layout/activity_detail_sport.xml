@@ -322,14 +322,6 @@
             tools:itemCount="3"
             tools:listitem="@layout/content_odds_detail_list_group_4_item" />
 
-        <View
-            android:visibility="visible"
-            android:id="@+id/snackbar_holder"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_gravity="bottom"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

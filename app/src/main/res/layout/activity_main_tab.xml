@@ -35,13 +35,20 @@
             app:layout_constraintBottom_toTopOf="@+id/linTab" />
 
         <LinearLayout
-            android:id="@+id/linTab"
+            android:id="@+id/linBottomNav"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginHorizontal="-5dp"
             android:paddingHorizontal="5dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"/>
+        <LinearLayout
+            android:id="@+id/linTab"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/colorRedLight"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/linBottomNav"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

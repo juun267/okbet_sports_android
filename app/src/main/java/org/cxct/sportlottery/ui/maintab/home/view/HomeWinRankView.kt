@@ -17,7 +17,6 @@ import org.cxct.sportlottery.databinding.ViewHomeWinRankChrisBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
@@ -232,16 +231,11 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private fun enterGame(recordNewEvent: RecordNewEvent) {
+        val activity = fragment.activity as MainTabActivity? ?: return
         val firmType = "${recordNewEvent.firmType}"
         val gameCode = "${recordNewEvent.gameCode}"
         val gameEntryTagName = "${recordNewEvent.gameEntryType}"
-        if (LoginRepository.isLogined()) {
-            fragment.viewModel.requestEnterThirdGame(firmType, gameCode, firmType, gameEntryTagName, fragment)
-        } else {
-            fragment.loading()
-            fragment.viewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType, gameEntryTagName)
-        }
+        activity.requestEnterThirdGame(firmType, gameCode, firmType, gameEntryTagName)
     }
-
 
 }

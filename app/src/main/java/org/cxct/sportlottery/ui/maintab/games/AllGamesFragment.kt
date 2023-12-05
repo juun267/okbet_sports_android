@@ -4,15 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerGameListAdapter
@@ -224,30 +219,15 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
 
-        //设置监听游戏试玩
-        setTrialPlayGameDataObserve()
     }
 
     private fun onBindPart5View() {
        binding.bottomView.bindServiceClick(childFragmentManager)
     }
 
-
-
-
-
     private inline fun enterGame(okGameBean: OKGameBean) {
-        if(LoginRepository.isLogined()){
-            //已登录
-            okGamesFragment().enterGame(okGameBean)
-        }else{
-            //请求试玩路线
-            loading()
-            viewModel.requestEnterThirdGameNoLogin(okGameBean)
-        }
+        getMainTabActivity().enterThirdGame(okGameBean)
     }
-
-
 
     private fun onCollectClick(view: View, gameData: OKGameBean) {
         if (okGamesFragment().collectGame(gameData)) {

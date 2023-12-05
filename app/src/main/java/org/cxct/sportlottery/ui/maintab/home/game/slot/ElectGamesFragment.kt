@@ -17,7 +17,6 @@ import org.cxct.sportlottery.common.extentions.onConfirm
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.chat.hideSoftInput
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
@@ -25,8 +24,6 @@ import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
-import org.cxct.sportlottery.util.enterThirdGame
-import org.cxct.sportlottery.view.transform.TransformInDialog
 import splitties.views.rightPadding
 
 open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, FragmentGamevenueBinding>() {
@@ -111,14 +108,7 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
                 return@setOnItemClickListener
             }
 
-            if (LoginRepository.isLogined()) {
-                viewModel.homeOkGamesEnterThirdGame(okGameBean, this@ElectGamesFragment)
-                viewModel.homeOkGameAddRecentPlay(okGameBean)
-            } else {
-                //请求试玩路线
-                loading()
-                viewModel.requestEnterThirdGameNoLogin(okGameBean)
-            }
+            getMainTabActivity()?.enterThirdGame(okGameBean)
         }
 
         //实现左侧联动
@@ -169,15 +159,5 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
 
         }
 
-        viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
-            if (isVisibleToUser()) enterThirdGame(it.second, it.first)
-        }
-
-        viewModel.gameBalanceResult.observe(viewLifecycleOwner) {
-            val event = it.getContentIfNotHandled() ?: return@observe
-            TransformInDialog(event.first, event.second, event.third) { enterResult ->
-                enterThirdGame(enterResult, event.first)
-            }.show(childFragmentManager, null)
-        }
     }
 }
