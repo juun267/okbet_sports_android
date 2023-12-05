@@ -218,7 +218,14 @@
                 android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>
-
+        <include
+            android:id="@+id/linFirstDeposit"
+            layout="@layout/view_first_deposit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            tools:visibility="visible"
+            android:visibility="gone"/>
         <Button
             android:id="@+id/btn_submit"
             style="?android:attr/borderlessButtonStyle"
