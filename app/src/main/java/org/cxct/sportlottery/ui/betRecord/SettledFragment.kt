@@ -38,6 +38,12 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
     var startTime:Long?=0L
     //已结单数据 结束时间
     var endTime:Long?=0L
+    //总盈亏
+    var totalReward:Double=0.0
+    //总投注额
+    var totalBet:Double=0.0
+    //有效投注额
+    var totalEfficient:Double=0.0
     override fun onInitView(view: View) = binding.run {
         //默认搜索时间   今天
         startTime = TimeUtil.getTodayStartTimeStamp()
@@ -159,6 +165,10 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
         viewModel.settledResult.observe(this) {
             hideLoading()
             if (it==null){
+                totalBet=0.0
+                totalReward=0.0
+                totalEfficient=0.0
+                initBetValue()
                 binding.recyclerSettled.visible()
                 return@observe
             }
@@ -176,6 +186,10 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
                         mAdapter.addData(it)
                     }
                 }
+                totalBet=it.other?.totalAmount?:0.0
+                totalReward=it.other?.win?:0.0
+                totalEfficient=it.other?.valueBetAmount?:0.0
+                initBetValue()
             } else {
                 ToastUtil.showToast(requireContext(), it.msg)
             }
@@ -188,4 +202,15 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
             viewModel.getSettledList(pageIndex,startTime,endTime)
         }
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun initBetValue() {
+        //总盈亏
+        binding.tvReward.text = "$showCurrencySign ${TextUtil.formatMoney(totalReward,2)}"
+        //总有效投注
+        binding.tvTotalValue.text = "$showCurrencySign ${TextUtil.formatMoney(totalEfficient,2)}"
+        //总投注额
+        binding.tvTotalBet.text = "$showCurrencySign ${TextUtil.formatMoney(totalBet,2)}"
+    }
+
 }
