@@ -169,8 +169,8 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
         binding.btnSubmit.isEnabled = phoneErrorMsg.isNullOrEmpty()&&codeErrorMsg.isNullOrEmpty()
     }
 
-    override fun show(manager: FragmentManager, tag: String?) {
-        super.show(manager, tag)
+    override fun show(manager: FragmentManager) {
+        super.show(manager)
         instance = this
         afterLoginOrRegist =false
     }
