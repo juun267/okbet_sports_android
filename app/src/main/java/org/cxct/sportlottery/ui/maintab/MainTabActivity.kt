@@ -129,7 +129,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .fitsSystemWindows(false).init()
         initDrawerLayout()
         initMenu()
-        tabHelper = MainTabInflate2(binding.linBottomNav, ::onTabClick)
+        tabHelper = MainTabInflate2(binding.linTab, ::onTabClick)
         navToPosition(INDEX_HOME)
         initBottomNavigation()
         initObserve()
@@ -545,9 +545,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun setChristmasStyle() {
-        binding.linBottomNav.setBackgroundResource(R.drawable.bg_main_nav_bar)
-        binding.linBottomNav.setPadding(0, 0, 0, 0)
-        val params = binding.linBottomNav.layoutParams as MarginLayoutParams
+        binding.linTab.setBackgroundResource(R.drawable.bg_main_nav_bar)
+        binding.linTab.setPadding(0, 0, 0, 0)
+        val params = binding.linTab.layoutParams as MarginLayoutParams
         params.leftMargin = 0
         params.rightMargin = 0
     }
