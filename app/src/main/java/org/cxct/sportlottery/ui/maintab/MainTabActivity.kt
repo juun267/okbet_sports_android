@@ -127,7 +127,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .fitsSystemWindows(false).init()
         initDrawerLayout()
         initMenu()
-        tabHelper = MainTabInflate2(binding.linTab, ::onTabClick)
+        tabHelper = MainTabInflate2(binding.linBottomNav, ::onTabClick)
         navToPosition(INDEX_HOME)
         initBottomNavigation()
         initObserve()
@@ -523,17 +523,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun showLoginNotify() {
-        snackBarLoginNotify.apply {
-            setAnchorView(R.id.linTab)
-            show()
-        }
+        showSnackbar(this,R.string.login_notify)
     }
 
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
-        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
-        snackBarMyFavoriteNotify?.apply {
-            setAnchorView(R.id.linTab)
-            show()
+        getFavoriteMsg(myFavoriteNotifyType)?.let {
+            showSnackbar(this,it)
         }
     }
 
@@ -552,9 +547,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun setChristmasStyle() {
-        binding.linTab.setBackgroundResource(R.drawable.bg_main_nav_bar)
-        binding.linTab.setPadding(0, 0, 0, 0)
-        val params = binding.linTab.layoutParams as MarginLayoutParams
+        binding.linBottomNav.setBackgroundResource(R.drawable.bg_main_nav_bar)
+        binding.linBottomNav.setPadding(0, 0, 0, 0)
+        val params = binding.linBottomNav.layoutParams as MarginLayoutParams
         params.leftMargin = 0
         params.rightMargin = 0
     }
