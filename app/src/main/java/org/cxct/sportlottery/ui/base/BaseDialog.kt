@@ -104,7 +104,7 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : BaseDialogFragment(
             }
         }
     }
-    fun show(manager: FragmentManager){
+    open fun show(manager: FragmentManager){
         super.show(manager,this.javaClass.name)
     }
 
