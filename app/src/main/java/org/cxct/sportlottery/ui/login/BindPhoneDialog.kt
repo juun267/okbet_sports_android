@@ -143,9 +143,9 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
             if (it.second.succeeded()) {
                 dismiss()
                 if (it.second.getData()?.firstPhoneGiveMoney==true){
-                    ToastUtil.showToast(requireActivity(), R.string.N866)
+                    ToastUtil.showToast(requireActivity(),it.second.getData()?.msg)
                 }else{
-                    ToastUtil.showToast(requireActivity(), it.second.msg)
+                    ToastUtil.showToast(requireActivity(), it.second.getData()?.msg)
                 }
             }else{
                 ToastUtil.showToast(requireActivity(), it.second.msg)
