@@ -143,7 +143,7 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
             if (it.second.succeeded()) {
                 dismiss()
                 if (it.second.getData()?.firstPhoneGiveMoney==true){
-                    ToastUtil.showToast(requireActivity(),it.second.getData()?.msg)
+                    ToastUtil.showToast(requireActivity(),getString(R.string.P237,"${sConfigData?.systemCurrencySign}${sConfigData?.firstPhoneGiveMoney?:0}"))
                 }else{
                     ToastUtil.showToast(requireActivity(), it.second.getData()?.msg)
                 }
