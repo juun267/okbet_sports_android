@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import org.cxct.sportlottery.R
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.reflect.KClass
@@ -103,6 +104,8 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : BaseDialogFragment(
             }
         }
     }
-
+    fun show(manager: FragmentManager){
+        super.show(manager,this.javaClass.name)
+    }
 
 }

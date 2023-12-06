@@ -140,13 +140,14 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
                     }).show(childFragmentManager, PopImageDialog::class.simpleName)
                 }
             }
-            if (viewModel.isLogin.value==true&&BindPhoneDialog.needShow()){
-                BindPhoneDialog().show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
-            }
-            if (viewModel.isLogin.value==true&&RegisterSuccessDialog.needShow()){
-                RegisterSuccessDialog{
-                    getMainTabActivity().checkRechargeKYCVerify()
-                }.show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
+            if (viewModel.isLogin.value==true){
+                if (BindPhoneDialog.needShow()) {
+                    BindPhoneDialog().show(parentFragmentManager)
+                }
+                if(RegisterSuccessDialog.needShow()){
+                      RegisterSuccessDialog{ getMainTabActivity().checkRechargeKYCVerify()
+                    }.show(parentFragmentManager)
+                }
             }
         }
         setupSportStatusChange(this){

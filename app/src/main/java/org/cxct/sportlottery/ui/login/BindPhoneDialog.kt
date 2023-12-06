@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.ui.login
 
-import android.app.Activity
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +11,6 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.databinding.DialogBindphoneBinding
-import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.profileCenter.modify.BindInfoViewModel
@@ -137,7 +134,6 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
                 codeCountDown()
                 return@observe
             }
-
             ToastUtil.showToast(requireActivity(), smsResult.msg)
             binding.btnSendSms.setBtnEnable(true)
         }
@@ -145,8 +141,12 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
         resetResult.observe(viewLifecycleOwner) {
             hideLoading()
             if (it.second.succeeded()) {
-                ToastUtil.showToast(requireActivity(), R.string.N866)
                 dismiss()
+                if (it.second.getData()?.firstPhoneGiveMoney==true){
+                    ToastUtil.showToast(requireActivity(), R.string.N866)
+                }else{
+                    ToastUtil.showToast(requireActivity(), it.second.msg)
+                }
             }else{
                 ToastUtil.showToast(requireActivity(), it.second.msg)
             }
