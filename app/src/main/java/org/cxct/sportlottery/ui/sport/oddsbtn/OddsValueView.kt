@@ -26,6 +26,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import splitties.views.gravityCenter
+import timber.log.Timber
 
 class OddsValueView @JvmOverloads constructor(
     context: Context,
@@ -44,6 +45,7 @@ class OddsValueView @JvmOverloads constructor(
             includeFontPadding = false
             gravity = Gravity.CENTER
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15f)
+            setTextColor(ContextCompat.getColorStateList(context, if(esportTheme) R.color.selector_button_odd_top_text_es else R.color.selector_button_odd_top_text))
         }
 
         addView(valuesText,LayoutParams(-2,-2).apply { addRule(CENTER_IN_PARENT,TRUE) })
