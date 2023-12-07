@@ -23,6 +23,7 @@ import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -334,30 +335,22 @@ fun loginedRun(context: Context, block: () -> Unit): Boolean {
         return true
     }
     if (context is Activity) {
-        showSnackbar(context,R.string.login_notify)
+        showLoginSnackbar(context)
         return false
     }
     context.startActivity(Intent(context, LoginOKActivity::class.java))
     return false
 }
-fun getFavoriteMsg(myFavoriteNotifyType: Int) = when(myFavoriteNotifyType){
-        MyFavoriteNotifyType.LEAGUE_ADD.code-> R.string.myfavorite_notify_league_add
-        MyFavoriteNotifyType.LEAGUE_REMOVE.code-> R.string.myfavorite_notify_league_remove
-        MyFavoriteNotifyType.MATCH_ADD.code-> R.string.myfavorite_notify_match_add
-        MyFavoriteNotifyType.MATCH_REMOVE.code-> R.string.myfavorite_notify_match_remove
-        MyFavoriteNotifyType.DETAIL_ADD.code -> R.string.Pinned
-        MyFavoriteNotifyType.DETAIL_REMOVE.code -> R.string.Unpin
-        else -> null
-}
-fun showSnackbar(activity: Activity,contentRes: Int,bottomMargin: Int = 60.dp){
+fun showLoginSnackbar(activity: Activity, @StringRes titleResId: Int = R.string.login_notify){
     Snackbar.make(
         activity.findViewById(android.R.id.content),
-        activity.getString(contentRes),
+        activity.getString(R.string.login_notify),
         Snackbar.LENGTH_LONG
     ).apply {
         val snackView: View = activity.layoutInflater.inflate(
             R.layout.snackbar_login_notify, activity.findViewById(android.R.id.content), false
         )
+
         (this.view as Snackbar.SnackbarLayout).apply {
             findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
                 visibility = View.INVISIBLE
@@ -366,8 +359,41 @@ fun showSnackbar(activity: Activity,contentRes: Int,bottomMargin: Int = 60.dp){
             addView(snackView, 0)
             setPadding(0, 0, 0, 0)
         }
-
-        (snackView.layoutParams as MarginLayoutParams).bottomMargin = bottomMargin
+        (snackView.layoutParams as MarginLayoutParams).bottomMargin = 60.dp
+        show()
+    }
+}
+fun showFavoriteSnackbar(activity: Activity,favoriteNotifyType: Int){
+    val title = when(favoriteNotifyType){
+        MyFavoriteNotifyType.LEAGUE_ADD.code-> activity.getString(R.string.myfavorite_notify_league_add)
+        MyFavoriteNotifyType.LEAGUE_REMOVE.code-> activity.getString(R.string.myfavorite_notify_league_remove)
+        MyFavoriteNotifyType.MATCH_ADD.code-> activity.getString(R.string.myfavorite_notify_match_add)
+        MyFavoriteNotifyType.MATCH_REMOVE.code-> activity.getString(R.string.myfavorite_notify_match_remove)
+        MyFavoriteNotifyType.DETAIL_ADD.code -> activity.getString(R.string.Pinned)
+        MyFavoriteNotifyType.DETAIL_REMOVE.code -> activity.getString(R.string.Unpin)
+        else -> null
+    }
+    if (title.isNullOrEmpty()){
+        return
+    }
+    Snackbar.make(
+        activity.findViewById(android.R.id.content),
+        title,
+        Snackbar.LENGTH_LONG
+    ).apply {
+        val snackView: View = activity.layoutInflater.inflate(
+            R.layout.snackbar_my_favorite_notify, activity.findViewById(android.R.id.content), false
+        )
+        snackView.findViewById<TextView>(R.id.txv_title).text = title
+        (this.view as Snackbar.SnackbarLayout).apply {
+            findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                visibility = View.INVISIBLE
+            }
+            background.alpha = 0
+            addView(snackView, 0)
+            setPadding(0, 0, 0, 0)
+        }
+        (snackView.layoutParams as MarginLayoutParams).bottomMargin = 60.dp
         show()
     }
 }

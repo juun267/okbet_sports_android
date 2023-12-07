@@ -523,13 +523,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun showLoginNotify() {
-        showSnackbar(this,R.string.login_notify)
+        showLoginSnackbar(this)
     }
 
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
-        getFavoriteMsg(myFavoriteNotifyType)?.let {
-            showSnackbar(this,it)
-        }
+        showFavoriteSnackbar(this, favoriteNotifyType = myFavoriteNotifyType)
     }
 
     override fun initBottomNavigation() {
