@@ -25,6 +25,9 @@ import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
+import org.cxct.sportlottery.view.dialog.TrialGameDialog
+import org.cxct.sportlottery.view.transform.TransformInDialog
+
 
 // okgames主Fragment
 class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
