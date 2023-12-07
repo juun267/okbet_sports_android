@@ -141,47 +141,31 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
     }
 
     private val accountHistoryStateList by lazy {
-        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN) {
-            this.resources.getStringArray(R.array.account_history_state_by_credit_array).map {
-                when (it) {
-                    getString(R.string.text_account_history_bet) -> {
-                        StatusSheetData(AccountHistory.BET.tranTypeGroup, it)
-                    }
-                    getString(R.string.text_account_history_credit) -> {
-                        StatusSheetData(AccountHistory.CREDIT.tranTypeGroup, it)
-                    }
-                    else -> {
-                        StatusSheetData(AccountHistory.BET.tranTypeGroup, it)
-                    }
+        this.resources.getStringArray(R.array.account_history_state_array).map {
+            when (it) {
+                getString(R.string.label_all) -> {
+                    StatusSheetData(AccountHistory.ALL.tranTypeGroup, it)
                 }
-            }
-        } else {
-            this.resources.getStringArray(R.array.account_history_state_array).map {
-                when (it) {
-                    getString(R.string.label_all) -> {
-                        StatusSheetData(AccountHistory.ALL.tranTypeGroup, it)
-                    }
-                    getString(R.string.text_account_history_bet) -> {
-                        StatusSheetData(AccountHistory.BET.tranTypeGroup, it)
-                    }
-                    getString(R.string.text_account_history_recharge) -> {
-                        StatusSheetData(AccountHistory.RECHARGE.tranTypeGroup, it)
-                    }
-                    getString(R.string.text_account_history_withdraw) -> {
-                        StatusSheetData(AccountHistory.WITHDRAW.tranTypeGroup, it)
-                    }
-                    getString(R.string.text_account_history_activity) -> {
-                        StatusSheetData(AccountHistory.ACTIVITY.tranTypeGroup, it)
-                    }
-                    getString(R.string.text_account_history_credit) -> {
-                        StatusSheetData(AccountHistory.CREDIT.tranTypeGroup, it)
-                    }
-                    getString(R.string.third_party) -> {
-                        StatusSheetData(AccountHistory.THIRD.tranTypeGroup, it)
-                    }
-                    else -> {
-                        StatusSheetData(AccountHistory.BET.tranTypeGroup, it)
-                    }
+                getString(R.string.text_account_history_bet) -> {
+                    StatusSheetData(AccountHistory.BET.tranTypeGroup, it)
+                }
+                getString(R.string.text_account_history_recharge) -> {
+                    StatusSheetData(AccountHistory.RECHARGE.tranTypeGroup, it)
+                }
+                getString(R.string.text_account_history_withdraw) -> {
+                    StatusSheetData(AccountHistory.WITHDRAW.tranTypeGroup, it)
+                }
+                getString(R.string.text_account_history_activity) -> {
+                    StatusSheetData(AccountHistory.ACTIVITY.tranTypeGroup, it)
+                }
+                getString(R.string.text_account_history_credit) -> {
+                    StatusSheetData(AccountHistory.CREDIT.tranTypeGroup, it)
+                }
+                getString(R.string.third_party) -> {
+                    StatusSheetData(AccountHistory.THIRD.tranTypeGroup, it)
+                }
+                else -> {
+                    StatusSheetData(AccountHistory.BET.tranTypeGroup, it)
                 }
             }
         }
