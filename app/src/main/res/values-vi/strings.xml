@@ -1541,4 +1541,5 @@
     <string name="menu">Danh sách</string>
     <string name="P241">Hot Esports</string>
     <string name="P263">Bắt đầu chơi</string>
+    <string name="P274">Khoảng cách thời gian truy vấn không vượt quá 7 ngày</string>
 </resources>

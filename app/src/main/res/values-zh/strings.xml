@@ -1597,4 +1597,5 @@
     <string name="menu">菜单</string>
     <string name="P241">热门电竞赛事</string>
     <string name="P263">开始游戏</string>
+    <string name="P274">查询时间间隔不能大于7天</string>
 </resources>
