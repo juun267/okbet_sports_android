@@ -6,10 +6,11 @@ import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.databinding.ItemHomeBettingstationChrisBinding
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ScreenUtil
 
-class HomeBettingStationAdapter : BindingAdapter<BettingStation, ItemHomeBettingstationBinding>() {
+class HomeBettingStationAdapter : BindingAdapter<BettingStation, ItemHomeBettingstationChrisBinding>() {
 
     init {
         addChildClickViewIds(R.id.ivLocation)
@@ -17,7 +18,7 @@ class HomeBettingStationAdapter : BindingAdapter<BettingStation, ItemHomeBetting
 
     override fun onBinding(
         position: Int,
-        vb: ItemHomeBettingstationBinding,
+        vb: ItemHomeBettingstationChrisBinding,
         item: BettingStation,
     ) = vb.run {
         ivCover.load(sConfigData?.resServerHost + item.stationImage,R.drawable.img_banner01)

@@ -17,6 +17,7 @@ import android.text.Spanned
 import android.text.method.HideReturnsTransformationMethod
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.webkit.WebView
@@ -49,6 +50,7 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.money.config.MoneyRechCfg
@@ -66,8 +68,6 @@ import org.cxct.sportlottery.ui.login.CaptchaDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
-import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -77,12 +77,10 @@ import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationM
 import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
 import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
-import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.reflect.Field
 
 fun AppBarLayout.expand(animate: Boolean) {
     val behavior = (layoutParams as CoordinatorLayout.LayoutParams).behavior
@@ -325,61 +323,49 @@ fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
     )
 }
 
-/**
- * 进入三方游戏，试玩检测
- */
-fun BaseFragment<out MainHomeViewModel>.setTrialPlayGameDataObserve() {
-    viewModel.enterTrialPlayGameResult.observe(viewLifecycleOwner) {
-        hideLoading()
-        if (it == null) {
-            //不支持试玩
-            loginedRun(requireContext()) {}
-        } else {
-            //试玩弹框
-            val trialDialog = TrialGameDialog(requireContext(), it.first, it.second) { firmType, thirdGameResult->
-                enterThirdGame(thirdGameResult, firmType)
-            }
-
-            trialDialog.show()
-        }
-    }
-
-}
 
 fun loginedRun(context: Context, block: () -> Unit): Boolean {
     if (LoginRepository.isLogined()) {
         block.invoke()
         return true
     }
-
     if (context is Activity) {
-        Snackbar.make(
-            context.findViewById(android.R.id.content),
-            context.getString(R.string.login_notify),
-            Snackbar.LENGTH_LONG
-        ).apply {
-            val snackView: View = context.layoutInflater.inflate(
-                R.layout.snackbar_login_notify, context.findViewById(android.R.id.content), false
-            )
-            (this.view as Snackbar.SnackbarLayout).apply {
-                findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
-                    visibility = View.INVISIBLE
-                }
-                background.alpha = 0
-                addView(snackView, 0)
-                setPadding(0, 0, 0, 0)
-            }
-
-            if (context is MainTabActivity) {
-                setAnchorView(R.id.linTab)
-            }
-            show()
-        }
+        showSnackbar(context,R.string.login_notify)
         return false
     }
-
     context.startActivity(Intent(context, LoginOKActivity::class.java))
     return false
+}
+fun getFavoriteMsg(myFavoriteNotifyType: Int) = when(myFavoriteNotifyType){
+        MyFavoriteNotifyType.LEAGUE_ADD.code-> R.string.myfavorite_notify_league_add
+        MyFavoriteNotifyType.LEAGUE_REMOVE.code-> R.string.myfavorite_notify_league_remove
+        MyFavoriteNotifyType.MATCH_ADD.code-> R.string.myfavorite_notify_match_add
+        MyFavoriteNotifyType.MATCH_REMOVE.code-> R.string.myfavorite_notify_match_remove
+        MyFavoriteNotifyType.DETAIL_ADD.code -> R.string.Pinned
+        MyFavoriteNotifyType.DETAIL_REMOVE.code -> R.string.Unpin
+        else -> null
+}
+fun showSnackbar(activity: Activity,contentRes: Int,bottomMargin: Int = 60.dp){
+    Snackbar.make(
+        activity.findViewById(android.R.id.content),
+        activity.getString(contentRes),
+        Snackbar.LENGTH_LONG
+    ).apply {
+        val snackView: View = activity.layoutInflater.inflate(
+            R.layout.snackbar_login_notify, activity.findViewById(android.R.id.content), false
+        )
+        (this.view as Snackbar.SnackbarLayout).apply {
+            findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                visibility = View.INVISIBLE
+            }
+            background.alpha = 0
+            addView(snackView, 0)
+            setPadding(0, 0, 0, 0)
+        }
+
+        (snackView.layoutParams as MarginLayoutParams).bottomMargin = bottomMargin
+        show()
+    }
 }
 
 
@@ -1060,40 +1046,6 @@ fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter<*>, block: ((Boolean) 
     }
 }
 
-fun enterThirdGame(
-    baseFragment: BaseFragment<*>,
-    viewModel: MainHomeViewModel,
-    result: EnterThirdGameResult,
-    firmType: String,
-) = baseFragment.run {
-    hideLoading()
-    when (result.resultType) {
-        EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
-            JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.thirdGameCategoryCode ?: "")
-        }
-
-        EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
-            getString(R.string.prompt), result.errorMsg ?: ""
-        ) {}
-
-        EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
-
-        EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
-            getString(R.string.error), result.errorMsg ?: ""
-        ) {}
-
-        EnterThirdGameResult.ResultType.NONE -> {
-        }
-    }
-    if (result.resultType != EnterThirdGameResult.ResultType.NONE) viewModel.clearThirdGame()
-}
-
-fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
-    result: EnterThirdGameResult,
-    firmType: String,
-) {
-    enterThirdGame(this, viewModel, result, firmType)
-}
 
 // 设置优惠活动点击事件
 fun View.bindPromoClick(click: (() -> Unit)? = null) = setOnClickListener {

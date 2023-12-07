@@ -17,7 +17,6 @@ import org.cxct.sportlottery.common.extentions.onConfirm
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.chat.hideSoftInput
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
@@ -113,14 +112,7 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
                 return@setOnItemClickListener
             }
 
-            if (LoginRepository.isLogined()) {
-                viewModel.homeOkGamesEnterThirdGame(okGameBean, this@ElectGamesFragment)
-                viewModel.homeOkGameAddRecentPlay(okGameBean)
-            } else {
-                //请求试玩路线
-                loading()
-                viewModel.requestEnterThirdGameNoLogin(okGameBean)
-            }
+            getMainTabActivity()?.enterThirdGame(okGameBean)
         }
 
         //实现左侧联动
@@ -181,20 +173,6 @@ open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, Fragme
             TransformInDialog(event.first, event.second, event.third) { enterResult ->
                 enterThirdGame(enterResult, event.first)
             }.show(childFragmentManager, null)
-        }
-
-        viewModel.enterTrialPlayGameResult.observe(this) {
-            hideLoading()
-            if (it == null) {
-                //不支持试玩
-                context().startLogin()
-            } else {
-                //试玩弹框
-                val trialDialog = TrialGameDialog(context(), it.first, it.second) { firmType, thirdGameResult->
-                    enterThirdGame(this@ElectGamesFragment, viewModel, thirdGameResult, firmType)
-                }
-                trialDialog.show()
-            }
         }
     }
 }

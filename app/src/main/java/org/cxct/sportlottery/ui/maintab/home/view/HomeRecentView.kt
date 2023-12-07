@@ -11,7 +11,6 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.view.transform.TransformInDialog
 import splitties.systemservices.layoutInflater
 
 class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
@@ -23,7 +22,7 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
         setOnItemClickListener{ _, _, position ->
             val item = data[position]
             if (item.recordType != 0) {
-                item.gameBean?.let { fragment.viewModel.homeOkGamesEnterThirdGame(it, fragment) }
+                item.gameBean?.let { fragment.getMainTabActivity().enterHomeGame(it) }
                 return@setOnItemClickListener
             }
 
@@ -47,11 +46,9 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
     }
     fun setup(fragment: HomeHotFragment) {
         this.fragment = fragment
-        fragment.apply {
-            RecentDataManager.recentEvent.observe(fragment){
-                homeRecentAdapter.setList(subMaxCount(it))
-                this@HomeRecentView.isVisible = visibleRecent()
-            }
+        RecentDataManager.recentEvent.observe(fragment){
+            homeRecentAdapter.setList(subMaxCount(it))
+            this@HomeRecentView.isVisible = visibleRecent()
         }
         homeRecentAdapter.setList(subMaxCount(RecentDataManager.getRecentList()))
         isVisible = visibleRecent()

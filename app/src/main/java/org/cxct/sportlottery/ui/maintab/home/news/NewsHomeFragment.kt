@@ -4,7 +4,6 @@ import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.include_home_news.*
-import kotlinx.android.synthetic.main.view_home_news.*
 import kotlinx.android.synthetic.main.view_home_news.rvNews
 import kotlinx.android.synthetic.main.view_home_news.tvCateName
 import kotlinx.android.synthetic.main.view_home_news.tvMore

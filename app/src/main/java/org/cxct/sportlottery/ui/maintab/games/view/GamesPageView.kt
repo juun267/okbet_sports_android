@@ -9,20 +9,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewGamePageBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
-import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.enterThirdGame
-import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
-import org.cxct.sportlottery.view.transform.TransformInDialog
 
 class GamesPageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0

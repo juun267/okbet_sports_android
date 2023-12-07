@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.games
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -24,8 +23,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.TrialGameDialog
@@ -97,6 +94,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
     private fun initToolBar() = binding.homeToolbar.run {
         attach(this@OKGamesFragment, mainTabActivity(), viewModel)
+        binding.homeToolbar.setChristmasStyle2()
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
             mainTabActivity().showMainRightMenu()
@@ -130,32 +128,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         gamesList.observe(viewLifecycleOwner) {
             if (it.first == requestTag) {
                 showPartGameList(it.third, it.second)
-            }
-        }
-
-        enterThirdGameResult.observe(viewLifecycleOwner) {
-            if (isVisible) enterThirdGame(it.second, it.first)
-        }
-
-        gameBalanceResult.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { event ->
-                TransformInDialog(event.first, event.second, event.third) {
-                    enterThirdGame(it, event.first)
-                }.show(childFragmentManager, null)
-            }
-        }
-
-        enterTrialPlayGameResult.observe(viewLifecycleOwner) {
-            hideLoading()
-            if (it == null) {
-                //不支持试玩
-                mainTabActivity().startLogin()
-            } else {
-                //试玩弹框
-                val trialDialog = TrialGameDialog(mainTabActivity(), it.first, it.second) { firmType, thirdGameResult->
-                    enterThirdGame(this@OKGamesFragment, viewModel, thirdGameResult, firmType)
-                }
-                trialDialog.show()
             }
         }
 
@@ -229,11 +201,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     }
 
     fun enterGame(okGameBean: OKGameBean) {
-
-        loginedRun(binding.root.context) {
-            viewModel.requestEnterThirdGame(okGameBean, this)
-            viewModel.addRecentPlay(okGameBean)
-        }
+        mainTabActivity().enterThirdGame(okGameBean)
     }
 
     fun backGameAll() {

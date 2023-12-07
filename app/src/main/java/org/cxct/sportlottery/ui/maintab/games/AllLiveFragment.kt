@@ -19,8 +19,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerLiveListAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
-import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setupSportStatusChange
 
@@ -231,8 +229,6 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
                 binding.winsRankView.onNewHttpWinsData(it.reversed())
             }
         }
-        //设置监听游戏试玩
-        setTrialPlayGameDataObserve()
     }
 
     private fun onBindPart5View() {
