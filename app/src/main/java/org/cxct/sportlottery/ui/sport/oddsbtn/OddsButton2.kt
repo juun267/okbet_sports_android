@@ -252,7 +252,7 @@ class OddsButton2 @JvmOverloads constructor(
             oddsValue = addOddView(oddsValueCaches.removeAt(0), params1)
             return oddsValue!!
         }
-        oddsValue = OddsValueView(context,esportTheme = esportTheme)
+        oddsValue = OddsValueView(context)
         addOddView(oddsValue!!, params1)
         return oddsValue!!
     }
