@@ -53,7 +53,6 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.money.config.MoneyRechCfg
 import org.cxct.sportlottery.network.money.config.RechCfg
