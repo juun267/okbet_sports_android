@@ -431,7 +431,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
     //是否拿最新的sportMenu数据
     private fun getMenuData(newData: Boolean) {
-        viewModel.getSportMenuData()
+        viewModel.getSportMenuData(isNew = true)
     }
 
     private fun showSportDialog(){

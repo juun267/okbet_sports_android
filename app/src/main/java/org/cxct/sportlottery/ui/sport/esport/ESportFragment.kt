@@ -405,7 +405,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     //是否拿最新的sportMenu数据
     private fun getMenuData(newData:Boolean) {
         if (newData){
-            viewModel.getSportMenuData()
+            viewModel.getSportMenuData(isNew = true)
         }
     }
 

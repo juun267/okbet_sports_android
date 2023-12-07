@@ -14,7 +14,7 @@ import retrofit2.http.POST
 interface SportService {
 
     @POST(Constants.SPORT_MENU)
-    suspend fun getMenu(@Body sportMenuRequest: Map<String, String>): ApiResult<SportMenuData>
+    suspend fun getMenu(@Body params: JsonObject): ApiResult<SportMenuData>
 
     @POST(Constants.MYFAVORITE_QUERY_ALL)
     suspend fun getFavoriteSportList(@Body params: JsonObject): ApiResult<List<MyFavoriteAllMatchItem>>

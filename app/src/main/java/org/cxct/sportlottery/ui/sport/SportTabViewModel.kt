@@ -45,15 +45,13 @@ class SportTabViewModel(
 
     private var lastMenuTag = 0L
     private var menuLoading = false
-    fun getSportMenuData() {
+    fun getSportMenuData(isNew: Boolean?=null) {
         if (menuLoading || System.currentTimeMillis() - lastMenuTag < 10_000) {
             return
         }
         menuLoading = true
         callApi({
-            SportRepository.getSportMenu(
-                TimeUtil.getNowTimeStamp().toString(),
-                TimeUtil.getTodayStartTimeStamp().toString())
+            SportRepository.getSportMenu(isNew)
         }) {
             if (it.succeeded()) {
                 it.getData()?.sortSport()
