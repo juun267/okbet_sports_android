@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.ui.login
 
-import android.app.Activity
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +11,6 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.databinding.DialogBindphoneBinding
-import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.profileCenter.modify.BindInfoViewModel
@@ -137,7 +134,6 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
                 codeCountDown()
                 return@observe
             }
-
             ToastUtil.showToast(requireActivity(), smsResult.msg)
             binding.btnSendSms.setBtnEnable(true)
         }
@@ -145,10 +141,14 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
         resetResult.observe(viewLifecycleOwner) {
             hideLoading()
             if (it.second.succeeded()) {
-                ToastUtil.showToast(requireActivity(), R.string.N866)
                 dismiss()
+                if (it.second.getData()?.firstPhoneGiveMoney==true){
+                    ToastUtil.showToastInCenter(requireActivity(),getString(R.string.P237,"${sConfigData?.systemCurrencySign}${sConfigData?.firstPhoneGiveMoney?:0}"))
+                }else{
+                    ToastUtil.showToastInCenter(requireActivity(), it.second.getData()?.msg)
+                }
             }else{
-                ToastUtil.showToast(requireActivity(), it.second.msg)
+                ToastUtil.showToastInCenter(requireActivity(), it.second.msg)
             }
         }
     }
@@ -169,8 +169,8 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
         binding.btnSubmit.isEnabled = phoneErrorMsg.isNullOrEmpty()&&codeErrorMsg.isNullOrEmpty()
     }
 
-    override fun show(manager: FragmentManager, tag: String?) {
-        super.show(manager, tag)
+    override fun show(manager: FragmentManager) {
+        super.show(manager)
         instance = this
         afterLoginOrRegist =false
     }
