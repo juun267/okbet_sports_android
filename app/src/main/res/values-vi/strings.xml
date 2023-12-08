@@ -1541,4 +1541,8 @@
     <string name="menu">Danh sách</string>
     <string name="P241">Hot Esports</string>
     <string name="P263">Bắt đầu chơi</string>
+    <string name="P232">Chi tiết thưởng</string>
+    <string name="P233">Số tiền thưởng</string>
+    <string name="N633">Đợi xử lý</string>
+    <string name="J942">Thông qua</string>
 </resources>

@@ -1597,4 +1597,8 @@
     <string name="menu">菜单</string>
     <string name="P241">热门电竞赛事</string>
     <string name="P263">开始游戏</string>
+    <string name="P232">奖励详情</string>
+    <string name="P233">奖励金额</string>
+    <string name="N633">待处理</string>
+    <string name="J942">已通过</string>
 </resources>

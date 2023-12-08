@@ -43,11 +43,6 @@ class PromotionDetailActivity :
                 viewModel.activityDetailH5(it)
             }
         }
-//        viewModel.activityImageList.observe(this) {
-//            it.firstOrNull { it.activityId == activityId }?.let {
-//                setPromotion(it)
-//            }
-//        }
         viewModel.activityDetail.observe(this) {
              setActivity(it)
         }
@@ -90,7 +85,7 @@ class PromotionDetailActivity :
             }
             tvReward.text = TextUtil.formatMoney(activityDetail.reward)
             linHistory.setOnClickListener {
-               RewardHistoryDialog().show(supportFragmentManager,null)
+               RewardHistoryDialog(activityDetail.activityId).show(supportFragmentManager,null)
             }
             if (activityDetail.reward == 0.0) {
                 linApply.isEnabled = false

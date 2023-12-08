@@ -1673,4 +1673,8 @@
     <string name="menu">Menu</string>
     <string name="P241">Hot Esports</string>
     <string name="P263">Play</string>
+    <string name="P232">Reward Details</string>
+    <string name="P233">Reward Amount</string>
+    <string name="N633">Pending</string>
+    <string name="J942">Passed</string>
 </resources>
