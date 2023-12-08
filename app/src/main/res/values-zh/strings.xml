@@ -1603,4 +1603,5 @@
     <string name="P233">奖励金额</string>
     <string name="N633">待处理</string>
     <string name="J942">已通过</string>
+    <string name="apply_success">成功</string>
 </resources>

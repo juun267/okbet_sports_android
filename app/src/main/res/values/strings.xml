@@ -1681,4 +1681,5 @@
     <string name="P233">Reward Amount</string>
     <string name="N633">Pending</string>
     <string name="J942">Passed</string>
+    <string name="apply_success">Apply successful</string>
 </resources>
