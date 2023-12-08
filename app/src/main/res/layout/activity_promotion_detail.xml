@@ -11,24 +11,27 @@
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:topTitleText="@string/P169"
-        android:elevation="@dimen/margin_2"/>
+        android:elevation="@dimen/margin_2"
+        app:topTitleText="@string/P169" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_F9FAFD"
             android:orientation="vertical"
-            android:paddingTop="@dimen/margin_12"
-            android:paddingHorizontal="@dimen/margin_12">
+            android:paddingHorizontal="@dimen/margin_12"
+            android:paddingTop="@dimen/margin_12">
+
             <ImageView
                 android:id="@+id/ivBanner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"/>
+                android:adjustViewBounds="true" />
+
             <TextView
                 android:id="@+id/tvSubTitle"
                 android:layout_width="match_parent"
@@ -37,7 +40,7 @@
                 android:textColor="@color/color_303C55"
                 android:textSize="@dimen/textSize18sp"
                 android:textStyle="bold"
-                tools:text="Promotion Title Text Text Text Text Text Text Text Text Text Text Text Text"/>
+                tools:text="Promotion Title Text Text Text Text Text Text Text Text Text Text Text Text" />
 
             <TextView
                 android:id="@+id/tvTime"
@@ -46,114 +49,160 @@
                 android:layout_marginTop="@dimen/margin_8"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="Feb 12, 2023   to  Dec 12, 2023"/>
+                tools:text="Feb 12, 2023   to  Dec 12, 2023" />
 
 
             <LinearLayout
                 android:id="@+id/linActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginTop="@dimen/margin_8"
-                android:orientation="vertical">
+                android:background="@drawable/bg_white_radius_8"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/margin_15"
+                android:paddingVertical="@dimen/margin_12"
+                android:visibility="gone">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                <LinearLayout
-                    android:id="@+id/linDeposit"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="@dimen/margin_10"
-                    android:background="@drawable/bg_white_radius_8">
-                  <ImageView
-                      android:layout_width="@dimen/margin_36"
-                      android:layout_height="@dimen/margin_36"
-                      android:src="@drawable/ic_activity_deposit"/>
+
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/linDeposit"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_10"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/tvDeposit"
-                            android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingVertical="@dimen/margin_10">
+
+                        <ImageView
+                            android:layout_width="@dimen/margin_36"
+                            android:layout_height="@dimen/margin_36"
+                            android:src="@drawable/ic_activity_deposit" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:lines="1"
-                            android:textSize="@dimen/textSize18sp"
-                            android:textFontWeight="700"
-                            android:textColor="@color/color_1CD219"
-                            tools:text="5,000,000.00"/>
-                        <TextView
-                            android:id="@+id/tvDepositName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/textSize12sp"
-                            android:textColor="@color/color_6D7693"
-                            android:text="@string/H019"/>
+                            android:layout_marginLeft="@dimen/margin_10"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvDeposit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lines="1"
+                                android:textColor="@color/color_1CD219"
+                                android:textFontWeight="700"
+                                android:textSize="@dimen/textSize18sp"
+                                tools:text="5,000,000.00" />
+
+                            <TextView
+                                android:id="@+id/tvDepositName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/H019"
+                                android:textColor="@color/color_6D7693"
+                                android:textSize="@dimen/textSize12sp" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/linReward"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="@dimen/margin_10"
-                    android:layout_marginLeft="@dimen/margin_10"
-                    android:background="@drawable/bg_white_radius_8">
-                    <ImageView
-                        android:layout_width="@dimen/margin_36"
+
+                    <View
+                        android:layout_width="@dimen/margin_0.5"
                         android:layout_height="@dimen/margin_36"
-                        android:src="@drawable/ic_activity_reward"/>
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/margin_20"
+                        android:background="@color/color_E0E3EE" />
+
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/linReward"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_10"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/tvReward"
-                            android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingVertical="@dimen/margin_10">
+
+                        <ImageView
+                            android:layout_width="@dimen/margin_36"
+                            android:layout_height="@dimen/margin_36"
+                            android:src="@drawable/ic_activity_reward" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:lines="1"
-                            android:textSize="@dimen/textSize18sp"
-                            android:textFontWeight="700"
-                            android:textColor="@color/color_FF2E00"
-                            tools:text="5,000,000.00"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/textSize12sp"
-                            android:textColor="@color/color_6D7693"
-                            android:text="@string/P156"/>
+                            android:layout_marginLeft="@dimen/margin_10"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvReward"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lines="1"
+                                android:textColor="@color/color_FF2E00"
+                                android:textFontWeight="700"
+                                android:textSize="@dimen/textSize18sp"
+                                tools:text="5,000,000.00" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/P156"
+                                android:textColor="@color/color_6D7693"
+                                android:textSize="@dimen/textSize12sp" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/linApply"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:gravity="center"
-                    android:layout_marginTop="@dimen/margin_16"
-                    android:background="@drawable/bg_blue_radius_8">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/color_FFFFFF"
-                        android:textSize="@dimen/textSize16sp"
-                        android:text="@string/P159" />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_5"
-                        android:src="@drawable/ic_arrow_white_right"/>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/linHistory"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="@dimen/margin_16"
+                        android:layout_marginRight="@dimen/margin_12"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_blue_radius_8_stroke"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/P232"
+                            android:textColor="@color/color_025BE8"
+                            android:textSize="@dimen/textSize16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linApply"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="@dimen/margin_16"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_blue_radius_8"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/P159"
+                            android:textColor="@color/color_FFFFFF"
+                            android:textSize="@dimen/textSize16sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_5"
+                            android:src="@drawable/ic_arrow_white_right" />
+                    </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
+
             <org.cxct.sportlottery.view.webView.OkWebView
                 android:id="@+id/okWebView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/margin_16"/>
+                android:layout_marginTop="@dimen/margin_16" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

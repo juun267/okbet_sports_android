@@ -2,14 +2,13 @@ package org.cxct.sportlottery.net.user.api
 
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
-import org.cxct.sportlottery.net.user.data.ActivityImageList
-import org.cxct.sportlottery.net.user.data.OCRInfo
-import org.cxct.sportlottery.net.user.data.SendCodeRespnose
-import org.cxct.sportlottery.net.user.data.VerifyConfig
+import org.cxct.sportlottery.net.PageData
+import org.cxct.sportlottery.net.user.data.*
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.ACTIVITY_APPLY
 import org.cxct.sportlottery.network.Constants.ACTIVITY_DETAIL_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
+import org.cxct.sportlottery.network.Constants.ACTIVITY_RECORD
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
 import org.cxct.sportlottery.network.Constants.LOGIN
@@ -48,6 +47,9 @@ interface UserApiService {
 
     @GET(ACTIVITY_APPLY)
     suspend fun activityApply(@Path("activityId") activityId: String): ApiResult<String>
+
+    @POST(ACTIVITY_RECORD)
+    suspend fun activityRecord(@Body params : JsonObject): ApiResult<PageData<RewardRecord>>
 
     @GET(USER_VERIFY_CONFIG)
     suspend fun getVerifyConfig(): ApiResult<VerifyConfig>

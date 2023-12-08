@@ -1677,4 +1677,8 @@
     <string name="P263">Play</string>
     <string name="P274">The query interval cannot be greater than 7 days</string>
     <string name="N473">Promo Period</string>
+    <string name="P232">Reward Details</string>
+    <string name="P233">Reward Amount</string>
+    <string name="N633">Pending</string>
+    <string name="J942">Passed</string>
 </resources>

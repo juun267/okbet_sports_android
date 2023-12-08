@@ -351,6 +351,8 @@ object Constants {
 
     const val ACTIVITY_APPLY = "/api/front/agentActivity/apply/{activityId}"
 
+    const val ACTIVITY_RECORD = "/api/front/index/getUserActivityRecord"
+
     const val OCR_INFO = "/idscan/api/front/ocr/getOCRInfo"
 
     //登录或注册(新版优化登录注册->使用)
