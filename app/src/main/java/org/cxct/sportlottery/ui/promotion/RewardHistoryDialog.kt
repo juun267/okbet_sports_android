@@ -13,6 +13,7 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.RefreshHelper
+import org.cxct.sportlottery.view.BetEmptyView
 
 class RewardHistoryDialog(val activityId: String): BaseDialog<MainHomeViewModel>(MainHomeViewModel::class) {
 
@@ -54,6 +55,7 @@ class RewardHistoryDialog(val activityId: String): BaseDialog<MainHomeViewModel>
         setOnClickListeners(ivClose,btnConfirm){
             dismiss()
         }
+        adapter.setEmptyView(BetEmptyView(requireContext()).apply { center() })
         rvRecord.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
         rvRecord.adapter = adapter
     }
