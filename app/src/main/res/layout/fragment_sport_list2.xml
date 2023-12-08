@@ -1,46 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rootView"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    app:srlDragRate="0.3"
-    app:srlEnableLoadMore="true"
-    app:srlEnablePureScrollMode="true">
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:background="@color/transparent"
-        app:elevation="0dp">
+        android:orientation="vertical"
+        android:background="@color/color_E7EDF8"
+        android:paddingBottom="@dimen/margin_5">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbarLayout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sport_type_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll">
+            android:background="@drawable/bg_white_radius_8_bottom"
+            android:nestedScrollingEnabled="false"
+            android:paddingLeft="5.5dp"
+            android:clipToPadding="false"
+            tools:itemCount="1" />
+
+    </LinearLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rootView"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@color/transparent"
+            app:elevation="0dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@color/color_E7EDF8">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/sport_type_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:elevation="0dp"
-                    android:background="@drawable/bg_white_radius_8_bottom"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingLeft="5.5dp"
-                    android:clipToPadding="false"
-                    tools:itemCount="1" />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_5"/>
+                android:background="@color/color_E7EDF8"
+                android:paddingBottom="@dimen/margin_0.5"
+                app:layout_scrollFlags="scroll">
 
                 <LinearLayout
                     android:id="@+id/lin_opt"
@@ -51,6 +61,7 @@
                     android:paddingHorizontal="12dp"
                     android:background="@drawable/bg_white_radius_8_top"
                     android:visibility="gone"
+                    app:layout_scrollFlags="scroll"
                     tools:visibility="visible">
 
                     <TextView
@@ -86,41 +97,39 @@
                         android:src="@drawable/ic_arrow_up" />
 
                 </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_0.5"
-                    android:background="@color/color_D4E1F1"/>
+
             </LinearLayout>
 
+        </com.google.android.material.appbar.AppBarLayout>
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <FrameLayout
-        android:id="@+id/linContent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/game_list"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:background="@color/color_FFFFFF"
-            android:paddingTop="0dp"
-            tools:itemCount="1" />
-
-    </FrameLayout>
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-    <ImageView
-        android:id="@+id/ivBackTop"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="60dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/icon_backtop_blue" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/game_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:background="@color/color_FFFFFF"
+                android:paddingTop="0dp"
+                tools:itemCount="1" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/ivBackTop"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="60dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icon_backtop_blue" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>

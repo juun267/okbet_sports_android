@@ -33,6 +33,8 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
+import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
+import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 import org.cxct.sportlottery.view.StreamerTextView
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
@@ -40,25 +42,22 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     : FrameLayout(context, attrs, defStyle) {
 
     init {
-        if (background == null) {
-            setBackgroundResource(R.color.color_FFFFFF)
-        }
         12.dp.let { setPadding(6.dp, 6.dp, it, it) }
         addChildView()
     }
 
-    lateinit var ivLogo: ImageView
+    private lateinit var ivLogo: ImageView
     private lateinit var searchView: View
     lateinit var searchIcon: View
     lateinit var betlistIcon: View
-    lateinit var userMoneyView: LinearLayout
-    lateinit var banlanceView: LinearLayout
+    private lateinit var userMoneyView: LinearLayout
+    private lateinit var banlanceView: LinearLayout
     lateinit var tvUserMoney: TextView
-    lateinit var ivRefreshMoney: ImageView
-    lateinit var btnDeposit: TextView
-    lateinit var loginLayout: LinearLayout
-    lateinit var tvLogin: TextView
-    lateinit var tvRegist: TextView
+    private lateinit var ivRefreshMoney: ImageView
+    private lateinit var btnDeposit: TextView
+    private lateinit var loginLayout: LinearLayout
+    private lateinit var tvLogin: TextView
+    private lateinit var tvRegist: TextView
 
     private lateinit var fragment: LifecycleOwner
     private lateinit var activity: MainTabActivity
@@ -276,7 +275,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     private var refreshTimeTag = 0L
-    fun onRefreshMoney() {
+    private fun onRefreshMoney() {
         val time = System.currentTimeMillis()
         if (!LoginRepository.isLogined() && time - refreshTimeTag < 1500) {
             return
@@ -294,5 +293,26 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             duration = 1000
         })
         viewModel.getMoneyAndTransferOut()
+    }
+
+    fun setChristmasStyle() {
+        ivRefreshMoney.setImageResource(R.drawable.ic_refresh_green_christmas)
+        ivLogo.setImageResource(R.drawable.logo_okbet_color_christmas)
+        tvLogin.setBackgroundResource(R.drawable.bg_home_top_login)
+        tvLogin.setTextColor(context.getColor(R.color.color_FFFFFF))
+        tvRegist.setBackgroundResource(R.drawable.bg_home_top_register)
+        btnDeposit.setBackgroundResource(R.drawable.bg_home_top_deposit)
+        banlanceView.background = ShapeDrawable()
+            .setRadius(100.dp.toFloat())
+            .setSolidColor(context.getColor(R.color.color_4DE3ECF5), context.getColor(R.color.color_99F1F5F9))
+            .setSolidGradientOrientation(ShapeGradientOrientation.LEFT_TO_RIGHT)
+            .setStrokeColor(Color.WHITE)
+            .setStrokeSize(1.dp)
+
+    }
+
+    fun setChristmasStyle2() {
+        setChristmasStyle()
+        setBackgroundResource(R.drawable.bg_home_top2)
     }
 }

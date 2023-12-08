@@ -1,20 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/color_F8F9FD">
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="@dimen/margin_12"
+        app:tabIndicator="@drawable/bet_time_tab_indicator"
+        app:tabTextAppearance="@style/NoUppercaseTab2"
+        app:tabIndicatorHeight="@dimen/margin_36"
+        app:tabIndicatorGravity="center"
+        app:tabPaddingStart="@dimen/margin_12"
+        app:tabPaddingEnd="@dimen/margin_12"
+        app:tabMode="fixed"
+        app:tabRippleColor="@null"
+        android:background="@color/color_F9FAFD"
+        app:tabSelectedTextColor="@color/color_FFFFFF"
+        app:tabTextColor="@color/color_6D7693">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/C016_small" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/I023" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/P128" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/other" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <org.cxct.sportlottery.view.DateRangeSearchView
+        android:id="@+id/date_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dateRange="-30"
+        app:minusDays="6"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerUnsettled"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:background="@color/color_F8F9FD"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_bet_list" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -63,8 +63,8 @@ class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>
         }
     }
 
-    override fun show(manager: FragmentManager, tag: String?) {
-        super.show(manager, tag)
+     override fun show(manager: FragmentManager) {
+        super.show(manager)
         ifNew =false
     }
 }

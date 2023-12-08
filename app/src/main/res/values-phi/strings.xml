@@ -1517,6 +1517,8 @@
     <string name="menu">Menu</string>
     <string name="P241">Hot Esports</string>
     <string name="P263">Maglaro</string>
+    <string name="P274">Ang pagitan ng query ay hindi maaaring lumampas sa 7 araw</string>
+    <string name="N473">Panahon ng aktibidad</string>
     <string name="P232">Mga Detalye ng Reward</string>
     <string name="P233">Halaga ng Reward</string>
     <string name="N633">Pending</string>

@@ -218,7 +218,7 @@ object SocketUpdateUtil {
     }
 
     private fun needAttack(gameType: String?) = when (gameType) {
-        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.BB.key, GameType.CK.key -> true
+        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.BB.key, GameType.CK.key, GameType.IH.key, -> true
         else -> false
     }
 

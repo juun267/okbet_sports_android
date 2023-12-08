@@ -528,19 +528,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     override fun showLoginNotify() {
-        snackBarLoginNotify.apply {
-            anchorView = binding.snackbarHolder
-            show()
-        }
+        showLoginSnackbar(this)
     }
 
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
-        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
-        snackBarMyFavoriteNotify?.apply {
-            anchorView = binding.snackbarHolder
-            show()
-        }
-
+        showFavoriteSnackbar(this,myFavoriteNotifyType)
     }
 
     private fun initData() {

@@ -8,7 +8,7 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
-import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
+import org.cxct.sportlottery.databinding.FragmentHomeHotChrisBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
@@ -29,7 +29,7 @@ import org.cxct.sportlottery.view.transform.TransformInDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
+class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHotChrisBinding>() {
 
      fun getMainTabActivity() = activity as MainTabActivity
      private fun getHomeFragment() = parentFragment as HomeFragment
@@ -40,6 +40,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         }
     }
     override fun onInitView(view: View) = binding.run {
+        setChristmasStyle()
         scrollView.setupBackTop(ivBackTop, 180.dp) {
             if (hotMatchView.isVisible) {
                 hotMatchView.resubscribe()
@@ -48,16 +49,14 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
                 hotEsportView.resubscribe()
             }
         }
-        bottomView.bindServiceClick(childFragmentManager)
         EventBusUtil.targetLifecycle(this@HomeHotFragment)
         ToGcashDialog.showByLogin()
     }
 
-    override fun onInitData() {
-        //设置监听游戏试玩
-        setTrialPlayGameDataObserve()
-
+    private fun setChristmasStyle() {
+        binding.newsView.setChristmasStyle()
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSportStatusChange(event: SportStatusEvent) {
@@ -74,6 +73,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         if (binding.scrollView.scrollY != 0) {
             binding.scrollView.postDelayed({ backTop() }, 50)
         }
+        bottomView.bindServiceClick(childFragmentManager)
         recentView.setup(this@HomeHotFragment)
         hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@HomeHotFragment)
         okGamesView.setUp(this@HomeHotFragment)
@@ -140,13 +140,14 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
                     }).show(childFragmentManager, PopImageDialog::class.simpleName)
                 }
             }
-            if (viewModel.isLogin.value==true&&BindPhoneDialog.needShow()){
-                BindPhoneDialog().show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
-            }
-            if (viewModel.isLogin.value==true&&RegisterSuccessDialog.needShow()){
-                RegisterSuccessDialog{
-                    getMainTabActivity().checkRechargeKYCVerify()
-                }.show(parentFragmentManager,RegisterSuccessDialog::class.simpleName)
+            if (viewModel.isLogin.value==true){
+                if (BindPhoneDialog.needShow()) {
+                    BindPhoneDialog().show(parentFragmentManager)
+                }
+                if(RegisterSuccessDialog.needShow()){
+                      RegisterSuccessDialog{ getMainTabActivity().checkRechargeKYCVerify()
+                    }.show(parentFragmentManager)
+                }
             }
         }
         setupSportStatusChange(this){
@@ -158,31 +159,6 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             }else{
                 binding.hotMatchView.gone()
                 binding.hotEsportView.gone()
-            }
-        }
-
-        viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
-            if (isVisibleToUser()) enterThirdGame(it.second, it.first)
-        }
-
-        viewModel.gameBalanceResult.observe(viewLifecycleOwner) {
-            val event = it.getContentIfNotHandled() ?: return@observe
-            TransformInDialog(event.first, event.second, event.third) { enterResult ->
-                enterThirdGame(enterResult, event.first)
-            }.show(childFragmentManager, null)
-        }
-
-        viewModel.enterTrialPlayGameResult.observe(this) {
-            hideLoading()
-            if (it == null) {
-                //不支持试玩
-                context().startLogin()
-            } else {
-                //试玩弹框
-                val trialDialog = TrialGameDialog(context(), it.first, it.second) { firmType, thirdGameResult->
-                    enterThirdGame(this@HomeHotFragment, viewModel, thirdGameResult, firmType)
-                }
-                trialDialog.show()
             }
         }
     }

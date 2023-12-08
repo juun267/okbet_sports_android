@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.view_item_recharge_log.view.rech_log_date
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.rech_log_time
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.list.SportBillResult
+import org.cxct.sportlottery.ui.finance.df.AccountHistory
 import org.cxct.sportlottery.util.TextUtil
 
 class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -29,8 +30,6 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             field = value
             notifyItemChanged(data.size)
         }
-
-
     override fun getItemViewType(position: Int): Int {
         return when (position) {
             (data.size) -> {
@@ -67,6 +66,7 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.rech_log_date.text = item.rechDateStr
             itemView.rech_log_time.text = item.rechTimeStr
             itemView.rech_order_num.text = item.orderNo
+            itemView.tvTypeName.text = itemView.context.getString(AccountHistory.getShowName(item.tranTypeName))
             itemView.rech_balance.text = TextUtil.format(item.balance)
             if(item.money<0){
                 itemView.rech_amont.setTextColor(
@@ -88,7 +88,6 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 itemView.rech_amont.text = TextUtil.format(item.money)
             }
         }
-
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
@@ -120,7 +119,3 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 }
-
-//class RechargeLogListener(val clickListener: (row: Event<Row>) -> Unit) {
-//    fun onClick(row: Event<Row>) = clickListener(row)
-//}

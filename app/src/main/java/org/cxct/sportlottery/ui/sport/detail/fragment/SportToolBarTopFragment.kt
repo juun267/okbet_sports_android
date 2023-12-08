@@ -210,6 +210,7 @@ class SportToolBarTopFragment :
             GameType.BM.key -> setBmScoreText(matchInfo)
             GameType.BB.key -> setBbScoreText(matchInfo)
             GameType.CK.key -> setCkScoreText(matchInfo)
+            GameType.IH.key -> setIHScoreText(matchInfo)
             else -> setBkScoreText(matchInfo)
         }
     }
@@ -267,6 +268,12 @@ class SportToolBarTopFragment :
         setScoreTextAtFront(matchInfo)
         setAttack(matchInfo)
         setSptText(matchInfo)
+    }
+
+    private fun setIHScoreText(matchInfo: MatchInfo) {
+        setScoreTextAtFront(matchInfo)
+        setAllScoreTextAtBottom(matchInfo)
+        setAttack(matchInfo)
     }
 
     private fun setFbKicks(matchInfo: MatchInfo) {

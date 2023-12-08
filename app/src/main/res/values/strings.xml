@@ -1673,6 +1673,8 @@
     <string name="menu">Menu</string>
     <string name="P241">Hot Esports</string>
     <string name="P263">Play</string>
+    <string name="P274">The query interval cannot be greater than 7 days</string>
+    <string name="N473">Promo Period</string>
     <string name="P232">Reward Details</string>
     <string name="P233">Reward Amount</string>
     <string name="N633">Pending</string>

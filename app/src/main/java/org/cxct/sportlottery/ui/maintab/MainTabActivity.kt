@@ -2,12 +2,11 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
@@ -25,6 +24,7 @@ import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.event.ShowInPlayEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -37,7 +37,9 @@ import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
+import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
@@ -52,17 +54,20 @@ import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import org.cxct.sportlottery.view.dialog.TrialGameDialog
+import org.cxct.sportlottery.view.transform.TransformInDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import splitties.activities.start
 import kotlin.system.exitProcess
 
 
 class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel::class) {
 
+    val gamesViewModel by viewModel<OKGamesViewModel>()
     private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
@@ -111,7 +116,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private val binding by lazy { ActivityMainTabBinding.inflate(layoutInflater) }
-    private lateinit var tabHelper: MainTabInflate
+    private lateinit var tabHelper: MainTabInflate2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,7 +127,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .fitsSystemWindows(false).init()
         initDrawerLayout()
         initMenu()
-        tabHelper = MainTabInflate(binding.linTab, ::onTabClick)
+        tabHelper = MainTabInflate2(binding.linTab, ::onTabClick)
         navToPosition(INDEX_HOME)
         initBottomNavigation()
         initObserve()
@@ -264,6 +269,32 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 getString(R.string.message_recharge_maintain)
             ) {}
 
+        }
+
+        gamesViewModel.enterThirdGameResult.observe(this) {
+            enterThirdGame(it.second, it.first)
+        }
+
+        gamesViewModel.gameBalanceResult.observe(this) {
+            it.getContentIfNotHandled()?.let { event ->
+                TransformInDialog(event.first, event.second, event.third) {
+                    enterThirdGame(it, event.first)
+                }.show(supportFragmentManager, null)
+            }
+        }
+
+        gamesViewModel.enterTrialPlayGameResult.observe(this) {
+            hideLoading()
+            if (it == null) {
+                //不支持试玩
+                startLogin()
+            } else {
+                //试玩弹框
+                val trialDialog = TrialGameDialog(this, it.first, it.second) { firmType, thirdGameResult->
+                    enterThirdGame(thirdGameResult, firmType)
+                }
+                trialDialog.show()
+            }
         }
     }
 
@@ -492,31 +523,33 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun showLoginNotify() {
-        snackBarLoginNotify.apply {
-            setAnchorView(R.id.linTab)
-            show()
-        }
+        showLoginSnackbar(this)
     }
 
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
-        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
-        snackBarMyFavoriteNotify?.apply {
-            setAnchorView(R.id.linTab)
-            show()
-        }
+        showFavoriteSnackbar(this, favoriteNotifyType = myFavoriteNotifyType)
     }
 
     override fun initBottomNavigation() {
         binding.parlayFloatWindow.onViewClick = ::showBetListPage
-        val radius = 15.dp.toFloat()
-        binding.linTab.background = ShapeDrawable()
-            .setWidth(screenWidth + 15.dp)
-            .setHeight(58.dp)
-            .setSolidColor(Color.WHITE)
-            .setShadowColor(getColor(R.color.color_A9B2D3))
-            .setShadowSize(5.dp)
-            .setShadowOffsetY(-10.dp)
-            .setRadius(radius, radius, 0F, 0F)
+        setChristmasStyle()
+//        val radius = 15.dp.toFloat()
+//        binding.linTab.background = ShapeDrawable()
+//            .setWidth(screenWidth + 15.dp)
+//            .setHeight(58.dp)
+//            .setSolidColor(Color.WHITE)
+//            .setShadowColor(getColor(R.color.color_A9B2D3))
+//            .setShadowSize(5.dp)
+//            .setShadowOffsetY(-10.dp)
+//            .setRadius(radius, radius, 0F, 0F)
+    }
+
+    private fun setChristmasStyle() {
+        binding.linTab.setBackgroundResource(R.drawable.bg_main_nav_bar)
+        binding.linTab.setPadding(0, 0, 0, 0)
+        val params = binding.linTab.layoutParams as MarginLayoutParams
+        params.leftMargin = 0
+        params.rightMargin = 0
     }
 
     override fun showBetListPage() {
@@ -675,6 +708,61 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun checkRechargeKYCVerify() {
         viewModel.checkRechargeKYCVerify()
+    }
+
+    private fun enterThirdGame(result: EnterThirdGameResult, firmType: String) {
+
+        hideLoading()
+        when (result.resultType) {
+            EnterThirdGameResult.ResultType.SUCCESS -> {
+                JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.thirdGameCategoryCode ?: "")
+            }
+
+            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
+                getString(R.string.prompt), result.errorMsg ?: ""
+            ) {}
+
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> startRegister()
+
+            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
+                getString(R.string.error), result.errorMsg ?: ""
+            ) {}
+
+            EnterThirdGameResult.ResultType.NONE -> {
+            }
+        }
+        if (result.resultType != EnterThirdGameResult.ResultType.NONE) gamesViewModel.clearThirdGame()
+    }
+
+    fun enterHomeGame(gameData: OKGameBean) {
+        if(LoginRepository.isLogined()) {
+            gamesViewModel.homeOkGamesEnterThirdGame(gameData, this)
+            gamesViewModel.homeOkGameAddRecentPlay(gameData)
+        } else {
+            //请求试玩路线
+            loading()
+            gamesViewModel.requestEnterThirdGameNoLogin(gameData)
+        }
+    }
+
+    fun enterThirdGame(gameData: OKGameBean) {
+        if(LoginRepository.isLogined()) {
+            gamesViewModel.requestEnterThirdGame(gameData, this)
+        } else {
+            //请求试玩路线
+            loading()
+            gamesViewModel.requestEnterThirdGameNoLogin(gameData)
+        }
+
+    }
+
+    fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String, gameEntryTagName: String) {
+        if (LoginRepository.isLogined()) {
+            gamesViewModel.requestEnterThirdGame(firmType, gameCode, firmType, gameEntryTagName, this)
+        } else {
+            loading()
+            gamesViewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType, gameEntryTagName)
+        }
     }
 
 }

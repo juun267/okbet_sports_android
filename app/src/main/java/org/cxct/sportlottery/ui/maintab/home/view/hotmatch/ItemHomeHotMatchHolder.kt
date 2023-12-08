@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.databinding.ItemHomeHotMatchBinding
+import org.cxct.sportlottery.databinding.ItemHomeHotMatchChrisBinding
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -17,7 +18,7 @@ import org.cxct.sportlottery.util.*
 
 class ItemHomeHotMatchHolder(
     lifecycleOwner: LifecycleOwner,
-    val binding: ItemHomeHotMatchBinding,
+    val binding: ItemHomeHotMatchChrisBinding,
     private val homeRecommendListener: HomeRecommendListener,
 ) : ViewHolderUtils.TimerViewHolderTimer(lifecycleOwner, binding.root) {
     lateinit var data: Recommend
