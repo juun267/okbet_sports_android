@@ -167,7 +167,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/P232"
+                            android:gravity="center"
+                            android:text="@string/P275"
                             android:textColor="@color/color_025BE8"
                             android:textSize="@dimen/textSize16sp" />
                     </LinearLayout>
