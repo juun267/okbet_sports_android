@@ -120,6 +120,7 @@
                             android:textColor="@color/color_FF2E00"
                             tools:text="5,000,000.00"/>
                         <TextView
+                            android:id="@+id/tvRewardName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/textSize12sp"
@@ -136,6 +137,7 @@
                     android:layout_marginTop="@dimen/margin_16"
                     android:background="@drawable/bg_blue_radius_8">
                     <TextView
+                        android:id="@+id/tvApply"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_FFFFFF"

@@ -16,6 +16,7 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.net.live.OKLiveRepository
+import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
@@ -140,6 +141,8 @@ open class MainHomeViewModel(
     val homeAllProvider: LiveData<List<OKGamesFirm>>
         get() = _homeAllProvider
     private val _homeAllProvider = MutableLiveData<List<OKGamesFirm>>()
+
+    var dailyConfigEvent = SingleLiveEvent<DailyConfig>()
 
     //region 宣傳頁用
     fun getRecommend(gameType: GameType?=null) {
@@ -642,6 +645,15 @@ open class MainHomeViewModel(
             _activityApply.postValue(it.getData())
         }else{
             toast(it.msg)
+        }
+    }
+    fun getDailyConfig(){
+        callApi({org.cxct.sportlottery.net.money.MoneyRepository.rechDailyConfig()}){
+            if (it.succeeded()){
+                it.getData()?.let {
+                    dailyConfigEvent.postValue(it)
+                }
+            }
         }
     }
 }

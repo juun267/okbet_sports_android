@@ -10,9 +10,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.show
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.DialogBottomSheetIconAndTickBinding
 import org.cxct.sportlottery.databinding.OnlinePayFragmentBinding
+import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
@@ -102,6 +104,9 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
                 showErrorPromptDialog(getString(R.string.prompt), it) {}
             }
         }
+        viewModel.dailyConfigEvent.observe(this){
+            initFirstDeposit(it)
+        }
     }
 
     private fun initView() = binding.run{
@@ -114,8 +119,6 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
         btnSubmit.setTitleLetterSpacing()
 
         tvRemark.text = "・${getString(R.string.credit_bet_remark)}："
-
-        initFirstDeposit()
     }
 
     private fun initButton() =binding.run{
@@ -220,7 +223,7 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
                     etRechargeOnlineAmount.setCursor()
                     return@afterTextChanged
                 }
-
+                updateFirstDepositExtraMoney(it.toIntS(0))
                 checkRcgOnlineAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     if (includeQuickMoney.root.isVisible) (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(
@@ -272,9 +275,11 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
 
     private fun setupFocusEvent()=binding.run {
         etRechargeOnlineAmount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                viewModel.checkRcgOnlineAmount(etRechargeOnlineAmount.getText(), mSelectRechCfgs)
-            else if (includeQuickMoney.root.isVisible) {
+            if (!hasFocus) {
+                val amountStr = etRechargeOnlineAmount.getText()
+                updateFirstDepositExtraMoney(amountStr.toIntS(0))
+                viewModel.checkRcgOnlineAmount(amountStr, mSelectRechCfgs)
+            }else if (includeQuickMoney.root.isVisible) {
                 (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(-1)
             }
         }
@@ -409,6 +414,8 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
                     )
                 payRoadSpannerList.add(selectBank)
             }
+
+        viewModel.getDailyConfig()
     }
 
     private fun getPayGap(position: Int) {
@@ -464,8 +471,8 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
             etRechargeOnlineAmount.setMarginBottom(0.dp)
             if (binding.includeQuickMoney.rvQuickMoney.adapter == null) {
                 binding.includeQuickMoney.rvQuickMoney.layoutManager = GridLayoutManager(requireContext(), 3)
-                binding.includeQuickMoney.rvQuickMoney.addItemDecoration(GridItemDecoration(10.dp,
-                    12.dp,
+                binding.includeQuickMoney.rvQuickMoney.addItemDecoration(GridItemDecoration(0.dp,
+                    0.dp,
                     requireContext().getColor(R.color.color_FFFFFF),
                     false))
                 binding.includeQuickMoney.rvQuickMoney.adapter = QuickMoneyAdapter().apply {
@@ -483,22 +490,45 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
             }
         }
     }
-    private fun initFirstDeposit() =binding.linFirstDeposit.run{
-        linNoChoose.isSelected = false
-        linChooseReward.isSelected = true
+    private fun initFirstDeposit(dailyConfig: DailyConfig) =binding.linFirstDeposit.run{
+        binding.linFirstDeposit.root.isVisible = dailyConfig.first==1
+        linNoChoose.isSelected = true
+        linChooseReward.isSelected = false
         linNoChoose.setOnClickListener {
             linNoChoose.isSelected = true
             linChooseReward.isSelected = false
-            linReceiveExtra.isVisible = false
+            binding.linReceiveExtra.isVisible = false
+            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0)
         }
         linChooseReward.setOnClickListener {
             linNoChoose.isSelected = false
             linChooseReward.isSelected = true
-            linReceiveExtra.isVisible = true
+            binding.linReceiveExtra.isVisible = true
+            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(dailyConfig.additional)
+            updateFirstDepositExtraMoney(binding.etRechargeOnlineAmount.getText().toIntS(0))
         }
         tvRewardTC.setOnClickListener {
-            FirstDepositNoticeDialog().show(childFragmentManager,null)
+            FirstDepositNoticeDialog(dailyConfig.content).show(childFragmentManager,null)
+        }
+        tvPercent.text = "${dailyConfig.additional}%"
+        tvCapped.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(dailyConfig.capped,0)}"
+        tvRewardDesp.text = when{
+            dailyConfig.rewards==0&&dailyConfig.principal==1->getString(R.string.P279,dailyConfig.times.toString())
+            dailyConfig.rewards==1&&dailyConfig.principal==0->getString(R.string.P280,dailyConfig.times.toString())
+            dailyConfig.rewards==1&&dailyConfig.principal==1->getString(R.string.P281,dailyConfig.times.toString())
+            else -> ""
         }
     }
-
+    private fun updateFirstDepositExtraMoney(rechargeMoney: Int){
+         val dailyConfig = viewModel.dailyConfigEvent.value
+        if (dailyConfig!=null && dailyConfig.first==1){
+            val additional = dailyConfig.additional
+            val capped = dailyConfig.capped
+            if (additional>0){
+                val additionalMoney = rechargeMoney*additional/100
+                val extraMoney = if(rechargeMoney>capped) capped else  additionalMoney
+                binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(extraMoney,0)}"
+            }
+        }
+    }
 }

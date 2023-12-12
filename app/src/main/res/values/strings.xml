@@ -1673,4 +1673,11 @@
     <string name="menu">Menu</string>
     <string name="P241">Hot Esports</string>
     <string name="P263">Play</string>
+    <string name="P276">I chose not to claim this reward.</string>
+    <string name="P277">Additional</string>
+    <string name="P278">Capped at</string>
+    <string name="P279">%sx turnover of bonus</string>
+    <string name="P280">%sx turnover of deposited</string>
+    <string name="P281">%sx turnover of deposited and bonus</string>
+    <string name="P282">You will receive an extra</string>
 </resources>

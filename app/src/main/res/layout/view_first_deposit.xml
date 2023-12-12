@@ -25,13 +25,14 @@
             android:layout_marginLeft="@dimen/margin_12"
             android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize14sp"
-            android:text="I chose not to claim this reward."/>
+            android:text="@string/P276"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/linChooseReward"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/margin_12"
+        android:layout_marginBottom="@dimen/margin_12"
         android:gravity="center">
         <ImageView
             android:id="@+id/ivRewardCheck"
@@ -57,13 +58,13 @@
                    android:textSize="36sp"
                    android:textColor="@color/color_025BE8"
                    android:textStyle="bold"
-                   android:text="10%"/>
+                   tools:text="10%"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textColor="@color/color_025BE8"
-                    android:text="additional"/>
+                    android:text="@string/P277"/>
             </LinearLayout>
             <ImageView
                 android:layout_width="@dimen/margin_1"
@@ -87,9 +88,9 @@
                        android:layout_height="wrap_content"
                        android:textColor="#303C55"
                        android:textSize="@dimen/textSize14sp"
-                       android:text="Capped At"/>
+                       android:text="@string/P278"/>
                    <TextView
-                       android:id="@+id/tvRewardAmount"
+                       android:id="@+id/tvCapped"
                        android:layout_width="0dp"
                        android:layout_height="wrap_content"
                        android:layout_weight="1"
@@ -97,7 +98,7 @@
                        android:textColor="@color/color_F23C3B"
                        android:textSize="@dimen/textSize18sp"
                        android:textStyle="bold"
-                       android:text="₱ 1,000"/>
+                       tools:text="₱ 1,000"/>
                    <TextView
                        android:id="@+id/tvRewardTC"
                        android:layout_width="wrap_content"
@@ -112,41 +113,18 @@
                </LinearLayout>
                 <TextView
                     android:id="@+id/tvRewardDesp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_6D7693"
                     android:textSize="@dimen/textSize12sp"
                     android:maxLines="2"
                     android:ellipsize="end"
-                    android:text="*3 times turnover of rewards  *3 times turnover o*3 times turnover of "/>
+                    android:text="@string/P281"/>
             </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linReceiveExtra"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_44"
-        android:layout_marginTop="@dimen/margin_20"
-        android:gravity="center"
-        android:layout_marginHorizontal="@dimen/margin_20"
-        android:background="@drawable/bg_gradient_red_radius_8">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize16sp"
-            android:textColor="@color/color_FFFFFF"
-            android:text="You will receive an extra " />
-        <TextView
-            android:id="@+id/tvExtraAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize20sp"
-            android:textStyle="bold"
-            android:textColor="@color/color_FFFFFF"
-            android:text="₱ 100" />
-    </LinearLayout>
 
 
 

@@ -24,14 +24,12 @@
             android:textStyle="bold"
             android:textSize="@dimen/textSize18sp"
             android:textColor="@color/color_0D2245" />
-        <TextView
+        <org.cxct.sportlottery.view.webView.OkWebView
+            android:id="@+id/wvContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginVertical="@dimen/margin_15"
-            android:textSize="@dimen/textSize12sp"
-            android:textColor="@color/color_6D7693"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipisc ing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoqu luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget."/>
+            android:layout_marginVertical="@dimen/margin_15" />
         <Button
             android:id="@+id/btnClose"
             style="?android:attr/borderlessButtonStyle"

@@ -2,8 +2,11 @@ package org.cxct.sportlottery.ui.promotion
 
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
 import android.text.Html
 import androidx.core.content.ContextCompat
+import androidx.core.os.postDelayed
+import androidx.core.view.postDelayed
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
@@ -12,6 +15,7 @@ import org.cxct.sportlottery.databinding.ActivityPromotionDetailBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PromotionSuccessDialog
@@ -39,8 +43,11 @@ class PromotionDetailActivity :
         }
         activityData?.let {
             setPromotion(activityData!!)
-            it.activityId?.let {
-                viewModel.activityDetailH5(it)
+            LogUtil.toJson(activityData)
+            if (!it.activityId.isNullOrEmpty()){
+                viewModel.activityDetailH5(it.activityId)
+            }else if(it.activityType==4){
+                viewModel.getDailyConfig()
             }
         }
 //        viewModel.activityImageList.observe(this) {
@@ -59,6 +66,30 @@ class PromotionDetailActivity :
             binding.linApply.isEnabled = false
             binding.linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
             PromotionSuccessDialog.newInstance().show(supportFragmentManager,null)
+        }
+        viewModel.dailyConfigEvent.observe(this){
+            binding.linActivity.show()
+            binding.tvDepositName.text = getString(R.string.P277)
+            binding.tvRewardName.text = getString(R.string.P278)
+            binding.tvDeposit.text = "${it.additional}%"
+            binding.tvDeposit.setTextColor(getColor(R.color.color_0D2245))
+            binding.tvReward.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.capped,0)}"
+            binding.tvReward.setTextColor(getColor(R.color.color_0D2245))
+            binding.tvApply.text = getString(R.string.J285)
+            if (it.first == 1) {
+                binding.linApply.isEnabled = true
+                binding.linApply.setBackgroundResource(R.drawable.bg_blue_radius_8)
+                binding.linApply.setOnClickListener {
+                    MainTabActivity.reStart(this)
+                    binding.linApply.postDelayed(1000){
+                        (AppManager.currentActivity() as? MainTabActivity)?.checkRechargeKYCVerify()
+                    }
+                }
+
+            } else {
+                binding.linApply.isEnabled = false
+                binding.linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
+            }
         }
     }
 
@@ -86,9 +117,14 @@ class PromotionDetailActivity :
                 1 -> getString(R.string.H019)
                 2 -> getString(R.string.title_deposit_money)//充值活动
                 3 -> getString(R.string.P225)//充值活动
+                4 -> getString(R.string.P277)//充值活动
                 else -> getString(R.string.deposits)//亏损金额
             }
             tvReward.text = TextUtil.formatMoney(activityDetail.reward)
+            tvRewardName.text = when (activityDetail.activityType) {
+                4 -> getString(R.string.P278)
+                else -> getString(R.string.P156)//亏损金额
+            }
             if (activityDetail.reward == 0.0) {
                 linApply.isEnabled = false
                 linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
@@ -101,4 +137,5 @@ class PromotionDetailActivity :
             }
         }
     }
+
 }

@@ -8,8 +8,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogFirstDepositNoticeBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.profileCenter.modify.BindInfoViewModel
+import org.cxct.sportlottery.util.formatHTML
 
-class FirstDepositNoticeDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
+class FirstDepositNoticeDialog(val content: String): BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
 
     init {
         setStyle(R.style.FullScreen)
@@ -31,6 +32,7 @@ class FirstDepositNoticeDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel:
     }
     private fun initView()=binding.run {
         btnClose.setOnClickListener { dismiss() }
+        wvContent.loadData(content.formatHTML(), "text/html", null)
     }
 
 }

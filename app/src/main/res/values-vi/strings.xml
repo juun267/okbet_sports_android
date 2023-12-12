@@ -1541,4 +1541,11 @@
     <string name="menu">Danh sách</string>
     <string name="P241">Hot Esports</string>
     <string name="P263">Bắt đầu chơi</string>
+    <string name="P276">Bạn lựa chọn không nhận thưởng</string>
+    <string name="P277">Phụ thêm</string>
+    <string name="P278">Hạn mức là</string>
+    <string name="P279">%sx doanh số giải thưởng</string>
+    <string name="P280">%sx doanh số tiền nạp vào</string>
+    <string name="P281">%sx doanh số tiền nạp vào + doanh số giải thưởng</string>
+    <string name="P282">Bạn sẽ nhận thêm</string>
 </resources>
