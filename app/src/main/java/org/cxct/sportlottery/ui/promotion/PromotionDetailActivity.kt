@@ -124,6 +124,7 @@ class PromotionDetailActivity :
                 4 -> getString(R.string.P278)
                 else -> getString(R.string.P156)//亏损金额
             }
+            linHistory.show()
             linHistory.setOnClickListener {
                RewardHistoryDialog(activityDetail.activityId).show(supportFragmentManager,null)
             }
