@@ -293,6 +293,12 @@ class LoginEditText @JvmOverloads constructor(
         et_input.setSelection(et_input.text.length)
     }
 
+
+    override fun clearFocus() {
+        super.clearFocus()
+        et_input.clearFocus()
+    }
+
     fun getAllButton(clickGetAll: (EditText) -> Unit) {
         btn_withdraw_all.setOnClickListener {
             clickGetAll(et_input)

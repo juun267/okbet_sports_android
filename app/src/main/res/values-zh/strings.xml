@@ -1605,4 +1605,11 @@
     <string name="J942">已通过</string>
     <string name="apply_success">成功</string>
     <string name="P275">领取记录</string>
+    <string name="P276">我选择不领取奖励。</string>
+    <string name="P277">附加</string>
+    <string name="P278">上限为</string>
+    <string name="P279">%s倍奖金流水</string>
+    <string name="P280">%s倍存款额流水</string>
+    <string name="P281">%s倍存款额+奖金的流水</string>
+    <string name="P282">你将收到额外的</string>
 </resources>
