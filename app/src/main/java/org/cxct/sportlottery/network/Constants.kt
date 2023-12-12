@@ -302,11 +302,24 @@ object Constants {
         if (url.isNullOrEmpty()) {
             return url
         }
+        val url = pingHostAndPath(getH5BaseUrl(),url)
         return url + (if (url.contains("?")) "&" else "?") + "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}lang=${
-            getLanguageTag(MultiLanguagesApplication.appContext)
+            LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key
         }&token=${LoginRepository.token}"
     }
 
+    /**
+     * 拼接host和path
+     */
+    private fun pingHostAndPath(host: String, path: String): String{
+        if (path.startsWith("http")){
+            return path
+        }
+        return if(host.endsWith("/") && path.startsWith("/"))
+            host+(path.substring(1))
+        else
+           host+path
+    }
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
         return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (upgradeFromMarket()) "-${BuildConfig.FLAVOR}" else "") + ".json"
