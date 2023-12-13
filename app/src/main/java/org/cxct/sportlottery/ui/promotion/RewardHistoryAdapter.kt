@@ -10,10 +10,11 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 
-class RewardHistoryAdapter: BindingAdapter<RewardRecord, ItemRewardHistoryBinding>() {
+class RewardHistoryAdapter(val activityId: String): BindingAdapter<RewardRecord, ItemRewardHistoryBinding>() {
 
     override fun onBinding(position: Int, binding: ItemRewardHistoryBinding, item: RewardRecord) = binding.run {
-        tvTime.text = TimeUtil.timeFormat(item.addTime,TimeUtil.YMD_HMS_FORMAT_CHANGE_LINE)
+        val time = if(activityId.startsWith("R",ignoreCase = false)) item.applyTime else item.addTime
+        tvTime.text = TimeUtil.timeFormat(time,TimeUtil.YMD_HMS_FORMAT_CHANGE_LINE)
         tvAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(item.rewardAmount)}"
         when(item.recordStatus){//1待审核，2已发放，3已拒绝
             1-> {

@@ -9,7 +9,7 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 data class RewardRecord(
     val activityName: String?=null,
     val addTime: Long,
-    val applyTime: String?=null,
+    val applyTime: Long,
     val auditBy: String?=null,
     val auditId: String?=null,
     val auditTime: String?=null,
