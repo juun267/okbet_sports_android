@@ -1604,4 +1604,5 @@
     <string name="P280">%s倍存款额流水</string>
     <string name="P281">%s倍存款额+奖金的流水</string>
     <string name="P282">你将收到额外的</string>
+    <string name="terms_conditions_short">规则与条款</string>
 </resources>
