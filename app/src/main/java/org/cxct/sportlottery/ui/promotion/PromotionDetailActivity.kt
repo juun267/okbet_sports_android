@@ -13,6 +13,7 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.ActivityPromotionDetailBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -47,7 +48,9 @@ class PromotionDetailActivity :
             if (!it.activityId.isNullOrEmpty()){
                 viewModel.activityDetailH5(it.activityId)
             }else if(it.activityType==4){
-                viewModel.getDailyConfig()
+                if (LoginRepository.isLogined()) {
+                    viewModel.getDailyConfig()
+                }
             }
         }
 //        viewModel.activityImageList.observe(this) {
