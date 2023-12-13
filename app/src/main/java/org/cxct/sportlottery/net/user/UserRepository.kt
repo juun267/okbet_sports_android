@@ -5,10 +5,7 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.user.api.OCRApiService
 import org.cxct.sportlottery.net.user.api.UserApiService
-import org.cxct.sportlottery.net.user.data.ActivityImageList
-import org.cxct.sportlottery.net.user.data.OCRInfo
-import org.cxct.sportlottery.net.user.data.SendCodeRespnose
-import org.cxct.sportlottery.net.user.data.VerifyConfig
+import org.cxct.sportlottery.net.user.data.*
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.repository.LOGIN_SRC
@@ -141,5 +138,7 @@ object UserRepository {
         params.addProperty("birthday", birthday)
         return userApi.uploadKYCInfo(params)
     }
-
+    suspend fun getWheelActivityInfo(): ApiResult<WheelActivityInfo> {
+        return userApi.getWheelActivityInfo()
+    }
 }

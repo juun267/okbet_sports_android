@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import okio.ByteString.Companion.encode
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -304,7 +305,7 @@ object Constants {
         }
         val url = pingHostAndPath(getH5BaseUrl(),url)
         return url + (if (url.contains("?")) "&" else "?") + "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}lang=${
-            LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key
+            getSelectLanguage(MultiLanguagesApplication.appContext).key
         }&token=${LoginRepository.token}"
     }
 
@@ -468,6 +469,7 @@ object Constants {
     const val SET_USERNAME = "/api/front/user/fullname" // 修改用户名称
     const val LOGIN_CHECK_NEED_CODE = "/api/front/index/checkUserNeedCode"   // loginV3登陆前检查是否需要校验短信验证码
     const val LOGIN = "/api/front/index/loginV4"   // 用户登陆  2023.10.24
+    const val WHEEL_ACTIVITY_INFO = "/api/front/wheelActivity/info"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
