@@ -707,7 +707,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun checkRechargeKYCVerify() {
-        viewModel.checkRechargeKYCVerify()
+        ToGcashDialog.showByClick{
+            viewModel.checkRechargeKYCVerify()
+        }
     }
 
     private fun enterThirdGame(result: EnterThirdGameResult, firmType: String) {

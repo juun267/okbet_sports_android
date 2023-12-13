@@ -21,6 +21,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.databinding.DialogBottomSheetIconAndTickBinding
@@ -277,7 +278,8 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
         etName.setText("")
         etBankAccount.setText("")
         etNickname.setText("")
-
+        binding.linFirstDeposit.root.gone()
+        binding.linReceiveExtra.gone()
         viewModel.clearnRechargeStatus()
     }
 
@@ -873,8 +875,8 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
         tvPercent.text = "${dailyConfig.additional}%"
         tvCapped.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(dailyConfig.capped,0)}"
         tvRewardDesp.text = when{
-            dailyConfig.rewards==0&&dailyConfig.principal==1->getString(R.string.P279,dailyConfig.times.toString())
-            dailyConfig.rewards==1&&dailyConfig.principal==0->getString(R.string.P280,dailyConfig.times.toString())
+            dailyConfig.rewards==1&&dailyConfig.principal==0->getString(R.string.P279,dailyConfig.times.toString())
+            dailyConfig.rewards==0&&dailyConfig.principal==1->getString(R.string.P280,dailyConfig.times.toString())
             dailyConfig.rewards==1&&dailyConfig.principal==1->getString(R.string.P281,dailyConfig.times.toString())
             else -> ""
         }
