@@ -15,12 +15,13 @@ data class MoneyAddRequest(
     var appsFlyerId: String? = null,
     var appsFlyerKey: String? = null,
     var appsFlyerPkgName: String? = null,
-    val clientType: Int = 2
+    val clientType: Int = 2,
+    val participate: Int?=null //是否参与首次充值活动， 1参加，0不参加
 ) {
     var payee: String? = null
     var payeeName: String? = null
     var txHashCode: String? = null//虚拟币转账交易单号
     var voucherPath: String? = null//虚拟币转账凭证
     var proofImg: String? = null //支付凭证图片，转账执联
-    val participate: Int?=null //是否参与首次充值活动， 1参加，0不参加
+
 }

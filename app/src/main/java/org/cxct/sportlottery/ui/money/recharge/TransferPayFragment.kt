@@ -95,7 +95,8 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
         //提交
         btnSubmit.setTitleLetterSpacing()
         btnSubmit.setOnClickListener {
-            createMoneyAddRequest()?.let {
+            val participate = if(binding.linReceiveExtra.isVisible) 1 else 0
+            createMoneyAddRequest(participate)?.let {
                 viewModel.rechargeSubmit(
                     it,
                     mMoneyPayWay?.rechType,
@@ -653,7 +654,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
     }
 
     //創建MoneyAddRequest
-    private fun createMoneyAddRequest(): MoneyAddRequest? =binding.run{
+    private fun createMoneyAddRequest(participate:Int): MoneyAddRequest? =binding.run{
         return when (mMoneyPayWay?.rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 MoneyAddRequest(
@@ -672,6 +673,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
+                    participate = participate
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -693,6 +695,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
+                    participate = participate
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -714,6 +717,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
+                    participate = participate
                 ).apply {
                     proofImg = imgResultUrl
                 }
