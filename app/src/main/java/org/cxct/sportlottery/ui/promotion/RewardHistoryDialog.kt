@@ -21,7 +21,7 @@ class RewardHistoryDialog(val activityId: String): BaseDialog<MainHomeViewModel>
         setStyle(R.style.FullScreen)
     }
     lateinit var binding : DialogRewardHistoryBinding
-    private val adapter by lazy { RewardHistoryAdapter() }
+    private val adapter by lazy { RewardHistoryAdapter(activityId) }
     private val refreshHelper by lazy { RefreshHelper.of(binding.rvRecord, this, false) }
     private var currentPage: Int = 1
     private var totalCount: Int = 0
