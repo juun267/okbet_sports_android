@@ -278,6 +278,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
         etName.setText("")
         etBankAccount.setText("")
         etNickname.setText("")
+        binding.linFirstDeposit.linNoChoose.performClick()
         binding.linFirstDeposit.root.gone()
         binding.linReceiveExtra.gone()
         viewModel.clearnRechargeStatus()
@@ -559,8 +560,8 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
                     etRechargeAmount.setCursor()
                     return@afterTextChanged
                 }
-
                 checkRechargeAmount(it, mSelectRechCfgs)
+                updateFirstDepositExtraMoney(it.toIntS(0))
                 if (it.isEmpty() || it.isBlank()) {
                     if (includeQuickMoney.root.isVisible) (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(
                         -1)

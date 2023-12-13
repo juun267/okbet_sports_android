@@ -443,6 +443,7 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
     private fun resetEvent() {
         clearFocus()
         binding.etRechargeOnlineAmount.setText("")
+        binding.linFirstDeposit.linNoChoose.performClick()
         binding.linFirstDeposit.root.gone()
         binding.linReceiveExtra.gone()
         viewModel.clearnRechargeStatus()
