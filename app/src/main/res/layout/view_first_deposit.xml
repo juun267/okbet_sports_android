@@ -108,7 +108,7 @@
                        android:background="@drawable/bg_red_radius_22"
                        android:textColor="@color/color_FFFFFF"
                        android:textSize="@dimen/textSize12sp"
-                       android:text="@string/login_terms_conditions"/>
+                       android:text="@string/terms_conditions"/>
 
                </LinearLayout>
                 <TextView
