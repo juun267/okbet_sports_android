@@ -136,8 +136,8 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
             }
 
             val payer = if (needPayerField()) etRechargeOnlinePayer.getText() else ""
-
-            viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer)
+            val participate = if(binding.linReceiveExtra.isVisible) 1 else 0
+            viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer,participate)
         }
         mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance.root) }
 

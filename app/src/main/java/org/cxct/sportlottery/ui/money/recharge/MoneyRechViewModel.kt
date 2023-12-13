@@ -282,7 +282,8 @@ class MoneyRechViewModel(
         mSelectRechCfgs: RechCfg?,
         depositMoney: String,
         bankCode: String?,
-        payer: String?
+        payer: String?,
+        participate: Int=0
     ) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
@@ -296,7 +297,8 @@ class MoneyRechViewModel(
                 "rechCfgId" to rechCfgId,
                 "bankCode" to (bankCode ?: ""),
                 "depositMoney" to depositMoney,
-                "clientType" to "2"
+                "clientType" to "2",
+                "participate" to participate.toString(),
             ).apply {
                 if (!payer.isNullOrEmpty())
                     put("payer", payer)
