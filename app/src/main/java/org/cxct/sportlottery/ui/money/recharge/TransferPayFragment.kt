@@ -560,8 +560,8 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
                     etRechargeAmount.setCursor()
                     return@afterTextChanged
                 }
-                checkRechargeAmount(it, mSelectRechCfgs)
                 updateFirstDepositExtraMoney(it.toIntS(0))
+                checkRechargeAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     if (includeQuickMoney.root.isVisible) (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(
                         -1)
@@ -598,7 +598,10 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
     private fun setupFocusEvent() =binding.run{
         viewModel.apply {
             //充值金額
-            setupEditTextFocusEvent(etRechargeAmount) { checkRechargeAmount(it, mSelectRechCfgs) }
+            setupEditTextFocusEvent(etRechargeAmount) {
+                updateFirstDepositExtraMoney(it.toIntS(0))
+                checkRechargeAmount(it, mSelectRechCfgs)
+            }
             //微信
             setupEditTextFocusEvent(etWxId) { checkWX(it) }
             //認證姓名
@@ -889,7 +892,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
             val capped = dailyConfig.capped
             if (additional>0){
                 val additionalMoney = rechargeMoney*additional/100
-                val extraMoney = if(rechargeMoney>capped) capped else  additionalMoney
+                val extraMoney = if(additionalMoney>capped) capped else  additionalMoney
                 binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(extraMoney,0)}"
             }
         }
