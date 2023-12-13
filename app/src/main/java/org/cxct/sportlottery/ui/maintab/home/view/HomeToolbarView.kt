@@ -239,7 +239,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             userMoneyView.visible()
             bindMoneyText(LoginRepository.userMoney())
             btnDeposit.setOnClickListener {
-                ToGcashDialog.showByClick{ activity.checkRechargeKYCVerify() }
+                activity.checkRechargeKYCVerify()
             }
         } else {
             searchView.visible()

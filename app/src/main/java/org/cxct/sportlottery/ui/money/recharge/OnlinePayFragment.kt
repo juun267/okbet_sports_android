@@ -443,6 +443,8 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
     private fun resetEvent() {
         clearFocus()
         binding.etRechargeOnlineAmount.setText("")
+        binding.linFirstDeposit.root.gone()
+        binding.linReceiveExtra.gone()
         viewModel.clearnRechargeStatus()
     }
 
@@ -513,8 +515,8 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
         tvPercent.text = "${dailyConfig.additional}%"
         tvCapped.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(dailyConfig.capped,0)}"
         tvRewardDesp.text = when{
-            dailyConfig.rewards==0&&dailyConfig.principal==1->getString(R.string.P279,dailyConfig.times.toString())
-            dailyConfig.rewards==1&&dailyConfig.principal==0->getString(R.string.P280,dailyConfig.times.toString())
+            dailyConfig.rewards==1&&dailyConfig.principal==0->getString(R.string.P279,dailyConfig.times.toString())
+            dailyConfig.rewards==0&&dailyConfig.principal==1->getString(R.string.P280,dailyConfig.times.toString())
             dailyConfig.rewards==1&&dailyConfig.principal==1->getString(R.string.P281,dailyConfig.times.toString())
             else -> ""
         }

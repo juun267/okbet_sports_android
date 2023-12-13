@@ -31,7 +31,8 @@
         android:id="@+id/linChooseReward"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/margin_12"
+        android:paddingLeft="@dimen/margin_12"
+        android:paddingRight="@dimen/margin_6"
         android:layout_marginBottom="@dimen/margin_12"
         android:gravity="center">
         <ImageView
@@ -39,10 +40,16 @@
             android:layout_width="@dimen/margin_24"
             android:layout_height="@dimen/margin_24"
             android:src="@drawable/selector_radio_circle"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_6"
+            android:layout_marginLeft="@dimen/margin_6"
+            android:background="@drawable/selector_blue_radius_12">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_12"
             android:background="@drawable/bg_kapian">
             <LinearLayout
                 android:layout_width="0dp"
@@ -121,8 +128,9 @@
                     android:ellipsize="end"
                     android:text="@string/P281"/>
             </LinearLayout>
-        </LinearLayout>
 
+        </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 
 
