@@ -12,6 +12,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
 import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
@@ -28,14 +29,6 @@ class LuckyWheelManager {
     private var activity: BaseActivity<BaseViewModel>? = null
     private var floatRootView: LuckyWheelFloatingButton? = null
     private var clickClose = false
-    init {
-        callApiWithNoCancel({UserRepository.getWheelActivityInfo()}){
-            it.getData()?.let {
-                startTime = it.eventTimeStart
-                endTime = it.eventTimeEnd
-            }
-        }
-    }
 
     /**
      * 绑定activity和viewmodel
@@ -46,22 +39,28 @@ class LuckyWheelManager {
      */
     open fun bind(activity: BaseActivity<BaseViewModel>) {
         this.activity = activity
-        startTimer()
+        bindview()
     }
 
     /**
      * 限定指定页面不能显示红包相关的
      */
     fun allowdShow(): Boolean = when (activity!!::class) {
-        SplashActivity::class -> false
-        LaunchActivity::class -> false
-        MaintenanceActivity::class -> false
-        ThirdGameActivity::class -> false
+        SplashActivity::class,
+        LaunchActivity::class,
+        MaintenanceActivity::class,
+        ThirdGameActivity::class,
+        LuckyWheelActivity::class
+        -> false
         else -> true
     }
 
-    private fun startTimer() {
+    private fun bindview() {
         if (!allowdShow()||clickClose){
+            return
+        }
+        if (startTime==0L && endTime==0L){
+            getTimeRange()
             return
         }
         val currentTime = System.currentTimeMillis()
@@ -109,11 +108,16 @@ class LuckyWheelManager {
         removeFloatingBtn()
     }
     fun clickContent() {
-        if (LoginRepository.isLogined()){
-            activity?.let { JumpUtil.toInternalWeb(it, "/mobile/personal/activity_v2/christmas-promo",it.getString(R.string.P169)) }
-            removeFloatingBtn()
-        }else{
-            ToastUtil.showToast(activity,R.string.login_notify)
+        activity?.let { JumpUtil.toInternalWeb(it, "/mobile/personal/activity_v2/christmas-promo",it.getString(R.string.P169)) }
+        removeFloatingBtn()
+    }
+    fun getTimeRange(){
+        callApiWithNoCancel({UserRepository.getWheelActivityInfo()}){
+            it.getData()?.let {
+                startTime = it.eventTimeStart
+                endTime = it.eventTimeEnd
+                bindview()
+            }
         }
     }
 }

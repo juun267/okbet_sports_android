@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
+import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import splitties.activities.start
 import timber.log.Timber
@@ -27,18 +28,31 @@ object JumpUtil {
         bettingStation: BettingStation? = null
     ) {
         LogUtil.d("href:===>${href}")
-
-        context.startActivity(
-            Intent(context, WebActivity::class.java).apply {
-                putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
-                putExtra(WebActivity.KEY_TITLE, title)
-                putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
-                putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
-                if (bettingStation != null) {
-                    putExtra(WebActivity.BET_STATION, bettingStation)
+        if (href?.endsWith("/mobile/personal/activity_v2/christmas-promo") == true){
+            context.startActivity(
+                Intent(context, LuckyWheelActivity::class.java).apply {
+                    putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
+                    putExtra(WebActivity.KEY_TITLE, title)
+                    putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
+                    putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
+                    if (bettingStation != null) {
+                        putExtra(WebActivity.BET_STATION, bettingStation)
+                    }
                 }
-            }
-        )
+            )
+        }else {
+            context.startActivity(
+                Intent(context, WebActivity::class.java).apply {
+                    putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
+                    putExtra(WebActivity.KEY_TITLE, title)
+                    putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
+                    putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
+                    if (bettingStation != null) {
+                        putExtra(WebActivity.BET_STATION, bettingStation)
+                    }
+                }
+            )
+        }
     }
 
     /**

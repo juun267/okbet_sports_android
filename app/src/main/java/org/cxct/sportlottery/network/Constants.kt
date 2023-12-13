@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import androidx.core.text.htmlEncode
 import okio.ByteString.Companion.encode
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -15,6 +16,7 @@ import org.cxct.sportlottery.util.getCurrentOddsTypeName
 import org.cxct.sportlottery.util.isMultipleSitePlat
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
+import java.nio.charset.Charset
 
 object Constants {
     val SERVICE_H5_URL_LIST = listOf(
@@ -306,7 +308,7 @@ object Constants {
         val url = pingHostAndPath(getH5BaseUrl(),url)
         return url + (if (url.contains("?")) "&" else "?") + "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}lang=${
             getSelectLanguage(MultiLanguagesApplication.appContext).key
-        }&token=${LoginRepository.token}"
+        }&token=${URLEncoder.encode(LoginRepository.token, "utf-8")}"
     }
 
     /**
