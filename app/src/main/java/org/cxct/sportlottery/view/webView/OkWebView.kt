@@ -1,8 +1,14 @@
 package org.cxct.sportlottery.view.webView
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
+import android.webkit.CookieManager
+import android.webkit.CookieSyncManager
+import android.webkit.WebStorage
 import android.webkit.WebView
+import kotlinx.android.synthetic.main.activity_web.*
+
 //import org.cxct.sportlottery.util.language.MultiLanguages
 
 open class OkWebView  : WebView {
@@ -35,6 +41,21 @@ open class OkWebView  : WebView {
         webViewClient = okWebViewClient
         okWebChromeClient = okWebChromeClient
     }
-
+    fun cleanAllCache(){
+        WebStorage.getInstance().deleteAllData()
+        clearCache(true)
+        clearFormData()
+        clearHistory()
+        val cookieManager = CookieManager.getInstance()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cookieManager.removeSessionCookies(null);
+            cookieManager.removeAllCookie();
+            cookieManager.flush();
+        } else {
+            cookieManager.removeSessionCookies(null);
+            cookieManager.removeAllCookie();
+            CookieSyncManager.getInstance().sync();
+        }
+    }
 }
 
