@@ -306,7 +306,7 @@ object Constants {
             return url
         }
         val url = pingHostAndPath(getH5BaseUrl(),url)
-        return url + (if (url.contains("?")) "&" else "?") + "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}lang=${
+        return url + (if (url.contains("?")) "&" else "?") + "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}&lang=${
             getSelectLanguage(MultiLanguagesApplication.appContext).key
         }&token=${URLEncoder.encode(LoginRepository.token, "utf-8")}"
     }
