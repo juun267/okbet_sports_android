@@ -89,6 +89,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     fun setCookie() {
+        okWebView.clearCache(true)
         try {
             val cookieManager = CookieManager.getInstance()
             cookieManager.setAcceptCookie(true)
