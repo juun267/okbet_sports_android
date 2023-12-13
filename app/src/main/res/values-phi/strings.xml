@@ -1517,5 +1517,12 @@
     <string name="menu">Menu</string>
     <string name="P241">Hot Esports</string>
     <string name="P263">Maglaro</string>
+    <string name="P276">Pinipili kong hindi i-claim ang reward na ito.</string>
+    <string name="P277">Dagdag</string>
+    <string name="P278">Nilimitahan sa</string>
+    <string name="P279">%sx turnover ng bonus</string>
+    <string name="P280">%sx turnover ng nadeposito</string>
+    <string name="P281">%sx turnover ng nadeposito at bonus</string>
+    <string name="P282">Makakatanggap ka ng dagdag na</string>
 </resources>
 
