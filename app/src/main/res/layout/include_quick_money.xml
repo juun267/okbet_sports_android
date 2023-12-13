@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginBottom="@dimen/margin_10"
     android:background="@color/color_FFFFFF">
 
     <View
@@ -20,7 +19,8 @@
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"
         android:layout_marginHorizontal="@dimen/margin_7"
-        android:layout_marginVertical="@dimen/margin_10"
+        android:paddingVertical="@dimen/margin_10"
+        android:layout_marginVertical="1dp"
         tools:listitem="@layout/item_quick_money"
         tools:itemCount="6"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
