@@ -12,7 +12,9 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.common.MoneyType
@@ -148,6 +150,8 @@ class MoneyRechViewModel(
         get() = _rechCheckMsg
     private var _rechCheckMsg = MutableLiveData<Event<String>>()
 
+    var dailyConfigEvent = SingleLiveEvent<DailyConfig>()
+
     //更新使用者資料
     fun getUserInfo() {
         viewModelScope.launch {
@@ -278,7 +282,8 @@ class MoneyRechViewModel(
         mSelectRechCfgs: RechCfg?,
         depositMoney: String,
         bankCode: String?,
-        payer: String?
+        payer: String?,
+        participate: Int=0
     ) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
@@ -292,7 +297,8 @@ class MoneyRechViewModel(
                 "rechCfgId" to rechCfgId,
                 "bankCode" to (bankCode ?: ""),
                 "depositMoney" to depositMoney,
-                "clientType" to "2"
+                "clientType" to "2",
+                "participate" to participate.toString(),
             ).apply {
                 if (!payer.isNullOrEmpty())
                     put("payer", payer)
@@ -721,6 +727,15 @@ class MoneyRechViewModel(
                 R.string.online_paypal
             )
             else -> ""
+        }
+    }
+    fun getDailyConfig(){
+        callApi({org.cxct.sportlottery.net.money.MoneyRepository.rechDailyConfig()}){
+            if (it.succeeded()){
+                it.getData()?.let {
+                    dailyConfigEvent.postValue(it)
+                }
+            }
         }
     }
 }

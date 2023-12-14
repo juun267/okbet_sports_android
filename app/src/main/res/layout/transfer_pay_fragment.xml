@@ -375,7 +375,19 @@
         <include
             android:id="@+id/includeQuickMoney"
             layout="@layout/include_quick_money"
-            android:visibility="gone" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+        <include
+            android:id="@+id/linFirstDeposit"
+            layout="@layout/view_first_deposit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            tools:visibility="visible"
+            android:visibility="gone"/>
 
         <!-- 微信 -->
         <org.cxct.sportlottery.view.LoginEditText
@@ -736,7 +748,8 @@
             android:id="@+id/ll_fee_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="@dimen/margin_20">
 
             <TextView
                 android:layout_marginStart="@dimen/margin_14"
@@ -767,14 +780,37 @@
 
 
         </LinearLayout>
-
+        <LinearLayout
+            android:id="@+id/linReceiveExtra"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_30"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:gravity="center"
+            android:background="@drawable/bg_gradient_red_orange"
+            android:visibility="gone"
+            tools:visibility="visible">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize16sp"
+                android:textColor="@color/color_FFFFFF"
+                android:text="@string/P282" />
+            <TextView
+                android:id="@+id/tvExtraAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_6"
+                android:textSize="@dimen/textSize20sp"
+                android:textStyle="bold"
+                android:textColor="@color/color_FFFFFF"
+                tools:text="₱ 100" />
+        </LinearLayout>
         <Button
             android:id="@+id/btn_submit"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginStart="@dimen/margin_20"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/margin_20"
             android:background="@drawable/ic_submit"
             android:gravity="center"

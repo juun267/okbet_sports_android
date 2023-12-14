@@ -5,8 +5,6 @@ import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -21,33 +19,14 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
-import kotlinx.android.synthetic.main.crypto_pay_fragment.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
-import kotlinx.android.synthetic.main.edittext_login.view.*
-import kotlinx.android.synthetic.main.include_quick_money.*
-import kotlinx.android.synthetic.main.online_crypto_pay_fragment.*
-import kotlinx.android.synthetic.main.online_pay_fragment.*
-import kotlinx.android.synthetic.main.transfer_pay_fragment.*
-import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
-import kotlinx.android.synthetic.main.transfer_pay_fragment.cv_recharge_time
-import kotlinx.android.synthetic.main.transfer_pay_fragment.et_recharge_amount
-import kotlinx.android.synthetic.main.transfer_pay_fragment.includeQuickMoney
-import kotlinx.android.synthetic.main.transfer_pay_fragment.iv_bank_icon
-import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_fee_amount
-import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_fee_rate
-import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_qr
-import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_remark
-import kotlinx.android.synthetic.main.transfer_pay_fragment.title_fee_amount
-import kotlinx.android.synthetic.main.transfer_pay_fragment.title_fee_rate
-import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_currency_type
-import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_amount
-import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_rate
-import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_remark
-import kotlinx.android.synthetic.main.transfer_pay_fragment.txv_pay_bank
-import kotlinx.android.synthetic.main.transfer_pay_fragment.linMaintenance
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.toIntS
+import org.cxct.sportlottery.databinding.DialogBottomSheetIconAndTickBinding
+import org.cxct.sportlottery.databinding.TransferPayFragmentBinding
+import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
@@ -55,7 +34,7 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.view.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*
@@ -72,7 +51,7 @@ import kotlin.math.abs
 /**
  * @app_destination 存款-转账支付  //存款时间格式需要修改
  */
-class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
+class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragmentBinding>() {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
 
@@ -94,33 +73,31 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     var depositDate = Date()
     var depositDate2 = Date()
     var mCalendar: Calendar =Calendar.getInstance()
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.transfer_pay_fragment, container, false)
-    }
+
+    private val dialogBinding by lazy {
+        val contentView: ViewGroup? = activity?.window?.decorView?.findViewById(android.R.id.content)
+        DialogBottomSheetIconAndTickBinding.inflate(layoutInflater,contentView,false) }
 
     fun setArguments(moneyPayWay: MoneyPayWayData?): TransferPayFragment {
         mMoneyPayWay = moneyPayWay
         return this
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView(view: View) {
         initPayAccountBottomSheet()
         initView()
         initButton()
         initObserve()
         setPayBankBottomSheet()
         setupQuickMoney()
+        viewModel.getDailyConfig()
     }
 
-    private fun initButton() {
+    private fun initButton() = binding.run {
         //提交
-        btn_submit.setTitleLetterSpacing()
-        btn_submit.setOnClickListener {
-            createMoneyAddRequest()?.let {
+        btnSubmit.setTitleLetterSpacing()
+        btnSubmit.setOnClickListener {
+            val participate = if(binding.linReceiveExtra.isVisible) 1 else 0
+            createMoneyAddRequest(participate)?.let {
                 viewModel.rechargeSubmit(
                     it,
                     mMoneyPayWay?.rechType,
@@ -128,52 +105,49 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 )
             }
         }
-        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance.root) }
 
         //選取日曆
        /* cv_recharge_time.setOnClickListener {
             dateTimePicker.show()
         }*/
         //年月日的时间选择器
-        ll_transfer_time.setOnClickListener {
+        llTransferTime.setOnClickListener {
             dateTimePicker.show()
         }
         //时分秒的选择器
-        ll_transfer_time2.setOnClickListener {
+        llTransferTime2.setOnClickListener {
             dateTimePickerHMS.show()
         }
 
-        bt_check_files.setOnClickListener {
-            this.activity?.let {
+        btCheckFiles.setOnClickListener {
                 val dialog = RechargePicSelectorDialog()
                 dialog.mSelectListener = mSelectMediaListener
-                dialog.show(it.supportFragmentManager, null)
-            }
+                dialog.show(childFragmentManager, null)
         }
         //複製姓名
-        btn_name_copy.setOnClickListener {
-            val clipboard =
-                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-            val clipData = ClipData.newPlainText(null, tv_name.text)
+        btnNameCopy.setOnClickListener {
+            val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clipData = ClipData.newPlainText(null, tvName.text)
             clipboard?.setPrimaryClip(clipData)
             ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
         }
 
         //複製帳號
-        btn_account_copy.setOnClickListener {
+        btnAccountCopy.setOnClickListener {
             val clipboard =
                 activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-            val clipData = ClipData.newPlainText(null, tv_account.text)
+            val clipData = ClipData.newPlainText(null, tvAccount.text)
             clipboard?.setPrimaryClip(clipData)
             ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
         }
 
         //選擇銀行
-        cv_bank.setOnClickListener {
+        cvBank.setOnClickListener {
             bankBottomSheet.show()
         }
 
-        tv_customer_service.setServiceClick(childFragmentManager)
+        tvCustomerService.setServiceClick(childFragmentManager)
     }
 
     private fun initView() {
@@ -185,56 +159,56 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         updateMoneyRange()
         getBankType(0)
         refreshFieldTitle()
-        tv_currency_type.text = sConfigData?.systemCurrencySign
+        binding.tvCurrencyType.text = "${sConfigData?.systemCurrencySign}"
     }
 
     private fun refreshFieldTitle() {
         if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code)
-            tv_pay_type.text = String.format(resources.getString(R.string.title_bank))
+            binding.tvPayType.text = String.format(resources.getString(R.string.title_bank))
         else
-            tv_pay_type.text = String.format(resources.getString(R.string.title_main_account))
+            binding.tvPayType.text = String.format(resources.getString(R.string.title_main_account))
     }
 
     @SuppressLint("SetTextI18n")
     private fun initObserve() {
 
         //充值金額訊息
-        viewModel.rechargeAmountMsg.observe(viewLifecycleOwner) {
-            et_recharge_amount.setError(it)
+        viewModel.rechargeAmountMsg.observe(this) {
+            binding.etRechargeAmount.setError(it)
         }
         //微信
-        viewModel.wxErrorMsg.observe(viewLifecycleOwner) {
-            et_wx_id.setError(it)
+        viewModel.wxErrorMsg.observe(this) {
+            binding.etWxId.setError(it)
         }
         //認證姓名
-        viewModel.nameErrorMsg.observe(viewLifecycleOwner) {
-            et_name.setError(it)
+        viewModel.nameErrorMsg.observe(this) {
+            binding.etName.setError(it)
         }
         //銀行卡號
-        viewModel.bankIDErrorMsg.observe(viewLifecycleOwner) {
-            et_bank_account.setError(it)
+        viewModel.bankIDErrorMsg.observe(this) {
+            binding.etBankAccount.setError(it)
         }
         //暱稱
-        viewModel.nickNameErrorMsg.observe(viewLifecycleOwner) {
-            et_nickname.setError(it)
+        viewModel.nickNameErrorMsg.observe(this) {
+            binding.etNickname.setError(it)
         }
-        viewModel.userMoney.observe(viewLifecycleOwner) {
-            txv_wallet_money.text =
+        viewModel.userMoney.observe(this) {
+            binding.txvWalletMoney.text =
                 "${sConfigData?.systemCurrencySign} ${ArithUtil.toMoneyFormat(it)} "
         }
 
-        viewModel.transferPayResult.observe(viewLifecycleOwner) {
+        viewModel.transferPayResult.observe(this) {
             if (it.success) {
                 resetEvent()
                 getBankType(0)
             }
         }
-        viewModel.uploadPayResult.observe(viewLifecycleOwner){
+        viewModel.uploadPayResult.observe(this){
             it.getContentIfNotHandled()?.let { upload->
                 if (upload.success){
                     var lastIndexOf = upload.imgData?.path?.lastIndexOf("/")
                     imgResultUrl = upload.imgData?.path
-                    tv_hint_upload.setText(lastIndexOf?.let { it1 ->
+                    binding.tvHintUpload.setText(lastIndexOf?.let { it1 ->
                         upload.imgData?.path?.substring(
                             it1+1, upload.imgData?.path?.length)
                     })
@@ -244,10 +218,13 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             }
         }
         //转账充值首充提示
-        viewModel.onlinePayFirstRechargeTips.observe(viewLifecycleOwner) { event ->
+        viewModel.onlinePayFirstRechargeTips.observe(this) { event ->
             event.getContentIfNotHandled()?.let { tipString ->
                 showPromptDialog(getString(R.string.prompt), tipString) {}
             }
+        }
+        viewModel.dailyConfigEvent.observe(this){
+            initFirstDeposit(it)
         }
     }
 
@@ -256,15 +233,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
             val contentView: ViewGroup? =
                 activity?.window?.decorView?.findViewById(android.R.id.content)
-            val bottomSheetView =
-                layoutInflater.inflate(
-                    R.layout.dialog_bottom_sheet_icon_and_tick,
-                    contentView,
-                    false
-                )
+            val dialogBinding = DialogBottomSheetIconAndTickBinding.inflate(layoutInflater,contentView,false)
+
             bankBottomSheet = BottomSheetDialog(this.requireContext())
             bankBottomSheet.apply {
-                setContentView(bottomSheetView)
+                setContentView(dialogBinding.root)
 
                 bankCardAdapter = BtsRvAdapter(
                     mBottomSheetList,
@@ -275,19 +248,19 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                         resetEvent()
                         dismiss()
                     })
-                rv_bank_item.layoutManager =
+                dialogBinding.rvBankItem.layoutManager =
                     LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                rv_bank_item.adapter = bankCardAdapter
+                dialogBinding.rvBankItem.adapter = bankCardAdapter
 
 
                 if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code)
-                    tv_game_type_title.text =
+                    dialogBinding.tvGameTypeTitle.text =
                         String.format(resources.getString(R.string.title_bank))
                 else
-                    tv_game_type_title.text =
+                    dialogBinding.tvGameTypeTitle.text =
                         String.format(resources.getString(R.string.title_main_account))
 
-                bankBottomSheet.btn_close.setOnClickListener {
+                dialogBinding.btnClose.setOnClickListener {
                     this.dismiss()
                 }
             }
@@ -298,14 +271,16 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
 
     //重置畫面事件
-    private fun resetEvent() {
+    private fun resetEvent() = binding.run{
         clearFocus()
-        et_recharge_amount.setText("")
-        et_wx_id.setText("")
-        et_name.setText("")
-        et_bank_account.setText("")
-        et_nickname.setText("")
-
+        etRechargeAmount.setText("")
+        etWxId.setText("")
+        etName.setText("")
+        etBankAccount.setText("")
+        etNickname.setText("")
+        binding.linFirstDeposit.linNoChoose.performClick()
+        binding.linFirstDeposit.root.gone()
+        binding.linReceiveExtra.gone()
         viewModel.clearnRechargeStatus()
     }
 
@@ -359,7 +334,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             OnTimeSelectListener { date, _ ->
                 try {
                     depositDate = date
-                    txv_transfer_time.text = TimeUtil.dateToStringFormatYMD(date)
+                    binding.txvTransferTime.text = TimeUtil.dateToStringFormatYMD(date)
                     upDataTimeYMD()
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -375,31 +350,31 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .setSubmitText(getString(R.string.picker_submit))
             .setTitleColor(
                 ContextCompat.getColor(
-                    cv_recharge_time.context,
+                    requireContext(),
                     R.color.color_CCCCCC_000000
                 )
             )
             .setTitleBgColor(
                 ContextCompat.getColor(
-                    cv_recharge_time.context,
+                    requireContext(),
                     R.color.color_2B2B2B_e2e2e2
                 )
             )
             .setBgColor(
                 ContextCompat.getColor(
-                    cv_recharge_time.context,
+                    requireContext(),
                     R.color.color_191919_FCFCFC
                 )
             )
             .setSubmitColor(
                 ContextCompat.getColor(
-                    cv_recharge_time.context,
+                    requireContext(),
                     R.color.color_7F7F7F_999999
                 )
             )
             .setCancelColor(
                 ContextCompat.getColor(
-                    cv_recharge_time.context,
+                    requireContext(),
                     R.color.color_7F7F7F_999999
                 )
             )
@@ -412,7 +387,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             try {
                 depositDate2 = date
 //                txv_recharge_time2.text = TimeUtil.dateToStringFormatHMS(date)
-                txv_transfer_time2.text = TimeUtil.dateToStringFormatHMS(date)
+                binding.txvTransferTime2.text = TimeUtil.dateToStringFormatHMS(date)
                 upDataTimeHMS()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -427,13 +402,13 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .setSubmitText(getString(R.string.picker_submit))
             .setSubmitColor(
                 ContextCompat.getColor(
-                    txv_transfer_time.context,
+                    requireContext(),
                     R.color.color_7F7F7F_999999
                 )
             )
             .setCancelColor(
                 ContextCompat.getColor(
-                    txv_transfer_time2.context,
+                    requireContext(),
                     R.color.color_7F7F7F_999999
                 )
             )
@@ -441,166 +416,166 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .build() as TimePickerView
     }
     //依據選擇的支付渠道，刷新UI
-    private fun refreshSelectRechCfgs(selectRechCfgs: RechCfg?) {
+    private fun refreshSelectRechCfgs(selectRechCfgs: RechCfg?) =binding.run {
         //姓名
-        tv_name.text = selectRechCfgs?.payeeName
+        tvName.text = selectRechCfgs?.payeeName
 
         //帳號
-        tv_account.text = selectRechCfgs?.payee
+        tvAccount.text = selectRechCfgs?.payee
 
         //地址QR code
         if (selectRechCfgs?.qrCode.isNullOrEmpty()) {
-            iv_address.visibility = View.GONE
+            ivAddress.visibility = View.GONE
         } else {
-            iv_address.visibility = View.VISIBLE
-            Glide.with(this).load(selectRechCfgs?.qrCode).into(iv_address)
+            ivAddress.visibility = View.VISIBLE
+            ivAddress.load(selectRechCfgs?.qrCode)
         }
 
 
         //銀行卡轉帳 UI 特別處理
         if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code) {
-            ll_remark.visibility = View.GONE
-            ll_qr.visibility = View.GONE
-            ll_address.visibility = View.VISIBLE
-            et_wx_id.visibility = View.GONE
+            llRemark.visibility = View.GONE
+            llQr.visibility = View.GONE
+            llAddress.visibility = View.VISIBLE
+            etWxId.visibility = View.GONE
 
             //銀行備註放在地址
-            tv_address.text = selectRechCfgs?.remark
+            tvAddress.text = selectRechCfgs?.remark
         } else {
-            ll_remark.visibility = View.VISIBLE
-            ll_qr.visibility = View.VISIBLE
-            ll_address.visibility = View.GONE
+            llRemark.visibility = View.VISIBLE
+            llQr.visibility = View.VISIBLE
+            llAddress.visibility = View.GONE
 
             //備註
-            tv_remark.text = selectRechCfgs?.remark
+            tvRemark.text = selectRechCfgs?.remark
         }
         when (mMoneyPayWay?.rechType) {
             MoneyType.BANK_TYPE.code -> {
                 hideEditText()
-                ll_address.visibility = View.VISIBLE
-                et_bank_account.visibility = View.VISIBLE
-                et_name.visibility = View.VISIBLE
-                ll_hit2.visibility = View.VISIBLE
+                llAddress.visibility = View.VISIBLE
+                etBankAccount.visibility = View.VISIBLE
+                etName.visibility = View.VISIBLE
+                llHit2.visibility = View.VISIBLE
 
-                tv_hint1.text = getString(R.string.money_recharge_hint1)
-                tv_hint2.text = getString(R.string.money_recharge_hint2)
+                tvHint1.text = getString(R.string.money_recharge_hint1)
+                tvHint2.text = getString(R.string.money_recharge_hint2)
             }
             MoneyType.CTF_TYPE.code -> {
                 hideEditText()
-                ll_qr.visibility = View.VISIBLE
-                et_bank_account.visibility = View.VISIBLE
-                et_name.visibility = View.VISIBLE
-                tv_dio.isVisible = false
-                tv_hint1.text = getString(R.string.cft_recharge_hint)
+                llQr.visibility = View.VISIBLE
+                etBankAccount.visibility = View.VISIBLE
+                etName.visibility = View.VISIBLE
+                tvDio.isVisible = false
+                tvHint1.text = getString(R.string.cft_recharge_hint)
             }
             MoneyType.WX_TYPE.code -> {
                 hideEditText()
-                ll_qr.visibility = View.VISIBLE
-                et_wx_id.visibility = View.VISIBLE
-                tv_dio.isVisible = false
-                tv_hint1.text = getString(R.string.wx_recharge_hint)
+                llQr.visibility = View.VISIBLE
+                etWxId.visibility = View.VISIBLE
+                tvDio.isVisible = false
+                tvHint1.text = getString(R.string.wx_recharge_hint)
 
             }
             MoneyType.ALI_TYPE.code -> {
                 hideEditText()
-                ll_qr.visibility = View.VISIBLE
-                et_nickname.visibility = View.VISIBLE
-                et_name.visibility = View.VISIBLE
-                tv_dio.isVisible = false
-                tv_hint1.text = getString(R.string.ali_recharge_hint)
+                llQr.visibility = View.VISIBLE
+                etNickname.visibility = View.VISIBLE
+                etName.visibility = View.VISIBLE
+                tvDio.isVisible = false
+                tvHint1.text = getString(R.string.ali_recharge_hint)
             }
             MoneyType.GCASH_TYPE.code -> {
                 hideEditText()
-                ll_qr.visibility = View.VISIBLE
-                et_nickname.visibility = View.GONE
-                et_name.visibility = View.VISIBLE
-                tv_dio.isVisible = false
-                tv_hint1.text = getString(R.string.gcash_recharge_hint)
+                llQr.visibility = View.VISIBLE
+                etNickname.visibility = View.GONE
+                etName.visibility = View.VISIBLE
+                tvDio.isVisible = false
+                tvHint1.text = getString(R.string.gcash_recharge_hint)
             }
             MoneyType.GRABPAY_TYPE.code -> {
                 hideEditText()
-                ll_qr.visibility = View.VISIBLE
-                et_nickname.visibility = View.GONE
-                et_name.visibility = View.VISIBLE
-                tv_dio.isVisible = false
-                tv_hint1.text = getString(R.string.grabpay_recharge_hint)
+                llQr.visibility = View.VISIBLE
+                etNickname.visibility = View.GONE
+                etName.visibility = View.VISIBLE
+                tvDio.isVisible = false
+                tvHint1.text = getString(R.string.grabpay_recharge_hint)
             }
             MoneyType.PAYMAYA_TYPE.code -> {
                 hideEditText()
-                ll_qr.visibility = View.VISIBLE
-                et_nickname.visibility = View.GONE
-                et_name.visibility = View.VISIBLE
-                tv_dio.isVisible = false
-                tv_hint1.text = getString(R.string.paymaya_recharge_hint)
+                llQr.visibility = View.VISIBLE
+                etNickname.visibility = View.GONE
+                etName.visibility = View.VISIBLE
+                tvDio.isVisible = false
+                tvHint1.text = getString(R.string.paymaya_recharge_hint)
             }
         }
 
         //反利、手續費
         val rebateFee = mSelectRechCfgs?.rebateFee
         if (rebateFee == null || rebateFee == 0.0) {
-            ll_fee_rate.visibility = View.GONE
-            ll_fee_amount.visibility = View.GONE
+            llFeeRate.visibility = View.GONE
+            llFeeAmount.visibility = View.GONE
         } else {
-            ll_fee_rate.visibility = View.VISIBLE
-            ll_fee_amount.visibility = View.VISIBLE
+            llFeeRate.visibility = View.VISIBLE
+            llFeeAmount.visibility = View.VISIBLE
             if (rebateFee < 0.0) {
-                title_fee_rate.text = getString(R.string.title_fee_rate)
-                title_fee_amount.text = getString(R.string.title_fee_amount)
+                titleFeeRate.text = getString(R.string.title_fee_rate)
+                titleFeeAmount.text = getString(R.string.title_fee_amount)
             } else {
-                title_fee_rate.text = getString(R.string.title_rebate_rate)
-                title_fee_amount.text = getString(R.string.title_rebate_amount)
+                titleFeeRate.text = getString(R.string.title_rebate_rate)
+                titleFeeAmount.text = getString(R.string.title_rebate_amount)
             }
-            tv_fee_rate.text = ArithUtil.toOddFormat(abs(rebateFee).times(100))
-            tv_fee_amount.text = ArithUtil.toOddFormat(0.0.times(100))
+            tvFeeRate.text = ArithUtil.toOddFormat(abs(rebateFee).times(100))
+            tvFeeAmount.text = ArithUtil.toOddFormat(0.0.times(100))
         }
 
         //存款時間
-        txv_transfer_time.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
-        txv_transfer_time2.text = TimeUtil.dateToStringFormatHMS(Date())
-        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
+        txvTransferTime.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
+        txvTransferTime2.text = TimeUtil.dateToStringFormatHMS(Date())
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance.root) }
     }
 
-    private fun hideEditText() {
-        ll_qr.visibility = View.GONE
-        ll_address.visibility = View.GONE
-        et_wx_id.visibility = View.GONE
-        et_nickname.visibility = View.GONE
-        et_bank_account.visibility = View.GONE
-        et_name.visibility = View.GONE
-        ll_hit2.visibility = View.GONE
+    private fun hideEditText()=binding.run {
+        llQr.visibility = View.GONE
+        llAddress.visibility = View.GONE
+        etWxId.visibility = View.GONE
+        etNickname.visibility = View.GONE
+        etBankAccount.visibility = View.GONE
+        etName.visibility = View.GONE
+        llHit2.visibility = View.GONE
     }
 
-    private fun setupTextChangeEvent() {
+    private fun setupTextChangeEvent() =binding.run{
         viewModel.apply {
             //充值金額
-            et_recharge_amount.afterTextChanged {
+            etRechargeAmount.afterTextChanged {
                 if (it.startsWith("0") && it.length > 1) {
-                    et_recharge_amount.setText(et_recharge_amount.getText().replace("0", ""))
-                    et_recharge_amount.setCursor()
+                    etRechargeAmount.setText(etRechargeAmount.getText().replace("0", ""))
+                    etRechargeAmount.setCursor()
                     return@afterTextChanged
                 }
 
-                if (et_recharge_amount.getText().length > 9) {
-                    et_recharge_amount.setText(et_recharge_amount.getText().substring(0, 9))
-                    et_recharge_amount.setCursor()
+                if (etRechargeAmount.getText().length > 9) {
+                    etRechargeAmount.setText(etRechargeAmount.getText().substring(0, 9))
+                    etRechargeAmount.setCursor()
                     return@afterTextChanged
                 }
-
+                updateFirstDepositExtraMoney(it.toIntS(0))
                 checkRechargeAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
-                    if (includeQuickMoney.isVisible) (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(
+                    if (includeQuickMoney.root.isVisible) (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(
                         -1)
-                    tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
+                    tvFeeAmount.text = ArithUtil.toMoneyFormat(0.0)
                 } else {
-                    tv_fee_amount.text = ArithUtil.toMoneyFormat(
+                    tvFeeAmount.text = ArithUtil.toMoneyFormat(
                         it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0))
                     )
                 }
             }
             //微信
-            et_wx_id.afterTextChanged { checkWX(it) }
+            etWxId.afterTextChanged { checkWX(it) }
             //認證姓名
-            et_name.afterTextChanged {
+            etName.afterTextChanged {
                 when (mMoneyPayWay?.rechType) {
                     MoneyType.BANK_TYPE.code -> {
                         checkUserName(MoneyType.BANK_TYPE.code, it)
@@ -614,20 +589,23 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 }
             }
             //認證銀行卡號
-            et_bank_account.afterTextChanged { checkBankID(it) }
+            etBankAccount.afterTextChanged { checkBankID(it) }
             //暱稱
-            et_nickname.afterTextChanged { checkNickName(it) }
+            etNickname.afterTextChanged { checkNickName(it) }
         }
     }
 
-    private fun setupFocusEvent() {
+    private fun setupFocusEvent() =binding.run{
         viewModel.apply {
             //充值金額
-            setupEditTextFocusEvent(et_recharge_amount) { checkRechargeAmount(it, mSelectRechCfgs) }
+            setupEditTextFocusEvent(etRechargeAmount) {
+                updateFirstDepositExtraMoney(it.toIntS(0))
+                checkRechargeAmount(it, mSelectRechCfgs)
+            }
             //微信
-            setupEditTextFocusEvent(et_wx_id) { checkWX(it) }
+            setupEditTextFocusEvent(etWxId) { checkWX(it) }
             //認證姓名
-            setupEditTextFocusEvent(et_name) {
+            setupEditTextFocusEvent(etName) {
                 when (mMoneyPayWay?.rechType) {
                     MoneyType.BANK_TYPE.code -> {
                         checkUserName(MoneyType.BANK_TYPE.code, it)
@@ -641,18 +619,18 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 }
             }
             //認證銀行卡號
-            setupEditTextFocusEvent(et_bank_account) { checkBankID(it) }
+            setupEditTextFocusEvent(etBankAccount) { checkBankID(it) }
             //暱稱
-            setupEditTextFocusEvent(et_nickname) { checkNickName(it) }
+            setupEditTextFocusEvent(etNickname) { checkNickName(it) }
         }
     }
 
-    private fun setupEditTextFocusEvent(customEditText: LoginEditText, event: (String) -> Unit) {
+    private fun setupEditTextFocusEvent(customEditText: LoginEditText, event: (String) -> Unit)=binding.run {
         customEditText.setEditTextOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                event.invoke(customEditText.et_input.text.toString())
-            } else if (customEditText == et_recharge_amount && includeQuickMoney.isVisible) {
-                (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(-1)
+                event.invoke(customEditText.getText())
+            } else if (customEditText == etRechargeAmount && includeQuickMoney.root.isVisible) {
+                (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(-1)
             }
         }
     }
@@ -663,8 +641,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
 
     //修改hint
-    private fun updateMoneyRange() {
-        et_recharge_amount.setHint(
+    private fun updateMoneyRange() =binding.run{
+        etRechargeAmount.setHint(
             String.format(
                 getString(R.string.edt_hint_deposit_money), sConfigData?.systemCurrencySign,
                 TextUtil.formatBetQuota(
@@ -682,25 +660,26 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
 
     //創建MoneyAddRequest
-    private fun createMoneyAddRequest(): MoneyAddRequest? {
+    private fun createMoneyAddRequest(participate:Int): MoneyAddRequest? =binding.run{
         return when (mMoneyPayWay?.rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 MoneyAddRequest(
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
                     bankCode = mBottomSheetList[bankPosition].bankName.toString(),
-                    depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
-                        et_recharge_amount.getText()
+                    depositMoney = if (etRechargeAmount.getText().isNotEmpty()) {
+                        etRechargeAmount.getText()
                     } else {
                         ""
                     },
-                    payer = et_bank_account.getText(),
-                    payerName = et_name.getText(),
+                    payer = etBankAccount.getText(),
+                    payerName = etName.getText(),
                     payerBankName = mBottomSheetList[bankPosition].bankName.toString(),
                     payerInfo = "",
                     depositDate = mCalendar.time.time,
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
+                    participate = participate
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -709,19 +688,20 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 MoneyAddRequest(
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
                     bankCode = null,
-                    depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
-                        et_recharge_amount.getText()
+                    depositMoney = if (etRechargeAmount.getText().isNotEmpty()) {
+                        etRechargeAmount.getText()
                     } else {
                         ""
                     },
                     payer = null,
-                    payerName = et_wx_id.getText(),
+                    payerName = etWxId.getText(),
                     payerBankName = null,
                     payerInfo = null,
                     depositDate = mCalendar.time.time,
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
+                    participate = participate
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -730,19 +710,20 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 MoneyAddRequest(
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
                     bankCode = null,
-                    depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
-                        et_recharge_amount.getText()
+                    depositMoney = if (etRechargeAmount.getText().isNotEmpty()) {
+                        etRechargeAmount.getText()
                     } else {
                         ""
                     },
                     payer = null,
-                    payerName = et_nickname.getText(),
+                    payerName = etNickname.getText(),
                     payerBankName = null,
-                    payerInfo = et_name.getText(),
+                    payerInfo = etName.getText(),
                     depositDate = mCalendar.time.time,
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
+                    participate = participate
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -751,15 +732,15 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         }
     }
 
-    private fun getBankType(position: Int) {
+    private fun getBankType(position: Int)=binding.run {
         if (rechCfgsList.size > 0) {
             mSelectRechCfgs = rechCfgsList[position]
             refreshSelectRechCfgs(mSelectRechCfgs)
             getMoney()
             updateMoneyRange()
 
-            iv_bank_icon.setImageResource(mBottomSheetList[position].bankIcon ?: 0)
-            txv_pay_bank.text = mBottomSheetList[position].bankName.toString()
+            ivBankIcon.setImageResource(mBottomSheetList[position].bankIcon ?: 0)
+            txvPayBank.text = mBottomSheetList[position].bankName.toString()
         } else {
             mSelectRechCfgs = null
         }
@@ -845,34 +826,77 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     /**
      * 设置快捷金额
      */
-    private fun setupQuickMoney() {
+    private fun setupQuickMoney() =binding.run{
         if (sConfigData?.selectedDepositAmountSettingList.isNullOrEmpty()) {
-            includeQuickMoney.isVisible = false
-            et_recharge_amount.showLine(true)
-            et_recharge_amount.setMarginBottom(10.dp)
+            includeQuickMoney.root.isVisible = false
+            etRechargeAmount.showLine(true)
+            etRechargeAmount.setMarginBottom(10.dp)
         } else {
-            includeQuickMoney.isVisible = true
-            et_recharge_amount.showLine(false)
-            et_recharge_amount.setMarginBottom(0.dp)
-            if (rv_quick_money.adapter == null) {
-                rv_quick_money.layoutManager = GridLayoutManager(requireContext(), 3)
-                rv_quick_money.addItemDecoration(GridItemDecoration(10.dp,
+            includeQuickMoney.root.isVisible = true
+            etRechargeAmount.showLine(false)
+            etRechargeAmount.setMarginBottom(0.dp)
+            if (includeQuickMoney.rvQuickMoney.adapter == null) {
+                includeQuickMoney.rvQuickMoney.layoutManager = GridLayoutManager(requireContext(), 3)
+                includeQuickMoney.rvQuickMoney.addItemDecoration(GridItemDecoration(10.dp,
                     12.dp,
                     requireContext().getColor(R.color.color_FFFFFF),
                     false))
-                rv_quick_money.adapter = QuickMoneyAdapter().apply {
+                includeQuickMoney.rvQuickMoney.adapter = QuickMoneyAdapter().apply {
                     setOnItemClickListener { adapter, view, position ->
                         (adapter as QuickMoneyAdapter).selectItem(position)
                         adapter.data[position].toString().let {
-                            et_recharge_amount.setText(it)
-                            et_recharge_amount.et_input.clearFocus()
+                            etRechargeAmount.setText(it)
+                            etRechargeAmount.clearFocus()
                         }
                     }
                     setList(sConfigData?.selectedDepositAmountSettingList)
                 }
             } else {
-                (rv_quick_money.adapter as QuickMoneyAdapter).setList(sConfigData?.selectedDepositAmountSettingList)
+                (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setList(sConfigData?.selectedDepositAmountSettingList)
             }
         }
     }
+    private fun initFirstDeposit(dailyConfig: DailyConfig) =binding.linFirstDeposit.run{
+        binding.linFirstDeposit.root.isVisible = dailyConfig.first==1
+        linNoChoose.isSelected = true
+        linChooseReward.isSelected = false
+        linNoChoose.setOnClickListener {
+            linNoChoose.isSelected = true
+            linChooseReward.isSelected = false
+            binding.linReceiveExtra.isVisible = false
+            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0)
+        }
+        linChooseReward.setOnClickListener {
+            linNoChoose.isSelected = false
+            linChooseReward.isSelected = true
+            binding.linReceiveExtra.isVisible = true
+            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(dailyConfig.additional)
+            updateFirstDepositExtraMoney(binding.etRechargeAmount.getText().toIntS(0))
+        }
+        tvRewardTC.setOnClickListener {
+            FirstDepositNoticeDialog(dailyConfig.content).show(childFragmentManager,null)
+        }
+        tvPercent.text = "${dailyConfig.additional}%"
+        tvCapped.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(dailyConfig.capped,0)}"
+        tvRewardDesp.text = when{
+            dailyConfig.rewards==1&&dailyConfig.principal==0->getString(R.string.P279,dailyConfig.times.toString())
+            dailyConfig.rewards==0&&dailyConfig.principal==1->getString(R.string.P280,dailyConfig.times.toString())
+            dailyConfig.rewards==1&&dailyConfig.principal==1->getString(R.string.P281,dailyConfig.times.toString())
+            else -> ""
+        }
+    }
+    private fun updateFirstDepositExtraMoney(rechargeMoney: Int){
+        val dailyConfig = viewModel.dailyConfigEvent.value
+        if (dailyConfig!=null && dailyConfig.first==1){
+            val additional = dailyConfig.additional
+            val capped = dailyConfig.capped
+            if (additional>0){
+                val additionalMoney = rechargeMoney*additional/100
+                val extraMoney = if(additionalMoney>capped) capped else  additionalMoney
+                binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(extraMoney,0)}"
+            }
+        }
+    }
+
+
 }

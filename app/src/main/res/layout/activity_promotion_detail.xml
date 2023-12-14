@@ -141,6 +141,7 @@
                                 tools:text="5,000,000.00" />
 
                             <TextView
+                                android:id="@+id/tvRewardName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/P156"
@@ -183,6 +184,7 @@
                         android:gravity="center">
 
                         <TextView
+                            android:id="@+id/tvApply"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/P159"
