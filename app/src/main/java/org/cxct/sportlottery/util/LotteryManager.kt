@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
 import org.cxct.sportlottery.ui.maintab.menu.ScannerActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
 import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
@@ -73,6 +74,7 @@ class LotteryManager {
                 ThirdGameActivity::class,
                 LotteryActivity::class,
                 ScannerActivity::class,
+                LuckyWheelActivity::class
                 -> false
                 else -> true
             }

@@ -13,6 +13,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
 import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
@@ -67,6 +68,7 @@ class RedEnvelopeManager {
         LaunchActivity::class -> false
         MaintenanceActivity::class -> false
         ThirdGameActivity::class -> false
+        LuckyWheelActivity::class -> false
         else -> true
     }
 

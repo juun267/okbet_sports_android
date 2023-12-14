@@ -3,6 +3,8 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import androidx.core.text.htmlEncode
+import okio.ByteString.Companion.encode
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -14,6 +16,7 @@ import org.cxct.sportlottery.util.getCurrentOddsTypeName
 import org.cxct.sportlottery.util.isMultipleSitePlat
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
+import java.nio.charset.Charset
 
 object Constants {
     val SERVICE_H5_URL_LIST = listOf(
@@ -302,11 +305,24 @@ object Constants {
         if (url.isNullOrEmpty()) {
             return url
         }
-        return url + (if (url.contains("?")) "&" else "?") + "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}lang=${
-            getLanguageTag(MultiLanguagesApplication.appContext)
-        }&token=${LoginRepository.token}"
+        val url = pingHostAndPath(getH5BaseUrl(),url)
+        return url + (if (url.contains("?")) "&" else "?") + "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}&lang=${
+            getSelectLanguage(MultiLanguagesApplication.appContext).key
+        }&token=${URLEncoder.encode(LoginRepository.token, "utf-8")}"
     }
 
+    /**
+     * 拼接host和path
+     */
+    private fun pingHostAndPath(host: String, path: String): String{
+        if (path.startsWith("http")){
+            return path
+        }
+        return if(host.endsWith("/") && path.startsWith("/"))
+            host+(path.substring(1))
+        else
+           host+path
+    }
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
         return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (upgradeFromMarket()) "-${BuildConfig.FLAVOR}" else "") + ".json"
@@ -457,6 +473,7 @@ object Constants {
     const val SET_USERNAME = "/api/front/user/fullname" // 修改用户名称
     const val LOGIN_CHECK_NEED_CODE = "/api/front/index/checkUserNeedCode"   // loginV3登陆前检查是否需要校验短信验证码
     const val LOGIN = "/api/front/index/loginV4"   // 用户登陆  2023.10.24
+    const val WHEEL_ACTIVITY_INFO = "/api/front/wheelActivity/info"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片

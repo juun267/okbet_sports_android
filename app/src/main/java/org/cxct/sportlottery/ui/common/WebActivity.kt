@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.net.http.SslError
+import android.os.Build
 import android.os.Bundle
 import android.os.Message
 import android.view.View
@@ -88,7 +89,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    fun setCookie() {
+    open fun setCookie() {
         try {
             val cookieManager = CookieManager.getInstance()
             cookieManager.setAcceptCookie(true)
@@ -113,7 +114,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         webView.webChromeClient = object : OkWebChromeClient(
         ) {
             override fun onCreateWindow(
-                view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message
+                view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message,
             ): Boolean {
                 val newWebView = WebView(view.context)
                 newWebView.webViewClient = object : WebViewClient() {
@@ -142,7 +143,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             override fun onShowFileChooser(
                 webView: WebView,
                 filePathCallback: ValueCallback<Array<Uri>>,
-                fileChooserParams: FileChooserParams
+                fileChooserParams: FileChooserParams,
             ): Boolean {
                 mUploadCallbackAboveL = filePathCallback
                 openImageChooserActivity()
@@ -177,7 +178,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
         }) {
             override fun shouldInterceptRequest(
-                view: WebView?, request: WebResourceRequest?
+                view: WebView?, request: WebResourceRequest?,
             ): WebResourceResponse? {
                 return super.shouldInterceptRequest(view, request)
             }
@@ -187,7 +188,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
 
             override fun onReceivedSslError(
-                view: WebView, handler: SslErrorHandler, error: SslError
+                view: WebView, handler: SslErrorHandler, error: SslError,
             ) {
                 //此方法是为了处理在5.0以上Https的问题，必须加上
                 //handler.proceed()
@@ -289,4 +290,5 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         super.onDestroy()
         runWithCatch { viewBinding.okWebView.destroy() }
     }
+
 }

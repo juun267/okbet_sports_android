@@ -4,6 +4,10 @@ import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.PageData
 import org.cxct.sportlottery.net.user.data.*
+import org.cxct.sportlottery.net.user.data.ActivityImageList
+import org.cxct.sportlottery.net.user.data.SendCodeRespnose
+import org.cxct.sportlottery.net.user.data.VerifyConfig
+import org.cxct.sportlottery.net.user.data.WheelActivityInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.ACTIVITY_APPLY
 import org.cxct.sportlottery.network.Constants.ACTIVITY_DETAIL_H5
@@ -13,18 +17,15 @@ import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
 import org.cxct.sportlottery.network.Constants.LOGIN
 import org.cxct.sportlottery.network.Constants.LOGIN_CHECK_NEED_CODE
-import org.cxct.sportlottery.network.Constants.OCR_INFO
 import org.cxct.sportlottery.network.Constants.RRESET_WITHDRAW
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.UPLOAD_REVIEW_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_VERIFY_CONFIG
 import org.cxct.sportlottery.network.Constants.SET_USERNAME
 import org.cxct.sportlottery.network.Constants.UPLOAD_VERIFY_PHOTO
+import org.cxct.sportlottery.network.Constants.WHEEL_ACTIVITY_INFO
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
-import org.cxct.sportlottery.network.uploadImg.UploadVerifyPhotoKYCRequest
-import org.cxct.sportlottery.network.uploadImg.UploadVerifyPhotoResult
-import retrofit2.Response
 import retrofit2.http.*
 
 //用户账户相关Api
@@ -74,5 +75,8 @@ interface UserApiService {
 
     @POST(UPLOAD_VERIFY_PHOTO)
     suspend fun uploadKYCInfo(@Body params : JsonObject): ApiResult<String>
+
+    @GET(WHEEL_ACTIVITY_INFO)
+    suspend fun getWheelActivityInfo(): ApiResult<WheelActivityInfo>
 
 }

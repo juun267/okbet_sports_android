@@ -69,6 +69,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         super.onStart()
         RedEnvelopeManager.instance.bind(this as BaseActivity<BaseViewModel>)
         LotteryManager.instance.bind(this as BaseActivity<BaseViewModel>)
+        LuckyWheelManager.instance.bind(this as BaseActivity<BaseViewModel>)
     }
 
     private var firstCrate = false
