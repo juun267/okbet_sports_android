@@ -13,8 +13,15 @@ object SportRepository {
 
     private val sportApi by lazy { RetrofitHolder.createApiService(SportService::class.java) }
 
-    suspend fun getSportMenu(now: String, todayStart: String): ApiResult<SportMenuData> {
-        return sportApi.getMenu(mapOf("now" to now, "todayStart" to todayStart))
+    /**
+     * isNew 则不返回categoryList参数
+     */
+    suspend fun getSportMenu(isNew: Boolean? = null): ApiResult<SportMenuData> {
+        val params = JsonObject()
+        params.addProperty("now",  TimeUtil.getNowTimeStamp().toString())
+        params.addProperty("todayStart", TimeUtil.getTodayStartTimeStamp().toString())
+        params.addProperty("isNew", isNew)
+        return sportApi.getMenu(params)
     }
 
     suspend fun getCouponMenu() = sportApi.getCouponMenu()
