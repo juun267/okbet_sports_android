@@ -319,7 +319,6 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     var todayMenuPosition = 0
     fun setJumpSport(matchType: MatchType? = null, gameType: String? = null) {
-        LogUtil.d("setJumpSport= "+gameType)
         jumpMatchType = matchType
         jumpGameType = gameType
 
@@ -406,7 +405,7 @@ class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     //是否拿最新的sportMenu数据
     private fun getMenuData(newData:Boolean) {
         if (newData){
-            viewModel.getSportMenuData()
+            viewModel.getSportMenuData(isNew = true)
         }
     }
 
