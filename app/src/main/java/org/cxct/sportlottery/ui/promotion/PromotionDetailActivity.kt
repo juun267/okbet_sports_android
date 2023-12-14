@@ -72,26 +72,25 @@ class PromotionDetailActivity :
         }
         viewModel.dailyConfigEvent.observe(this){
             binding.linActivity.show()
+            binding.linApply.isEnabled = true
+            binding.linApply.setBackgroundResource(R.drawable.bg_blue_radius_8)
+            binding.linApply.setOnClickListener {
+                MainTabActivity.reStart(this)
+                binding.linApply.postDelayed(1000){
+                    (AppManager.currentActivity() as? MainTabActivity)?.checkRechargeKYCVerify()
+                }
+            }
             binding.tvDepositName.text = getString(R.string.P277)
             binding.tvRewardName.text = getString(R.string.P278)
-            binding.tvDeposit.text = "${it.additional}%"
-            binding.tvDeposit.setTextColor(getColor(R.color.color_0D2245))
-            binding.tvReward.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.capped,0)}"
-            binding.tvReward.setTextColor(getColor(R.color.color_0D2245))
             binding.tvApply.text = getString(R.string.J285)
             if (it.first == 1) {
-                binding.linApply.isEnabled = true
-                binding.linApply.setBackgroundResource(R.drawable.bg_blue_radius_8)
-                binding.linApply.setOnClickListener {
-                    MainTabActivity.reStart(this)
-                    binding.linApply.postDelayed(1000){
-                        (AppManager.currentActivity() as? MainTabActivity)?.checkRechargeKYCVerify()
-                    }
-                }
-
+                binding.tvDeposit.text = "${it.additional}%"
+                binding.tvDeposit.setTextColor(getColor(R.color.color_0D2245))
+                binding.tvReward.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.capped,0)}"
+                binding.tvReward.setTextColor(getColor(R.color.color_0D2245))
             } else {
-                binding.linApply.isEnabled = false
-                binding.linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
+                binding.tvDeposit.text = "${activityData?.amount?.toInt()}%"
+                binding.tvReward.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(activityData?.reward?:0,0)}"
             }
         }
     }
