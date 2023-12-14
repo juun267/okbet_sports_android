@@ -5,8 +5,10 @@
     android:gravity="center"
     android:orientation="vertical">
   <LinearLayout
-      android:layout_width="104dp"
+      android:layout_width="wrap_content"
       android:layout_height="104dp"
+      android:minWidth="104dp"
+      android:padding="@dimen/margin_12"
       android:gravity="center"
       android:orientation="vertical"
       android:background="@drawable/bg_trans_radius_10">
@@ -20,6 +22,6 @@
         android:layout_marginTop="@dimen/margin_8"
         android:textColor="@color/color_FFFFFF"
         android:textSize="@dimen/textSize14sp"
-        android:text="@string/recharge_state_success"/>
+        android:text="@string/apply_success"/>
   </LinearLayout>
 </LinearLayout>

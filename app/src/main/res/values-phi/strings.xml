@@ -1519,5 +1519,11 @@
     <string name="P263">Maglaro</string>
     <string name="P274">Ang pagitan ng query ay hindi maaaring lumampas sa 7 araw</string>
     <string name="N473">Panahon ng aktibidad</string>
+    <string name="P232">Mga Detalye ng Reward</string>
+    <string name="P233">Halaga ng Reward</string>
+    <string name="N633">Pending</string>
+    <string name="J942">Pumasa</string>
+    <string name="apply_success">Tagumpay</string>
+    <string name="P275">Reward history</string>
 </resources>
 

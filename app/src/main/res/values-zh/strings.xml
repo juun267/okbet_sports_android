@@ -1599,4 +1599,10 @@
     <string name="P263">开始游戏</string>
     <string name="P274">查询时间间隔不能大于7天</string>
     <string name="N473">活动时间</string>
+    <string name="P232">奖励详情</string>
+    <string name="P233">奖励金额</string>
+    <string name="N633">待处理</string>
+    <string name="J942">已通过</string>
+    <string name="apply_success">成功</string>
+    <string name="P275">领取记录</string>
 </resources>

@@ -2,13 +2,11 @@ package org.cxct.sportlottery.net.user
 
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.PageData
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.user.api.OCRApiService
 import org.cxct.sportlottery.net.user.api.UserApiService
-import org.cxct.sportlottery.net.user.data.ActivityImageList
-import org.cxct.sportlottery.net.user.data.OCRInfo
-import org.cxct.sportlottery.net.user.data.SendCodeRespnose
-import org.cxct.sportlottery.net.user.data.VerifyConfig
+import org.cxct.sportlottery.net.user.data.*
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.repository.LOGIN_SRC
@@ -141,5 +139,11 @@ object UserRepository {
         params.addProperty("birthday", birthday)
         return userApi.uploadKYCInfo(params)
     }
-
+    suspend fun activityRecord(activityId: String,page: Int,pageSize: Int): ApiResult<PageData<RewardRecord>> {
+        val params = JsonObject()
+        params.addProperty("page", page)
+        params.addProperty("pageSize", pageSize)
+        params.addProperty("activityId", activityId)
+        return userApi.activityRecord(params)
+    }
 }

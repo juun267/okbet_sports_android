@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toast
+import org.cxct.sportlottery.net.PageData
 import org.cxct.sportlottery.net.PageInfo
 import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
 import org.cxct.sportlottery.net.games.OKGamesRepository
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.ActivityImageList
+import org.cxct.sportlottery.net.user.data.RewardRecord
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.BettingStation
@@ -137,6 +139,10 @@ open class MainHomeViewModel(
     val activityApply: LiveData<String>
         get() = _activityApply
     private val _activityApply = MutableLiveData<String>()
+
+    val rewardRecord: LiveData<PageData<RewardRecord>>
+        get() = _rewardRecord
+    private val _rewardRecord = MutableLiveData<PageData<RewardRecord>>()
 
     val homeAllProvider: LiveData<List<OKGamesFirm>>
         get() = _homeAllProvider
@@ -641,6 +647,13 @@ open class MainHomeViewModel(
     fun activityApply(activityId: String) = callApi({UserRepository.activityApply(activityId)}){
         if (it.succeeded()){
             _activityApply.postValue(it.getData())
+        }else{
+            toast(it.msg)
+        }
+    }
+    fun activityRecord(activityId: String, page: Int, pageSize: Int=20) = callApi({UserRepository.activityRecord(activityId,page,pageSize)}){
+        if (it.succeeded()){
+            _rewardRecord.postValue(it.getData())
         }else{
             toast(it.msg)
         }
