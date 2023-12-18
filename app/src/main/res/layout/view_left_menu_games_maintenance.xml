@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:clickable="true"
     android:background="@color/transparent_black_70">
     <ImageView
         android:layout_width="@dimen/margin_36"

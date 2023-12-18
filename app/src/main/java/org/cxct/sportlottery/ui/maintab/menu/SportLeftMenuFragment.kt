@@ -90,7 +90,6 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         //初始化顶部登录状态
         initLoginData()
         if(sportBettingFragment.isVisible){
-            LogUtil.d("reloadData")
             sportBettingFragment.getBetRecordCount()
             sportBettingFragment.getInPlayData()
             sportBettingFragment.getRecommendLeagueData()

@@ -20,11 +20,26 @@ class LeftGameFragment: BindingFragment<MainViewModel,FragmentLeftSportGameBindi
     private inline fun getMainTabActivity() = activity as MainTabActivity
 
     override fun onInitView(view: View) {
-        setBannerStatus()
+        initBanners()
         initMenuItems()
     }
 
-    fun setBannerStatus() = binding.run{
+    override fun onBindViewStatus(view: View) {
+        super.onBindViewStatus(view)
+        setBannerStatus()
+    }
+    private fun initBanners() = binding.run{
+        cvOkLive.setOnClickListener {
+            getMainTabActivity().jumpToOkLive()
+        }
+        cvOkGame.setOnClickListener {
+            getMainTabActivity().jumpToOKGames()
+        }
+        cvESport.setOnClickListener {
+            getMainTabActivity().jumpToESport()
+        }
+    }
+    private fun setBannerStatus() = binding.run{
         if (StaticData.okLiveOpened()){
             cvOkLive.show()
         }else{
