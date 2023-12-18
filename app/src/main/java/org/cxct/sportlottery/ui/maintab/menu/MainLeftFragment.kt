@@ -57,43 +57,42 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         ){
             //检查是否关闭入口
             checkSportStatus(requireActivity() as BaseActivity<*>){
-                lastItem=menuSport
                 close()
                 getMainTabActivity().jumpToInplaySport()
             }
         }.apply {
             isVisible=StaticData.okSportOpened()
         }
-
+        menuOKLive.tag="menuOKLive"
         menuOKLive.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_oklive_sel, R.drawable.ic_left_menu_oklive_nor),
             R.string.P160
         ){
-            lastItem=menuOKLive
+            reSelected(menuOKLive)
             close()
             getMainTabActivity().jumpToOkLive()
         }.apply {
             isVisible = !getMarketSwitch() && StaticData.okLiveOpened()
         }
-
+        menuOKGames.tag="menuOKGames"
         menuOKGames.setItem(
-            cxt.getIconSelector(R.drawable.ic_left_menu_okgame_sel, R.drawable.ic_left_menu_oklive_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_okgame_sel, R.drawable.ic_left_menu_okgame_nor),
             R.string.J203
         ){
-            lastItem=menuOKGames
+            reSelected(menuOKGames)
             close()
-            getMainTabActivity().jumpToOkLive()
+            getMainTabActivity().jumpToOKGames()
         }.apply {
             isVisible = !getMarketSwitch() && StaticData.okGameOpened()
         }
-
+        menuESport.tag="menuESport"
         menuESport.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_esport_sel, R.drawable.ic_left_menu_esport_nor),
             R.string.esports
         ){
-            lastItem=menuESport
+            reSelected(menuESport)
             close()
-            getMainTabActivity().jumpToOkLive()
+            getMainTabActivity().jumpToESport()
         }.apply {
             isVisible = !getMarketSwitch() && StaticData.okBingoOpened()
             showBottomLine(false)
@@ -101,9 +100,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         menuPromo.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_promo_sel, R.drawable.ic_left_menu_promo_nor),
             R.string.B005
-        ){
-
-        }.apply {
+        ).apply {
             setVisibilityByMarketSwitch()
             bindPromoClick()
         }
@@ -119,12 +116,12 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         }.apply {
             setVisibilityByMarketSwitch()
         }
-
+        menuNews.tag="menuNews"
         menuNews.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),
             R.string.N909
         ){
-            lastItem=menuNews
+            reSelected(menuNews)
             close()
             getMainTabActivity().jumpToNews()
         }
@@ -190,13 +187,20 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         binSelected()
     }
 
-    private fun binSelected() = when(currentContent) {
-        OKGamesFragment::class.java -> binding.menuOKGames.isSelected=true
-        OKLiveFragment::class.java -> binding.menuOKLive.isSelected=true
-        NewsHomeFragment::class.java -> binding.menuNews.isSelected=true
-        ESportFragment::class.java -> binding.menuESport.isSelected=true
-        else -> {}
-
+    private fun binSelected()  {
+        lastItem = when(currentContent) {
+            OKGamesFragment::class.java -> binding.menuOKGames
+            OKLiveFragment::class.java -> binding.menuOKLive
+            ESportFragment::class.java -> binding.menuESport
+            NewsHomeFragment::class.java -> binding.menuNews
+            else -> lastItem
+        }
+        lastItem?.isSelected=true
+    }
+    fun reSelected(itemView: MainMenuItemView){
+        lastItem?.isSelected = false
+        itemView.isSelected = true
+        lastItem = itemView
     }
 
     override fun onInitView(view: View) {
@@ -206,9 +210,6 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
 
     override fun onBindViewStatus(view: View) {
         initObserver()
-//        promotionItem.group.setVisibilityByMarketSwitch()
-//        bindVerifyStatus(UserInfoRepository.userInfo.value)
-//        binSelected()
     }
 
     private fun initView() = binding.run {
