@@ -48,7 +48,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
         if (fragmentClass == null) {
             if (item.name == R.string.promo) {
                 startActivity(PromotionListActivity::class.java)
-            } else if (item.name == R.string.LT050) {
+            } else if (item.name == R.string.LT050_1) {
                 serviceEvent(context(), childFragmentManager)
             }
 
@@ -216,6 +216,8 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
         fragmentHelper2.show(HomeHotFragment::class.java) { frament, _ ->
             hotFragment = frament
         }
+
+
         LeftLinearSnapHelper().attachToRecyclerView(this)
     }
 
