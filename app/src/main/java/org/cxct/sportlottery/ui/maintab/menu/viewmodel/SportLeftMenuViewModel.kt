@@ -53,10 +53,11 @@ class SportLeftMenuViewModel(
 
     val betCountEvent=SingleLiveEvent<Long>()
     var totalCount=0
-    private val _inplayList = MutableLiveData<List<Item>>()
-    val inplayList: LiveData<List<Item>>
-        get() = _inplayList
-    val recommendLeagueEvent = SingleLiveEvent<List<RecommendLeague>>()
+
+    val inplayList = SingleLiveEvent<List<Item>>()
+
+    val recommendLeague = SingleLiveEvent<List<RecommendLeague>>()
+
 
     fun isLogin(): Boolean {
         return loginRepository.isLogined()
@@ -253,14 +254,13 @@ class SportLeftMenuViewModel(
                     TimeUtil.getTodayStartTimeStamp().toString()
                 )
             }?.sportMenuData?.let { sportMenuList ->
-                _inplayList.postValue(sportMenuList.menu.inPlay.items)
+                inplayList.postValue(sportMenuList.menu.inPlay.items)
             }
         }
     }
     fun getRecommendLeague() {
         callApi({SportRepository.getRecommendLeague()}){
-            recommendLeagueEvent.postValue(it.getData())
-          LogUtil.toJson(it.getData())
+            recommendLeague.postValue(it.getData())
         }
     }
 

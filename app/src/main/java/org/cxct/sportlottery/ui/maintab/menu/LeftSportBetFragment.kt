@@ -5,10 +5,14 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentLeftSportBetBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -17,16 +21,17 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerInPlayAdapter
 import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerLeftMatchesAdapter
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.GridItemDecoration
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.isVisible
+import org.cxct.sportlottery.view.rumWithSlowRequest
 import org.cxct.sportlottery.view.updateLastRequestTime
 
 class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftSportBetBinding>() {
+
+    private inline fun getMainTabActivity() = activity as MainTabActivity
 
     private val inPlayAdapter= RecyclerInPlayAdapter()
     //热门赛事 adapter
@@ -37,7 +42,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
     override fun onInitView(view: View) =binding.run{
         initInplayList()
         initHotMatch()
-        initObservable()
+        initMenuItems()
         //投注详情
         constrainBetRecord.setOnClickListener {
             loginedRun(it.context) {
@@ -47,29 +52,28 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         }
     }
 
-    override fun onInitData() {
-        super.onInitData()
+    override fun onBindViewStatus(view: View) {
+        super.onBindViewStatus(view)
+        initObservable()
         loadingHolder.showLoading()
+        getBetRecordCount()
         getInPlayData()
         getRecommendLeagueData()
-
-        if(viewModel.isLogin()){
-            updateLastRequestTime()
-            viewModel.getBetRecordCount()
-        }
     }
+
     private fun initObservable() {
         viewModel.betCountEvent.observe(this){
+            binding.constrainBetRecord.isVisible = viewModel.totalCount>0
             binding.tvRecordNumber.text="${viewModel.totalCount}"
         }
-        viewModel.recommendLeagueEvent.observe(this){
+        viewModel.recommendLeague.observe(this){
             loadingHolder.showLoadSuccess()
             hotMatchAdapter.setList(it)
-            binding.tvRecommendLeague.isVisible = it.isNullOrEmpty()
+            binding.tvRecommendLeague.isVisible = !it.isNullOrEmpty()
         }
         viewModel.inplayList.observe(this) {
             inPlayAdapter.setList(it)
-            binding.tvInplay.isVisible = it.isNullOrEmpty()
+            binding.tvInplay.isVisible = !it.isNullOrEmpty()
         }
     }
     private fun initInplayList()=binding.rvInPlay.run{
@@ -96,17 +100,74 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
 //                matchType = MatchType.IN_PLAY)
         }
     }
+    private fun initMenuItems() = binding.run {
+        menuPromo.setItem(
+            requireContext().getIconSelector(R.drawable.ic_left_menu_promo_sel, R.drawable.ic_left_menu_promo_nor),
+            R.string.B005
+        ){
+            close()
+            menuPromo.bindPromoClick {}
+        }.apply {
+            setVisibilityByMarketSwitch()
+        }
+        menuAffiliate.setItem(
+            requireContext().getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),
+            R.string.B015
+        ){
+            close()
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getAffiliateUrl(binding.root.context),
+                resources.getString(R.string.btm_navigation_affiliate)
+            )
+        }.apply {
+            setVisibilityByMarketSwitch()
+        }
 
+        menuNews.setItem(
+            requireContext().getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),
+            R.string.B015
+        ){
+            close()
+            getMainTabActivity().jumpToNews()
+        }
+
+        menuSupport.setItem(
+            requireContext().getIconSelector(R.drawable.ic_left_menu_custom_sel, R.drawable.ic_left_menu_custom_nor),
+            R.string.LT050
+        ).setServiceClick(parentFragmentManager) { close() }
+
+        menuVerify.setItem(
+            requireContext().getIconSelector(R.drawable.ic_left_menu_verify_sel, R.drawable.ic_left_menu_verify_nor),
+            R.string.N914
+        ){
+            close()
+            loginedRun(requireContext()) { startActivity(VerifyIdentityActivity::class.java) }
+        }.hideBottomLine()
+    }
     /**
      * 请求滚球类型列表
      */
-    private fun getInPlayData(){
+    fun getInPlayData(){
         viewModel.getInPlayList()
     }
     /**
      * 获取热门赛事数据
      */
-    private fun getRecommendLeagueData(){
+    fun getRecommendLeagueData(){
         viewModel.getRecommendLeague()
+    }
+    fun getBetRecordCount(){
+        if(viewModel.isLogin()){
+            rumWithSlowRequest(viewModel){
+                updateLastRequestTime()
+                viewModel.getBetRecordCount()
+            }
+        }else{
+            binding.constrainBetRecord.gone()
+        }
+    }
+    fun close() {
+        getMainTabActivity().closeDrawerLayout()
     }
 }

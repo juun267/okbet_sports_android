@@ -41,18 +41,6 @@ import timber.log.Timber
 
 class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Binding>() {
 
-
-    private fun getIconSelector(selected: Int, unSelected: Int): Drawable {
-        val selectDrawable = resources.getDrawable(selected)
-        val unSelecteDrawable = resources.getDrawable(unSelected)
-        return DrawableCreator.Builder()
-            .setSelectedDrawable(selectDrawable)
-            .setUnSelectedDrawable(unSelecteDrawable)
-            .setPressedDrawable(selectDrawable)
-            .setUnPressedDrawable(unSelecteDrawable)
-            .build()
-    }
-
     private inline fun getMainTabActivity() = activity as MainTabActivity
 
     private var lastItem: MainMenuItemView? = null
@@ -60,8 +48,9 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
     // 新增菜单在这里修改
     private fun initMenuItem() = binding.run {
+        val cxt = binding.root.context
         menuSport.setItem(
-            getIconSelector(R.drawable.ic_left_menu_sport_sel, R.drawable.ic_left_menu_sport_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_sport_sel, R.drawable.ic_left_menu_sport_nor),
             R.string.B001
         ){
             //检查是否关闭入口
@@ -75,7 +64,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
 
         menuOKLive.setItem(
-            getIconSelector(R.drawable.ic_left_menu_oklive_sel, R.drawable.ic_left_menu_oklive_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_oklive_sel, R.drawable.ic_left_menu_oklive_nor),
             R.string.P160
         ){
             lastItem=menuOKLive
@@ -86,7 +75,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
 
         menuOKGames.setItem(
-            getIconSelector(R.drawable.ic_left_menu_okgame_sel, R.drawable.ic_left_menu_oklive_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_okgame_sel, R.drawable.ic_left_menu_oklive_nor),
             R.string.J203
         ){
             lastItem=menuOKGames
@@ -97,7 +86,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
 
         menuESport.setItem(
-            getIconSelector(R.drawable.ic_left_menu_esport_sel, R.drawable.ic_left_menu_esport_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_esport_sel, R.drawable.ic_left_menu_esport_nor),
             R.string.esports
         ){
             lastItem=menuESport
@@ -108,7 +97,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             hideBottomLine()
         }
         menuPromo.setItem(
-            getIconSelector(R.drawable.ic_left_menu_promo_sel, R.drawable.ic_left_menu_promo_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_promo_sel, R.drawable.ic_left_menu_promo_nor),
             R.string.B005
         ){
             close()
@@ -117,7 +106,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             setVisibilityByMarketSwitch()
         }
         menuAffiliate.setItem(
-            getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),
             R.string.B015
         ){
             close()
@@ -131,7 +120,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
 
         menuNews.setItem(
-            getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),
             R.string.N909
         ){
             lastItem=menuNews
@@ -140,12 +129,12 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
 
         menuSupport.setItem(
-            getIconSelector(R.drawable.ic_left_menu_custom_sel, R.drawable.ic_left_menu_custom_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_custom_sel, R.drawable.ic_left_menu_custom_nor),
             R.string.LT050
         ).setServiceClick(parentFragmentManager) { close() }
 
         menuVerify.setItem(
-            getIconSelector(R.drawable.ic_left_menu_verify_sel, R.drawable.ic_left_menu_verify_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_verify_sel, R.drawable.ic_left_menu_verify_nor),
             R.string.N914
         ){
             close()
@@ -153,7 +142,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
 
         menuAboutUs.setItem(
-            getIconSelector(R.drawable.ic_left_menu_aboutus_sel, R.drawable.ic_left_menu_aboutus_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_aboutus_sel, R.drawable.ic_left_menu_aboutus_nor),
             R.string.B015
         ){
             close()
@@ -161,7 +150,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
 
         menuLanguage.setItem(
-            getIconSelector(R.drawable.ic_left_menu_language_sel, R.drawable.ic_left_menu_language_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_language_sel, R.drawable.ic_left_menu_language_nor),
             R.string.M169
         ) {
             initLanguageList()
@@ -177,7 +166,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
 
         menuScan.setItem(
-            getIconSelector(R.drawable.ic_left_menu_scan_sel, R.drawable.ic_left_menu_scan_nor),
+            cxt.getIconSelector(R.drawable.ic_left_menu_scan_sel, R.drawable.ic_left_menu_scan_nor),
             R.string.N908
         ){
             close()
