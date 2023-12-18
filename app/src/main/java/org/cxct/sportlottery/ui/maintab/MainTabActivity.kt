@@ -43,7 +43,7 @@ import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
-import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
+import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -360,7 +360,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
 
     fun showMainLeftMenu(contentFragment: Class<BaseFragment<*>>?) {
-        fragmentHelper2.show(MainLeftFragment2::class.java, Bundle()) { fragment, _ ->
+        fragmentHelper2.show(MainLeftFragment::class.java, Bundle()) { fragment, _ ->
             fragment.openWithFragment(contentFragment)
         }
     }

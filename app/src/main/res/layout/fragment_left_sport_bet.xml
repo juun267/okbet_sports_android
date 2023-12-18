@@ -35,11 +35,13 @@
                 android:id="@+id/tvSportName"
                 android:text="@string/N944"
                 app:layout_constraintStart_toEndOf="@+id/ivBetRecord"
-                app:layout_constraintTop_toTopOf="@+id/ivBetRecord"
+                app:layout_constraintTop_toTopOf="parent"
                 android:textColor="@color/color_00181E"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_8"
                 android:textSize="14sp"
-                android:textFontWeight="600"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"/>
 
 
@@ -51,7 +53,8 @@
                 android:textColor="@color/color_6D7693"
                 android:layout_width="wrap_content"
                 android:textSize="12sp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_8"/>
 
 
             <TextView
@@ -72,17 +75,40 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginRight="12dp"
+                app:tint="@color/color_0D2245"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="16dp"
                 android:layout_height="16dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         <TextView
+            android:id="@+id/tvInplay"
+            android:text="@string/home_in_play"
+            android:paddingStart="12dp"
+            android:textSize="14sp"
+            android:textColor="@color/color_0D2245"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvInPlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            tools:listitem="@layout/item_left_in_play"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:itemCount="5"
+            app:spanCount="2"
+            android:isScrollContainer="false"
+            android:nestedScrollingEnabled="false"
+          />
+        <TextView
+            android:id="@+id/tvRecommendLeague"
             android:text="@string/N881"
             android:paddingStart="12dp"
             android:textSize="14sp"
-            android:textColor="@color/color_000000"
+            android:textColor="@color/color_0D2245"
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:textStyle="bold"
@@ -90,60 +116,50 @@
             android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerHotMatch"
+            android:id="@+id/rvRecommendLeague"
             tools:listitem="@layout/item_left_hot_matches"
-            tools:itemCount="14"
+            tools:itemCount="6"
             android:isScrollContainer="false"
             android:nestedScrollingEnabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:paddingHorizontal="12dp"-->
-<!--            android:paddingTop="16dp"-->
-<!--            android:layout_height="wrap_content">-->
-
-
-<!--            <TextView-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_constraintLeft_toLeftOf="parent"-->
-<!--                android:text="Sports classification"-->
-<!--                android:textSize="14sp"-->
-<!--                android:textColor="@color/color_000000"-->
-<!--                android:textStyle="bold"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"/>-->
-
-<!--            <TextView-->
-<!--                app:layout_constraintRight_toLeftOf="@+id/ivClassArrow"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                android:text="Change Order"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:textSize="12sp"-->
-<!--                android:textColor="@color/color_6D7693"-->
-<!--                android:layout_height="wrap_content"/>-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/ivClassArrow"-->
-<!--                android:src="@drawable/ic_bet_arrow"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                android:layout_width="16dp"-->
-<!--                android:layout_height="16dp"/>-->
-
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/ivClassArrow"-->
-<!--                app:layout_constraintLeft_toLeftOf="parent"-->
-<!--                android:paddingStart="12dp"-->
-<!--                android:id="@+id/recyclerClassification"-->
-<!--                android:nestedScrollingEnabled="false"-->
-<!--                android:paddingTop="12dp"-->
-<!--                android:layout_width="match_parent"-->
-<!--                tools:listitem="@layout/item_sport_classification"-->
-<!--                tools:itemCount="4"-->
-<!--                android:layout_height="wrap_content"/>-->
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:background="@color/color_EEF3FC"/>
+        <TextView
+            android:text="@string/other"
+            android:textSize="14sp"
+            android:textColor="@color/color_0D2245"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuPromo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuAffiliate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuNews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuSupport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuVerify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"/>
     </LinearLayout>
+
 </androidx.core.widget.NestedScrollView>

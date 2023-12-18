@@ -15,6 +15,7 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.onClick
@@ -30,7 +31,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
     //Betting sport
     private val sportBettingFragment=LeftSportBetFragment()
     //滚球
-    private val inPlayFragment by lazy { LeftInPlayFragment() }
+    private val gameFragment by lazy { LeftGameFragment() }
     //其他
     private val othersFragment by lazy { LeftOthersFragment() }
 
@@ -88,21 +89,14 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
 
         //初始化顶部登录状态
         initLoginData()
-        //刷新订单数量
         if(sportBettingFragment.isVisible){
-            if(viewModel.isLogin()){
-                rumWithSlowRequest(viewModel){
-                    sportBettingFragment.viewModel.getBetRecordCount()
-                }
-            }
+            LogUtil.d("reloadData")
+            sportBettingFragment.getBetRecordCount()
+            sportBettingFragment.getInPlayData()
+            sportBettingFragment.getRecommendLeagueData()
         }
-        //刷新滚球列表
-        if(inPlayFragment.isVisible){
-            inPlayFragment.viewModel.getInPlayList()
-        }
-        //刷新热门赛事
-        if(sportBettingFragment.isVisible){
-            sportBettingFragment.viewModel.getRecommend()
+        if(gameFragment.isVisible){
+            gameFragment.setBannerStatus()
         }
     }
 
@@ -155,7 +149,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
             }
             1->{
                 //滚球
-                transaction.replace(R.id.frameContent,inPlayFragment)
+                transaction.replace(R.id.frameContent,gameFragment)
             }
             2->{
                 //其他

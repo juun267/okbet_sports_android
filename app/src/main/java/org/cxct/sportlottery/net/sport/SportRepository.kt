@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.sport.api.SportService
+import org.cxct.sportlottery.net.sport.data.RecommendLeague
 import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.util.TimeUtil
@@ -34,5 +35,8 @@ object SportRepository {
         params.addProperty("todayStart", TimeUtil.getTodayStartTimeStamp().toString())
         params.addProperty("isPc", false)
         return sportApi.getMenuCategoryList(params)
+    }
+    suspend fun getRecommendLeague():ApiResult<List<RecommendLeague>> {
+        return sportApi.getRecommendLeague()
     }
 }

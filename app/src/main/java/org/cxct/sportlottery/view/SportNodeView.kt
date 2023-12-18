@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.hide
+import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.ViewSportNodeBinding
 import org.cxct.sportlottery.ui.maintab.entity.NodeBean
 import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerNodeAdapter
@@ -96,6 +99,15 @@ class SportNodeView(context: Context, attrs: AttributeSet) :LinearLayout(context
         childAdapter.data.forEach {
             it.select=false
         }
+    }
+
+    fun alwaysExpand():SportNodeView{
+        isExpand=true
+        binding.frameTitle.isEnabled = false
+        binding.ivWay.gone()
+        binding.recyclerNode.show()
+        binding.recyclerNode.expand(mNodeList.size*40.dp)
+        return this
     }
 
 }

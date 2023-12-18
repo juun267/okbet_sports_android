@@ -8,6 +8,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -74,6 +75,7 @@ import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
+import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
 import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
@@ -1236,4 +1238,14 @@ fun showCaptchaDialog(manager: FragmentManager,callback: (ticket: String, randst
     }else{
         VerifyCodeDialog(callback).show(manager, null)
     }
+}
+fun Context.getIconSelector(selected: Int, unSelected: Int): Drawable {
+    val selectDrawable = ContextCompat.getDrawable(this,selected)
+    val unSelecteDrawable = ContextCompat.getDrawable(this,unSelected)
+    return DrawableCreator.Builder()
+        .setSelectedDrawable(selectDrawable)
+        .setUnSelectedDrawable(unSelecteDrawable)
+        .setPressedDrawable(selectDrawable)
+        .setUnPressedDrawable(unSelecteDrawable)
+        .build()
 }
