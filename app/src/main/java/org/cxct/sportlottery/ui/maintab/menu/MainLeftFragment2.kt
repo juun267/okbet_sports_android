@@ -21,15 +21,17 @@ import com.budiyev.android.codescanner.BarcodeUtils
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
+import kotlinx.android.synthetic.main.fragment_main_left2.*
+import kotlinx.android.synthetic.main.item_view_payment_method.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentMainLeft2Binding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.StaticData
-import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -38,6 +40,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
+import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
@@ -45,6 +48,7 @@ import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
+import org.cxct.sportlottery.view.MainMenuItemView
 import org.cxct.sportlottery.view.PictureSelectUtil
 import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
@@ -52,65 +56,6 @@ import timber.log.Timber
 
 class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Binding>() {
 
-
-    private inner class MenuItem(val group: View,
-                                      val icon: ImageView,
-                                      val tvName: TextView,
-                                      val ivIndicator: ImageView?,
-                                      val needClose: Boolean,
-                                      val click: (() -> Unit)? = null) {
-
-        var onSetSelected: (() -> Unit)? = null
-        var onClearSelected: (() -> Unit)? = null
-
-        init {
-
-            click?.let {
-                group.setOnClickListener {
-                    click.invoke()
-                    if (needClose) {
-                        close()
-                    }
-                }
-            }
-        }
-
-        fun clearSelected() {
-            if (lastItem == this) {
-                lastItem = null
-            }
-
-            onClearSelected?.let {
-                it.invoke()
-                return
-            }
-
-            group.isSelected = false
-            icon.isSelected = false
-            ivIndicator?.gone()
-            tvName.typeface = Typeface.DEFAULT
-            tvName.setTextColor(ContextCompat.getColor(icon.context, R.color.color_6D7693))
-        }
-
-        fun setSelected() {
-            if (lastItem == this) {
-                return
-            } else if (lastItem != null) {
-                lastItem!!.clearSelected()
-            }
-            lastItem = this
-            onSetSelected?.let {
-                it.invoke()
-                return
-            }
-
-            group.isSelected = true
-            icon.isSelected = true
-            tvName.typeface = Typeface.DEFAULT_BOLD
-            tvName.setTextColor(icon.context.resources.getColor(R.color.color_025BE8))
-            ivIndicator?.visible()
-        }
-    }
 
     private fun getIconSelector(selected: Int, unSelected: Int): Drawable {
         val selectDrawable = resources.getDrawable(selected)
@@ -123,239 +68,130 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             .build()
     }
 
-    private fun addMenu(index: Int,
-                        params: LayoutParams,
-                        iconParams: LayoutParams,
-                        selectedIcon: Int,
-                        unSelectedIcon: Int,
-                        textParams: LayoutParams,
-                        text: Int,
-                        hasIndicator: Boolean = false,
-                        needClose: Boolean = true,
-                        click: (() -> Unit)? = null): MenuItem {
-
-        val linearLayout = LinearLayout(context)
-        linearLayout.gravity = Gravity.CENTER_VERTICAL
-        linearLayout.setBackgroundResource(R.drawable.selector_cor30_tran_blue)
-        binding.llMenuRoot.addView(linearLayout, index, params)
-
-        val icon = AppCompatImageView(linearLayout.context)
-        icon.setImageDrawable(getIconSelector(selectedIcon, unSelectedIcon))
-        linearLayout.addView(icon, iconParams)
-
-        val textView = AppCompatTextView(linearLayout.context)
-        textView.textSize = 14f
-        textView.setText(text)
-        textView.setTextColor(ContextCompat.getColor(icon.context, R.color.color_6D7693))
-        linearLayout.addView(textView, textParams)
-
-        var imageView: ImageView? = null
-        if (hasIndicator) {
-            imageView = AppCompatImageView(linearLayout.context)
-            imageView.setImageResource(R.drawable.ic_selected_indicator)
-            imageView.gone()
-            linearLayout.addView(imageView)
-        }
-
-        return MenuItem(linearLayout, icon, textView, imageView, needClose, click)
-    }
-
     private inline fun getMainTabActivity() = activity as MainTabActivity
 
-    private var lastItem: MenuItem? = null
+    private var lastItem: MainMenuItemView? = null
 
-    private lateinit var sportsItem: MenuItem
-    private lateinit var okGamesItem: MenuItem
-    private lateinit var eSportGamesItem: MenuItem
-    private lateinit var okLiveItem: MenuItem
-    private lateinit var promotionItem: MenuItem
-    private lateinit var affiliateItem: MenuItem
-    private lateinit var newsItem: MenuItem
-    private lateinit var serviceItem: MenuItem
-    private lateinit var languageItem: MenuItem
-    private lateinit var scanItem: MenuItem
 
     // 新增菜单在这里修改
     private fun initMenuItem() = binding.run {
-
-        val hMargin = 28.dp
-        val groupParams = LayoutParams(-1, 40.dp)
-        groupParams.topMargin = 4.5f.dp
-        groupParams.leftMargin = hMargin
-        groupParams.rightMargin = hMargin
-        val iconParams = 20.dp.let { LayoutParams(it, it) }
-        iconParams.leftMargin = 12.dp
-        val textParams = LayoutParams(0, -2, 1f)
-        textParams.leftMargin = iconParams.leftMargin
-
-        var index1 = 0
-        sportsItem = addMenu(index1++,
-            groupParams,
-            iconParams,
-            R.drawable.ic_main_menu_sports_1,
-            R.drawable.ic_main_menu_sports_0,
-            textParams,
-            R.string.B001,
-            true
-        ) {
+        menuSport.setItem(
+            getIconSelector(R.drawable.ic_left_menu_sport_sel, R.drawable.ic_left_menu_sport_nor),
+            R.string.B001
+        ){
             //检查是否关闭入口
             checkSportStatus(requireActivity() as BaseActivity<*>){
+                lastItem=menuSport
+                close()
                 getMainTabActivity().jumpToInplaySport()
             }
+        }.apply {
+            isVisible=StaticData.okSportOpened()
         }
-        sportsItem.group.isVisible=StaticData.okSportOpened()
 
-        okGamesItem = addMenu(index1++,
-            groupParams,
-            iconParams,
-            R.drawable.ic_main_menu_okgames_1,
-            R.drawable.ic_main_menu_okgames_0,
-            textParams,
-            R.string.J203,
-            true
-        ) { getMainTabActivity().jumpToOKGames() }
-        okGamesItem.group.isVisible = !getMarketSwitch() && StaticData.okGameOpened()
-
-        eSportGamesItem = addMenu(index1++,
-            groupParams,
-            iconParams,
-            R.drawable.ic_main_menu_esport_1,
-            R.drawable.ic_main_menu_esport_0,
-            textParams,
-            R.string.esports,
-            true
-        ) { getMainTabActivity().jumpToESport() }
-        eSportGamesItem.group.isVisible= StaticData.okSportOpened()&&StaticData.okBingoOpened()
-
-//
-        okLiveItem = addMenu(index1++,
-            groupParams,
-            iconParams,
-            R.drawable.ic_main_menu_oklive_1,
-            R.drawable.ic_main_menu_oklive_0,
-            textParams,
-            R.string.P160,
-            true
-        ) {
+        menuOKLive.setItem(
+            getIconSelector(R.drawable.ic_left_menu_oklive_sel, R.drawable.ic_left_menu_oklive_nor),
+            R.string.P160
+        ){
+            lastItem=menuOKLive
+            close()
             getMainTabActivity().jumpToOkLive()
+        }.apply {
+            isVisible = !getMarketSwitch() && StaticData.okLiveOpened()
         }
 
-        okLiveItem.group.isVisible = !getMarketSwitch() && StaticData.okLiveOpened()
-
-        var index = binding.llMenuRoot.indexOfChild(divider1)
-        promotionItem = addMenu(
-            ++index,
-            groupParams,
-            iconParams,
-            R.drawable.ic_main_menu_promo_1,
-            R.drawable.ic_main_menu_promo_0,
-            textParams,
-            R.string.B005,
-        )
-        promotionItem.group.bindPromoClick {
-
+        menuOKGames.setItem(
+            getIconSelector(R.drawable.ic_left_menu_okgame_sel, R.drawable.ic_left_menu_oklive_nor),
+            R.string.J203
+        ){
+            lastItem=menuOKGames
+            close()
+            getMainTabActivity().jumpToOkLive()
+        }.apply {
+            isVisible = !getMarketSwitch() && StaticData.okGameOpened()
         }
-        promotionItem.group.setVisibilityByMarketSwitch()
 
-        affiliateItem = addMenu(++index,
-            groupParams,
-            iconParams,
-            R.drawable.ic_main_menu_affiliate_1,
-            R.drawable.ic_main_menu_affiliate_0,
-            textParams,
-            R.string.B015,
-        ) {
+        menuESport.setItem(
+            getIconSelector(R.drawable.ic_left_menu_esport_sel, R.drawable.ic_left_menu_esport_nor),
+            R.string.esports
+        ){
+            lastItem=menuESport
+            close()
+            getMainTabActivity().jumpToOkLive()
+        }.apply {
+            isVisible = !getMarketSwitch() && StaticData.okBingoOpened()
+            hideBottomLine()
+        }
+        menuPromo.setItem(
+            getIconSelector(R.drawable.ic_left_menu_promo_sel, R.drawable.ic_left_menu_promo_nor),
+            R.string.B005
+        ){
+            close()
+            menuPromo.bindPromoClick {}
+        }.apply {
+            setVisibilityByMarketSwitch()
+        }
+        menuAffiliate.setItem(
+            getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),
+            R.string.B015
+        ){
+            close()
             JumpUtil.toInternalWeb(
-                binding.root.context,
+                requireContext(),
                 Constants.getAffiliateUrl(binding.root.context),
                 resources.getString(R.string.btm_navigation_affiliate)
             )
+        }.apply {
+            setVisibilityByMarketSwitch()
         }
-        affiliateItem.group.setVisibilityByMarketSwitch()
-        newsItem = addMenu(++index,
-            groupParams,
-            iconParams,
-            R.drawable.ic_main_menu_news_0,
-            R.drawable.ic_main_menu_news_0,
-            textParams,
-            R.string.N909,
-            hasIndicator = true
-        ) {
+
+        menuNews.setItem(
+            getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),
+            R.string.B015
+        ){
+            lastItem=menuNews
+            close()
             getMainTabActivity().jumpToNews()
         }
 
-        serviceItem = addMenu(++index,
-            groupParams,
-            iconParams,
-            R.drawable.ic_main_menu_livesupport_1,
-            R.drawable.ic_main_menu_livesupport_0,
-            textParams,
-            R.string.LT050,
-        )
-        serviceItem.group.setServiceClick(parentFragmentManager) { close() }
+        menuSupport.setItem(
+            getIconSelector(R.drawable.ic_left_menu_custom_sel, R.drawable.ic_left_menu_custom_nor),
+            R.string.LT050
+        ).setServiceClick(parentFragmentManager) { close() }
 
-        val group2Params = LayoutParams(-1, 40.dp)
-        group2Params.leftMargin = hMargin
-        group2Params.rightMargin = hMargin
-        group2Params.topMargin = 6.dp
-
-        val toRight = resources.getDrawable(R.drawable.ic_arrow_gray_right)
-        toRight.setTint(resources.getColor(R.color.color_6D7693))
-        initLanguageItem(group2Params, iconParams, textParams, toRight)
-
-        scanItem = addMenu(binding.llMenuRoot.indexOfChild(divider3) + 1,
-            group2Params,
-            iconParams,
-            R.drawable.ic_main_menu_scan_0,
-            R.drawable.ic_main_menu_scan_0,
-            textParams,
-            R.string.N908,
-            true,
-            false
-        ) { scanQR() }
-        scanItem.onClearSelected = { scanItem.ivIndicator?.visible() }
-        scanItem.ivIndicator?.let {
-            it.visible()
-            it.setImageDrawable(toRight)
+        menuVerify.setItem(
+            getIconSelector(R.drawable.ic_left_menu_verify_sel, R.drawable.ic_left_menu_verify_nor),
+            R.string.N914
+        ){
+            close()
+            loginedRun(requireContext()) { startActivity(VerifyIdentityActivity::class.java) }
         }
 
-    }
-
-    private fun initLanguageItem(group2Params: LayoutParams,
-                                 iconParams: LayoutParams,
-                                 textParams: LayoutParams,
-                                 toRight: Drawable) = binding.run {
-        languageItem = addMenu(binding.llMenuRoot.indexOfChild(rvLanguage),
-            group2Params,
-            iconParams,
-            R.drawable.ic_main_menu_language_press,
-            R.drawable.ic_main_menu_language_normal,
-            textParams,
-            R.string.M169,
-            true,
-            false
-        ) {
-            if (rvLanguage.isVisible) languageItem.clearSelected() else languageItem.setSelected()
+        menuAboutUs.setItem(
+            getIconSelector(R.drawable.ic_left_menu_aboutus_sel, R.drawable.ic_left_menu_aboutus_nor),
+            R.string.B015
+        ){
+            close()
+            getMainTabActivity().jumpToNews()
+        }
+        menuLanguage.setItem(
+            getIconSelector(R.drawable.ic_left_menu_language_sel, R.drawable.ic_left_menu_language_nor),
+            R.string.M169
+        ){
+            menuLanguage.isSelected = !rvLanguage.isVisible
+            if (menuLanguage.isSelected){
+                showLanguageList()
+            }
         }
 
-        val toUp = resources.getDrawable(R.drawable.ic_arrow_gray_right)
-        toUp.setTint(resources.getColor(R.color.color_025BE8))
-        languageItem.ivIndicator?.setImageDrawable(toRight)
-        languageItem.ivIndicator?.visible()
+        menuScan.setItem(
+            getIconSelector(R.drawable.ic_left_menu_scan_sel, R.drawable.ic_left_menu_scan_nor),
+            R.string.N908
+        ){
+            close()
+            scanQR()
+        }.hideBottomLine()
 
-        languageItem.onClearSelected = {
-            rvLanguage.isVisible = false
-            (divider3.layoutParams as ViewGroup.MarginLayoutParams).topMargin = 6.dp
-            languageItem.ivIndicator?.rotation = 0f
-            languageItem.ivIndicator?.setImageDrawable(toRight)
-        }
-
-        languageItem.onSetSelected = {
-            showLanguageList()
-            (divider3.layoutParams as ViewGroup.MarginLayoutParams).topMargin = 0
-            languageItem.ivIndicator?.rotation = -90f
-            languageItem.ivIndicator?.setImageDrawable(toUp)
-        }
     }
 
     private fun close() {
@@ -366,37 +202,36 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
     fun openWithFragment(menuContentFragment: Class<BaseFragment<*>>?) {
         currentContent = menuContentFragment
-        lastItem?.clearSelected()
-        if (menuContentFragment == null || !::okGamesItem.isInitialized) {
+        lastItem?.isSelected =false
+        if (menuContentFragment == null) {
             return
         }
         binSelected()
     }
 
-
     private fun binSelected() = when(currentContent) {
-        OKGamesFragment::class.java -> okGamesItem.setSelected()
-        OKLiveFragment::class.java -> okLiveItem.setSelected()
-        NewsHomeFragment::class.java -> newsItem.setSelected()
-        ESportFragment::class.java -> eSportGamesItem.setSelected()
+        OKGamesFragment::class.java -> binding.menuOKGames.isSelected=true
+        OKLiveFragment::class.java -> binding.menuOKLive.isSelected=true
+        NewsHomeFragment::class.java -> binding.menuNews.isSelected=true
+        ESportFragment::class.java -> binding.menuESport.isSelected=true
         else -> {}
 
     }
 
     override fun onInitView(view: View) {
-        initMenuItem()
         initView()
+        initMenuItem()
     }
 
     override fun onBindViewStatus(view: View) {
         initObserver()
-        promotionItem.group.setVisibilityByMarketSwitch()
-        bindVerifyStatus(UserInfoRepository.userInfo.value)
-        binSelected()
+//        promotionItem.group.setVisibilityByMarketSwitch()
+//        bindVerifyStatus(UserInfoRepository.userInfo.value)
+//        binSelected()
     }
 
     private fun initView() = binding.run {
-        llVerify.setOnClickListener { loginedRun(it.context) { startActivity(VerifyIdentityActivity::class.java) } }
+        promotionView.setup(this@MainLeftFragment2 as BaseFragment<MainHomeViewModel>)
         ivClose.setOnClickListener { close() }
         ivHome.setOnClickListener {
             getMainTabActivity().backMainHome()
@@ -437,10 +272,10 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
     private fun bindVerifyStatus(userInfo: UserInfo?) = binding.run {
         if (getMarketSwitch()) {
-            llVerify.setVisibilityByMarketSwitch()
+            menuVerify.setVisibilityByMarketSwitch()
             return@run
         }
-        llVerify.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
+        menuVerify.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
 
         when (userInfo?.verified) {
@@ -473,11 +308,12 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     }
 
     private inline fun setVerify(enable: Boolean, clickAble: Boolean, text: Int, statusColor: Int) = binding.run  {
-        llVerify.isEnabled = enable
-        llVerify.isClickable = clickAble
-        tvVerifyStatus.setText(text)
-        binding.tvVerifyStatus.setTextColor(statusColor)
-        binding.ivVerifyIndicator.isVisible = enable
+        menuVerify.isEnabled = enable
+        menuVerify.isClickable = clickAble
+        menuVerify.binding.tvSummary.show()
+        menuVerify.binding.tvSummary.setText(text)
+        menuVerify.binding.tvSummary.setTextColor(statusColor)
+        menuVerify.binding.ivArrow.isVisible = enable
     }
 
     private fun scanQR() {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/transparent_black_70">
+    <ImageView
+        android:layout_width="@dimen/margin_36"
+        android:layout_height="@dimen/margin_36"
+        android:src="@drawable/ic_home_maintenance"/>
+
+    <TextView
+        android:id="@+id/tvMantance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_4"
+        android:textSize="@dimen/textSize14sp"
+        android:textColor="@color/color_FFFFFF"
+        android:text="@string/N257"/>
+
+
+</LinearLayout>
+
+

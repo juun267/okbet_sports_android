@@ -30,7 +30,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
     //Betting sport
     private val sportBettingFragment=LeftSportBetFragment()
     //滚球
-    private val inPlayFragment by lazy { LeftInPlayFragment() }
+    private val gameFragment by lazy { LeftGameFragment() }
     //其他
     private val othersFragment by lazy { LeftOthersFragment() }
 
@@ -96,13 +96,13 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
                 }
             }
         }
-        //刷新滚球列表
-        if(inPlayFragment.isVisible){
-            inPlayFragment.viewModel.getInPlayList()
-        }
         //刷新热门赛事
         if(sportBettingFragment.isVisible){
+            sportBettingFragment.viewModel.getInPlayList()
             sportBettingFragment.viewModel.getRecommend()
+        }
+        if(gameFragment.isVisible){
+            gameFragment.setBannerStatus()
         }
     }
 
@@ -155,7 +155,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
             }
             1->{
                 //滚球
-                transaction.replace(R.id.frameContent,inPlayFragment)
+                transaction.replace(R.id.frameContent,gameFragment)
             }
             2->{
                 //其他

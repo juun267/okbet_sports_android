@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+<LinearLayout
+    android:id="@+id/linContent"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/margin_50"
+    android:paddingHorizontal="@dimen/margin_12"
+    android:gravity="center_vertical"
+    android:foreground="@drawable/fg_ripple">
+
+   <ImageView
+       android:id="@+id/ivIcon"
+       android:layout_width="@dimen/margin_20"
+       android:layout_height="@dimen/margin_20"/>
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="@dimen/margin_8"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textSize="@dimen/textSize14sp"
+        android:textColor="@color/color_6d7693_025be8"
+        android:text="sport"/>
+    <TextView
+        android:id="@+id/tvSummary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_8"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textSize="@dimen/textSize14sp"
+        android:textColor="@color/color_ff0000"
+        android:text="summary"
+        android:visibility="gone"/>
+    <ImageView
+        android:id="@+id/ivArrow"
+        android:layout_width="@dimen/margin_24"
+        android:layout_height="@dimen/margin_24"
+        android:src="@drawable/selector_main_menu_arrow"/>
+</LinearLayout>
+    <View
+        android:id="@+id/bottomLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_0.5"
+        android:layout_marginBottom="@dimen/margin_4"
+        android:background="@color/color_EEF3FC"/>
+</merge>

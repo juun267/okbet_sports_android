@@ -20,27 +20,20 @@
                 android:id="@+id/nodeHandicap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginHorizontal="@dimen/margin_12"
+                android:background="@color/color_EEF3FC"/>
             <org.cxct.sportlottery.view.SportNodeView
                 android:id="@+id/nodeBetRule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-            <org.cxct.sportlottery.view.SportNodeView
-                android:id="@+id/nodeLanguage"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical"
-                android:paddingStart="12dp"
-                android:paddingTop="12dp"
-                android:text="@string/other"
-                android:textColor="@color/color_000000"
-                android:textSize="14sp" />
-
+                android:layout_height="4dp"
+                android:layout_marginHorizontal="@dimen/margin_12"
+                android:background="@color/color_EEF3FC"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

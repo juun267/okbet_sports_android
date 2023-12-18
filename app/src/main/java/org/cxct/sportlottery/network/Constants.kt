@@ -425,6 +425,8 @@ object Constants {
     const val SPORT_COUPON_MENU = "/api/front/sport/coupon/menu"
     const val INDEX_RESOURCE_JSON = "/api/front/index/resource.json"
     const val SPORT_MENU_CATEGORYLIST = "/api/front/sport/menu/categoryList"
+    const val SPORT_RECOMMEND_LEAGUE = "/api/front/sport/recommendLeague"
+
 
     const val MYFAVORITE_QUERY = "/api/front/myFavorite/query"
     const val MYFAVORITE_MATCH_QUERY = "/api/front/myFavorite/match/query"

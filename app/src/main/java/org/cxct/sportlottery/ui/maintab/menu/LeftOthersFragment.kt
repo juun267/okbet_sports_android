@@ -57,7 +57,7 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
             .setOnChildClick {
                 //改变盘口选择
                 viewModel.changeHandicap(it.data as String)
-            }
+            }.alwaysExpand()
 
         //初始化投注玩法
         binding.nodeBetRule
@@ -66,16 +66,6 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
             .setOnChildClick {
                 //更新投注玩法
                 viewModel.updateOddsChangeOption(it.data as Int)
-            }
-
-        //初始化语言切换
-        binding.nodeLanguage
-            .setTitle(getString(R.string.langugae_setting))
-            .setNodeChild(viewModel.getLanguageConfig())
-            .setOnChildClick {
-                //切换语言
-                viewModel.changeLanguage(it.data as LanguageManager.Language)
-                MainTabActivity.reStart(requireContext(), true)
-            }
+            }.alwaysExpand()
     }
 }

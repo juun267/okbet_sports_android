@@ -11,8 +11,12 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.sport.SportRepository
+import org.cxct.sportlottery.net.sport.data.RecommendLeague
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
+import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.user.odds.OddsChangeOptionRequest
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.HandicapType
@@ -25,11 +29,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.maintab.entity.NodeBean
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.LanguageManager.makeUseLanguage
-import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.OddsModeUtil
-import org.cxct.sportlottery.util.SingleLiveEvent
 
 class SportLeftMenuViewModel(
     androidContext: Application,
@@ -38,7 +39,7 @@ class SportLeftMenuViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-    sportMenuRepository: SportMenuRepository,
+    val sportMenuRepository: SportMenuRepository,
 ) : MainHomeViewModel(
     androidContext,
     userInfoRepository,
@@ -52,6 +53,11 @@ class SportLeftMenuViewModel(
 
     val betCountEvent=SingleLiveEvent<Long>()
     var totalCount=0
+    private val _inplayList = MutableLiveData<List<Item>>()
+    val inplayList: LiveData<List<Item>>
+        get() = _inplayList
+    val recommendLeagueEvent = SingleLiveEvent<List<RecommendLeague>>()
+
     fun isLogin(): Boolean {
         return loginRepository.isLogined()
     }
@@ -239,13 +245,23 @@ class SportLeftMenuViewModel(
         }
     }
 
-
-    /**
-     * 很哈人的黑夜模式
-     */
-//    fun changeUIMode(isNightMode:Boolean){
-////        val application=MultiLanguagesApplication.appContext as MultiLanguagesApplication
-////        application.setNightMode(isNightMode)
-//    }
+    fun getInPlayList() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                sportMenuRepository.getSportMenu(
+                    TimeUtil.getNowTimeStamp().toString(),
+                    TimeUtil.getTodayStartTimeStamp().toString()
+                )
+            }?.sportMenuData?.let { sportMenuList ->
+                _inplayList.postValue(sportMenuList.menu.inPlay.items)
+            }
+        }
+    }
+    fun getRecommendLeague() {
+        callApi({SportRepository.getRecommendLeague()}){
+            recommendLeagueEvent.postValue(it.getData())
+          LogUtil.toJson(it.getData())
+        }
+    }
 
 }

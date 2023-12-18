@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_margin="@dimen/margin_12">
+           <androidx.cardview.widget.CardView
+               android:id="@+id/cvOkLive"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               app:cardCornerRadius="@dimen/margin_12">
+               <ImageView
+                   android:id="@+id/ivOkLive"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:adjustViewBounds="true"
+                   android:src="@drawable/bg_left_menu_oklive" />
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:layout_marginLeft="@dimen/margin_24"
+                   android:textAllCaps="true"
+                   android:textSize="28sp"
+                   android:textColor="@color/color_FFFFFF"
+                   android:textFontWeight="900"
+                   android:text="@string/P160" />
+               <include
+                   android:id="@+id/maintenOkLive"
+                   android:visibility="gone"
+                   layout="@layout/view_left_menu_games_maintenance"/>
+
+           </androidx.cardview.widget.CardView>
+           <androidx.cardview.widget.CardView
+               android:id="@+id/cvOkGame"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="@dimen/margin_12"
+               app:cardCornerRadius="@dimen/margin_12">
+               <ImageView
+                   android:id="@+id/ivOkGame"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:adjustViewBounds="true"
+                   android:src="@drawable/bg_left_menu_okgame"/>
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:layout_marginLeft="@dimen/margin_24"
+                   android:textAllCaps="true"
+                   android:textSize="28sp"
+                   android:textColor="@color/color_FFFFFF"
+                   android:textFontWeight="900"
+                   android:text="@string/home_on_game" />
+               <include
+                   android:id="@+id/maintenOkGame"
+                   android:visibility="gone"
+                   layout="@layout/view_left_menu_games_maintenance"/>
+
+           </androidx.cardview.widget.CardView>
+           <androidx.cardview.widget.CardView
+               android:id="@+id/cvESport"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="@dimen/margin_12"
+               app:cardCornerRadius="@dimen/margin_12">
+               <ImageView
+                   android:id="@+id/ivESport"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:adjustViewBounds="true"
+                   android:src="@drawable/bg_left_menu_esport"/>
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:layout_marginLeft="@dimen/margin_24"
+                   android:textAllCaps="true"
+                   android:textSize="28sp"
+                   android:textColor="@color/color_FFFFFF"
+                   android:textFontWeight="900"
+                   android:text="@string/esports" />
+               <include
+                   android:id="@+id/maintenESport"
+                   android:visibility="gone"
+                   layout="@layout/view_left_menu_games_maintenance"/>
+
+           </androidx.cardview.widget.CardView>
+       </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

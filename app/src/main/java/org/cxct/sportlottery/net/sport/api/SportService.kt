@@ -2,6 +2,7 @@ package org.cxct.sportlottery.net.sport.api
 
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.sport.data.RecommendLeague
 import org.cxct.sportlottery.net.sport.data.SportCouponItem
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteAllMatchItem
@@ -24,6 +25,10 @@ interface SportService {
 
     @POST(Constants.SPORT_MENU_CATEGORYLIST)
     suspend fun getMenuCategoryList(@Body params: JsonObject): ApiResult<List<CategoryItem>>
+
+
+    @POST(Constants.SPORT_RECOMMEND_LEAGUE)
+    suspend fun getRecommendLeague(): ApiResult<List<RecommendLeague>>
 
 
 
