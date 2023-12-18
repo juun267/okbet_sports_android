@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
@@ -100,16 +101,15 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             cxt.getIconSelector(R.drawable.ic_left_menu_promo_sel, R.drawable.ic_left_menu_promo_nor),
             R.string.B005
         ){
-            close()
-            menuPromo.bindPromoClick {}
+
         }.apply {
             setVisibilityByMarketSwitch()
+            bindPromoClick()
         }
         menuAffiliate.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),
             R.string.B015
         ){
-            close()
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getAffiliateUrl(binding.root.context),
@@ -131,7 +131,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         menuSupport.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_custom_sel, R.drawable.ic_left_menu_custom_nor),
             R.string.LT050
-        ).setServiceClick(parentFragmentManager) { close() }
+        ).setServiceClick(parentFragmentManager)
 
         menuVerify.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_verify_sel, R.drawable.ic_left_menu_verify_nor),
@@ -143,10 +143,9 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
         menuAboutUs.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_aboutus_sel, R.drawable.ic_left_menu_aboutus_nor),
-            R.string.B015
+            R.string.about_us
         ){
-            close()
-            getMainTabActivity().jumpToNews()
+            cxt.startActivity(Intent(cxt, AboutMeActivity::class.java))
         }
 
         menuLanguage.setItem(
@@ -169,7 +168,6 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             cxt.getIconSelector(R.drawable.ic_left_menu_scan_sel, R.drawable.ic_left_menu_scan_nor),
             R.string.N908
         ){
-            close()
             scanQR()
         }.hideBottomLine()
 
