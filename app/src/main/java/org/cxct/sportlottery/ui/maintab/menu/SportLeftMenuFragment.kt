@@ -15,6 +15,7 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.onClick
@@ -88,18 +89,11 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
 
         //初始化顶部登录状态
         initLoginData()
-        //刷新订单数量
         if(sportBettingFragment.isVisible){
-            if(viewModel.isLogin()){
-                rumWithSlowRequest(viewModel){
-                    sportBettingFragment.viewModel.getBetRecordCount()
-                }
-            }
-        }
-        //刷新热门赛事
-        if(sportBettingFragment.isVisible){
-            sportBettingFragment.viewModel.getInPlayList()
-            sportBettingFragment.viewModel.getRecommend()
+            LogUtil.d("reloadData")
+            sportBettingFragment.getBetRecordCount()
+            sportBettingFragment.getInPlayData()
+            sportBettingFragment.getRecommendLeagueData()
         }
         if(gameFragment.isVisible){
             gameFragment.setBannerStatus()

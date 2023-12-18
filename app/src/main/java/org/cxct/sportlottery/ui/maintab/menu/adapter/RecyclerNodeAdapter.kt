@@ -20,11 +20,11 @@ class RecyclerNodeAdapter: BindingAdapter<NodeBean,ItemSingleNodeBinding>() {
             binding.ivIcon.load(item.icon)
         }
         if(item.select){
-            binding.ivCheckBox.setImageResource(R.drawable.ic_filter_check_sel)
+            binding.ivCheckBox.setImageResource(R.drawable.ic_check_circle_sel)
             binding.tvName.setColors(R.color.color_025BE8)
             binding.tvName.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
         }else{
-            binding.ivCheckBox.setImageResource(R.drawable.ic_filter_check_nor)
+            binding.ivCheckBox.setImageResource(R.drawable.ic_check_circle_nor)
             binding.tvName.setColors(R.color.color_6D7693)
             binding.tvName.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
         }
