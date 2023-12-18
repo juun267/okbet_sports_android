@@ -102,7 +102,7 @@ class MatchTableAdapter(private val onSelected:(Pair<Int, Sport>) -> Unit)
     }
 
     override fun setNewInstance(list: MutableList<Pair<Int, Sport>>?) {
-        changeSelected(list?.first(), 0)
+        changeSelected(list?.getOrNull(0), 0)
         super.setNewInstance(list)
     }
 
