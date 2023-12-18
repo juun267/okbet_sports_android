@@ -3,7 +3,9 @@ package org.cxct.sportlottery.ui.maintab.menu
 import android.Manifest
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.view.View
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.budiyev.android.codescanner.BarcodeUtils
@@ -23,6 +25,7 @@ import org.cxct.sportlottery.ui.news.SportNewsActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.PictureSelectUtil
 import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
@@ -74,10 +77,17 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
             requireContext().getIconSelector(R.drawable.ic_left_menu_language_sel, R.drawable.ic_left_menu_language_nor),
             R.string.M169
         ){
-            menuLanguage.isSelected = !rvLanguage.isVisible
-            if (menuLanguage.isSelected){
-                showLanguageList()
-            }
+            initLanguageList()
+            val selected = rvLanguage.isGone
+            menuLanguage.isSelected = selected
+            menuLanguage.isEnabled = false
+            menuLanguage.showBottomLine(!selected)
+            rvLanguage.isVisible = selected
+            menuLanguage.ivArrow()
+                .animate()
+                .rotation(if (selected) 90f else 0f)
+                .withEndAction { menuLanguage.isEnabled = true }
+                .start()
         }
         menuAnnouncement.setItem(
             requireContext().getIconSelector(R.drawable.ic_left_menu_announcement_nor, R.drawable.ic_left_menu_announcement_nor),
@@ -104,7 +114,7 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
                 Constants.getGameRuleUrl(requireContext()),
                 getString(R.string.game_rule)
             )
-        }.hideBottomLine()
+        }.showBottomLine(false)
 
     }
     private fun scanQR() {
@@ -116,8 +126,7 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
                     startActivity(Intent(requireContext(), ScannerActivity::class.java))
                 } else {
                     ToastUtil.showToast(
-                        requireContext(),
-                        LocalUtils.getString(R.string.N980)
+                        requireContext(), getString(R.string.N980)
                     )
                 }
             }.isDisposed
@@ -154,14 +163,13 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
             })
 
     }
-    private fun showLanguageList() {
-        binding.rvLanguage.visible()
+    private fun initLanguageList() {
         if (binding.rvLanguage.adapter != null) {
             return
         }
-
         val languageAdapter = LanguageAdapter(LanguageManager.makeUseLanguage())
-        binding.rvLanguage.layoutManager = GridLayoutManager(context, 2)
+        binding.rvLanguage.layoutManager = GridLayoutManager(requireContext(),2)
+        binding.rvLanguage.addItemDecoration(GridItemDecoration(8.dp, 10.dp, Color.TRANSPARENT,false))
         binding.rvLanguage.adapter = languageAdapter
         languageAdapter.setOnItemClickListener { adapter, _, position ->
             viewModel.betInfoRepository.clear()

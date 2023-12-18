@@ -35,8 +35,8 @@ class MainMenuItemView (context: Context, attrs: AttributeSet) : LinearLayout(co
         binding.ivArrow.gone()
     }
 
-    fun hideBottomLine() {
-        binding.bottomLine.gone()
+    fun showBottomLine(isVisible: Boolean) {
+        binding.bottomLine.isVisible = isVisible
     }
 
     fun setSummaryStatus(enable: Boolean, text: Int, statusColor: Int) {

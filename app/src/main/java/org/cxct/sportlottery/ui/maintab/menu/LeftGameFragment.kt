@@ -86,7 +86,7 @@ class LeftGameFragment: BindingFragment<MainViewModel,FragmentLeftSportGameBindi
         ){
             close()
             loginedRun(requireContext()) { startActivity(VerifyIdentityActivity::class.java) }
-        }.hideBottomLine()
+        }.showBottomLine(false)
     }
     fun close() {
         getMainTabActivity().closeDrawerLayout()

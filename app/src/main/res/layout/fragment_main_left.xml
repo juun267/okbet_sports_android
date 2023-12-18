@@ -41,12 +41,6 @@
 
     </FrameLayout>
 
-    <org.cxct.sportlottery.ui.maintab.home.view.HomePromotionView
-        android:id="@+id/promotionView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -56,8 +50,13 @@
             android:id="@+id/llMenuRoot"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="false"
             android:orientation="vertical">
+
+            <org.cxct.sportlottery.ui.maintab.home.view.HomePromotionView
+                android:id="@+id/promotionView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"/>
 
             <TextView
                 android:text="@string/N711"
@@ -158,8 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_8"
-                android:paddingHorizontal="22dp"
-                android:background="@color/color_EEF3FC"
+                android:paddingHorizontal="12dp"
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
@@ -171,14 +169,8 @@
                 android:id="@+id/menuScan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="12dp"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginHorizontal="22dp"
-                android:layout_marginBottom="100dp"
-                android:background="@color/color_EEF3FC"/>
+                android:paddingHorizontal="12dp"
+                android:layout_marginBottom="@dimen/margin_20"/>
 
 
         </LinearLayout>

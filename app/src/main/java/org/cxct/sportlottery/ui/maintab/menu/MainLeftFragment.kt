@@ -3,8 +3,9 @@ package org.cxct.sportlottery.ui.maintab.menu
 import android.Manifest
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
+import android.graphics.Color
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,7 +15,7 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.startActivity
-import org.cxct.sportlottery.databinding.FragmentMainLeft2Binding
+import org.cxct.sportlottery.databinding.FragmentMainLeftBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.StaticData
@@ -33,14 +34,14 @@ import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.drawable.DrawableCreator
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.MainMenuItemView
 import org.cxct.sportlottery.view.PictureSelectUtil
 import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
 import timber.log.Timber
 
-class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Binding>() {
+class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>() {
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
 
@@ -95,7 +96,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             getMainTabActivity().jumpToOkLive()
         }.apply {
             isVisible = !getMarketSwitch() && StaticData.okBingoOpened()
-            hideBottomLine()
+            showBottomLine(false)
         }
         menuPromo.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_promo_sel, R.drawable.ic_left_menu_promo_nor),
@@ -156,6 +157,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             val selected = rvLanguage.isGone
             menuLanguage.isSelected = selected
             menuLanguage.isEnabled = false
+            menuLanguage.showBottomLine(!selected)
             rvLanguage.isVisible = selected
             menuLanguage.ivArrow()
                 .animate()
@@ -169,7 +171,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.string.N908
         ){
             scanQR()
-        }.hideBottomLine()
+        }.showBottomLine(false)
 
     }
 
@@ -210,7 +212,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     }
 
     private fun initView() = binding.run {
-        promotionView.setup(this@MainLeftFragment2 as BaseFragment<MainHomeViewModel>)
+        promotionView.setup(this@MainLeftFragment as BaseFragment<MainHomeViewModel>)
         ivClose.setOnClickListener { close() }
         ivHome.setOnClickListener {
             getMainTabActivity().backMainHome()
@@ -224,8 +226,8 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
 
         val languageAdapter = LanguageAdapter(LanguageManager.makeUseLanguage())
-//        languageItem.tvName.text = LanguageManager.getLanguageStringResource(context)
         binding.rvLanguage.layoutManager = GridLayoutManager(context, 2)
+        binding.rvLanguage.addItemDecoration(GridItemDecoration(8.dp, 10.dp, Color.TRANSPARENT,false))
         binding.rvLanguage.adapter = languageAdapter
         languageAdapter.setOnItemClickListener { adapter, _, position ->
             viewModel.betInfoRepository.clear()
@@ -258,29 +260,41 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
         when (userInfo?.verified) {
             ProfileActivity.VerifiedType.PASSED.value -> {
-                setVerify(true, true,
-                    R.string.kyc_passed,
-                    resources.getColor(R.color.color_1CD219))
+                setVerify(enable = true, clickAble = true,
+                    text = R.string.kyc_passed,
+                    statusColor = ContextCompat.getColor(requireContext(),R.color.color_1CD219))
 
             }
             ProfileActivity.VerifiedType.NOT_YET.value,ProfileActivity.VerifiedType.VERIFIED_FAILED.value -> {
-                setVerify(true, true,
-                    R.string.kyc_unverified,
-                    resources.getColor(R.color.color_FF2E00))
+                setVerify(enable = true, clickAble = true,
+                    text = R.string.kyc_unverified,
+                    statusColor = ContextCompat.getColor(requireContext(),R.color.color_FF2E00))
             }
             ProfileActivity.VerifiedType.VERIFYING.value,ProfileActivity.VerifiedType.VERIFIED_WAIT.value -> {
-                setVerify(true, true, R.string.kyc_unverifing, resources.getColor(R.color.color_6D7693))
+                setVerify(enable = true,
+                    clickAble = true,
+                    text = R.string.kyc_unverifing,
+                    statusColor = resources.getColor(R.color.color_6D7693))
 
             }
             ProfileActivity.VerifiedType.REVERIFIED_NEED.value -> {
-                setVerify(true, true, R.string.P211, resources.getColor(R.color.color_6D7693))
+                setVerify(enable = true,
+                    clickAble = true,
+                    text = R.string.P211,
+                    statusColor = resources.getColor(R.color.color_6D7693))
 
             }
             ProfileActivity.VerifiedType.REVERIFYING.value -> {
-                setVerify(true, true, R.string.P196, resources.getColor(R.color.color_6D7693))
+                setVerify(enable = true,
+                    clickAble = true,
+                    text = R.string.P196,
+                    statusColor = resources.getColor(R.color.color_6D7693))
             }
             else -> {
-                setVerify(true, true, R.string.kyc_unverified, resources.getColor(R.color.color_6D7693))
+                setVerify(enable = true,
+                    clickAble = true,
+                    text = R.string.kyc_unverified,
+                    statusColor = resources.getColor(R.color.color_6D7693))
             }
         }
     }

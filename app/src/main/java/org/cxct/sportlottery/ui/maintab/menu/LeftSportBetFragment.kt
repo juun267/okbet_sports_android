@@ -143,7 +143,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         ){
             close()
             loginedRun(requireContext()) { startActivity(VerifyIdentityActivity::class.java) }
-        }.hideBottomLine()
+        }.showBottomLine(false)
     }
     /**
      * 请求滚球类型列表
