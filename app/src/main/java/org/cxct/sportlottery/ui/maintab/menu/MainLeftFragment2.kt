@@ -3,31 +3,17 @@ package org.cxct.sportlottery.ui.maintab.menu
 import android.Manifest
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.LinearLayout.LayoutParams
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.budiyev.android.codescanner.BarcodeUtils
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.fragment_main_left2.*
-import kotlinx.android.synthetic.main.item_view_payment_method.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.extentions.startActivity
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentMainLeft2Binding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
@@ -46,7 +32,6 @@ import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.view.MainMenuItemView
 import org.cxct.sportlottery.view.PictureSelectUtil
@@ -147,7 +132,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
         menuNews.setItem(
             getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),
-            R.string.B015
+            R.string.N909
         ){
             lastItem=menuNews
             close()
@@ -174,14 +159,21 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             close()
             getMainTabActivity().jumpToNews()
         }
+
         menuLanguage.setItem(
             getIconSelector(R.drawable.ic_left_menu_language_sel, R.drawable.ic_left_menu_language_nor),
             R.string.M169
-        ){
-            menuLanguage.isSelected = !rvLanguage.isVisible
-            if (menuLanguage.isSelected){
-                showLanguageList()
-            }
+        ) {
+            initLanguageList()
+            val selected = rvLanguage.isGone
+            menuLanguage.isSelected = selected
+            menuLanguage.isEnabled = false
+            rvLanguage.isVisible = selected
+            menuLanguage.ivArrow()
+                .animate()
+                .rotation(if (selected) 90f else 0f)
+                .withEndAction { menuLanguage.isEnabled = true }
+                .start()
         }
 
         menuScan.setItem(
@@ -239,8 +231,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
     }
 
-    private fun showLanguageList() {
-        binding.rvLanguage.visible()
+    private fun initLanguageList() {
         if (binding.rvLanguage.adapter != null) {
             return
         }
@@ -310,10 +301,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     private inline fun setVerify(enable: Boolean, clickAble: Boolean, text: Int, statusColor: Int) = binding.run  {
         menuVerify.isEnabled = enable
         menuVerify.isClickable = clickAble
-        menuVerify.binding.tvSummary.show()
-        menuVerify.binding.tvSummary.setText(text)
-        menuVerify.binding.tvSummary.setTextColor(statusColor)
-        menuVerify.binding.ivArrow.isVisible = enable
+        menuVerify.setSummaryStatus(enable, text, statusColor)
     }
 
     private fun scanQR() {
