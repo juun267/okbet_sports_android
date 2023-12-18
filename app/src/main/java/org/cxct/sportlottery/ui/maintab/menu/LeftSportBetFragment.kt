@@ -2,11 +2,13 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.event.SelectMatchEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -23,11 +25,13 @@ import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerLeftMatchesAdapter
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.rumWithSlowRequest
 import org.cxct.sportlottery.view.updateLastRequestTime
+import org.greenrobot.eventbus.EventBus
 
 class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftSportBetBinding>() {
 
@@ -94,10 +98,13 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         layoutManager=LinearLayoutManager(requireContext())
         adapter=hotMatchAdapter
         hotMatchAdapter.setOnItemClickListener{_,_,position->
-//            //item点击进入详情
-//            SportDetailActivity.startActivity(requireContext(),
-//                matchInfo = hotMatchAdapter.data[position].matchInfo!!,
-//                matchType = MatchType.IN_PLAY)
+//            //item点击进入体育大厅早盘下，指定的联赛
+            val itemData = hotMatchAdapter.data[position]
+            close()
+            getMainTabActivity().jumpToTheSport(MatchType.EARLY, GameType.getGameType(itemData.gameType))
+            postDelayed(500){
+               EventBus.getDefault().post(SelectMatchEvent(leagueIds = arrayListOf(itemData.id), matchIds = arrayListOf()))
+            }
         }
     }
     private fun initMenuItems() = binding.run {
