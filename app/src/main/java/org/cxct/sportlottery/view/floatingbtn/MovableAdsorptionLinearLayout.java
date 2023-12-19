@@ -15,6 +15,9 @@ import android.widget.LinearLayout;
  *
  * add 左右吸附功能 20211007 by Dean
  */
+
+//"给要实现拖动左右吸附动view设置自定义OnTouchListener即可(View.setOnTouchListener(SuckEdgeTouch()))"
+@Deprecated
 public class MovableAdsorptionLinearLayout extends LinearLayout implements View.OnTouchListener {
 
     private final static float CLICK_DRAG_TOLERANCE = 10; // Often, there will be a slight, unintentional, drag when the user taps the FAB, so we need to account for this.
