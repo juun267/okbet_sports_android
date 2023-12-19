@@ -1613,4 +1613,7 @@
     <string name="P281">%s倍存款额+奖金的流水</string>
     <string name="P282">你将收到额外的</string>
     <string name="terms_conditions_short">规则与条款</string>
+    <string name="bet_info_no_parlay_hint_for_play_cate">玩法暂无支持串关</string> <!--A409-->
+    <string name="your_bet_order_play_cate_cannot_parlay">下注失败:玩法暂无支持串关</string> <!--A410-->
+
 </resources>
