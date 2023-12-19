@@ -19,7 +19,7 @@ object LocalUtils {
 
     fun getLocalizedContext(): Context {
         val context = MultiLanguagesApplication.appContext
-        val locale = LanguageManager.getSetLanguageLocale(context)
+        val locale = LanguageManager.getSetLanguageLocale()
         var conf = context.resources.configuration
         conf = Configuration(conf)
         conf.setLocale(locale)
