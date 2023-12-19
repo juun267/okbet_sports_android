@@ -31,12 +31,15 @@ class LeftGameFragment: BindingFragment<MainViewModel,FragmentLeftSportGameBindi
     }
     private fun initBanners() = binding.run{
         cvOkLive.setOnClickListener {
+            close()
             getMainTabActivity().jumpToOkLive()
         }
         cvOkGame.setOnClickListener {
+            close()
             getMainTabActivity().jumpToOKGames()
         }
         cvESport.setOnClickListener {
+            close()
             getMainTabActivity().jumpToESport()
         }
     }
