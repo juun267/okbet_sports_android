@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,6 +18,9 @@ import org.cxct.sportlottery.databinding.FragmentLeftSportBetBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.user.UserInfo
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -24,6 +28,8 @@ import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerInPlayAdapter
 import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerLeftMatchesAdapter
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.util.*
@@ -66,8 +72,10 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
     }
 
     private fun initObservable() {
+        viewModel.userInfo.observe(this) {
+            bindVerifyStatus(userInfo = it)
+        }
         viewModel.betCountEvent.observe(this){
-            binding.constrainBetRecord.isVisible = viewModel.totalCount>0
             binding.tvRecordNumber.text="${viewModel.totalCount}"
         }
         viewModel.recommendLeague.observe(this){
@@ -113,7 +121,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
             R.string.B005
         ){
             close()
-            menuPromo.bindPromoClick {}
+            startActivity(PromotionListActivity::class.java)
         }.apply {
             setVisibilityByMarketSwitch()
         }
@@ -133,7 +141,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
 
         menuNews.setItem(
             requireContext().getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),
-            R.string.B015
+            R.string.N909
         ){
             close()
             getMainTabActivity().jumpToNews()
@@ -149,8 +157,66 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
             R.string.N914
         ){
             close()
-            loginedRun(requireContext()) { startActivity(VerifyIdentityActivity::class.java) }
+            if (LoginRepository.isLogined()){
+                startActivity(VerifyIdentityActivity::class.java)
+            }else{
+                requireActivity().startLogin()
+            }
         }.showBottomLine(false)
+    }
+    private fun bindVerifyStatus(userInfo: UserInfo?) = binding.run {
+        if (getMarketSwitch()) {
+            menuVerify.setVisibilityByMarketSwitch()
+            return@run
+        }
+        menuVerify.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
+                || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
+
+        when (userInfo?.verified) {
+            ProfileActivity.VerifiedType.PASSED.value -> {
+                setVerify(enable = true, clickAble = true,
+                    text = R.string.kyc_passed,
+                    statusColor = ContextCompat.getColor(requireContext(),R.color.color_1CD219))
+
+            }
+            ProfileActivity.VerifiedType.NOT_YET.value, ProfileActivity.VerifiedType.VERIFIED_FAILED.value -> {
+                setVerify(enable = true, clickAble = true,
+                    text = R.string.kyc_unverified,
+                    statusColor = ContextCompat.getColor(requireContext(),R.color.color_FF2E00))
+            }
+            ProfileActivity.VerifiedType.VERIFYING.value, ProfileActivity.VerifiedType.VERIFIED_WAIT.value -> {
+                setVerify(enable = true,
+                    clickAble = true,
+                    text = R.string.kyc_unverifing,
+                    statusColor = resources.getColor(R.color.color_6D7693))
+
+            }
+            ProfileActivity.VerifiedType.REVERIFIED_NEED.value -> {
+                setVerify(enable = true,
+                    clickAble = true,
+                    text = R.string.P211,
+                    statusColor = resources.getColor(R.color.color_6D7693))
+
+            }
+            ProfileActivity.VerifiedType.REVERIFYING.value -> {
+                setVerify(enable = true,
+                    clickAble = true,
+                    text = R.string.P196,
+                    statusColor = resources.getColor(R.color.color_6D7693))
+            }
+            else -> {
+                setVerify(enable = true,
+                    clickAble = true,
+                    text = R.string.kyc_unverified,
+                    statusColor = resources.getColor(R.color.color_FF2E00))
+            }
+        }
+    }
+
+    private inline fun setVerify(enable: Boolean, clickAble: Boolean, text: Int, statusColor: Int) = binding.run  {
+        menuVerify.isEnabled = enable
+        menuVerify.isClickable = clickAble
+        menuVerify.setSummaryStatus(enable, text, statusColor)
     }
     /**
      * 请求滚球类型列表
@@ -170,8 +236,6 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
                 updateLastRequestTime()
                 viewModel.getBetRecordCount()
             }
-        }else{
-            binding.constrainBetRecord.gone()
         }
     }
     fun close() {

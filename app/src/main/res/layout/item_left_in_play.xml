@@ -18,10 +18,7 @@
 
     <TextView
         android:id="@+id/tvSportName"
-        android:paddingTop="2dp"
         android:text="Bet record"
-        android:fontFamily="@font/helvetica_normal"
-        android:paddingBottom="6dp"
         app:layout_constraintStart_toEndOf="@+id/ivCover"
         app:layout_constraintTop_toTopOf="@+id/ivCover"
         android:paddingStart="8dp"
@@ -47,7 +44,9 @@
     <ImageView
         android:src="@drawable/ic_arrow_left"
         app:layout_constraintStart_toEndOf="@+id/tvSportNum"
-        app:layout_constraintTop_toBottomOf="@+id/tvSportName"
+        app:layout_constraintTop_toTopOf="@+id/tvSportNum"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSportNum"
+        android:layout_marginLeft="@dimen/margin_2"
         android:layout_width="16dp"
         android:layout_height="16dp"/>
 

@@ -77,6 +77,14 @@ class SportNodeView(context: Context, attrs: AttributeSet) :LinearLayout(context
         binding.tvTitle.text=title
         return  this
     }
+    /**
+     * 隐藏底线
+     */
+    fun hideBottomLine():SportNodeView{
+        //标题
+        binding.vBottomLine.gone()
+        return  this
+    }
 
 
     /**

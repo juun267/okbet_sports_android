@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.menu
 import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.view.View
+import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone
@@ -64,22 +65,22 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
             requireActivity().startLogin()
             close()
         }
-
-        ivTopCover.onClick {
-
-        }
         tvLogin.text="${getString(R.string.btn_login)}/${getString(R.string.btn_register)}"
     }
 
     override fun onInitData() {
         super.onInitData()
         //默认选中sport betting
-       binding.linearBetting.performClick()
+        binding.linearBetting.performClick()
         reloadData()
-
         EventBusUtil.targetLifecycle(this)
 
+    }
 
+    override fun onBindViewStatus(view: View) {
+        super.onBindViewStatus(view)
+        initObservable()
+        viewModel.getSportCount()
     }
 
     fun reloadData(){
@@ -90,7 +91,6 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         //初始化顶部登录状态
         initLoginData()
         if(sportBettingFragment.isVisible){
-            LogUtil.d("reloadData")
             sportBettingFragment.getBetRecordCount()
             sportBettingFragment.getInPlayData()
             sportBettingFragment.getRecommendLeagueData()
@@ -135,7 +135,11 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
             }
         }
     }
-
+    private fun initObservable() {
+        viewModel.sportCountEvent.observe(this) {
+            binding.tvTabBettingCount.text = "$it"
+        }
+    }
     /**
      * 切换tab
      */
@@ -166,35 +170,32 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
 
 
     private fun clearTabStyle(index:Int){
-        binding.tvTabBetting.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
-        binding.tvTabInPlay.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
-        binding.tvTabOthers.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
         binding.ivTabBetting.inVisible()
         binding.ivTabInPlay.inVisible()
         binding.ivTabOthers.inVisible()
-        binding.tvTabBetting.setColors(R.color.color_6D7693)
-        binding.tvTabInPlay.setColors(R.color.color_6D7693)
-        binding.tvTabOthers.setColors(R.color.color_6D7693)
+        binding.tvTabBetting.setColors(R.color.color_0D2245)
+        binding.tvTabInPlay.setColors(R.color.color_0D2245)
+        binding.tvTabOthers.setColors(R.color.color_0D2245)
         selectTabStyle(index)
     }
 
     private fun selectTabStyle(index:Int){
         when(index){
             0->{
-                binding.tvTabBetting.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
                 binding.tvTabBetting.setColors(R.color.color_025BE8)
                 binding.ivTabBetting.visible()
             }
             1->{
-                binding.tvTabInPlay.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
                 binding.tvTabInPlay.setColors(R.color.color_025BE8)
                 binding.ivTabInPlay.visible()
             }
             2->{
-                binding.tvTabOthers.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
                 binding.tvTabOthers.setColors(R.color.color_025BE8)
                 binding.ivTabOthers.visible()
             }
         }
+    }
+    fun getSportCount(){
+        viewModel.getSportCount()
     }
 }

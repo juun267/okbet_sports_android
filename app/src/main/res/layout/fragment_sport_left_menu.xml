@@ -6,89 +6,70 @@
     android:background="@color/color_FFFFFF"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/ivTopCover"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_width="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg_sport_left2_top"
-        android:layout_height="138dp"/>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="138dp"
+       android:gravity="center_vertical"
+       app:layout_constraintTop_toTopOf="parent"
+       android:paddingHorizontal="@dimen/margin_12"
+       android:paddingTop="30dp"
+       android:background="@drawable/bg_sport_left2_top">
+       <com.makeramen.roundedimageview.RoundedImageView
+           android:id="@+id/ivUserCover"
+           android:layout_width="60dp"
+           android:layout_height="60dp"
+           android:scaleType="fitXY"
+           android:src="@drawable/ic_person_avatar"
+           app:riv_border_width="1dp"
+           app:riv_border_color="@color/color_BEC7DC"
+           app:riv_oval="true" />
+       <LinearLayout
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:orientation="vertical"
+           android:layout_marginHorizontal="@dimen/margin_8">
+           <TextView
+               android:id="@+id/tvUserName"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="User_324212"
+               android:textSize="14sp"
+               android:layout_marginBottom="@dimen/margin_8"
+               android:textColor="@color/color_6D7693" />
+           <TextView
+               android:id="@+id/tvLogin"
+               android:text="Login/Register"
+               android:textStyle="bold"
+               android:visibility="gone"
+               android:textSize="16sp"
+               android:textColor="@color/color_313F56"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
 
-    <ImageView
-        android:id="@+id/ivHome"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/ivClose"
-        android:src="@drawable/ic_circle_home2"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="54dp"
-        android:scaleType="centerCrop"
-        android:layout_width="40dp"
-        android:layout_height="40dp"/>
-
-    <ImageView
-        android:id="@+id/ivClose"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/ic_sport_left_close"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="54dp"
-        android:scaleType="centerCrop"
-        android:layout_width="40dp"
-        android:layout_height="40dp"/>
-
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/ivUserCover"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="62dp"
-        android:layout_marginStart="12dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_person_avatar"
-        app:riv_oval="true" />
-
-
-    <TextView
-        android:id="@+id/tvUserName"
-        app:layout_constraintLeft_toRightOf="@+id/ivUserCover"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingTop="70dp"
-        android:paddingLeft="8dp"
-        android:text="User_324212"
-        android:textSize="14sp"
-        android:textColor="@color/color_6D7693"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    .
-    <TextView
-        android:id="@+id/tvLogin"
-        app:layout_constraintLeft_toRightOf="@+id/ivUserCover"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingTop="81dp"
-        android:paddingLeft="8dp"
-        android:text="Login/Register"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:textSize="16sp"
-        android:textColor="@color/color_313F56"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/tvUserBalance"
-        app:layout_constraintLeft_toRightOf="@+id/ivUserCover"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingTop="96dp"
-        android:paddingLeft="8dp"
-        android:text="₱ 95,5455,21"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@color/color_313F56"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+           <TextView
+               android:id="@+id/tvUserBalance"
+               android:text="₱ 95,5455,21"
+               android:textSize="14sp"
+               android:textStyle="bold"
+               android:textColor="@color/color_313F56"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+       </LinearLayout>
+       <ImageView
+           android:id="@+id/ivHome"
+           android:src="@drawable/ic_circle_home2"
+           android:layout_marginRight="12dp"
+           android:scaleType="centerCrop"
+           android:layout_width="40dp"
+           android:layout_height="40dp"/>
+       <ImageView
+           android:id="@+id/ivClose"
+           android:src="@drawable/ic_sport_left_close"
+           android:scaleType="centerCrop"
+           android:layout_width="40dp"
+           android:layout_height="40dp"/>
+   </LinearLayout>
 
     <LinearLayout
         android:id="@+id/llayoutTab"

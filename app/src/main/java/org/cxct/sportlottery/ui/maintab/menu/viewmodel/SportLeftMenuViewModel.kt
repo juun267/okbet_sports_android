@@ -58,6 +58,7 @@ class SportLeftMenuViewModel(
 
     val recommendLeague = SingleLiveEvent<List<RecommendLeague>>()
 
+    val sportCountEvent=SingleLiveEvent<Int>()
 
     fun isLogin(): Boolean {
         return loginRepository.isLogined()
@@ -261,6 +262,17 @@ class SportLeftMenuViewModel(
     fun getRecommendLeague() {
         callApi({SportRepository.getRecommendLeague()}){
             recommendLeague.postValue(it.getData())
+        }
+    }
+
+    /**
+     * 滚球+早盘+冠军
+     */
+    fun getSportCount() {
+        callApi({SportRepository.getSportMenu(true)}){
+            it.getData()?.menu?.let {
+                sportCountEvent.postValue(it.inPlay.num+it.early.num+it.outright.num)
+            }
         }
     }
 

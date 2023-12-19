@@ -18,7 +18,7 @@
             android:background="@drawable/bg_bet_record"
             android:foreground="@drawable/fg_ripple"
             android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:layout_height="58dp">
 
             <ImageView
@@ -36,7 +36,7 @@
                 android:text="@string/N944"
                 app:layout_constraintStart_toEndOf="@+id/ivBetRecord"
                 app:layout_constraintTop_toTopOf="parent"
-                android:textColor="@color/color_00181E"
+                android:textColor="@color/color_0D2245"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="@dimen/margin_8"
                 android:layout_marginTop="@dimen/margin_8"
@@ -84,7 +84,7 @@
             android:id="@+id/tvInplay"
             android:text="@string/home_in_play"
             android:paddingStart="12dp"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/color_0D2245"
             android:paddingTop="16dp"
             android:paddingBottom="8dp"

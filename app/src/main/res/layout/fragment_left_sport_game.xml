@@ -10,13 +10,9 @@
         android:id="@+id/content"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_12">
 
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="vertical"
-           android:layout_margin="@dimen/margin_12">
            <androidx.cardview.widget.CardView
                android:id="@+id/cvOkLive"
                android:layout_width="match_parent"
@@ -34,6 +30,7 @@
                    android:layout_gravity="center_vertical"
                    android:layout_marginLeft="@dimen/margin_24"
                    android:textAllCaps="true"
+                   android:fontFamily="@font/inter_bold"
                    android:textSize="28sp"
                    android:textColor="@color/color_FFFFFF"
                    android:textFontWeight="900"
@@ -62,6 +59,7 @@
                    android:layout_gravity="center_vertical"
                    android:layout_marginLeft="@dimen/margin_24"
                    android:textAllCaps="true"
+                   android:fontFamily="@font/inter_bold"
                    android:textSize="28sp"
                    android:textColor="@color/color_FFFFFF"
                    android:textFontWeight="900"
@@ -90,6 +88,7 @@
                    android:layout_gravity="center_vertical"
                    android:layout_marginLeft="@dimen/margin_24"
                    android:textAllCaps="true"
+                   android:fontFamily="@font/inter_bold"
                    android:textSize="28sp"
                    android:textColor="@color/color_FFFFFF"
                    android:textFontWeight="900"
@@ -100,37 +99,36 @@
                    layout="@layout/view_left_menu_games_maintenance"/>
 
            </androidx.cardview.widget.CardView>
-       </LinearLayout>
-        <TextView
-            android:text="@string/other"
-            android:textSize="14sp"
-            android:textColor="@color/color_0D2245"
-            android:layout_marginHorizontal="@dimen/margin_12"
-            android:paddingTop="16dp"
-            android:paddingBottom="8dp"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <org.cxct.sportlottery.view.MainMenuItemView
-            android:id="@+id/menuPromo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <org.cxct.sportlottery.view.MainMenuItemView
-            android:id="@+id/menuAffiliate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <org.cxct.sportlottery.view.MainMenuItemView
-            android:id="@+id/menuNews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <org.cxct.sportlottery.view.MainMenuItemView
-            android:id="@+id/menuSupport"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <org.cxct.sportlottery.view.MainMenuItemView
-            android:id="@+id/menuVerify"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"/>
+           <TextView
+               android:text="@string/other"
+               android:textSize="14sp"
+               android:textColor="@color/color_0D2245"
+               android:layout_marginHorizontal="@dimen/margin_12"
+               android:paddingTop="16dp"
+               android:paddingBottom="8dp"
+               android:textStyle="bold"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+           <org.cxct.sportlottery.view.MainMenuItemView
+               android:id="@+id/menuPromo"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+           <org.cxct.sportlottery.view.MainMenuItemView
+               android:id="@+id/menuAffiliate"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+           <org.cxct.sportlottery.view.MainMenuItemView
+               android:id="@+id/menuNews"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+           <org.cxct.sportlottery.view.MainMenuItemView
+               android:id="@+id/menuSupport"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+           <org.cxct.sportlottery.view.MainMenuItemView
+               android:id="@+id/menuVerify"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="20dp"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

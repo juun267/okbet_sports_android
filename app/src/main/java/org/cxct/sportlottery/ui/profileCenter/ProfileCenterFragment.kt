@@ -16,6 +16,7 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
@@ -41,6 +42,7 @@ import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.redeem.RedeemActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
@@ -262,7 +264,9 @@ class ProfileCenterFragment :
             startActivity(Intent(requireActivity(), FinanceActivity::class.java))
         }
         //優惠活動
-        btn_promotion.bindPromoClick()
+        btn_promotion.setOnClickListener {
+            startActivity(PromotionListActivity::class.java)
+        }
         //代理加盟
         btn_affiliate.setOnClickListener {
             JumpUtil.toInternalWeb(

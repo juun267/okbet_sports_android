@@ -1,90 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll"
-        android:layout_above="@+id/constrainBottom"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_12"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <org.cxct.sportlottery.view.SportNodeView
+            android:id="@+id/nodeHandicap"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="@dimen/margin_20">
+            android:layout_height="wrap_content" />
 
-            <org.cxct.sportlottery.view.SportNodeView
-                android:id="@+id/nodeHandicap"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginHorizontal="@dimen/margin_12"
-                android:background="@color/color_EEF3FC"/>
-            <org.cxct.sportlottery.view.SportNodeView
-                android:id="@+id/nodeBetRule"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginHorizontal="@dimen/margin_12"
-                android:background="@color/color_EEF3FC"/>
-            <TextView
-                android:text="@string/other"
-                android:textSize="14sp"
-                android:textColor="@color/color_0D2245"
-                android:layout_marginHorizontal="@dimen/margin_12"
-                android:paddingTop="16dp"
-                android:paddingBottom="8dp"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuAboutUs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuScan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuLanguage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvLanguage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_8"
-                android:paddingHorizontal="@dimen/margin_12"
-                android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
-                tools:itemCount="4"
-                tools:listitem="@layout/item_language"
-                tools:visibility="visible" />
-            <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuAnnouncement"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuResult"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuRules"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:background="@color/color_EEF3FC" />
 
-        </LinearLayout>
+        <org.cxct.sportlottery.view.SportNodeView
+            android:id="@+id/nodeBetRule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    </androidx.core.widget.NestedScrollView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:background="@color/color_EEF3FC" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:text="@string/other"
+            android:textColor="@color/color_0D2245"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-</RelativeLayout>
+        <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuAboutUs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLanguage"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_language"
+            tools:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:paddingHorizontal="@dimen/margin_12"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2" />
+
+        <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuAnnouncement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuRules"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

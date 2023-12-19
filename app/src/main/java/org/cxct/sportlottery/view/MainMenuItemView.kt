@@ -16,7 +16,7 @@ import splitties.systemservices.layoutInflater
 class MainMenuItemView (context: Context, attrs: AttributeSet) : LinearLayout(context, attrs)  {
 
     private val binding = ViewMainMenuItemBinding.inflate(layoutInflater,this)
-
+    private var boldSelected = true
     init {
         orientation= VERTICAL
         foreground = context.getDrawable(R.drawable.fg_ripple)
@@ -46,8 +46,14 @@ class MainMenuItemView (context: Context, attrs: AttributeSet) : LinearLayout(co
         binding.ivArrow.isVisible = enable
     }
 
+    fun setBoldSelected(bold: Boolean){
+        boldSelected = false
+    }
+
     override fun setSelected(selected: Boolean) {
         super.setSelected(selected)
-        binding.tvName.typeface = if (selected) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+        if (boldSelected) {
+            binding.tvName.typeface = if (selected) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+        }
     }
 }

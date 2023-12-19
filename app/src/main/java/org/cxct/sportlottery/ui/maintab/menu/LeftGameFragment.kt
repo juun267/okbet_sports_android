@@ -13,6 +13,7 @@ import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.*
 
 class LeftGameFragment: BindingFragment<MainViewModel,FragmentLeftSportGameBinding>() {
@@ -20,10 +21,25 @@ class LeftGameFragment: BindingFragment<MainViewModel,FragmentLeftSportGameBindi
     private inline fun getMainTabActivity() = activity as MainTabActivity
 
     override fun onInitView(view: View) {
-        setBannerStatus()
+        initBanners()
         initMenuItems()
     }
 
+    override fun onBindViewStatus(view: View) {
+        super.onBindViewStatus(view)
+        setBannerStatus()
+    }
+    private fun initBanners() = binding.run{
+        cvOkLive.setOnClickListener {
+            getMainTabActivity().jumpToOkLive()
+        }
+        cvOkGame.setOnClickListener {
+            getMainTabActivity().jumpToOKGames()
+        }
+        cvESport.setOnClickListener {
+            getMainTabActivity().jumpToESport()
+        }
+    }
     fun setBannerStatus() = binding.run{
         if (StaticData.okLiveOpened()){
             cvOkLive.show()
@@ -49,7 +65,7 @@ class LeftGameFragment: BindingFragment<MainViewModel,FragmentLeftSportGameBindi
             R.string.B005
         ){
             close()
-            menuPromo.bindPromoClick {}
+            startActivity(PromotionListActivity::class.java)
         }.apply {
             setVisibilityByMarketSwitch()
         }
@@ -69,7 +85,7 @@ class LeftGameFragment: BindingFragment<MainViewModel,FragmentLeftSportGameBindi
 
         menuNews.setItem(
             requireContext().getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),
-            R.string.B015
+            R.string.N909
         ){
             close()
             getMainTabActivity().jumpToNews()

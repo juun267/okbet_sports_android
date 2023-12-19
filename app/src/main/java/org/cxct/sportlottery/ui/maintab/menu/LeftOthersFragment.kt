@@ -18,6 +18,8 @@ import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentLeftOthersBinding
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
@@ -40,6 +42,7 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
         //初始化盘口列表
         binding.nodeHandicap
             .setTitle(getString(R.string.J117))
+            .hideBottomLine()
             .setNodeChild(viewModel.getHandicapConfig())
             .setOnChildClick {
                 //改变盘口选择
@@ -49,10 +52,15 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
         //初始化投注玩法
         binding.nodeBetRule
             .setTitle(getString(R.string.str_bet_way))
+            .hideBottomLine()
             .setNodeChild(viewModel.getBettingRulesData())
             .setOnChildClick {
                 //更新投注玩法
-                viewModel.updateOddsChangeOption(it.data as Int)
+                if (LoginRepository.isLogined()){
+                    viewModel.updateOddsChangeOption(it.data as Int)
+                }else{
+                    requireActivity().startLogin()
+                }
             }.alwaysExpand()
         initMenuItems()
     }
@@ -60,10 +68,10 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
     private fun initMenuItems() = binding.run {
         menuAboutUs.setItem(
             requireContext().getIconSelector(R.drawable.ic_left_menu_aboutus_sel, R.drawable.ic_left_menu_aboutus_nor),
-            R.string.B015
+            R.string.about_us
         ){
             close()
-            getMainTabActivity().jumpToNews()
+            startActivity(Intent(requireActivity(), AboutMeActivity::class.java))
         }
 
         menuScan.setItem(
@@ -88,6 +96,8 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
                 .rotation(if (selected) 90f else 0f)
                 .withEndAction { menuLanguage.isEnabled = true }
                 .start()
+        }.apply {
+            setBoldSelected(false)
         }
         menuAnnouncement.setItem(
             requireContext().getIconSelector(R.drawable.ic_left_menu_announcement_nor, R.drawable.ic_left_menu_announcement_nor),
