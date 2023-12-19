@@ -150,7 +150,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
 
             R.string.main_tab_sport -> { // 体育
-                if (checkSportMaintain(true)) {
+                if (!StaticData.okSportOpened()){
+                    ToastUtil.showToast(this@MainTabActivity,getString(R.string.N700))
+                    false
+                }else if (checkSportMaintain(true)) {
                     false
                 } else {
                     navToPosition(INDEX_SPORT)

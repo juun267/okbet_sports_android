@@ -95,7 +95,6 @@
                    android:text="@string/esports" />
                <include
                    android:id="@+id/maintenESport"
-                   android:visibility="gone"
                    layout="@layout/view_left_menu_games_maintenance"/>
 
            </androidx.cardview.widget.CardView>
