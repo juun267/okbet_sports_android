@@ -4,13 +4,12 @@ import android.view.View
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHomeMenuBinding
+import org.cxct.sportlottery.databinding.ItemHomeMenuPageBinding
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
@@ -21,8 +20,9 @@ import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
 
 class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
-    : BindingAdapter<HomeMenuAdapter.MenuTab, ItemHomeMenuBinding>(), OnItemClickListener {
+    : BindingAdapter<Array<HomeMenuAdapter.MenuTab>, ItemHomeMenuPageBinding>() {
 
+    private val pageSize = 6
     private var selectedBg = R.drawable.bg_home_menu_sel
     private var normalBg = R.drawable.bg_home_menu_nor
 
@@ -53,10 +53,8 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private var selectItem: MenuTab? = null
 
     init {
-        buildItem()
+        reload()
         selectItem = datas[0]
-        setList(datas)
-        setOnItemClickListener(this)
     }
 
     fun setChristmasStyle() {
@@ -75,15 +73,34 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         }
     }
 
-    override fun onBinding(position: Int, binding: ItemHomeMenuBinding, item: MenuTab, payloads: List<Any> ) = binding.run {
-        setMaintanence(binding.linMaintenance, item.content)
-        setSelectedStyle(item == selectItem, item, root.getChildAt(0), binding.ivIcon)
+    override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab>, payloads: List<Any> ) = binding.run {
+        payloads.forEach {
+            val index = it as Int
+            val itemView = binding.root.getChildAt(index)
+            val itemBinding = (itemView.tag as ItemHomeMenuBinding?) ?: ItemHomeMenuBinding.bind(itemView)
+            val itemData = item[index]
+            setMaintanence(itemBinding.linMaintenance, itemData.content)
+            setSelectedStyle(itemData == selectItem, itemData, itemView, itemBinding.ivIcon)
+        }
     }
 
-    override fun onBinding(position: Int, binding: ItemHomeMenuBinding, item: MenuTab) = binding.run {
-        tvName.text = context.getString(item.name)
-        setSelectedStyle(item == selectItem, item, root.getChildAt(0), binding.ivIcon)
-        setMaintanence(binding.linMaintenance, item.content)
+    override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab>) = binding.run {
+        repeat(binding.root.childCount) { itemIndex->
+            val itemData = item[itemIndex]
+            val itemView = binding.root.getChildAt(itemIndex)
+            if (itemData.name == 0) {
+                itemView.gone()
+                itemView.isEnabled = false
+            } else {
+                itemView.visible()
+                itemView.isEnabled = true
+                val itemBinding = (itemView.tag as ItemHomeMenuBinding?) ?: ItemHomeMenuBinding.bind(itemView)
+                itemBinding.tvName.text = context.getString(itemData.name)
+                setMaintanence(itemBinding.linMaintenance, itemData.content)
+                setSelectedStyle(itemData == selectItem, itemData, itemView, itemBinding.ivIcon)
+                itemView.setOnClickListener { changeSelected(itemData) }
+            }
+        }
     }
 
     private fun setMaintanence(linMaintenance: View, fragmentClass: Class<out BaseFragment<*>>?){
@@ -113,32 +130,46 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         }
         datas.add(promotionMenuItem)
         datas.add(sericeMenuItem)
-    }
-    fun reload(){
-        buildItem()
-        setList(datas)
-    }
 
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        setSelected(position)
-    }
-
-    private fun setSelected(position: Int) {
-        val item = getItem(position)
-        if (item == selectItem) {
+        val less = datas.size % pageSize
+        if (less == 0) {
             return
         }
-        if (itemClick.invoke(item)) {
-            val lastPosition = getItemPosition(selectItem)
-            selectItem = item
-            if (lastPosition >= 0) {
-                notifyItemChanged(lastPosition, lastPosition)
-            }
-            notifyItemChanged(position, position)
+
+        val nonItem = MenuTab(0, 0, 0, null)
+        repeat(pageSize - less) {
+            datas.add(nonItem)
         }
     }
 
-    fun selectedRecommend() = setSelected(0)
+
+    fun reload(){
+        buildItem()
+
+        val list = mutableListOf<Array<MenuTab>>()
+        for (i in 0 until datas.size / pageSize) {
+            list.add(datas.subList(i * pageSize, (i + 1) * pageSize).toTypedArray())
+        }
+        setList(list)
+    }
+
+    private fun changeSelected(item: MenuTab) {
+        if (selectItem == item || !itemClick.invoke(item)) {
+            return
+        }
+
+        val index = datas.indexOf(item)
+        val oldIndex = datas.indexOf(selectItem)
+        if (index < 0 || oldIndex < 0) {
+            return
+        }
+
+        selectItem = item
+        notifyItemChanged(index / pageSize, index % pageSize)
+        notifyItemChanged(oldIndex / pageSize, oldIndex % pageSize)
+    }
+
+    fun selectedRecommend() = changeSelected(hotMenuItem)
 
     fun checkMaintain() {
         if (selectItem == sportMenuItem || selectItem == esportMenuItem) {

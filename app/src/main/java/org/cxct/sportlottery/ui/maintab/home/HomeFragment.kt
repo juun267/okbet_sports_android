@@ -116,7 +116,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
             viewModel.getActivityImageListH5()
             homeMenuAdapter.reload()
             homeMenuAdapter.checkMaintain()
-            if (homeMenuAdapter.dataCount() < 7) {
+            if (homeMenuAdapter.dataCount() < 2) {
                 binding.hIndicator.gone()
             }
         }
@@ -210,13 +210,14 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
         }
     }
 
+    private val pageSize = 6
     private fun initMenu() = binding.rvMenu.run {
-        layoutManager = LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
+        val lm = LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
+        layoutManager = lm
         adapter = homeMenuAdapter
         fragmentHelper2.show(HomeHotFragment::class.java) { frament, _ ->
             hotFragment = frament
         }
-
 
         LeftLinearSnapHelper().attachToRecyclerView(this)
     }
