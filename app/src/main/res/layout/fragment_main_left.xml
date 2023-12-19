@@ -7,39 +7,41 @@
     android:background="@color/color_FFFFFF"
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="138dp"
+        android:paddingTop="@dimen/margin_30"
         android:orientation="horizontal"
-        android:layout_marginHorizontal="28dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp"
+        android:background="@drawable/bg_sport_left2_top"
         android:clickable="true">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:layout_marginTop="40dp"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_menu_logo" />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
         <ImageView
             android:id="@+id/ivHome"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_gravity="right"
-            android:layout_marginTop="50dp"
-            android:layout_marginRight="52dp"
+            android:layout_marginRight="@dimen/margin_12"
             android:src="@drawable/ic_circle_home" />
-
 
         <ImageView
             android:id="@+id/ivClose"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_gravity="right"
-            android:layout_marginTop="50dp"
             android:src="@drawable/ic_circle_close" />
 
-    </FrameLayout>
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -60,7 +62,7 @@
 
             <TextView
                 android:text="@string/N711"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/color_0D2245"
                 android:layout_marginHorizontal="22dp"
                 android:paddingTop="16dp"
@@ -101,7 +103,7 @@
 
             <TextView
                 android:text="@string/other"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/color_0D2245"
                 android:layout_marginHorizontal="22dp"
                 android:paddingTop="16dp"

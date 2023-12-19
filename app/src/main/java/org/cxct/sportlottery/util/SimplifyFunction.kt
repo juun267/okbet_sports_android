@@ -1079,18 +1079,6 @@ fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter<*>, block: ((Boolean) 
 }
 
 
-// 设置优惠活动点击事件
-fun View.bindPromoClick(click: (() -> Unit)? = null) = setOnClickListener {
-     AppManager.currentActivity().startActivity(PromotionListActivity::class.java)
-//    JumpUtil.toInternalWeb(
-//        context,
-//        Constants.getPromotionUrl(
-//            LoginRepository.token,
-//            LanguageManager.getSelectLanguage(context)
-//        ),
-//        context.getString(R.string.promotion)
-//    )
-}
 fun String.formatHTML(): String {
     val head =
         "<head>" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " + "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" + "</head>";

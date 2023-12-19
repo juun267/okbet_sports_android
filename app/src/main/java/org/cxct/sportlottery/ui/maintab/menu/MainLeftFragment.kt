@@ -18,6 +18,7 @@ import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentMainLeftBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
@@ -32,6 +33,7 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -48,6 +50,54 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
     private var lastItem: MainMenuItemView? = null
 
 
+    override fun onInitView(view: View) {
+        initView()
+        initMenuItem()
+    }
+
+    override fun onBindViewStatus(view: View) {
+        initObserver()
+        binSelected()
+    }
+
+    private fun initView() = binding.run {
+        promotionView.setup(this@MainLeftFragment as BaseFragment<MainHomeViewModel>)
+        ivClose.setOnClickListener { close() }
+        ivHome.setOnClickListener {
+            getMainTabActivity().backMainHome()
+            close()
+        }
+    }
+
+    private fun initLanguageList() {
+        if (binding.rvLanguage.adapter != null) {
+            return
+        }
+
+        val languageAdapter = LanguageAdapter(LanguageManager.makeUseLanguage())
+        binding.rvLanguage.layoutManager = GridLayoutManager(context, 2)
+        binding.rvLanguage.addItemDecoration(GridItemDecoration(8.dp, 10.dp, Color.TRANSPARENT,false))
+        binding.rvLanguage.adapter = languageAdapter
+        languageAdapter.setOnItemClickListener { adapter, _, position ->
+            viewModel.betInfoRepository.clear()
+            selectLanguage(adapter.getItem(position) as LanguageManager.Language)
+        }
+    }
+
+    private fun selectLanguage(select: LanguageManager.Language) {
+        if (LanguageManager.getSelectLanguageName() != select.key) {
+            context?.let {
+                LanguageManager.saveSelectLanguage(it, select)
+                MainTabActivity.reStart(it, true)
+            }
+        }
+    }
+
+    private fun initObserver() {
+        viewModel.userInfo.observe(this) {
+            bindVerifyStatus(userInfo = it)
+        }
+    }
     // 新增菜单在这里修改
     private fun initMenuItem() = binding.run {
         val cxt = binding.root.context
@@ -100,9 +150,11 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         menuPromo.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_promo_sel, R.drawable.ic_left_menu_promo_nor),
             R.string.B005
-        ).apply {
+        ){
+            close()
+            startActivity(PromotionListActivity::class.java)
+        }.apply {
             setVisibilityByMarketSwitch()
-            bindPromoClick()
         }
         menuAffiliate.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),
@@ -136,7 +188,11 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
             R.string.N914
         ){
             close()
-            loginedRun(requireContext()) { startActivity(VerifyIdentityActivity::class.java) }
+            if (LoginRepository.isLogined()){
+                startActivity(VerifyIdentityActivity::class.java)
+            }else{
+                requireActivity().startLogin()
+            }
         }
 
         menuAboutUs.setItem(
@@ -161,6 +217,8 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
                 .rotation(if (selected) 90f else 0f)
                 .withEndAction { menuLanguage.isEnabled = true }
                 .start()
+        }.apply {
+            setBoldSelected(false)
         }
 
         menuScan.setItem(
@@ -184,7 +242,6 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         if (menuContentFragment == null) {
             return
         }
-        binSelected()
     }
 
     private fun binSelected()  {
@@ -202,55 +259,6 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         itemView.isSelected = true
         lastItem = itemView
     }
-
-    override fun onInitView(view: View) {
-        initView()
-        initMenuItem()
-    }
-
-    override fun onBindViewStatus(view: View) {
-        initObserver()
-    }
-
-    private fun initView() = binding.run {
-        promotionView.setup(this@MainLeftFragment as BaseFragment<MainHomeViewModel>)
-        ivClose.setOnClickListener { close() }
-        ivHome.setOnClickListener {
-            getMainTabActivity().backMainHome()
-            close()
-        }
-    }
-
-    private fun initLanguageList() {
-        if (binding.rvLanguage.adapter != null) {
-            return
-        }
-
-        val languageAdapter = LanguageAdapter(LanguageManager.makeUseLanguage())
-        binding.rvLanguage.layoutManager = GridLayoutManager(context, 2)
-        binding.rvLanguage.addItemDecoration(GridItemDecoration(8.dp, 10.dp, Color.TRANSPARENT,false))
-        binding.rvLanguage.adapter = languageAdapter
-        languageAdapter.setOnItemClickListener { adapter, _, position ->
-            viewModel.betInfoRepository.clear()
-            selectLanguage(adapter.getItem(position) as LanguageManager.Language)
-        }
-    }
-
-    private fun selectLanguage(select: LanguageManager.Language) {
-        if (LanguageManager.getSelectLanguageName() != select.key) {
-            context?.let {
-                LanguageManager.saveSelectLanguage(it, select)
-                MainTabActivity.reStart(it, true)
-            }
-        }
-    }
-
-    private fun initObserver() {
-        viewModel.userInfo.observe(this) {
-            bindVerifyStatus(userInfo = it)
-        }
-    }
-
     private fun bindVerifyStatus(userInfo: UserInfo?) = binding.run {
         if (getMarketSwitch()) {
             menuVerify.setVisibilityByMarketSwitch()
@@ -295,7 +303,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
                 setVerify(enable = true,
                     clickAble = true,
                     text = R.string.kyc_unverified,
-                    statusColor = resources.getColor(R.color.color_6D7693))
+                    statusColor = resources.getColor(R.color.color_FF2E00))
             }
         }
     }
