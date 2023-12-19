@@ -991,7 +991,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         var minBetMoney = "0"
         if (betListFilter.isNotEmpty()) {
             //最大投注金额
-            maxBetMoney = betListFilter[0].betInfo?.maxBetMoneyString.toString()
+            //2023/12/19 与H5对比后，发现maxBetMoney 是固定的7个9
+//            maxBetMoney = betListFilter[0].betInfo?.maxBetMoneyString.toString()
             //最小投注金额
             minBetMoney = betListFilter[0].betInfo?.minBetMoneyString.toString()
         }

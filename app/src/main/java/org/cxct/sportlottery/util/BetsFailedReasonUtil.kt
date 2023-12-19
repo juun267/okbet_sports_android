@@ -33,7 +33,9 @@ object BetsFailedReasonUtil {
     private const val PARLAY_ODD_NUM_ERROR = "PARLAY_ODD_NUM_ERROR"// 串关可以下注的赔率数量与玩家下注的赔率数量不一致
     private const val OUTRIGHT_PARLAY_ERROR = "OUTRIGHT_PARLAY_ERROR"// 冠军赛事禁止串关
     private const val PARLAY_TYPE_ERROR = "PARLAY_TYPE_ERROR"// 串关类型错误
-
+    private const val ODDS_CLOSE = "ODDS_CLOSE"
+    private const val MATCH_CANNOT_PARLAY = "MATCH_CANNOT_PARLAY"
+    private const val PLAY_CATE_CANNOT_PARLAY = "PLAY_CATE_CANNOT_PARLAY"
 
     fun getFailedReasonByCode(code: String?): String {
         var reason = ""
@@ -55,9 +57,14 @@ object BetsFailedReasonUtil {
             MATCH_STATUS_CHANGED -> {
                 reason = LocalUtils.getString(R.string.str_market_closed_please_try_later)
             } //赛事状态异动
-            MATCH_STATUS_CLOSE -> {
+            ODDS_CLOSE,
+            MATCH_STATUS_CLOSE,
+            MATCH_CANNOT_PARLAY -> {
                 reason = LocalUtils.getString(R.string.str_match_closed)
             }//赛事不存在
+            PLAY_CATE_CANNOT_PARLAY->{
+                reason = LocalUtils.getString(R.string.your_bet_order_play_cate_cannot_parlay)
+            }
             ODDS_SUSPENDED -> {
                 reason = LocalUtils.getString(R.string.str_match_be_suspended)
             }//赛事暂停
