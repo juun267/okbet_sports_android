@@ -7,6 +7,7 @@ import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHomeMenuBinding
 import org.cxct.sportlottery.databinding.ItemHomeMenuPageBinding
@@ -20,7 +21,7 @@ import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
 
 class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
-    : BindingAdapter<Array<HomeMenuAdapter.MenuTab>, ItemHomeMenuPageBinding>() {
+    : BindingAdapter<Array<HomeMenuAdapter.MenuTab?>, ItemHomeMenuPageBinding>() {
 
     private val pageSize = 6
     private var selectedBg = R.drawable.bg_home_menu_sel
@@ -31,7 +32,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
                        @StringRes val name: Int,
                        val content: Class<out BaseFragment<*>>?)
 
-    private val datas = mutableListOf<MenuTab>()
+    private val datas = mutableListOf<MenuTab?>()
 
 //    private val hotMenuItem = MenuTab(R.drawable.ic_home_menu_hot_sel, R.drawable.ic_home_menu_hot_nor, R.string.home_recommend, HomeHotFragment::class.java)
 //    private val sportMenuItem = MenuTab(R.drawable.ic_home_menu_sport_sel, R.drawable.ic_home_menu_sport_nor, R.string.main_tab_sport, SportVenueFragment::class.java)
@@ -57,6 +58,14 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         selectItem = datas[0]
     }
 
+    override fun getDefItemCount() = Int.MAX_VALUE
+
+    override fun getItem(position: Int): Array<MenuTab?> {
+        return super.getItem(position % data.size)
+    }
+
+    override fun getItemViewType(position: Int) = 0
+
     fun setChristmasStyle() {
         selectedBg = R.drawable.bg_chris_home_menu_sel
         normalBg = R.drawable.bg_chris_home_menu_nor
@@ -73,23 +82,23 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         }
     }
 
-    override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab>, payloads: List<Any> ) = binding.run {
+    override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab?>, payloads: List<Any> ) = binding.run {
         payloads.forEach {
             val index = it as Int
+            val itemData = item[index] ?: return@run
             val itemView = binding.root.getChildAt(index)
             val itemBinding = (itemView.tag as ItemHomeMenuBinding?) ?: ItemHomeMenuBinding.bind(itemView)
-            val itemData = item[index]
             setMaintanence(itemBinding.linMaintenance, itemData.content)
             setSelectedStyle(itemData == selectItem, itemData, itemView, itemBinding.ivIcon)
         }
     }
 
-    override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab>) = binding.run {
+    override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab?>) = binding.run {
         repeat(binding.root.childCount) { itemIndex->
             val itemData = item[itemIndex]
             val itemView = binding.root.getChildAt(itemIndex)
-            if (itemData.name == 0) {
-                itemView.gone()
+            if (itemData == null) {
+                itemView.inVisible()
                 itemView.isEnabled = false
             } else {
                 itemView.visible()
@@ -136,17 +145,14 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
             return
         }
 
-        val nonItem = MenuTab(0, 0, 0, null)
-        repeat(pageSize - less) {
-            datas.add(nonItem)
-        }
+        repeat(pageSize - less) { datas.add(null) }
     }
 
 
     fun reload(){
         buildItem()
 
-        val list = mutableListOf<Array<MenuTab>>()
+        val list = mutableListOf<Array<MenuTab?>>()
         for (i in 0 until datas.size / pageSize) {
             list.add(datas.subList(i * pageSize, (i + 1) * pageSize).toTypedArray())
         }
