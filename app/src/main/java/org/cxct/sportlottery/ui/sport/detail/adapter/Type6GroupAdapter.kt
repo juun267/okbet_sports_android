@@ -15,6 +15,7 @@ import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setTeamLogo
 
 
@@ -55,6 +56,7 @@ class Type6GroupAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindModel(oddsList: List<Odd?>) {
+//            LogUtil.toJson(oddsList.map { it?.id+","+it?.name+it?.playCode })
             itemView.findViewById<TextView>(R.id.tv_draw).show()
             //順序 前兩項左列 中間兩項中列 後兩項右列
             val homeList: MutableList<Odd?> = mutableListOf()
