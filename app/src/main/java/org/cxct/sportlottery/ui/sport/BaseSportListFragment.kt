@@ -339,7 +339,9 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         val adapter = getGameListAdapter()
         adapter.setNewInstance(list)
         if (sizeNumber == null) setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "") else setMatchNum(sizeNumber)
-        if (!list.isNullOrEmpty()) {
+        if (list.isNullOrEmpty()) {
+            dismissLoading()
+        }else{
             resubscribeChannel(120)
             binding.linOpt.visible()
         }

@@ -34,9 +34,9 @@ class RedEnvelopeManager {
     private var count = 0
     private var countdownTimer: Timer? = null
     private var showedRedenpId  //顯示過的紅包id
-        get() = MultiLanguagesApplication.myPref!!.getInt("redenId", -1)
+        get() = MultiLanguagesApplication.myPref.getInt("redenId", -1)
         set(value) {
-            with(MultiLanguagesApplication.myPref!!.edit()) {
+            with(MultiLanguagesApplication.myPref.edit()) {
                 putInt("redenId", value)
                 apply()
             }

@@ -143,7 +143,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
     }
 
     private fun finishPage() {
-        SPUtil.getInstance(this).saveLoginInfoSwitch()
+        SPUtil.saveLoginInfoSwitch()
         //返回继续完成登录
         viewModel.loginResult?.let { result ->
             //返回继续完成登录

@@ -225,8 +225,8 @@ class BetInfoItemViewHolder(
             update()
             setSelection(text.length)
         }
+        update()
         checkBetLimit(itemData)
-
         setupOddInfo(
             itemData, currentOddsType, betListSize, onItemClickListener, adapterBetType
         )
