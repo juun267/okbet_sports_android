@@ -30,6 +30,8 @@ data class BankCardList(
     val uwType: String,
     @Json(name = "bankCode")
     val bankCode: String,
+    @Json(name = "maintentace")
+    val maintentace: Int?,
 ) : Parcelable {
     @Json(name = "bankName")
     var bankName: String = ""

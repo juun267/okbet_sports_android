@@ -182,7 +182,6 @@
                                 android:id="@+id/rv_bank_item"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/margin_16"
                                 tools:itemCount="3"
                                 tools:listitem="@layout/item_listview_bank_card" />
                         </LinearLayout>

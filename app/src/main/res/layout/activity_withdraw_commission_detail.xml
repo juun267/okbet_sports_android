@@ -63,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_check_time"
-        tools:listitem="@layout/item_money_get_commission_inside"/>
+        tools:listitem="@layout/item_money_get_commission"/>
 
     <LinearLayout
         android:id="@+id/ll_total"

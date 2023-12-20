@@ -203,6 +203,9 @@ class LoginEditText @JvmOverloads constructor(
             }
         }
     }
+    fun setSelection(){
+        et_input.setSelection(et_input.length())
+    }
 
     private fun setupVerificationCode() {
         iv_verification_code.setOnClickListener {

@@ -2,16 +2,16 @@ package org.cxct.sportlottery.ui.money.withdraw
 
 import android.os.Bundle
 import androidx.navigation.findNavController
-import kotlinx.android.synthetic.main.activity_bank.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.databinding.ActivityBankBinding
 import org.cxct.sportlottery.network.money.config.TransferType
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.BindingActivity
 
 /**
  * @app_destination 提款設置
  */
-class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::class) {
+class BankActivity : BindingActivity<WithdrawViewModel,ActivityBankBinding>() {
 
     companion object {
         const val ModifyBankTypeKey = "modify_bank_type_key"
@@ -22,15 +22,11 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
         findNavController(R.id.bank_container)
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        setContentView(R.layout.activity_bank)
         setupBankSetting()
         setupBackButton()
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -82,12 +78,13 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
     }
 
     private fun setupBackButton() {
-        custom_tool_bar.setOnBackPressListener {
+        binding.customToolBar.setOnBackPressListener {
             onBackPressed()
         }
     }
 
     fun changeTitle(title: String) {
-        custom_tool_bar.titleText = title
+        binding.customToolBar.titleText = title
     }
+
 }
