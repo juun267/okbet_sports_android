@@ -56,6 +56,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
 
     override fun onBindViewStatus(view: View) {
         initObserver()
+        binSelected()
     }
 
     private fun initView() = binding.run {
@@ -246,6 +247,9 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
     }
 
     private fun binSelected()  {
+        if (!isAdded){
+            return
+        }
         lastItem = when(currentContent) {
             OKGamesFragment::class.java -> binding.menuOKGames
             OKLiveFragment::class.java -> binding.menuOKLive
