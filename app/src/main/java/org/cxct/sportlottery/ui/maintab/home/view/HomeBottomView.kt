@@ -57,6 +57,7 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
             R.drawable.icon_gcash,
             R.drawable.icon_paymaya,
             R.drawable.icon_fortune_pay,
+            R.drawable.icon_rbank_logo,
 //            R.drawable.icon_epon,
             R.drawable.icon_unionbank,
             R.drawable.icon_aub,
@@ -67,7 +68,6 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
             R.drawable.icon_dragonpay_logo,
             R.drawable.icon_bpi_logo,
             R.drawable.icon_ussc_logo,
-            R.drawable.icon_rbank_logo,
         ), rcvPayment2)
 
         val serviceEmail = sConfigData?.customerServiceEmailAddress
