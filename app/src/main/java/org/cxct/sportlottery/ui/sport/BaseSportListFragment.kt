@@ -135,7 +135,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             }
 
             setSportDataList(null)
-//            dismissLoading()
+            dismissLoading()
             if (!it.second) {
                 ToastUtil.showToast(activity, it.third)
                 return@observe
@@ -146,6 +146,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     open fun updateSportType(gameTypeList: List<Item>) {
         if (gameTypeList.isEmpty()) {
             setSportDataList(null)
+            dismissLoading()
             return
         }
         //处理默认不选中的情况
@@ -339,9 +340,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         val adapter = getGameListAdapter()
         adapter.setNewInstance(list)
         if (sizeNumber == null) setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "") else setMatchNum(sizeNumber)
-        if (list.isNullOrEmpty()) {
-            dismissLoading()
-        }else{
+        if (!list.isNullOrEmpty()) {
             resubscribeChannel(120)
             binding.linOpt.visible()
         }
