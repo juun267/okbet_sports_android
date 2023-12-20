@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddSpreadForSCO
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.common.extentions.toStringS
@@ -325,8 +324,7 @@ class SportViewModel(
                         val eventId = it.trackerId
                         val screenWidth = MetricsUtil.getScreenWidth()
                         val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth)).px
-                        val languageParams =
-                            LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
+                        val languageParams = LanguageManager.getLanguageString()
 
                         val videoUrl =
                             "${sConfigData?.sportStream}/animation/?matchId=${matchId}&lang=${languageParams}&mode=video"

@@ -1,19 +1,14 @@
 package org.cxct.sportlottery.ui.chat
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.JsonElement
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.net.chat.data.ChatSticker
 import org.cxct.sportlottery.net.chat.data.ChatStickerRow
 import org.cxct.sportlottery.net.chat.data.Row
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
@@ -465,7 +460,7 @@ class ChatViewModel(
             _chatEvent.emit(ChatEvent.InitFail(queryListResult.msg))
             return@launch
         }
-        val language = LanguageManager.getLanguageString2(androidContext)
+        val language = LanguageManager.getLanguageString2()
         ChatRepository.chatRoom = queryListResult.getData()?.find { it.language == language && it.isOpen.isStatusOpen() }
         if (ChatRepository.chatRoom == null) {
             _chatEvent.emit(ChatEvent.NoMatchRoom)
