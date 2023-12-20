@@ -87,6 +87,7 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
         //在線充值成功
         viewModel.onlinePayResult.observe(this.viewLifecycleOwner) {
             resetEvent()
+            hideFirstDesposit()
         }
 
         //在線充值首充提示
@@ -443,9 +444,6 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
     private fun resetEvent() {
         clearFocus()
         binding.etRechargeOnlineAmount.setText("")
-        binding.linFirstDeposit.linNoChoose.performClick()
-        binding.linFirstDeposit.root.gone()
-        binding.linReceiveExtra.gone()
         viewModel.clearnRechargeStatus()
     }
 
@@ -492,6 +490,11 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
                 (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setList(sConfigData?.selectedDepositAmountSettingList)
             }
         }
+    }
+    private fun hideFirstDesposit(){
+        binding.linFirstDeposit.linNoChoose.performClick()
+        binding.linFirstDeposit.root.gone()
+        binding.linReceiveExtra.gone()
     }
     private fun initFirstDeposit(dailyConfig: DailyConfig) =binding.linFirstDeposit.run{
         binding.linFirstDeposit.root.isVisible = dailyConfig.first==1
