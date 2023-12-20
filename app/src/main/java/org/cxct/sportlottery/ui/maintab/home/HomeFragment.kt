@@ -115,7 +115,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
             setUpBanner()
             viewModel.getActivityImageListH5()
             homeMenuAdapter.reload()
-            binding.rvMenu.scrollToPosition(900000)
+            binding.rvMenu.scrollToPosition(homeMenuAdapter.initiallyPosition)
             homeMenuAdapter.checkMaintain()
             if (homeMenuAdapter.dataCount() < 2) {
                 binding.hIndicator.gone()
@@ -218,7 +218,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
         fragmentHelper2.show(HomeHotFragment::class.java) { frament, _ ->
             hotFragment = frament
         }
-        binding.rvMenu.scrollToPosition(900000)
+        binding.rvMenu.scrollToPosition(homeMenuAdapter.initiallyPosition)
         LeftLinearSnapHelper().attachToRecyclerView(this)
     }
 
