@@ -21,7 +21,6 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
@@ -41,7 +40,6 @@ import org.cxct.sportlottery.view.MainMenuItemView
 import org.cxct.sportlottery.view.PictureSelectUtil
 import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
-import org.cxct.sportlottery.view.isVisible
 import timber.log.Timber
 
 class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>() {
@@ -200,7 +198,8 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
             cxt.getIconSelector(R.drawable.ic_left_menu_aboutus_sel, R.drawable.ic_left_menu_aboutus_nor),
             R.string.about_us
         ){
-            cxt.startActivity(Intent(cxt, AboutMeActivity::class.java))
+            JumpUtil.toInternalWeb(requireContext(),
+                Constants.getAboutUsUrl(requireContext()),getString(R.string.about_us))
         }
 
         menuLanguage.setItem(
