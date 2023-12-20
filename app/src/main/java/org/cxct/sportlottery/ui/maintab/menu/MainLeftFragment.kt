@@ -21,7 +21,6 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
@@ -57,7 +56,6 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
 
     override fun onBindViewStatus(view: View) {
         initObserver()
-        binSelected()
     }
 
     private fun initView() = binding.run {
@@ -147,6 +145,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
             isVisible = !getMarketSwitch() && StaticData.okBingoOpened()
             showBottomLine(false)
         }
+        linMainMenu.isVisible = menuSport.isVisible || menuOKLive.isVisible || menuOKGames.isVisible || menuESport.isVisible
         menuPromo.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_promo_sel, R.drawable.ic_left_menu_promo_nor),
             R.string.B005
@@ -199,7 +198,8 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
             cxt.getIconSelector(R.drawable.ic_left_menu_aboutus_sel, R.drawable.ic_left_menu_aboutus_nor),
             R.string.about_us
         ){
-            cxt.startActivity(Intent(cxt, AboutMeActivity::class.java))
+            JumpUtil.toInternalWeb(requireContext(),
+                Constants.getAboutUsUrl(requireContext()),getString(R.string.about_us))
         }
 
         menuLanguage.setItem(
@@ -242,6 +242,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         if (menuContentFragment == null) {
             return
         }
+        binSelected()
     }
 
     private fun binSelected()  {
