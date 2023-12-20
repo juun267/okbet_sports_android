@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.TextUtils
@@ -28,6 +29,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
@@ -36,7 +38,6 @@ import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 import org.cxct.sportlottery.view.StreamerTextView
-import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
 class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : FrameLayout(context, attrs, defStyle) {
@@ -55,6 +56,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     lateinit var tvUserMoney: TextView
     private lateinit var ivRefreshMoney: ImageView
     private lateinit var btnDeposit: TextView
+    private lateinit var ivMails: ImageView
     private lateinit var loginLayout: LinearLayout
     private lateinit var tvLogin: TextView
     private lateinit var tvRegist: TextView
@@ -64,6 +66,8 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private lateinit var viewModel: BaseOddButtonViewModel
     private var userModelEnable = true
     private var onlyShowSeach = true
+    private var mailsIcon = R.drawable.icon_mails
+    private var mailsIcon1 = R.drawable.icon_mails1
 
     private fun addChildView() {
 
@@ -111,11 +115,12 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             2.dp.let { setPadding(0, it, 0, it) }
         }
 
+        val dp32 = 32.dp
         banlanceView = LinearLayout(context)
         banlanceView.gravity = Gravity.CENTER_VERTICAL
         6.dp.let { banlanceView.setPadding(it, it, it, it) }
         banlanceView.background = DrawableCreatorUtils.getCommonBackgroundStyle(20.dp, R.color.color_20b8d2f8, R.color.color_b8d2f8, 1)
-        userMoneyView.addView(banlanceView, LinearLayout.LayoutParams(-2, 32.dp))
+        userMoneyView.addView(banlanceView, LinearLayout.LayoutParams(-2, dp32))
 
         tvUserMoney = AppCompatTextView(context).apply {
             typeface = Typeface.DEFAULT_BOLD
@@ -141,7 +146,19 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         btnDeposit.setText(R.string.J285)
         btnDeposit.background = DrawableCreatorUtils.getGradientBackgroundStyle(20.dp, R.color.color_1DA0FF, R.color.color_0050e6)
         btnDeposit.setTextColor(Color.WHITE)
-        userMoneyView.addView(btnDeposit, LayoutParams(-2, 32.dp).apply { leftMargin = 8.dp })
+        userMoneyView.addView(btnDeposit, LayoutParams(-2, dp32).apply { leftMargin = 8.dp })
+
+        ivMails = AppCompatImageView(context)
+        ivMails.setImageResource(R.drawable.icon_mails)
+        userMoneyView.addView(ivMails, LayoutParams(dp32, dp32).apply { leftMargin = 8.dp })
+        ivMails.setOnClickListener {
+            context.startActivity(
+                Intent(context, InfoCenterActivity::class.java).putExtra(
+                    InfoCenterActivity.KEY_READ_PAGE,
+                    InfoCenterActivity.YET_READ
+                )
+            )
+        }
 
         addView(userMoneyView, LayoutParams(-2, -2, Gravity.RIGHT or Gravity.BOTTOM))
     }
@@ -209,6 +226,18 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             userMoney.observe(fragment) {
                 it?.let { bindMoneyText(it) }
             }
+
+            infoCenterRepository.unreadNoticeList.observe(fragment) {
+                mailsNum = it.size
+                updateMailsIcon()
+            }
+        }
+    }
+
+    private var mailsNum = 0
+    private fun updateMailsIcon() {
+        if (::ivMails.isInitialized) {
+            ivMails.setImageResource(if (mailsNum > 0) mailsIcon1 else mailsIcon)
         }
     }
 
@@ -302,6 +331,9 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         tvLogin.setTextColor(context.getColor(R.color.color_FFFFFF))
         tvRegist.setBackgroundResource(R.drawable.bg_home_top_register)
         btnDeposit.setBackgroundResource(R.drawable.bg_home_top_deposit)
+        mailsIcon = R.drawable.icon_mails_chirs
+        mailsIcon1 = R.drawable.icon_mails_chirs1
+        updateMailsIcon()
         banlanceView.background = ShapeDrawable()
             .setRadius(100.dp.toFloat())
             .setSolidColor(context.getColor(R.color.color_4DE3ECF5), context.getColor(R.color.color_99F1F5F9))
