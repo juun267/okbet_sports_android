@@ -133,18 +133,18 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private fun buildItem(){
         datas.clear()
         datas.add(hotMenuItem)
-//        if (StaticData.okSportOpened()){
-//            datas.add(sportMenuItem)
-//        }
-//        if (StaticData.okGameOpened()){
-//            datas.add(okGameMenuItem)
-//        }
-//        if (StaticData.okLiveOpened()){
-//            datas.add(okLiveGameItem)
-//        }
-//        if (StaticData.okBingoOpened()){
-//            datas.add(esportMenuItem)
-//        }
+        if (StaticData.okSportOpened()){
+            datas.add(sportMenuItem)
+        }
+        if (StaticData.okGameOpened()){
+            datas.add(okGameMenuItem)
+        }
+        if (StaticData.okLiveOpened()){
+            datas.add(okLiveGameItem)
+        }
+        if (StaticData.okBingoOpened()){
+            datas.add(esportMenuItem)
+        }
         datas.add(promotionMenuItem)
         datas.add(sericeMenuItem)
 
