@@ -60,6 +60,8 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         reload()
     }
 
+    fun pageCount() = data.size
+
     override fun getDefItemCount() = Int.MAX_VALUE
 
     override fun getItem(position: Int): Array<MenuTab?> {
@@ -87,7 +89,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab?>, payloads: List<Any> ) = binding.run {
         payloads.forEach {
             val index = it as Int
-            val itemData = item[index] ?: return@run
+            val itemData = item.getOrNull(index) ?: return@run
             val itemView = binding.root.getChildAt(index)
             val itemBinding = (itemView.tag as ItemHomeMenuBinding?) ?: ItemHomeMenuBinding.bind(itemView)
             setMaintanence(itemBinding.linMaintenance, itemData.content)
@@ -99,7 +101,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         val binding = helper.vb
         val position = helper.absoluteAdapterPosition
         repeat(binding.root.childCount) { itemIndex->
-            val itemData = item[itemIndex]
+            val itemData = item.getOrNull(itemIndex)
             val itemView = binding.root.getChildAt(itemIndex)
             if (itemData == null) {
                 itemView.inVisible()
@@ -131,23 +133,23 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private fun buildItem(){
         datas.clear()
         datas.add(hotMenuItem)
-        if (StaticData.okSportOpened()){
-            datas.add(sportMenuItem)
-        }
-        if (StaticData.okGameOpened()){
-            datas.add(okGameMenuItem)
-        }
-        if (StaticData.okLiveOpened()){
-            datas.add(okLiveGameItem)
-        }
-        if (StaticData.okBingoOpened()){
-            datas.add(esportMenuItem)
-        }
+//        if (StaticData.okSportOpened()){
+//            datas.add(sportMenuItem)
+//        }
+//        if (StaticData.okGameOpened()){
+//            datas.add(okGameMenuItem)
+//        }
+//        if (StaticData.okLiveOpened()){
+//            datas.add(okLiveGameItem)
+//        }
+//        if (StaticData.okBingoOpened()){
+//            datas.add(esportMenuItem)
+//        }
         datas.add(promotionMenuItem)
         datas.add(sericeMenuItem)
 
         val less = datas.size % pageSize
-        if (less == 0) {
+        if (less == 0 || datas.size < pageSize) {
             return
         }
 
@@ -159,8 +161,13 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         buildItem()
 
         val list = mutableListOf<Array<MenuTab?>>()
-        for (i in 0 until datas.size / pageSize) {
-            list.add(datas.subList(i * pageSize, (i + 1) * pageSize).toTypedArray())
+
+        if (datas.size < pageSize) {
+            list.add(datas.toTypedArray())
+        } else {
+            for (i in 0 until datas.size / pageSize) {
+                list.add(datas.subList(i * pageSize, (i + 1) * pageSize).toTypedArray())
+            }
         }
 
         selectItem = datas[0]
