@@ -57,7 +57,6 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
 
     override fun onBindViewStatus(view: View) {
         initObserver()
-        binSelected()
     }
 
     private fun initView() = binding.run {
@@ -242,6 +241,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         if (menuContentFragment == null) {
             return
         }
+        binSelected()
     }
 
     private fun binSelected()  {
