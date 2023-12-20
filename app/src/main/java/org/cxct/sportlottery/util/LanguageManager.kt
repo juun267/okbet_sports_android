@@ -11,10 +11,8 @@ import android.os.LocaleList
 import android.util.DisplayMetrics
 import com.luck.picture.lib.basic.PictureSelectorSupporterActivity
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.repository.sConfigData
-//import org.cxct.sportlottery.util.language.MultiLanguages
 import java.util.*
 
 object LanguageManager {
@@ -34,17 +32,17 @@ object LanguageManager {
      *
      * @return Locale对象
      */
-    private fun getSystemLocale(context: Context?): Locale {
-        return SPUtil.getInstance(context).systemCurrentLocal
+    private fun getSystemLocale(): Locale {
+        return SPUtil.systemCurrentLocal
     }
 
-    fun getSelectLanguage(context: Context?): Language {
+    fun getSelectLanguage(context: Context? = null): Language {
         //[Martin]無腦鎖定為英文
 //        if(BuildConfig.CHANNEL_NAME == "spkx"){
 //            return Language.EN
 //        }
         //TODO 20210217 Simon 紀錄：目前只有 簡體中文、英文 選項，且預設是簡體中文，待之後 review
-        return when (SPUtil.getInstance(context).getSelectLanguage()) {
+        return when (SPUtil.getSelectLanguage()) {
             Language.ZH.key, Language.ZHT.key -> Language.ZH
             Language.EN.key -> Language.EN
             Language.VI.key -> Language.VI
@@ -52,7 +50,7 @@ object LanguageManager {
             Language.PHI.key -> Language.PHI
             else -> {
                 //若APP local 未設定過語系，就使用系統語系判斷
-                val local = getSystemLocale(context)
+                val local = getSystemLocale()
                 when {
                     local.language == Locale.ENGLISH.language -> Language.EN
                     local.language == Locale("vi").language -> Language.VI
@@ -111,18 +109,8 @@ object LanguageManager {
         return "${SPUtil.getSelectLanguage()}"
     }
 
-    fun getLanguageFlag(context: Context?): Int {
-        return when (getSelectLanguage(context)) {
-            Language.ZH -> R.drawable.ic_flag_cn
-            Language.VI -> R.drawable.ic_flag_vi
-            Language.TH -> R.drawable.ic_flag_th
-            Language.PHI -> R.drawable.ic_flag_phi
-            else -> R.drawable.ic_flag_en
-        }
-    }
-
-    fun getLanguageString2(context: Context?): String {
-        return when (getSelectLanguage(context)) {
+    fun getLanguageString2(): String {
+        return when (getSelectLanguage()) {
             Language.ZH -> "zh"
             Language.VI -> "vi"
             Language.TH -> "th"
@@ -131,35 +119,14 @@ object LanguageManager {
         }
     }
 
-    fun getLanguageString(context: Context?): String {
-        return when (getSelectLanguage(context)) {
+    fun getLanguageString(): String {
+        return when (getSelectLanguage()) {
             Language.ZH -> "zh"
             Language.VI -> "vi"
             Language.TH -> "th"
             Language.PHI -> "phi"
             else -> "en"
         }
-    }
-
-    fun getLanguageStringResource(context: Context?): String {
-        return when (getSelectLanguage(context)) {
-            Language.ZH -> context?.resources?.getString(R.string.language_cn) ?: ""
-            Language.VI -> context?.resources?.getString(R.string.language_vi) ?: ""
-            Language.TH -> context?.resources?.getString(R.string.language_th) ?: ""
-            Language.PHI -> context?.resources?.getString(R.string.language_phi) ?: ""
-            else -> context?.resources?.getString(R.string.language_en) ?: ""
-        }
-    }
-
-    fun getLanguageStringList(context: Context?): List<String> {
-        return listOf(
-            context?.resources?.getString(R.string.language_cn) ?: "",
-            context?.resources?.getString(R.string.language_en) ?: "",
-            context?.resources?.getString(R.string.language_vi) ?: "",
-            context?.resources?.getString(R.string.language_th) ?: "",
-            context?.resources?.getString(R.string.language_phi) ?: "",
-            ""
-        )
     }
 
     private lateinit var selectedLocale: Locale
@@ -170,9 +137,9 @@ object LanguageManager {
      * @param context
      * @return
      */
-    fun getSetLanguageLocale(context: Context?): Locale {
+    fun getSetLanguageLocale(): Locale {
         if (!::selectedLocale.isInitialized) {
-            selectedLocale = convert(getSelectLanguage(context))
+            selectedLocale = convert(getSelectLanguage())
         }
         return selectedLocale
     }
@@ -190,28 +157,24 @@ object LanguageManager {
         }
     }
 
-    fun saveSystemCurrentLanguage(context: Context) {
-        SPUtil.getInstance(context).systemCurrentLocal = getSystemLocal()
+    fun saveSystemCurrentLanguage() {
+        SPUtil.systemCurrentLocal = getSystemLocal()
     }
 
     /**
      * 保存系统语言
-     * @param context
      * @param newConfig
      */
-    fun saveSystemCurrentLanguage(
-        context: Context,
-        newConfig: Configuration
-    ) {
-        SPUtil.getInstance(context).systemCurrentLocal = getSystemLocal(newConfig)
+    fun saveSystemCurrentLanguage(newConfig: Configuration) {
+        SPUtil.systemCurrentLocal = getSystemLocal(newConfig)
     }
 
     fun saveSelectLanguage(context: Context, select: Language) {
-        val lastLanguage = getSelectLanguage(context)
+        val lastLanguage = getSelectLanguage()
         FirebaseLog.addLogInfo("currentLanguage", select.name) // 在崩溃日志中记录当前的语言类型
         selectedLocale = convert(select)
 //        MultiLanguages.setAppLanguage(context, selectedLocale)
-        SPUtil.getInstance(context).saveLanguage(select.key)
+        SPUtil.saveLanguage(select.key)
         KvUtils.removeKey("splashAd")
         setApplicationLanguage(context)
         if (lastLanguage != select) {
@@ -235,11 +198,11 @@ object LanguageManager {
         }
     }
 
-    fun setApplicationLanguage(context: Context) {
+    private fun setApplicationLanguage(context: Context) {
         val resources = context.applicationContext.resources
         val dm = resources.displayMetrics
         val config = resources.configuration
-        val locale: Locale = getSetLanguageLocale(context)
+        val locale: Locale = getSetLanguageLocale()
         config.locale = locale
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val localeList = LocaleList(locale)

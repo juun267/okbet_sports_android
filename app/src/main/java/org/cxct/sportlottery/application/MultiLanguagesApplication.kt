@@ -55,6 +55,11 @@ import java.util.*
  * App 內部切換語系
  */
 class MultiLanguagesApplication : Application() {
+
+    init {
+        mInstance = this
+    }
+
     //private var userInfoData : UserInfo?= null
     private val sharedPref: SharedPreferences by lazy {
         getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
@@ -92,7 +97,7 @@ class MultiLanguagesApplication : Application() {
 
     override fun attachBaseContext(base: Context) {
         //第一次进入app时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
-        LanguageManager.saveSystemCurrentLanguage(base)
+        LanguageManager.saveSystemCurrentLanguage()
         super.attachBaseContext(base)
 //        super.attachBaseContext(MultiLanguages.attach(base))
     }
@@ -100,13 +105,12 @@ class MultiLanguagesApplication : Application() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         //用户在系统设置页面切换语言时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
-        LanguageManager.saveSystemCurrentLanguage(applicationContext, newConfig)
+        LanguageManager.saveSystemCurrentLanguage(newConfig)
     }
 
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
-        mInstance = this
         // 非主进程不进行下面的初始化
         if (BuildConfig.APPLICATION_ID != getAppProcessName()) {
             return
@@ -249,7 +253,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     companion object {
-        val myPref: SharedPreferences by lazy { mInstance.getSharedPreferences(mInstance.packageName + "_preferences", MODE_PRIVATE) }
+        val myPref by lazy { mInstance.getSharedPreferences(mInstance.packageName + "_preferences", MODE_PRIVATE) }
         lateinit var appContext: Context
         const val UUID_DEVICE_CODE = "uuidDeviceCode"
         const val UUID = "uuid"
@@ -274,7 +278,7 @@ class MultiLanguagesApplication : Application() {
                     return field
                 }
 
-                val searchHistoryJson = myPref?.getString("search_history", "")
+                val searchHistoryJson = myPref.getString("search_history", "")
                 if (searchHistoryJson.isEmptyStr()) {
                     field = mutableListOf()
                     return field
@@ -284,13 +288,13 @@ class MultiLanguagesApplication : Application() {
                 return field
             }
             set(value) {
-                val editor = myPref?.edit()
+                val editor = myPref.edit()
                 if (value == null) {
-                    editor?.putString("search_history", "")
+                    editor.putString("search_history", "")
                 } else {
-                    editor?.putString("search_history", JsonUtil.toJson(value))
+                    editor.putString("search_history", JsonUtil.toJson(value))
                 }
-                editor?.apply()
+                editor.apply()
                 field = value
             }
 
@@ -302,11 +306,11 @@ class MultiLanguagesApplication : Application() {
         var colorModeChanging: Boolean = false
 
         var isNightMode: Boolean
-            get() = myPref?.getBoolean("is_night_mode", false) ?: false
+            get() = myPref.getBoolean("is_night_mode", false) ?: false
             set(check) {
-                val editor = myPref?.edit()
-                editor?.putBoolean("is_night_mode", check)
-                editor?.apply()
+                val editor = myPref.edit()
+                editor.putBoolean("is_night_mode", check)
+                editor.apply()
             }
 
 

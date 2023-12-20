@@ -5,12 +5,11 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import android.os.LocaleList
-import org.cxct.sportlottery.util.LanguageManager
 import java.util.*
 
 class ResourceWrapper(private val context: Context, origin: Resources): Resources(origin.assets, origin.displayMetrics, origin.configuration) {
 
-    private var currentLocale: Locale = LanguageManager.getSetLanguageLocale(context)
+    private var currentLocale: Locale = LanguageManager.getSetLanguageLocale()
     private var localeContext: Context = getLocalizedContext(currentLocale)
 
     override fun getString(id: Int): String {
@@ -23,7 +22,7 @@ class ResourceWrapper(private val context: Context, origin: Resources): Resource
     }
 
     private fun checkLocal() {
-        val selectedLocal = LanguageManager.getSetLanguageLocale(context)
+        val selectedLocal = LanguageManager.getSetLanguageLocale()
         if (currentLocale != selectedLocal) {
             currentLocale = selectedLocal
             localeContext = getLocalizedContext(currentLocale)
