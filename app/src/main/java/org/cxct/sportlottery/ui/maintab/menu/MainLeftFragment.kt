@@ -41,6 +41,7 @@ import org.cxct.sportlottery.view.MainMenuItemView
 import org.cxct.sportlottery.view.PictureSelectUtil
 import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
+import org.cxct.sportlottery.view.isVisible
 import timber.log.Timber
 
 class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>() {
@@ -146,6 +147,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
             isVisible = !getMarketSwitch() && StaticData.okBingoOpened()
             showBottomLine(false)
         }
+        linMainMenu.isVisible = menuSport.isVisible || menuOKLive.isVisible || menuOKGames.isVisible || menuESport.isVisible
         menuPromo.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_promo_sel, R.drawable.ic_left_menu_promo_nor),
             R.string.B005
