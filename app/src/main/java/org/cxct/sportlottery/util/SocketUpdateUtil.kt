@@ -582,6 +582,7 @@ object SocketUpdateUtil {
         }.apply {
             if (this) {
                 oddsDetailListData.updateOddStatus()
+                oddsDetailListData.oddArrayList.sortWith(compareBy({ it?.marketSort }, { it?.rowSort }))
             }
         }
     }
@@ -708,7 +709,6 @@ object SocketUpdateUtil {
 //            }
             setupPinList(playCate)
         }
-
         return if (addedNewOdds || removedOldOdds) newOddsDetailDataList else null
     }
 

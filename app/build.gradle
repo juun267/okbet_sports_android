@@ -287,9 +287,9 @@ dependencies {
 
     //相片選擇、拍照、錄影、剪裁 https://github.com/LuckSiege/PictureSelector
 //    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.0'
-    implementation 'io.github.lucksiege:pictureselector:v3.11.1'
-    implementation 'io.github.lucksiege:compress:v3.11.1'
-    implementation 'io.github.lucksiege:ucrop:v3.11.1'
+    implementation 'io.github.lucksiege:pictureselector:v3.11.2'
+    implementation 'io.github.lucksiege:compress:v3.11.2'
+    implementation 'io.github.lucksiege:ucrop:v3.11.2'
 //    implementation 'io.github.lucksiege:camerax:v3.11.1'
 
     //動態權限請求 https://github.com/tbruyelle/RxPermissions
