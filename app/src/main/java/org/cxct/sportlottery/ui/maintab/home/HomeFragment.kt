@@ -4,11 +4,11 @@ import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
@@ -115,11 +115,9 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
             setUpBanner()
             viewModel.getActivityImageListH5()
             homeMenuAdapter.reload()
-            binding.rvMenu.scrollToPosition(900000)
+            binding.rvMenu.scrollToPosition(homeMenuAdapter.initiallyPosition)
             homeMenuAdapter.checkMaintain()
-            if (homeMenuAdapter.dataCount() < 2) {
-                binding.hIndicator.gone()
-            }
+            binding.hIndicator.isVisible = homeMenuAdapter.pageCount() > 1
         }
         //新版宣傳頁
         viewModel.messageListResult.observe(viewLifecycleOwner) {
@@ -215,10 +213,11 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
     private fun initMenu() = binding.rvMenu.run {
         layoutManager = LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
         adapter = homeMenuAdapter
+        binding.hIndicator.isVisible = homeMenuAdapter.pageCount() > 1
         fragmentHelper2.show(HomeHotFragment::class.java) { frament, _ ->
             hotFragment = frament
         }
-        binding.rvMenu.scrollToPosition(900000)
+        binding.rvMenu.scrollToPosition(homeMenuAdapter.initiallyPosition)
         LeftLinearSnapHelper().attachToRecyclerView(this)
     }
 
