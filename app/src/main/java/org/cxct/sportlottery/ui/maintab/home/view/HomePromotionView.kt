@@ -9,6 +9,7 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.ViewHomePromotionBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.ui.promotion.PromotionDetailActivity
@@ -28,7 +29,7 @@ class HomePromotionView(context: Context, attrs: AttributeSet) : LinearLayout(co
 
     }
 
-    fun setup(fragment: HomeHotFragment) = binding.run {
+    fun setup(fragment: BaseFragment<MainHomeViewModel>) = binding.run {
         viewModel = fragment.viewModel
         viewModel.activityImageList.observe(fragment){
             //优惠banne让判断是否首页显示

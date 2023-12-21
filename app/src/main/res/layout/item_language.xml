@@ -3,26 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rbtn_odds"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingVertical="@dimen/margin_10"
+    android:layout_height="@dimen/margin_50"
+    android:paddingHorizontal="@dimen/margin_12"
+    android:background="@drawable/selector_trans_blue_radius_8"
     android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/iv_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/margin_24"
+        android:layout_height="@dimen/margin_24"
         android:enabled="false"
         android:gravity="center_vertical"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="12dp"
         android:includeFontPadding="true"
         android:button="@null"
         android:checked="true"
-        android:src="@drawable/selector_radio_white" />
+        android:src="@drawable/selector_radio_circle_slim" />
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="@dimen/margin_24"
-        android:layout_height="@dimen/margin_24"
+        android:layout_width="@dimen/margin_20"
+        android:layout_height="@dimen/margin_20"
         android:src="@drawable/ic_flag_cn" />
 
     <TextView
@@ -30,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:textColor="@color/color_FFFFFF_414655"
+        android:textColor="@color/color_6d7693_025be8"
         android:textSize="@dimen/textSize14sp"
         tools:text="@string/odd_type_eu" />
 </LinearLayout>

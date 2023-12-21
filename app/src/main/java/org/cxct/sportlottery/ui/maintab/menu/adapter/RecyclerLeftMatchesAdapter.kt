@@ -1,14 +1,16 @@
 package org.cxct.sportlottery.ui.maintab.menu.adapter
 
+import androidx.core.view.isVisible
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.databinding.ItemLeftHotMatchesBinding
-import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.net.sport.data.RecommendLeague
 import org.cxct.sportlottery.util.setLeagueLogo
 
-class RecyclerLeftMatchesAdapter: BindingAdapter<Recommend,ItemLeftHotMatchesBinding>() {
+class RecyclerLeftMatchesAdapter: BindingAdapter<RecommendLeague,ItemLeftHotMatchesBinding>() {
 
-    override fun onBinding(position: Int, binding: ItemLeftHotMatchesBinding, item: Recommend) {
-        binding.tvLeagueName.text= item.leagueName
-        binding.ivLeagueCover.setLeagueLogo(item.categoryIcon)
+    override fun onBinding(position: Int, binding: ItemLeftHotMatchesBinding, item: RecommendLeague)= binding.run {
+        tvLeagueName.text= item.name
+        ivLeagueCover.setLeagueLogo(item.categoryIcon)
+        tvLine.isVisible = position != itemCount-1
     }
 }
