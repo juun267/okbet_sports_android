@@ -346,5 +346,8 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     fun setChristmasStyle2() {
         setChristmasStyle()
         setBackgroundResource(R.drawable.bg_home_top2)
+        if (::ivMails.isInitialized) {
+            ivMails.gone()
+        }
     }
 }
