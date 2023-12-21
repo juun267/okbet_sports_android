@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.view.View
 import androidx.core.view.isVisible
+import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.activity_sport_search.*
+import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone
@@ -38,6 +41,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
 
     @SuppressLint("SetTextI18n")
     override fun onInitView(view: View) =binding.run {
+        linHead.setPadding(linHead.paddingLeft,ImmersionBar.getStatusBarHeight(requireActivity()),linHead.paddingRight,linHead.paddingBottom)
         //关闭按钮
         ivClose.onClick {
             close()

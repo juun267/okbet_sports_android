@@ -10,6 +10,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.budiyev.android.codescanner.BarcodeUtils
+import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -60,6 +61,8 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
     }
 
     private fun initView() = binding.run {
+        linHead.setPadding(linHead.paddingLeft,
+            ImmersionBar.getStatusBarHeight(requireActivity()),linHead.paddingRight,linHead.paddingBottom)
         promotionView.setup(this@MainLeftFragment as BaseFragment<MainHomeViewModel>)
         ivClose.setOnClickListener { close() }
         ivHome.setOnClickListener {
