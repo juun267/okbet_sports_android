@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import android.view.View
 import androidx.core.view.isVisible
+import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.show
@@ -28,6 +29,7 @@ class LeftGameFragment: BindingFragment<MainViewModel,FragmentLeftSportGameBindi
     override fun onBindViewStatus(view: View) {
         super.onBindViewStatus(view)
         setBannerStatus()
+        menuSupport.setServiceClick(getMainTabActivity().supportFragmentManager){ close() }
     }
     private fun initBanners() = binding.run{
         cvOkLive.setOnClickListener {
@@ -97,7 +99,7 @@ class LeftGameFragment: BindingFragment<MainViewModel,FragmentLeftSportGameBindi
         menuSupport.setItem(
             requireContext().getIconSelector(R.drawable.ic_left_menu_custom_sel, R.drawable.ic_left_menu_custom_nor),
             R.string.LT050
-        ).setServiceClick(parentFragmentManager) { close() }
+        ).setServiceClick(getMainTabActivity().supportFragmentManager) { close() }
 
         menuVerify.setItem(
             requireContext().getIconSelector(R.drawable.ic_left_menu_verify_sel, R.drawable.ic_left_menu_verify_nor),
