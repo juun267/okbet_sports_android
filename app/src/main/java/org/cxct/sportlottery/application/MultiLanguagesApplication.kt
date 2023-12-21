@@ -34,7 +34,6 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.runWithCatch
-import org.cxct.sportlottery.fix.PictureSelectorFix
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.user.UserInfo
@@ -132,9 +131,6 @@ class MultiLanguagesApplication : Application() {
             DoKit.Builder(mInstance) //性能监控模块
                 .build()
         }
-
-        // 修复PictureSelector V3.11.1 bug
-        PictureSelectorFix.fixBug(this)
 
     }
 

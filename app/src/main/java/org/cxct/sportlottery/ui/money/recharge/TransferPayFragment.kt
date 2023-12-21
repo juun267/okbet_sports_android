@@ -200,6 +200,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
         viewModel.transferPayResult.observe(this) {
             if (it.success) {
                 resetEvent()
+                hideFirstDesposit()
                 getBankType(0)
             }
         }
@@ -278,9 +279,6 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
         etName.setText("")
         etBankAccount.setText("")
         etNickname.setText("")
-        binding.linFirstDeposit.linNoChoose.performClick()
-        binding.linFirstDeposit.root.gone()
-        binding.linReceiveExtra.gone()
         viewModel.clearnRechargeStatus()
     }
 
@@ -855,6 +853,11 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
                 (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setList(sConfigData?.selectedDepositAmountSettingList)
             }
         }
+    }
+    private fun hideFirstDesposit(){
+        binding.linFirstDeposit.linNoChoose.performClick()
+        binding.linFirstDeposit.root.gone()
+        binding.linReceiveExtra.gone()
     }
     private fun initFirstDeposit(dailyConfig: DailyConfig) =binding.linFirstDeposit.run{
         binding.linFirstDeposit.root.isVisible = dailyConfig.first==1

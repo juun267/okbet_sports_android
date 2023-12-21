@@ -15,6 +15,7 @@ import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setTeamLogo
 
 

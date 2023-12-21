@@ -135,7 +135,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             }
 
             setSportDataList(null)
-//            dismissLoading()
+            dismissLoading()
             if (!it.second) {
                 ToastUtil.showToast(activity, it.third)
                 return@observe
@@ -146,6 +146,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     open fun updateSportType(gameTypeList: List<Item>) {
         if (gameTypeList.isEmpty()) {
             setSportDataList(null)
+            dismissLoading()
             return
         }
         //处理默认不选中的情况
