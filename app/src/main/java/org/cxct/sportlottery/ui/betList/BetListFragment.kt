@@ -75,6 +75,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         const val PARLAY = 1
         const val BASKETBALL_ENDING_CARD = 2
 
+        //篮球删除投注信息提示弹窗  不再提示标记
+        const val BASKETBALL_DEL_TIP_FLAG = "basketball_del_tip_flag"
+
         @JvmStatic
         fun newInstance(
             betResultListener: BetResultListener,
@@ -379,12 +382,12 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         setOnClickListeners(binding.clTitle.tvClearAll, binding.tvDeleteAll) {
             if (BetInfoRepository.currentBetType == BASKETBALL_ENDING_CARD){
-                if (!KvUtils.decodeBooleanTure(KvUtils.BASKETBALL_DEL_TIP_FLAG, false)) {
+                if (!KvUtils.decodeBooleanTure(BASKETBALL_DEL_TIP_FLAG, false)) {
                     val dialog = BasketballDelBetTipDialog(requireContext())
                     dialog.setNegativeClickListener(object :
                         BasketballDelBetTipDialog.OnNegativeListener {
                         override fun negativeClick(isCheck: Boolean) {
-                            KvUtils.put(KvUtils.BASKETBALL_DEL_TIP_FLAG, isCheck)
+                            KvUtils.put(BASKETBALL_DEL_TIP_FLAG, isCheck)
                             adapterItemClickListener.clearCarts()
                             dialog.dismiss()
                         }

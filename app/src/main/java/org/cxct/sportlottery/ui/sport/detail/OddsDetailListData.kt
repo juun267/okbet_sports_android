@@ -1,10 +1,11 @@
 package org.cxct.sportlottery.ui.sport.detail
 
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 
 data class OddsDetailListData(
-    var gameType: String, //GameType.HDP ...
+    val gameType: String, //GameType.HDP ...
     var typeCodes: MutableList<String>, //POPULAR,ALL,HDP&OU,GOAL,QATest
     var name: String, //大/小
     var oddArrayList: MutableList<Odd?>, //odds[]
@@ -26,6 +27,11 @@ data class OddsDetailListData(
     var awayMap = HashMap<String, List<Odd?>>() // 球員玩法客隊
 
     var needShowItem: MutableList<Odd?> = mutableListOf() // 目前作用在單列表情況
+
+    @Transient
+    var itemLayout = 0 // adapter的item对应的布局id
+
+    val playCate by lazy { PlayCate.getPlayCate(gameType) }
 }
 
 enum class FGLGType {
