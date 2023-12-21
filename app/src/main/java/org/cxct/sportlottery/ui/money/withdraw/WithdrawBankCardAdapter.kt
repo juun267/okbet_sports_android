@@ -59,7 +59,7 @@ class WithdrawBankCardAdapter(
             }
         )
         checkBank.isChecked = selectedPosition == position
-        linMaintenance.isVisible  = item.maintentace==1
+        linMaintenance.isVisible  = item.maintainStatus==1
     }
 
 
