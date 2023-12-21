@@ -8,6 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/linHead"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:background="@drawable/bg_sport_left_top"
@@ -93,7 +94,9 @@
             <LinearLayout
                 android:id="@+id/linTabBetting"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/margin_3"
                 android:gravity="center">
                 <TextView
                     android:id="@+id/tvTabBetting"
@@ -134,7 +137,9 @@
                 android:id="@+id/tvTabInPlay"
                 android:text="@string/N711"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/margin_3"
                 android:textColor="@color/color_6D7693"
                 android:fontFamily="@font/helvetica_normal"
                 android:gravity="center"
@@ -159,7 +164,9 @@
                 android:id="@+id/tvTabOthers"
                 android:text="@string/setting_center"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/margin_3"
                 android:gravity="center"
                 android:textColor="@color/color_6D7693"
                 android:fontFamily="@font/helvetica_normal"
