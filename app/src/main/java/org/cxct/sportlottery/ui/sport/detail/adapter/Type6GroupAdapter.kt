@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.show
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
@@ -57,24 +58,27 @@ class Type6GroupAdapter(
 
         fun bindModel(oddsList: List<Odd?>) {
             itemView.findViewById<TextView>(R.id.tv_draw).show()
+            if (oddsDetail.gameType== PlayCate.SINGLE_OU.value) {
+                LogUtil.toJson(oddsList.map { it?.name + "," + it?.odds + "," + it?.marketSort + "," + it?.rowSort })
+            }
             //順序 前兩項左列 中間兩項中列 後兩項右列
             val homeList: MutableList<Odd?> = mutableListOf()
             val drawList: MutableList<Odd?> = mutableListOf()
             val awayList: MutableList<Odd?> = mutableListOf()
 
             homeList.apply {
-                add(oddsList.firstOrNull())
-                add(oddsList.getOrNull(1))
+                add(oddsList.firstOrNull { it?.rowSort==1 })
+                add(oddsList.firstOrNull { it?.rowSort==2 })
             }
 
             drawList.apply {
-                add(oddsList.getOrNull(2))
-                add(oddsList.getOrNull(3))
+                add(oddsList.firstOrNull { it?.rowSort==3 })
+                add(oddsList.firstOrNull { it?.rowSort==4 })
             }
 
             awayList.apply {
-                add(oddsList.getOrNull(4))
-                add(oddsList.getOrNull(5))
+                add(oddsList.firstOrNull { it?.rowSort==5 })
+                add(oddsList.firstOrNull { it?.rowSort==6 })
             }
 
             setupRecyclerView(itemView.findViewById(R.id.rv_home), homeList)
