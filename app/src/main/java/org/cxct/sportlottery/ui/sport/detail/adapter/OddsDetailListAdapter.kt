@@ -1642,9 +1642,6 @@ class OddsDetailListAdapter(
         }
 
         private fun group6AdapterSetup(oddsDetail: OddsDetailListData): Type6GroupAdapter {
-            if (oddsDetail.gameType==PlayCate.SINGLE_OU.value) {
-                LogUtil.toJson(oddsDetail.oddArrayList?.map { it?.id + "," + it?.name + "," + it?.playCode + "," + it?.marketSort + "," + it?.rowSort + "，" + it?.odds })
-            }
             return Type6GroupAdapter(
                 oddsDetail, onOddClickListener, oddsType
             )
