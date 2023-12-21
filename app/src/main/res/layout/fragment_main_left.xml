@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/linHead"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:paddingTop="@dimen/margin_30"
@@ -19,7 +20,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="@dimen/margin_45"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_menu_logo" />
 
@@ -59,47 +60,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="true"/>
-
-            <TextView
-                android:text="@string/N711"
-                android:textSize="16sp"
-                android:textColor="@color/color_0D2245"
-                android:layout_marginHorizontal="22dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="8dp"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuSport"
+            <LinearLayout
+                android:id="@+id/linMainMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="12dp"/>
+                android:orientation="vertical">
+                <TextView
+                    android:text="@string/N711"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_0D2245"
+                    android:layout_marginHorizontal="22dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuOKLive"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="12dp"/>
+                <org.cxct.sportlottery.view.MainMenuItemView
+                    android:id="@+id/menuSport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="12dp"/>
 
-            <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuOKGames"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="12dp"/>
+                <org.cxct.sportlottery.view.MainMenuItemView
+                    android:id="@+id/menuOKLive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="12dp"/>
 
-            <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuESport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="12dp"/>
+                <org.cxct.sportlottery.view.MainMenuItemView
+                    android:id="@+id/menuOKGames"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="12dp"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginHorizontal="22dp"
-                android:background="@color/color_EEF3FC"/>
+                <org.cxct.sportlottery.view.MainMenuItemView
+                    android:id="@+id/menuESport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="12dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:layout_marginHorizontal="22dp"
+                    android:background="@color/color_EEF3FC"/>
+            </LinearLayout>
+
 
             <TextView
                 android:text="@string/other"

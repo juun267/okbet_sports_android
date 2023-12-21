@@ -10,6 +10,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.budiyev.android.codescanner.BarcodeUtils
+import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -21,7 +22,6 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
@@ -57,9 +57,12 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
 
     override fun onBindViewStatus(view: View) {
         initObserver()
+        binSelected()
     }
 
     private fun initView() = binding.run {
+        linHead.setPadding(linHead.paddingLeft,
+            ImmersionBar.getStatusBarHeight(requireActivity()),linHead.paddingRight,linHead.paddingBottom)
         promotionView.setup(this@MainLeftFragment as BaseFragment<MainHomeViewModel>)
         ivClose.setOnClickListener { close() }
         ivHome.setOnClickListener {
@@ -146,6 +149,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
             isVisible = !getMarketSwitch() && StaticData.okBingoOpened()
             showBottomLine(false)
         }
+        linMainMenu.isVisible = menuSport.isVisible || menuOKLive.isVisible || menuOKGames.isVisible || menuESport.isVisible
         menuPromo.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_promo_sel, R.drawable.ic_left_menu_promo_nor),
             R.string.B005
@@ -198,7 +202,8 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
             cxt.getIconSelector(R.drawable.ic_left_menu_aboutus_sel, R.drawable.ic_left_menu_aboutus_nor),
             R.string.about_us
         ){
-            cxt.startActivity(Intent(cxt, AboutMeActivity::class.java))
+            JumpUtil.toInternalWeb(requireContext(),
+                Constants.getAboutUsUrl(requireContext()),getString(R.string.about_us))
         }
 
         menuLanguage.setItem(
@@ -245,6 +250,9 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
     }
 
     private fun binSelected()  {
+        if (!isAdded){
+            return
+        }
         lastItem = when(currentContent) {
             OKGamesFragment::class.java -> binding.menuOKGames
             OKLiveFragment::class.java -> binding.menuOKLive

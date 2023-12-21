@@ -13,25 +13,20 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.startActivity
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentLeftOthersBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.news.SportNewsActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.PictureSelectUtil
 import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
-import org.cxct.sportlottery.view.onClick
 import timber.log.Timber
 
 class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftOthersBinding>() {
@@ -71,7 +66,8 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
             R.string.about_us
         ){
             close()
-            startActivity(Intent(requireActivity(), AboutMeActivity::class.java))
+            JumpUtil.toInternalWeb(requireContext(),
+                Constants.getAboutUsUrl(requireContext()),getString(R.string.about_us))
         }
 
         menuScan.setItem(
