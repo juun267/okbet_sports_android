@@ -504,7 +504,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private fun setupBetBarVisiblity() {
 
         val needShowBetBar = fragmentHelper.getCurrentPosition() >= 0
-                && (fragmentHelper.getCurrentFragment() is HomeFragment || fragmentHelper.getCurrentFragment() is SportFragment2)
+                && (fragmentHelper.getCurrentFragment() is HomeFragment
+                    || fragmentHelper.getCurrentFragment() is SportFragment2
+                    || fragmentHelper.getCurrentFragment() is ESportFragment)
 
         if (betListCount == 0
             || !needShowBetBar
@@ -686,25 +688,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
     fun getCurrentFragment():Fragment  = fragmentHelper.getCurrentFragment()
-    override fun initToolBar() {
-    }
 
-    override fun clickMenuEvent() {
-    }
-
-    override fun updateUiWithLogin(isLogin: Boolean) {
-        if (isLogin) {
-
-
-        } else {
-
-
-        }
-    }
-
-    override fun updateOddsType(oddsType: OddsType) {
-
-    }
+    override fun initToolBar() { }
+    override fun clickMenuEvent() { }
+    override fun updateUiWithLogin(isLogin: Boolean) { }
+    override fun updateOddsType(oddsType: OddsType) { }
 
     fun checkRechargeKYCVerify() {
         ToGcashDialog.showByClick{
