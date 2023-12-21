@@ -135,8 +135,8 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
                 updateESportType(it)
                 return@observe
             }
-            dismissLoading()
             setSportDataList(null)
+            dismissLoading()
             if (!it.second) {
                 ToastUtil.showToast(activity, it.third)
                 return@observe
@@ -283,8 +283,8 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
 
         val categoryList = item.categoryList
         if (categoryList.isNullOrEmpty()) {
-            dismissLoading()
             setSportDataList(null)
+            dismissLoading()
             return
         }
 

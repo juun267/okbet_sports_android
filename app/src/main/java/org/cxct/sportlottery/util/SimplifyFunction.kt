@@ -59,6 +59,8 @@ import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.match_odds_change.Odds
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
@@ -943,6 +945,11 @@ fun MutableMap<String, MutableList<Odd>?>.sortOddsMap(sizeCheck: Int = 0) {
 fun MutableMap<String, CateDetailData>.sortOddsMapByDetail() {
     forEach { (_, value) ->
         value.odds.sortWith(compareBy({ it?.marketSort }, { it?.rowSort }))
+    }
+}
+fun MatchOddsChangeEvent.sortOddsMap() {
+    odds?.forEach { (_, value) ->
+        value.odds?.sortWith(compareBy({ it?.marketSort }, { it?.rowSort }))
     }
 }
 
