@@ -57,10 +57,14 @@ class Type6GroupAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindModel(oddsList: List<Odd?>) {
-            itemView.findViewById<TextView>(R.id.tv_draw).show()
-//            if (oddsDetail.gameType== PlayCate.SINGLE_OU.value) {
-//                LogUtil.toJson(oddsList.map { it?.name + "," + it?.odds + "," + it?.marketSort + "," + it?.rowSort })
-//            }
+            if (oddsDetail.gameType== PlayCate.DC_OU.value) {
+                LogUtil.toJson(oddsList.map { it?.name + "," + it?.odds + "," + it?.marketSort + "," + it?.rowSort })
+            }
+            if (!leftName.isNullOrEmpty()){
+                itemView.findViewById<TextView>(R.id.tv_home_name).text = leftName
+                itemView.findViewById<TextView>(R.id.tv_draw).text = centerName
+                itemView.findViewById<TextView>(R.id.tv_away_name).text = rightName
+            }
             //順序 前兩項左列 中間兩項中列 後兩項右列
             val homeList: MutableList<Odd?> = mutableListOf()
             val drawList: MutableList<Odd?> = mutableListOf()
