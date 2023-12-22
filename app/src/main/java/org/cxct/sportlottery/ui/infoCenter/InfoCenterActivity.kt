@@ -2,6 +2,8 @@ package org.cxct.sportlottery.ui.infoCenter
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -24,6 +26,12 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
         const val KEY_READ_PAGE = "key-read-page"
         const val BEEN_READ = 0
         const val YET_READ = 1
+
+        fun startWith(context: Context, unRead: Boolean) {
+            val intent = Intent(context, InfoCenterActivity::class.java)
+            intent.putExtra(KEY_READ_PAGE, if (unRead) YET_READ else BEEN_READ)
+            context.startActivity(intent)
+        }
     }
 
     private val mDefaultShowPage by lazy { intent.getIntExtra(KEY_READ_PAGE, BEEN_READ) }

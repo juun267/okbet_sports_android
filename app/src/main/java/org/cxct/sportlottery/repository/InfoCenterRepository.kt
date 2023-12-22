@@ -19,9 +19,7 @@ class InfoCenterRepository {
 
     val unreadNoticeList: LiveData<List<InfoCenterData>>
         get() = _unreadNoticeList
-    private val _unreadNoticeList = MutableLiveData<List<InfoCenterData>>().apply {
-        value = listOf()
-    }
+    private val _unreadNoticeList = MutableLiveData<List<InfoCenterData>>(listOf())
 
     val unreadList: LiveData<List<InfoCenterData>>
         get() = _unreadList
@@ -123,22 +121,23 @@ class InfoCenterRepository {
     fun setUserNoticeList(userNoticeList: List<FrontWsEvent.UserNotice>) {
 
         val noticeList = _unreadNoticeList.value?.toMutableList()
-        val unreadUserNoticeList = userNoticeList.map {
-            InfoCenterData(
-                it.id,
-                it.userId,
-                it.userName,
-                it.addDate.toString(),
-                it.title,
-                it.content,
-                it.isRead,
-                it.noticeType,
-                it.msgShowType,
-                it.platformId,
-                it.operatorName
-            )
-        }.filter {
-            it.isRead.toString() == MsgType.NOTICE_UNREAD.code.toString()
+        val unreadUserNoticeList = mutableListOf<InfoCenterData>()
+        userNoticeList.forEach {
+            if (it.isRead == MsgType.NOTICE_UNREAD.code.toLong()) {
+                unreadUserNoticeList.add(InfoCenterData(
+                    it.id,
+                    it.userId,
+                    it.userName,
+                    it.addDate.toString(),
+                    it.title,
+                    it.content,
+                    it.isRead,
+                    it.noticeType,
+                    it.msgShowType,
+                    it.platformId,
+                    it.operatorName
+                ))
+            }
         }
         unreadUserNoticeList.forEach {
             noticeList?.let { noticeList ->
