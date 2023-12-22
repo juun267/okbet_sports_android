@@ -48,7 +48,7 @@ object ServiceBroadcastReceiver {
     val lockMoney: LiveData<Double?>
         get() = _lockMoney
 
-    val userNotice: LiveData<FrontWsEvent.UserNoticeEvent?>
+    val userNotice: LiveData<Event<FrontWsEvent.UserNoticeEvent>>
         get() = _userNotice
 
     val sysMaintenance: LiveData<FrontWsEvent.SysMaintainEvent?>
@@ -86,7 +86,7 @@ object ServiceBroadcastReceiver {
     private val _producerUp = MutableLiveData<FrontWsEvent.ProducerUpEvent?>()
     private val _userMoney = MutableLiveData<Double?>()
     private val _lockMoney = MutableLiveData<Double?>()
-    private val _userNotice = MutableLiveData<FrontWsEvent.UserNoticeEvent?>()
+    private val _userNotice = MutableLiveData<Event<FrontWsEvent.UserNoticeEvent>>()
     private val _sysMaintenance = SingleLiveEvent<FrontWsEvent.SysMaintainEvent?>()
     private val _serviceConnectStatus = SingleLiveEvent<ServiceConnectStatus>()
     private val _leagueChange = MutableLiveData<FrontWsEvent.LeagueChangeEvent?>()
@@ -165,7 +165,7 @@ object ServiceBroadcastReceiver {
                 _lockMoney.postValue(event.userLockMoneyEvent.lockMoney.toDoubleOrNull())
             }
             EventType.USER_NOTICE -> {
-                _userNotice.postValue(event.userNoticeEvent)
+                event.userNoticeEvent?.let { _userNotice.postValue(Event(it)) }
             }
             EventType.PING_PONG -> {
                 _pingPong.postValue(event.pingPongEvent)
