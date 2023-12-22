@@ -275,7 +275,7 @@ class WithdrawFragment : BindingFragment<WithdrawViewModel,FragmentWithdrawBindi
 
     private fun initObserve() {
         viewModel.submitEnable.observe(this){
-            updateButtonStatus(it)
+            updateButtonStatus(it && withdrawBankCardData?.maintainStatus==0)
         }
         viewModel.addMoneyCardSwitch.observe(this) {
             transferTypeAddSwitch = it

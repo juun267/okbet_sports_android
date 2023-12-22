@@ -678,13 +678,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun updateButtonStatus(isEnable: Boolean) {
-        if (isEnable) {
-            btn_submit.isEnabled = true
-            btn_submit.alpha = 1.0f
-        } else {
-            btn_submit.isEnabled = false
-            btn_submit.alpha = 0.5f
-        }
+        btn_submit.setBtnEnable(isEnable)
     }
 }
 
