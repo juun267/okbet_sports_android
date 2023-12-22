@@ -1,113 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="6dp">
+    android:layout_height="44dp"
+    android:layout_gravity="center_vertical"
+    tools:parentTag="FrameLayout">
 
-    <FrameLayout
+
+    <LinearLayout
+        android:id="@+id/button_odd_detail"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:layout_gravity="center_vertical"
-        >
-
+        android:background="@drawable/selector_button_radius_6_odds"
+        android:gravity="center"
+        android:orientation="horizontal"
+        tools:ignore="SpUsage">
 
         <LinearLayout
-            android:id="@+id/button_odd_detail"
+            android:id="@+id/lin_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/selector_button_radius_6_odds"
-            android:gravity="center"
-            android:orientation="horizontal"
-            tools:ignore="SpUsage">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:gravity="center_vertical"
+            android:visibility="visible">
 
-            <LinearLayout
-                android:id="@+id/lin_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:gravity="center_vertical"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="@color/selector_button_odd_top_text"
-                    android:textSize="@dimen/textSize12sp"
-                    android:paddingRight="5dp"
-                    android:text="name"
-                    tools:textColor="@color/color_6D7693" />
-
-                <TextView
-                    android:id="@+id/tv_spread"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/helvetica_normal"
-                    android:maxLines="1"
-                    android:textColor="@color/selector_button_odd_top_text"
-                    android:textSize="@dimen/textSize12sp"
-                    tools:text="-0.5/1"
-                    tools:textColor="@color/color_6D7693" />
-
-            </LinearLayout>
-
-
-            <FrameLayout
-                android:id="@+id/fl_odd_detail"
+            <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/tv_odds"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_12"
-                    android:fontFamily="@font/inter_bold"
-                    android:layout_gravity="center"
-                    android:textFontWeight="700"
-                    android:textColor="@color/selector_button_odd_bottom_text"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="1.067" />
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/selector_button_odd_top_text"
+                android:textSize="@dimen/textSize12sp"
+                android:paddingRight="5dp"
+                android:text="name"
+                tools:textColor="@color/color_6D7693" />
 
-                <ImageView
-                    android:id="@+id/iv_arrow"
-                    android:layout_width="12dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top|right"
-                    tools:src="@drawable/icon_odds_up"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-            </FrameLayout>
-
+            <TextView
+                android:id="@+id/tv_spread"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/helvetica_normal"
+                android:maxLines="1"
+                android:textColor="@color/selector_button_odd_top_text"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="-0.5/1"
+                tools:textColor="@color/color_6D7693" />
 
         </LinearLayout>
 
 
-        <ImageView
-            android:id="@+id/img_odd_lock"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_radius_4_button_odds_lock"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_lock"
-            tools:visibility="gone"
-            android:visibility="gone" />
+        <FrameLayout
+            android:id="@+id/fl_odd_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_odds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_12"
+                android:fontFamily="@font/inter_bold"
+                android:layout_gravity="center"
+                android:textFontWeight="700"
+                android:textColor="@color/selector_button_odd_bottom_text"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="1.067" />
 
-        <TextView
-            android:id="@+id/img_odd_unknown"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_radius_4_button_odds_lock"
-            android:gravity="center"
-            android:textSize="@dimen/textSize14sp"
-            android:textStyle="bold"
-            android:textColor="@color/color_FFFFFF_535D76"
-            android:text="@string/unknown_data"
-            android:visibility="gone" />
+            <ImageView
+                android:id="@+id/iv_arrow"
+                android:layout_width="12dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                tools:src="@drawable/icon_odds_up"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </FrameLayout>
 
-    </FrameLayout>
 
-</FrameLayout>
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/img_odd_lock"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/bg_radius_4_button_odds_lock"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_lock"
+        tools:visibility="gone"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/img_odd_unknown"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/bg_radius_4_button_odds_lock"
+        android:gravity="center"
+        android:textSize="@dimen/textSize14sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_FFFFFF_535D76"
+        android:text="@string/unknown_data"
+        android:visibility="gone" />
+
+
+</merge>

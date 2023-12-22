@@ -3,15 +3,12 @@ package org.cxct.sportlottery.ui.sport.oddsbtn
 
 import android.animation.Animator
 import android.content.Context
-import android.graphics.Paint
-import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
@@ -28,8 +25,7 @@ import org.cxct.sportlottery.ui.sport.detail.adapter.TypeOneListAdapter
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
-import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
-import org.cxct.sportlottery.util.LocalUtils.getString
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 
 /**
@@ -47,7 +43,7 @@ class OddsButtonDetail @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     var betStatus: Int? = null
         set(value) {
@@ -69,33 +65,15 @@ class OddsButtonDetail @JvmOverloads constructor(
 
     private var mOddsType: OddsType = OddsType.EU
 
-    private var hideItem = false
-
-    private var mBackground: Drawable? = null
-
     init {
-        init(attrs)
+        inflate(context, R.layout.button_odd_detail, this)
+        6.dp.let { setPadding(it, it, it, it) }
     }
 
 
     //为了在赔率不显示队名，按钮内传入队名，过滤
     private var matchInfo: MatchInfo? = null
     private var hideName = true
-
-    private fun init(attrs: AttributeSet?) {
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OddsButton)
-        hideItem = typedArray.getBoolean(R.styleable.OddsButton_ob_hide_item_flag, false)
-        mBackground =
-            typedArray.getDrawable(R.styleable.OddsButton_ob_background)
-                ?: context.theme.getDrawable(R.drawable.selector_button_radius_6_odds)
-        try {
-            inflate(context, R.layout.button_odd_detail, this).apply {
-                button_odd_detail.background = mBackground
-            }
-        } catch (e: Exception) {
-            typedArray.recycle()
-        }
-    }
 
     fun setupOdd(
         odd: Odd?,
@@ -110,7 +88,7 @@ class OddsButtonDetail @JvmOverloads constructor(
         this.matchInfo = matchInfo
         hideName = (TextUtils.equals(matchInfo?.homeName, odd?.name)
                 || TextUtils.equals(matchInfo?.awayName, odd?.name)
-                || TextUtils.equals(getString(R.string.draw), odd?.name))&&adapterName!=TypeOneListAdapter::class.java.name
+                || TextUtils.equals(context.getString(R.string.draw), odd?.name))&&adapterName!=TypeOneListAdapter::class.java.name
 
         tv_name.apply {
 //            val extInfoStr =

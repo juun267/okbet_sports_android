@@ -31,8 +31,7 @@
                     android:layout_weight="1"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
-                    android:overScrollMode="never"
-                    tools:listitem="@layout/content_type_grid_item" />
+                    android:overScrollMode="never" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_draw"
@@ -41,9 +40,7 @@
                     android:layout_weight="1"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
-                    android:overScrollMode="never"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/content_type_grid_item" />
+                    android:overScrollMode="never" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_away"
@@ -52,8 +49,7 @@
                     android:layout_weight="1"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
-                    android:overScrollMode="never"
-                    tools:listitem="@layout/content_type_grid_item" />
+                    android:overScrollMode="never" />
 
             </LinearLayout>
 
@@ -68,7 +64,10 @@
 
         </LinearLayout>
 
-        <include layout="@layout/space_content_odds_detail_list"/>
+    <View
+        android:id="@+id/spaceItemBottom"
+        android:layout_width="match_parent"
+        android:layout_height="7dp"/>
 
     </LinearLayout>
 

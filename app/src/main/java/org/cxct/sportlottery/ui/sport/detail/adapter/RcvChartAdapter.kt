@@ -1,5 +1,10 @@
 package org.cxct.sportlottery.ui.sport.detail.adapter
 
+import android.graphics.Color
+import android.view.Gravity
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
@@ -7,7 +12,16 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
 
-class RcvChartAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_text_view) {
+class RcvChartAdapter : BaseQuickAdapter<String, BaseViewHolder>(0) {
+
+    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        val textView = AppCompatTextView(parent.context)
+        textView.gravity = Gravity.CENTER
+        textView.textSize = 10f
+        textView.setTextColor(Color.WHITE)
+        textView.layoutParams = LinearLayout.LayoutParams(-1, 51.dp)
+        return BaseViewHolder(textView)
+    }
 
         private var gameType: String? = null
         private var currentSpt: Int? = null
