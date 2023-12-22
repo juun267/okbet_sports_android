@@ -15,9 +15,9 @@ import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetail
 
 
 class TypeSingleAdapter (
-    private var oddsDetail: OddsDetailListData,
-    private val onOddClickListener: OnOddClickListener,
-    private val oddsType: OddsType
+    var oddsDetail: OddsDetailListData,
+    var onOddClickListener: OnOddClickListener,
+    var oddsType: OddsType
 ) : RecyclerView.Adapter<TypeSingleAdapter.ViewHolder>() {
 
 
