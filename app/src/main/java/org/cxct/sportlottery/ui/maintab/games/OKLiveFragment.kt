@@ -17,6 +17,7 @@ import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
@@ -181,8 +182,8 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     }
 
     fun enterGame(bean: OKGameBean) {
-        loginedRun(binding.root.context) {
-            mainTabActivity().enterThirdGame(bean)
+        mainTabActivity().enterThirdGame(bean)
+        if (LoginRepository.isLogined()) {
             viewModel.addRecentPlay(bean)
         }
     }
