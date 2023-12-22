@@ -554,37 +554,32 @@ class OddsDetailVH (
             return
         }
 
-        val onOddClickListener = oddsAdapter.onOddClickListener
-        val oddsType = oddsAdapter.oddsType
+
         if (oddsDetail.gameType.isEndScoreType()) {
             //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
             itemView.lin_match.isVisible = false
             rvBet.setBackgroundResource(R.color.color_F9FAFD)
             val nonAdapter = rvBet.adapter == null
-            rvBet.layoutManager = GridLayoutManager(itemView.context, 4)
             if (rvBet.itemDecorationCount == 0) {
                 rvBet.addItemDecoration(GridSpacingItemDecoration(4, 4.dp,false))
             }
-            val adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
-            rvBet.adapter = adapter
-            this.rvBet.tag = oddsDetail.gameType
+
+            val adapter = initSingleRCV(rvBet, 4, oddsDetail)
+            rvBet.tag = oddsDetail.gameType
             if (nonAdapter) {
                 oddsAdapter.isFirstRefresh = false
             } else {
-                if (rvBet.tag != oddsDetail.gameType){
-                    rvBet.tag = oddsDetail.gameType
-                    adapter.setOddsDetailData(oddsDetail)
-                }
-                if (payloads?.isEmpty() == true){
+                rvBet.tag = oddsDetail.gameType
+                if (payloads.isNullOrEmpty()){
                     adapter.notifyDataSetChanged()
-                }
-            }
-
-            if (payloads?.isNotEmpty() == true) {
-                adapter.setOddsDetailData(oddsDetail)
-                payloads.forEach { payloadItem ->
-                    val index = oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
-                    runWithCatch { adapter.notifyItemChanged(index) }
+                } else {
+                    payloads.forEach { payloadItem ->
+                        oddsDetail.oddArrayList.forEachIndexed { index, odd ->
+                            if (odd?.id == payloadItem) {
+                                runWithCatch { adapter.notifyItemChanged(index) }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -594,9 +589,9 @@ class OddsDetailVH (
 
 //      Timber.d("===洗刷刷4 else index:${12} payloads:${payloads?.size}")
         rvBet.setBackgroundResource(R.color.color_FFFFFF)
-        val singleAdapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
-        rvBet.adapter = singleAdapter
-        rvBet.layoutManager = GridLayoutManager(itemView.context, spanCount)
+        if (rvBet.adapter == initSingleRCV(rvBet, spanCount, oddsDetail)) {
+            rvBet.adapter!!.notifyDataSetChanged()
+        }
         //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
         if (spanCount == 3) {
             //如果第三个标题不等于客队名，那么判断第三个为和局，迁移到第二个位置
@@ -608,6 +603,22 @@ class OddsDetailVH (
             itemView.tv_draw?.text = oddsDetail.oddArrayList[1]?.name
         }
 
+    }
+
+    private fun initSingleRCV(recyclerView: RecyclerView, spanCount: Int, oddsDetail: OddsDetailListData): TypeSingleAdapter {
+        lateinit var adapter: TypeSingleAdapter
+        if (recyclerView.adapter == null) {
+            adapter = TypeSingleAdapter(oddsDetail, oddsAdapter.onOddClickListener, oddsAdapter.oddsType)
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = GridLayoutManager(itemView.context, spanCount)
+        } else {
+            adapter = recyclerView.adapter as TypeSingleAdapter
+            adapter.oddsDetail = oddsDetail
+            adapter.onOddClickListener = oddsAdapter.onOddClickListener
+            adapter.oddsType = oddsAdapter.oddsType
+            (recyclerView.layoutManager as GridLayoutManager).spanCount = spanCount
+        }
+        return adapter
     }
 
     private fun forSingleCS(oddsDetail: OddsDetailListData) {

@@ -71,7 +71,7 @@ class TypeEPSAdapter : RecyclerView.Adapter<TypeEPSAdapter.ViewHolder>() {
         fun bindModel(odd: Odd?) {
             tvName.text = odd?.name
 
-            btnOdds?.apply {
+            btnOdds.apply {
                 setupOddState(this, odd)
                 setOnClickListener {
                     odd?.let { odd ->
