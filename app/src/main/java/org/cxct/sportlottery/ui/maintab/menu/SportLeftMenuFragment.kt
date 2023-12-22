@@ -1,8 +1,11 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
 import android.annotation.SuppressLint
-import android.graphics.Typeface
 import android.view.View
+import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.activity_sport_search.*
+import kotlinx.android.synthetic.main.fragment_main_left.*
+import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone
@@ -14,28 +17,32 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.startLogin
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.onClick
-import org.cxct.sportlottery.view.rumWithSlowRequest
 import org.cxct.sportlottery.view.setColors
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 
-class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, FragmentSportLeftMenuBinding> (){
+class SportLeftMenuFragment :
+    BindingSocketFragment<SportLeftMenuViewModel, FragmentSportLeftMenuBinding>() {
     private fun getMainTabActivity() = activity as MainTabActivity
 
     //Betting sport
-    private val sportBettingFragment=LeftSportBetFragment()
+    private val sportBettingFragment = LeftSportBetFragment()
+
     //滚球
-    private val inPlayFragment by lazy { LeftInPlayFragment() }
+    private val gameFragment by lazy { LeftGameFragment() }
+
     //其他
     private val othersFragment by lazy { LeftOthersFragment() }
 
     @SuppressLint("SetTextI18n")
-    override fun onInitView(view: View) =binding.run {
+    override fun onInitView(view: View) = binding.run {
+        linHead.setPadding(linHead.paddingLeft,
+            ImmersionBar.getStatusBarHeight(requireActivity()),
+            linHead.paddingRight,
+            linHead.paddingBottom)
         //关闭按钮
         ivClose.onClick {
             close()
@@ -63,49 +70,40 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
             requireActivity().startLogin()
             close()
         }
-
-        ivTopCover.onClick {
-
-        }
-        tvLogin.text="${getString(R.string.btn_login)}/${getString(R.string.btn_register)}"
+        tvLogin.text = "${getString(R.string.btn_login)}/${getString(R.string.btn_register)}"
     }
 
     override fun onInitData() {
         super.onInitData()
         //默认选中sport betting
-       binding.linearBetting.performClick()
+        binding.linearBetting.performClick()
         reloadData()
-
         EventBusUtil.targetLifecycle(this)
-
 
     }
 
-    fun reloadData(){
+    override fun onBindViewStatus(view: View) {
+        super.onBindViewStatus(view)
+        initObservable()
+        viewModel.getSportCount()
+    }
+
+    fun reloadData() {
         if (activity == null) {
             return
         }
 
         //初始化顶部登录状态
         initLoginData()
-        //刷新订单数量
-        if(sportBettingFragment.isVisible){
-            if(viewModel.isLogin()){
-                rumWithSlowRequest(viewModel){
-                    sportBettingFragment.viewModel.getBetRecordCount()
-                }
-            }
+        if (sportBettingFragment.isVisible) {
+            sportBettingFragment.getBetRecordCount()
+            sportBettingFragment.getInPlayData()
+            sportBettingFragment.getRecommendLeagueData()
         }
-        //刷新滚球列表
-        if(inPlayFragment.isVisible){
-            inPlayFragment.viewModel.getInPlayList()
-        }
-        //刷新热门赛事
-        if(sportBettingFragment.isVisible){
-            sportBettingFragment.viewModel.getRecommend()
+        if (gameFragment.isVisible) {
+            gameFragment.setBannerStatus()
         }
     }
-
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -115,25 +113,26 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
 
 
     @SuppressLint("SetTextI18n")
-    private fun initLoginData(){
+    private fun initLoginData() {
 
         binding.apply {
             //已登录
-            if(viewModel.isLogin()){
+            if (viewModel.isLogin()) {
                 tvUserName.visible()
                 tvUserBalance.visible()
                 tvLogin.gone()
                 //用户名
-                if(viewModel.userInfo.value?.nickName.isNullOrEmpty()){
-                    tvUserName.text="${viewModel.userInfo.value?.userName} "
-                }else{
-                    tvUserName.text="${viewModel.userInfo.value?.nickName} "
+                if (viewModel.userInfo.value?.nickName.isNullOrEmpty()) {
+                    tvUserName.text = "${viewModel.userInfo.value?.userName} "
+                } else {
+                    tvUserName.text = "${viewModel.userInfo.value?.nickName} "
                 }
 
                 //余额
-                tvUserBalance.text="$showCurrencySign ${TextUtil.format(viewModel.userMoney.value?:0)}"
+                tvUserBalance.text =
+                    "$showCurrencySign ${TextUtil.format(viewModel.userMoney.value ?: 0)}"
                 ivUserCover.load(viewModel.userInfo.value?.iconUrl, R.drawable.ic_person_avatar)
-            }else{
+            } else {
                 //未登录
                 tvLogin.visible()
                 tvUserName.gone()
@@ -142,24 +141,30 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         }
     }
 
+    private fun initObservable() {
+        viewModel.sportCountEvent.observe(this) {
+            binding.tvTabBettingCount.text = "$it"
+        }
+    }
+
     /**
      * 切换tab
      */
-    private fun replaceTab(index:Int){
+    private fun replaceTab(index: Int) {
         clearTabStyle(index)
-        val transaction=childFragmentManager.beginTransaction()
-        when(index){
-            0->{
+        val transaction = childFragmentManager.beginTransaction()
+        when (index) {
+            0 -> {
                 //Sport betting
-                transaction.replace(R.id.frameContent,sportBettingFragment)
+                transaction.replace(R.id.frameContent, sportBettingFragment)
             }
-            1->{
+            1 -> {
                 //滚球
-                transaction.replace(R.id.frameContent,inPlayFragment)
+                transaction.replace(R.id.frameContent, gameFragment)
             }
-            2->{
+            2 -> {
                 //其他
-                transaction.replace(R.id.frameContent,othersFragment)
+                transaction.replace(R.id.frameContent, othersFragment)
             }
         }
         transaction.commitAllowingStateLoss()
@@ -171,36 +176,34 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
     }
 
 
-    private fun clearTabStyle(index:Int){
-        binding.tvTabBetting.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
-        binding.tvTabInPlay.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
-        binding.tvTabOthers.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
+    private fun clearTabStyle(index: Int) {
         binding.ivTabBetting.inVisible()
         binding.ivTabInPlay.inVisible()
         binding.ivTabOthers.inVisible()
-        binding.tvTabBetting.setColors(R.color.color_6D7693)
-        binding.tvTabInPlay.setColors(R.color.color_6D7693)
-        binding.tvTabOthers.setColors(R.color.color_6D7693)
+        binding.tvTabBetting.setColors(R.color.color_0D2245)
+        binding.tvTabInPlay.setColors(R.color.color_0D2245)
+        binding.tvTabOthers.setColors(R.color.color_0D2245)
         selectTabStyle(index)
     }
 
-    private fun selectTabStyle(index:Int){
-        when(index){
-            0->{
-                binding.tvTabBetting.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+    private fun selectTabStyle(index: Int) {
+        when (index) {
+            0 -> {
                 binding.tvTabBetting.setColors(R.color.color_025BE8)
                 binding.ivTabBetting.visible()
             }
-            1->{
-                binding.tvTabInPlay.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+            1 -> {
                 binding.tvTabInPlay.setColors(R.color.color_025BE8)
                 binding.ivTabInPlay.visible()
             }
-            2->{
-                binding.tvTabOthers.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+            2 -> {
                 binding.tvTabOthers.setColors(R.color.color_025BE8)
                 binding.ivTabOthers.visible()
             }
         }
+    }
+
+    fun getSportCount() {
+        viewModel.getSportCount()
     }
 }

@@ -64,7 +64,7 @@
         android:outlineAmbientShadowColor="@color/transparent"
         android:outlineSpotShadowColor="@color/transparent"
         android:tag="LEFT"
-        tools:layout="@layout/fragment_main_left2" />
+        tools:layout="@layout/fragment_main_left" />
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/right_menu"
         android:layout_width="match_parent"

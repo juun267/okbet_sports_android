@@ -234,9 +234,6 @@
             android:name=".ui.profileCenter.cancelaccount.CancelAccountActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.maintab.menu.SettingCenterActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.aboutMe.AboutMeActivity"
             android:screenOrientation="portrait" />
         <activity

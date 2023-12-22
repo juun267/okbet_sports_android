@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.user.odds.OddsChangeOptionRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -21,23 +22,20 @@ class MainViewModel(
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository,
-) : BaseSocketViewModel(
+) : MainHomeViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
     betInfoRepository,
     infoCenterRepository,
-    favoriteRepository
+    favoriteRepository,
+    sportMenuRepository
 ) {
     val token
         get() = loginRepository.token
 
     val userId = loginRepository.userId
 
-
-    private val _inplayList = MutableLiveData<List<Item>>()
-    val inplayList: LiveData<List<Item>>
-        get() = _inplayList
 
     fun updateOddsChangeOption(option: Int) {
         viewModelScope.launch {
@@ -50,20 +48,5 @@ class MainViewModel(
             }
         }
     }
-
-
-    fun getInPlayList() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                sportMenuRepository.getSportMenu(
-                    TimeUtil.getNowTimeStamp().toString(),
-                    TimeUtil.getTodayStartTimeStamp().toString()
-                )
-            }?.sportMenuData?.let { sportMenuList ->
-                _inplayList.postValue(sportMenuList.menu.inPlay.items)
-            }
-        }
-    }
-
 
 }

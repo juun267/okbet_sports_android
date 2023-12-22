@@ -4,6 +4,7 @@ package org.cxct.sportlottery.ui.sport.detail.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
@@ -15,9 +16,9 @@ import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetail
 
 
 class TypeSingleAdapter (
-    private var oddsDetail: OddsDetailListData,
-    private val onOddClickListener: OnOddClickListener,
-    private val oddsType: OddsType
+    var oddsDetail: OddsDetailListData,
+    var onOddClickListener: OnOddClickListener,
+    var oddsType: OddsType
 ) : RecyclerView.Adapter<TypeSingleAdapter.ViewHolder>() {
 
 
@@ -34,8 +35,11 @@ class TypeSingleAdapter (
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_grid_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val oddsBtn = OddsButtonDetail(parent.context)
+        oddsBtn.layoutParams = LinearLayout.LayoutParams(-1, -2)
+        return ViewHolder(oddsBtn)
+    }
 
 
     override fun getItemCount(): Int = oddsDetail.oddArrayList.size
@@ -47,19 +51,17 @@ class TypeSingleAdapter (
     }
 
 
-    inner class ViewHolder(view: View) : OddStateViewHolderDetail(view) {
+    inner class ViewHolder(private val btnOdds: OddsButtonDetail) : OddStateViewHolderDetail(btnOdds) {
 
-        private val btnOdds = itemView.findViewById<OddsButtonDetail>(R.id.button_odds)
 
-        fun bindModel(gameType: String?, odd: Odd?) {
+        fun bindModel(gameType: String?, odd: Odd?) = btnOdds.run {
 //            Timber.d("===洗刷刷-1 设置点击事件123")
-            btnOdds?.apply {
-                setupOdd(odd, oddsType, gameType, matchInfo = oddsDetail.matchInfo)
-                setupOddState(this, odd)
-                setOnClickListener {
+
+            setupOdd(odd, oddsType, gameType, matchInfo = oddsDetail.matchInfo)
+            setupOddState(this, odd)
+            setOnClickListener {
 //                    Timber.d("===洗刷刷-1 设置点击事件")
-                    odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
-                }
+                odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
             }
         }
 

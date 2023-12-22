@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
@@ -52,11 +53,16 @@ class TypeOneListAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        when (viewType) {
-            ItemType.ITEM.ordinal -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_one_list_item, parent, false))
-            else -> MoreViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_more_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == ItemType.ITEM.ordinal) {
+            val oddsBtn = OddsButtonDetail(parent.context)
+            oddsBtn.layoutParams = LinearLayout.LayoutParams(-1, -2)
+            ViewHolder(oddsBtn)
+        } else {
+            MoreViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_more_item, parent, false))
         }
+    }
+
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         when (holder) {
@@ -74,9 +80,8 @@ class TypeOneListAdapter(
         else oddsDetail.needShowItem.size + 1
     }
 
-    inner class ViewHolder(view: View) : OddStateViewHolderDetail(view) {
+    inner class ViewHolder(private val btnOdds: OddsButtonDetail) : OddStateViewHolderDetail(btnOdds) {
 
-        private val btnOdds = itemView.findViewById<OddsButtonDetail>(R.id.button_odds)
         private fun checkKey(key: String): Boolean {
             return TextUtil.compareWithGameKey(oddsDetail.gameType, key)
         }
@@ -119,7 +124,7 @@ class TypeOneListAdapter(
                         }
                         tv_spread.text = ""
                     }
-                    checkKey(PlayCate.DC.value) -> {
+                    oddsDetail.gameType.startsWith(PlayCate.DC.value) -> {
                         tv_name.text = when (odd?.playCode) {
                             PlayCode.DC_H_D.value -> this.context.getString(R.string.odds_button_name_home) + "/" + this.context.getString(
                                 R.string.draw_name)

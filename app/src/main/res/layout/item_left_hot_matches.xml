@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingHorizontal="12dp"
-    android:layout_height="42dp"
+    android:layout_height="50dp"
     android:foreground="@drawable/fg_ripple">
 
     <ImageView
@@ -24,7 +24,7 @@
         android:textSize="14sp"
         android:maxLines="2"
         android:ellipsize="end"
-        android:textColor="@color/color_000000"
+        android:textColor="@color/color_6D7693"
         android:layout_width="wrap_content"
         android:text="Philippine SupPhilippine SupPhilippine "
         android:layout_height="wrap_content"/>
