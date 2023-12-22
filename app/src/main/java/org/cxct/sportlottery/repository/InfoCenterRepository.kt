@@ -7,32 +7,36 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
 import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import retrofit2.Response
-import timber.log.Timber
 
 enum class MsgType(var code: Int) {
     NOTICE_UNREAD(0),
     NOTICE_READED(1)
 }
 
-class InfoCenterRepository {
+object InfoCenterRepository {
+
+    init {
+        ServiceBroadcastReceiver.userNotice.observeForever  {
+            it.getContentIfNotHandled()?.userNoticeListList?.let { list ->
+                setUserNoticeList(list)
+            }
+        }
+    }
 
     val unreadNoticeList: LiveData<List<InfoCenterData>>
         get() = _unreadNoticeList
     private val _unreadNoticeList = MutableLiveData<List<InfoCenterData>>(listOf())
 
     val unreadList: LiveData<List<InfoCenterData>>
-        get() = _unreadList
-    private val _unreadList = MutableLiveData<List<InfoCenterData>>().apply {
-        value = listOf()
-    }
+        get() = _unreadNoticeList
+
     var moreUnreadList = mutableListOf<InfoCenterData>()
 
     val readedList: LiveData<List<InfoCenterData>>
         get() = _readedList
-    private val _readedList = MutableLiveData<List<InfoCenterData>>().apply {
-        value = listOf()
-    }
+    private val _readedList = MutableLiveData<List<InfoCenterData>>(listOf())
 
     //未讀總數目
     val totalUnreadMsgCount: LiveData<Int>
@@ -51,21 +55,17 @@ class InfoCenterRepository {
             when (infoCenterRequest.isRead) {
                 MsgType.NOTICE_UNREAD.code -> {
                     response.body().let {
+
                         moreUnreadList = mutableListOf()
                         val newUnreadNoticeList = it?.infoCenterData?.filter { infoCenterData ->
                             infoCenterData.isRead.toString() == MsgType.NOTICE_UNREAD.code.toString()
                         } as MutableList<InfoCenterData>
 
-                        if(infoCenterRequest.page !=1 ){
-                            if (!_unreadList.value.isNullOrEmpty())
-                                moreUnreadList = _unreadList.value as MutableList<InfoCenterData>
+
+                        if (newUnreadNoticeList.isNotEmpty()) {
+                            moreUnreadList.addAll(newUnreadNoticeList)
                         }
 
-                        newUnreadNoticeList.forEach { infoCenterData ->
-                            moreUnreadList.add(infoCenterData)
-                        }
-
-                        _unreadList.value = moreUnreadList
                         _unreadNoticeList.value = moreUnreadList
 
                         _totalUnreadMsgCount.postValue(it.total ?: 0)
@@ -88,8 +88,8 @@ class InfoCenterRepository {
         val response = OneBoSportApi.infoCenterService.setMsgReaded(msgId)
 
         if (response.isSuccessful) {
-            val noticeList = _unreadList.value?.toMutableList()
-            noticeList?.find { it.id.toString() == msgId }?.let { noticeList?.remove(it) }
+            val noticeList = _unreadNoticeList.value?.toMutableList()
+            noticeList?.find { it.id.toString() == msgId }?.let { noticeList.remove(it) }
             _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())
 //            response.body()?.total?.let { _totalUnreadMsgCount.postValue(it) }
         }
@@ -139,15 +139,19 @@ class InfoCenterRepository {
                 ))
             }
         }
-        unreadUserNoticeList.forEach {
-            noticeList?.let { noticeList ->
-                if (!noticeList.contains(it)) {
-                    noticeList.add(it)
-                }
+
+        if (noticeList.isNullOrEmpty()) {
+            _unreadNoticeList.postValue(unreadUserNoticeList)
+            return
+        }
+
+        unreadUserNoticeList.forEach { unReadMsg->
+            if (noticeList.find { it.id == unReadMsg.id } == null) {
+                noticeList.add(unReadMsg)
             }
         }
 
-        _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())
+        _unreadNoticeList.postValue(noticeList!!)
     }
 
     fun clear() {
@@ -155,7 +159,6 @@ class InfoCenterRepository {
     }
 
     fun clearList() {
-        _unreadList.postValue(listOf())
         _readedList.postValue(listOf())
     }
 }

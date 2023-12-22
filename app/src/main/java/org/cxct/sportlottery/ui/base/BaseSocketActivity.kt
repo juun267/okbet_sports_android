@@ -81,12 +81,6 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             viewModel.getSettlementNotification(it)
         }
 
-        receiver.userNotice.observe(this, Observer {
-            it?.userNoticeListList?.let { list ->
-                viewModel.setUserNoticeList(list)
-            }
-        })
-
         receiver.userDiscountChange.observe(this) {
             viewModel.updateDiscount(it?.discount?.toDoubleOrNull())
         }
