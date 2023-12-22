@@ -71,9 +71,9 @@ class Type6GroupAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindModel(oddsList: List<Odd?>) {
-            if (oddsDetail.gameType== PlayCate.DC_OU.value) {
-                LogUtil.toJson(oddsList.map { it?.name + ","+ it?.spread + "," + it?.odds + "," + it?.marketSort + "," + it?.rowSort })
-            }
+//            if (oddsDetail.gameType== PlayCate.DC_OU.value) {
+//                LogUtil.toJson(oddsList.map { it?.name + ","+ it?.spread + "," + it?.odds + "," + it?.marketSort + "," + it?.rowSort })
+//            }
             if (!leftName.isNullOrEmpty()){
                 itemView.findViewById<TextView>(R.id.tv_home_name).text = leftName
                 itemView.findViewById<TextView>(R.id.tv_draw).text = centerName

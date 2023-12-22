@@ -119,7 +119,7 @@ class TypeOneListAdapter(
                         }
                         tv_spread.text = ""
                     }
-                    checkKey(PlayCate.DC.value) -> {
+                    oddsDetail.gameType.startsWith(PlayCate.DC.value) -> {
                         tv_name.text = when (odd?.playCode) {
                             PlayCode.DC_H_D.value -> this.context.getString(R.string.odds_button_name_home) + "/" + this.context.getString(
                                 R.string.draw_name)
