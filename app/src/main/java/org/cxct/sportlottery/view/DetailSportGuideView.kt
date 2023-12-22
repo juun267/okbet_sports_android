@@ -13,6 +13,16 @@ import org.cxct.sportlottery.util.KvUtils
 class DetailSportGuideView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : FrameLayout(context, attrs, defStyle) {
 
+    companion object {
+
+        //是否已经展示过新手引导
+        const val BASKETBALL_GUIDE_TIP_FLAG = "basketball_guide_tip_flag"
+
+        fun isPlayed(): Boolean {
+            return KvUtils.decodeBooleanTure(BASKETBALL_GUIDE_TIP_FLAG, false)
+        }
+    }
+
     private val ivBg: ImageView
     private val dsgt: DetailSportGuideTipsView
     private var curIndex = 0
@@ -65,13 +75,13 @@ class DetailSportGuideView @JvmOverloads constructor(context: Context, attrs: At
                     onRebind()
                 } else {
                     visibility = GONE
-                    KvUtils.put(KvUtils.BASKETBALL_GUIDE_TIP_FLAG, true)
+                    KvUtils.put(BASKETBALL_GUIDE_TIP_FLAG, true)
                 }
             }
 
             override fun onCloseClick() {
                 visibility = GONE
-                KvUtils.put(KvUtils.BASKETBALL_GUIDE_TIP_FLAG, true)
+                KvUtils.put(BASKETBALL_GUIDE_TIP_FLAG, true)
             }
 
         }

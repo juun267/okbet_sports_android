@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.network.common
 
 import org.cxct.sportlottery.common.proguards.KeepMembers
-import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 
 @KeepMembers
 enum class PlayCate(val value: String) {
@@ -415,29 +414,6 @@ enum class PlayCate(val value: String) {
             }
         }
 
-        fun isIntervalCornerPlayCate(code: String?): Boolean {
-            return when (code) {
-                CORNER_HDP_SEG1.value,
-                CORNER_HDP_SEG2.value,
-                CORNER_HDP_SEG3.value,
-                CORNER_HDP_SEG4.value,
-                CORNER_HDP_SEG5.value,
-                CORNER_HDP_SEG6.value,
-                CORNER_OU_SEG1.value,
-                CORNER_OU_SEG2.value,
-                CORNER_OU_SEG3.value,
-                CORNER_OU_SEG4.value,
-                CORNER_OU_SEG5.value,
-                CORNER_OU_SEG6.value,
-                CORNER_SINGLE_SEG1.value,
-                CORNER_SINGLE_SEG2.value,
-                CORNER_SINGLE_SEG3.value,
-                CORNER_SINGLE_SEG4.value,
-                CORNER_SINGLE_SEG5.value,
-                CORNER_SINGLE_SEG6.value -> true
-                else -> false
-            }
-        }
 
         fun getPlayCate(code: String?): PlayCate {
             return when (code) {

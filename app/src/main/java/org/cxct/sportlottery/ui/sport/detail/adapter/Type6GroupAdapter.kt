@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.show
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.service.match_odds_change.Odds
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
 import org.cxct.sportlottery.util.LogUtil
@@ -39,8 +41,21 @@ class Type6GroupAdapter(
 
     var rightName: String? = null
 
-
-    private val groupList = oddsDetail.oddArrayList.chunked(6)
+    private val groupList by lazy {
+       val newList =oddsDetail.oddArrayList.filterNotNull().groupBy { it?.marketSort }.values.toList()
+        if (newList.size==1&&newList.first().size>6){ //例如双重机会那些玩法， marketSort都是一样的，导致数组size=1
+            var newList2 = mutableListOf<MutableList<Odd>>()
+            newList.first().groupBy { it.rowSort }.values.forEachIndexed { index, odds ->
+                odds.forEachIndexed { index, odd ->
+                    val childList = newList2.getOrNull(index)?: mutableListOf<Odd>().apply { newList2.add(this) }
+                    childList.add(odd)
+                }
+            }
+            newList2
+        }else{
+            newList
+        }
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -56,25 +71,32 @@ class Type6GroupAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindModel(oddsList: List<Odd?>) {
-            itemView.findViewById<TextView>(R.id.tv_draw).show()
+//            if (oddsDetail.gameType== PlayCate.DC_OU.value) {
+//                LogUtil.toJson(oddsList.map { it?.name + ","+ it?.spread + "," + it?.odds + "," + it?.marketSort + "," + it?.rowSort })
+//            }
+            if (!leftName.isNullOrEmpty()){
+                itemView.findViewById<TextView>(R.id.tv_home_name).text = leftName
+                itemView.findViewById<TextView>(R.id.tv_draw).text = centerName
+                itemView.findViewById<TextView>(R.id.tv_away_name).text = rightName
+            }
             //順序 前兩項左列 中間兩項中列 後兩項右列
             val homeList: MutableList<Odd?> = mutableListOf()
             val drawList: MutableList<Odd?> = mutableListOf()
             val awayList: MutableList<Odd?> = mutableListOf()
 
             homeList.apply {
-                add(oddsList.firstOrNull())
-                add(oddsList.getOrNull(1))
+                add(oddsList.firstOrNull { it?.rowSort==1 })
+                add(oddsList.firstOrNull { it?.rowSort==2 })
             }
 
             drawList.apply {
-                add(oddsList.getOrNull(2))
-                add(oddsList.getOrNull(3))
+                add(oddsList.firstOrNull { it?.rowSort==3 })
+                add(oddsList.firstOrNull { it?.rowSort==4 })
             }
 
             awayList.apply {
-                add(oddsList.getOrNull(4))
-                add(oddsList.getOrNull(5))
+                add(oddsList.firstOrNull { it?.rowSort==5 })
+                add(oddsList.firstOrNull { it?.rowSort==6 })
             }
 
             setupRecyclerView(itemView.findViewById(R.id.rv_home), homeList)

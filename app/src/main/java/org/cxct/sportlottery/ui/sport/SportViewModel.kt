@@ -14,7 +14,6 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.match.MatchRound
-import org.cxct.sportlottery.network.matchLiveInfo.ChatLiveLoginData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
@@ -87,11 +86,6 @@ class SportViewModel(
     val isLoading: LiveData<Boolean>
         get() = _isLoading
     private var _isLoading = MutableLiveData<Boolean>()
-
-    //優惠活動文字跑馬燈
-    private val _liveLoginInfo = MutableLiveData<Event<ChatLiveLoginData>>()
-    val liveLoginInfo: LiveData<Event<ChatLiveLoginData>>
-        get() = _liveLoginInfo
 
     var allSearchData: List<SearchResponse.Row>? = null
 
@@ -274,7 +268,7 @@ class SportViewModel(
                             matchInfo = result.oddsDetailData?.matchOdd.matchInfo
                         )
                         //球員玩法邏輯
-                        if (PlayCate.getPlayCate(key) == PlayCate.SCO) {
+                        if (key == PlayCate.SCO.value) {
                             oddsDetail.setSCOTeamNameList(
                                 filteredOddList, result.oddsDetailData.matchOdd.matchInfo.homeName
                             )

@@ -77,7 +77,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Param(ProfileCenterFragment::class.java),
                 Param(OKLiveFragment::class.java),
                 Param(NewsHomeFragment::class.java),
-                Param(ESportFragment::class.java),
+                Param(ESportFragment::class.java, needRemove = true),
             )
         )
     }

@@ -247,7 +247,7 @@ object ServiceBroadcastReceiver {
                     }
                 }
                 data.updateOddsSelectedState()
-                data.sortOddsMap()
+//                data.sortOddsMap()
                 post{
                     MatchOddsRepository.onMatchOdds(data)
                 }
