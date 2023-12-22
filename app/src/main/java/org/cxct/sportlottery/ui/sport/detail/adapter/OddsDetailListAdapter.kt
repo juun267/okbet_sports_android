@@ -1600,11 +1600,7 @@ class OddsDetailListAdapter(
 
         private fun group6Item(oddsDetail: OddsDetailListData) {
             rvBet?.apply {
-                adapter = group6AdapterSetup(oddsDetail).apply {
-                    leftName = homeName
-                    centerName = itemView.context.getString(R.string.draw)
-                    rightName = awayName
-                }
+                adapter = group6AdapterSetup(oddsDetail)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
         }
