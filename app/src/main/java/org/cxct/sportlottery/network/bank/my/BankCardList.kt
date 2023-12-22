@@ -36,4 +36,5 @@ data class BankCardList(
         get() = if (field == "PayMaya") "Maya" else field
     var transferType: TransferType = TransferType.BANK
     var isSelected = false
+    var maintainStatus: Int=0
 }
