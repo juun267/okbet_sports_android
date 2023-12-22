@@ -17,17 +17,16 @@ class WithdrawBankCardAdapter(
     init {
         setList(dataList)
     }
-    private var selectedPosition = 0
+    private var selectedPosition = -1
 
     fun initSelectStatus() {
         //初始化選中狀態
-        dataList.forEach { bankCard ->
-            bankCard.isSelected = false
+        dataList.forEach { it.isSelected = false }
+        dataList.firstOrNull{ it.maintainStatus==0 }?.let {
+            it.isSelected = true
+            selectedPosition = dataList.indexOf(it)
+            listener.onClick(it)
         }
-        dataList.firstOrNull()?.isSelected = true
-
-        selectedPosition = 0
-        listener.onClick(dataList[0])
         notifyDataSetChanged()
     }
 
