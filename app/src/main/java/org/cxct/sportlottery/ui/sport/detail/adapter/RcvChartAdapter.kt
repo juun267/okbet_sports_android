@@ -4,10 +4,10 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
@@ -96,6 +96,6 @@ class RcvChartAdapter : BaseQuickAdapter<String, BaseViewHolder>(0) {
 
             }
 
-            holder.setText(R.id.tvContent, item)
+            (holder.itemView as TextView).text = item
         }
     }
