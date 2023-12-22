@@ -62,7 +62,7 @@ class ProfileCenterFragment :
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
-    private var noticeCount: Int? = null
+    private var noticeCount: Int = 0
     private var isGuest: Boolean? = null
 
     override fun layoutId() = R.layout.fragment_profile_center
@@ -611,15 +611,8 @@ class ProfileCenterFragment :
     }
 
     //有 child activity 給定 notice button 顯示
-    fun setupNoticeButton() {
-        iv_user_notice.setOnClickListener {
-            startActivity(
-                Intent(requireActivity(), InfoCenterActivity::class.java).putExtra(
-                    InfoCenterActivity.KEY_READ_PAGE,
-                    InfoCenterActivity.YET_READ
-                )
-            )
-        }
+    private fun setupNoticeButton() {
+        iv_user_notice.setOnClickListener {InfoCenterActivity.startWith(it.context, noticeCount > 0) }
     }
 
     private fun updateNoticeCount(noticeCount: Int) {
@@ -638,7 +631,7 @@ class ProfileCenterFragment :
 
     private fun updateNoticeButton() {
         iv_circle?.visibility =
-            (if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE)
+            (if (noticeCount > 0 && isGuest == false) View.VISIBLE else View.GONE)
     }
 
     //实名验证
