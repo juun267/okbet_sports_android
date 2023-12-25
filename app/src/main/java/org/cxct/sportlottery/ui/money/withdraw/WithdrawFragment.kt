@@ -275,8 +275,9 @@ class WithdrawFragment : BindingFragment<WithdrawViewModel,FragmentWithdrawBindi
 
     private fun initObserve() {
         viewModel.submitEnable.observe(this){
-            val isMaintenance = withdrawBankCardData==null || withdrawBankCardData?.maintainStatus == 1
-            updateButtonStatus(it && !isMaintenance)
+            //当前有选中的卡片，并且卡片不维护
+            val availabCard = withdrawBankCardData!=null&&withdrawBankCardData?.maintainStatus==0
+            updateButtonStatus(it && availabCard )
         }
         viewModel.addMoneyCardSwitch.observe(this) {
             transferTypeAddSwitch = it
