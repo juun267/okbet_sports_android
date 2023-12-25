@@ -96,7 +96,7 @@ object AppViewModel {
         single { LoginRepository }
         single { SportMenuRepository }
         single { SettlementRepository() }
-        single { InfoCenterRepository() }
+        single { InfoCenterRepository }
         single { MoneyRepository }
         single { BetInfoRepository }
         single { AvatarRepository(get()) }

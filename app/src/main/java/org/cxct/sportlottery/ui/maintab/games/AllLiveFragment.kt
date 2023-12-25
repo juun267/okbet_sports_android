@@ -232,14 +232,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
 
 
     private inline fun enterGame(bean: OKGameBean) {
-        if (LoginRepository.isLogined()) {
-            //已登录
-            okLiveFragment().enterGame(bean)
-        } else {
-            //请求试玩路线
-            loading()
-            viewModel.requestEnterThirdGameNoLogin(bean)
-        }
+        okLiveFragment().enterGame(bean)
     }
 
 

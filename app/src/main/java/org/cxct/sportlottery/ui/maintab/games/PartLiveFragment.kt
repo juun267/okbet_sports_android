@@ -85,14 +85,7 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
         loadMore { onMoreClick() }
         gameChildAdapter.setOnItemClickListener { _, _, position ->
             val okGameBean = gameChildAdapter.getItem(position)
-            if (LoginRepository.isLogined()) {
-                mOkLiveFragment().enterGame(okGameBean)
-            } else {
-                //请求试玩路线
-                loading()
-                viewModel.requestEnterThirdGameNoLogin(okGameBean)
-            }
-
+            mOkLiveFragment().enterGame(okGameBean)
         }
     }
 

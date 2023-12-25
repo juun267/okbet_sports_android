@@ -151,15 +151,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         ivMails = AppCompatImageView(context)
         ivMails.setImageResource(R.drawable.icon_mails)
         userMoneyView.addView(ivMails, LayoutParams(dp32, dp32).apply { leftMargin = 8.dp })
-        ivMails.setOnClickListener {
-            context.startActivity(
-                Intent(context, InfoCenterActivity::class.java).putExtra(
-                    InfoCenterActivity.KEY_READ_PAGE,
-                    InfoCenterActivity.YET_READ
-                )
-            )
-        }
-
+        ivMails.setOnClickListener { InfoCenterActivity.startWith(context, mailsNum > 0) }
         addView(userMoneyView, LayoutParams(-2, -2, Gravity.RIGHT or Gravity.BOTTOM))
     }
 
