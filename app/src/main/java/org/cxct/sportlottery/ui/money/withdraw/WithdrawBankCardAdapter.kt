@@ -22,11 +22,10 @@ class WithdrawBankCardAdapter(
     fun initSelectStatus() {
         //初始化選中狀態
         dataList.forEach { it.isSelected = false }
-        dataList.firstOrNull{ it.maintainStatus==0 }?.let {
-            it.isSelected = true
-            selectedPosition = dataList.indexOf(it)
-            listener.onClick(it)
-        }
+        val selectedItem = dataList.firstOrNull{ it.maintainStatus==0 }
+        selectedItem?.isSelected = true
+        selectedPosition =  dataList.indexOf(selectedItem)
+        listener.onClick(selectedItem)
         notifyDataSetChanged()
     }
 
@@ -75,6 +74,6 @@ class WithdrawBankCardAdapter(
 }
 
 
-class BankCardAdapterListener(val listener: (bankCard: BankCardList) -> Unit) {
-    fun onClick(bankCard: BankCardList) = listener(bankCard)
+class BankCardAdapterListener(val listener: (bankCard: BankCardList?) -> Unit) {
+    fun onClick(bankCard: BankCardList?) = listener(bankCard)
 }

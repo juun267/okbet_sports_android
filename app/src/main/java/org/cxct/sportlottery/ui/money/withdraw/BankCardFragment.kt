@@ -1,36 +1,25 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
-import android.content.Context
-import android.os.Bundle
+
 import android.text.method.HideReturnsTransformationMethod
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
-import kotlinx.android.synthetic.main.fragment_bank_card.*
-import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.BankCardChangeEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.databinding.ItemListviewBankCardBinding
+import org.cxct.sportlottery.databinding.FragmentBankCardBinding
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.afterTextChanged
@@ -42,56 +31,39 @@ import org.cxct.sportlottery.view.isVisible
 /**
  * @app_destination 新增银行卡
  */
-class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
+class BankCardFragment : BindingFragment<WithdrawViewModel,FragmentBankCardBinding>() {
     private var transferType: TransferType = TransferType.BANK
-
-    //TODO 虚拟币添加后续样式修改
-    private var mBankSelectorBottomSheetDialog: BottomSheetDialog? = null
-    private lateinit var mBankSelectorAdapter: BankSelectorAdapter
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
     private var bankCode: String? = null
     private var countDownGoing = false
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bank_card, container, false).apply {
-            setupInitData(this)
-            setupTitle()
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        view.apply {
-            initView()
-            setupEvent()
-            setupObserve()
-            setupBankList()
-        }
+    private val bankSelectorBottomSheetDialog by lazy { BankSelectorBottomSheetDialog(requireContext()){
+          updateSelectedBank(it)
+    }}
+    override fun onInitView(view: View) {
+        initView()
+        setupEvent()
+        setupObserve()
+        setupBankList()
     }
 
     private fun setupBankList() {
         viewModel.getMoneyConfigs()
-
-        sv_protocol.setOnItemSelectedListener{
-            tv_usdt_name.text = it.showName
+        binding.svProtocol.setOnItemSelectedListener{
+            binding.tvUsdtName.text = it.showName
         }
     }
     //编辑银行卡跳转的方法
-    private fun setupInitData(view: View) {
+    private fun setupInitData() {
         viewModel.clearBankCardFragmentStatus()
         transferType = args.transferType
         val initData = args.editBankCard
         initData?.let {
             bankCode = it.bankCode
             view.apply {
-                tv_bank_name.text = initData.bankName
-                tv_usdt_name.text = initData.bankName
+                binding.tvBankName.text = initData.bankName
+                binding.tvUsdtName.text = initData.bankName
             }
             return@setupInitData
 
@@ -124,9 +96,11 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun initView() {
+        setupInitData()
+        setupTitle()
         changeTransferType(transferType)
 
-        val ivQuestion = et_create_name.endIconImageButton
+        val ivQuestion = binding.etCreateName.endIconImageButton
         ivQuestion.post {
             val param = ivQuestion.layoutParams as MarginLayoutParams
             param.bottomMargin = 4.dp
@@ -152,24 +126,24 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }.show(childFragmentManager, msg)
         }
 
-        btn_submit.setTitleLetterSpacing()
+        binding.btnSubmit.setTitleLetterSpacing()
         setupTabLayout(args.transferTypeAddSwitch)
 
-        et_withdrawal_password.endIconImageButton.setOnClickListener {
-            if (et_withdrawal_password.endIconResourceId == R.drawable.ic_eye_open) {
-                eet_withdrawal_password.transformationMethod =
+        binding.etWithdrawalPassword.endIconImageButton.setOnClickListener {
+            if (binding.etWithdrawalPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                binding.eetWithdrawalPassword.transformationMethod =
                     AsteriskPasswordTransformationMethod()
-                et_withdrawal_password.setEndIcon(R.drawable.ic_eye_close)
+                binding.etWithdrawalPassword.setEndIcon(R.drawable.ic_eye_close)
             } else {
-                et_withdrawal_password.setEndIcon(R.drawable.ic_eye_open)
-                eet_withdrawal_password.transformationMethod =
+                binding.etWithdrawalPassword.setEndIcon(R.drawable.ic_eye_open)
+                binding.eetWithdrawalPassword.transformationMethod =
                     HideReturnsTransformationMethod.getInstance()
             }
-            et_withdrawal_password.hasFocus = true
-            eet_withdrawal_password.setSelection(eet_withdrawal_password.text.toString().length)
+            binding.etWithdrawalPassword.hasFocus = true
+            binding.eetWithdrawalPassword.setSelection(binding.eetWithdrawalPassword.text.toString().length)
         }
 
-        btnSend.setOnClickListener {
+        binding.btnSend.setOnClickListener {
             val phoneNo = UserInfoRepository.userInfo?.value?.phone
             if (phoneNo.isEmptyStr()) {
                 ToastUtil.showToast(context, R.string.set_phone_no)
@@ -182,50 +156,23 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
 
-        block_sms_valid_code.isVisible = StaticData.isNeedOTPBank()
-        eet_sms_code.checkRegisterListener {
+        binding.blockSmsValidCode.isVisible = StaticData.isNeedOTPBank()
+        binding.eetSmsCode.checkRegisterListener {
             val msg = when {
                 it.isNullOrBlank() -> getString(R.string.error_input_empty)
                 !VerifyConstUtil.verifyValidCode(it) -> getString(R.string.verification_not_correct)
                 else -> null
             }
-            et_sms_valid_code.setError(msg, false)
+            binding.etSmsValidCode.setError(msg, false)
             viewModel.checkInputCompleteByAddBankCard()
         }
     }
 
 
-    private fun setupBankSelector(rechCfgData: MoneyRechCfgData) {
-        mBankSelectorBottomSheetDialog = BottomSheetDialog(requireContext()).apply {
-            val bankSelectorBottomSheetView =
-                layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
-            setContentView(bankSelectorBottomSheetView)
-            mBankSelectorAdapter =
-                BankSelectorAdapter(
-                    lv_bank_item.context,
-                    rechCfgData.banks,
-                    BankSelectorAdapterListener {
-                        updateSelectedBank(it)
-                        dismiss()
-                    }).apply {
-                    bankType = getBankType() ?: BankType.BANK
-                }
-
-            with(lv_bank_item) {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                adapter = mBankSelectorAdapter
-            }
-            tv_game_type_title.text = getString(R.string.select_bank)
-            btn_close.setOnClickListener {
-                dismiss()
-            }
-        }
-    }
-
     private fun updateSelectedBank(bank: Bank) {
         bankCode = bank.value
-        tv_bank_name.text = bank.name
-        iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(bank.name ?: ""))
+        binding.tvBankName.text = bank.name
+        binding.ivBankIcon.setImageResource(MoneyManager.getBankIconByBankName(bank.name ?: ""))
     }
 
     private fun setupEvent() {
@@ -234,25 +181,25 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         setupTextChangeEvent()
     }
 
-    private fun setupTextChangeEvent() {
+    private fun setupTextChangeEvent()=binding.run{
         viewModel.apply {
             //開戶名
             //真實姓名為空時才可進行編輯see userInfo.observe
 
             //銀行卡號
-            setupClearButtonVisibility(eet_bank_card_number) { checkBankCardNumber(it) }
+            setupClearButtonVisibility(binding.eetBankCardNumber) { checkBankCardNumber(it) }
 
             //開戶網點
-            setupClearButtonVisibility(eet_network_point) { checkNetWorkPoint(it) }
+            setupClearButtonVisibility(binding.eetNetworkPoint) { checkNetWorkPoint(it) }
 
             //錢包地址
-            setupClearButtonVisibility(eet_wallet) { checkWalletAddress(it) }
+            setupClearButtonVisibility(binding.eetWallet) { checkWalletAddress(it) }
 
             //電話號碼
-            setupClearButtonVisibility(eet_phone_number) { checkPhoneNumber(it) }
+            setupClearButtonVisibility(binding.eetPhoneNumber) { checkPhoneNumber(it) }
 
             //提款密碼
-            setupClearButtonVisibility(eet_withdrawal_password) { checkWithdrawPassword(it) }
+            setupClearButtonVisibility(binding.eetWithdrawalPassword) { checkWithdrawPassword(it) }
         }
     }
 
@@ -267,28 +214,28 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
 
-    private fun setupClickEvent() {
+    private fun setupClickEvent()=binding.run {
         tabClickEvent()
 
-        item_usdt_selector.setOnClickListener {
-            sv_protocol.invokeClick()
+        itemUsdtSelector.setOnClickListener {
+            svProtocol.invokeClick()
         }
 
-        item_bank_selector.setOnClickListener {
-            mBankSelectorBottomSheetDialog?.show()
+        itemBankSelector.setOnClickListener {
+            bankSelectorBottomSheetDialog?.show()
         }
 
-        btn_submit.setOnClickListener {
+        btnSubmit.setOnClickListener {
             modifyFinish()
             viewModel.apply {
                 when (transferType) {
                     TransferType.BANK -> {
                         addBankCard(
-                            securityCode = eet_sms_code.text.toString(),
-                            bankName = tv_bank_name.text.toString(),
-                            subAddress = eet_network_point.getText().toString(),
-                            cardNo = eet_bank_card_number.getText().toString(),
-                            fundPwd = eet_withdrawal_password.getText().toString(),
+                            securityCode = eetSmsCode.text.toString(),
+                            bankName = tvBankName.text.toString(),
+                            subAddress = eetNetworkPoint.getText().toString(),
+                            cardNo = eetBankCardNumber.getText().toString(),
+                            fundPwd = eetWithdrawalPassword.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
                             uwType = transferType.type,
                             bankCode = bankCode
@@ -296,20 +243,20 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     }
                     TransferType.CRYPTO -> {
                         addBankCard(
-                            securityCode = eet_sms_code.text.toString(),
-                            bankName = sv_protocol.selectedText ?: "",
-                            cardNo = eet_wallet.getText().toString(),
-                            fundPwd = eet_withdrawal_password.getText().toString(),
+                            securityCode = eetSmsCode.text.toString(),
+                            bankName = svProtocol.selectedText ?: "",
+                            cardNo = eetWallet.getText().toString(),
+                            fundPwd = eetWithdrawalPassword.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
                             uwType = transferType.type,
                         )
                     }
                     TransferType.E_WALLET -> { //eWallet暫時寫死 與綁定銀行卡相同
                         addBankCard(
-                            securityCode = eet_sms_code.text.toString(),
-                            bankName = tv_bank_name.text.toString(),
-                            cardNo = eet_phone_number.getText().toString(),
-                            fundPwd = eet_withdrawal_password.getText().toString(),
+                            securityCode = eetSmsCode.text.toString(),
+                            bankName = tvBankName.text.toString(),
+                            cardNo = eetPhoneNumber.getText().toString(),
+                            fundPwd = eetWithdrawalPassword.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
                             uwType = transferType.type,
                             bankCode = bankCode
@@ -318,10 +265,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     TransferType.PAYMAYA -> { //eWallet暫時寫死 與綁定銀行卡相同
                         MoneyType.PAYMAYA_TYPE
                         addBankCard(
-                            securityCode = eet_sms_code.text.toString(),
+                            securityCode = eetSmsCode.text.toString(),
                             bankName = PAYMAYA,
-                            cardNo = eet_phone_number.getText().toString(),
-                            fundPwd = eet_withdrawal_password.getText().toString(),
+                            cardNo = eetPhoneNumber.getText().toString(),
+                            fundPwd = eetWithdrawalPassword.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
                             uwType = TransferType.E_WALLET.type,
                             bankCode = PAYMAYA,
@@ -342,32 +289,32 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 //        }
     }
 
-    private fun setupTabLayout(transferTypeAddSwitch: TransferTypeAddSwitch?) {
+    private fun setupTabLayout(transferTypeAddSwitch: TransferTypeAddSwitch?) =binding.run{
 
         transferTypeAddSwitch?.apply {
 
-            tab_layout.getTabAt(0)?.view?.visibility = if (bankTransfer) View.VISIBLE else View.GONE
+            tabLayout.getTabAt(0)?.view?.visibility = if (bankTransfer) View.VISIBLE else View.GONE
 
-            tab_layout.getTabAt(1)?.view?.visibility =
+            tabLayout.getTabAt(1)?.view?.visibility =
                 if (cryptoTransfer) View.VISIBLE else View.GONE
-            tab_layout.getTabAt(2)?.view?.visibility =
+            tabLayout.getTabAt(2)?.view?.visibility =
                 if (walletTransfer) View.VISIBLE else View.GONE
-            tab_layout.getTabAt(3)?.view?.visibility =
+            tabLayout.getTabAt(3)?.view?.visibility =
                 if (paymataTransfer) View.VISIBLE else View.GONE
             var countTabShow = 0
             for(position in 0..3){
-                if(tab_layout.getTabAt(position)?.view?.isVisible()==true){
+                if(tabLayout.getTabAt(position)?.view?.isVisible()==true){
                     countTabShow++
                 }
              }
-            ll_tab_layout.visibility = if (countTabShow<2 || mBankCardStatus) View.GONE else View.VISIBLE
+            llTabLayout.visibility = if (countTabShow<2 || mBankCardStatus) View.GONE else View.VISIBLE
         }
     }
 
     private fun tabClickEvent() {
         if (!mBankCardStatus) {
 
-            tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     modifyFinish()
                     when (tab?.position) {
@@ -392,8 +339,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                             changeTransferType(transferType)
                         }
                     }
-                    updateBankSelectorList()
-                    mBankSelectorBottomSheetDialog?.lv_bank_item?.scrollToPosition(0)
+                    updateBankList()
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -406,28 +352,28 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
-    private fun clearBankInputFiled() {
-        eet_bank_card_number.setText("")
-        eet_network_point.setText("")
-        eet_withdrawal_password.setText("")
-        eet_phone_number.setText("")
-        eet_sms_code.setText("")
+    private fun clearBankInputFiled() =binding.run{
+        eetBankCardNumber.setText("")
+        eetNetworkPoint.setText("")
+        eetWithdrawalPassword.setText("")
+        eetPhoneNumber.setText("")
+        eetSmsCode.setText("")
         bankCode = null
-        et_sms_valid_code.setError(null,false)
-        et_bank_card_number.setError(null,false)
-        et_network_point.setError(null,false)
-        et_withdrawal_password.setError(null,false)
-        et_phone_number.setError(null,false)
+        etSmsValidCode.setError(null,false)
+        etBankCardNumber.setError(null,false)
+        etNetworkPoint.setError(null,false)
+        etWithdrawalPassword.setError(null,false)
+        etPhoneNumber.setError(null,false)
         clearFocus()
     }
 
-    private fun clearCryptoInputFiled() {
-        eet_wallet.setText("")
-        eet_withdrawal_password.setText("")
-        eet_sms_code.setText("")
-        et_sms_valid_code.setError(null,false)
-        et_wallet.setError(null,false)
-        et_withdrawal_password.setError(null,false)
+    private fun clearCryptoInputFiled()=binding.run {
+        eetWallet.setText("")
+        eetWithdrawalPassword.setText("")
+        eetSmsCode.setText("")
+        etSmsValidCode.setError(null,false)
+        etWallet.setError(null,false)
+        etWithdrawalPassword.setError(null,false)
         clearFocus()
     }
 
@@ -439,92 +385,93 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         updateButtonStatus(false)
     }
 
-    private fun changeTab(type: TransferType) {
+    private fun changeTab(type: TransferType)=binding.run {
         when (type) {
             TransferType.BANK -> {
-                tab_layout.getTabAt(0)?.select()
+                tabLayout.getTabAt(0)?.select()
             }
             TransferType.CRYPTO -> {
-                tab_layout.getTabAt(1)?.select()
+                tabLayout.getTabAt(1)?.select()
             }
             TransferType.E_WALLET -> {
-                tab_layout.getTabAt(2)?.select()
+                tabLayout.getTabAt(2)?.select()
             }
             TransferType.PAYMAYA -> {
-                tab_layout.getTabAt(3)?.select()
+                tabLayout.getTabAt(3)?.select()
             }
+            else -> {}
         }
     }
 
-    private fun changeInputField(type: TransferType) {
+    private fun changeInputField(type: TransferType)=binding.run{
         when (type) {
             TransferType.BANK -> {
-                block_bank_card_input.visibility = View.VISIBLE
-                item_bank_selector.visibility = View.VISIBLE
-                block_crypto_input.visibility = View.GONE
+                blockBankCardInput.visibility = View.VISIBLE
+                itemBankSelector.visibility = View.VISIBLE
+                blockCryptoInput.visibility = View.GONE
 
                 //region 顯示Bank欄位
-                et_bank_card_number.visibility = View.VISIBLE
-                et_network_point.visibility = View.VISIBLE
+                etBankCardNumber.visibility = View.VISIBLE
+                etNetworkPoint.visibility = View.VISIBLE
                 //endregion
                 //region 隱藏eWallet欄位
-                et_phone_number.visibility = View.GONE
+                etPhoneNumber.visibility = View.GONE
                 //endregion
             }
             TransferType.CRYPTO -> {
-                block_bank_card_input.visibility = View.GONE
-                block_crypto_input.visibility = View.VISIBLE
+                blockBankCardInput.visibility = View.GONE
+                blockCryptoInput.visibility = View.VISIBLE
             }
             TransferType.E_WALLET -> {
-                block_bank_card_input.visibility = View.VISIBLE
-                item_bank_selector.visibility = View.VISIBLE
-                block_crypto_input.visibility = View.GONE
+                blockBankCardInput.visibility = View.VISIBLE
+                itemBankSelector.visibility = View.VISIBLE
+                blockCryptoInput.visibility = View.GONE
 
                 //region 隱藏Bank欄位
-                et_bank_card_number.visibility = View.GONE
-                et_network_point.visibility = View.GONE
+                etBankCardNumber.visibility = View.GONE
+                etNetworkPoint.visibility = View.GONE
                 //endregion
                 //region 顯示eWallet欄位
-                et_phone_number.visibility = View.VISIBLE
+                etPhoneNumber.visibility = View.VISIBLE
                 //endregion
             }
             TransferType.PAYMAYA -> {
-                block_bank_card_input.visibility = View.VISIBLE
-                item_bank_selector.visibility = View.GONE
-                block_crypto_input.visibility = View.GONE
+                blockBankCardInput.visibility = View.VISIBLE
+                itemBankSelector.visibility = View.GONE
+                blockCryptoInput.visibility = View.GONE
                 //region 隱藏Bank欄位
-                et_bank_card_number.visibility = View.GONE
-                et_network_point.visibility = View.GONE
+                etBankCardNumber.visibility = View.GONE
+                etNetworkPoint.visibility = View.GONE
                 //endregion
                 //region 顯示eWallet欄位
-                et_phone_number.visibility = View.VISIBLE
+                etPhoneNumber.visibility = View.VISIBLE
                 //endregion
             }
         }
     }
 
     private fun setCryptoProtocol(protocol: Detail?) {
-        protocol?.contract?.let { sv_protocol.selectedText = it }
+        protocol?.contract?.let { binding.svProtocol.selectedText = it }
     }
 
     private fun setupObserve() {
-        viewModel.loading.observe(this.viewLifecycleOwner, Observer {
+        viewModel.loading.observe(this){
             if (it)
               //  loading()
             else
                 hideLoading()
-        })
+        }
 
-        viewModel.userInfo.observe(this.viewLifecycleOwner) {
+        viewModel.userInfo.observe(this) {
             it?.fullName?.let { fullName ->
-                if (fullName.isNotEmpty()) eet_create_name.setText(
+                if (fullName.isNotEmpty()) binding.eetCreateName.setText(
 //                    TextUtil.maskFullName(fullName)
                     fullName
                 ).also {
-                    eet_create_name.isFocusable = false
+                    binding.eetCreateName.isFocusable = false
                 }
             } ?: run {
-                setupClearButtonVisibility(eet_create_name) { inputFullName ->
+                setupClearButtonVisibility(binding.eetCreateName) { inputFullName ->
                     viewModel.checkCreateName(
                         inputFullName
                     )
@@ -532,25 +479,24 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         }
 
-        viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
-            setupBankSelector(rechCfgData)
-            updateBankSelectorList()
-            mBankSelectorBottomSheetDialog?.lv_bank_item?.scrollToPosition(0)
+        viewModel.rechargeConfigs.observe(this) { rechCfgData ->
+            bankSelectorBottomSheetDialog.setBanks(rechCfgData.banks)
+            updateBankList()
             viewModel.getCryptoBindList(args.editBankCard)
-        })
+        }
 
-        viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner) {
+        viewModel.addMoneyCardSwitch.observe(this) {
             setupTabLayout(it)
         }
 
-        viewModel.addCryptoCardList.observe(this.viewLifecycleOwner) {
+        viewModel.addCryptoCardList.observe(this) {
 
             val sheetList: List<StatusSheetData> = it.map { item ->
                 StatusSheetData(item.contract, item.contract)
             }
-            sv_protocol.dataList = sheetList
-            sv_protocol.selectedText = it.firstOrNull()?.contract
-            sv_protocol.selectedTag = it.firstOrNull()?.contract
+            binding.svProtocol.dataList = sheetList
+            binding.svProtocol.selectedText = it.firstOrNull()?.contract
+            binding.svProtocol.selectedTag = it.firstOrNull()?.contract
 
             val modifyMoneyCardDetail =
                 it.find { list -> list.contract == args.editBankCard?.bankName }
@@ -593,59 +539,57 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.createNameErrorMsg.observe(
             this.viewLifecycleOwner
         ) {
-            et_create_name.setError(it , false)
+            binding.etCreateName.setError(it , false)
         }
 
         //銀行卡號
         viewModel.bankCardNumberMsg.observe(
             this.viewLifecycleOwner,
         ) {
-            et_bank_card_number.setError(it ,false)
+            binding.etBankCardNumber.setError(it ,false)
         }
 
         //開戶網點
         viewModel.networkPointMsg.observe(
             this.viewLifecycleOwner
         ) {
-            et_network_point.setError(it,false)
+            binding.etNetworkPoint.setError(it,false)
         }
 
         //錢包地址
         viewModel.walletAddressMsg.observe(
             this.viewLifecycleOwner
         ) {
-            et_wallet.setError(it ,false)
+            binding.etWallet.setError(it ,false)
         }
 
         //電話號碼
-        viewModel.phoneNumberMsg.observe(this.viewLifecycleOwner) {
-            et_phone_number.setError(it ,false)
+        viewModel.phoneNumberMsg.observe(this) {
+            binding.etPhoneNumber.setError(it ,false)
         }
 
         //提款密碼
-        viewModel.withdrawPasswordMsg.observe(
-            this.viewLifecycleOwner
-        ) {
-            et_withdrawal_password.setError(it ,false)
+        viewModel.withdrawPasswordMsg.observe(this) {
+            binding.etWithdrawalPassword.setError(it ,false)
         }
 
-        viewModel.submitEnable.observe(this.viewLifecycleOwner) {
-            updateButtonStatus(it && (!StaticData.isNeedOTPBank() || eet_sms_code.text.length == 4))
+        viewModel.submitEnable.observe(this) {
+            updateButtonStatus(it && (!StaticData.isNeedOTPBank() || binding.eetSmsCode.text.length == 4))
         }
 
         viewModel.onEmsCodeSended.observe(this) {
             hideLoading()
 
             if (it?.success == true) {
-                CountDownUtil.smsCountDown(lifecycleScope, {
-                    btnSend.setBtnEnable(false)
+                CountDownUtil.smsCountDown(lifecycle.coroutineScope, {
+                    binding.btnSend.setBtnEnable(false)
                     countDownGoing = true
                 }, {
-                    btnSend.setBtnEnable(false)
-                    btnSend.text = "${it}s"
+                    binding.btnSend.setBtnEnable(false)
+                    binding.btnSend.text = "${it}s"
                 }, {
-                    btnSend.setBtnEnable(true)
-                    btnSend.text = getString(R.string.send)
+                    binding.btnSend.setBtnEnable(true)
+                    binding.btnSend.text = getString(R.string.send)
                     countDownGoing = false
                 })
             } else {
@@ -659,16 +603,15 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         TransferType.E_WALLET -> BankType.E_WALLET
         else -> null
     }
-
-    private fun updateBankSelectorList() {
-        if (!::mBankSelectorAdapter.isInitialized) {
-            return
+    private fun updateBankList(){
+        getBankType()?.let {
+            bankSelectorBottomSheetDialog.setBankType(it)
+            updateBankSelectorList()
         }
-
-        val bankType = getBankType() ?: return
-        mBankSelectorAdapter.bankType = bankType
-        mBankSelectorAdapter.bankList.firstOrNull()?.let { initBank ->
-            updateSelectedBank(initBank)
+    }
+    private fun updateBankSelectorList() {
+        bankSelectorBottomSheetDialog?.getSelectedItem()?.let { initBank ->
+           updateSelectedBank(initBank)
         }
     }
 
@@ -678,97 +621,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun updateButtonStatus(isEnable: Boolean) {
-        btn_submit.setBtnEnable(isEnable)
-    }
-}
-
-class BankSelectorAdapter(
-    private val context: Context,
-    private val dataList: List<Bank>,
-    private val listener: BankSelectorAdapterListener
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var selectedPosition = 0
-
-    val bankList: List<Bank> get() = dataList.filter { it.bankType == bankType.ordinal }
-
-    var bankType: BankType = BankType.BANK
-        set(value) {
-            field = value
-            initSelectStatus()
-        }
-
-    private fun initSelectStatus() {
-        //選中狀態初始化
-        dataList.forEach { bank ->
-            bank.isSelected = false
-        }
-
-        selectedPosition = 0
-        bankList[selectedPosition].isSelected = true
-
-        if (dataList.isNotEmpty()) {
-            listener.onSelect(dataList[0])
-        }
-        notifyDataSetChanged()
+        binding.btnSubmit.setBtnEnable(isEnable)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        BankItemViewHolder(
-            ItemListviewBankCardBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (holder) {
-        is BankItemViewHolder -> {
-            holder.bind(bankList[position], position)
-        }
-        else -> {
-            //do nothing
-        }
-    }
-
-    override fun getItemCount(): Int = bankList.size
-
-    inner class BankItemViewHolder(val binding: ItemListviewBankCardBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(bank: Bank, position: Int) {
-            with(binding) {
-                root.setOnClickListener {
-                    selectBank(position)
-                    listener.onSelect(bank)
-                }
-                tvBankCard.text = bank.name
-                ivBankIcon.setImageResource(MoneyManager.getBankIconByBankName(bank.name ?: ""))
-                checkBank.isChecked = selectedPosition == position
-
-                checkBank.setOnClickListener {
-                    selectBank(position)
-                    listener.onSelect(bank)
-                    notifyDataSetChanged()
-                }
-
-                if (bank.isSelected) {
-                    selectedPosition = position
-                    checkBank.isChecked = true
-                } else {
-                    checkBank.isChecked = false
-                }
-            }
-        }
-
-        private fun selectBank(bankPosition: Int) {
-            bankList[selectedPosition].isSelected = false
-            notifyItemChanged(selectedPosition)
-            selectedPosition = bankPosition
-            bankList[bankPosition].isSelected = true
-            notifyItemChanged(bankPosition)
-        }
-    }
-}
-
-class BankSelectorAdapterListener(private val selectListener: (item: Bank) -> Unit) {
-    fun onSelect(item: Bank) = selectListener(item)
 }

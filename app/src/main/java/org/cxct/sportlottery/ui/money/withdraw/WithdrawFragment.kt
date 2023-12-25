@@ -275,7 +275,9 @@ class WithdrawFragment : BindingFragment<WithdrawViewModel,FragmentWithdrawBindi
 
     private fun initObserve() {
         viewModel.submitEnable.observe(this){
-            updateButtonStatus(it && withdrawBankCardData?.maintainStatus==0)
+            //当前有选中的卡片，并且卡片不维护
+            val availabCard = withdrawBankCardData!=null&&withdrawBankCardData?.maintainStatus==0
+            updateButtonStatus(it && availabCard )
         }
         viewModel.addMoneyCardSwitch.observe(this) {
             transferTypeAddSwitch = it
@@ -502,21 +504,11 @@ class WithdrawFragment : BindingFragment<WithdrawViewModel,FragmentWithdrawBindi
             WithdrawBankCardAdapter(
                 bankCardList,
                 BankCardAdapterListener {
-                    val cardIcon = when (it.transferType) {
-                        TransferType.BANK -> getBankIconByBankName(it.bankName)
-                        TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
-                        TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
-                        TransferType.STATION -> getBankIconByBankName(it.bankName)
-                        TransferType.PAYMAYA -> getBankIconByBankName(it.bankName)
-                    }
-
-
                     withdrawBankCardData = it
-                    viewModel.setupWithdrawCard(it)
-
+                    if (it != null) {
+                        viewModel.setupWithdrawCard(it)
+                    }
                     binding.etWithdrawalAmount.resetText()
-
-
                 })
 
         with(binding.rvBankItem) {
