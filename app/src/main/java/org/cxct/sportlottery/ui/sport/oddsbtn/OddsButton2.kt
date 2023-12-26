@@ -76,7 +76,12 @@ class OddsButton2 @JvmOverloads constructor(
         set(value) {
             if (value != null) {
                 field = value
-                setBetStatus(value)
+                if(euTypeAndOddOne()){
+                    field = BetStatus.LOCKED.code
+                }
+                field?.let {
+                    setBetStatus(it)
+                }
             }
         }
 
@@ -126,12 +131,6 @@ class OddsButton2 @JvmOverloads constructor(
             getOddsUnknownView()
             return
         }
-
-        if (euTypeAndOddOne()) {
-            betStatus = BetStatus.LOCKED.code
-            return
-        }
-
         recyclerLockedView()
         recyclerUnknownView()
     }

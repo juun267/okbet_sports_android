@@ -48,6 +48,9 @@ class OddsButtonDetail @JvmOverloads constructor(
     var betStatus: Int? = null
         set(value) {
             field = value
+            if (euTypeAndOddOne()){
+                field = BetStatus.LOCKED.code
+            }
             field?.let {
                 setupBetStatus(it)
             }
@@ -124,7 +127,6 @@ class OddsButtonDetail @JvmOverloads constructor(
         //[Martin]馬來盤＆印尼盤會有負數的賠率
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
-
         lin_name.isVisible = !(hideName && !tv_spread.isVisible)
         //篮球末尾比分，只显示最后空格后面的比分
         if (mOdd?.playCode?.isEndScoreType() == true) {
@@ -141,7 +143,7 @@ class OddsButtonDetail @JvmOverloads constructor(
     private fun setupBetStatus(betStatus: Int) {
         img_odd_lock.apply {
             visibility =
-                if (betStatus == BetStatus.LOCKED.code||euTypeAndOddOne()) {
+                if (betStatus == BetStatus.LOCKED.code) {
                     View.VISIBLE
                 } else {
                     View.GONE
