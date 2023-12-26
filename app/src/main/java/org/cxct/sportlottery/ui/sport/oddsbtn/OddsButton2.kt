@@ -16,7 +16,6 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import org.cxct.sportlottery.R
@@ -75,10 +74,10 @@ class OddsButton2 @JvmOverloads constructor(
 
     var betStatus: Int? = null
         set(value) {
-            value?.let {
-                setBetStatus(it)
+            if (value != null) {
+                field = value
+                setBetStatus(value)
             }
-            field = value
         }
 
     var oddStatus: Int? = null
@@ -118,13 +117,18 @@ class OddsButton2 @JvmOverloads constructor(
 
         isEnabled = status == BetStatus.ACTIVATED.code
 
-        if (status == BetStatus.LOCKED.code||euTypeAndOddOne()) {
+        if (status == BetStatus.LOCKED.code) {
             getOddsLockedView()
             return
         }
 
         if (status == BetStatus.DEACTIVATED.code) {
             getOddsUnknownView()
+            return
+        }
+
+        if (euTypeAndOddOne()) {
+            betStatus = BetStatus.LOCKED.code
             return
         }
 
@@ -336,15 +340,14 @@ class OddsButton2 @JvmOverloads constructor(
     }
 
     fun setupOdd4hall(playCateCode: String, odds: Odd?, status: Int?, oddsType: OddsType, isDrawBtn: Boolean = false) {
+        mOdd = odds
+        mOddsType = oddsType
         betStatus = status
         if (betStatus == BetStatus.DEACTIVATED.code || betStatus == BetStatus.LOCKED.code) {
             return
         }
-
         //判断是否反波胆玩法，显示上要单独处理
         val isOddPercentage = playCateCode.startsWith(PlayCate.LCS.value)
-        mOdd = odds
-        mOddsType = oddsType
 
         if(isDrawBtn) {
             nameText = when {
@@ -470,6 +473,6 @@ class OddsButton2 @JvmOverloads constructor(
      * 当前欧洲盘，并且欧洲盘赔率=1，显示锁盘
      */
     private fun euTypeAndOddOne(): Boolean{
-        return mOddsType==OddsType.EU&&mOdd?.odds==1.0
+        return mOddsType==OddsType.EU && mOdd?.odds==1.0
     }
 }
