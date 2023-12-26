@@ -58,8 +58,11 @@ class PromotionDetailActivity :
              setActivity(it)
         }
         viewModel.activityApply.observe(this) {
-            if (viewModel.activityDetail.value?.activityType!=3){
-                binding.tvDeposit.text = TextUtil.formatMoney(0)
+            when(viewModel.activityDetail.value?.activityType){
+                3,5->{}
+                else->{
+                    binding.tvDeposit.text = TextUtil.formatMoney(0)
+                }
             }
             binding.tvReward.text = TextUtil.formatMoney(0)
             binding.linApply.isEnabled = false
