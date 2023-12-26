@@ -5,7 +5,6 @@ import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
-import org.cxct.sportlottery.common.extentions.runWithTimeLog
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -640,6 +639,7 @@ object SocketUpdateUtil {
 
         val newOddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
         newOddsDetailDataList.addAll(oddsDetailDataList)
+        matchOddsChangeEvent.odds = matchOddsChangeEvent.odds.replaceNameMap(oddsDetailDataList?.firstOrNull()?.matchInfo)
         //有新賠率盤口
         matchOddsChangeEvent.odds?.forEach { (key, value) ->
             oddsDetailDataList.filter { it.gameType == key }.forEach {
@@ -712,8 +712,6 @@ object SocketUpdateUtil {
             })
             addedNewOdds = true
         }
-        LogUtil.e("newOddsDetailDataList="+newOddsDetailDataList.size)
-        runWithTimeLog("updateMatchOdds"){
         newOddsDetailDataList.apply {
             forEach { oddsDetailListData ->
                     if(updateMatchOdds(oddsDetailListData, matchOddsChangeEvent)){
@@ -721,7 +719,6 @@ object SocketUpdateUtil {
                     }
             }
             setupPinList(playCate)
-        }
         }
         return if (addedNewOdds || removedOldOdds || updateOldOdds) newOddsDetailDataList else null
     }
@@ -952,12 +949,7 @@ object SocketUpdateUtil {
     private fun refreshMatchOdds(
         oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent
     ): Boolean {
-
         var isNeedRefresh = false
-
-        //置換玩法翻譯名稱
-        val newMatchOddsMap = matchOddsChangeEvent.odds.replaceNameMap(oddsDetailListData.matchInfo)
-        matchOddsChangeEvent.odds = newMatchOddsMap
 
         val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds?.keys?.find {
             it == oddsDetailListData.gameType
