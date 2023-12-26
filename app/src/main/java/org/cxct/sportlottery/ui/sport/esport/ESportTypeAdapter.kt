@@ -4,21 +4,44 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.common.ESportType
 import org.cxct.sportlottery.network.sport.CategoryItem
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
+import org.cxct.sportlottery.util.setServiceClick
 
 
 class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : BaseQuickAdapter<CategoryItem, BaseViewHolder>(0), OnItemClickListener {
 
     init {
         setOnItemClickListener(this)
+    }
+
+    fun applyEventView(activity: FragmentActivity) {
+        if (hasFooterLayout()) {
+            return
+        }
+        val ivPromotion = AppCompatImageView(activity)
+        ivPromotion.layoutParams = iconParams
+        ivPromotion.setImageResource(R.drawable.ic_sport_promotion)
+        ivPromotion.setOnClickListener { activity.startActivity(PromotionListActivity::class.java) }
+        addFooterView(ivPromotion, -1, LinearLayout.HORIZONTAL)
+        val ivService = AppCompatImageView(activity)
+        ivService.layoutParams = iconParams
+        ivService.setImageResource(R.drawable.ic_sport_service)
+        ivService.setServiceClick(activity.supportFragmentManager)
+        addFooterView(ivService, -1, LinearLayout.HORIZONTAL)
     }
 
     private val iconParams by lazy {
@@ -87,6 +110,7 @@ class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : Ba
     }
 
     override fun setNewInstance(list: MutableList<CategoryItem>?) {
+        recyclerView?.isVisible = !list.isNullOrEmpty()
         currentItem = list?.find { it.isSelected }
         super.setNewInstance(list)
     }

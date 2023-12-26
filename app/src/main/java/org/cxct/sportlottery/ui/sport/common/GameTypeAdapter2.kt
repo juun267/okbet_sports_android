@@ -1,33 +1,51 @@
 package org.cxct.sportlottery.ui.sport.common
 
-import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.annotation.RequiresApi
+import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.opensource.svgaplayer.SVGAImageView
-import com.opensource.svgaplayer.SVGAParser
-import com.opensource.svgaplayer.SVGAVideoEntity
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAItem
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.SvgUtil.setAssetSvgIcon
 import org.cxct.sportlottery.util.drawable.DrawableCreator
-import org.jetbrains.annotations.NotNull
+import org.cxct.sportlottery.util.setServiceClick
 
 
 class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAdapter<Item, BaseViewHolder>(0), OnItemClickListener {
 
     init {
         setOnItemClickListener(this)
+    }
+
+
+    fun applyEventView(activity: FragmentActivity) {
+        if (hasFooterLayout()) {
+            return
+        }
+        val ivPromotion = AppCompatImageView(activity)
+        ivPromotion.layoutParams = iconParams
+        ivPromotion.setImageResource(R.drawable.ic_sport_promotion)
+        ivPromotion.setOnClickListener { activity.startActivity(PromotionListActivity::class.java) }
+        addFooterView(ivPromotion, -1, LinearLayout.HORIZONTAL)
+        val ivService = AppCompatImageView(activity)
+        ivService.layoutParams = iconParams
+        ivService.setImageResource(R.drawable.ic_sport_service)
+        ivService.setServiceClick(activity.supportFragmentManager)
+        addFooterView(ivService, -1, LinearLayout.HORIZONTAL)
     }
 
     private val iconParams by lazy {
@@ -105,6 +123,7 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
     }
 
     override fun setNewInstance(list: MutableList<Item>?) {
+        recyclerView?.isVisible = !list.isNullOrEmpty()
         currentItem = list?.find { it.isSelected }
         super.setNewInstance(list)
     }
