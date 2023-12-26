@@ -97,6 +97,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         super.onBindViewStatus(view)
         observeSportList()
         initSocketObserver()
+        esportTypeAdapter.applyEventView(requireActivity())
     }
 
     override fun onInitData() {
