@@ -135,14 +135,13 @@ class OddsButtonDetail @JvmOverloads constructor(
             width = if(lin_name.isVisible) -2 else -1
             fl_odd_detail.layoutParams = this
         }
-        lockViewByOuPlatAndOne()
     }
 
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
         img_odd_lock.apply {
             visibility =
-                if (betStatus == BetStatus.LOCKED.code) {
+                if (betStatus == BetStatus.LOCKED.code||euTypeAndOddOne()) {
                     View.VISIBLE
                 } else {
                     View.GONE
@@ -160,7 +159,6 @@ class OddsButtonDetail @JvmOverloads constructor(
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
         button_odd_detail.isVisible = isEnabled
-        lockViewByOuPlatAndOne()
     }
 
     private fun setupOddState(oddState: Int) {
@@ -268,10 +266,8 @@ class OddsButtonDetail @JvmOverloads constructor(
     /**
      * 当前欧洲盘，并且欧洲盘赔率=1，显示锁盘
      */
-    private fun lockViewByOuPlatAndOne(){
-        if (mOddsType==OddsType.EU&&mOdd?.odds==1.0){
-            setupBetStatus(BetStatus.LOCKED.code)
-        }
+    private fun euTypeAndOddOne(): Boolean{
+        return mOddsType==OddsType.EU&&mOdd?.odds==1.0
     }
 }
 

@@ -158,7 +158,7 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
     private fun setupBetStatus(betStatus: Int) {
         img_odd_lock.apply {
             visibility =
-                if (betStatus == BetStatus.LOCKED.code) {
+                if (betStatus == BetStatus.LOCKED.code||euTypeAndOddOne()) {
                     View.VISIBLE
                 } else {
                     View.GONE
@@ -280,6 +280,8 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
             else -> "${number}th"
         }
     }
-
+    private fun euTypeAndOddOne(): Boolean{
+        return mOddsType==OddsType.EU&&mOdd?.odds==1.0
+    }
 }
 
