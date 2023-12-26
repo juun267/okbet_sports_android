@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setTeamLogo
 
 
@@ -40,9 +42,21 @@ class Type4GroupAdapter(
         .filter { it.key != null }
         .mapTo(mutableListOf()) { it.key }
 
-
-    private val groupList = oddsDetail.oddArrayList.chunked(4)
-
+    private val groupList by lazy {
+        val newList =oddsDetail.oddArrayList.filterNotNull().groupBy { it?.marketSort }.values.toList()
+        if (newList.size==1&&newList.first().size>4){ //例如双重机会那些玩法， marketSort都是一样的，导致数组size=1
+            var newList2 = mutableListOf<MutableList<Odd>>()
+            newList.first().groupBy { it.rowSort }.values.forEachIndexed { index, odds ->
+                odds.forEachIndexed { index, odd ->
+                    val childList = newList2.getOrNull(index)?: mutableListOf<Odd>().apply { newList2.add(this) }
+                    childList.add(odd)
+                }
+            }
+            newList2
+        }else{
+            newList
+        }
+    }
 
     var isShowSpreadWithName = false
 
@@ -68,6 +82,9 @@ class Type4GroupAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindModel(oddsList: List<Odd?>, key: String) {
+//            if (oddsDetail.gameType== PlayCate.OU_BTS.value) {
+//                LogUtil.toJson(oddsList.map { it?.name + ","+ it?.spread + "," + it?.odds + "," + it?.marketSort + "," + it?.rowSort })
+//            }
             itemView.findViewById<TextView>(R.id.tv_left_name).text =
                 leftName?.plus(if (isShowSpreadWithName) key else "")
             itemView.findViewById<TextView>(R.id.tv_right_name).text =

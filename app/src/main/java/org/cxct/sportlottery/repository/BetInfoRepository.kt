@@ -739,7 +739,6 @@ object BetInfoRepository {
                 }
             }
         }
-
         betInfoList.value?.peekContent()?.toArray()?.forEach {it as BetInfoListData
             updateItem(it.matchOdd, newList)
         }
@@ -750,51 +749,42 @@ object BetInfoRepository {
     private fun updateItem(
         oldItem: MatchOdd, newList: List<Odd>
     ) {
-        for (newItem in newList) {
-            try {
-                newItem.let {
-                    if (it.id == oldItem.oddsId) {
-                        //若賠率關閉則賠率不做高亮變化
-                        newItem.status.let { status -> oldItem.status = status }
+        newList.firstOrNull { it.id == oldItem.oddsId }?.let {
+                //若賠率關閉則賠率不做高亮變化
+                it.status.let { status -> oldItem.status = status }
+                //賠率為啟用狀態時才去判斷是否有賠率變化
+                var currentOddsType =
+                    MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
+                if (it.odds == it.malayOdds) currentOddsType = OddsType.EU
+                if (oldItem.status == BetStatus.ACTIVATED.code) {
+                    oldItem.oddState = getOddState(
+                        getOdds(
+                            oldItem, currentOddsType
+                        ), it
+                    )
 
-                        //賠率為啟用狀態時才去判斷是否有賠率變化
-                        var currentOddsType =
-                            MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
-                        if (it.odds == it.malayOdds) currentOddsType = OddsType.EU
-                        if (oldItem.status == BetStatus.ACTIVATED.code) {
-                            oldItem.oddState = getOddState(
-                                getOdds(
-                                    oldItem, currentOddsType
-                                ), newItem
-                            )
-
-                            if (oldItem.oddState != OddState.SAME.state) oldItem.oddsHasChanged =
-                                true
-                        }
-
-                        oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
-
-                        if (oldItem.status == BetStatus.ACTIVATED.code) {
-                            newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
-                            newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
-                            newItem.indoOdds.let { indoOdds -> oldItem.indoOdds = indoOdds ?: 0.0 }
-                            newItem.malayOdds.let { malayOdds ->
-                                oldItem.malayOdds = malayOdds ?: 0.0
-                            }
-                            newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
-                        }
-
-                        //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
-                        if (oldItem.oddState != OddState.SAME.state && oldItem.status == BetStatus.ACTIVATED.code) {
-                            oldItem.betAddError = null
-                        }
-
-                    }
+                    if (oldItem.oddState != OddState.SAME.state) oldItem.oddsHasChanged =
+                        true
                 }
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
+
+                oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
+
+                if (oldItem.status == BetStatus.ACTIVATED.code) {
+                    it.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
+                    it.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                    it.indoOdds.let { indoOdds -> oldItem.indoOdds = indoOdds ?: 0.0 }
+                    it.malayOdds.let { malayOdds ->
+                        oldItem.malayOdds = malayOdds ?: 0.0
+                    }
+                    it.spread.let { spread -> oldItem.spread = spread ?: "" }
+                }
+
+                //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
+                if (oldItem.oddState != OddState.SAME.state && oldItem.status == BetStatus.ACTIVATED.code) {
+                    oldItem.betAddError = null
+                }
+
             }
-        }
     }
 
     private fun getOddState(

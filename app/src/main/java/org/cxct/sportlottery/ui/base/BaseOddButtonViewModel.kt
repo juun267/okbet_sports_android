@@ -44,7 +44,6 @@ import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
-import org.cxct.sportlottery.util.OddsUtil.updateBetStatus
 import timber.log.Timber
 import java.math.RoundingMode
 
@@ -694,7 +693,6 @@ abstract class BaseOddButtonViewModel(
             value.odds.filterNotNull()?.forEach { odd ->
                 odd.setupOddsDiscount(key == PlayCate.LCS.value, key, discount)
             }
-            value?.odds.updateBetStatus()
         }
     }
 

@@ -289,12 +289,6 @@ class SportViewModel(
                     result.oddsDetailData?.matchOdd?.updateOddStatus()
 
                     //因UI需求 特優賠率移到第一項 需求先隱藏特優賠率
-//                    list.find { it.gameType == PlayCate.EPS.value }.apply {
-//                        if (this != null) {
-//                            list.add(0, list.removeAt(list.indexOf(this)))
-//                        }
-//                    }
-
                     list.forEach {
                         it.originPosition = list.indexOf(it)
                     }
