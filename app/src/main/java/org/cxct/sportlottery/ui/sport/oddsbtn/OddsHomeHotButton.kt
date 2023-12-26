@@ -258,7 +258,6 @@ class OddsHomeHotButton @JvmOverloads constructor(
 //        updateOddsTextColor()
 
         isSelected = odds?.isSelected ?: false
-        lockViewByOuPlatAndOne()
     }
 
     //主頁精選oddsButton的判斷
@@ -277,7 +276,7 @@ class OddsHomeHotButton @JvmOverloads constructor(
 //        button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
         img_odd_lock.apply {
             visibility =
-                if (betStatus == BetStatus.LOCKED.code) {
+                if (betStatus == BetStatus.LOCKED.code||euTypeAndOddOne()) {
                     View.VISIBLE
                 } else {
                     View.GONE
@@ -295,7 +294,6 @@ class OddsHomeHotButton @JvmOverloads constructor(
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
         button_odd_detail.isVisible = isEnabled
-        lockViewByOuPlatAndOne()
     }
 
     private fun setupOddState(oddState: Int) {
@@ -424,10 +422,8 @@ class OddsHomeHotButton @JvmOverloads constructor(
     /**
      * 当前欧洲盘，并且欧洲盘赔率=1，显示锁盘
      */
-    private fun lockViewByOuPlatAndOne(){
-        if (mOddsType==OddsType.EU&&mOdd?.odds==1.0){
-            setupBetStatus(BetStatus.LOCKED.code)
-        }
+    private fun euTypeAndOddOne(): Boolean{
+        return mOddsType==OddsType.EU&&mOdd?.odds==1.0
     }
 }
 
