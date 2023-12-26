@@ -130,6 +130,7 @@ class OddsButton2 @JvmOverloads constructor(
 
         recyclerLockedView()
         recyclerUnknownView()
+        lockViewByOuPlatAndOne()
     }
 
     override fun setEnabled(enabled: Boolean) {
@@ -409,8 +410,7 @@ class OddsButton2 @JvmOverloads constructor(
         if (odds.oddState in OddState.SAME.state..OddState.SMALLER.state) {
             oddStatus = odds.oddState
         }
-
-
+       lockViewByOuPlatAndOne()
     }
 
     override fun setVisibility(visibility: Int) {
@@ -466,5 +466,14 @@ class OddsButton2 @JvmOverloads constructor(
         buoyIcon.tag = animation
         buoyIcon.setImageResource(icon)
         animation.start()
+    }
+
+    /**
+     * 当前欧洲盘，并且欧洲盘赔率=1，显示锁盘
+     */
+    private fun lockViewByOuPlatAndOne(){
+        if (mOddsType==OddsType.EU&&mOdd?.odds==1.0){
+            setBetStatus(BetStatus.LOCKED.code)
+        }
     }
 }
