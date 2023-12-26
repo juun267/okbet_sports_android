@@ -153,7 +153,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private lateinit var sportChartFragment: SportChartFragment
 
     private var delayObserver: Runnable? = null
-    private var updateMatchOddJob: Job?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -906,31 +905,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 return@observerMatchOdds
             }
             val playCate = viewModel.favorPlayCateList.value?.find { playCate -> playCate.gameType == matchInfo?.gameType }
-            if (updateMatchOddJob?.isActive == true){
-                updateMatchOddJob!!.cancel()
-            }
-             updateMatchOddJob = lifecycleScope.launch(Dispatchers.IO) {
-                val updatedDataList = SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList,it,playCate)
-                lifecycleScope.launch(Dispatchers.Main) {
-                    if (updatedDataList != null) {
-                        oddsAdapter.oddsDetailDataList = updatedDataList
-                    }
-                }
-            }
-
-
-//            var needUpdate = false
-//            LogUtil.d("updateMatchOdds start"+TimeUtil.dateToStringFormatHMS(Date()))
-//            oddsDetailListDataList.forEachIndexed { _, oddsDetailListData ->
-//                if (SocketUpdateUtil.updateMatchOdds(oddsDetailListData, it) && oddsDetailListData.isExpand) {
-//                    needUpdate = true
-//                    updateBetInfo(oddsDetailListData, it)
-//                }
-//            }
-//            LogUtil.d("updateMatchOdds end"+TimeUtil.dateToStringFormatHMS(Date()))
-//            if (needUpdate) {
-//                oddsAdapter.notifyDataSetChanged()
-//            }
+            val updatedDataList = SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList,it,playCate)?:return@observerMatchOdds
+            oddsAdapter.oddsDetailDataList = updatedDataList
         }
 
         receiver.matchOddsLock.observe(this) {
