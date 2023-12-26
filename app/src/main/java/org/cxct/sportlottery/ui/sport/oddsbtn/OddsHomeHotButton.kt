@@ -54,6 +54,9 @@ class OddsHomeHotButton @JvmOverloads constructor(
     var betStatus: Int? = null
         set(value) {
             field = value
+            if(euTypeAndOddOne()){
+                field = BetStatus.LOCKED.code
+            }
             field?.let {
                 setupBetStatus(it)
             }
@@ -276,7 +279,7 @@ class OddsHomeHotButton @JvmOverloads constructor(
 //        button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
         img_odd_lock.apply {
             visibility =
-                if (betStatus == BetStatus.LOCKED.code||euTypeAndOddOne()) {
+                if (betStatus == BetStatus.LOCKED.code) {
                     View.VISIBLE
                 } else {
                     View.GONE
