@@ -260,6 +260,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //        updateOddsTextColor()
 
         isSelected = odds?.isSelected ?: false
+        lockViewByOuPlatAndOne()
     }
 
     //主頁精選oddsButton的判斷
@@ -296,6 +297,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
         button_odd_detail.isVisible = isEnabled
+        lockViewByOuPlatAndOne()
     }
 
     private fun setupOddState(oddState: Int) {
@@ -421,6 +423,13 @@ class OddsHotButtonHome @JvmOverloads constructor(
             else -> "${number}th"
         }
     }
-
+    /**
+     * 当前欧洲盘，并且欧洲盘赔率=1，显示锁盘
+     */
+    private fun lockViewByOuPlatAndOne(){
+        if (mOddsType==OddsType.EU&&mOdd?.odds==1.0){
+            setupBetStatus(BetStatus.LOCKED.code)
+        }
+    }
 }
 

@@ -5,6 +5,7 @@ import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
+import org.cxct.sportlottery.common.extentions.runWithTimeLog
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -604,10 +605,27 @@ object SocketUpdateUtil {
             playCateNameMap?.set(it.key, it.value)
         }
     }
+//    fun updateMatchOddsMap(
+//        oddsDetailMap: LinkedHashMap<String,Odds?>,
+//        matchOddsChangeEvent: MatchOddsChangeEvent,
+//    ): LinkedHashMap<String,MutableList<Odd?>?> {
+//        val newOddsMap = matchOddsChangeEvent.odds?.filterValues { it.odds?.all { it?.status == BetStatus.DEACTIVATED.code }!=false }?: linkedMapOf()
+//            //需要先移除失效的玩法
+//        val removekeys = oddsDetailMap?.keys.subtract(newOddsMap.keys)
+//        if (removekeys.isNotEmpty()){
+//            removekeys.forEach { oddsDetailMap.remove(it) }
+//        }
+//        newOddsMap.forEach { oddsDetailMap[] = it.value.odds }
+//        return oddsDetailMap
+//    }
+//    fun Odds.updateOdds(){
+//
+//    }
 
     /**
      * 加入新增的玩法並同時更新已有玩法的資料再以rowSort排序
      */
+    @Synchronized
     fun updateMatchOddsMap(
         oddsDetailDataList: ArrayList<OddsDetailListData>,
         matchOddsChangeEvent: MatchOddsChangeEvent,
@@ -618,9 +636,10 @@ object SocketUpdateUtil {
         //若有舊玩法被移除的話
         var removedOldOdds = false
 
+        var updateOldOdds = false
+
         val newOddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
         newOddsDetailDataList.addAll(oddsDetailDataList)
-
         //有新賠率盤口
         matchOddsChangeEvent.odds?.forEach { (key, value) ->
             oddsDetailDataList.filter { it.gameType == key }.forEach {
@@ -648,7 +667,6 @@ object SocketUpdateUtil {
                 }
             }
         }
-
         matchOddsChangeEvent.odds?.filter { socketOddsMap ->
             socketOddsMap.value.odds?.all { it?.status == 2 } ?: false
         }?.forEach { lostOddsMap ->
@@ -669,13 +687,11 @@ object SocketUpdateUtil {
                 oddsDetailListData.originPosition = index
             }
         }
-
         //新玩法
         val newPlay = matchOddsChangeEvent.odds?.filter { socketOdds ->
             oddsDetailDataList.find { it.gameType == socketOdds.key } == null
                     && socketOdds.value.odds?.all { it?.status != BetStatus.DEACTIVATED.code } ?: true //新玩法應過濾 DEACTIVATED odds
         }
-
         //加入新玩法
         newPlay?.forEach { (key, value) ->
             val filteredOddList = mutableListOf<Odd?>()
@@ -696,20 +712,18 @@ object SocketUpdateUtil {
             })
             addedNewOdds = true
         }
-
+        LogUtil.e("newOddsDetailDataList="+newOddsDetailDataList.size)
+        runWithTimeLog("updateMatchOdds"){
         newOddsDetailDataList.apply {
-            if (addedNewOdds) {
-                forEach { oddsDetailListData ->
-                    updateMatchOdds(oddsDetailListData, matchOddsChangeEvent)
-                }
+            forEach { oddsDetailListData ->
+                    if(updateMatchOdds(oddsDetailListData, matchOddsChangeEvent)){
+                        updateOldOdds = true
+                    }
             }
-            //因UI需求 特優賠率移到第一項 需求先隱藏特優賠率
-//            find { it.gameType == PlayCate.EPS.value }?.also { oddsDetailListData ->
-//                add(0, removeAt(indexOf(oddsDetailListData)))
-//            }
             setupPinList(playCate)
         }
-        return if (addedNewOdds || removedOldOdds) newOddsDetailDataList else null
+        }
+        return if (addedNewOdds || removedOldOdds || updateOldOdds) newOddsDetailDataList else null
     }
 
     /**
@@ -938,6 +952,7 @@ object SocketUpdateUtil {
     private fun refreshMatchOdds(
         oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent
     ): Boolean {
+
         var isNeedRefresh = false
 
         //置換玩法翻譯名稱
@@ -1005,7 +1020,6 @@ object SocketUpdateUtil {
                 }
             }
         }
-
         return isNeedRefresh
     }
 

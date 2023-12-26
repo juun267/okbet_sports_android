@@ -37,6 +37,7 @@ import org.cxct.sportlottery.ui.sport.detail.adapter.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.view.IndicatorView
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import java.util.*
@@ -778,9 +779,6 @@ class OddsDetailVH (
     private fun group6Item(oddsDetail: OddsDetailListData) {
         val rvBet = rvBet ?: return
         val adapter = group6AdapterSetup(oddsDetail)
-        adapter.leftName = oddsAdapter.homeName
-        adapter.centerName = itemView.context.getString(R.string.draw)
-        adapter.rightName = oddsAdapter.awayName
         rvBet.adapter = adapter
         rvBet.layoutManager = LinearLayoutManager(itemView.context)
     }

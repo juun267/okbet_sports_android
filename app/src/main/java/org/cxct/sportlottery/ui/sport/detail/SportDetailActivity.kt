@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -32,6 +33,9 @@ import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
@@ -42,6 +46,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -147,6 +152,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private lateinit var sportChartFragment: SportChartFragment
 
     private var delayObserver: Runnable? = null
+    private var updateMatchOddJob: Job?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -898,21 +904,32 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             if (oddsDetailListDataList.isEmpty()) {
                 return@observerMatchOdds
             }
-
             val playCate = viewModel.favorPlayCateList.value?.find { playCate -> playCate.gameType == matchInfo?.gameType }
-            val updatedDataList = SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList, it, playCate) ?: return@observerMatchOdds
-            oddsAdapter.oddsDetailDataList = updatedDataList
-
-            var needUpdate = false
-            oddsDetailListDataList.forEachIndexed { _, oddsDetailListData ->
-                if (SocketUpdateUtil.updateMatchOdds(oddsDetailListData, it) && oddsDetailListData.isExpand) {
-                    needUpdate = true
-                    updateBetInfo(oddsDetailListData, it)
+            if (updateMatchOddJob?.isActive == true){
+                updateMatchOddJob!!.cancel()
+            }
+             updateMatchOddJob = lifecycleScope.launch(Dispatchers.IO) {
+                val updatedDataList = SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList,it,playCate)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    if (updatedDataList != null) {
+                        oddsAdapter.oddsDetailDataList = updatedDataList
+                    }
                 }
             }
-            if (needUpdate) {
-                oddsAdapter.notifyDataSetChanged()
-            }
+
+
+//            var needUpdate = false
+//            LogUtil.d("updateMatchOdds start"+TimeUtil.dateToStringFormatHMS(Date()))
+//            oddsDetailListDataList.forEachIndexed { _, oddsDetailListData ->
+//                if (SocketUpdateUtil.updateMatchOdds(oddsDetailListData, it) && oddsDetailListData.isExpand) {
+//                    needUpdate = true
+//                    updateBetInfo(oddsDetailListData, it)
+//                }
+//            }
+//            LogUtil.d("updateMatchOdds end"+TimeUtil.dateToStringFormatHMS(Date()))
+//            if (needUpdate) {
+//                oddsAdapter.notifyDataSetChanged()
+//            }
         }
 
         receiver.matchOddsLock.observe(this) {
