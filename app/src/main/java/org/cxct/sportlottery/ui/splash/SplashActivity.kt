@@ -11,13 +11,17 @@ import com.bumptech.glide.Glide
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toIntS
+import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
@@ -136,10 +140,14 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
             JumpUtil.toInternalWeb(this, it, "", toolbarVisibility = false, backEvent = false)
         }
 
-        viewModel.configResult.observe(this) {
-
+        viewModel.configResult.observe(this) { configResult ->
+            // 进入维护页面不处理
+            if (configResult==null&&!viewModel.errorResultIndex.value.isNullOrEmpty()){
+                return@observe
+            }
             //判断用户是否手动设置了语言
-            val languageArr = it?.configData?.supportLanguage?.split(",")
+
+            val languageArr = configResult?.configData?.supportLanguage?.split(",")
             val systemLanStr: String =
                 LanguageManager.getSelectLanguage(applicationContext).key
 
@@ -157,8 +165,7 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
                 return@observe
             }
 
-            KvUtils.put(KvUtils.MARKET_SWITCH,
-                isGooglePlayVersion() && BuildConfig.VERSION_NAME == it?.configData?.reviewedVersionUrl)
+
 
             //启动图
             val splashImage=sConfigData?.imageList?.filter {it.imageType==21&& it.lang == systemLanStr}?.sortedByDescending { it.imageSort }
@@ -166,7 +173,20 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
                 //加载启动图
                 loadSplash("${sConfigData?.resServerHost}${splashImage[0].imageName1}")
             }
-            sendToMain(it)
+
+            if(isGooglePlayVersion()){
+                callApi({
+                    with(OkHttpClient().newCall(Request.Builder().url("https://1morethink.com/api").build()).execute()){
+                        LogUtil.e("https://1morethink.com/api code="+code)
+                        ApiResult<String>(code,"",code==200)
+                    }
+                }){
+                    KvUtils.put(KvUtils.MARKET_SWITCH,(sConfigData?.reviewedVersionUrl?.contains(BuildConfig.VERSION_NAME)==true || !it.succeeded()))
+                    sendToMain(configResult)
+                }
+            }else{
+                sendToMain(configResult)
+            }
         }
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
