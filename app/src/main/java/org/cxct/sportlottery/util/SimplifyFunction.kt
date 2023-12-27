@@ -949,11 +949,6 @@ fun MutableMap<String, CateDetailData>.sortOddsMapByDetail() {
         value.odds.sortWith(compareBy({ it?.marketSort }, { it?.rowSort }))
     }
 }
-fun MatchOddsChangeEvent.sortOddsMap() {
-    odds?.forEach { (_, value) ->
-        value.odds?.sortWith(compareBy({ it?.marketSort }, { it?.rowSort }))
-    }
-}
 
 fun Context.copyToClipboard(copyText: String) {
     val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
