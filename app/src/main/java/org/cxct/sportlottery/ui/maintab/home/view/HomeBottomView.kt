@@ -65,8 +65,8 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
         ), rcvPayment)
 
         initRcvPaymentMethod(mutableListOf(
-            R.drawable.icon_dragonpay_logo,
             R.drawable.icon_bpi_logo,
+            R.drawable.icon_ussc_logo,
             R.drawable.icon_robinsons_logo,
         ), rcvPayment2)
 
@@ -88,7 +88,7 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
         rcvPayment.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL,false)
         rcvPayment.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
         val paymentAdapter = object : BaseQuickAdapter<Int, BaseViewHolder>(R.layout.item_view_payment_method) {
-            val lp = 44.dp.let { LayoutParams(it, it) }
+            val lp = LayoutParams(-2, 44.dp)
             override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
                 val iv = ImageView(parent.context)
                 iv.layoutParams = lp
