@@ -16,7 +16,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
-import org.cxct.sportlottery.databinding.ItemGameChildBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.enums.GameEntryType
@@ -26,7 +25,6 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setTextColorGradient
 
 class SportFootGameAdapter(val onFavoriate: (View, OKGameBean) -> Unit,

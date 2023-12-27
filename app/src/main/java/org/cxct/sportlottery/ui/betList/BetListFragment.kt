@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.betList
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -24,11 +24,7 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.runWithCatch
-import org.cxct.sportlottery.common.extentions.setOnClickListeners
-import org.cxct.sportlottery.common.extentions.setViewGone
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -929,7 +925,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             }
         }
 
-        receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
+        receiver.matchOddsLock.collectWith(lifecycleScope){
             it?.let { matchOddsLockEvent ->
                 viewModel.updateLockMatchOdd(matchOddsLockEvent)
             }
