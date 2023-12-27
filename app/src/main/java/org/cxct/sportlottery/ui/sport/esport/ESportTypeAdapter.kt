@@ -110,7 +110,7 @@ class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : Ba
     }
 
     override fun setNewInstance(list: MutableList<CategoryItem>?) {
-        recyclerView?.isVisible = !list.isNullOrEmpty()
+        recyclerViewOrNull?.isVisible = !list.isNullOrEmpty()
         currentItem = list?.find { it.isSelected }
         super.setNewInstance(list)
     }
