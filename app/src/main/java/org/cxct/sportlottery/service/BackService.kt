@@ -58,6 +58,7 @@ import java.util.concurrent.TimeUnit
     private var errorFlag = false // Stomp connect錯誤
     private var reconnectionNum = 0//重新連接次數
     private var delay: Boolean = false
+     private val connectHeaders = mapOf(Pair("sec-websocket-protocol", "v12.stomp"))
 
     fun connect(token: String?, userId: Long, platformId: Long) {
         val changed = mToken != token || mUserId != userId || mPlatformId != platformId
@@ -98,7 +99,7 @@ import java.util.concurrent.TimeUnit
                 .retryOnConnectionFailure(true)
                 .build()
 
-            mStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, URL_SOCKET_HOST_AND_PORT, null, httpClient)
+            mStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, URL_SOCKET_HOST_AND_PORT, connectHeaders, httpClient)
             if (mStompClient == null) {
                 isConnecting = false
                 return
