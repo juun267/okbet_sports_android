@@ -1,11 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.games.view
 
-import android.R.attr.endColor
-import android.R.attr.startColor
-import android.graphics.LinearGradient
-import android.graphics.Shader
-import android.opengl.ETC1.getHeight
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

@@ -2,15 +2,13 @@ package org.cxct.sportlottery.ui.maintab.games.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
-import android.view.LayoutInflater
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -18,10 +16,10 @@ import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.doOnStop
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
-import org.cxct.sportlottery.databinding.ViewHomePromotionBinding
 import org.cxct.sportlottery.databinding.ViewHotGameBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
@@ -241,7 +239,7 @@ class HotMatchView(
         }
         receiver.addOddsChangeListener(viewLifecycleOwner, mOddsChangeListener)
 
-        receiver.matchOddsLock.observe(viewLifecycleOwner) {
+        receiver.matchOddsLock.collectWith(fragment.lifecycleScope) {
             it?.let { matchOddsLockEvent ->
                 val targetList = adapter?.data
 

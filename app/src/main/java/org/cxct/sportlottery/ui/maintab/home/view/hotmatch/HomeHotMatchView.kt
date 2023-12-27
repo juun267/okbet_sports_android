@@ -8,12 +8,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.doOnStop
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ViewHomeHotMatchBinding
@@ -191,7 +193,7 @@ class HomeHotMatchView(
             }
         }
 
-        receiver.matchOddsLock.observe(viewLifecycleOwner) {
+        receiver.matchOddsLock.collectWith(fragment.lifecycleScope) {
             it?.let { matchOddsLockEvent ->
                 val targetList = adapter?.data
 

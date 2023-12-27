@@ -33,9 +33,6 @@ import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
@@ -46,7 +43,6 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -908,12 +904,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             val updatedDataList = SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList,it,playCate)?:return@observerMatchOdds
             oddsAdapter.oddsDetailDataList = updatedDataList
         }
-
-        receiver.matchOddsLock.observe(this) {
-            val matchOddsLockEvent = it ?: return@observe
+        receiver.matchOddsLock.collectWith(lifecycleScope) {
             //比對收到 matchOddsLock event 的 matchId
-            if (matchInfo?.id != matchOddsLockEvent.matchId) {
-                return@observe
+            if (matchInfo?.id != it.matchId) {
+                return@collectWith
             }
             val oddsDetailListDataList = oddsAdapter.oddsDetailDataList
             oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->

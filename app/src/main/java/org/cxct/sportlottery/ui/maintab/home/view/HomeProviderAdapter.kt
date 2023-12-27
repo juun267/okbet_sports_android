@@ -15,11 +15,9 @@ import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.roundOf
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHomeProviderPageBinding
-import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.ScreenUtil
 
 class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : BindingAdapter<List<OKGamesFirm>, ItemHomeProviderPageBinding>() {
 

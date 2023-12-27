@@ -24,7 +24,6 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setTextColorGradient
 
 class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
