@@ -56,10 +56,6 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private var selectItem: MenuTab? = null
     private var selectedPosition = initiallyPosition
 
-    init {
-        reload()
-    }
-
     fun pageCount() = data.size
 
     override fun getDefItemCount() = Int.MAX_VALUE
@@ -130,37 +126,53 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         linMaintenance.gone()
     }
 
-    private fun buildItem(){
-        datas.clear()
-        datas.add(hotMenuItem)
+    private fun buildItem(): MutableList<MenuTab?> {
+        val itemDatas = mutableListOf<MenuTab?>()
+        itemDatas.add(hotMenuItem)
         if (StaticData.okSportOpened()){
-            datas.add(sportMenuItem)
+            itemDatas.add(sportMenuItem)
         }
         if (StaticData.okGameOpened()){
-            datas.add(okGameMenuItem)
+            itemDatas.add(okGameMenuItem)
         }
         if (StaticData.okLiveOpened()){
-            datas.add(okLiveGameItem)
+            itemDatas.add(okLiveGameItem)
         }
         if (StaticData.okBingoOpened()){
-            datas.add(esportMenuItem)
+            itemDatas.add(esportMenuItem)
         }
-        datas.add(promotionMenuItem)
-        datas.add(sericeMenuItem)
+        itemDatas.add(promotionMenuItem)
+        itemDatas.add(sericeMenuItem)
 
-        val less = datas.size % pageSize
-        if (less == 0 || datas.size < pageSize) {
-            return
+        val less = itemDatas.size % pageSize
+        if (less == 0 || itemDatas.size < pageSize) {
+            return itemDatas
         }
 
-        repeat(pageSize - less) { datas.add(null) }
+        repeat(pageSize - less) { itemDatas.add(null) }
+
+        return itemDatas
     }
 
 
     fun reload(){
-        buildItem()
+        val items = buildItem()
+        if (items.size == datas.size) { // 如果item没有变化就不重新绑定数据
+            var asSame = true
+            items.forEachIndexed { index, menuTab ->
+                if (menuTab != datas[index]) {
+                    asSame = false
+                    return@forEachIndexed
+                }
+            }
+            if (asSame) {
+                return
+            }
+        }
 
         val list = mutableListOf<Array<MenuTab?>>()
+        datas.clear()
+        datas.addAll(items)
 
         if (datas.size < pageSize) {
             list.add(datas.toTypedArray())
@@ -173,6 +185,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         selectItem = datas[0]
         selectedPosition = initiallyPosition
         setList(list)
+        itemClick.invoke(selectItem!!)
     }
 
     private fun changeSelected(item: MenuTab, position: Int, position2: Int) {
@@ -189,7 +202,6 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         val lastPosition = selectedPosition
         selectedPosition = position
         notifyItemChanged(position, position2)
-
         if (position % 2 == lastPosition % 2) { // 因为目前实际数据最多2页，%2的方式即可判断是否跟选中的在同一页
             notifyItemChanged(position, oldIndex % pageSize)
         } else {
