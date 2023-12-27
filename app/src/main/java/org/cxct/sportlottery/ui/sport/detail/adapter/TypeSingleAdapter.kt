@@ -1,12 +1,9 @@
 package org.cxct.sportlottery.ui.sport.detail.adapter
 
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.OddStateViewHolderDetail
@@ -25,7 +22,6 @@ class TypeSingleAdapter (
     fun setOddsDetailData(oddsDetail: OddsDetailListData){
         this.oddsDetail = oddsDetail
     }
-
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolderDetail.OddStateChangeListener {

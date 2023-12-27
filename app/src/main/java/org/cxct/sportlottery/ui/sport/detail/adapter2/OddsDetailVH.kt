@@ -608,6 +608,10 @@ class OddsDetailVH (
 
     private fun initSingleRCV(recyclerView: RecyclerView, spanCount: Int, oddsDetail: OddsDetailListData): TypeSingleAdapter {
         lateinit var adapter: TypeSingleAdapter
+        oddsDetail.sortOddForSingle()
+//        if (oddsDetail.gameType== PlayCate.CORNER_HDP.value){
+//            LogUtil.toJson(oddsDetail.oddArrayList?.map { it?.name+","+it?.spread+","+it?.odds+","+it?.marketSort +","+it?.rowSort })
+//        }
         if (recyclerView.adapter == null) {
             adapter = TypeSingleAdapter(oddsDetail, oddsAdapter.onOddClickListener, oddsAdapter.oddsType)
             recyclerView.adapter = adapter
@@ -622,6 +626,22 @@ class OddsDetailVH (
         return adapter
     }
 
+    /**
+     * 当出现rowSort呈现11112222的时候，需要整理成 12121212的布局
+     */
+    fun OddsDetailListData.sortOddForSingle(){
+        val newList = oddArrayList.filterNotNull().groupBy { it?.rowSort }.values.toList()
+        if (newList.size==2&&newList.first().size>2){
+            var result = mutableListOf<Odd?>()
+            for (index in 0 until (newList.maxOf { it.size })){
+                for (element in newList){
+                    element.getOrNull(index)?.let { result.add(it) }
+                }
+            }
+            oddArrayList = result
+       }
+    }
+
     private fun forSingleCS(oddsDetail: OddsDetailListData) {
         val spanCount = 2
         itemView.tv_draw?.isVisible = true
@@ -630,7 +650,6 @@ class OddsDetailVH (
 
         val homeList: MutableList<Odd> = mutableListOf()
         val awayList: MutableList<Odd> = mutableListOf()
-
         oddsDetail.oddArrayList.forEach {
             it?.let { odd ->
                 val stringArray = odd.name?.replace("\\s".toRegex(), "")?.split("-") ?: return@let

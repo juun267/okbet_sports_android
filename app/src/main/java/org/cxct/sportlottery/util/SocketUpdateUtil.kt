@@ -582,7 +582,6 @@ object SocketUpdateUtil {
         }.apply {
             if (this) {
                 oddsDetailListData.updateOddStatus()
-                oddsDetailListData.oddArrayList.sortWith(compareBy({ it?.marketSort }, { it?.rowSort }))
             }
         }
     }
