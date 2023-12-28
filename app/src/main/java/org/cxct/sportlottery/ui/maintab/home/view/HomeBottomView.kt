@@ -53,7 +53,23 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
         )
 
         jumpToWebView(tvFaqs, Constants.getFAQsUrl(context), R.string.faqs)
-        initRcvPaymentMethod(rcvPayment)
+        initRcvPaymentMethod(mutableListOf(
+            R.drawable.icon_gcash,
+            R.drawable.icon_paymaya,
+            R.drawable.icon_fortune_pay,
+            R.drawable.icon_dragonpay_logo,
+//            R.drawable.icon_rbank_logo,
+//            R.drawable.icon_epon,
+            R.drawable.icon_unionbank,
+            R.drawable.icon_aub,
+            R.drawable.icon_payloro,
+        ), rcvPayment)
+
+        initRcvPaymentMethod(mutableListOf(
+            R.drawable.icon_bpi_logo,
+            R.drawable.icon_ussc_logo,
+            R.drawable.icon_robinsons_logo,
+        ), rcvPayment2)
 
         val serviceEmail = sConfigData?.customerServiceEmailAddress
         if (!serviceEmail.isNullOrEmpty()) {
@@ -69,27 +85,25 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    private fun initRcvPaymentMethod(rcvPayment: RecyclerView) {
-        val list = mutableListOf(
-            R.drawable.icon_gcash,
-            R.drawable.icon_paymaya,
-            R.drawable.icon_fortune_pay,
-//            R.drawable.icon_epon,
-            R.drawable.icon_unionbank,
-            R.drawable.icon_aub,
-            R.drawable.icon_payloro,
-        )
+    private fun initRcvPaymentMethod(datas: MutableList<Int>, rcvPayment: RecyclerView) {
         rcvPayment.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL,false)
-        rcvPayment.addItemDecoration(SpaceItemDecoration(context,R.dimen.margin_8))
-        val paymentAdapter =
-            object : BaseQuickAdapter<Int, BaseViewHolder>(R.layout.item_view_payment_method) {
-                override fun convert(holder: BaseViewHolder, item: Int) {
-                    holder.setImageResource(R.id.iv, item)
-                }
-
+        rcvPayment.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
+        val paymentAdapter = object : BaseQuickAdapter<Int, BaseViewHolder>(R.layout.item_view_payment_method) {
+            val lp = LayoutParams(-2, 44.dp)
+            override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+                val iv = ImageView(parent.context)
+                iv.layoutParams = lp
+                iv.scaleType = ImageView.ScaleType.CENTER
+                return BaseViewHolder(iv)
             }
+
+            override fun convert(holder: BaseViewHolder, item: Int) {
+                (holder.itemView as ImageView).setImageResource(item)
+            }
+
+        }
         rcvPayment.adapter = paymentAdapter
-        paymentAdapter.setNewInstance(list)
+        paymentAdapter.setNewInstance(datas)
     }
 
     fun bindServiceClick(fragmentManager: FragmentManager) = binding.run{
