@@ -47,6 +47,7 @@ object InfoCenterRepository {
     val totalReadMsgCount: LiveData<Int>
         get() = _totalReadMsgCount
     private var _totalReadMsgCount = MutableLiveData<Int>()
+    var isLoadMore = false
 
     suspend fun getUserNoticeList(infoCenterRequest: InfoCenterRequest): Response<InfoCenterResult> {
         val response = OneBoSportApi.infoCenterService.getInfoList(infoCenterRequest)
@@ -66,6 +67,7 @@ object InfoCenterRepository {
                             moreUnreadList.addAll(newUnreadNoticeList)
                         }
 
+                        isLoadMore = infoCenterRequest.page ?: 0 > 1
                         _unreadNoticeList.value = moreUnreadList
 
                         _totalUnreadMsgCount.postValue(it.total ?: 0)
@@ -73,6 +75,7 @@ object InfoCenterRepository {
                 }
                 MsgType.NOTICE_READED.code -> {
                     response.body().let {
+                        isLoadMore = infoCenterRequest.page ?: 0 > 1
                         _readedList.postValue(it?.infoCenterData?.filter { infoCenterData ->
                             infoCenterData.isRead.toString() == MsgType.NOTICE_READED.code.toString()
                         })
