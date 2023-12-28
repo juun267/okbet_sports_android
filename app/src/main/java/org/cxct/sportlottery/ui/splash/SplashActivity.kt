@@ -30,6 +30,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
@@ -137,7 +138,7 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
     private fun initObserve() {
         viewModel.errorResultIndex.observe(this) {
             Timber.d("href:Jump to internal web: =====>")
-            JumpUtil.toInternalWeb(this, it, "", toolbarVisibility = false, backEvent = false)
+            JumpUtil.toInternalWeb(this, it, "", toolbarVisibility = false, backEvent = false,tag = WebActivity.TAG_403)
         }
 
         viewModel.configResult.observe(this) { configResult ->

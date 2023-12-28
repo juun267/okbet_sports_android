@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
@@ -69,6 +70,9 @@ class RedEnvelopeManager {
         MaintenanceActivity::class -> false
         ThirdGameActivity::class -> false
         LuckyWheelActivity::class -> false
+        WebActivity::class -> {
+            !WebActivity.currentTag.isNullOrBlank()
+        }
         else -> true
     }
 
