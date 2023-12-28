@@ -4,14 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.text.Html
+import android.view.View
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.os.postDelayed
 import androidx.core.view.postDelayed
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.show
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityPromotionDetailBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.repository.LoginRepository
@@ -21,7 +22,10 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PromotionSuccessDialog
+import org.cxct.sportlottery.view.webView.OkWebViewClient
+import org.cxct.sportlottery.view.webView.WebViewCallBack
 import org.koin.android.ext.android.bind
+import timber.log.Timber
 import java.util.*
 
 
@@ -105,7 +109,6 @@ class PromotionDetailActivity :
         val startTime = TimeUtil.timeFormat(activityData.startTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
         val endTime = TimeUtil.timeFormat(activityData.endTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
         tvTime.text = "${getString(R.string.N473)}: $startTime ${getString(R.string.J645)} $endTime"
-        okWebView.setBackgroundColor(ContextCompat.getColor(this@PromotionDetailActivity,R.color.color_F9FAFD))
         okWebView.loadDataWithBaseURL(null,(activityData.contentText?:"").formatHTML(), "text/html", "utf-8",null)
     }
     private fun setActivity(activityDetail: ActivityImageList)=binding.run {
