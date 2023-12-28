@@ -123,7 +123,7 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
     }
 
     override fun setNewInstance(list: MutableList<Item>?) {
-        recyclerView?.isVisible = !list.isNullOrEmpty()
+        recyclerViewOrNull?.isVisible = !list.isNullOrEmpty()
         currentItem = list?.find { it.isSelected }
         super.setNewInstance(list)
     }
