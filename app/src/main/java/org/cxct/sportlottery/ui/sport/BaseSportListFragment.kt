@@ -106,6 +106,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     override fun onBindViewStatus(view: View) {
         scrollBackTop()
+        gameTypeAdapter.applyEventView(requireActivity())
         currentItem = null
         gameTypeAdapter.setNewInstance(null)
         EventBusUtil.targetLifecycle(this)
