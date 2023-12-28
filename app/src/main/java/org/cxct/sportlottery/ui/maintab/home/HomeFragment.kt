@@ -4,12 +4,12 @@ import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
@@ -19,11 +19,9 @@ import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.StaticData.Companion.okGameOpened
 import org.cxct.sportlottery.repository.StaticData.Companion.okLiveOpened
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -41,15 +39,18 @@ import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
 import timber.log.Timber
 
 class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
+
+    fun getCurrentFragment() = fragmentHelper2.currentFragment()
     private fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper2: FragmentHelper2 by lazy { FragmentHelper2(childFragmentManager, R.id.flContent) }
     private lateinit var hotFragment: HomeHotFragment
+
     private val homeMenuAdapter = HomeMenuAdapter { item->
         val fragmentClass = item.content
         if (fragmentClass == null) {
             if (item.name == R.string.promo) {
                 startActivity(PromotionListActivity::class.java)
-            } else if (item.name == R.string.LT050) {
+            } else if (item.name == R.string.LT050_1) {
                 serviceEvent(context(), childFragmentManager)
             }
 
@@ -77,7 +78,6 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
         super.onHiddenChanged(hidden)
         if (hidden) {
             binding.appBarLayout.expand(false)
-        } else {
             homeMenuAdapter.selectedRecommend()
         }
         fragmentHelper2.currentFragment()?.let {
@@ -110,16 +110,14 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
         viewModel.getAnnouncement()
     }
 
-
     private fun initObservable() {
         ConfigRepository.onNewConfig(this) {
             setUpBanner()
             viewModel.getActivityImageListH5()
             homeMenuAdapter.reload()
+            binding.rvMenu.scrollToPosition(homeMenuAdapter.initiallyPosition)
             homeMenuAdapter.checkMaintain()
-            if (homeMenuAdapter.dataCount() < 7) {
-                binding.hIndicator.gone()
-            }
+            binding.hIndicator.isVisible = homeMenuAdapter.pageCount() > 1
         }
         //新版宣傳頁
         viewModel.messageListResult.observe(viewLifecycleOwner) {
@@ -149,6 +147,7 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
             getMainTabActivity().showMainRightMenu()
         }
     }
+
     private fun setUpBanner() {
         val imageType = 2
         val lang = LanguageManager.getSelectLanguage(context).key
@@ -214,39 +213,30 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
     private fun initMenu() = binding.rvMenu.run {
         layoutManager = LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
         adapter = homeMenuAdapter
+        binding.hIndicator.isVisible = homeMenuAdapter.pageCount() > 1
         fragmentHelper2.show(HomeHotFragment::class.java) { frament, _ ->
             hotFragment = frament
         }
+        binding.rvMenu.scrollToPosition(homeMenuAdapter.initiallyPosition)
         PagerSnapHelper().attachToRecyclerView(this)
     }
 
     private fun initIndicate(){
-        binding.hIndicator.bindRecyclerView(binding.rvMenu)
+        binding.hIndicator.ratio = 0.5f
+        binding.rvMenu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    val lm = binding.rvMenu.layoutManager as LinearLayoutManager
+                    binding.hIndicator.progress = lm.findFirstVisibleItemPosition().toFloat() % 2
+                }
+            }
+        })
     }
-
-
-    fun getCurrentFragment() = fragmentHelper2.currentFragment()
-
 
     override fun onResume() {
         super.onResume()
         viewModel.getConfigData()
     }
-    fun Class<BaseFragment<*>>.checkMenuStatus(block: ((Boolean) -> Unit)? = null){
-        when(this){
-            SportVenueFragment::class.java, ESportVenueFragment::class.java->{
-                StaticData.okSportOpened()
-            }
-            ElectGamesFragment::class.java->{
-                StaticData.okGameOpened()
-            }
-            LiveGamesFragment::class.java->{
-                StaticData.okLiveOpened()
-            }
-            ESportVenueFragment::class.java->{
-                StaticData.okSportOpened()&&StaticData.okBingoOpened()
-            }
-            else->true
-        }.let { block?.invoke(it) }
-    }
+
 }
