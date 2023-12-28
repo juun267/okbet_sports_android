@@ -176,15 +176,8 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
             }
 
             if(isGooglePlayVersion()){
-                callApi({
-                    with(OkHttpClient().newCall(Request.Builder().url("https://1morethink.com/api").build()).execute()){
-                        LogUtil.e("https://1morethink.com/api code="+code)
-                        ApiResult<String>(code,"",code==200)
-                    }
-                }){
-                    KvUtils.put(KvUtils.MARKET_SWITCH,(sConfigData?.reviewedVersionUrl?.contains(BuildConfig.VERSION_NAME)==true || !it.succeeded()))
-                    sendToMain(configResult)
-                }
+                KvUtils.put(KvUtils.MARKET_SWITCH,(sConfigData?.reviewedVersionUrl?.contains(BuildConfig.VERSION_NAME)==true))
+                sendToMain(configResult)
             }else{
                 sendToMain(configResult)
             }
