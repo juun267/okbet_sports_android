@@ -3,10 +3,12 @@ package org.cxct.sportlottery.ui.sport.esport
 import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.show
@@ -203,13 +205,13 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
             }
         }
 
-        receiver.matchOddsLock.observe(this@ESportListFragment.viewLifecycleOwner) { event->
-            val matchId =  event?.matchId ?: return@observe
+        receiver.matchOddsLock.collectWith(lifecycleScope) { event->
+            val matchId =  event?.matchId ?: return@collectWith
             if (matchId == null || sportLeagueAdapter2.getCount() < 1) {
-                return@observe
+                return@collectWith
             }
 
-            val matchOdd = sportLeagueAdapter2.findVisiableRangeMatchOdd(matchId) ?: return@observe
+            val matchOdd = sportLeagueAdapter2.findVisiableRangeMatchOdd(matchId) ?: return@collectWith
             if (SocketUpdateUtil.updateOddStatus(matchOdd, event)) {
                 sportLeagueAdapter2.notifyMatchOddChanged(matchOdd)
             }

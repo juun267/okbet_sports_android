@@ -48,6 +48,7 @@ object ChatService {
     private var mCompositeDisposable: CompositeDisposable? = null
     private val mSubscribedMap = mutableMapOf<String, Disposable?>()
     private val mSubscribeChannelPending = mutableListOf<String>()
+    private val connectHeaders = mapOf(Pair("sec-websocket-protocol", "v12.stomp"))
 
     private const val RECONNECT_LIMIT = 3 //斷線後重連次數限制
     private var errorFlag = false // Stomp connect錯誤
@@ -79,7 +80,7 @@ object ChatService {
             resetSubscriptions()
 
             val url = "${URL_CHAT_SOCKET_HOST}ws/chat/app"
-            mChatStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url, null, okHttpClient)
+            mChatStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url, connectHeaders, okHttpClient)
             mChatStompClient?.let { chatStompClient ->
 
                 chatStompClient.withClientHeartbeat(10 * 1000).withServerHeartbeat(10 * 1000)

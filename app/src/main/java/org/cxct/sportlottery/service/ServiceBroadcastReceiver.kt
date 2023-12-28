@@ -62,8 +62,7 @@ object ServiceBroadcastReceiver {
     val leagueChange: LiveData<FrontWsEvent.LeagueChangeEvent?>
         get() = _leagueChange
 
-    val matchOddsLock: LiveData<FrontWsEvent.MatchOddsLockEvent?>
-        get() = _matchOddsLock
+    val matchOddsLock = SocketRepository.matchOddsLock
 
     val userDiscountChange: LiveData<FrontWsEvent.UserDiscountChangeEvent?>
         get() = _userDiscountChange
@@ -92,7 +91,6 @@ object ServiceBroadcastReceiver {
     private val _sysMaintenance = SingleLiveEvent<FrontWsEvent.SysMaintainEvent?>()
     private val _serviceConnectStatus = SingleLiveEvent<ServiceConnectStatus>()
     private val _leagueChange = MutableLiveData<FrontWsEvent.LeagueChangeEvent?>()
-    private val _matchOddsLock = MutableLiveData<FrontWsEvent.MatchOddsLockEvent?>()
     private val _userDiscountChange = MutableLiveData<FrontWsEvent.UserDiscountChangeEvent?>()
     private val _userMaxBetMoneyChange = MutableLiveData<FrontWsEvent.UserLevelConfigChangeEvent?>()
     private val _dataSourceChange = MutableLiveData<Boolean?>()
@@ -104,7 +102,6 @@ object ServiceBroadcastReceiver {
     val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
 
     val thirdGamesMaintain = MutableSharedFlow<FrontWsEvent.GameFirmMaintainEvent>(extraBufferCapacity= 3)
-
 
     fun onConnectStatus(connectStatus: ServiceConnectStatus) {
         _serviceConnectStatus.postValue(connectStatus)
@@ -179,7 +176,7 @@ object ServiceBroadcastReceiver {
                 _leagueChange.postValue(event.leagueChangeEvent)
             }
             EventType.MATCH_ODDS_LOCK -> {
-                _matchOddsLock.postValue(event.matchOddsLockEvent)
+                SocketRepository.emitMatchOddsLock(event.matchOddsLockEvent)
             }
             //賠率折扣
             EventType.USER_DISCOUNT_CHANGE -> {

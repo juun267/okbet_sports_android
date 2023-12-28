@@ -78,7 +78,6 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
         super.onHiddenChanged(hidden)
         if (hidden) {
             binding.appBarLayout.expand(false)
-        } else {
             homeMenuAdapter.selectedRecommend()
         }
         fragmentHelper2.currentFragment()?.let {
