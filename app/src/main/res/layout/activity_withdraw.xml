@@ -7,15 +7,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <include
         android:id="@+id/toolBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <include layout="@layout/view_base_tool_bar_no_drawer" />
-
-    </RelativeLayout>
+        layout="@layout/view_base_tool_bar_no_drawer"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/withdraw_container"

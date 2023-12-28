@@ -9,7 +9,9 @@ data class Bank(
     @Json(name = "value")
     val value: String?,
     @Json(name = "bankType")
-    val bankType: Int
+    val bankType: Int,
+    @Json(name = "maintainStatus")
+    val maintainStatus: Int=0
 ) {
     @Json(name = "name")
     var name: String? = null

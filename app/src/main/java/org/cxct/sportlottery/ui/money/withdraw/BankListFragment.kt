@@ -1,34 +1,27 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_bank_list.*
-import kotlinx.android.synthetic.main.fragment_bank_list.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.BankCardChangeEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
-import org.cxct.sportlottery.common.extentions.toLongS
+import org.cxct.sportlottery.databinding.FragmentBankListBinding
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.PAYMAYA
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 /**
  * @app_destination 提款设置
  */
-class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
+class BankListFragment : BindingFragment<WithdrawViewModel,FragmentBankListBinding>() {
 
     private val mNavController by lazy {
         findNavController()
@@ -69,21 +62,14 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             )
 
     }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_bank_list, container, false).apply {
-            setupRecyclerView(this)
-        }
+    override fun onInitView(view: View) {
+        setupRecyclerView()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initData()
+    override fun onBindViewStatus(view: View) {
+        super.onBindViewStatus(view)
         setupObserve()
         setupTitle()
-    }
-
-    private fun initData() {
         viewModel.getBankCardList()
     }
 
@@ -114,8 +100,8 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
            if (it.walletTransfer) stringList.add(getString(R.string.bank_list_e_wallet))
            if (it.paymataTransfer) stringList.add(getString(R.string.online_maya))
            cardTypeTitle = stringList.joinToString("/")
-           tv_unbind_bank_card.text = getString(R.string.bank_list_not_bink, cardTypeTitle)
-           tv_add_money_card_type.text =
+           binding.tvUnbindBankCard.text = getString(R.string.bank_list_not_bink, cardTypeTitle)
+            binding.tvAddMoneyCardType.text =
                getString(R.string.add_credit_or_virtual, cardTypeTitle)
             updateCardNumbers("${viewModel.numberOfBankCard.value}")
 
@@ -125,16 +111,16 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
             viewModel.checkBankCardCount()
             if (bankCardList.isNullOrEmpty()){
-                tv_unbind_bank_card.visibility = View.VISIBLE
+                binding.tvUnbindBankCard.visibility = View.VISIBLE
             }else{
-                tv_unbind_bank_card.visibility = View.GONE
+                binding.tvUnbindBankCard.visibility = View.GONE
             }
         })
         //银行卡数量
         viewModel.numberOfBankCard.observe(this.viewLifecycleOwner) {
             updateCardNumbers(it)
         }
-        cv_add_bank.setOnClickListener{
+        binding.cvAddBank.setOnClickListener{
             runWithCatch {
                 val addSwitch=viewModel.addMoneyCardSwitch.value
                 var transferType =when{
@@ -164,13 +150,13 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
-    private fun setupRecyclerView(view: View) {
-        view.rv_bank_list.setLinearLayoutManager()
-        view.rv_bank_list.adapter = mBankListAdapter
+    private fun setupRecyclerView() {
+        binding.rvBankList.setLinearLayoutManager()
+        binding.rvBankList.adapter = mBankListAdapter
     }
 
     private fun updateCardNumbers(number: String) {
-        tv_money_card_type.text = getString(R.string.my_bank_card, cardTypeTitle, "($number)")
+        binding.tvMoneyCardType.text = getString(R.string.my_bank_card, cardTypeTitle, "($number)")
     }
 
     private fun getDeleteInfo(bankCardList: BankCardList?): String {
@@ -181,4 +167,6 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             else -> getString(R.string.text_bank_card_delete_success)
         }
     }
+
+
 }

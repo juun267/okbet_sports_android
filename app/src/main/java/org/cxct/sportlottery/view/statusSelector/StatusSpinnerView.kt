@@ -220,4 +220,7 @@ class StatusSpinnerView @JvmOverloads constructor(
         selectedListener?.onClick(null)
         tv_name.setTextColor(ContextCompat.getColor(context, R.color.color_414655))
     }
+    fun setNameGravity(gravity: Int){
+        tv_name.gravity = gravity
+    }
 }

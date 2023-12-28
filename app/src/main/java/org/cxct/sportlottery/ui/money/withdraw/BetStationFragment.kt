@@ -2,36 +2,27 @@ package org.cxct.sportlottery.ui.money.withdraw
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Looper
 import android.text.TextUtils
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.google.android.gms.location.*
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.edittext_login.view.*
-import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
-import kotlinx.android.synthetic.main.fragment_bet_station.*
-import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ItemBetStationBinding
+import org.cxct.sportlottery.databinding.FragmentBetStationBinding
 import org.cxct.sportlottery.network.bettingStation.AreaAll
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.bettingStation.City
 import org.cxct.sportlottery.network.bettingStation.Province
-import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.LoginEditText
@@ -42,10 +33,14 @@ import java.util.*
 /**
  * @app_destination 提款-网点预约
  */
-class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
-
-    private var transferType: TransferType = TransferType.STATION
-    private lateinit var stationAdapter: BetStationAdapter
+class BetStationFragment : BindingFragment<WithdrawViewModel,FragmentBetStationBinding>() {
+    
+    private val stationAdapter by lazy { BetStationAdapter{
+        hideKeyboard()
+        selectBettingStation = it
+        binding.tvTime.text = getString(R.string.select_time)
+        updateStation()
+    }}
     private var areaAll: AreaAll? = null
     private var selectProvince: Province? = null
     private var selectCity: City? = null
@@ -58,18 +53,16 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     var mCalendar: Calendar =Calendar.getInstance()
     private var selectDate: Date? = null
         set(value) {
-            tv_time.text =
+            binding.tvTime.text =
                 (TimeUtil.dateToDateFormat(value, TimeUtil.YMD_HMS_FORMAT) ?: "") + "(GTM+8)"
             field = value
         }
-
-    override fun layoutId() = R.layout.fragment_bet_station
-
-    override fun onBindView(view: View) {
+    
+    override fun onInitView(view: View) {
         checkPermissionGranted();
         initView()
-        setupEvent()
         setupObserve()
+        setupEvent()
         setupServiceButton()
         initTimePickerForYMD()
         initTimePickerForHMS()
@@ -77,71 +70,61 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
 
     //联系客服
     private fun setupServiceButton() {
-        tv_service_show.setServiceClick(childFragmentManager)
+        binding.tvServiceShow.setServiceClick(childFragmentManager)
     }
 
-    private fun initView() {
-        et_amount.apply {
+    private fun initView() =binding.run{
+        etAmount.apply {
             clearIsShow = false
             getAllIsShow = true
         }
 
-        spinner_area.setBetStationStyle()
-        spinner_city.setBetStationStyle()
+        spinnerArea.setBetStationStyle()
+        spinnerCity.setBetStationStyle()
 
-        initEditTextStatus(et_amount)
-        initEditTextStatus(et_password)
+        initEditTextStatus(etAmount)
+        initEditTextStatus(etPassword)
         View.OnClickListener { hideKeyboard() }.let {
-            spinner_area.setOnClickListener(it)
-            spinner_city.setOnClickListener(it)
+            spinnerArea.setOnClickListener(it)
+            spinnerCity.setOnClickListener(it)
           //  tv_time.setOnClickListener(it)
-            txv_withdrawal_time.setOnClickListener(it)
-            txv_withdrawal_time2.setOnClickListener(it)
+            txvWithdrawalTime.setOnClickListener(it)
+            txvWithdrawalTime2.setOnClickListener(it)
         }
-        spinner_area.setOnItemSelectedListener {
+        spinnerArea.setOnItemSelectedListener {
             selectProvince = areaAll?.provinces?.find { province ->
                 TextUtils.equals(it.code, province.id.toString())
             }
             setCity(selectProvince)
         }
-        spinner_city.setOnItemSelectedListener {
+        spinnerCity.setOnItemSelectedListener {
             selectCity = areaAll?.cities?.find { city ->
                 TextUtils.equals(it.code, city.id.toString())
             }
             selectArea()
         }
 
-        btn_submit.setTitleLetterSpacing()
-        stationAdapter =
-            BetStationAdapter(
-                requireContext(),
-                BetStationSelectorAdapterListener {
-                    hideKeyboard()
-                    selectBettingStation = it
-                    tv_time.text = getString(R.string.select_time)
-                    updateStation()
-                })
-
-        with(rv_station) {
+        btnSubmit.setTitleLetterSpacing()
+        with(rvStation) {
             layoutManager = GridLayoutManager(context, 2)
             adapter = stationAdapter
         }
 
-        tv_detail.setOnClickListener {
+        tvDetail.setOnClickListener {
             startActivity(Intent(activity, WithdrawCommissionDetailActivity::class.java))
         }
 
-        btn_info.setOnClickListener {
+        btnInfo.setOnClickListener {
             CommissionInfoDialog().show(childFragmentManager, null)
         }
 
      //   tv_time.text = TimeUtil.dateToDateFormat(selectDate, TimeUtil.YMD_HMS_FORMAT) ?: ""
         //存款时间年月日
-        txv_withdrawal_time.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
+        txvWithdrawalTime.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
         //存款时间时分秒
-        txv_withdrawal_time2.text = TimeUtil.dateToStringFormatHMS(Date())
-        spinner_area.tv_name.gravity = Gravity.CENTER_VERTICAL
-        spinner_city.tv_name.gravity = Gravity.CENTER_VERTICAL
+        txvWithdrawalTime2.text = TimeUtil.dateToStringFormatHMS(Date())
+        spinnerArea.setNameGravity(Gravity.CENTER_VERTICAL)
+        spinnerCity.setNameGravity(Gravity.CENTER_VERTICAL)
     }
 
     private fun initEditTextStatus(setupView: LoginEditText) {
@@ -150,22 +133,22 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         }
     }
 
-    private fun updateStation() {
+    private fun updateStation() =binding.run{
         selectBettingStation.let {
             if (it == null) {
-                lin_station.visibility = View.GONE
-                lin_empty.visibility = View.VISIBLE
+                linStation.visibility = View.GONE
+                linEmpty.visibility = View.VISIBLE
             } else {
-                lin_station_detail.visibility = View.VISIBLE
-                lin_empty.visibility = View.GONE
-                tv_station_name.text = it.name
-                tv_station_address.text = it.addr
+                linStationDetail.visibility = View.VISIBLE
+                linEmpty.visibility = View.GONE
+                binding.tvStationName.text = it.name
+                binding.tvStationAddress.text = it.addr
                 var desloc = Location("").apply {
                     latitude = it.lat
                     longitude = it.lon
                 }
                 var distance = location?.distanceTo(desloc)
-                tv_station_distance.text = ArithUtil.round(
+                tvStationDistance.text = ArithUtil.round(
                     distance?.div(1000)?.toDouble(),
                     2,
                     RoundingMode.HALF_UP
@@ -191,7 +174,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 }
             }
         }
-        spinner_city.setItemData(cityList)
+        binding.spinnerCity.setItemData(cityList)
         selectCity = citys?.get(0)
         selectArea()
     }
@@ -208,14 +191,14 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     }
 
 
-    private fun setupTextChangeEvent() {
+    private fun setupTextChangeEvent()=binding.run {
         viewModel.apply {
 
-            et_amount.afterTextChanged { checkWithdrawAmount(null, it) }
+            etAmount.afterTextChanged { checkWithdrawAmount(null, it) }
             //銀行卡號
-            setupClearButtonVisibility(et_amount) { checkWithdrawAmount(null, it) }
+            setupClearButtonVisibility(etAmount) { checkWithdrawAmount(null, it) }
             //提款密碼
-            setupClearButtonVisibility(et_password) { checkNetWorkPoint(it) }
+            setupClearButtonVisibility(etPassword) { checkNetWorkPoint(it) }
 
         }
     }
@@ -236,25 +219,25 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     }
 
 
-    private fun setupClickEvent() {
+    private fun setupClickEvent() =binding.run{
         /* tv_time.setOnClickListener {
              showDatePicker()
          }*/
         //年月日的时间选择器
-        ll_withdrawal_time.setOnClickListener {
+        llWithdrawalTime.setOnClickListener {
             dateTimePicker.show()
         }
-        txv_withdrawal_time.setOnClickListener {
+        txvWithdrawalTime.setOnClickListener {
             dateTimePicker.show()
         }
         //时分秒的选择器
-        ll_withdrawal_time2.setOnClickListener {
+        llWithdrawalTime2.setOnClickListener {
             dateTimePickerHMS.show()
         }
-        txv_withdrawal_time2.setOnClickListener {
+        txvWithdrawalTime2.setOnClickListener {
             dateTimePickerHMS.show()
         }
-        lin_station_detail.setOnClickListener {
+        linStationDetail.setOnClickListener {
             selectBettingStation?.let {
                 JumpUtil.toInternalWeb(
                     requireContext(),
@@ -266,7 +249,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 )
             }
         }
-        btn_submit.setOnClickListener {
+        btnSubmit.setOnClickListener {
             modifyFinish()
             if(sConfigData?.auditFailureRestrictsWithdrawalsSwitch==1&&(viewModel.uwCheckData?.total?.unFinishValidAmount?:0.0)>0){
                 showPromptDialog(getString(R.string.P150),getString(R.string.P149,"${sConfigData?.systemCurrencySign}${(viewModel.uwCheckData?.total?.unFinishValidAmount?:0).toInt()}")){}
@@ -276,8 +259,8 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 viewModel.addWithdraw(
                     null,
                     viewModel.getChannelMode(),
-                    et_amount.getText(),
-                    et_password.getText(),
+                    etAmount.getText(),
+                    etPassword.getText(),
                     if (selectBettingStation == null) null else selectBettingStation!!.id,
                     TimeUtil.dateToDateFormat(
                         mCalendar.time,
@@ -294,70 +277,64 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
 
 
     private fun setupObserve() {
-        viewModel.loading.observe(this.viewLifecycleOwner, Observer {
+        viewModel.loading.observe(this) {
             if (it)
                 loading()
             else
                 hideLoading()
-        })
-        //提款金額提示訊息
-        viewModel.withdrawAmountHint.observe(this.viewLifecycleOwner, Observer {
-            et_amount.et_input.hint = it
-        })
-        //提款手續費提示
-        viewModel.withdrawRateHint.observe(this.viewLifecycleOwner) {
-            tv_tips_handling_fee.text = it
         }
-        viewModel.withdrawAmountMsg.observe(
-            this.viewLifecycleOwner
-        ) {
-            et_amount.setError(it ?: "")
+        //提款金額提示訊息
+        viewModel.withdrawAmountHint.observe(this) {
+            binding.etAmount.setHint(it)
+        }
+        //提款手續費提示
+        viewModel.withdrawRateHint.observe(this) {
+            binding.tvTipsHandlingFee.text = it
+        }
+        viewModel.withdrawAmountMsg.observe(this) {
+            binding.etAmount.setError(it ?: "")
         }
 
-        et_amount.getAllButton {
+        binding.etAmount.getAllButton {
             it.setText(viewModel.getWithdrawAmountLimit().max.toLong().toString())
-            et_amount.et_input.apply { setSelection(this.length()) }
+            binding.etAmount.setSelection()
         }
         //提款密碼
-        viewModel.withdrawPasswordMsg.observe(
-            this.viewLifecycleOwner
-        ) {
-            et_password.setError(it ?: "")
+        viewModel.withdrawPasswordMsg.observe(this) {
+            binding. etPassword.setError(it ?: "")
         }
-        viewModel.WithdrawAppointmentMsg.observe(
-            this.viewLifecycleOwner
-        ) {
-            tv_time_error.text = it ?: ""
-            tv_time_error.visibility = if (it.isBlank()) View.GONE else View.VISIBLE
+        viewModel.WithdrawAppointmentMsg.observe(this) {
+            binding.tvTimeError.text = it ?: ""
+            binding.tvTimeError.visibility = if (it.isBlank()) View.GONE else View.VISIBLE
         }
-        viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
-            tv_balance.text = sConfigData?.systemCurrency + " " + TextUtil.format(
+        viewModel.userMoney.observe(this) {
+            binding.tvBalance.text = sConfigData?.systemCurrency + " " + TextUtil.format(
                 ArithUtil.toMoneyFormat(it).toDouble()
             )
-            tv_current_time.text = TimeUtil.dateToFormat(Date())
-        })
-        viewModel.areaList.observe(this.viewLifecycleOwner) {
+            binding.tvCurrentTime.text = TimeUtil.dateToFormat(Date())
+        }
+        viewModel.areaList.observe(this) {
             areaAll = it
             var provinceList = mutableListOf<StatusSheetData>()
             for (i in it.provinces) {
                 provinceList.add(StatusSheetData(i.id.toString(), i.name))
             }
-            spinner_area.setItemData(provinceList)
+            binding.spinnerArea.setItemData(provinceList)
             setCity(it.provinces[0])
             selectArea()
         }
-        viewModel.bettingStationList.observe(this.viewLifecycleOwner) {
+        viewModel.bettingStationList.observe(this) {
             if (it.isNotEmpty()) {
-                lin_station.visibility = View.VISIBLE
-                lin_empty.visibility = View.GONE
+                binding.linStation.visibility = View.VISIBLE
+                binding.linEmpty.visibility = View.GONE
             } else {
-                lin_station.visibility = View.GONE
-                lin_empty.visibility = View.VISIBLE
+                binding.linStation.visibility = View.GONE
+                binding.linEmpty.visibility = View.VISIBLE
             }
             stationAdapter.setData(it)
         }
         //提款
-        viewModel.withdrawAddResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawAddResult.observe(this, Observer {
             if (it.success) {
                 clearEvent()
                 showPromptDialog(
@@ -374,21 +351,21 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             }
         })
 
-        viewModel.needCheck.observe(this.viewLifecycleOwner) {
-            ll_commission.visibility = if (it) View.VISIBLE else View.GONE
-            rv_station.visibility = if (it) View.VISIBLE else View.GONE
+        viewModel.needCheck.observe(this) {
+            binding.llCommission.visibility = if (it) View.VISIBLE else View.GONE
+            binding.rvStation.visibility = if (it) View.VISIBLE else View.GONE
         }
 
-        viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
-            tv_detail.apply {
+        viewModel.commissionCheckList.observe(this) {
+            binding.tvDetail.apply {
                 isEnabled = it.isNotEmpty()
                 isSelected = it.isNotEmpty()
             }
         }
 
-        viewModel.deductMoney.observe(this.viewLifecycleOwner) {
+        viewModel.deductMoney.observe(this) {
             val zero = 0.0
-            tv_commission.apply {
+            binding.tvCommission.apply {
                 text = if (it.isNaN()) "0" else TextUtil.formatMoney(zero.minus(it ?: 0.0))
                 setTextColor(
                     ContextCompat.getColor(
@@ -408,8 +385,8 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     }
 
     private fun clearEvent() {
-        et_amount.setText("")
-        et_password.setText("")
+        binding.etAmount.setText("")
+        binding.etPassword.setText("")
         viewModel.resetWithdrawPage()
         modifyFinish()
     }
@@ -543,7 +520,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         dateTimePicker = TimePickerBuilder(activity) { date, _ ->
             try {
                 depositDate = date
-                txv_withdrawal_time.text = TimeUtil.dateToStringFormatYMD(date)
+                binding.txvWithdrawalTime.text = TimeUtil.dateToStringFormatYMD(date)
                 upDataTimeYMD()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -559,13 +536,13 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             .setSubmitText(getString(R.string.picker_submit))
             .setSubmitColor(
                 ContextCompat.getColor(
-                    txv_withdrawal_time.context,
+                    binding.txvWithdrawalTime.context,
                     R.color.color_7F7F7F_999999
                 )
             )
             .setCancelColor(
                 ContextCompat.getColor(
-                    txv_withdrawal_time.context,
+                    binding.txvWithdrawalTime.context,
                     R.color.color_7F7F7F_999999
                 )
             )
@@ -577,7 +554,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         dateTimePickerHMS = TimePickerBuilder(activity) { date, _ ->
             try {
                 depositDate2 = date
-                txv_withdrawal_time2.text = TimeUtil.dateToStringFormatHMS(date)
+                binding.txvWithdrawalTime2.text = TimeUtil.dateToStringFormatHMS(date)
                 upDataTimeHMS()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -592,13 +569,13 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             .setSubmitText(getString(R.string.picker_submit))
             .setSubmitColor(
                 ContextCompat.getColor(
-                    txv_withdrawal_time2.context,
+                    binding.txvWithdrawalTime2.context,
                     R.color.color_7F7F7F_999999
                 )
             )
             .setCancelColor(
                 ContextCompat.getColor(
-                    txv_withdrawal_time2.context,
+                    binding.txvWithdrawalTime2.context,
                     R.color.color_7F7F7F_999999
                 )
             )
@@ -628,81 +605,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
 
         }
     }
+    
 
 }
 
-class BetStationAdapter(
-    private val context: Context,
-    private val listener: BetStationSelectorAdapterListener
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var selectedPosition = 0
-    private var stationList: List<BettingStation> = listOf()
-
-    fun setData(newData: List<BettingStation>) {
-        stationList = newData
-        selectedPosition = 0
-        if (stationList.isNotEmpty()) {
-            stationList[selectedPosition].isSelected = true
-            listener.onSelect(stationList[0])
-        }
-        notifyDataSetChanged()
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        BetStationItemViewHolder(
-            ItemBetStationBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (holder) {
-        is BetStationItemViewHolder -> {
-            holder.bind(stationList[position], position)
-        }
-        else -> {
-            //do nothing
-        }
-    }
-
-    override fun getItemCount(): Int = stationList.size
-
-    inner class BetStationItemViewHolder(val binding: ItemBetStationBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(station: BettingStation, position: Int) {
-            with(binding) {
-                root.setOnClickListener {
-                    selectBank(position)
-                    listener.onSelect(station)
-                }
-                tvName.isSelected =  selectedPosition == position
-                tvNameNum.isSelected =  selectedPosition == position
-
-                tvName.text = station.name
-                tvNameNum.text = itemView.context.getString(R.string.outlet)+"${position+1}"
-                if (station.isSelected) {
-                    selectedPosition = position
-                    imgCheck.visibility = View.VISIBLE
-                    llSelectBankCard.setBackgroundResource(R.drawable.ic_bule_site)
-                } else {
-                    imgCheck.visibility = View.GONE
-                    llSelectBankCard.setBackgroundResource(R.drawable.ic_white_site)
-
-                }
-            }
-        }
-
-        private fun selectBank(bankPosition: Int) {
-            stationList[selectedPosition].isSelected = false
-            notifyItemChanged(selectedPosition)
-            selectedPosition = bankPosition
-            stationList[bankPosition].isSelected = true
-            notifyItemChanged(bankPosition)
-        }
-    }
-}
-
-class BetStationSelectorAdapterListener(private val selectListener: (item: BettingStation?) -> Unit) {
-    fun onSelect(item: BettingStation?) = selectListener(item)
-}
