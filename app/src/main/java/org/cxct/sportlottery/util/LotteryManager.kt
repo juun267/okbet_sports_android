@@ -20,6 +20,7 @@ import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
 import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
+import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.view.floatingbtn.LotteryFloatingButton
 import java.util.*
@@ -74,8 +75,10 @@ class LotteryManager {
                 ThirdGameActivity::class,
                 LotteryActivity::class,
                 ScannerActivity::class,
-                LuckyWheelActivity::class
-                -> false
+                LuckyWheelActivity::class -> false
+                WebActivity::class -> {
+                    !WebActivity.currentTag.isNullOrBlank()
+                }
                 else -> true
             }
 

@@ -220,6 +220,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             }
 
             infoCenterRepository.unreadNoticeList.observe(fragment) {
+                LogUtil.e("mailsNum="+it.size)
                 mailsNum = it.size
                 updateMailsIcon()
             }

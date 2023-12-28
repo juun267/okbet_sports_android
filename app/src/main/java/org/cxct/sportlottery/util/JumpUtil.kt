@@ -25,7 +25,8 @@ object JumpUtil {
         title: String?,
         toolbarVisibility: Boolean = true,
         backEvent: Boolean = true,
-        bettingStation: BettingStation? = null
+        bettingStation: BettingStation? = null,
+        tag: String? = null
     ) {
         LogUtil.d("href:===>${href}")
         if (href?.endsWith("/mobile/personal/activity_v2/christmas-promo") == true){

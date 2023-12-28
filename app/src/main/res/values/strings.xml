@@ -1693,5 +1693,6 @@
     <string name="terms_conditions_short">T&amp;C</string>
     <string name="bet_info_no_parlay_hint_for_play_cate">The gameplay does not currently support parlay</string> <!--A409-->
     <string name="your_bet_order_play_cate_cannot_parlay">Bet failed: The gameplay does not currently support parlay</string>
+
     <string name="LT050_1">Support</string>
 </resources>

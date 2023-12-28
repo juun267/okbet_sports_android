@@ -1559,5 +1559,7 @@
     <string name="P282">Bạn sẽ nhận thêm</string>
     <string name="bet_info_no_parlay_hint_for_play_cate">Cách chơi không ủng hộ cược xâu</string> <!--A409-->
     <string name="your_bet_order_play_cate_cannot_parlay">Đặt cược không thành công: Cách chơi không ủng hộ cược xâu</string> <!--A410-->
+
+
     <string name="LT050_1">CSKH</string>
 </resources>
