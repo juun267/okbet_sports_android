@@ -62,8 +62,11 @@ class PromotionDetailActivity :
              setActivity(it)
         }
         viewModel.activityApply.observe(this) {
-            if (viewModel.activityDetail.value?.activityType!=3){
-                binding.tvDeposit.text = TextUtil.formatMoney(0)
+            when(viewModel.activityDetail.value?.activityType){
+                3,5->{}
+                else->{
+                    binding.tvDeposit.text = TextUtil.formatMoney(0)
+                }
             }
             binding.tvReward.text = TextUtil.formatMoney(0)
             binding.linApply.isEnabled = false
@@ -122,6 +125,7 @@ class PromotionDetailActivity :
                 2 -> getString(R.string.title_deposit_money)//充值活动
                 3 -> getString(R.string.P225)//充值活动
                 4 -> getString(R.string.P277)//充值活动
+                5 -> getString(R.string.N713)//盈利金额
                 else -> getString(R.string.deposits)//亏损金额
             }
             tvReward.text = TextUtil.formatMoney(activityDetail.reward)
