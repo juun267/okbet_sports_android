@@ -2,10 +2,12 @@ package org.cxct.sportlottery.view.dialog
 
 import android.os.Bundle
 import android.view.*
+import com.tencent.mmkv.MMKV
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.databinding.DialogAgeVerifyBinding
+import org.cxct.sportlottery.util.KvUtils
 
 class AgeVerifyDialog(val onConfirm: ()->Unit,val onExit: ()->Unit) : BaseDialog<BaseViewModel>(BaseViewModel::class) {
 
@@ -13,7 +15,12 @@ class AgeVerifyDialog(val onConfirm: ()->Unit,val onExit: ()->Unit) : BaseDialog
         setStyle(R.style.FullScreen)
     }
     companion object{
-         var isAgeVerifyNeedShow = true
+         var isAgeVerifyNeedShow :Boolean = true
+             get() = KvUtils.decodeBooleanTure("isAgeVerifyNeedShow",true)
+             set(value) {
+                field = value
+                KvUtils.put("isAgeVerifyNeedShow",value)
+             }
     }
     lateinit var binding : DialogAgeVerifyBinding
 
