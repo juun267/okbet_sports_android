@@ -777,6 +777,47 @@ enum class PlayCate(val value: String) {
                 else -> UNCHECK
             }
         }
+
+        fun needShowHomeAndAway(code: String?): Boolean {
+            return when (code) {
+                HWMG_SINGLE.value,
+                TG_OU_H_1ST.value,
+                CORNER_1ST_OE.value,
+                PENALTY_1ST_HDP.value,
+                PENALTY_1ST_OE.value,
+                PENALTY_OE.value,
+                PK.value,
+                PENALTY_AWARDED.value,
+                CORNER_OU_SEG1.value,
+                CORNER_OU_SEG2.value,
+                CORNER_OU_SEG3.value,
+                CORNER_OU_SEG4.value,
+                CORNER_OU_SEG5.value,
+                CORNER_OU_SEG6.value,
+                OU_1ST.value,
+                OU.value,
+                OU_SEG1.value,
+                OU_SEG2.value,
+                OU_SEG3.value,
+                OU_SEG4.value,
+                OU_SEG5.value,
+                OU_SEG6.value,
+                TG.value,
+                TG_1ST.value,
+                BTS.value,
+                TG_OE_C.value,
+                TG_OE_H_1ST.value,
+                OE.value,
+                OE_1ST.value,
+                CORNER_OE.value,
+                TG_OU.value,
+                PENALTY_OU.value,
+                EXTRA_TIME.value,
+                RED_CARD_PLAYER.value,
+                -> false
+                else -> true
+            }
+        }
     }
 
 }
