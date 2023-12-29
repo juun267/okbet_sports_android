@@ -160,11 +160,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             }
             if (AgeVerifyDialog.isAgeVerifyNeedShow){
                 AgeVerifyDialog.isAgeVerifyNeedShow =false
-                AgeVerifyDialog(onConfirm = {
-
-                }, onExit = {
-                    AppManager.AppExit()
-                }).show(childFragmentManager)
+                AgeVerifyDialog(onConfirm = {}, onExit = {}).show(parentFragmentManager)
             }
         }
         setupSportStatusChange(this){
