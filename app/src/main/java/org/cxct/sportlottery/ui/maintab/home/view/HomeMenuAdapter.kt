@@ -61,7 +61,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     override fun getDefItemCount() = Int.MAX_VALUE
 
     override fun getItem(position: Int): Array<MenuTab?> {
-        return super.getItem(position % data.size)
+        return super.getItem(position % if(pageCount()==0) position else pageCount())
     }
 
     override fun getItemViewType(position: Int) = 0
