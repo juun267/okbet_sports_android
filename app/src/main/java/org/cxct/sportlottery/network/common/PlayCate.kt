@@ -60,6 +60,7 @@ enum class PlayCate(val value: String) {
     EXTRA_TIME("EXTRA-TIME"),
     FGLG("FG/LG"),//最先进球/最后进球
     FGM("FGM"),
+    FGM_O("FGM-O"),
     FOUL_BALL_FIRST("FOUL-BALL-FIRST"),
     FOUL_BALL_LAST("FOUL-BALL-LAST"),
     FREE_KICK_FIRST("FREE-KICK-FIRST"),
@@ -780,7 +781,6 @@ enum class PlayCate(val value: String) {
 
         fun needShowHomeAndAway(code: String?): Boolean {
             return when (code) {
-                HWMG_SINGLE.value,
                 TG_OU_H_1ST.value,
                 CORNER_1ST_OE.value,
                 PENALTY_1ST_OE.value,
@@ -850,6 +850,11 @@ enum class PlayCate(val value: String) {
                 P_ASSIST_OU.value,
                 P_BLOCK_OU.value,
                 P_THREE_OU.value,
+                TG_OU_H_2ST_INCL_OT.value,
+                OU_PK.value,
+                TG_OU_H.value,
+                TG_OU_C.value,
+                FGM_O.value,
                 -> false
                 else -> true
             }
