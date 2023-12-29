@@ -83,7 +83,6 @@ class OddsDetailVH (
         }
 
         val context = itemView.context
-
         if (oddsAdapter.sportCode == GameType.BK) {
             tvGameName.text = when {
                 oddsDetail.gameType.isEndScoreType() -> {
@@ -186,7 +185,7 @@ class OddsDetailVH (
 
         }
         rvBet?.isVisible = oddsDetail.isExpand
-        itemView.lin_match?.isVisible = oddsDetail.isExpand
+        itemView.lin_match?.isVisible = oddsDetail.isExpand && PlayCate.needShowHomeAndAway(oddsDetail.gameType)
         val gameType = oddsDetail.gameType
 
         if (viewType == oddsAdapter.SINGLE) {
