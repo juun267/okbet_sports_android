@@ -83,9 +83,6 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         addLoginBtn()
         fitsSystemStatus()
         updateMailsIcon()
-        if (::ivMails.isInitialized) {
-            ivMails.gone()
-        }
     }
 
     private fun addSearchView() {
