@@ -93,7 +93,6 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
 
     private fun initToolBar() = binding.homeToolbar.run {
         attach(this@OKLiveFragment, mainTabActivity(), viewModel)
-        setChristmasStyle2()
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
             mainTabActivity().showMainRightMenu()

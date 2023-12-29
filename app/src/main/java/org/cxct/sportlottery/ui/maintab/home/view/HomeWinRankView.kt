@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.doOnDestory
-import org.cxct.sportlottery.databinding.ViewHomeWinRankChrisBinding
+import org.cxct.sportlottery.databinding.ViewHomeWinRankBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
@@ -29,7 +29,7 @@ import kotlin.random.Random
 class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle), OnItemClickListener {
 
-    val binding = ViewHomeWinRankChrisBinding.inflate(layoutInflater,this)
+    val binding = ViewHomeWinRankBinding.inflate(layoutInflater,this)
     val pageSize = 5
 
     private var winsRequest: (() -> Unit)? = null
@@ -139,11 +139,9 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
             if (rbtnLb.id== checkedId){
                 rbtnLb.setTextTypeFace(Typeface.BOLD)
                 rbtnLbw.setTextTypeFace(Typeface.NORMAL)
-                rGroupRecord.setBackgroundResource(R.drawable.bg_chris_win_title_left)
             }else{
                 rbtnLb.setTextTypeFace(Typeface.NORMAL)
                 rbtnLbw.setTextTypeFace(Typeface.BOLD)
-                rGroupRecord.setBackgroundResource(R.drawable.bg_chris_win_title_right)
             }
             if (winsRequest == null || betRequest == null) {
                 return@setOnCheckedChangeListener

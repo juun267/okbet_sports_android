@@ -89,19 +89,12 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
     }
 
     override fun onInitView(view: View) {
-        setChristmasStyle()
         initToolBar()
         binding.rvMarquee.bindLifecycler(this)
         initMenu()
         initIndicate()
         binding.ivService.setOnTouchListener(SuckEdgeTouch())
         binding.ivService.setServiceClick(childFragmentManager)
-    }
-
-    private fun setChristmasStyle() {
-        binding.root.setBackgroundResource(R.color.color_f2f4fa)
-        homeMenuAdapter.setChristmasStyle()
-        binding.ivBroadcast.setImageResource(R.drawable.ic_notice_blue)
     }
 
     override fun onBindViewStatus(view: View) {
@@ -142,7 +135,6 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
 
     private fun initToolBar() = binding.homeToolbar.run {
         attach(this@HomeFragment, getMainTabActivity(), viewModel)
-        setChristmasStyle()
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true,Gravity.RIGHT))
             getMainTabActivity().showMainRightMenu()

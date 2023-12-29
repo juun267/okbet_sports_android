@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_home_okgame.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.databinding.ViewHomeOkliveChrisBinding
+import org.cxct.sportlottery.databinding.ViewHomeOkliveBinding
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -21,7 +21,7 @@ import splitties.systemservices.layoutInflater
 
 class HomeOkLiveView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    private val binding  = ViewHomeOkliveChrisBinding.inflate(layoutInflater,this)
+    private val binding  = ViewHomeOkliveBinding.inflate(layoutInflater,this)
     private val gameAdapter = HomeOkGamesAdapter()
 
     init {

@@ -8,7 +8,7 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
-import org.cxct.sportlottery.databinding.FragmentHomeHotChrisBinding
+import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
@@ -24,12 +24,10 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
-import org.cxct.sportlottery.view.dialog.TrialGameDialog
-import org.cxct.sportlottery.view.transform.TransformInDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHotChrisBinding>() {
+class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
 
      fun getMainTabActivity() = activity as MainTabActivity
      private fun getHomeFragment() = parentFragment as HomeFragment
@@ -40,7 +38,6 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         }
     }
     override fun onInitView(view: View) = binding.run {
-        setChristmasStyle()
         scrollView.setupBackTop(ivBackTop, 180.dp) {
             if (hotMatchView.isVisible) {
                 hotMatchView.resubscribe()
@@ -51,10 +48,6 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         }
         EventBusUtil.targetLifecycle(this@HomeHotFragment)
         ToGcashDialog.showByLogin()
-    }
-
-    private fun setChristmasStyle() {
-        binding.newsView.setChristmasStyle()
     }
 
 

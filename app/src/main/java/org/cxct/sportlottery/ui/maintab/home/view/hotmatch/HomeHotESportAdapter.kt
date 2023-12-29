@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.databinding.ItemHomeHotEsportBinding
-import org.cxct.sportlottery.databinding.ItemHomeHotEsportChrisBinding
-import org.cxct.sportlottery.databinding.ItemHomeHotMatchBinding
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
 
@@ -21,7 +19,7 @@ class HomeHotESportAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHomeHotESportHolder {
         return ItemHomeHotESportHolder(
             lifecycleOwner,
-            ItemHomeHotEsportChrisBinding.inflate(
+            ItemHomeHotEsportBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
