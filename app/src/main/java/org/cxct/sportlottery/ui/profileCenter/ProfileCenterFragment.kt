@@ -220,22 +220,11 @@ class ProfileCenterFragment :
         iv_logout.setOnClickListener {
             //退出登录并还原所有用户设置
             viewModel.doLogoutAPI()
-            viewModel.doLogoutCleanUser {
-                run {
-//                    if (sConfigData?.thirdOpen == FLAG_OPEN)
-//                        MainActivity.reStart(this)
-//                    else
-//                    GamePublicityActivity.reStart(requireContext())
-                }
-            }
         }
     }
 
     private fun setupMoreButtons() {
-        //個人資訊
-//        btn_profile.setOnClickListener {
-//            startActivity(Intent(requireActivity(), ProfileActivity::class.java))
-//        }
+
         block_amount.setVisibilityByMarketSwitch()
         tv_terms_condition.setVisibilityByMarketSwitch()
         btn_fund_detail.setVisibilityByMarketSwitch()
@@ -333,18 +322,6 @@ class ProfileCenterFragment :
 
     }
 
-    // TODO 跳轉Promotion 20220108新增 by Hewie
-    private fun toProfileCenter() {
-        JumpUtil.toInternalWeb(
-            requireContext(), Constants.getPromotionUrl(
-                viewModel.token, LanguageManager.getSelectLanguage(requireContext())
-            ), getString(R.string.promotion)
-        )
-    }
-
-    /*private fun initServiceButton() {
-        btn_floating_service.setView(this)
-    }*/
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         getMoney()
@@ -365,9 +342,6 @@ class ProfileCenterFragment :
             updateUI(it)
         }
 
-//        viewModel.navPublicityPage.observe(viewLifecycleOwner) {
-//            GamePublicityActivity.reStart(requireContext())
-//        }
 
         viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
             val operation = it.getContentIfNotHandled()

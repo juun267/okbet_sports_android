@@ -1617,4 +1617,6 @@
     <string name="your_bet_order_play_cate_cannot_parlay">下注失败:玩法暂无支持串关</string> <!--A410-->
 
     <string name="LT050_1">客服</string>
+    <string name="A002">请确认您已年满21岁，才能进入本网站</string>
+    <string name="ageVerify">年龄验证</string>
 </resources>
