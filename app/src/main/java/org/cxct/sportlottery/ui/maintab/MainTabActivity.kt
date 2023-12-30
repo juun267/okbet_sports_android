@@ -16,13 +16,10 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.event.BetModeChangeEvent
-import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.event.NetWorkEvent
-import org.cxct.sportlottery.common.event.SportStatusEvent
-import org.cxct.sportlottery.common.event.ShowFavEvent
-import org.cxct.sportlottery.common.event.ShowInPlayEvent
-import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.common.event.*
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -588,10 +585,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    private inline fun homeFragment() = fragmentHelper.getFragment(INDEX_HOME) as HomeFragment
 
     fun backMainHome() {
-        fragmentHelper.showFragment(INDEX_HOME)
         navToPosition(INDEX_HOME)
         tabHelper.clearSelected()
     }

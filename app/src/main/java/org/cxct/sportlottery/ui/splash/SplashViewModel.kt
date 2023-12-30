@@ -17,6 +17,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.util.ConfigResource
+import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.setupDefaultHandicapType
 import retrofit2.Retrofit
 import timber.log.Timber
@@ -39,8 +40,7 @@ class SplashViewModel(
     private var mAppUrlList: List<String> = listOf()
     private var isCheckNewHost = false
 
-    val configResult: LiveData<ConfigResult?>
-        get() = ConfigRepository.config
+    val configResult = SingleLiveEvent<ConfigResult?>()
 
     val skipHomePage: LiveData<Boolean>
         get() = _skipHomePage
@@ -140,17 +140,11 @@ class SplashViewModel(
     }
 
     fun goNextPage() = viewModelScope.launch {
-
             if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
                 runWithCatch { userInfoRepository.getUserInfo() }
-                _skipHomePage.postValue(true)
-            } else {
-                _skipHomePage.postValue(true)
             }
+             _skipHomePage.postValue(true)
         }
-//        } else {
-//            _skipHomePage.postValue(false)
-//        }
 
     private suspend fun sendGetHostRequest(index: Int) {
         try {
@@ -174,8 +168,9 @@ class SplashViewModel(
             e.printStackTrace()
             if (++mServerUrlIndex in Constants.SERVER_URL_LIST.indices)
                 sendGetHostRequest(mServerUrlIndex)
-            else
-                if (!isCheckNewHost) ConfigRepository.config.postValue(null)
+            else{
+                if (!isCheckNewHost) configResult.postValue(null)
+            }
         }
     }
 
@@ -233,6 +228,7 @@ class SplashViewModel(
         sConfigData = result?.configData
         result?.configData?.let { ConfigResource.preloadResource(it) }
         setupDefaultHandicapType()
+        configResult.postValue(result)
         ConfigRepository.config.postValue(result)
         FIBAUtil.preloadLoad() // 篮球世界杯相关
     }
