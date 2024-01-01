@@ -48,6 +48,10 @@ enum class PlayCate(val value: String) {
     CS_OT("CS-OT"),
     CS_SEG("CS-SEG"),
     CS_SEG1("CS-SEG1"),
+    CS_SEG2("CS-SEG2"),
+    CS_SEG3("CS-SEG3"),
+    CS_SEG4("CS-SEG4"),
+    CS_SEG5("CS-SEG5"),
     CS_5_MAP("CS-5-MAP"),//正确比分 (電競的玩法)
     LCS("LCS"),//反波胆
     DC("DC"),//双重机会
@@ -855,6 +859,12 @@ enum class PlayCate(val value: String) {
                 TG_OU_H.value,
                 TG_OU_C.value,
                 FGM_O.value,
+                CS_SEG1.value,
+                CS_SEG2.value,
+                CS_SEG3.value,
+                CS_SEG4.value,
+                CS_SEG5.value,
+                TIE_BREAK.value,
                 -> false
                 else -> true
             }

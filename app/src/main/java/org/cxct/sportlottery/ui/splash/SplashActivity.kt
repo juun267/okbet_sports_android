@@ -1,34 +1,21 @@
 package org.cxct.sportlottery.ui.splash
 
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.runWithCatch
-import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toIntS
-import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -38,8 +25,6 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.io.File
-import java.lang.Exception
 import kotlin.system.exitProcess
 
 
@@ -142,6 +127,7 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         }
 
         viewModel.configResult.observe(this) { configResult ->
+            LogUtil.d("configResult")
             // 进入维护页面不处理
             if (configResult==null&&!viewModel.errorResultIndex.value.isNullOrEmpty()){
                 return@observe
@@ -177,10 +163,10 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
 
             if(isGooglePlayVersion()){
                 KvUtils.put(KvUtils.MARKET_SWITCH,(sConfigData?.reviewedVersionUrl?.contains(BuildConfig.VERSION_NAME)==true))
-                sendToMain(configResult)
             }else{
-                sendToMain(configResult)
+                KvUtils.put(KvUtils.MARKET_SWITCH,false)
             }
+            sendToMain(configResult)
         }
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
