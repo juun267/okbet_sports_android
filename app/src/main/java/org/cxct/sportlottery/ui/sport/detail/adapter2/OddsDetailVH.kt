@@ -643,7 +643,7 @@ class OddsDetailVH (
 
     private fun forSingleCS(oddsDetail: OddsDetailListData) {
         val spanCount = 2
-        itemView.tv_draw?.isVisible = true
+        itemView.tv_draw?.isVisible = oddsDetail.matchInfo?.gameType == GameType.FT.key
         tvHomeName?.isVisible = oddsDetail.isExpand
         tvAwayName?.isVisible = oddsDetail.isExpand
 
