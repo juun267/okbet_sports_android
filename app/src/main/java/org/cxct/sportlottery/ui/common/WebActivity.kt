@@ -21,6 +21,7 @@ import org.cxct.sportlottery.databinding.ActivityWebBinding
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
+import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import org.cxct.sportlottery.view.webView.OkWebViewClient
@@ -41,6 +42,10 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         const val FIRM_CODE = "firm-code" // 厂商id
         const val GAME_CATEGORY_CODE = "game-category-code" //OK_GAMES、OK_LIVE、OK_BINGO、OK_SPORT
         const val BET_STATION = "betstation"
+        const val TAG = "tag"
+
+        var currentTag = ""
+        const val TAG_403 = "tag403"
     }
 
     private val mTitle: String by lazy { intent?.getStringExtra(KEY_TITLE) ?: "" }
@@ -54,6 +59,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         intent?.getBooleanExtra(KEY_BACK_EVENT, true) ?: true
     }
     private val bettingStation: BettingStation? by lazy { intent?.getSerializableExtra(BET_STATION) as? BettingStation }
+    private val tag: String by lazy { intent?.getStringExtra(TAG) ?: "" }
     private var mUploadCallbackAboveL: ValueCallback<Array<Uri>>? = null
     private var mUploadMessage: ValueCallback<Uri?>? = null
 
@@ -71,6 +77,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     open fun init() {
+        currentTag = tag
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(viewBinding.root)
         if (!mToolbarVisibility) custom_tool_bar.visibility = View.GONE else initToolBar()

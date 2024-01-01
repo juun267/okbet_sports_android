@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_info_center.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
+import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.MsgType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
@@ -185,13 +186,12 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
         viewModel.userReadMsgList.observe(this@InfoCenterActivity, Observer {
             val userMsgList = it ?: return@Observer
             if (currentPage == BEEN_READ) {
-                if (adapter.data.isNotEmpty()) {
-                    adapter.addData(userMsgList)//上拉加載
-                } else {
-                    if (it.isNullOrEmpty()) {
-                    } else {
-                        adapter.setNewData(userMsgList.toMutableList()) //重新載入
+                if (InfoCenterRepository.isLoadMore) {
+                    if (userMsgList.isNotEmpty()) {
+                        adapter.addData(userMsgList)//上拉加載
                     }
+                } else {
+                    adapter.setNewInstance(userMsgList.toMutableList()) //重新載入
                 }
             }
             viewModel.getResult()

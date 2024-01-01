@@ -1,152 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="spUsage,ContentDescription,WebViewLayout,UnusedAttribute">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:gravity="center_horizontal"
+          android:layout_marginHorizontal="@dimen/margin_15"
+          android:background="@drawable/bg_age_verify">
+          <ImageView
+              android:id="@+id/iv_logo"
+              android:layout_width="100dp"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="25dp"
+              android:adjustViewBounds="true"
+              android:background="@drawable/ic_logo_21"
+              android:gravity="center" />
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/margin_12"
+              android:text="@string/ageVerify"
+              android:textColor="@color/color_0D2245"
+              android:textSize="@dimen/textSize18sp"
+              android:textStyle="bold"/>
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/margin_30"
+              android:layout_marginTop="@dimen/margin_8"
+              android:text="@string/A002"
+              android:textColor="@color/color_6D7693"
+              android:textSize="@dimen/textSize14sp"/>
+          <TextView
+              android:id="@+id/btn_confirm"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/margin_45"
+              android:layout_marginHorizontal="30dp"
+              android:layout_marginTop="@dimen/margin_16"
+              android:background="@drawable/selector_button_default"
+              android:gravity="center"
+              android:text="@string/dialog_age_verify_confirm"
+              android:textColor="@color/color_FFFFFF"
+              android:textSize="@dimen/textSize16sp"/>
+          <TextView
+              android:id="@+id/btn_exit"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/margin_45"
+              android:layout_marginHorizontal="30dp"
+              android:layout_marginTop="@dimen/margin_16"
+              android:background="@drawable/bg_gray_radius_8_stroke_6c7ba8"
+              android:gravity="center"
+              android:text="@string/dialog_age_verify_exit"
+              android:textColor="@color/color_6C7BA8"
+              android:textSize="@dimen/textSize16sp"/>
+         <View
+             android:layout_width="match_parent"
+             android:layout_height="@dimen/margin_0.5"
+             android:layout_marginTop="@dimen/margin_20"
+             android:layout_marginHorizontal="@dimen/margin_20"
+             android:background="@color/color_E3E8EE"/>
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="@dimen/margin_36"
+              android:layout_marginTop="@dimen/margin_12"
+              android:orientation="horizontal"
+              android:layout_gravity="center_horizontal"
+              android:gravity="center_vertical">
 
-    <FrameLayout
-        android:id="@+id/rootLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+              <ImageView
+                  android:layout_width="wrap_content"
+                  android:layout_height="match_parent"
+                  android:src="@drawable/img_pagcor_h"
+                  android:adjustViewBounds="true"/>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="6dp">
+              <ImageView
+                  android:layout_width="wrap_content"
+                  android:layout_height="match_parent"
+                  android:layout_marginLeft="24dp"
+                  android:src="@drawable/img_keep21_h"
+                  android:adjustViewBounds="true"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_1f1f1f_fcfcfc"
-                android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:id="@+id/iv_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/ic_logo_21"
-                    android:gravity="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ScrollView
-                    android:id="@+id/scroll_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="234dp"
-                    android:layout_marginHorizontal="26dp"
-                    android:layout_marginTop="21dp"
-                    android:overScrollMode="never"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHeight_max="460dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_logo">
-
-                    <TextView
-                        android:id="@+id/tv_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:letterSpacing="0.06"
-                        android:lineHeight="17dp"
-                        android:text="@string/dialog_age_verify_statement"
-                        android:textColor="@color/color_939393_333333"
-                        android:textSize="@dimen/textSize12sp" />
-
-                </ScrollView>
-
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/color_313131_e2e2e2"
-                    app:layout_constraintTop_toBottomOf="@+id/scroll_view" />
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_agree_statement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:button="@drawable/selector_statement_agree"
-                    android:paddingVertical="10dp"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="0dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view" />
-
-                <TextView
-                    android:id="@+id/tv_statement_link"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:gravity="start"
-                    android:text="@string/dialog_age_verify_hint_and_terms_conditions"
-                    android:textColor="@color/color_5d5d5d_888888"
-                    android:textColorLink="@color/color_317FFF_0760D4"
-                    android:textSize="@dimen/textSize12sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/cb_agree_statement"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/cb_agree_statement"
-                    app:layout_constraintTop_toTopOf="@+id/cb_agree_statement" />
-
-                <TextView
-                    android:id="@+id/btn_confirm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="22dp"
-                    android:background="@drawable/bg_rectangle_4dp_gray_dark"
-                    android:gravity="center"
-                    android:paddingVertical="13dp"
-                    android:text="@string/dialog_age_verify_confirm"
-                    android:textColor="@color/color_e5e5e5_666666"
-                    android:textSize="@dimen/textSize14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/cb_agree_statement" />
-
-                <TextView
-                    android:id="@+id/btn_exit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="22dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_rectangle_4dp_gray_dark"
-                    android:gravity="center"
-                    android:paddingVertical="13dp"
-                    android:text="@string/dialog_age_verify_exit"
-                    android:textColor="@color/color_e5e5e5_666666"
-                    android:textSize="@dimen/textSize14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_confirm" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="20dp"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_exit">
-
-                    <ImageView
-                        android:id="@+id/iv_pagcor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_pagcor" />
-
-                    <ImageView
-                        android:id="@+id/iv_pagcor_21"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
-                        android:visibility="gone"
-                        android:src="@drawable/ic_pagcor_21" />
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </FrameLayout>
-</layout>
+          </LinearLayout>
+      </LinearLayout>
+    </LinearLayout>

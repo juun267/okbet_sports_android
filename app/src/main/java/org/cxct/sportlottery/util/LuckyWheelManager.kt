@@ -8,9 +8,9 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApiWithNoCancel
 import org.cxct.sportlottery.net.user.UserRepository
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
 import org.cxct.sportlottery.ui.splash.LaunchActivity
@@ -45,13 +45,16 @@ class LuckyWheelManager {
     /**
      * 限定指定页面不能显示红包相关的
      */
-    fun allowdShow(): Boolean = when (activity!!::class) {
+    fun allowdShow(): Boolean =
+        when (activity!!::class) {
         SplashActivity::class,
         LaunchActivity::class,
         MaintenanceActivity::class,
         ThirdGameActivity::class,
-        LuckyWheelActivity::class
-        -> false
+        LuckyWheelActivity::class -> false
+        WebActivity::class -> {
+            !WebActivity.currentTag.isNullOrBlank()
+        }
         else -> true
     }
 
