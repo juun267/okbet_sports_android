@@ -89,32 +89,6 @@ enum class GameType(val key: String, @StringRes val string: Int) {
         }
 
 
-        fun getGameTypeMenuIcon(gameType: String): Int {
-            return when (gameType) {
-                ALL.key -> R.drawable.selector_sport_all_new
-                FT.key -> R.drawable.icon_football_selected
-                BK.key -> R.drawable.icon_basketball_selected
-                TN.key -> R.drawable.icon_tennis_selected
-                VB.key -> R.drawable.icon_volleyball_selected
-                BM.key -> R.drawable.icon_badminton_selected
-                TT.key -> R.drawable.icon_tabletennis_selected
-                IH.key -> R.drawable.icon_icehockey_selected
-                BX.key -> R.drawable.icon_boxing_selected
-                CB.key -> R.drawable.icon_billiards_selected
-                CK.key -> R.drawable.icon_electronic_selected
-                BB.key -> R.drawable.icon_baseball_selected
-                RB.key -> R.drawable.icon_rugby_selected
-                AFT.key -> R.drawable.icon_american_football_selected
-                MR.key -> R.drawable.icon_motorracing_selected
-                GF.key -> R.drawable.icon_golf_selected
-                FB.key -> R.drawable.ic_home_finance_piechart
-                ES.key -> R.drawable.icon_esport_selected
-                OTHER.key -> R.drawable.ic_home_champ
-                BB_COMING_SOON.key -> R.drawable.icon_baseball_selected
-                ES_COMING_SOON.key -> R.drawable.icon_esport_selected
-                else -> R.drawable.ic_game_champ
-            }
-        }
         fun getGameTypeMenuSVGA(gameType: String): String {
             return "svga/"+when (gameType) {
                 FT.key -> "icon_football.svga"
