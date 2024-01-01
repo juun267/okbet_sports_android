@@ -84,7 +84,7 @@ android {
         release {
             minifyEnabled true
             zipAlignEnabled true
-            debuggable true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -121,38 +121,28 @@ android {
             manifestPlaceholders = [CHANNEL    : "xiaomi",
                                     INVITE_CODE: "xiaomi8"]
         }
-        oppo {
-            manifestPlaceholders = [CHANNEL    : "oppo",
-                                    INVITE_CODE: "oppo8"]
-        }
-        vivo {
-            manifestPlaceholders = [CHANNEL    : "vivo",
-                                    INVITE_CODE: "vivo8"]
-        }
         samgsung {
             manifestPlaceholders = [CHANNEL    : "samgsung",
                                     INVITE_CODE: "samsung8"]
         }
-        inmobi {
-            manifestPlaceholders = [CHANNEL    : "inmobi",
-                                    INVITE_CODE: "inmobi"]
-        }
+//        oppo {
+//            manifestPlaceholders = [CHANNEL    : "oppo",
+//                                    INVITE_CODE: "oppo8"]
+//        }
+//        vivo {
+//            manifestPlaceholders = [CHANNEL    : "vivo",
+//                                    INVITE_CODE: "vivo8"]
+//        }
+//
+//        inmobi {
+//            manifestPlaceholders = [CHANNEL    : "inmobi",
+//                                    INVITE_CODE: "inmobi"]
+//        }
         //okbet预发环境 app-phuat.abaoooiap.com
         phuat {
             buildConfigField "String", "CHANNEL_NAME", "\"yfp2\""
         }
-        //okbet9测试环境
-//        credit {
-//            buildConfigField "String", "CHANNEL_NAME", "\"cdplat1\""
-//            resValue "string", "app_name", "OKbet9"
-//            applicationId "com.okbet.cdplat1"
-//        }
-        //okbet9正式环境
-//        spk9 {
-//            buildConfigField "String", "CHANNEL_NAME", "\"spk9\""
-//            resValue "string", "app_name", "OKbet9"
-//            applicationId "com.okbet.spcd"
-//        }
+
     }
 
     compileOptions {
