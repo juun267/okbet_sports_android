@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ViewHomeBettingstationChrisBinding
+import org.cxct.sportlottery.databinding.ViewHomeBettingstationBinding
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.JumpUtil
@@ -16,7 +16,7 @@ import splitties.systemservices.layoutInflater
 
 class HomeBettingStationView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    private val binding = ViewHomeBettingstationChrisBinding.inflate(layoutInflater,this)
+    private val binding = ViewHomeBettingstationBinding.inflate(layoutInflater,this)
     private lateinit var viewModel:MainHomeViewModel
     private val homeBettingStationAdapter = HomeBettingStationAdapter().apply {
         setOnItemChildClickListener { adapter, view, position ->

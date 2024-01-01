@@ -7,7 +7,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.ViewHomeProviderBinding
-import org.cxct.sportlottery.databinding.ViewHomeProviderChrisBinding
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
@@ -17,7 +16,7 @@ import splitties.systemservices.layoutInflater
 
 class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    val binding = ViewHomeProviderChrisBinding.inflate(layoutInflater,this)
+    val binding = ViewHomeProviderBinding.inflate(layoutInflater,this)
     private lateinit var viewModel:MainHomeViewModel
     private lateinit var onProviderSelect:(OKGamesFirm)->Unit
     private val pageSize = 3

@@ -116,7 +116,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private val binding by lazy { ActivityMainTabBinding.inflate(layoutInflater) }
-    private lateinit var tabHelper: MainTabInflate2
+    private lateinit var tabHelper: MainTabInflate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,7 +127,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .fitsSystemWindows(false).init()
         initDrawerLayout()
         initMenu()
-        tabHelper = MainTabInflate2(binding.linTab, ::onTabClick)
+        tabHelper = MainTabInflate(binding.linTab, ::onTabClick)
         navToPosition(INDEX_HOME)
         initBottomNavigation()
         initObserve()
@@ -537,7 +537,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun initBottomNavigation() {
         binding.parlayFloatWindow.onViewClick = ::showBetListPage
-        setChristmasStyle()
 //        val radius = 15.dp.toFloat()
 //        binding.linTab.background = ShapeDrawable()
 //            .setWidth(screenWidth + 15.dp)
@@ -547,14 +546,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 //            .setShadowSize(5.dp)
 //            .setShadowOffsetY(-10.dp)
 //            .setRadius(radius, radius, 0F, 0F)
-    }
-
-    private fun setChristmasStyle() {
-        binding.linTab.setBackgroundResource(R.drawable.bg_main_nav_bar)
-        binding.linTab.setPadding(0, 0, 0, 0)
-        val params = binding.linTab.layoutParams as MarginLayoutParams
-        params.leftMargin = 0
-        params.rightMargin = 0
     }
 
     override fun showBetListPage() {
