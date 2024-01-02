@@ -345,7 +345,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Copyright © 2024 OKbet ALL RIGHTS RESERVED"
-            android:textColor="@color/color_BEC7DC"
+            android:textColor="@color/color_667085"
             android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
