@@ -337,7 +337,18 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         setSportDataList(null)
     }
 
+    private var lastDataSetRunable: Runnable? = null
     protected fun setSportDataList(list: MutableList<BaseNode>?, sizeNumber: String? = null) {
+        /**
+         * RecyclerView.assertNotInLayoutOrScroll
+         *  IllegalStateException: Cannot call this method while RecyclerView is computing a layout or scrolling
+         */
+        if (binding.gameList.isComputingLayout) {
+            lastDataSetRunable?.let { binding.gameList.removeCallbacks(it) }
+            binding.gameList.post { setSportDataList(list, sizeNumber) }
+            return
+        }
+
         val adapter = getGameListAdapter()
         adapter.setNewInstance(list)
         if (sizeNumber == null) setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "") else setMatchNum(sizeNumber)
