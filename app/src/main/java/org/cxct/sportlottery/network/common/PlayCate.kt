@@ -865,7 +865,16 @@ enum class PlayCate(val value: String) {
                 CS_SEG4.value,
                 CS_SEG5.value,
                 TIE_BREAK.value,
+                BTS_2ST.value,
+                HWMG.value,
+                MOV.value,
+                ROUND.value,
+                ROUND_UFC.value,
+                MOV_UFC.value,
                 -> false
+                SINGLE_1ST.value,
+                SINGLE_2ST.value
+                -> true
                 else -> true
             }
         }
