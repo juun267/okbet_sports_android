@@ -871,6 +871,7 @@ enum class PlayCate(val value: String) {
                 ROUND.value,
                 ROUND_UFC.value,
                 MOV_UFC.value,
+                OU_2ST.value,
                 -> false
                 SINGLE_1ST.value,
                 SINGLE_2ST.value
