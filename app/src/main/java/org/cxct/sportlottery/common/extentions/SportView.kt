@@ -24,11 +24,9 @@ import timber.log.Timber
 fun TextView.setMatchSptText(matchInfo: MatchInfo) {
     if (matchInfo.gameType == GameType.CK.key) {
         visibility = View.VISIBLE
-        val homeOver = (matchInfo.homeOver ?: "0").toFloat()
-        val awayOver = (matchInfo.awayOver ?: "0").toFloat()
         text = when (matchInfo.attack){
-            "H"->" $homeOver"
-            "C"->" $awayOver"
+            "H"->" ${matchInfo.homeOver.toFloatS()}"
+            "C"->" ${matchInfo.awayOver.toFloatS()}"
             else -> ""
         }
         return
