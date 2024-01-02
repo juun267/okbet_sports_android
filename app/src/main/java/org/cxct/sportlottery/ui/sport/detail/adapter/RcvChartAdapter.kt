@@ -19,7 +19,7 @@ class RcvChartAdapter : BaseQuickAdapter<String, BaseViewHolder>(0) {
         textView.gravity = Gravity.CENTER
         textView.textSize = 10f
         textView.setTextColor(Color.WHITE)
-        textView.layoutParams = LinearLayout.LayoutParams(-1, 51.dp)
+        textView.layoutParams = LinearLayout.LayoutParams(-1, 40.dp)
         return BaseViewHolder(textView)
     }
 

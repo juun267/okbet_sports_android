@@ -94,15 +94,14 @@ class OddsButtonDetail @JvmOverloads constructor(
                 || TextUtils.equals(context.getString(R.string.draw), odd?.name))&&adapterName!=TypeOneListAdapter::class.java.name
 
         tv_name.apply {
-//            val extInfoStr =
-//                odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
+            val extInfoStr =
+                odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
             text =
-//                if (extInfoStr.isNullOrEmpty())
-                "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
-//                else
-//                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
+                if (extInfoStr.isNullOrEmpty())
+                    "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
+                else
+                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
             requestLayout()
-
             visibility =
                 if (odd?.name.isNullOrEmpty() || gameType == "disable" || hideName) View.GONE else View.VISIBLE
         }

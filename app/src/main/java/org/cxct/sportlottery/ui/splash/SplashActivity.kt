@@ -127,7 +127,6 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         }
 
         viewModel.configResult.observe(this) { configResult ->
-            LogUtil.d("configResult")
             // 进入维护页面不处理
             if (configResult==null&&!viewModel.errorResultIndex.value.isNullOrEmpty()){
                 return@observe

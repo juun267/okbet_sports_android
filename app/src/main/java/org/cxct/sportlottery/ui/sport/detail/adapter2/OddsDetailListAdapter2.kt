@@ -314,7 +314,9 @@ class OddsDetailListAdapter2(val onOddClickListener: OnOddClickListener)
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
                     PlayCate.SINGLE_SEG5.ordinal, PlayCate.SINGLE_SEG6.ordinal, PlayCate.SINGLE_SEG7.ordinal, PlayCate.SINGLE_SEG8.ordinal, PlayCate.SINGLE_1ST.ordinal,
+                    PlayCate.SINGLE_2ST.ordinal,
                     PlayCate.HDP.ordinal, PlayCate.OU.ordinal,
+                    PlayCate.HDP_1ST.ordinal,PlayCate.HDP_2ST.ordinal,
                     -> SINGLE_2_ITEM
 
                     PlayCate.EPS.ordinal,
