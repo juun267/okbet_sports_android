@@ -359,7 +359,7 @@ class SportViewModel(
         //過濾掉 其他:(第一、任何、最後), 无進球
         //依隊名分開
         oddList.filterNot { odd ->
-            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
+            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O || odd?.playCode == OddSpreadForSCO.SCORE_ANT_O || odd?.playCode == OddSpreadForSCO.SCORE_LAST_O || odd?.playCode == OddSpreadForSCO.SCORE_N
         }.groupBy {
             it?.extInfoMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
         }.forEach {
@@ -372,7 +372,7 @@ class SportViewModel(
         //倒序排列 多的在前(無進球只有一種賠率 放最後面)
         //添加至球員列表內
         oddList.filter { odd ->
-            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
+            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O || odd?.playCode == OddSpreadForSCO.SCORE_ANT_O || odd?.playCode == OddSpreadForSCO.SCORE_LAST_O || odd?.playCode == OddSpreadForSCO.SCORE_N
         }.groupBy {
             it?.name
         }.entries.sortedByDescending {

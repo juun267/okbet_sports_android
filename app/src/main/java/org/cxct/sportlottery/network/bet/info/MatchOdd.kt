@@ -75,7 +75,7 @@ data class MatchOdd(
     var runnable: Runnable? = null //賠率變更，按鈕顏色變換任務
     var betAddError: BetAddError? = null
     var oddsHasChanged = false
-    var spreadState: Int = SpreadState.SAME.state
+    var spreadState: Int = SpreadState.SAME
     var extInfo: String? = null //球員名稱
     var isOnlyEUType: Boolean = false
     var homeCornerKicks: Int? = null

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.KeyEvent
@@ -20,6 +21,11 @@ import org.cxct.sportlottery.common.event.*
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.event.BetModeChangeEvent
+import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.event.NetWorkEvent
+import org.cxct.sportlottery.common.event.SportStatusEvent
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -51,6 +57,7 @@ import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.cxct.sportlottery.view.dialog.TrialGameDialog
@@ -417,16 +424,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onShowInPlay(event: ShowInPlayEvent) {
-        binding.root.postDelayed({ jumpToTheSport(MatchType.IN_PLAY, GameType.BK) },200)
-    }
-
-
-    @Subscribe
-    fun onShowFavEvent(event: ShowFavEvent) {
-        showLoginNotify()
-    }
 
     @Subscribe
     fun onBetModeChangeEvent(event: BetModeChangeEvent) {
@@ -534,15 +531,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun initBottomNavigation() {
         binding.parlayFloatWindow.onViewClick = ::showBetListPage
-//        val radius = 15.dp.toFloat()
-//        binding.linTab.background = ShapeDrawable()
-//            .setWidth(screenWidth + 15.dp)
-//            .setHeight(58.dp)
-//            .setSolidColor(Color.WHITE)
-//            .setShadowColor(getColor(R.color.color_A9B2D3))
-//            .setShadowSize(5.dp)
-//            .setShadowOffsetY(-10.dp)
-//            .setRadius(radius, radius, 0F, 0F)
+        val radius = 15.dp.toFloat()
+        binding.linTab.background = ShapeDrawable()
+            .setWidth(screenWidth + 15.dp)
+            .setHeight(58.dp)
+            .setSolidColor(Color.WHITE)
+            .setShadowColor(getColor(R.color.color_A9B2D3))
+            .setShadowSize(5.dp)
+            .setShadowOffsetY(-10.dp)
+            .setRadius(radius, radius, 0F, 0F)
     }
 
     override fun showBetListPage() {

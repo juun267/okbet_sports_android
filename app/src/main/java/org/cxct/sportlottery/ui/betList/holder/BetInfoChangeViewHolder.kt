@@ -47,23 +47,23 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         val matchOdd = betInfoData.matchOdd
 
         when{
-            matchOdd.spreadState == SpreadState.SAME.state && matchOdd.oddState == OddState.SAME.state -> {
+            matchOdd.spreadState == SpreadState.SAME && matchOdd.oddState == OddState.SAME.state -> {
                 matchOdd.runnable?.let {
                     return
                 }?:run { setupMergeString(matchType, matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = false) }
             }
 
-            matchOdd.spreadState != SpreadState.SAME.state && matchOdd.oddState == OddState.SAME.state -> {
+            matchOdd.spreadState != SpreadState.SAME && matchOdd.oddState == OddState.SAME.state -> {
                 setupMergeString(betInfoData.matchType,matchOdd, oddsType, textView, isSpreadChanged = true, isOddsChanged = false)
                 resetRunnable(matchType, matchOdd, oddsType, textView)
             }
 
-            matchOdd.spreadState == SpreadState.SAME.state && matchOdd.oddState != OddState.SAME.state -> {
+            matchOdd.spreadState == SpreadState.SAME && matchOdd.oddState != OddState.SAME.state -> {
                 setupMergeString(betInfoData.matchType,matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = true)
                 resetRunnable(matchType, matchOdd, oddsType, textView)
             }
 
-            matchOdd.spreadState != SpreadState.SAME.state && matchOdd.oddState != OddState.SAME.state -> {
+            matchOdd.spreadState != SpreadState.SAME && matchOdd.oddState != OddState.SAME.state -> {
                 setupMergeString(betInfoData.matchType,matchOdd, oddsType, textView, isSpreadChanged = true, isOddsChanged = true)
                 resetRunnable(matchType, matchOdd, oddsType, textView)
             }
@@ -167,7 +167,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         return Runnable {
             setupMergeString(matchType, matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = false)
             matchOdd.oddState = OddState.SAME.state
-            matchOdd.spreadState = SpreadState.SAME.state
+            matchOdd.spreadState = SpreadState.SAME
             matchOdd.runnable = null
         }
     }
