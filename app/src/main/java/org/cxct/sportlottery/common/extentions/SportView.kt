@@ -24,11 +24,9 @@ import timber.log.Timber
 fun TextView.setMatchSptText(matchInfo: MatchInfo) {
     if (matchInfo.gameType == GameType.CK.key) {
         visibility = View.VISIBLE
-        val homeOver = (matchInfo.homeOver ?: "0").toFloat()
-        val awayOver = (matchInfo.awayOver ?: "0").toFloat()
         text = when (matchInfo.attack){
-            "H"->" $homeOver"
-            "C"->" $awayOver"
+            "H"->" ${matchInfo.homeOver.toFloatS()}"
+            "C"->" ${matchInfo.awayOver.toFloatS()}"
             else -> ""
         }
         return
@@ -454,13 +452,11 @@ fun <K, V> Map<K, V>?.getPlayCateName(context: Context): String {
  * 只有网球，排球，乒乓球，羽毛球
  */
 @SuppressLint("SetTextI18n")
- fun setSptText(matchInfo: MatchInfo): String {
+fun setSptText(matchInfo: MatchInfo): String {
     if (matchInfo.gameType == GameType.CK.key) {
-        val homeOver = (matchInfo.homeOver ?: "0").toFloat()
-        val awayOver = (matchInfo.awayOver ?: "0").toFloat()
         return when (matchInfo.attack){
-            "H"->" $homeOver"
-            "C"->" $awayOver"
+            "H"->" ${matchInfo.homeOver.toFloatS()}"
+            "C"->" ${matchInfo.awayOver.toFloatS()}"
             else -> ""
         }
     }
