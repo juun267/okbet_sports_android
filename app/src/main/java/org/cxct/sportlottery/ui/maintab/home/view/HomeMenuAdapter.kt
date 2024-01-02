@@ -105,7 +105,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private fun setMaintanence(linMaintenance: View, fragmentClass: Class<out BaseFragment<*>>?){
         if ((fragmentClass == SportVenueFragment::class.java || fragmentClass == ESportVenueFragment::class.java)
             && getSportEnterIsClose()) {
-            linMaintenance.gone()
+            linMaintenance.visible()
             return
         }
 
