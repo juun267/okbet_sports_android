@@ -26,16 +26,16 @@ fun tranByPlayCode(
     rtScore: String?
 ): String {
     return when {
-        playCode?.contains(OddSpreadForSCOCompare.SCORE_1ST.playCode) == true -> {
+        playCode?.contains(OddSpreadForSCOCompare.SCORE_1ST) == true -> {
             context.getString(R.string.odds_button_name_first)
         }
-        playCode?.contains(OddSpreadForSCOCompare.SCORE_ANT.playCode) == true -> {
+        playCode?.contains(OddSpreadForSCOCompare.SCORE_ANT) == true -> {
             context.getString(R.string.odds_button_name_ant)
         }
-        playCode?.contains(OddSpreadForSCOCompare.SCORE_LAST.playCode) == true -> {
+        playCode?.contains(OddSpreadForSCOCompare.SCORE_LAST) == true -> {
             context.getString(R.string.odds_button_name_last)
         }
-        playCode?.contains(OddSpreadForSCOCompare.SCORE_N.playCode) == true -> {
+        playCode?.contains(OddSpreadForSCOCompare.SCORE_N) == true -> {
             context.getString(R.string.odds_button_name_n)
         }
         //角球非區間型玩法需顯示當前角球數

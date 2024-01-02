@@ -20,8 +20,6 @@ import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
-import org.cxct.sportlottery.common.event.ShowFavEvent
-import org.cxct.sportlottery.common.event.ShowInPlayEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -420,16 +418,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onShowInPlay(event: ShowInPlayEvent) {
-        binding.root.postDelayed({ jumpToTheSport(MatchType.IN_PLAY, GameType.BK) },200)
-    }
-
-
-    @Subscribe
-    fun onShowFavEvent(event: ShowFavEvent) {
-        showLoginNotify()
-    }
 
     @Subscribe
     fun onBetModeChangeEvent(event: BetModeChangeEvent) {
