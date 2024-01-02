@@ -12,6 +12,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
+        android:paddingHorizontal="@dimen/margin_5"
         android:text="@string/N263"
         android:textColor="@color/color_FFFFFF"
         android:textSize="10sp" />
@@ -22,6 +23,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:paddingHorizontal="@dimen/margin_5"
         tools:text="主队"
         android:textColor="@color/color_FFFFFF"
         android:textSize="10sp" />
@@ -32,6 +36,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:paddingHorizontal="@dimen/margin_5"
         tools:text="客队"
         android:textColor="@color/color_FFFFFF"
         android:textSize="10sp" />
