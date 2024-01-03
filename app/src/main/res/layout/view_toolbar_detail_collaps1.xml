@@ -19,7 +19,7 @@
             android:id="@+id/ivToolbarHomeLogo"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            tools:src="@drawable/chat_avatar" />
+            tools:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_toolbar_home_name"
@@ -116,7 +116,7 @@
             android:id="@+id/ivToolbarAwayLogo"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            tools:src="@drawable/chat_avatar" />
+            tools:src="@mipmap/ic_launcher" />
     </LinearLayout>
 </LinearLayout>
 
