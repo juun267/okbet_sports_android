@@ -1,35 +1,22 @@
 package org.cxct.sportlottery.ui.splash
 
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_splash.*
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.runWithCatch
-import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.postDelayed
 import org.cxct.sportlottery.common.extentions.toIntS
-import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.ActivitySplashBinding
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.service.BackService
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -38,29 +25,24 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.io.File
-import java.lang.Exception
 import kotlin.system.exitProcess
 
 
 /**
  * @app_destination 啟動頁
  */
-class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::class) {
+class SplashActivity : BindingActivity<SplashViewModel,ActivitySplashBinding>() {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
     private var enterTime=0L
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-
+    override fun onInitView() {
         ImmersionBar.with(this)
             .statusBarDarkFont(true)
             .transparentStatusBar()
             .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
             .fitsSystemWindows(false)
             .init()
-        setContentView(R.layout.activity_splash)
         //加载缓存的启动图
         loadSplash()
         loading()
@@ -71,10 +53,8 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         checkLocalHost()
     }
 
-
     private fun setupVersion() {
-        val version = BuildConfig.VERSION_NAME
-        tv_version_info.text = version
+        binding.tvVersionInfo.text = BuildConfig.VERSION_NAME
     }
 
     private fun checkLocalHost() {
@@ -92,17 +72,17 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
 
 
     private fun goMaintenancePage() {
-        ivSplash.postDelayed({
+        postDelayed(getSplashTime()){
             startActivity(Intent(this@SplashActivity, MaintenanceActivity::class.java))
             finish()
-        },getSplashTime())
+        }
     }
 
     private  fun sendToLaunch(flag:Boolean,imageUrls:ArrayList<String>){
-        ivSplash.postDelayed({
+        postDelayed(getSplashTime()){
             LaunchActivity.start(this, flag, imageUrls =imageUrls)
             finish()
-        },getSplashTime())
+        }
     }
 
     private fun getSplashTime():Long{
@@ -297,17 +277,21 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
 
     //加载启动图
     private val splashKeyStr="splashAd"
-    private fun loadSplash(url:String=""){
-        ivSplash.visible()
-//        runWithCatch {
-            if(url.isEmpty()){
-                val localUrl = KvUtils.decodeString(splashKeyStr)
-                ivSplash.load(localUrl)
+    private fun loadSplash(url:String="")=binding.ivSplash.run{
+        val localUrl = KvUtils.decodeString(splashKeyStr)
+        if(url.isEmpty()){
+                if (localUrl.isNotEmpty()){
+                    visible()
+                    load( localUrl)
+                }
             }else{
-                ivSplash.load(url)
+                if (localUrl==url){
+                    return
+                }
+                visible()
+                load(url)
                 KvUtils.put(splashKeyStr,url)
             }
-//        }
     }
 
 }

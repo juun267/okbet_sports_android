@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.splash
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -14,16 +13,14 @@ import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import com.youth.banner.indicator.RectangleIndicator
 import com.youth.banner.listener.OnPageChangeListener
-import kotlinx.android.synthetic.main.activity_launch.*
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.toIntS
+import org.cxct.sportlottery.databinding.ActivityLaunchBinding
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.util.KvUtils
@@ -32,7 +29,7 @@ import org.cxct.sportlottery.util.KvUtils
 /**
  * @app_destination 啟動頁
  */
-class LaunchActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::class) {
+class LaunchActivity : BindingActivity<SplashViewModel,ActivityLaunchBinding>() {
 
     private val skipHomePage by lazy { intent.getBooleanExtra("skipHomePage", true) }
     private val imageUrls by lazy { intent.getSerializableExtra("imageUrls") as ArrayList<String> }
@@ -49,17 +46,17 @@ class LaunchActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView(){
         ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
             .fitsSystemWindows(false).init()
-        setContentView(R.layout.activity_launch)
 
-        tv_skip.isVisible = !isFirstOpen
         setupBanner()
-        tv_skip.setOnClickListener {
-            isClickSkip = true
-            startNow()
+        binding.tvSkip.apply {
+            isVisible = !isFirstOpen
+            setOnClickListener {
+                isClickSkip = true
+                startNow()
+            }
         }
         KvUtils.put("isFirstOpen", false)
     }
@@ -67,7 +64,7 @@ class LaunchActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
     private fun setupBanner() {
         val requestOptions =
             RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).dontTransform()
-        (banner as Banner<String, BannerImageAdapter<String>>).setAdapter(object :
+        (binding.banner as Banner<String, BannerImageAdapter<String>>).setAdapter(object :
             BannerImageAdapter<String>(imageUrls) {
             override fun onBindView(
                 holder: BannerImageHolder,
@@ -92,8 +89,8 @@ class LaunchActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
                 override fun onPageSelected(position: Int) {
                     if (position == (imageUrls.size - 1)) {
                         //banner组件无法设置只循环一次，当滑动到最好一页的时候，手动去掉自动循环
-                        banner.stop()
-                        banner.isAutoLoop(false)
+                        binding.banner.stop()
+                        binding.banner.isAutoLoop(false)
                         autoSkip()
                     }
                 }
@@ -114,7 +111,7 @@ class LaunchActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
     private fun autoSkip() {
         lifecycleScope.launch {
             delay(delayTime)
-            if (!isClickSkip && banner.currentItem == imageUrls.size - 1) {
+            if (!isClickSkip && binding.banner.currentItem == imageUrls.size - 1) {
                 startNow()
             }
         }
