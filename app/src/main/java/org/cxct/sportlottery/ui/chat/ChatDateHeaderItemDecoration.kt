@@ -21,7 +21,6 @@ class ChatDateHeaderItemDecoration(
         val headerPosition = getHeaderPositionForItem(itemPosition)
         if (headerPosition == RecyclerView.NO_POSITION) return null
         val headerType = when (val itemViewType = parent.adapter?.getItemViewType(headerPosition)) {
-            ChatMessageListAdapter.ItemType.DATE_TIP.ordinal -> ChatMessageListAdapter.ItemType.FLOATING_DATE_TIP.ordinal
             null -> null
             else -> itemViewType
         } ?: return null
@@ -30,13 +29,7 @@ class ChatDateHeaderItemDecoration(
             return currentHeader?.second?.itemView
         }
 
-        val headerHolder = when (headerType) {
-            ChatMessageListAdapter.ItemType.DATE_TIP.ordinal -> parent.adapter?.createViewHolder(
-                parent,
-                ChatMessageListAdapter.ItemType.FLOATING_DATE_TIP.ordinal
-            )
-            else -> parent.adapter?.createViewHolder(parent, headerType)
-        }
+        val headerHolder = parent.adapter?.createViewHolder(parent, headerType)
 
         if (headerHolder != null) {
             parent.adapter?.onBindViewHolder(headerHolder, headerPosition)

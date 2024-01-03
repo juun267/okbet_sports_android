@@ -11,9 +11,7 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
-import org.cxct.sportlottery.databinding.ItemBetCardBinding
 import org.cxct.sportlottery.databinding.ItemDetailCardBinding
-import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOddsVO
 import org.cxct.sportlottery.network.common.GameType

@@ -262,7 +262,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="end|center_vertical"
-                android:text="2023-01-12 10:59:45"
+                tools:text="2023-01-12 10:59:45"
                 android:textColor="@color/color_6C7BA8"
                 android:textSize="@dimen/textSize12sp" />
 
