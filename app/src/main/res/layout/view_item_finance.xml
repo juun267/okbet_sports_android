@@ -3,32 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:background="@color/color_191919_FCFCFC"
-    android:gravity="center">
+    android:foreground="@drawable/fg_ripple">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/iv_icon"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="18dp"
-            android:src="@mipmap/ic_launcher"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="14dp"
-            android:text="@string/unknown_data"
-            android:textColor="@color/color_9BB3D9_535D76"
-            android:textSize="@dimen/textSize14sp" />
-    </LinearLayout>
+        android:gravity="center_vertical"
+        android:layout_marginStart="14dp"
+        android:textColor="@color/color_9BB3D9_535D76"
+        android:textSize="@dimen/textSize14sp" />
 
     <ImageView
         android:layout_width="14dp"
