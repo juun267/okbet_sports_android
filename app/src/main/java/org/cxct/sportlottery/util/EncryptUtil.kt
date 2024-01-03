@@ -8,6 +8,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import android.util.Base64;
 import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
+import org.cxct.sportlottery.common.extentions.safeClose
 
 object EncryptUtil {
     private const val BUFFER_SIZE = 1024
@@ -151,22 +152,25 @@ object EncryptUtil {
         if (str.isNullOrEmpty()) {
             return null
         }
+
+        var gZip: GZIPInputStream? = null
         return try {
             val src = Base64.decode(str.toByteArray(charset(Charsets.UTF_8.name())), Base64.DEFAULT)
             val out = ByteArrayOutputStream()
             val `in` = ByteArrayInputStream(src)
-            val gZip = GZIPInputStream(`in`)
-            val buffer = ByteArray(256)
+            gZip = GZIPInputStream(`in`)
+            val buffer = ByteArray(1024)
             var n: Int
             while (gZip.read(buffer).also { n = it } >= 0) {
                 out.write(buffer, 0, n)
             }
             val result = out.toByteArray()
-            kotlin.runCatching { gZip.close() }
             FrontWsEvent.Events.parseFrom(result)
         } catch (e: Exception) {
             e.printStackTrace()
             null
+        } finally {
+            gZip?.safeClose()
         }
     }
 
