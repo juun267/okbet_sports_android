@@ -10,6 +10,7 @@ import org.cxct.sportlottery.common.event.LoginGlifeOrRegistEvent
 import org.cxct.sportlottery.common.event.LoginSelectAccountEvent
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.databinding.ActivitySelectAccountBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.sConfigData
@@ -34,6 +35,7 @@ class SelectAccountActivity : BindingActivity<LoginViewModel, ActivitySelectAcco
         setStatusBarDarkFont()
         bindFinish(btnBack)
         clLiveChat.setServiceClick(supportFragmentManager)
+        bottomLiences.tvLicense.text = Constants.copyRightString
         if (type==TYPE_LOGINGLIFE_OR_REGIST){
             ivOkbet.setImageResource(R.drawable.ic_glife_round)
             tvOkbet.text = getString(R.string.P176)
