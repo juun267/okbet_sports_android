@@ -112,12 +112,10 @@ object ServiceBroadcastReceiver {
         CoroutineScope(Dispatchers.IO).launch {
 
             try {
-                val decryptProtoMessage = EncryptUtil.uncompressProto(messageStr) ?: return@launch
-                decryptProtoMessage.let {
-                    if (it.eventsList.isNotEmpty()) {
-                        it.eventsList.forEach { event ->
-                            handleEvent(event, channelStr)
-                        }
+                val eventsList = EncryptUtil.uncompressProto(messageStr)?.eventsList ?: return@launch
+                if (eventsList.isNotEmpty()) {
+                    eventsList.forEach { event ->
+                        handleEvent(event, channelStr)
                     }
                 }
 
