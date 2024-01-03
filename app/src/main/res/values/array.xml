@@ -1,30 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="finance_array">
-        <item>@string/record_recharge</item>
-        <item>@string/record_withdrawal</item>
-        <item>@string/record_conversion</item>
-        <item>@string/record_history</item>
-        <item>@string/redenvelope_record</item>
-        <!--        <item>@string/record_red_envelope</item>-->
-        <!--        <item>@string/record_conversion</item>-->
-        <!--        <item>@string/record_reward</item>-->
-    </string-array>
-
-    <string-array name="finance_hide_array">
-        <item>@string/record_conversion</item>
-    </string-array>
-
-    <integer-array name="finance_img_array">
-        <item>@drawable/ic_icondrawrechargerecord</item>
-        <item>@drawable/ic_icondrawwithdrawrecord</item>
-        <item>@drawable/ic_icondrawtransfer</item>
-        <item>@drawable/ic_icon_draw_bonus_record</item>
-        <item>@drawable/ic_redenvelope_record</item>
-        <!--        <item>@drawable/ic_icondrawredenvelope</item>-->
-        <!--        <item>@drawable/ic_icondrawtransfer</item>-->
-        <!--        <item>@drawable/ic_icondrawbonusrecord</item>-->
-    </integer-array>
 
     <string-array name="transfer_state_array">
         <item>@string/all_status</item>
@@ -118,11 +93,6 @@
         <item>X</item>
         <item>Y</item>
         <item>Z</item>
-    </string-array>
-    <string-array name="handicap_type_list">
-        <item>@string/win_line</item>
-        <item>@string/ou_hdp_hdp</item>
-        <item>@string/big_or_small</item>
     </string-array>
 
 </resources>
