@@ -15,6 +15,7 @@ import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.extentions.finishWithOK
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordData
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -98,6 +99,7 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             inputEmail = it
             onNewSMSStatus()
         }
+        bottomLiences.tvLicense.text = Constants.copyRightString
     }
 
     private fun setNextBtnStatus() {

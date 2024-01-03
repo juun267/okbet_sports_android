@@ -13,6 +13,7 @@ import org.cxct.sportlottery.common.extentions.finishWithOK
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ActivityForgetWaysBinding
 import org.cxct.sportlottery.databinding.ActivitySelectAccountBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -33,6 +34,7 @@ class ForgetWaysActivity:  BindingActivity<ForgetViewModel, ActivityForgetWaysBi
         binding.includeSubtitle.tvSubTitle1.gone()
         binding.includeSubtitle.tvSubTitle2.gone()
         cl_live_chat.setServiceClick(supportFragmentManager)
+        binding.bottomLiences.tvLicense.text = Constants.copyRightString
         btnPhoneWays.setOnClickListener { ForgetPasswordActivity.startByPhoneWays(this) }
         btnEmailWays.setOnClickListener { ForgetPasswordActivity.startByEmailWays(this) }
     }

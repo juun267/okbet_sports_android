@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityModifyBindInfoBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.view.checkEmail
@@ -246,6 +247,7 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
         } else {
             setVerifyLayout()
         }
+        bottomLiences.tvLicense.text = Constants.copyRightString
     }
 
     private fun bindResetClick() {
