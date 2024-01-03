@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_rest_password.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityRestPasswordBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.view.checkRegisterListener
@@ -58,6 +59,7 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
         eetConfirmPasswordForget.checkRegisterListener {
             btnNext.setBtnEnable(checkInput(etConfirmPasswordForget, eetConfirmPasswordForget, etLoginPassword, eetLoginPasswordForget))
         }
+        bottomLiences.tvLicense.text = Constants.copyRightString
     }
 
     private fun resetInputTransformationMethod(fieldBox: LoginFormFieldView, editText: EditText) {

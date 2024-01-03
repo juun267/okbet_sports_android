@@ -17,6 +17,7 @@ import org.cxct.sportlottery.util.isMultipleSitePlat
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 import java.nio.charset.Charset
+import java.util.Calendar
 
 object Constants {
     val SERVICE_H5_URL_LIST = listOf(
@@ -297,6 +298,7 @@ object Constants {
         val base = getH5BaseUrl()
         return base + "sports-rule/#/${language}sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
     }
+    val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
     /**
      * 给h5地址加上统一参数
