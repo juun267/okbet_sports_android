@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,8 +14,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 谷歌市场的包要移除install 权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 谷歌市场的包要移除install 权限 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.webkit.PermissionRequest" />
@@ -28,15 +26,13 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
-
     <uses-permission
         android:name="android.permission.OBSERVE_GRANT_REVOKE_PERMISSIONS"
-        tools:ignore="ProtectedPermissions" />
-
-    <!-- Required -->
+        tools:ignore="ProtectedPermissions" /> <!-- Required -->
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission
         android:name="android.permission.INTERACT_ACROSS_USERS"
         tools:ignore="ProtectedPermissions" />
@@ -87,25 +83,22 @@
         <activity
             android:name=".ui.profileCenter.identity.KYCFormActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.feedback.FeedbackMainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" /> <!-- 後臺服務-長連線 -->
-
         <activity
             android:name=".ui.login.signUp.info.RegisterInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".ui.profileCenter.otherBetRecord.OtherBetRecordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.sport.detail.SportDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.maintenance.MaintenanceActivity"
             android:launchMode="singleTask"
@@ -117,8 +110,6 @@
         <activity
             android:name=".ui.finance.FinanceActivity"
             android:screenOrientation="portrait" />
-
-
         <activity
             android:name=".ui.betRecord.detail.BetDetailsActivity"
             android:screenOrientation="portrait" />
@@ -146,12 +137,11 @@
         <activity
             android:name=".ui.helpCenter.HelpCenterActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
-            android:theme="@style/lunchTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/lunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -248,9 +238,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.chat.ChatActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false">
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -262,6 +252,7 @@
             android:name=".ui.promotion.PromotionDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -306,16 +297,15 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.maintab.menu.ScannerActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.redeem.RedeemActivity"
+        <activity
+            android:name=".ui.redeem.RedeemActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.promotion.LuckyWheelActivity"
-            android:screenOrientation="portrait" />
-
-        <!-- Since JCore2.0.0 Required SDK核心功能-->
+        <activity
+            android:name=".ui.promotion.LuckyWheelActivity"
+            android:screenOrientation="portrait" /> <!-- Since JCore2.0.0 Required SDK核心功能 -->
         <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
         <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
         <service
@@ -334,6 +324,7 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+
                 <category android:name="${JPUSH_PKGNAME}" />
             </intent-filter>
         </receiver>

@@ -24,7 +24,7 @@
         <attr name="cvEms" format="integer" />
         <attr name="cvTitleMinEms" format="integer" />
         <attr name="cvTextColor" format="reference|color" />
-        <attr name="cvBottomLine" format="boolean"/>
+        <attr name="cvBottomLine" format="boolean" />
         <attr name="necessarySymbol">
             <!-- Visible on screen; the default value. -->
             <enum name="visible" value="0x00000000" />
