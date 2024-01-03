@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.util
+package org.cxct.sportlottery.view.floatingbtn
 
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +16,7 @@ import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
 import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
-import org.cxct.sportlottery.view.floatingbtn.LuckyWheelFloatingButton
+import org.cxct.sportlottery.util.JumpUtil
 
 class LuckyWheelManager {
     companion object {
@@ -111,7 +111,11 @@ class LuckyWheelManager {
         removeFloatingBtn()
     }
     fun clickContent() {
-        activity?.let { JumpUtil.toInternalWeb(it, "/mobile/personal/activity_v2/christmas-promo",it.getString(R.string.P169)) }
+        activity?.let {
+            JumpUtil.toInternalWeb(it,
+                "/mobile/personal/activity_v2/christmas-promo",
+                it.getString(R.string.P169))
+        }
         removeFloatingBtn()
     }
     fun getTimeRange(){

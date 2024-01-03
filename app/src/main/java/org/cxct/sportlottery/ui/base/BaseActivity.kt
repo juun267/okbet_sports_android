@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.base
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -40,6 +39,10 @@ import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.floatingbtn.LotteryManager
+import org.cxct.sportlottery.view.floatingbtn.LuckyWheelManager
+import org.cxct.sportlottery.view.floatingbtn.PromotionManager
+import org.cxct.sportlottery.view.floatingbtn.RedEnvelopeManager
 //import org.cxct.sportlottery.util.language.MultiLanguages
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -70,6 +73,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         RedEnvelopeManager.instance.bind(this as BaseActivity<BaseViewModel>)
         LotteryManager.instance.bind(this as BaseActivity<BaseViewModel>)
         LuckyWheelManager.instance.bind(this as BaseActivity<BaseViewModel>)
+        PromotionManager.instance.bind(this as BaseActivity<BaseViewModel>)
     }
 
     private var firstCrate = false

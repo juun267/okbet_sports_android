@@ -7,7 +7,6 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LuckyWheelManager
 
 class LuckyWheelFloatingButton @JvmOverloads constructor(
     context: Context,
