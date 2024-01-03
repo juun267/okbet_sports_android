@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -126,6 +127,11 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
         recyclerViewOrNull?.isVisible = !list.isNullOrEmpty()
         currentItem = list?.find { it.isSelected }
         super.setNewInstance(list)
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        recyclerView.isVisible = getDefItemCount() > 0
     }
 
     fun selectGameType(gameType: String) {
