@@ -82,6 +82,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         addUserView()
         addLoginBtn()
         fitsSystemStatus()
+        updateMailsIcon()
     }
 
     private fun addSearchView() {
@@ -316,30 +317,4 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         viewModel.getMoneyAndTransferOut()
     }
 
-    fun setChristmasStyle() {
-        ivRefreshMoney.setImageResource(R.drawable.ic_refresh_green_christmas)
-        ivLogo.setImageResource(R.drawable.logo_okbet_color_christmas)
-        tvLogin.setBackgroundResource(R.drawable.bg_home_top_login)
-        tvLogin.setTextColor(context.getColor(R.color.color_FFFFFF))
-        tvRegist.setBackgroundResource(R.drawable.bg_home_top_register)
-        btnDeposit.setBackgroundResource(R.drawable.bg_home_top_deposit)
-        mailsIcon = R.drawable.icon_mails_chirs
-        mailsIcon1 = R.drawable.icon_mails_chirs1
-        updateMailsIcon()
-        banlanceView.background = ShapeDrawable()
-            .setRadius(100.dp.toFloat())
-            .setSolidColor(context.getColor(R.color.color_4DE3ECF5), context.getColor(R.color.color_99F1F5F9))
-            .setSolidGradientOrientation(ShapeGradientOrientation.LEFT_TO_RIGHT)
-            .setStrokeColor(Color.WHITE)
-            .setStrokeSize(1.dp)
-
-    }
-
-    fun setChristmasStyle2() {
-        setChristmasStyle()
-        setBackgroundResource(R.drawable.bg_home_top2)
-        if (::ivMails.isInitialized) {
-            ivMails.gone()
-        }
-    }
 }

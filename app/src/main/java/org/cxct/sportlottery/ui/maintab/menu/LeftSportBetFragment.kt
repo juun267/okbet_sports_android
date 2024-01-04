@@ -30,11 +30,8 @@ import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
-import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.rumWithSlowRequest
 import org.cxct.sportlottery.view.updateLastRequestTime
 import org.greenrobot.eventbus.EventBus

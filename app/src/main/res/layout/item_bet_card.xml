@@ -273,7 +273,6 @@
                 android:id="@+id/tvFullTeam"
                 android:textSize="12sp"
                 android:textColor="@color/color_303030"
-                android:text="sadasdasdasdasdasdsadasdasdasdasdsadadsasdasdasdsadasdasdasdasdsadadsasdasdasdasdsadadsasdasdasd"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:paddingStart="15dp"

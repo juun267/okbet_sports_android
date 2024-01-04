@@ -36,22 +36,13 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
 
     private val datas = mutableListOf<MenuTab?>()
 
-//    private val hotMenuItem = MenuTab(R.drawable.ic_home_menu_hot_sel, R.drawable.ic_home_menu_hot_nor, R.string.home_recommend, HomeHotFragment::class.java)
-//    private val sportMenuItem = MenuTab(R.drawable.ic_home_menu_sport_sel, R.drawable.ic_home_menu_sport_nor, R.string.main_tab_sport, SportVenueFragment::class.java)
-//    private val esportMenuItem = MenuTab(R.drawable.ic_home_menu_esport_sel, R.drawable.ic_home_menu_esport_nor, R.string.esports, ESportVenueFragment::class.java)
-//    private val okGameMenuItem = MenuTab(R.drawable.ic_home_menu_live_sel, R.drawable.ic_home_menu_live_nor, R.string.J203, ElectGamesFragment::class.java)
-//    private val okLiveGameItem = MenuTab(R.drawable.ic_home_menu_casino_sel, R.drawable.ic_home_menu_casino_nor, R.string.P160, LiveGamesFragment::class.java)
-//    private val promotionMenuItem = MenuTab(R.drawable.ic_home_menu_promotion_sel, R.drawable.ic_home_menu_promotion_nor, R.string.promo, null)
-//    private val sericeMenuItem = MenuTab(R.drawable.ic_home_menu_service_sel, R.drawable.ic_home_menu_service_nor, R.string.LT050_1, null)
-
-
-    private val hotMenuItem = MenuTab(R.drawable.ic_chris_home_menu_hot_sel, R.drawable.ic_chris_home_menu_hot_nor, R.string.home_recommend, HomeHotFragment::class.java)
-    private val sportMenuItem = MenuTab(R.drawable.ic_chris_home_menu_sport_sel, R.drawable.ic_chris_home_menu_sport_nor, R.string.main_tab_sport, SportVenueFragment::class.java)
-    private val esportMenuItem = MenuTab(R.drawable.ic_chris_home_menu_esport_sel, R.drawable.ic_chris_home_menu_esport_nor, R.string.esports, ESportVenueFragment::class.java)
-    private val okGameMenuItem = MenuTab(R.drawable.ic_chris_home_menu_casino_sel, R.drawable.ic_chris_home_menu_casino_nor, R.string.J203, ElectGamesFragment::class.java)
-    private val okLiveGameItem = MenuTab(R.drawable.ic_chris_home_menu_live_sel, R.drawable.ic_chris_home_menu_live_nor, R.string.P160, LiveGamesFragment::class.java)
-    private val promotionMenuItem = MenuTab(R.drawable.ic_chris_home_menu_promotion_sel, R.drawable.ic_chris_home_menu_promotion_nor, R.string.promo, null)
-    private val sericeMenuItem = MenuTab(R.drawable.ic_chris_home_menu_service_nor, R.drawable.ic_chris_home_menu_service_nor, R.string.LT050_1, null)
+    private val hotMenuItem = MenuTab(R.drawable.ic_home_menu_hot_sel, R.drawable.ic_home_menu_hot_nor, R.string.home_recommend, HomeHotFragment::class.java)
+    private val sportMenuItem = MenuTab(R.drawable.ic_home_menu_sport_sel, R.drawable.ic_home_menu_sport_nor, R.string.main_tab_sport, SportVenueFragment::class.java)
+    private val esportMenuItem = MenuTab(R.drawable.ic_home_menu_esport_sel, R.drawable.ic_home_menu_esport_nor, R.string.esports, ESportVenueFragment::class.java)
+    private val okGameMenuItem = MenuTab(R.drawable.ic_home_menu_casino_sel, R.drawable.ic_home_menu_casino_nor, R.string.J203, ElectGamesFragment::class.java)
+    private val okLiveGameItem = MenuTab(R.drawable.ic_home_menu_live_sel, R.drawable.ic_home_menu_live_nor, R.string.P160, LiveGamesFragment::class.java)
+    private val promotionMenuItem = MenuTab(R.drawable.ic_home_menu_promotion_sel, R.drawable.ic_home_menu_promotion_nor, R.string.promo, null)
+    private val sericeMenuItem = MenuTab(R.drawable.ic_home_menu_service_sel, R.drawable.ic_home_menu_service_nor, R.string.LT050_1, null)
 
     private var selectItem: MenuTab? = null
     private var selectedPosition = initiallyPosition
@@ -65,11 +56,6 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     }
 
     override fun getItemViewType(position: Int) = 0
-
-    fun setChristmasStyle() {
-        selectedBg = R.drawable.bg_chris_home_menu_sel
-        normalBg = R.drawable.bg_chris_home_menu_nor
-    }
 
     private fun setSelectedStyle(isSelected: Boolean, item: MenuTab, group: View, icon: ImageView) {
         group.isSelected = isSelected
@@ -119,7 +105,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private fun setMaintanence(linMaintenance: View, fragmentClass: Class<out BaseFragment<*>>?){
         if ((fragmentClass == SportVenueFragment::class.java || fragmentClass == ESportVenueFragment::class.java)
             && getSportEnterIsClose()) {
-            linMaintenance.gone()
+            linMaintenance.visible()
             return
         }
 

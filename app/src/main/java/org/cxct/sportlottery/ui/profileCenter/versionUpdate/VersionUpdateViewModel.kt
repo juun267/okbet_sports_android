@@ -9,14 +9,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.common.exception.DoNoConnectException
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.NetworkUtil
-import org.cxct.sportlottery.util.SPUtil
 import timber.log.Timber
 
 class VersionUpdateViewModel(
@@ -93,8 +91,10 @@ class VersionUpdateViewModel(
             val url = Constants.getCheckAppUpdateUrl(serverUrl)
             viewModelScope.launch {
                 try {
-                    if (!NetworkUtil.isAvailable(androidContext))
-                        throw DoNoConnectException()
+                    if (!NetworkUtil.isAvailable(androidContext)) {
+                        return@launch
+                    }
+
                     val response = OneBoSportApi.appUpdateService.checkAppVersion(url)
                     val result = response.body()
 

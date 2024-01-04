@@ -15,13 +15,11 @@
     <color name="color_FF9143_ff9200">@color/color_FF9143</color>
     <color name="color_FF9143_cb7c2e">@color/color_FF9143</color>
     <color name="color_08dc6e_08dc6e">@color/color_08dc6e</color>
-    <color name="color_34CB8A_1D9F51">@color/color_34CB8A</color>
     <color name="color_E44438_e44438">@color/color_E44438</color>
     <color name="color_E23434_E23434">@color/color_ce3636</color>
     <color name="color_F75452_E23434">@color/color_F75452</color>
     <color name="color_FFFFFF_FFFFFF">@color/color_FFFFFF</color>
     <color name="color_191919_FCFCFC">@color/color_191919</color>
-    <color name="color_1C1C1C_FAFAFA">@color/color_1C1C1C</color>
     <color name="color_141414_F3F4F5">@color/color_141414</color>
     <color name="color_141414_f3f3f3">@color/color_141414</color>
     <color name="color_242424_f2f2f2">@color/color_242424</color>
@@ -41,14 +39,11 @@
     <color name="color_CCCCCC_000000">@color/color_cccccc</color>
     <color name="color_000000_FFFFFF">@color/color_000000</color>
     <color name="color_191919_EEEFF0">@color/color_191919</color>
-    <color name="color_212121_EAF4FE">@color/color_212121</color>
     <color name="color_1A1A1A_FAFAFA">@color/color_1A1A1A</color>
     <color name="color_404348_D2D2D7">@color/color_404348</color>
     <color name="color_CCCCCC_999999">@color/color_cccccc</color>
     <color name="color_939393_333333">@color/color_939393</color>
-    <color name="color_1A1A1A_0760D4">@color/color_1A1A1A</color>
     <color name="color_2B2B2B_FCFCFC">@color/color_2B2B2B</color>
-    <color name="color_1A1A1A_FFFFFF">@color/color_1A1A1A</color>
     <color name="color_939393_999999">@color/color_939393</color>
     <color name="color_191919_EAF4FE">@color/color_191919</color>
     <color name="color_939393_cccccc">@color/color_939393</color>
@@ -69,11 +64,9 @@
     <color name="color_cccccc_e2e2e2">@color/color_cccccc</color>
     <color name="color_1F1F1F_EEEFF0">@color/color_1F1F1F</color>
     <color name="color_BCBCBC_666666">@color/color_bcbcbc</color>
-    <color name="color_A8AFB8_A8AFB8">@color/color_A8AFB8</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_text_color">#CAE0FF</color>
-    <color name="play_category_text_color">#FFFFFF</color>
     <!--endregion 特殊處理顏色-->
     <color name="color_E8EFFD">#E8EFFD</color>
 
@@ -88,7 +81,6 @@
     <color name="color_2B3859_E3E8EE">@color/color_2B3859</color>
 
     <color name="color_025BE8_025BE8">@color/color_025BE8</color>
-    <color name="color_D35555_D35555">@color/color_D35555</color>
     <color name="color_1D9F51_1D9F51">@color/color_1D9F51</color>
 
     <color name="color_141931_F9F9F9">@color/color_141931</color>

@@ -14,7 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.visible
-import org.cxct.sportlottery.databinding.ViewHomeBottomChrisBinding
+import org.cxct.sportlottery.databinding.ViewHomeBottomBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.*
@@ -24,7 +24,7 @@ import splitties.systemservices.layoutInflater
 class HomeBottomView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle) {
 
-    val binding = ViewHomeBottomChrisBinding.inflate(layoutInflater,this)
+    val binding = ViewHomeBottomBinding.inflate(layoutInflater,this)
     init {
         orientation = VERTICAL
         initView()

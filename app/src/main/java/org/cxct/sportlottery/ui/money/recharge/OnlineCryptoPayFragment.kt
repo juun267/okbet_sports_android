@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.online_crypto_pay_fragment.tv_remark
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.txv_account
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.txv_currency
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.linMaintenance
-import kotlinx.android.synthetic.main.online_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.show

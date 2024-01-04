@@ -8,14 +8,17 @@
     tools:orientation="vertical"
     tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
 
-    <ImageView
+    <TextView
+        android:id="@+id/tvCateName"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/margin_24"
-        android:adjustViewBounds="true"
-        android:layout_marginLeft="@dimen/margin_12"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_2"
         android:layout_marginBottom="@dimen/margin_8"
-        android:src="@drawable/ic_chris_recent"/>
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_313F56"
+        android:text="@string/N874" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecent"

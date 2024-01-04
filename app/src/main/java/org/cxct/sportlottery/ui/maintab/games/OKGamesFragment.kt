@@ -94,7 +94,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
     private fun initToolBar() = binding.homeToolbar.run {
         attach(this@OKGamesFragment, mainTabActivity(), viewModel)
-        binding.homeToolbar.setChristmasStyle2()
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
             mainTabActivity().showMainRightMenu()

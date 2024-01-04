@@ -703,8 +703,8 @@ abstract class BaseOddButtonViewModel(
     }
 
     private fun getSpreadState(oldSpread: String, newSpread: String): Int = when {
-        newSpread != oldSpread -> SpreadState.DIFFERENT.state
-        else -> SpreadState.SAME.state
+        newSpread != oldSpread -> SpreadState.DIFFERENT
+        else -> SpreadState.SAME
     }
 
     private fun updateItem(

@@ -4,7 +4,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.roundOf
 import org.cxct.sportlottery.databinding.ItemHomeNews1Binding
-import org.cxct.sportlottery.databinding.ItemHomeNewsBinding
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
