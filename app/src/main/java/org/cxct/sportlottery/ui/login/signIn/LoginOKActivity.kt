@@ -99,6 +99,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupAuthLogin()
         setupPrivacy()
         setupServiceButton()
+        binding.bottomLiences.tvLicense.text = Constants.copyRightString
         initObserve()
         viewModel.focusChangeCheckAllInputComplete()
         EventBusUtil.targetLifecycle(this)

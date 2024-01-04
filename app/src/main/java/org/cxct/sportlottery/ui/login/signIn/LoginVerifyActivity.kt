@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.databinding.ActivityLoginVerifyBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.ui.base.BindingActivity
@@ -42,7 +43,7 @@ class LoginVerifyActivity: BindingActivity<LoginViewModel, ActivityLoginVerifyBi
             .fitsSystemWindows(false)
             .init()
         llInput.background = DrawableCreatorUtils.getCommonBackgroundStyle(15, R.color.white, R.color.color_DDE8FF)
-
+        binding.bottomLiences.tvLicense.text = Constants.copyRightString
 
         initEvent()
         initObserver()

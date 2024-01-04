@@ -46,6 +46,7 @@
         <item name="android:gravity">center</item>
         <item name="android:windowSoftInputMode">stateHidden</item>
     </style>
+
     <style name="FullScreen" parent="Theme.AppCompat.Dialog">
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowNoTitle">true</item>
@@ -63,18 +64,21 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/textSize14sp</item>
     </style>
+
     <style name="NoUppercaseTabStyle">
         <item name="android:textStyle">normal</item>
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/textSize14sp</item>
     </style>
+
     <style name="NoUppercaseTab2" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
     </style>
+
     <style name="NoCaseTab" parent="TextAppearance.Design.Tab">
         <item name="android:textStyle">normal</item>
         <item name="textAllCaps">false</item>
@@ -88,12 +92,13 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
     </style>
+
     <style name="StyleOddButtonLL">
-<!--        <item name="android:clipChildren">false</item>-->
+        <!--        <item name="android:clipChildren">false</item>-->
     </style>
 
     <style name="StyleOddButtonItem">
-<!--        <item name="android:paddingBottom">10dp</item>-->
+        <!--        <item name="android:paddingBottom">10dp</item>-->
     </style>
 
     <style name="tv_keyboard_number">
@@ -123,23 +128,27 @@
     </style>
 
     <declare-styleable name="SwipeMenuLayout">
-        <attr format="boolean" name="swipeEnable" />
-        <attr format="boolean" name="ios" />
-        <attr format="boolean" name="leftSwipe" />
+        <attr name="swipeEnable" format="boolean" />
+        <attr name="ios" format="boolean" />
+        <attr name="leftSwipe" format="boolean" />
     </declare-styleable>
 
     <!--弹窗动画-->
     <style name="AnimDialogEnter" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
     </style>
+
     <style name="Widget.AppTheme.MyView" parent="">
         <item name="android:background">@color/gray_400</item>
         <item name="exampleColor">@color/light_blue_400</item>
     </style>
 
     <style name="lunchTheme" parent="AppTheme">
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/bg_splash</item>
     </style>
+
     <style name="textBlackBold">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/color_FFFFFF</item>

@@ -31,6 +31,7 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     private fun initView() =binding.run{
+        textView17.text = Constants.copyRightString
         jumpToWebView(
             tvPrivacyPolicy,
             Constants.getPrivacyRuleUrl(context),

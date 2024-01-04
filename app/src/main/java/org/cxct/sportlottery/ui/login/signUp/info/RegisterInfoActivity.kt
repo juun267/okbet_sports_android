@@ -14,6 +14,7 @@ import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityRegisterInfoBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.*
@@ -274,7 +275,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             viewModel.emailInput=binding.eetEmail.text.toString()
             checkStatus()
         }
-
+        binding.bottomLiences.tvLicense.text = Constants.copyRightString
     }
 
     private fun initToolsBar() {
