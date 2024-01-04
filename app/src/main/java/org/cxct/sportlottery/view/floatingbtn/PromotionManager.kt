@@ -52,6 +52,7 @@ class PromotionManager {
         LaunchActivity::class,
         MaintenanceActivity::class,
         ThirdGameActivity::class,
+        LuckyWheelActivity::class,
         PromotionListActivity::class,
         PromotionDetailActivity::class -> false
         WebActivity::class -> {
@@ -85,8 +86,8 @@ class PromotionManager {
                 (floatRootView?.parent as ViewGroup).removeView(floatRootView)
             }
             viewGroup.addView(floatRootView)
-            floatRootView?.startAnim()
         }
+        floatRootView?.startAnim()
     }
     private fun removeFloatingBtn(){
         if (floatRootView!=null){
