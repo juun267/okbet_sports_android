@@ -4,10 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.motion.widget.MotionLayout
-import kotlinx.android.synthetic.main.motion_view_red_envelope_floating.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.RedEnvelopeManager
+import org.cxct.sportlottery.databinding.ViewFloatingRedenvelopeBinding
 import org.cxct.sportlottery.util.TimeUtil
+import splitties.systemservices.layoutInflater
 
 class RedEnvelopeFloatingButton @JvmOverloads constructor(
     context: Context,
@@ -16,21 +16,18 @@ class RedEnvelopeFloatingButton @JvmOverloads constructor(
 ) :
     MotionLayout(context, attributeSet, defStyle) {
 
+    private val binding = ViewFloatingRedenvelopeBinding.inflate(layoutInflater,this,true)
 
     init {
-        addView(
-            LayoutInflater.from(context)
-                .inflate(R.layout.motion_view_red_envelope_floating, this, false)
-        )
         initClickEvent()
     }
 
     private fun initClickEvent() {
-        iv_close.setOnClickListener {
+        binding.ivClose.setOnClickListener {
             RedEnvelopeManager.instance.clickCloseFloatBtn()
         }
     }
     fun setCountdown(countdown: Long) {
-        tv_countdown.text = TimeUtil.timeFormat(countdown * 1000, TimeUtil.HM_FORMAT_MS)
+        binding.tvCountdown.text = TimeUtil.timeFormat(countdown * 1000, TimeUtil.HM_FORMAT_MS)
     }
 }

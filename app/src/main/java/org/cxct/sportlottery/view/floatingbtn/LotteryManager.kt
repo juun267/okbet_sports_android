@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.util
+package org.cxct.sportlottery.view.floatingbtn
 
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +22,10 @@ import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
-import org.cxct.sportlottery.view.floatingbtn.LotteryFloatingButton
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.getMarketSwitch
 import java.util.*
 
 class LotteryManager {

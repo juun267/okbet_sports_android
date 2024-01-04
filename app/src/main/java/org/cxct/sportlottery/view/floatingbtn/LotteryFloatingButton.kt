@@ -2,12 +2,9 @@ package org.cxct.sportlottery.view.floatingbtn
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.constraintlayout.motion.widget.MotionLayout
-import kotlinx.android.synthetic.main.motion_lottery_floating.view.*
-import kotlinx.android.synthetic.main.motion_view_red_envelope_floating.view.iv_close
-import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.LotteryManager
+import org.cxct.sportlottery.databinding.MotionLotteryFloatingBinding
+import splitties.systemservices.layoutInflater
 
 class LotteryFloatingButton @JvmOverloads constructor(
     context: Context,
@@ -16,26 +13,22 @@ class LotteryFloatingButton @JvmOverloads constructor(
 ) :
     MotionLayout(context, attributeSet, defStyle) {
 
-
+    private val binding = MotionLotteryFloatingBinding.inflate(layoutInflater,this,true)
     init {
-        addView(
-            LayoutInflater.from(context)
-                .inflate(R.layout.motion_lottery_floating, this, false)
-        )
         initClickEvent()
     }
 
     private fun initClickEvent() {
-        movable_layout.setOnClickListener {
+        binding.movableLayout.setOnClickListener {
             LotteryManager.instance.clickOpenFloatBtn()
         }
-        iv_close.setOnClickListener {
+        binding.ivClose.setOnClickListener {
             LotteryManager.instance.clickCloseFloatBtn()
         }
     }
 
     fun setTime(name: String, startdate: String) {
-        tv_name.text = name
-        tv_time.text = startdate
+        binding.tvName.text = name
+        binding.tvTime.text = startdate
     }
 }

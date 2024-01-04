@@ -61,6 +61,7 @@ import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.cxct.sportlottery.view.dialog.TrialGameDialog
+import org.cxct.sportlottery.view.floatingbtn.LotteryManager
 import org.cxct.sportlottery.view.transform.TransformInDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

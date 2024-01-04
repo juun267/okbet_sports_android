@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.util
+package org.cxct.sportlottery.view.floatingbtn
 
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +18,8 @@ import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
 import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
+import org.cxct.sportlottery.util.commonTwoButtonDialog
 import org.cxct.sportlottery.view.dialog.RedEnvelopeReceiveDialog
-import org.cxct.sportlottery.view.floatingbtn.RedEnvelopeFloatingButton
 import java.util.*
 
 class RedEnvelopeManager {
