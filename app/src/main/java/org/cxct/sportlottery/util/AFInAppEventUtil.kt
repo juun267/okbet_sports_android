@@ -16,8 +16,6 @@ object AFInAppEventUtil {
         AppsFlyerLib.getInstance().logEvent(
             MultiLanguagesApplication.getInstance(),
             AFInAppEventType.LOGIN, eventValues)
-
-        Firebase.analytics.logEvent(AFInAppEventParameterName.ACHIEVEMENT_ID,eventValues.toBundle())
     }
 
     fun register(method: String,eventValues: HashMap<String, Any>) {
@@ -25,22 +23,17 @@ object AFInAppEventUtil {
         AppsFlyerLib.getInstance().logEvent(
             MultiLanguagesApplication.getInstance(),
             AFInAppEventType.COMPLETE_REGISTRATION, eventValues)
-
-        Firebase.analytics.logEvent(AFInAppEventParameterName.REGSITRATION_METHOD,eventValues.toBundle())
     }
 
     fun regAndLogin(eventValues: HashMap<String, Any>) {
         AppsFlyerLib.getInstance().logEvent(
             MultiLanguagesApplication.getInstance(),
             "reportLoginInfo", eventValues)
-        Firebase.analytics.logEvent("reportLoginInfo",eventValues.toBundle())
     }
 
     fun logEvent(name: String,eventName: String,eventValues: String) {
         AppsFlyerLib.getInstance().logEvent(MultiLanguagesApplication.getInstance(), name, mapOf(eventName to eventValues))
-        Firebase.analytics.logEvent(name,mapOf(eventName to eventValues).toBundle())
     }
-
 
 
     fun deposit(revenue: String, currency: String) {
