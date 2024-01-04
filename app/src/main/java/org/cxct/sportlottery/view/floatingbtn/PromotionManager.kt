@@ -87,7 +87,9 @@ class PromotionManager {
             }
             viewGroup.addView(floatRootView)
         }
-        floatRootView?.startAnim()
+        kotlin.runCatching {
+            floatRootView?.startAnim()
+        }
     }
     private fun removeFloatingBtn(){
         if (floatRootView!=null){

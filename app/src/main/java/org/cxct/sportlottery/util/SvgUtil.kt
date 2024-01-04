@@ -15,6 +15,7 @@ import com.opensource.svgaplayer.SVGAVideoEntity
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.jetbrains.annotations.NotNull
+import timber.log.Timber
 import java.lang.ref.WeakReference
 
 object SvgUtil {
@@ -53,7 +54,6 @@ object SvgUtil {
                 stepToFrame(0, autoPlay)
             }
             override fun onError() {
-
             }
         })
     }

@@ -377,7 +377,7 @@ dependencies {
     implementation("com.louiscad.splitties:splitties-fun-pack-android-base-with-views-dsl:3.0.0")
 
     //SVGAPlayer
-    implementation 'com.github.yyued:SVGAPlayer-Android:2.5.3'
+    implementation 'com.github.yyued:SVGAPlayer-Android:2.6.1'
 
     //compose
 //    implementation 'androidx.activity:activity-compose:1.6.1'
