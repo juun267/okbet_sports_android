@@ -111,6 +111,7 @@ class LoginViewModel(
         }
 
     fun login(account: String, password: String, identity: String, validCode: String, onNeedVerifyPhone: (String) -> Unit) = launch {
+        AFInAppEventUtil.logEvent("login","account",account)
         loading()
         val loginRequest = LoginRequest(
             account = account,
@@ -151,6 +152,7 @@ class LoginViewModel(
     }
 
     fun loginOrReg(account: String, smsCode: String, inviteCode: String) {
+        AFInAppEventUtil.logEvent("loginOrReg","account",account)
         loading()
         loginRepository.account = account
         val loginRequest = LoginRequest(
@@ -167,6 +169,7 @@ class LoginViewModel(
     }
 
     fun loginGoogle(token: String) {
+        AFInAppEventUtil.logEvent("loginGoogle","token",token)
         loading()
         doRequest({ loginRepository.googleLogin(token, inviteCode = Constants.getInviteCode()) }) {
             hideLoading()
@@ -175,6 +178,7 @@ class LoginViewModel(
     }
 
     fun regPlatformUser(token: String,loginRequest: LoginRequest) {
+        AFInAppEventUtil.logEvent("regPlatformUser","account",loginRequest.account)
         loading()
         doRequest({ loginRepository.regPlatformUser(token,loginRequest) }) {
             hideLoading()
