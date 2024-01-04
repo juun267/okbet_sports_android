@@ -11,7 +11,9 @@ import java.io.File
 fun ImageView.load(@DrawableRes res: Int = 0) {
     runWithCatch { Glide.with(context).load(res).into(this) }
 }
-
+fun ImageView.loadAsGif(@DrawableRes res: Int = 0) {
+    runWithCatch { Glide.with(context).asGif().load(res).into(this) }
+}
 fun ImageView.load(url: String?, @DrawableRes placeHolder: Int = 0,  @DrawableRes error: Int = 0) {
     runWithCatch {
         Glide.with(context)
