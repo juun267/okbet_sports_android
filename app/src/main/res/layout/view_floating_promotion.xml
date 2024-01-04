@@ -18,14 +18,14 @@
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <ImageView
+            <com.opensource.svgaplayer.SVGAImageView
                 android:id="@+id/icon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="15dp"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_promotion_gift"/>
+                app:autoPlay="true"/>
             <ImageView
                 android:id="@+id/ivClose"
                 android:layout_width="@dimen/margin_20"

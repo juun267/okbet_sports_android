@@ -85,6 +85,7 @@ class PromotionManager {
                 (floatRootView?.parent as ViewGroup).removeView(floatRootView)
             }
             viewGroup.addView(floatRootView)
+            floatRootView?.startAnim()
         }
     }
     private fun removeFloatingBtn(){

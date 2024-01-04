@@ -11,6 +11,7 @@ import android.os.Process;
 import androidx.activity.ComponentActivity;
 
 import org.cxct.sportlottery.application.MultiLanguagesApplication;
+import org.cxct.sportlottery.view.floatingbtn.RedEnvelopeManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
