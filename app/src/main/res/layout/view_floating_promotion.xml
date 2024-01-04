@@ -10,12 +10,12 @@
         android:id="@+id/movable_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="230dp"
+        android:layout_marginBottom="295dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <com.opensource.svgaplayer.SVGAImageView
@@ -23,13 +23,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="15dp"
                 android:adjustViewBounds="true"
                 app:autoPlay="true"/>
             <ImageView
                 android:id="@+id/ivClose"
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:src="@drawable/ic_close_float_promotion"/>
