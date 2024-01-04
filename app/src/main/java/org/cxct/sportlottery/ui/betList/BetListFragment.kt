@@ -224,7 +224,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         binding.btnBet.apply {
             tv_login.setOnClickListener {
                 needUpdateBetLimit = true
-                MultiLanguagesApplication.mInstance.doNotReStartPublicity = true
                 requireActivity().startLogin()
             }
 

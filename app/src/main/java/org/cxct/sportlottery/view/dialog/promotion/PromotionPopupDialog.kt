@@ -16,8 +16,17 @@ import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.getMarketSwitch
 import org.cxct.sportlottery.util.isGooglePlayVersion
 
-class PromotionPopupDialog(val activity: AppCompatActivity, private val promotionPopupListener: () -> Unit) :
-    AlertDialog(activity) {
+class PromotionPopupDialog(val activity: AppCompatActivity, private val promotionPopupListener: () -> Unit) : AlertDialog(activity) {
+
+    companion object{
+        fun needShow(activity: AppCompatActivity):Boolean{
+            if (activity.isDestroyed
+                || sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden) } != true) {
+                return false
+            }
+            return true
+        }
+    }
     private var _binding: DialogPromotionPopupBinding? = null
     private val binding get() = _binding!!
 

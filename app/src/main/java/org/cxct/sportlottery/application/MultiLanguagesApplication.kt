@@ -11,9 +11,7 @@ import android.net.Network
 import android.net.NetworkRequest
 import android.os.Build
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -29,22 +27,17 @@ import kotlinx.coroutines.async
 import me.jessyan.autosize.AutoSize
 import me.jessyan.autosize.AutoSizeConfig
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.runWithCatch
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.view.dialog.AgeVerifyDialog
-import org.cxct.sportlottery.view.dialog.promotion.PromotionPopupDialog
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import java.util.*
@@ -68,10 +61,8 @@ class MultiLanguagesApplication : Application() {
     }
     val userInfo: LiveData<UserInfo?>
         get() = _userInfo
-    private var isAgeVerifyNeedShow = true
 
     val mOddsType = MutableLiveData<OddsType>()
-    var doNotReStartPublicity = false
 
     /**
      * HandicapType.NULL.name為尚未配置後端設置的預設盤口
@@ -200,14 +191,6 @@ class MultiLanguagesApplication : Application() {
         return _userInfo.value
     }
 
-    fun isAgeVerifyNeedShow(): Boolean {
-        return isAgeVerifyNeedShow
-    }
-
-    fun setIsAgeVerifyShow(show: Boolean) {
-        this.isAgeVerifyNeedShow = show
-    }
-
     fun getOddsType() {
         //若為HandicapType.NULL是為尚未配置, 無需更新View
         when (mInstance.sOddsType) {
@@ -247,10 +230,6 @@ class MultiLanguagesApplication : Application() {
 
         fun stringOf(@StringRes strId: Int): String {
             return mInstance.getString(strId)
-        }
-
-        private val loginSharedPref: SharedPreferences by lazy {
-            mInstance.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
         }
 
         fun saveSearchHistory(searchHistory: MutableList<String>?) {
@@ -307,50 +286,9 @@ class MultiLanguagesApplication : Application() {
         fun getInstance(): MultiLanguagesApplication {
             return mInstance
         }
-
-        //確認年齡彈窗
-        fun showAgeVerifyDialog(activity: AppCompatActivity) {
-            if (getInstance()?.isAgeVerifyNeedShow() == false) return
-            AgeVerifyDialog(activity, object : AgeVerifyDialog.OnAgeVerifyCallBack {
-                override fun onConfirm() {
-                    //當玩家點擊"I AM OVER 21 YEARS OLD"後，關閉此視窗
-                    getInstance()?.setIsAgeVerifyShow(false)
-                    showPromotionPopupDialog(activity){}
-                }
-
-                override fun onExit() {
-                    //當玩家點擊"EXIT"後，徹底關閉APP
-                    AppManager.AppExit()
-                }
-
-            }).show()
-        }
-
-        open fun showPromotionPopupDialog(activity: AppCompatActivity, onDismiss: ()->Unit) {
-            if (activity.isDestroyed
-                || sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden) } != true) {
-                return
-            }
-
-            PromotionPopupDialog(activity) {
-                val token = loginSharedPref.getString(KEY_TOKEN, "")
-                JumpUtil.toInternalWeb(activity,
-                    Constants.getPromotionUrl(token, LanguageManager.getSelectLanguage(activity)),
-                    activity.getString(R.string.promotion))
-            }.apply {
-                setOnDismissListener{
-                    onDismiss.invoke()
-                }
-            }.show()
-        }
-
         fun saveOddsType(oddsType: OddsType) {
             mInstance.sOddsType = oddsType.code
             mInstance.mOddsType.postValue(oddsType)
-        }
-
-        fun showKYCVerifyDialog(activity: FragmentActivity) {
-            VerifyIdentityDialog().show(activity.supportFragmentManager, null)
         }
     }
 

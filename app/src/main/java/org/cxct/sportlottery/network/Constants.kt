@@ -120,11 +120,11 @@ object Constants {
     }
 
     //优惠活动 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
-    fun getPromotionUrl(token: String?, language: LanguageManager.Language): String? {
+    fun getPromotionUrl(): String? {
         return try {
-            "${getH5BaseUrl()}activity/mobile/#/useractilistV2?lang=${language.key}&token=${
+            "${getH5BaseUrl()}activity/mobile/#/useractilistV2?lang=${getSelectLanguage()}&token=${
                 URLEncoder.encode(
-                    token, "utf-8"
+                    LoginRepository.token?:"", "utf-8"
                 )
             }${
                 if (isMultipleSitePlat()) {

@@ -24,9 +24,8 @@ import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.view.dialog.PopImageDialog
-import org.cxct.sportlottery.view.dialog.TrialGameDialog
-import org.cxct.sportlottery.view.transform.TransformInDialog
 
 
 // okgames主Fragment
@@ -271,6 +270,10 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
                     putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_OKGAME.code)
                 }).show(childFragmentManager, PopImageDialog::class.simpleName)
             }
+        }
+        if (AgeVerifyDialog.isAgeVerifyNeedShow){
+            AgeVerifyDialog.isAgeVerifyNeedShow =false
+            AgeVerifyDialog(onConfirm = {}, onExit = {}).show(parentFragmentManager)
         }
     }
     fun setupProvider(firmList:MutableList<OKGamesFirm>)=binding.topView.run{

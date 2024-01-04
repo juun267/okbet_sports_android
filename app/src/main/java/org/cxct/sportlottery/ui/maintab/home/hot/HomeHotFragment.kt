@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.repository.KEY_TOKEN
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.BindPhoneDialog
@@ -22,8 +25,10 @@ import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import org.cxct.sportlottery.view.dialog.promotion.PromotionPopupDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -126,7 +131,13 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             viewModel.getSportMenuFilter()
             if (PopImageDialog.showHomeDialog) {
                 PopImageDialog.showHomeDialog = false
-                MultiLanguagesApplication.showPromotionPopupDialog(getMainTabActivity()){}
+                if (PromotionPopupDialog.needShow(getMainTabActivity())){
+                    PromotionPopupDialog(getMainTabActivity()) {
+                        JumpUtil.toInternalWeb(getMainTabActivity(),
+                            Constants.getPromotionUrl(),
+                            getString(R.string.promotion))
+                    }.show()
+                }
                 if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_HOME.code)) {
                     requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
                         putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_HOME.code)
@@ -141,6 +152,10 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
                       RegisterSuccessDialog{ getMainTabActivity().checkRechargeKYCVerify()
                     }.show(parentFragmentManager)
                 }
+            }
+            if (AgeVerifyDialog.isAgeVerifyNeedShow){
+                AgeVerifyDialog.isAgeVerifyNeedShow =false
+                AgeVerifyDialog(onConfirm = {}, onExit = {}).show(parentFragmentManager)
             }
         }
         setupSportStatusChange(this){

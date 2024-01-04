@@ -1693,4 +1693,6 @@
     <string name="your_bet_order_play_cate_cannot_parlay">Bet failed: The gameplay does not currently support parlay</string>
 
     <string name="LT050_1">Support</string>
+    <string name="A002">Please verify that you are 21 years of ages or older to enter this site</string>
+    <string name="ageVerify">Age Verification</string>
 </resources>

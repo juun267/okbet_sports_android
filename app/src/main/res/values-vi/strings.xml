@@ -1561,4 +1561,6 @@
 
 
     <string name="LT050_1">CSKH</string>
+    <string name="A002">Vui lòng xác minh bạn đủ 21 tuổi để truy cập trang web này</string>
+    <string name="ageVerify">Xác Minh Độ Tuổi</string>
 </resources>
