@@ -9,6 +9,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_15">
@@ -48,7 +49,7 @@
             android:id="@+id/xbanner"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintDimensionRatio="362:580"
             app:layout_constraintCircleRadius="@dimen/margin_10"
             app:AutoPlayTime="3500"
             app:pointSelect="@drawable/dot_8_blue_sel"
@@ -64,7 +65,7 @@
         android:id="@+id/btn_close"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/ic_close_white"
         android:contentDescription="@null" />
 </LinearLayout>
