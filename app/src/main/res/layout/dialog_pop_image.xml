@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_15">
+        android:layout_marginHorizontal="32dp">
 
         <com.stx.xhb.androidx.XBanner
             android:id="@+id/xbanner"

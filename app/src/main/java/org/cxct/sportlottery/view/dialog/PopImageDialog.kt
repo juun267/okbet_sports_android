@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.dialog_pop_image.*
 import org.cxct.sportlottery.R
@@ -16,7 +15,6 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
-import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
@@ -62,17 +60,6 @@ class PopImageDialog :
         super.onViewCreated(view, savedInstanceState)
         setupClose()
         setUpBanner()
-        setLayoutParams()
-    }
-
-    private fun setLayoutParams() {
-        if (imageType == ImageType.DIALOG_HOME.code) {
-            if (xbanner.layoutParams is ConstraintLayout.LayoutParams) {
-                val lp = (xbanner.layoutParams as ConstraintLayout.LayoutParams)
-                lp.dimensionRatio = "1:1"
-                xbanner.layoutParams = lp
-            }
-        }
     }
 
     private fun setupClose() {
