@@ -8,6 +8,7 @@ import okio.ByteString.Companion.encode
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
@@ -121,23 +122,9 @@ object Constants {
     }
 
     //优惠活动 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
-    fun getPromotionUrl(): String? {
-        return try {
-            "${getH5BaseUrl()}activity/mobile/#/useractilistV2?lang=${getSelectLanguage()}&token=${
-                URLEncoder.encode(
-                    LoginRepository.token?:"", "utf-8"
-                )
-            }${
-                if (isMultipleSitePlat()) {
-                    "&platform=onbet"
-                } else {
-                    "&platform=okbet"
-                }
-            }"
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            null
-        }
+    fun getPromotionUrl(): String {
+        val encodeToken = kotlin.runCatching {   URLEncoder.encode(LoginRepository.token?:"", "utf-8") }?.getOrNull()?:""
+        return "${getH5BaseUrl()}activity/mobile/#/useractilistV2?lang=${getSelectLanguage()}&token=${encodeToken}"
     }
 
     //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
@@ -146,22 +133,8 @@ object Constants {
         id: Int?,
         language: LanguageManager.Language,
     ): String? {
-        return try {
-            "${getH5BaseUrl()}activity/mobile/#/useractivityV2/${id}?lang=${language.key}&token=${
-                URLEncoder.encode(
-                    token, "utf-8"
-                )
-            }${
-                if (isMultipleSitePlat()) {
-                    "&platform=onbet"
-                } else {
-                    "&platform=okbet"
-                }
-            }"
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            null
-        }
+        val encodeToken = kotlin.runCatching {   URLEncoder.encode(LoginRepository.token?:"", "utf-8") }?.getOrNull()?:""
+        return "${getH5BaseUrl()}activity/mobile/#/useractivityV2/${id}?lang=${language.key}&token=${encodeToken}"
     }
 
     /**
@@ -192,7 +165,7 @@ object Constants {
 
 
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
-    fun getGameRuleUrl(context: Context): String? {
+    fun getGameRuleUrl(context: Context): String {
 
         return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/?platform=" + context.getString(
             R.string.app_name
@@ -200,7 +173,7 @@ object Constants {
     }
 
     //關於我們
-    fun getAboutUsUrl(context: Context): String? {
+    fun getAboutUsUrl(context: Context): String {
 
         return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/about-us?platform=" + context.getString(
             R.string.app_name
@@ -208,7 +181,7 @@ object Constants {
     }
 
     //博彩责任
-    fun getDutyRuleUrl(context: Context): String? {
+    fun getDutyRuleUrl(context: Context): String {
 
         return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/responsibility?platform=" + context.getString(
             R.string.app_name
@@ -225,7 +198,7 @@ object Constants {
     }
 
     //隐私权政策
-    fun getPrivacyRuleUrl(context: Context): String? {
+    fun getPrivacyRuleUrl(context: Context): String {
 
         return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/privacy-policy?platform=" + context.getString(
             R.string.app_name
@@ -233,7 +206,7 @@ object Constants {
     }
 
     //规则与条款
-    fun getAgreementRuleUrl(context: Context): String? {
+    fun getAgreementRuleUrl(context: Context): String {
 
         return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/terms-conditions?platform=" + context.getString(
             R.string.app_name
@@ -251,7 +224,7 @@ object Constants {
     }
 
     //常见问题
-    fun getFAQsUrl(context: Context): String? {
+    fun getFAQsUrl(context: Context): String {
 
         return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/faq?platform=" + context.getString(
             R.string.app_name
@@ -259,7 +232,7 @@ object Constants {
     }
 
     //联系我们
-    fun getContactUrl(context: Context): String? {
+    fun getContactUrl(context: Context): String {
         isMultipleSitePlat()
         return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/contact-us?platform=" + context.getString(
             R.string.app_name

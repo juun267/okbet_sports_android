@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
@@ -25,7 +26,7 @@ object JumpUtil {
 
     fun toInternalWeb(
         context: Context,
-        href: String?,
+        href: String,
         title: String?,
         toolbarVisibility: Boolean = true,
         backEvent: Boolean = true,
@@ -33,13 +34,20 @@ object JumpUtil {
         tag: String? = null
     ) {
         LogUtil.d("href:===>${href}")
+        if (href.isNullOrEmpty()){
+            return
+        }
 //                /mobile/games/oklive -> oklive頁
 //                /mobile/games/okgame -> okgame頁
 //                /mobile/sports/today/ES/SB:CSGO -> esport頁
 //                /mobile/sports/inPlay/BK -> sport頁
-//                /mobile/personal/activity_v2    ->  优惠活动列表页
-        val path = href?.getUrlPathExcludeHost()
+//                /mobile/personal/activity_v2 ->  优惠活动列表页
+        val path = href.getUrlPathExcludeHost()
+        LogUtil.d("path=$path")
         when{
+              path.contains("sweepstakes") ->{
+                  toLottery(context, Constants.getLotteryH5Url(context, LoginRepository.token))
+              }
               path == "mobile/personal/activity_v2/christmas-promo"->{
                 context.startActivity(
                     Intent(context, LuckyWheelActivity::class.java).apply {
@@ -47,6 +55,7 @@ object JumpUtil {
                         putExtra(WebActivity.KEY_TITLE, title)
                         putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
                         putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
+                        putExtra(WebActivity.TAG, tag)
                         if (bettingStation != null) {
                             putExtra(WebActivity.BET_STATION, bettingStation)
                         }
@@ -66,7 +75,7 @@ object JumpUtil {
                     it.jumpToOkLive()
                 }
             }
-            path?.startsWith("mobile/sports/")==true->{
+            path.startsWith("mobile/sports/") ->{
                 val sportParams = path.substringAfter("mobile/sports/").split("/")
                 LogUtil.toJson(sportParams)
                 val matchType = sportParams.getOrNull(0)
@@ -87,6 +96,7 @@ object JumpUtil {
                         putExtra(WebActivity.KEY_TITLE, title)
                         putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
                         putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
+                        putExtra(WebActivity.TAG, tag)
                         if (bettingStation != null) {
                             putExtra(WebActivity.BET_STATION, bettingStation)
                         }
@@ -99,7 +109,7 @@ object JumpUtil {
     /**
      * 获取url域名后的路径
      */
-    fun String.getUrlPathExcludeHost(): String = substringAfterLast("://").substringAfter("/").substringBefore("?")
+    private fun String.getUrlPathExcludeHost(): String = substringAfterLast("://").substringAfter("/").substringBefore("?")
 
     /**
      * 開啟外部瀏覽器
