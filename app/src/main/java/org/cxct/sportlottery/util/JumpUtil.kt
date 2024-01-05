@@ -5,19 +5,23 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.webkit.URLUtil
-import kotlinx.coroutines.*
+import androidx.appcompat.app.AppCompatActivity
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
 import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
-import splitties.activities.start
 import timber.log.Timber
 
 object JumpUtil {
+
 
     fun toInternalWeb(
         context: Context,
@@ -29,32 +33,73 @@ object JumpUtil {
         tag: String? = null
     ) {
         LogUtil.d("href:===>${href}")
-        if (href?.endsWith("/mobile/personal/activity_v2/christmas-promo") == true){
-            context.startActivity(
-                Intent(context, LuckyWheelActivity::class.java).apply {
-                    putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
-                    putExtra(WebActivity.KEY_TITLE, title)
-                    putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
-                    putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
-                    if (bettingStation != null) {
-                        putExtra(WebActivity.BET_STATION, bettingStation)
+//                /mobile/games/oklive -> oklive頁
+//                /mobile/games/okgame -> okgame頁
+//                /mobile/sports/today/ES/SB:CSGO -> esport頁
+//                /mobile/sports/inPlay/BK -> sport頁
+//                /mobile/personal/activity_v2    ->  优惠活动列表页
+        val path = href?.getUrlPathExcludeHost()
+        when{
+              path == "mobile/personal/activity_v2/christmas-promo"->{
+                context.startActivity(
+                    Intent(context, LuckyWheelActivity::class.java).apply {
+                        putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
+                        putExtra(WebActivity.KEY_TITLE, title)
+                        putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
+                        putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
+                        if (bettingStation != null) {
+                            putExtra(WebActivity.BET_STATION, bettingStation)
+                        }
+                    }
+                )
+            }
+            path == "mobile/personal/activity_v2"->{
+                (context as AppCompatActivity).startActivity(PromotionListActivity::class.java)
+            }
+            path == "mobile/games/okgame"->{
+                (context as? MainTabActivity)?.let {
+                    it.jumpToOKGames()
+                }
+            }
+            path== "mobile/games/oklive"->{
+                (context as? MainTabActivity)?.let {
+                    it.jumpToOkLive()
+                }
+            }
+            path?.startsWith("mobile/sports/")==true->{
+                val sportParams = path.substringAfter("mobile/sports/").split("/")
+                LogUtil.toJson(sportParams)
+                val matchType = sportParams.getOrNull(0)
+                val gameType = sportParams.getOrNull(1)
+                val categoryType = sportParams.getOrNull(2)
+                (context as? MainTabActivity)?.let {
+                    if (gameType==GameType.ES.key){
+                       it.jumpToESport(matchType = MatchType.getMatchType(matchType),categoryType)
+                    }else{
+                        it.jumpToTheSport(matchType = MatchType.getMatchType(matchType),gameType = GameType.getGameType(gameType))
                     }
                 }
-            )
-        }else {
-            context.startActivity(
-                Intent(context, WebActivity::class.java).apply {
-                    putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
-                    putExtra(WebActivity.KEY_TITLE, title)
-                    putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
-                    putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
-                    if (bettingStation != null) {
-                        putExtra(WebActivity.BET_STATION, bettingStation)
+            }
+            else->{
+                context.startActivity(
+                    Intent(context, WebActivity::class.java).apply {
+                        putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
+                        putExtra(WebActivity.KEY_TITLE, title)
+                        putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
+                        putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
+                        if (bettingStation != null) {
+                            putExtra(WebActivity.BET_STATION, bettingStation)
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
+
+    /**
+     * 获取url域名后的路径
+     */
+    fun String.getUrlPathExcludeHost(): String = substringAfterLast("://").substringAfter("/").substringBefore("?")
 
     /**
      * 開啟外部瀏覽器

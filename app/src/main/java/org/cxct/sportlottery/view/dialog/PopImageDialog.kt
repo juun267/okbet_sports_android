@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.viewpager.widget.ViewPager
 import com.stx.xhb.androidx.XBanner
-import kotlinx.android.synthetic.main.dialog_pop_image.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.DialogPopImageBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.ImageType
@@ -46,37 +46,29 @@ class PopImageDialog :
                 MultiLanguagesApplication.appContext).key && !it.imageName1.isNullOrEmpty()
         }?.isNotEmpty() == true
     }
-
+    lateinit var binding : DialogPopImageBinding
     var onDismiss: (() -> Unit)? = null
     val imageType by lazy { arguments?.getInt(IMAGE_TYPE) }
+    lateinit var imageList : List<ImageData>
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.dialog_pop_image, container, false)
+        binding=DialogPopImageBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupClose()
         setUpBanner()
-        setLayoutParams()
     }
 
-    private fun setLayoutParams() {
-        if (imageType == ImageType.DIALOG_HOME.code) {
-            if (xbanner.layoutParams is ConstraintLayout.LayoutParams) {
-                val lp = (xbanner.layoutParams as ConstraintLayout.LayoutParams)
-                lp.dimensionRatio = "1:1"
-                xbanner.layoutParams = lp
-            }
-        }
-    }
 
     private fun setupClose() {
-        btn_close.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             dismiss()
         }
     }
@@ -86,12 +78,12 @@ class PopImageDialog :
         onDismiss?.invoke()
     }
 
-    private fun setUpBanner() {
+    private fun setUpBanner() = binding.run {
         val lang = LanguageManager.getSelectLanguage(context).key
-        val imageList = sConfigData?.imageList?.filter {
+         imageList = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
         }
-            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })?: listOf()
 
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
@@ -104,16 +96,32 @@ class PopImageDialog :
         xbanner.loadImage { _, model, view, _ ->
             (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
         }
+        xbanner.setOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int,
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                updateIndicate()
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+        })
 
         val host = sConfigData?.resServerHost
-        val images = imageList.map {
+        val images = imageList?.map {
             XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
-        }
+        }.toMutableList()
 
-        if (imageType == 7 && images.isNotEmpty()) {
+        if (imageType == ImageType.DIALOG_HOME.code && images.isNotEmpty()) {
             xbanner.visible()
         }
-        xbanner.setBannerData(images.toMutableList())
+        xbanner.setBannerData(images)
+        updateIndicate()
     }
 
     override fun onItemClick(banner: XBanner?, model: Any?, view: View?, position: Int) {
@@ -129,6 +137,9 @@ class PopImageDialog :
             JumpUtil.toInternalWeb(requireActivity(), jumpUrl, "")
         }
           dismissAllowingStateLoss()
+    }
+    private fun updateIndicate(){
+        binding.tvIndicator.text = "< ${binding.xbanner.bannerCurrentItem+1}/${imageList?.size?:0} >"
     }
 
 
