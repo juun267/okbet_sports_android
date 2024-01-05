@@ -145,7 +145,7 @@ class PopImageDialog :
     override fun onItemClick(banner: XBanner?, model: Any?, view: View?, position: Int) {
         val jumpUrl = (model as XBannerImage).jumpUrl
         if (!jumpUrl.isNullOrEmpty()) {
-            JumpUtil.toInternalWeb(requireActivity(), jumpUrl, (model as XBannerImage).title)
+            JumpUtil.toInternalWeb(requireActivity(), jumpUrl, model.title)
             dismissAllowingStateLoss()
         }
     }
