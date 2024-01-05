@@ -3,17 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
     android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/tvIndicator"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="@color/color_FFFFFF"
-        android:layout_marginBottom="@dimen/margin_15"/>
+        android:layout_marginBottom="@dimen/margin_15">
+        <TextView
+            android:id="@+id/tvArrowLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:textSize="20sp"
+            android:textColor="@color/color_FFFFFF"/>
+        <TextView
+            android:id="@+id/tvIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/color_FFFFFF"
+            tools:text="1/1"/>
+        <TextView
+            android:id="@+id/tvArrowRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:textSize="20sp"
+            android:textColor="@color/color_FFFFFF"/>
+    </LinearLayout>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +64,7 @@
         android:id="@+id/btn_close"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:src="@drawable/ic_close_white"
         android:contentDescription="@null" />
 </LinearLayout>
