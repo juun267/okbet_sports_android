@@ -62,13 +62,27 @@ class PopImageDialog :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupClose()
+        initClick()
         setUpBanner()
     }
 
 
-    private fun setupClose() {
-        binding.btnClose.setOnClickListener {
+    private fun initClick()=binding.run {
+        tvArrowLeft.text = "<"
+        tvArrowLeft.setOnClickListener {
+            if (xbanner.realCount==1){
+                return@setOnClickListener
+            }
+            xbanner.bannerCurrentItem = if(xbanner.bannerCurrentItem==0) xbanner.realCount-1 else xbanner.bannerCurrentItem-1
+        }
+        tvArrowRight.text = ">"
+        tvArrowRight.setOnClickListener {
+            if (xbanner.realCount==1){
+                return@setOnClickListener
+            }
+            xbanner.bannerCurrentItem = if(xbanner.bannerCurrentItem==xbanner.realCount-1) 0 else xbanner.bannerCurrentItem+1
+        }
+        btnClose.setOnClickListener {
             dismiss()
         }
     }
@@ -89,9 +103,9 @@ class PopImageDialog :
         if (imageList.isNullOrEmpty()) {
             return
         }
-
-        xbanner.setHandLoop(loopEnable)
-        xbanner.setAutoPlayAble(loopEnable)
+         //sid 要求取消自动循环
+//        xbanner.setHandLoop(loopEnable)
+//        xbanner.setAutoPlayAble(loopEnable)
         xbanner.setOnItemClickListener(this@PopImageDialog)
         xbanner.loadImage { _, model, view, _ ->
             (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
@@ -139,7 +153,7 @@ class PopImageDialog :
           dismissAllowingStateLoss()
     }
     private fun updateIndicate(){
-        binding.tvIndicator.text = "< ${binding.xbanner.bannerCurrentItem+1}/${imageList?.size?:0} >"
+        binding.tvIndicator.text = "${binding.xbanner.bannerCurrentItem+1}/${imageList?.size?:0}"
     }
 
 
