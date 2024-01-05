@@ -6,25 +6,38 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <TextView
+        android:id="@+id/tvIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/color_FFFFFF"
+        android:layout_marginBottom="@dimen/margin_15"/>
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_15">
+        android:layout_marginHorizontal="32dp"
+        app:cardCornerRadius="@dimen/margin_16">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <com.stx.xhb.androidx.XBanner
             android:id="@+id/xbanner"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="362:580"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintCircleRadius="@dimen/margin_10"
             app:AutoPlayTime="3500"
             app:pointSelect="@drawable/dot_8_blue_sel"
             app:pointNormal="@drawable/dot_8_blue_nor"
+            app:pointsVisibility="false"
             android:adjustViewBounds="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/btn_close"
