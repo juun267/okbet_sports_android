@@ -144,17 +144,10 @@ class PopImageDialog :
 
     override fun onItemClick(banner: XBanner?, model: Any?, view: View?, position: Int) {
         val jumpUrl = (model as XBannerImage).jumpUrl
-        if (jumpUrl.isEmptyStr()) {
-            return
+        if (!jumpUrl.isNullOrEmpty()) {
+            JumpUtil.toInternalWeb(requireActivity(), jumpUrl, (model as XBannerImage).title)
+            dismissAllowingStateLoss()
         }
-
-        if (jumpUrl!!.contains("sweepstakes")) {
-            JumpUtil.toLottery(requireActivity(),
-                Constants.getLotteryH5Url(requireContext(), LoginRepository.token))
-        } else {
-            JumpUtil.toInternalWeb(requireActivity(), jumpUrl, "")
-        }
-          dismissAllowingStateLoss()
     }
     private fun updateIndicate(){
         binding.tvIndicator.text = "${binding.xbanner.bannerCurrentItem+1}/${imageList?.size?:0}"

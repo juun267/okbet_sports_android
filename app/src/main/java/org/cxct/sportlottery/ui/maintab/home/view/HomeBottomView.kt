@@ -79,7 +79,7 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    private fun jumpToWebView(view: View, url: String?, @StringRes title: Int) {
+    private fun jumpToWebView(view: View, url: String, @StringRes title: Int) {
         view.setOnClickListener {
             val context = view.context
             JumpUtil.toInternalWeb(context, url, context.getString(title))
