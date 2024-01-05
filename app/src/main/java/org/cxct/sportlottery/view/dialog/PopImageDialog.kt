@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
 import com.stx.xhb.androidx.XBanner
+import com.stx.xhb.androidx.transformers.Transformer
+import kotlinx.android.synthetic.main.view_global_loading.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -73,14 +76,14 @@ class PopImageDialog :
             if (xbanner.realCount==1){
                 return@setOnClickListener
             }
-            xbanner.bannerCurrentItem = if(xbanner.bannerCurrentItem==0) xbanner.realCount-1 else xbanner.bannerCurrentItem-1
+            xbanner.setBannerCurrentItem(if(xbanner.bannerCurrentItem==0) xbanner.realCount-1 else xbanner.bannerCurrentItem-1,true)
         }
         tvArrowRight.text = ">"
         tvArrowRight.setOnClickListener {
             if (xbanner.realCount==1){
                 return@setOnClickListener
             }
-            xbanner.bannerCurrentItem = if(xbanner.bannerCurrentItem==xbanner.realCount-1) 0 else xbanner.bannerCurrentItem+1
+            xbanner.setBannerCurrentItem(if(xbanner.bannerCurrentItem==xbanner.realCount-1) 0 else xbanner.bannerCurrentItem+1,true)
         }
         btnClose.setOnClickListener {
             dismiss()
@@ -98,14 +101,15 @@ class PopImageDialog :
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
         }
             ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })?: listOf()
-
+        linIndicator.isVisible = imageList.size>1
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
             return
         }
          //sid 要求取消自动循环
-//        xbanner.setHandLoop(loopEnable)
-//        xbanner.setAutoPlayAble(loopEnable)
+        xbanner.setHandLoop(false)
+        xbanner.setAutoPlayAble(false)
+        xbanner.setPageTransformer(Transformer.Depth)
         xbanner.setOnItemClickListener(this@PopImageDialog)
         xbanner.loadImage { _, model, view, _ ->
             (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
@@ -127,7 +131,7 @@ class PopImageDialog :
         })
 
         val host = sConfigData?.resServerHost
-        val images = imageList?.map {
+        val images = imageList.map {
             XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }.toMutableList()
 
