@@ -241,12 +241,18 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (RecyclerView.SCROLL_STATE_DRAGGING == newState) { // 开始滑动
                     clearSubscribeChannels()
-                } else if (RecyclerView.SCROLL_STATE_IDLE == newState) { // 滑动停止
+                }/* else if (RecyclerView.SCROLL_STATE_IDLE == newState) { // 滑动停止
                     resubscribeChannel(20)
-                }
+                }*/
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                onScrollChanged(dx, dy)
             }
         })
     }
+
+    protected open fun onScrollChanged(dx: Int, dy: Int) { }
 
     override fun onResume() {
         super.onResume()
@@ -358,11 +364,16 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         unSubscribeChannelHallAll()
     }
 
-    protected val subscribedChannel = mutableListOf<Pair<String?, String?>>()
+    protected val subscribedChannel = mutableMapOf<String, Pair<String?, String?>>()
     protected val subscribeHandler = Handler(Looper.getMainLooper())
 
+    protected fun generateChannelKey(gameType: String?, eventId: String?) = "$gameType---$eventId"
     protected fun subscribeChannel(gameType: String?, eventId: String?) {
-        subscribedChannel.add(Pair(gameType, eventId))
+        val key = generateChannelKey(gameType, eventId)
+        if (subscribedChannel.containsKey(key)) {
+            return
+        }
+        subscribedChannel[key] = Pair(gameType, eventId)
         subscribeChannelHall(gameType, eventId)
     }
 
@@ -374,8 +385,8 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     private fun unSubscribeAllChannel() {
         unSubscribeChannelHallAll()
         getGameListAdapter().resetRangeMatchOdd()
-        if (subscribedChannel.size > 0) {
-            subscribedChannel.forEach { unSubscribeChannelHall(it.first, it.second) }
+        if (subscribedChannel.isNotEmpty()) {
+            subscribedChannel.forEach { unSubscribeChannelHall(it.value.first, it.value.second) }
             subscribedChannel.clear()
         }
     }
