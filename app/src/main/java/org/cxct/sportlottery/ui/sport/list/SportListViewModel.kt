@@ -51,8 +51,6 @@ open class SportListViewModel(
         get() = _oddsListGameHallResult
     private val _oddsListGameHallResult = SingleLiveEvent<Event<OddsListResult?>>()
 
-    private val _sportMenuResult = SingleLiveEvent<SportMenuResult?>()
-
     val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
 
     fun loadFavoriteGameList() {
