@@ -25,10 +25,9 @@ import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
-import org.cxct.sportlottery.ui.sport.list.SportListFragment2
+import org.cxct.sportlottery.ui.sport.list.SportListFragment
 import org.cxct.sportlottery.ui.sport.list.TodayMenuPop
 import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
@@ -40,7 +39,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
 
-class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
+class SportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
 
     override fun createVM(clazz: KClass<SportTabViewModel>) = getViewModel(clazz = clazz)
 
@@ -52,11 +51,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         MatchType.PARLAY,
         MatchType.OUTRIGHT,
         MatchType.MY_EVENT
-    ).apply {
-        if (FIBAUtil.enableFiba()){
-            add(1,MatchType.FIBA)
-        }
-    }
+    )
     private val todayMatchPosition = 2
     private val matchTypeTodayTab = mutableListOf(
         MatchType.TODAY,
@@ -81,7 +76,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     //根据赛事数量判断默认的分类
     private var defaultMatchType: MatchType? = null
     private var favoriteItems = listOf<Item>()
-    private val favoriteDelayRunable by lazy { DelayRunable(this@SportFragment2) { viewModel.loadFavoriteGameList() } }
+    private val favoriteDelayRunable by lazy { DelayRunable(this@SportFragment) { viewModel.loadFavoriteGameList() } }
     private inline fun favoriteCount(items: List<Item>): Int {
         return items.sumOf { it.leagueOddsList?.sumOf { it.matchOdds.size } ?: 0 }
     }
@@ -110,7 +105,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     fun initToolBar() = binding.homeToolbar.run {
         background = null
-        attach(this@SportFragment2, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
+        attach(this@SportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         betlistIcon.setOnClickListener {
             loginedRun(it.context) {
@@ -174,9 +169,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
         var position =0
         addTab(getString(R.string.home_tab_end_score), countBkEnd, position)
-        if (FIBAUtil.enableFiba()){
-            addTab(getString(R.string.fiba_2023), FIBAUtil.takeFIBAItem()?.num?:0, ++position)
-        }
         addTab(getString(R.string.home_tab_in_play), countInPlay, ++position)
 //        addTab(getString(R.string.home_tab_at_start), countAtStart, ++position)
         when (matchTypeTab[todayMatchPosition]){
@@ -213,7 +205,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
         tab.customView?.run {
             tv_title.text = name
-            tv_number.text = if(name==getString(R.string.fiba_2023)) "" else num.toString()
+            tv_number.text = num.toString()
             ivArrow.isVisible = showArrow
             if(showArrow){
                 todayTabItem = tab
@@ -291,7 +283,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             }
 
             else -> {
-                fragmentHelper.show(SportListFragment2::class.java, args) { fragment, newInstance ->
+                fragmentHelper.show(SportListFragment::class.java, args) { fragment, newInstance ->
                     fragment.resetFooterView(footView)
                     if (!newInstance && fragment.isAdded) {
                         fragment.reload(matchType, gameType)

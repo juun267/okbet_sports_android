@@ -5,11 +5,11 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.ui.sport.list.SportListFragment2
+import org.cxct.sportlottery.ui.sport.list.SportListFragment
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import java.util.ArrayList
 
-class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportList2Binding>() {
+class FavoriteFragment2: SportListFragment<SportListViewModel, FragmentSportList2Binding>() {
 
     override var matchType = MatchType.MY_EVENT
     private var currentFavoriteList = listOf<Item>()

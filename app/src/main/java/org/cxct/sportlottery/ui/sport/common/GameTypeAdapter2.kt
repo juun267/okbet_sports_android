@@ -18,7 +18,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAItem
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.SvgUtil.setAssetSvgIcon
@@ -83,17 +82,11 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
     }
 
     override fun convert(holder: BaseViewHolder, item: Item) = (holder.itemView as SVGAImageView).run {
-        if (item is FIBAItem) {
-            7.dp.let { setPadding(it, it, it, it) }
-            setImageDrawable(item.icon)
-        } else {
-            setPadding(0, 0, 0, 0)
-            loops = 1
-            clearsAfterStop = false
-            setAssetSvgIcon(GameType.getGameTypeMenuSVGA(item.code))
-            if (item.isSelected){
-                stepToFrame(0, true)
-            }
+        loops = 1
+        clearsAfterStop = false
+        setAssetSvgIcon(GameType.getGameTypeMenuSVGA(item.code))
+        if (item.isSelected){
+            stepToFrame(0, true)
         }
         background = if (item.isSelected) bgDrawable else null
     }

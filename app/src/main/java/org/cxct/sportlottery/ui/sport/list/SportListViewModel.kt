@@ -23,10 +23,8 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
-import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMDE_FORMAT
@@ -308,11 +306,7 @@ open class SportListViewModel(
             jobSwitchGameType?.cancel()
         }
         jobSwitchGameType = viewModelScope.launch {
-            if (matchType == MatchType.FIBA) {
-                getOddsList(GameType.BK.key, item.code, null, selectLeagueIdList, selectMatchIdList)
-            } else {
-                getGameHallList(matchType, item.code, selectLeagueIdList, selectMatchIdList,categoryCodeList)
-            }
+            getGameHallList(matchType, item.code, selectLeagueIdList, selectMatchIdList,categoryCodeList)
         }
     }
 
@@ -580,23 +574,6 @@ open class SportListViewModel(
             MatchType.EPS -> menuData.menu.eps?.items ?: listOf()
             MatchType.MY_EVENT -> menuData.menu.myFavorite?.items ?: listOf()
             else -> listOf()
-        }
-
-        if (FIBAUtil.enableFiba()) {
-            if (matchType == MatchType.FIBA
-                ||matchType == MatchType.IN_PLAY
-                || matchType == MatchType.AT_START
-                || matchType == MatchType.IN12HR
-                || matchType == MatchType.IN24HR
-                || matchType == MatchType.TODAY
-                || matchType == MatchType.EARLY) {
-
-                FIBAUtil.takeFIBAItem()?.let {
-                    val list = itemList.toMutableList()
-                    list.add(0, it)
-                    itemList = list
-                }
-            }
         }
 
         sportTypeMenuData.value = Triple(itemList, sportMenuResult.succeeded(), sportMenuResult.msg)

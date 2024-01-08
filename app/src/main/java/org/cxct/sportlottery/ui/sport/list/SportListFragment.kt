@@ -2,13 +2,10 @@ package org.cxct.sportlottery.ui.sport.list
 
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.gone
@@ -21,16 +18,14 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetInfoListData
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.list.adapter.*
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
  */
-open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>(), OnOddClickListener {
+open class SportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>(), OnOddClickListener {
 
     override var matchType = MatchType.IN_PLAY
 
@@ -43,7 +38,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         SportLeagueAdapter2(matchType,
             this,
             onNodeExpand = { resubscribeChannel(200) },
-            onOddClick = this@SportListFragment2,
+            onOddClick = this@SportListFragment,
             onFavorite = { matchId ->
             loginedRun(context()) { viewModel.pinFavorite(FavoriteType.MATCH, matchId) }
         })
@@ -102,7 +97,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
     private inline fun BaseNode.isMatchOdd() =  this is org.cxct.sportlottery.network.odds.list.MatchOdd
     protected open fun observeSportList() = viewModel.run {
 
-        oddsListGameHallResult.observe(this@SportListFragment2.viewLifecycleOwner) {
+        oddsListGameHallResult.observe(this@SportListFragment.viewLifecycleOwner) {
             if (it.tag != gameType) {
                 return@observe
             }
@@ -175,7 +170,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
             }
         }
 
-        receiver.matchClock.observe(this@SportListFragment2.viewLifecycleOwner) { event->
+        receiver.matchClock.observe(this@SportListFragment.viewLifecycleOwner) { event->
             val matchId =  event?.matchId ?: return@observe
             if (sportLeagueAdapter2.getCount() < 1) {
                 return@observe
@@ -200,7 +195,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
             }
         }
 
-        receiver.globalStop.observe(this@SportListFragment2.viewLifecycleOwner) { event->
+        receiver.globalStop.observe(this@SportListFragment.viewLifecycleOwner) { event->
             if (event == null || sportLeagueAdapter2.getCount() < 1) {
                 return@observe
             }
@@ -213,7 +208,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
             }
         }
 
-        receiver.closePlayCate.observe(this@SportListFragment2.viewLifecycleOwner) { event ->
+        receiver.closePlayCate.observe(this@SportListFragment.viewLifecycleOwner) { event ->
             val closeEvent = event?.peekContent() ?: return@observe
             if (gameTypeAdapter.currentItem?.code == closeEvent.gameType) {
                 sportLeagueAdapter2.closePlayCate(closeEvent)

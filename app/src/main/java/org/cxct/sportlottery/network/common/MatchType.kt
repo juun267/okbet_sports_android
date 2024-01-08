@@ -3,8 +3,6 @@ package org.cxct.sportlottery.network.common
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.proguards.KeepMembers
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAItem
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 
 @KeepMembers
 enum class MatchType private constructor(val postValue: String, @StringRes val resId: Int) {
@@ -25,8 +23,7 @@ enum class MatchType private constructor(val postValue: String, @StringRes val r
     DETAIL("DETAIL", R.string.my_favorite),
     SINGLE("SINGLE",R.string.ou_hdp_1x2_title),
     IN12HR("IN12HR",R.string.P228),
-    IN24HR("IN24HR",R.string.P229),
-    FIBA("FIBA", R.string.fiba_2023);
+    IN24HR("IN24HR",R.string.P229);
 
     companion object {
         fun getMatchTypeStringRes(matchType: String?): Int {
