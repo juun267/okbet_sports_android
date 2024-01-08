@@ -273,7 +273,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
         if (AgeVerifyDialog.isAgeVerifyNeedShow){
             AgeVerifyDialog.isAgeVerifyNeedShow =false
-            AgeVerifyDialog(onConfirm = {}, onExit = {}).show(parentFragmentManager)
+            AgeVerifyDialog(onConfirm = {}, onExit = {}).show(childFragmentManager)
         }
     }
     fun setupProvider(firmList:MutableList<OKGamesFirm>)=binding.topView.run{
