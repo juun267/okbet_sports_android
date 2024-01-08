@@ -228,6 +228,8 @@ open class SportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, F
         addOddsDialog(matchInfo, odd, playCateCode,betPlayCateName, betPlayCateNameMap)
     }
 
+    override fun onScrollStoped() { }
+
     override fun onScrollChanged(dx: Int, dy: Int) {
 
         val visibleMatchInfo = mutableSetOf<String>()
