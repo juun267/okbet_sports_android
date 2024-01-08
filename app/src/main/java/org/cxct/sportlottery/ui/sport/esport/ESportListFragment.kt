@@ -250,6 +250,24 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         addOddsDialog(matchInfo, odd, playCateCode,betPlayCateName, betPlayCateNameMap)
     }
 
+    override fun onScrollChanged(dx: Int, dy: Int) {
+
+        val visibleMatchInfo = mutableSetOf<String>()
+        sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
+            matchOdd.matchInfo?.let {
+                visibleMatchInfo.add("${it.gameType}---${it.id}")
+                subscribeChannel(it.gameType, it.id)
+            }
+        }
+
+        subscribedChannel.forEach {
+            if (!visibleMatchInfo.contains(it.key)) {
+                unSubscribeChannelHall(it.value.first, it.value.second)
+            }
+        }
+
+    }
+
     override fun resubscribeChannel(delay: Long) {
         clearSubscribeChannels()
         if (!isVisible) {

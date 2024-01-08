@@ -44,10 +44,10 @@ open class SportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, F
         })
     }
 
-    override fun onInitView(view: View) {
-        binding.gameList.itemAnimator = null
-        super.onInitView(view)
-    }
+//    override fun onInitView(view: View) {
+//        binding.gameList.itemAnimator = null
+//        super.onInitView(view)
+//    }
 
 
     // 该方法中不要引用与生命周期有关的(比如：ViewModel、Activity)
@@ -227,6 +227,25 @@ open class SportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, F
     ) {
         addOddsDialog(matchInfo, odd, playCateCode,betPlayCateName, betPlayCateNameMap)
     }
+
+    override fun onScrollChanged(dx: Int, dy: Int) {
+
+        val visibleMatchInfo = mutableSetOf<String>()
+        sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
+            matchOdd.matchInfo?.let {
+                visibleMatchInfo.add(generateChannelKey(it.gameType, it.id))
+                subscribeChannel(it.gameType, it.id)
+            }
+        }
+
+        subscribedChannel.forEach {
+            if (!visibleMatchInfo.contains(it.key)) {
+                unSubscribeChannelHall(it.value.first, it.value.second)
+            }
+        }
+
+    }
+
 
     override fun resubscribeChannel(delay: Long) {
         clearSubscribeChannels()
