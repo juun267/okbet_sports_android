@@ -102,9 +102,6 @@ class StaticData {
             return TestFlag.values().find { it.index == index }
         }
 
-        fun worldCupOpened(): Boolean {
-            return sConfigData?.fibaConfig?.fibaEnable == 1
-        }
         fun okLiveOpened(): Boolean {
             sConfigData?.homeGamesList?.forEach {
                 if(it.uniqueName== HomeGames.OkLive.value){

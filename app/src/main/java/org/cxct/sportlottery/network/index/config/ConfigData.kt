@@ -124,7 +124,6 @@ data class ConfigData(
     val nationCurrencyList: List<NationCurrency>?, //国家币种列表
     val liveChatHost: String?,
     var liveChatOpen: Int?,
-    var fibaConfig: FibaConfig?=null,
     var liveCount: Int?,//直播总数
     val enableLockBalance: String?,//个人中心押金后台配置0或者null隐藏1显示
     val uwEnableTime: String?,//锁定额度限制解锁时间
@@ -160,10 +159,4 @@ data class ConfigData(
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
 }
-@JsonClass(generateAdapter = true)
-@Keep
-data class FibaConfig(
-    val fibaEnable: Int?,//是否开启世界杯入口
-    val fibaShow3rd: Int?,
-    val fibaShowBracket: Int?,
-)
+
