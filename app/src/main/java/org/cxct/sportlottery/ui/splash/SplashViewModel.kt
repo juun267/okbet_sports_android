@@ -15,7 +15,6 @@ import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.util.ConfigResource
 import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.setupDefaultHandicapType
@@ -230,7 +229,6 @@ class SplashViewModel(
         setupDefaultHandicapType()
         configResult.postValue(result)
         ConfigRepository.config.postValue(result)
-        FIBAUtil.preloadLoad() // 篮球世界杯相关
     }
 
     private fun setBaseUrl(baseUrl: String, retrofit: Retrofit) {

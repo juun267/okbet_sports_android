@@ -19,7 +19,6 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
-import org.cxct.sportlottery.network.common.ESportType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -33,9 +32,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
-import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
@@ -158,20 +155,13 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 targetGameType = it
             }
         }
-        //篮球世界杯界面
-        if (gameTypeList.size==1&&gameTypeList.first().code==FIBAUtil.fibaCode){
-            binding.sportTypeList.gone()
-            if (targetGameType == null) {
-                targetGameType = gameTypeList.first()
-            }
-        }else{
-            binding.sportTypeList.show()
-            if (targetGameType == null) {
-                targetGameType = gameTypeList.find { it.num > 0 && it.code!=FIBAUtil.fibaCode }
-            }
-            if (targetGameType == null) {
-                targetGameType = gameTypeList.first()
-            }
+
+        binding.sportTypeList.show()
+        if (targetGameType == null) {
+            targetGameType = gameTypeList.find { it.num > 0 }
+        }
+        if (targetGameType == null) {
+            targetGameType = gameTypeList.first()
         }
         if (currentItem==null){
             gameType = targetGameType!!.code
@@ -286,13 +276,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         } else {
             scrollBackTop()
         }
-        if (item.code == FIBAUtil.fibaCode){
-            when(parentFragment){
-                is SportFragment2->(parentFragment as SportFragment2).setJumpSport(MatchType.FIBA)
-                is ESportFragment ->(parentFragment as ESportFragment).setJumpSport(MatchType.FIBA)
-            }
-            return
-        }
+
         //日期圖示選取狀態下，切換球種要重置UI狀態
         gameType = item.code
         currentItem = item

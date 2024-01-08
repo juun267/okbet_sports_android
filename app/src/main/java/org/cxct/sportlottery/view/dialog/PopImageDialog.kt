@@ -19,7 +19,6 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.DialogPopImageBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
-import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog

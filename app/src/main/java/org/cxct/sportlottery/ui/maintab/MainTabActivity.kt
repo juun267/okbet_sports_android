@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
@@ -17,7 +16,6 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.event.*
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
@@ -52,7 +50,7 @@ import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
-import org.cxct.sportlottery.ui.sport.SportFragment2
+import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.*
@@ -77,7 +75,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
                 Param(HomeFragment::class.java),
-                Param(SportFragment2::class.java),
+                Param(SportFragment::class.java),
                 Param(OKGamesFragment::class.java),
                 Param(ProfileCenterFragment::class.java),
                 Param(OKLiveFragment::class.java),
@@ -146,7 +144,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             R.string.menu -> { // 菜单
                 val currentFragment = fragmentHelper.getCurrentFragment()
                 onMenuEvent(MenuEvent(true))
-                if (currentFragment is SportFragment2) {
+                if (currentFragment is SportFragment) {
                     showSportLeftMenu()
                 } else {
                     showMainLeftMenu(currentFragment.javaClass as Class<BaseFragment<*>>?)
@@ -327,7 +325,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
      */
     fun checkSportFragment(): Boolean {
         val fragment = fragmentHelper.getCurrentFragment()
-        if (fragment is SportFragment2) {
+        if (fragment is SportFragment) {
             return true
         }
         if (fragment is ESportFragment) {
@@ -503,7 +501,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
         val needShowBetBar = fragmentHelper.getCurrentPosition() >= 0
                 && (fragmentHelper.getCurrentFragment() is HomeFragment
-                    || fragmentHelper.getCurrentFragment() is SportFragment2
+                    || fragmentHelper.getCurrentFragment() is SportFragment
                     || fragmentHelper.getCurrentFragment() is ESportFragment)
 
         if (betListCount == 0
@@ -636,14 +634,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             tabHelper.selectedSport()
             navToPosition(INDEX_SPORT)
             binding.root.postDelayed(200){
-                (fragmentHelper.getFragment(INDEX_SPORT) as SportFragment2).jumpToSport(gameType)
+                (fragmentHelper.getFragment(INDEX_SPORT) as SportFragment).jumpToSport(gameType)
             }
         }
     }
 
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         tabHelper.selectedSport()
-        (fragmentHelper.getFragment(INDEX_SPORT) as SportFragment2).setJumpSport(matchType, gameType)
+        (fragmentHelper.getFragment(INDEX_SPORT) as SportFragment).setJumpSport(matchType, gameType)
         navToPosition(INDEX_SPORT)
     }
 

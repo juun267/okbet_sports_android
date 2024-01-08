@@ -3,23 +3,12 @@ package org.cxct.sportlottery.ui.sport
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.sport.SportRepository
-import org.cxct.sportlottery.network.common.ESportType
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.sport.CategoryItem
-import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.maintab.worldcup.FIBAUtil
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.SingleLiveEvent
-import org.cxct.sportlottery.util.TimeUtil
 
 class SportTabViewModel(
     androidContext: Application,
