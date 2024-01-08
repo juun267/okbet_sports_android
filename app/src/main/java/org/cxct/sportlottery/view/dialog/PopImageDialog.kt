@@ -105,7 +105,6 @@ class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class), XBanner.
          //sid 要求取消自动循环
         xbanner.setHandLoop(loopEnable)
         xbanner.setAutoPlayAble(false)
-        xbanner.setPageTransformer(Transformer.Depth)
         //使用xbanner的Depth 动画时，点击第一个banner，会触发第二个banner的点击，故此使用自定义的
         xbanner.setCustomPageTransformer(org.cxct.sportlottery.util.DepthPageTransformer())
         xbanner.setOnItemClickListener(this@PopImageDialog)
