@@ -10,16 +10,14 @@ import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
 import com.stx.xhb.androidx.XBanner
 import com.stx.xhb.androidx.transformers.Transformer
-import kotlinx.android.synthetic.main.view_global_loading.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.DialogPopImageBinding
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -30,8 +28,7 @@ import org.cxct.sportlottery.util.LanguageManager
 /**
  * 顯示棋牌彈窗
  */
-class PopImageDialog :
-    BaseDialog<BaseViewModel>(BaseViewModel::class), XBanner.OnItemClickListener {
+class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class), XBanner.OnItemClickListener {
 
     init {
         setStyle(R.style.FullScreen)
@@ -49,7 +46,7 @@ class PopImageDialog :
         }?.isNotEmpty() == true
     }
     lateinit var binding : DialogPopImageBinding
-    var onDismiss: (() -> Unit)? = null
+    var onDismiss: ((clickDismiss: Boolean) -> Unit)? = null
     val imageType by lazy { arguments?.getInt(IMAGE_TYPE) }
     lateinit var imageList : List<ImageData>
 
@@ -91,7 +88,7 @@ class PopImageDialog :
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        onDismiss?.invoke()
+        onDismiss?.invoke(false)
     }
 
     private fun setUpBanner() = binding.run {
@@ -101,14 +98,16 @@ class PopImageDialog :
         }
             ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })?: listOf()
         linIndicator.isVisible = imageList.size>1
-        val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
             return
         }
+        val loopEnable = (imageList?.size ?: 0) > 1
          //sid 要求取消自动循环
-        xbanner.setHandLoop(false)
+        xbanner.setHandLoop(loopEnable)
         xbanner.setAutoPlayAble(false)
         xbanner.setPageTransformer(Transformer.Depth)
+        //使用xbanner的Depth 动画时，点击第一个banner，会触发第二个banner的点击，故此使用自定义的
+        xbanner.setCustomPageTransformer(org.cxct.sportlottery.util.DepthPageTransformer())
         xbanner.setOnItemClickListener(this@PopImageDialog)
         xbanner.loadImage { _, model, view, _ ->
             (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
@@ -133,7 +132,6 @@ class PopImageDialog :
         val images = imageList.map {
             XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }.toMutableList()
-
         if (imageType == ImageType.DIALOG_HOME.code && images.isNotEmpty()) {
             xbanner.visible()
         }
@@ -147,10 +145,9 @@ class PopImageDialog :
             JumpUtil.toInternalWeb(requireActivity(), jumpUrl, model.title)
             dismissAllowingStateLoss()
         }
+        onDismiss?.invoke(true)
     }
     private fun updateIndicate(){
         binding.tvIndicator.text = "${binding.xbanner.bannerCurrentItem+1}/${imageList?.size?:0}"
     }
-
-
 }

@@ -129,12 +129,12 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             viewModel.getSportMenuFilter()
             if (PopImageDialog.showHomeDialog) {
                 PopImageDialog.showHomeDialog = false
-                if (PromotionPopupDialog.needShow(getMainTabActivity())){
-                    PromotionPopupDialog(getMainTabActivity()) {
+                if (PromotionPopupDialog.needShow()){
+                    PromotionPopupDialog {
                         JumpUtil.toInternalWeb(getMainTabActivity(),
                             Constants.getPromotionUrl(),
                             getString(R.string.promotion))
-                    }.show()
+                    }.show(parentFragmentManager)
                 }
                 if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_HOME.code)) {
                     requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
