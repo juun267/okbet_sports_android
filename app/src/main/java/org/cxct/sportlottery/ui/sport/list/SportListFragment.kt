@@ -235,17 +235,18 @@ open class SportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, F
 
     override fun onStartScroll() {
         super.onStartScroll()
-        lastMove = -1000
+        lastMove = 0
     }
 
-    private val minMove = 4.dp
+    private val minMove = 5.dp
     private var lastMove = 0
     override fun onScrollChanged(dx: Int, dy: Int) {
-        if (abs(dy - lastMove) < minMove) {
+
+        lastMove += abs(dy)
+        if (lastMove < minMove) {
             return
         }
-        lastMove = dy
-
+        lastMove = 0
         val visibleMatchInfo = mutableSetOf<String>()
         sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
             matchOdd.matchInfo?.let {
