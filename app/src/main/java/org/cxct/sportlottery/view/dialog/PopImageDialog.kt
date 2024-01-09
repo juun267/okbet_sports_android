@@ -23,11 +23,12 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LogUtil
 
 /**
  * 顯示棋牌彈窗
  */
-class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class), XBanner.OnItemClickListener {
+class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
 
     init {
         setStyle(R.style.FullScreen)
@@ -44,17 +45,17 @@ class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class), XBanner.
                 MultiLanguagesApplication.appContext).key && !it.imageName1.isNullOrEmpty()
         }?.isNotEmpty() == true
     }
-    lateinit var binding : DialogPopImageBinding
-    var onDismiss: ((clickDismiss: Boolean) -> Unit)? = null
+
+    lateinit var binding: DialogPopImageBinding
     val imageType by lazy { arguments?.getInt(IMAGE_TYPE) }
-    lateinit var imageList : List<ImageData>
+    lateinit var imageList: List<ImageData>
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding=DialogPopImageBinding.inflate(layoutInflater, container, false)
+        binding = DialogPopImageBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -65,52 +66,60 @@ class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class), XBanner.
     }
 
 
-    private fun initClick()=binding.run {
+    private fun initClick() = binding.run {
         tvArrowLeft.text = "<"
         tvArrowLeft.setOnClickListener {
-            if (xbanner.realCount==1){
+            if (xbanner.realCount == 1) {
                 return@setOnClickListener
             }
-            xbanner.setBannerCurrentItem(if(xbanner.bannerCurrentItem==0) xbanner.realCount-1 else xbanner.bannerCurrentItem-1,true)
+            xbanner.setBannerCurrentItem(if (xbanner.bannerCurrentItem == 0) xbanner.realCount - 1 else xbanner.bannerCurrentItem - 1,
+                true)
         }
         tvArrowRight.text = ">"
         tvArrowRight.setOnClickListener {
-            if (xbanner.realCount==1){
+            if (xbanner.realCount == 1) {
                 return@setOnClickListener
             }
-            xbanner.setBannerCurrentItem(if(xbanner.bannerCurrentItem==xbanner.realCount-1) 0 else xbanner.bannerCurrentItem+1,true)
+            xbanner.setBannerCurrentItem(if (xbanner.bannerCurrentItem == xbanner.realCount - 1) 0 else xbanner.bannerCurrentItem + 1,
+                true)
         }
         btnClose.setOnClickListener {
             dismiss()
         }
     }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        onDismiss?.invoke(false)
-    }
-
     private fun setUpBanner() = binding.run {
         val lang = LanguageManager.getSelectLanguage(context).key
-         imageList = sConfigData?.imageList?.filter {
+        imageList = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
         }
-            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })?: listOf()
-        linIndicator.isVisible = imageList.size>1
+            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+            ?: listOf()
+        linIndicator.isVisible = imageList.size > 1
         if (imageList.isNullOrEmpty()) {
             return
         }
-        val loopEnable = imageList.size> 1
-         //sid 要求取消自动循环
+        val loopEnable = imageList.size > 1
+        //sid 要求取消自动循环
         xbanner.setHandLoop(loopEnable)
         xbanner.setAutoPlayAble(false)
         //使用xbanner的Depth 动画时，点击第一个banner，会触发第二个banner的点击，故此使用自定义的
         xbanner.setPageTransformer(Transformer.Depth)
-        xbanner.setOnItemClickListener(this@PopImageDialog)
-        xbanner.loadImage { _, model, view, _ ->
+        //因为onItemClick 返回的位置不对
+//        xbanner.setOnItemClickListener(this@PopImageDialog)
+        xbanner.loadImage { _, model, view, position ->
             (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
+            view.setOnClickListener {
+                val realImageData = imageList.getOrNull(xbanner.bannerCurrentItem)
+                LogUtil.d("bannerCurrentItem="+xbanner.bannerCurrentItem+",jumpUrl="+realImageData?.appUrl)
+                realImageData?.let {
+                    if (!it.appUrl.isNullOrEmpty()) {
+                        JumpUtil.toInternalWeb(requireActivity(), it.appUrl, it.imageText1)
+                        dismissAllowingStateLoss()
+                    }
+                }
+            }
         }
-        xbanner.setOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+        xbanner.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -130,6 +139,7 @@ class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class), XBanner.
         val images = imageList.map {
             XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }.toMutableList()
+        LogUtil.toJson(images)
         if (imageType == ImageType.DIALOG_HOME.code && images.isNotEmpty()) {
             xbanner.visible()
         }
@@ -137,15 +147,8 @@ class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class), XBanner.
         updateIndicate()
     }
 
-    override fun onItemClick(banner: XBanner?, model: Any?, view: View?, position: Int) {
-        val jumpUrl = (model as XBannerImage).jumpUrl
-        if (!jumpUrl.isNullOrEmpty()) {
-            JumpUtil.toInternalWeb(requireActivity(), jumpUrl, model.title)
-            dismissAllowingStateLoss()
-        }
-        onDismiss?.invoke(true)
-    }
-    private fun updateIndicate(){
-        binding.tvIndicator.text = "${binding.xbanner.bannerCurrentItem+1}/${imageList?.size?:0}"
+    private fun updateIndicate() {
+        binding.tvIndicator.text =
+            "${binding.xbanner.bannerCurrentItem + 1}/${imageList?.size ?: 0}"
     }
 }
