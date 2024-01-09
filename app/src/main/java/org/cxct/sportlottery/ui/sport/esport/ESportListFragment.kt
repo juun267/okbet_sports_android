@@ -33,6 +33,7 @@ import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import java.util.ArrayList
+import kotlin.math.abs
 
 open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>(), OnOddClickListener {
 
@@ -250,14 +251,24 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         addOddsDialog(matchInfo, odd, playCateCode,betPlayCateName, betPlayCateNameMap)
     }
 
-    override fun onScrollStoped() { }
+    override fun onScrollStopped() { }
 
+    override fun onStartScroll() {
+        super.onStartScroll()
+        lastMove = -1000
+    }
+
+    private val minMove = 4.dp
+    private var lastMove = 0
     override fun onScrollChanged(dx: Int, dy: Int) {
-
+        if (abs(dy - lastMove) < minMove) {
+            return
+        }
+        lastMove = dy
         val visibleMatchInfo = mutableSetOf<String>()
         sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
             matchOdd.matchInfo?.let {
-                visibleMatchInfo.add("${it.gameType}---${it.id}")
+                visibleMatchInfo.add(generateChannelKey(it.gameType, it.id))
                 subscribeChannel(it.gameType, it.id)
             }
         }
