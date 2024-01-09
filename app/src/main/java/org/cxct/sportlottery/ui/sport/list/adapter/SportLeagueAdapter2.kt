@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport.list.adapter
 
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.entity.node.BaseNode
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
@@ -26,6 +27,8 @@ class SportLeagueAdapter2(
     onOddClick: OnOddClickListener,
     onFavorite:(String) -> Unit,
     val esportTheme: Boolean = false,
+    val onAttachMatch: (org.cxct.sportlottery.network.odds.MatchInfo) -> Unit,
+    val onDetachMatch: (org.cxct.sportlottery.network.odds.MatchInfo) -> Unit,
 ): ExpanableOddsAdapter<MatchOdd>() {
 
     var oddsType: OddsType = OddsType.EU
@@ -48,6 +51,22 @@ class SportLeagueAdapter2(
             is LeagueOdd -> 1
             is MatchOdd -> 2
             else -> 3
+        }
+    }
+
+    override fun onViewAttachedToWindow(holder: BaseViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        (holder.itemView.tag as MatchOdd?)?.matchInfo?.let {
+            recodeRangeMatchOdd()
+            onAttachMatch(it)
+        }
+    }
+
+    override fun onViewDetachedFromWindow(holder: BaseViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        (holder.itemView.tag as MatchOdd?)?.matchInfo?.let {
+            recodeRangeMatchOdd()
+            onDetachMatch(it)
         }
     }
 
