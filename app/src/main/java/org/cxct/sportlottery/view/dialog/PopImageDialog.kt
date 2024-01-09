@@ -101,7 +101,7 @@ class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class), XBanner.
         if (imageList.isNullOrEmpty()) {
             return
         }
-        val loopEnable = (imageList?.size ?: 0) > 1
+        val loopEnable = imageList.size> 1
          //sid 要求取消自动循环
         xbanner.setHandLoop(loopEnable)
         xbanner.setAutoPlayAble(false)
