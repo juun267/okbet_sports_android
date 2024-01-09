@@ -23,6 +23,7 @@ class DailyConfigAdapter(val onSelectedItem: (DailyConfig)->Unit): BindingAdapte
                 FirstDepositNoticeDialog(item.content).show(it1.supportFragmentManager)
             }
         }
+        linChooseReward.isSelected = selectPos ==position
         tvPercent.text = "${item.additional}%"
         tvCapped.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(item.capped,0)}"
         tvRewardDesp.text = when{

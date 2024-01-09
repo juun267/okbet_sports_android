@@ -14,5 +14,5 @@ data class DailyConfig(
     val rewards: Int,
     val times: Int,
     val content:String,
-    val activityTypeCode:Int
+    val activityType:Int
 ):Parcelable

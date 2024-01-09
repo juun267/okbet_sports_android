@@ -283,7 +283,7 @@ class MoneyRechViewModel(
         depositMoney: String,
         bankCode: String?,
         payer: String?,
-        activityTypeCode:Int?
+        activityType:Int?
     ) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
@@ -299,7 +299,7 @@ class MoneyRechViewModel(
                 "depositMoney" to depositMoney,
                 "clientType" to "2",
             ).apply {
-                activityTypeCode?.let { put("activityTypeCode",it.toString()) }
+                activityType?.let { put("activityType",it.toString()) }
                 if (!payer.isNullOrEmpty())
                     put("payer", payer)
                 AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {

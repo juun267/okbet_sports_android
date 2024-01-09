@@ -74,7 +74,7 @@ class PromotionDetailActivity :
             PromotionSuccessDialog.newInstance().show(supportFragmentManager,null)
         }
         viewModel.dailyConfigEvent.observe(this){
-            val dailyConfig = it.firstOrNull { it.activityTypeCode == activityData?.activityType }
+            val dailyConfig = it.firstOrNull { it.activityType == activityData?.activityType }
             binding.linActivity.show()
             binding.linApply.isEnabled = true
             binding.linApply.setBackgroundResource(R.drawable.bg_blue_radius_8)
