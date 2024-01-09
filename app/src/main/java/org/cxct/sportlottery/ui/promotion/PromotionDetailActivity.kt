@@ -52,7 +52,7 @@ class PromotionDetailActivity :
             LogUtil.toJson(activityData)
             if (!it.activityId.isNullOrEmpty()){
                 viewModel.activityDetailH5(it.activityId)
-            }else if(it.activityType==4){
+            }else if(it.activityType==4||it.activityType==6){
                 if (LoginRepository.isLogined()) {
                     viewModel.getDailyConfig()
                 }
@@ -74,6 +74,7 @@ class PromotionDetailActivity :
             PromotionSuccessDialog.newInstance().show(supportFragmentManager,null)
         }
         viewModel.dailyConfigEvent.observe(this){
+            val dailyConfig = it.firstOrNull { it.activityTypeCode == activityData?.activityType }
             binding.linActivity.show()
             binding.linApply.isEnabled = true
             binding.linApply.setBackgroundResource(R.drawable.bg_blue_radius_8)
@@ -86,10 +87,10 @@ class PromotionDetailActivity :
             binding.tvDepositName.text = getString(R.string.P277)
             binding.tvRewardName.text = getString(R.string.P278)
             binding.tvApply.text = getString(R.string.J285)
-            if (it.first == 1) {
-                binding.tvDeposit.text = "${it.additional}%"
+            if (dailyConfig?.first == 1) {
+                binding.tvDeposit.text = "${dailyConfig.additional}%"
                 binding.tvDeposit.setTextColor(getColor(R.color.color_0D2245))
-                binding.tvReward.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.capped,0)}"
+                binding.tvReward.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(dailyConfig.capped,0)}"
                 binding.tvReward.setTextColor(getColor(R.color.color_0D2245))
             } else {
                 binding.tvDeposit.text = "${activityData?.amount?.toInt()}%"
@@ -124,13 +125,13 @@ class PromotionDetailActivity :
                 1 -> getString(R.string.H019)
                 2 -> getString(R.string.title_deposit_money)//充值活动
                 3 -> getString(R.string.P225)//充值活动
-                4 -> getString(R.string.P277)//充值活动
+                4,6 -> getString(R.string.P277)//充值活动
                 5 -> getString(R.string.N713)//盈利金额
                 else -> getString(R.string.deposits)//亏损金额
             }
             tvReward.text = TextUtil.formatMoney(activityDetail.reward)
             tvRewardName.text = when (activityDetail.activityType) {
-                4 -> getString(R.string.P278)
+                4,6 -> getString(R.string.P278)
                 else -> getString(R.string.P156)//亏损金额
             }
             linHistory.show()

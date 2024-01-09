@@ -16,7 +16,7 @@ object MoneyRepository {
     suspend fun rechCheckStauts(params: JsonObject): ApiResult<String> {
         return moneyApi.rechCheckStauts(params)
     }
-    suspend fun rechDailyConfig(): ApiResult<DailyConfig> {
+    suspend fun rechDailyConfig(): ApiResult<List<DailyConfig>> {
         return moneyApi.rechDailyConfig()
     }
 }
