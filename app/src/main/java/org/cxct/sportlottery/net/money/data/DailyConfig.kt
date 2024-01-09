@@ -13,5 +13,6 @@ data class DailyConfig(
     val principal: Int,
     val rewards: Int,
     val times: Int,
-    val content:String
+    val content:String,
+    val activityTypeCode:Int
 ):Parcelable
