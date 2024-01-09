@@ -235,7 +235,7 @@
             android:gravity="center"
             android:paddingHorizontal="10dp"
             android:lineHeight="@dimen/margin_16"
-            android:text="OKbet is a Registered Trade Mark, Brand and Business Name Owned by GAVIN VENTURES, INC.Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR)."
+            android:text="OKBET Is A Registered Trade Mark, Brand And Business Name Owned By GAVIN VENTURES, INC.Regulated &amp; Licensed By The Philippine Amusement And Gaming Corporation (PAGCOR)."
             android:textColor="@color/color_667085"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintEnd_toEndOf="@+id/view4"
