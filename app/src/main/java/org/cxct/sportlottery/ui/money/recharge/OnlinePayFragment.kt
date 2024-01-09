@@ -142,8 +142,8 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
             }
 
             val payer = if (needPayerField()) etRechargeOnlinePayer.getText() else ""
-            val activityTypeCode = dailyConfigAdapter.getSelectedItem()?.activityTypeCode
-            viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer,activityTypeCode)
+            val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
+            viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer,activityType)
         }
         mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance.root) }
 
