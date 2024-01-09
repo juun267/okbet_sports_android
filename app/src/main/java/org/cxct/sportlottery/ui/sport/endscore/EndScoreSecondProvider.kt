@@ -113,7 +113,6 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
     }
 
     private fun resetStyle(linExpand: View, tvExpand: TextView,tabLayout: TabLayout, matchOdd: MatchOdd) = tvExpand.run {
-        LogUtil.toJson(matchOdd)
         when{
             matchOdd.oddIdsMap.isNullOrEmpty()->{
                 linExpand.isEnabled = false
