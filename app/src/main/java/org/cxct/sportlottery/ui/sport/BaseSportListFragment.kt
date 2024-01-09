@@ -240,9 +240,9 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (RecyclerView.SCROLL_STATE_DRAGGING == newState) { // 开始滑动
-                    clearSubscribeChannels()
+                    onStartScroll()
                 } else if (RecyclerView.SCROLL_STATE_IDLE == newState) { // 滑动停止
-                    onScrollStoped()
+                    onScrollStopped()
                 }
             }
 
@@ -252,9 +252,12 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         })
     }
 
+
+    protected open fun onStartScroll() { clearSubscribeChannels() }
+
     protected open fun onScrollChanged(dx: Int, dy: Int) { }
 
-    protected open fun onScrollStoped() { resubscribeChannel(20) }
+    protected open fun onScrollStopped() { resubscribeChannel(20) }
 
     override fun onResume() {
         super.onResume()

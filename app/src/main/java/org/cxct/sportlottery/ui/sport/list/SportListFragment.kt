@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.gone
@@ -21,6 +22,8 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.list.adapter.*
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import kotlin.math.abs
 
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
@@ -228,9 +231,20 @@ open class SportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, F
         addOddsDialog(matchInfo, odd, playCateCode,betPlayCateName, betPlayCateNameMap)
     }
 
-    override fun onScrollStoped() { }
+    override fun onScrollStopped() { }
 
+    override fun onStartScroll() {
+        super.onStartScroll()
+        lastMove = -1000
+    }
+
+    private val minMove = 4.dp
+    private var lastMove = 0
     override fun onScrollChanged(dx: Int, dy: Int) {
+        if (abs(dy - lastMove) < minMove) {
+            return
+        }
+        lastMove = dy
 
         val visibleMatchInfo = mutableSetOf<String>()
         sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
@@ -274,7 +288,9 @@ open class SportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, F
 
         sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
             matchOdd.matchInfo?.let {
-                Log.e("[subscribe]","====>>> 訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName} (${it.gameType} ${it.id})")
+                if (BuildConfig.DEBUG) {
+                    Log.e("[subscribe]","====>>> 訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName} (${it.gameType} ${it.id})")
+                }
                 subscribeChannel(it.gameType, it.id)
             }
         }
