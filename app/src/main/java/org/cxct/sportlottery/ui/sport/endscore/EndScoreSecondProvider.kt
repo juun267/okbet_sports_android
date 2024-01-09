@@ -62,6 +62,10 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             if (it is SportMatchEvent.FavoriteChanged) {
                 getView<View>(R.id.league_odd_match_favorite).isSelected = matchInfo?.isFavorite ?: false
             } else if (it is SportMatchEvent.OddsChanged) {
+                val tvExpand = getView<TextView>(R.id.tvExpand)
+                val linExpand = getView<View>(R.id.linExpand)
+                val tabLayout = getView<TabLayout>(R.id.tabLayout)
+                resetStyle(linExpand, tvExpand, tabLayout, item)
                 rebindTab(getView(R.id.tabLayout), matchOdd, true)
             }
         }
@@ -87,11 +91,11 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         val tvExpand = getView<TextView>(R.id.tvExpand)
         val linExpand = getView<View>(R.id.linExpand)
         val tabLayout = getView<TabLayout>(R.id.tabLayout)
-        resetStyle(getView(R.id.llMatchInfo), linExpand, tvExpand, tabLayout, item)
+        resetStyle(linExpand, tvExpand, tabLayout, item)
         rebindTab(tabLayout, matchOdd)
         linExpand.setOnClickListener {
             adapter.expandOrCollapse(item, parentPayload = item)
-            resetStyle(getView(R.id.llMatchInfo), linExpand, tvExpand, tabLayout, item)
+            resetStyle(linExpand, tvExpand, tabLayout, item)
             rebindTab(tabLayout, matchOdd, true)
         }
 
@@ -104,22 +108,37 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
     private val collapseDrawable by lazy {
         DrawableCreatorUtils.getCommonBackgroundStyle(8, android.R.color.white, R.color.color_025BE8, 1)
     }
+    private val disableDrawable by lazy {
+        DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_cccccc)
+    }
 
-    private fun resetStyle(llMatchInfo: View, linExpand: View, tvExpand: TextView,tabLayout: TabLayout, matchOdd: MatchOdd) = tvExpand.run {
-        if (matchOdd.isExpanded) {
-            setText(R.string.D039)
-            setTextColor(ContextCompat.getColor(context, R.color.color_025BE8))
-            linExpand.background = collapseDrawable
-            (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 10.dp
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_up_blue, 0)
-        } else {
-            setText(R.string.N698)
-            setTextColor(Color.WHITE)
-            linExpand.background = expandedDrawable
-            (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 20.dp
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_down_white, 0)
+    private fun resetStyle(linExpand: View, tvExpand: TextView,tabLayout: TabLayout, matchOdd: MatchOdd) = tvExpand.run {
+        when{
+            matchOdd.oddIdsMap.isNullOrEmpty()->{
+                linExpand.isEnabled = false
+                setText(R.string.N698)
+                setTextColor(ContextCompat.getColor(context, R.color.color_FFFFFF))
+                linExpand.background = disableDrawable
+                (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 10.dp
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            }
+            matchOdd.isExpanded->{
+                linExpand.isEnabled = true
+                setText(R.string.D039)
+                setTextColor(ContextCompat.getColor(context, R.color.color_025BE8))
+                linExpand.background = collapseDrawable
+                (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 10.dp
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_up_blue, 0)
+            }
+            else->{
+                linExpand.isEnabled = true
+                setText(R.string.N698)
+                setTextColor(Color.WHITE)
+                linExpand.background = expandedDrawable
+                (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 20.dp
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_down_white, 0)
+            }
         }
-
 
     }
 
