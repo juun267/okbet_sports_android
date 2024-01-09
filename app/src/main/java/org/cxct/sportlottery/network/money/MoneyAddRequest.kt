@@ -16,7 +16,7 @@ data class MoneyAddRequest(
     var appsFlyerKey: String? = null,
     var appsFlyerPkgName: String? = null,
     val clientType: Int = 2,
-    val participate: Int?=null //是否参与首次充值活动， 1参加，0不参加
+    val activityTypeCode: Int?=null //提交充值后带入此参数原参数participate废弃
 ) {
     var payee: String? = null
     var payeeName: String? = null

@@ -149,7 +149,7 @@ open class MainHomeViewModel(
         get() = _homeAllProvider
     private val _homeAllProvider = MutableLiveData<List<OKGamesFirm>>()
 
-    var dailyConfigEvent = SingleLiveEvent<DailyConfig>()
+    var dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
 
     //region 宣傳頁用
     fun getRecommend(gameType: GameType?=null) {

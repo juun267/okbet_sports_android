@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.item_dailyconfig.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.show
@@ -57,6 +58,10 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
     private val dialogBinding by lazy {
         val contentView: ViewGroup? = activity?.window?.decorView?.findViewById(android.R.id.content)
         DialogBottomSheetIconAndTickBinding.inflate(layoutInflater,contentView,false) }
+
+    private val dailyConfigAdapter = DailyConfigAdapter{
+        updateDailyConfigSelect()
+    }
 
     override fun onStart() {
         super.onStart()
@@ -137,8 +142,8 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
             }
 
             val payer = if (needPayerField()) etRechargeOnlinePayer.getText() else ""
-            val participate = if(binding.linReceiveExtra.isVisible) 1 else 0
-            viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer,participate)
+            val activityTypeCode = dailyConfigAdapter.getSelectedItem()?.activityTypeCode
+            viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer,activityTypeCode)
         }
         mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance.root) }
 
@@ -224,7 +229,9 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
                     etRechargeOnlineAmount.setCursor()
                     return@afterTextChanged
                 }
-                updateFirstDepositExtraMoney(it.toIntS(0))
+                dailyConfigAdapter.getSelectedItem()?.let { dailyConfig->
+                    updateFirstDepositExtraMoney(dailyConfig,it.toIntS(0))
+                }
                 checkRcgOnlineAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     if (includeQuickMoney.root.isVisible) (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(
@@ -278,7 +285,9 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
         etRechargeOnlineAmount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
             if (!hasFocus) {
                 val amountStr = etRechargeOnlineAmount.getText()
-                updateFirstDepositExtraMoney(amountStr.toIntS(0))
+                dailyConfigAdapter.getSelectedItem()?.let {
+                    updateFirstDepositExtraMoney(it,amountStr.toIntS(0))
+                }
                 viewModel.checkRcgOnlineAmount(amountStr, mSelectRechCfgs)
             }else if (includeQuickMoney.root.isVisible) {
                 (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(-1)
@@ -496,37 +505,35 @@ class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentB
         binding.linFirstDeposit.root.gone()
         binding.linReceiveExtra.gone()
     }
-    private fun initFirstDeposit(dailyConfig: DailyConfig) =binding.linFirstDeposit.run{
-        binding.linFirstDeposit.root.isVisible = dailyConfig.first==1
+    private fun initFirstDeposit(list: List<DailyConfig>) =binding.linFirstDeposit.run{
+        val availableList = list.filter { it.first==1 }
+        binding.linFirstDeposit.root.isVisible = availableList.isNotEmpty()
         linNoChoose.isSelected = true
-        linChooseReward.isSelected = false
+        rvFirstDeposit.adapter = dailyConfigAdapter
+        dailyConfigAdapter.setList(availableList)
         linNoChoose.setOnClickListener {
-            linNoChoose.isSelected = true
-            linChooseReward.isSelected = false
+            dailyConfigAdapter.clearSelected()
+            updateDailyConfigSelect()
+        }
+//        tvRewardTC.setOnClickListener {
+//            FirstDepositNoticeDialog(dailyConfig.content).show(childFragmentManager,null)
+//        }
+    }
+    private fun updateDailyConfigSelect(){
+        val dailyConfig = dailyConfigAdapter.getSelectedItem()
+        if (dailyConfig==null){
+            binding.linFirstDeposit.linNoChoose.isSelected = true
             binding.linReceiveExtra.isVisible = false
             (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0)
-        }
-        linChooseReward.setOnClickListener {
-            linNoChoose.isSelected = false
-            linChooseReward.isSelected = true
+        }else{
+            binding.linFirstDeposit.linNoChoose.isSelected = false
             binding.linReceiveExtra.isVisible = true
             (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(dailyConfig.additional)
-            updateFirstDepositExtraMoney(binding.etRechargeOnlineAmount.getText().toIntS(0))
+            updateFirstDepositExtraMoney(dailyConfig,binding.etRechargeOnlineAmount.getText().toIntS(0))
         }
-        tvRewardTC.setOnClickListener {
-            FirstDepositNoticeDialog(dailyConfig.content).show(childFragmentManager,null)
-        }
-        tvPercent.text = "${dailyConfig.additional}%"
-        tvCapped.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(dailyConfig.capped,0)}"
-        tvRewardDesp.text = when{
-            dailyConfig.rewards==1&&dailyConfig.principal==0->getString(R.string.P279,dailyConfig.times.toString())
-            dailyConfig.rewards==0&&dailyConfig.principal==1->getString(R.string.P280,dailyConfig.times.toString())
-            dailyConfig.rewards==1&&dailyConfig.principal==1->getString(R.string.P281,dailyConfig.times.toString())
-            else -> ""
-        }
+
     }
-    private fun updateFirstDepositExtraMoney(rechargeMoney: Int){
-         val dailyConfig = viewModel.dailyConfigEvent.value
+    private fun updateFirstDepositExtraMoney(dailyConfig: DailyConfig, rechargeMoney: Int){
         if (dailyConfig!=null && dailyConfig.first==1){
             val additional = dailyConfig.additional
             val capped = dailyConfig.capped
