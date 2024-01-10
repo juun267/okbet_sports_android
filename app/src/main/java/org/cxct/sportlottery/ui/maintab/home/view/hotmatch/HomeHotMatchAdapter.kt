@@ -1,14 +1,20 @@
 package org.cxct.sportlottery.ui.maintab.home.view.hotmatch
 
+import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.databinding.ItemHomeHotMatchBinding
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
+import org.cxct.sportlottery.util.drawable.shape.ShapeType
 
 class HomeHotMatchAdapter(
     val lifecycleOwner: LifecycleOwner,
@@ -16,15 +22,32 @@ class HomeHotMatchAdapter(
 ) :
     RecyclerView.Adapter<ItemHomeHotMatchHolder>() {
 
+    private lateinit var context: Context
+    private val logoBg by lazy {
+        ShapeDrawable()
+            .setType(ShapeType.OVAL)
+            .setSolidColor(context.getColor(R.color.transparent_white_30))
+            .setStrokeColor(Color.WHITE)
+            .setStrokeSize(1.dp)
+            .setHeight(32.dp)
+            .setWidth(32.dp)
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        context = recyclerView.context
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHomeHotMatchHolder {
-        return ItemHomeHotMatchHolder(
-            lifecycleOwner,
-            ItemHomeHotMatchBinding.inflate(
-                LayoutInflater.from(parent.context),
+
+        val vh = ItemHomeHotMatchHolder(lifecycleOwner,
+            ItemHomeHotMatchBinding.inflate(LayoutInflater.from(parent.context),
                 parent,
                 false
             ), listener
         )
+        vh.binding.ivHomeIcon.background = logoBg
+        vh.binding.ivAwayIcon.background = logoBg
+        return vh
     }
 
 
