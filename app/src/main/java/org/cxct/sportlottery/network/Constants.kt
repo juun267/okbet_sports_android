@@ -420,8 +420,8 @@ object Constants {
 
     //money
     const val RECHARGE_CONFIG_MAP = "/api/front/rechcfg/map"
-    const val USER_RECHARGE_ADD = "/api/front/userrech/V2/add"
-    const val USER_RECHARGE_ONLINE_PAY = "api/front/userrech/V2/onlinepay"
+    const val USER_RECHARGE_ADD = "/api/front/userrech/v2/add"
+    const val USER_RECHARGE_ONLINE_PAY = "api/front/userrech/v2/onlinepay"
     const val USER_RECHARGE_LIST = "/api/front/userrech/list"
     const val USER_BILL_LIST = "/api/front/sportBill/query"
     const val RECH_CHECK_STATUS = "/api/front/userrech/onlinepayAndroidAndIos"//充值前检查参数状态
