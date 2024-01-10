@@ -329,7 +329,8 @@ class MoneyRechViewModel(
         mSelectRechCfgs: RechCfg?,
         depositMoney: String,
         payee: String?,
-        payeeName: String?
+        payeeName: String?,
+        activityType:Int?
     ) {
         checkRcgOnlineAccount(depositMoney, mSelectRechCfgs)
         if (onlineCryptoPayInput()) {
@@ -343,6 +344,7 @@ class MoneyRechViewModel(
                 "depositMoney" to depositMoney,
                 "clientType" to "2"
             ).apply {
+                activityType?.let { put("activityType",it.toString()) }
                 AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
                     put("appsFlyerId", it)
                     put("appsFlyerKey", BuildConfig.AF_APPKEY)
