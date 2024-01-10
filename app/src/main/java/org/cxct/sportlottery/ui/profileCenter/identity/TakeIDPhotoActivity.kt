@@ -251,10 +251,11 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
         if (file.exists()) {
             file.delete()
         }
-        file.createNewFile()
+
         var os: OutputStream? = null
         var ret = false
         try {
+            file.createNewFile()
             os = BufferedOutputStream(FileOutputStream(file))
             ret = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os)
         } catch (e: Exception) {
