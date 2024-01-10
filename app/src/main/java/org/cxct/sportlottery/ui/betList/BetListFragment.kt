@@ -994,21 +994,26 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             //最小投注金额
             minBetMoney = betListFilter[0].betInfo?.minBetMoneyString.toString()
         }
-        val totalBetAmount = when (currentBetType) {
+        val totalBetAmount: Double = when (currentBetType) {
             //单关
             0 -> {
                 betListFilter.sumOf { it.realAmount }
             }
             //篮球
             2 -> {
-                betListFilter[0].betAmount * betListFilter.size
+                if (betListFilter.isEmpty()) {
+                    -1.0
+                } else {
+                    betListFilter[0].betAmount * betListFilter.size
+                }
             }
             //串关
             else -> {
                 parlayList.sumOf { it.betAmount * it.num }
             }
         }
-        if (totalBetAmount.toString().isEmpty()) {
+
+        if (totalBetAmount < 0) {
             Timber.w("totalBetAmount isEmpty")
             return
         }
