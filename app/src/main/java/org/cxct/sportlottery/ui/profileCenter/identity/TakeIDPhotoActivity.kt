@@ -247,7 +247,7 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
     }
 
     private fun saveToLocal(bitmap: Bitmap): File? {
-        val file = File(externalCacheDir!!.absolutePath + File.separator + MD5Util.MD5Encode("${System.currentTimeMillis()}"))
+        val file = File(cacheDir.absolutePath + File.separator + MD5Util.MD5Encode("${System.currentTimeMillis()}"))
         if (file.exists()) {
             file.delete()
         }
