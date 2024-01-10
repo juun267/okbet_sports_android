@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.sport.esport
 
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -33,10 +32,8 @@ import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import java.util.ArrayList
-import kotlin.math.abs
 
 open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>(), OnOddClickListener {
-
 
     override var matchType = MatchType.IN_PLAY
     override var gameType = GameType.ES.key
@@ -50,11 +47,12 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         SportLeagueAdapter2(matchType,
             this,
             esportTheme = true,
-            onNodeExpand = { resubscribeChannel(200) },
+            onNodeExpand = { },
             onOddClick = this,
-            onFavorite = { matchId ->
-                loginedRun(context()) { viewModel.pinFavorite(FavoriteType.MATCH, matchId) }
-            })
+            onFavorite = { loginedRun(context()) { viewModel.pinFavorite(FavoriteType.MATCH, it) } },
+            onAttachMatch = { subscribeChannel(it.gameType, it.id) },
+            onDetachMatch = { unSubscribeChannel(it.gameType, it.id) }
+        )
     }
 
     protected val esportTypeAdapter by lazy { ESportTypeAdapter(::onESportTypeChanged) }
@@ -251,69 +249,28 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         addOddsDialog(matchInfo, odd, playCateCode,betPlayCateName, betPlayCateNameMap)
     }
 
+    override fun onResume() {
+        super.onResume()
+        resubscribeMatch()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            resubscribeMatch()
+        }
+    }
+
     override fun onScrollStopped() { }
+    override fun onStartScroll() { }
+    override fun resubscribeChannel(delay: Long) { }
 
-    override fun onStartScroll() {
-        super.onStartScroll()
-        lastMove = 0
-    }
-
-    private val minMove = 5.dp
-    private var lastMove = 0
-    override fun onScrollChanged(dx: Int, dy: Int) {
-
-        lastMove += abs(dy)
-        if (lastMove < minMove) {
-            return
-        }
-        lastMove = 0
-        val visibleMatchInfo = mutableSetOf<String>()
-        sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
-            matchOdd.matchInfo?.let {
-                visibleMatchInfo.add(generateChannelKey(it.gameType, it.id))
-                subscribeChannel(it.gameType, it.id)
-            }
-        }
-
-        subscribedChannel.forEach {
-            if (!visibleMatchInfo.contains(it.key)) {
-                unSubscribeChannelHall(it.value.first, it.value.second)
-            }
-        }
-
-    }
-
-    override fun resubscribeChannel(delay: Long) {
+    private fun resubscribeMatch() {
         clearSubscribeChannels()
-        if (!isVisible) {
-            return
-        }
-        if (sportLeagueAdapter2.getCount() > 0) {
-            firstVisibleRange(delay)
+        sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd->
+            matchOdd.matchInfo?.let { subscribeChannel(it.gameType, it.id) }
         }
     }
-
-
-    private fun firstVisibleRange(delay: Long = 100) = subscribeHandler.postDelayed({
-
-        if (sportLeagueAdapter2.getCount() < 1) {
-            return@postDelayed
-        }
-
-        if (binding.gameList.scrollState != RecyclerView.SCROLL_STATE_IDLE
-            || binding.gameList.isComputingLayout) {
-            resubscribeChannel(40)
-            return@postDelayed
-        }
-
-        sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
-            matchOdd.matchInfo?.let {
-                Log.e("[subscribe]","====>>> 訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName} (${it.gameType} ${it.id})")
-                subscribeChannel(it.gameType, it.id)
-            }
-        }
-
-    }, delay)
 
     open fun updateESportType(item: Item) {
 

@@ -247,14 +247,15 @@ class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakei
     }
 
     private fun saveToLocal(bitmap: Bitmap): File? {
-        val file = File(externalCacheDir!!.absolutePath + File.separator + MD5Util.MD5Encode("${System.currentTimeMillis()}"))
+        val file = File(cacheDir.absolutePath + File.separator + MD5Util.MD5Encode("${System.currentTimeMillis()}"))
         if (file.exists()) {
             file.delete()
         }
-        file.createNewFile()
+
         var os: OutputStream? = null
         var ret = false
         try {
+            file.createNewFile()
             os = BufferedOutputStream(FileOutputStream(file))
             ret = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os)
         } catch (e: Exception) {

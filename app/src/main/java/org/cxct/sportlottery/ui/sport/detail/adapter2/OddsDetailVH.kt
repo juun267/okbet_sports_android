@@ -600,7 +600,7 @@ class OddsDetailVH (
             }
             TextUtils.equals(oddsDetail.matchInfo?.homeName, oddsDetail.oddArrayList[0]?.name)
             itemView.tv_draw?.isVisible = true
-            itemView.tv_draw?.text = oddsDetail.oddArrayList[1]?.name
+            itemView.tv_draw?.text = oddsDetail.oddArrayList.getOrNull(1)?.name
         }
 
     }

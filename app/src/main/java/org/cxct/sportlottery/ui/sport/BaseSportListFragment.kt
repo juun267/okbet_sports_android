@@ -245,16 +245,11 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 }
             }
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                onScrollChanged(dx, dy)
-            }
         })
     }
 
 
     protected open fun onStartScroll() { clearSubscribeChannels() }
-
-    protected open fun onScrollChanged(dx: Int, dy: Int) { }
 
     protected open fun onScrollStopped() { resubscribeChannel(20) }
 
@@ -372,13 +367,19 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected val subscribeHandler = Handler(Looper.getMainLooper())
 
     protected fun generateChannelKey(gameType: String?, eventId: String?) = "$gameType---$eventId"
-    protected fun subscribeChannel(gameType: String?, eventId: String?) {
+    protected fun subscribeChannel(gameType: String?, eventId: String?) : String? {
         val key = generateChannelKey(gameType, eventId)
         if (subscribedChannel.containsKey(key)) {
-            return
+            return null
         }
         subscribedChannel[key] = Pair(gameType, eventId)
         subscribeChannelHall(gameType, eventId)
+        return key
+    }
+
+    protected fun unSubscribeChannel(gameType: String?, eventId: String?) {
+        subscribedChannel.remove(generateChannelKey(gameType, eventId)) ?: return
+        unSubscribeChannelHall(gameType, eventId)
     }
 
     protected open fun clearSubscribeChannels() {
