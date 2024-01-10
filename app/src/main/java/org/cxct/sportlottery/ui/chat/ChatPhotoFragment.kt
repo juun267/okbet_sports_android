@@ -140,12 +140,14 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
 
 
                                 act.runOnUiThread {
-                                    showPromptDialog(
-                                        title = null,
-                                        message = act.getString(R.string.chat_photo_download_done),
-                                        buttonText = null,
-                                        isShowDivider = false
-                                    ) {}
+                                    activity?.let {
+                                        showPromptDialog(
+                                            title = null,
+                                            message = act.getString(R.string.chat_photo_download_done),
+                                            buttonText = null,
+                                            isShowDivider = false
+                                        ) {}
+                                    }
                                 }
                             }
 

@@ -15,7 +15,6 @@ import androidx.lifecycle.Lifecycle
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
@@ -32,8 +31,8 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
@@ -68,7 +67,7 @@ import splitties.activities.start
 import kotlin.system.exitProcess
 
 
-class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel::class) {
+class MainTabActivity : BaseSocketActivity<MainTabViewModel>(MainTabViewModel::class) {
 
     val gamesViewModel by viewModel<OKGamesViewModel>()
     private val fragmentHelper: FragmentHelper by lazy {
@@ -231,6 +230,17 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
             EventBusUtil.post(SportStatusEvent(it))
         }
+        viewModel.betInfoList.observe(this) {
+            updateBetListCount(it.peekContent().size)
+        }
+        viewModel.notifyLogin.observe(this) {
+            showLoginSnackbar()
+        }
+        viewModel.notifyMyFavorite.observe(this) {
+            it.getContentIfNotHandled()?.let { result ->
+                showFavriteNotify(result)
+            }
+        }
         viewModel.showBetInfoSingle.observe(this) {
             it.getContentIfNotHandled()?.let {
                 showBetListPage()
@@ -238,17 +248,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
         viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true) {
-                showSnackBarBetUpperLimitNotify(
-                    getString(R.string.bet_notify_max_limit)
-                ).setAnchorView(R.id.parlayFloatWindow).show()
+                showLoginSnackbar(R.string.bet_notify_max_limit,R.id.parlayFloatWindow)
             }
         }
 
         viewModel.showBetBasketballUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true) {
-                showSnackBarBetUpperLimitNotify(
-                    getString(R.string.bet_basketball_notify_max_limit)
-                ).setAnchorView(R.id.parlayFloatWindow).show()
+                showLoginSnackbar(R.string.bet_basketball_notify_max_limit,R.id.parlayFloatWindow)
             }
         }
 
@@ -388,7 +394,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
 
-    override fun initMenu() {
+    fun initMenu() {
         try {
             //關閉側邊欄滑動行為
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -483,13 +489,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
 
-    override fun getBetListPageVisible(): Boolean {
+   open fun getBetListPageVisible(): Boolean {
         return betListFragment?.isVisible ?: false
     }
 
     private var betListCount = 0
 
-    override fun updateBetListCount(num: Int) {
+    fun updateBetListCount(num: Int) {
         betListCount = num
         setupBetBarVisiblity()
         parlayFloatWindow.updateCount(betListCount.toString())
@@ -520,15 +526,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         parlayFloatWindow.visible()
     }
 
-    override fun showLoginNotify() {
-        showLoginSnackbar(this)
-    }
-
-    override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
-        showFavoriteSnackbar(this, favoriteNotifyType = myFavoriteNotifyType)
-    }
-
-    override fun initBottomNavigation() {
+     fun initBottomNavigation() {
         binding.parlayFloatWindow.onViewClick = ::showBetListPage
         val radius = 15.dp.toFloat()
         binding.linTab.background = ShapeDrawable()
@@ -541,7 +539,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .setRadius(radius, radius, 0F, 0F)
     }
 
-    override fun showBetListPage() {
+    fun showBetListPage() {
         val ft = supportFragmentManager.beginTransaction()
         betListFragment?.let {
             if (it.isAdded) {
@@ -674,10 +672,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
     fun getCurrentFragment():Fragment  = fragmentHelper.getCurrentFragment()
 
-    override fun initToolBar() { }
-    override fun clickMenuEvent() { }
-    override fun updateUiWithLogin(isLogin: Boolean) { }
-    override fun updateOddsType(oddsType: OddsType) { }
 
     fun checkRechargeKYCVerify() {
         ToGcashDialog.showByClick{

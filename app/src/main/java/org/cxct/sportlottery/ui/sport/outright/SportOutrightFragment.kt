@@ -16,6 +16,7 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
+import org.cxct.sportlottery.util.showLoginSnackbar
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
 
 /**
@@ -108,9 +109,6 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
     }
 
     private fun initObserve() = viewModel.run {
-        notifyLogin.observe(viewLifecycleOwner) {
-            (activity as MainTabActivity).showLoginNotify()
-        }
 
         outrightList.observe(viewLifecycleOwner) {
             if (gameType != it.tag) {

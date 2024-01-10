@@ -9,8 +9,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkliveBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerLiveListAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
@@ -18,7 +17,7 @@ import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setupSportStatusChange
 
 // OkGames所有分类
-class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewModel::class) {
+class AllLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::class) {
     private val gameListAdapter= RecyclerLiveListAdapter()
     private fun getMainTabActivity() = activity as MainTabActivity
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()

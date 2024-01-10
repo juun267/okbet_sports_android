@@ -71,6 +71,10 @@ class SettlementViewModel(
 
     lateinit var requestListener: ResultsSettlementActivity.RequestListener
 
+    val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
+    val sportCodeList: LiveData<List<StatusSheetData>>
+        get() = _sportCodeSpinnerList
+
     fun getMatchResultList(
         gameType: String,
         pagingParams: PagingParams?,

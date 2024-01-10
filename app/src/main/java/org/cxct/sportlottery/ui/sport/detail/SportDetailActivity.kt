@@ -35,7 +35,6 @@ import kotlinx.android.synthetic.main.view_toolbar_detail_live.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
-import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityDetailSportBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -49,7 +48,7 @@ import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEv
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.MatchOddsRepository
-import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.sport.SportViewModel
@@ -68,7 +67,7 @@ import timber.log.Timber
 import java.util.*
 
 
-class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel::class),
+class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::class),
     TimerManager {
 
     private val binding by lazy { ActivityDetailSportBinding.inflate(layoutInflater) }
@@ -173,7 +172,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
 
-    override fun initToolBar() = binding.run {
+    fun initToolBar() = binding.run {
         setStatusbar(R.color.color_FFFFFF,true)
         ivBack.setOnClickListener {
             if (liveViewToolBar.isFullScreen) {
@@ -345,14 +344,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
     }
 
-
-    override fun initMenu() {
-    }
-
-    override fun clickMenuEvent() {
-    }
-
-    override fun initBottomNavigation() {
+     fun initBottomNavigation() {
         binding.parlayFloatWindow.setBetText(getString(R.string.bet_slip))
         binding.parlayFloatWindow.onViewClick = {
             showBetListPage()
@@ -448,7 +440,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     }
 
-    override fun showBetListPage() {
+     fun showBetListPage() {
         betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
             override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>, isMultiBet: Boolean) {
                 showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
@@ -461,27 +453,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             .commit()
     }
 
-    override fun updateUiWithLogin(isLogin: Boolean) {
-    }
 
-    override fun updateOddsType(oddsType: OddsType) {
-    }
-
-    override fun updateBetListCount(num: Int) {
+     fun updateBetListCount(num: Int) {
         setUpBetBarVisible()
         binding.parlayFloatWindow.updateCount(num.toString())
         Timber.e("num: $num")
         if (num > 0) viewModel.getMoneyAndTransferOut()
     }
-
-    override fun showLoginNotify() {
-        showLoginSnackbar(this)
-    }
-
-    override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
-        showFavoriteSnackbar(this,myFavoriteNotifyType)
-    }
-
     private fun initData() {
         matchInfo = intent.getStringExtra("matchInfo")?.fromJson<MatchInfo>()
         matchType = intent.getSerializableExtra("matchType") as MatchType
@@ -670,9 +648,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 showLive()
             }
         }
-
+        viewModel.betInfoList.observe(this) {
+            updateBetListCount(it.peekContent().size)
+        }
         viewModel.notifyLogin.observe(this) {
-            showLoginNotify()
+            showLoginSnackbar()
+        }
+        viewModel.notifyMyFavorite.observe(this) {
+            it.getContentIfNotHandled()?.let { result ->
+                showFavriteNotify(result)
+            }
         }
 
         viewModel.userInfo.observe(this) { userInfo ->
@@ -807,22 +792,18 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             oddsAdapter.notifyDataSetChanged()
         }
 
-
         viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true) {
-                showSnackBar(R.string.bet_notify_max_limit)
+                showLoginSnackbar(R.string.bet_notify_max_limit,R.id.parlayFloatWindow)
             }
         }
+
         viewModel.showBetBasketballUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true) {
-                showSnackBar(R.string.bet_basketball_notify_max_limit)
+                showLoginSnackbar(R.string.bet_basketball_notify_max_limit,R.id.parlayFloatWindow)
             }
         }
 
-    }
-
-    private inline fun showSnackBar(msg: Int) {
-        showSnackBarBetUpperLimitNotify(getString(msg)).setAnchorView(R.id.parlayFloatWindow).show()
     }
 
     private fun showLive() {
@@ -958,8 +939,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
-    //TODO 底部注单是否显示
-    override fun getBetListPageVisible(): Boolean {
+    open fun getBetListPageVisible(): Boolean {
         return betListFragment?.isVisible ?: false
     }
 

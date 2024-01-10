@@ -37,16 +37,5 @@ class MainViewModel(
     val userId = loginRepository.userId
 
 
-    fun updateOddsChangeOption(option: Int) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.userService.oddsChangeOption(
-                    OddsChangeOptionRequest(option)
-                )
-            }?.let { result ->
-                userInfoRepository.updateOddsChangeOption(option)
-            }
-        }
-    }
 
 }
