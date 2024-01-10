@@ -24,12 +24,16 @@ import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.ColorRes
+import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,10 +42,10 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
 import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.online_pay_fragment.*
+import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.android.synthetic.main.view_payment_maintenance.view.*
 import kotlinx.coroutines.flow.*
@@ -51,19 +55,20 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
-import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.QuickPlayCate
+import org.cxct.sportlottery.databinding.SnackbarLoginNotifyBinding
+import org.cxct.sportlottery.databinding.SnackbarMyFavoriteNotifyBinding
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.money.config.MoneyRechCfg
 import org.cxct.sportlottery.network.money.config.RechCfg
+import org.cxct.sportlottery.network.myfavorite.MyFavoriteNotify
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.match_odds_change.Odds
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -71,7 +76,6 @@ import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
 import org.cxct.sportlottery.ui.login.CaptchaDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -338,66 +342,66 @@ fun loginedRun(context: Context, block: () -> Unit): Boolean {
         block.invoke()
         return true
     }
-    if (context is Activity) {
-        showLoginSnackbar(context)
+    if (context is FragmentActivity){
+         context.showLoginSnackbar()
         return false
     }
     context.startActivity(Intent(context, LoginOKActivity::class.java))
     return false
 }
-fun showLoginSnackbar(activity: Activity, @StringRes titleResId: Int = R.string.login_notify){
+fun FragmentActivity.showLoginSnackbar(@StringRes titleResId: Int = R.string.login_notify, @IdRes anchorViewId: Int?=null){
     Snackbar.make(
-        activity.findViewById(android.R.id.content),
-        activity.getString(R.string.login_notify),
+        findViewById(android.R.id.content),
+        getString(R.string.login_notify),
         Snackbar.LENGTH_LONG
     ).apply {
-        val snackView: View = activity.layoutInflater.inflate(
-            R.layout.snackbar_login_notify, activity.findViewById(android.R.id.content), false
-        )
-
+        val binding = SnackbarLoginNotifyBinding.inflate(layoutInflater,this@showLoginSnackbar.findViewById(android.R.id.content), false)
+        binding.tvNotify.text = getString(titleResId)
         (this.view as Snackbar.SnackbarLayout).apply {
             findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
                 visibility = View.INVISIBLE
             }
             background.alpha = 0
-            addView(snackView, 0)
+            addView(binding.root, 0)
             setPadding(0, 0, 0, 0)
         }
-        (snackView.layoutParams as MarginLayoutParams).bottomMargin = 60.dp
+        (binding.root.layoutParams as MarginLayoutParams).bottomMargin = 60.dp
+        anchorViewId?.let {
+            setAnchorView(it)
+        }
         show()
     }
 }
-fun showFavoriteSnackbar(activity: Activity,favoriteNotifyType: Int){
+fun FragmentActivity.showFavoriteSnackbar(favoriteNotifyType: Int){
     val title = when(favoriteNotifyType){
-        MyFavoriteNotifyType.LEAGUE_ADD.code-> activity.getString(R.string.myfavorite_notify_league_add)
-        MyFavoriteNotifyType.LEAGUE_REMOVE.code-> activity.getString(R.string.myfavorite_notify_league_remove)
-        MyFavoriteNotifyType.MATCH_ADD.code-> activity.getString(R.string.myfavorite_notify_match_add)
-        MyFavoriteNotifyType.MATCH_REMOVE.code-> activity.getString(R.string.myfavorite_notify_match_remove)
-        MyFavoriteNotifyType.DETAIL_ADD.code -> activity.getString(R.string.Pinned)
-        MyFavoriteNotifyType.DETAIL_REMOVE.code -> activity.getString(R.string.Unpin)
+        MyFavoriteNotifyType.LEAGUE_ADD.code-> getString(R.string.myfavorite_notify_league_add)
+        MyFavoriteNotifyType.LEAGUE_REMOVE.code-> getString(R.string.myfavorite_notify_league_remove)
+        MyFavoriteNotifyType.MATCH_ADD.code-> getString(R.string.myfavorite_notify_match_add)
+        MyFavoriteNotifyType.MATCH_REMOVE.code-> getString(R.string.myfavorite_notify_match_remove)
+        MyFavoriteNotifyType.DETAIL_ADD.code -> getString(R.string.Pinned)
+        MyFavoriteNotifyType.DETAIL_REMOVE.code -> getString(R.string.Unpin)
         else -> null
     }
     if (title.isNullOrEmpty()){
         return
     }
     Snackbar.make(
-        activity.findViewById(android.R.id.content),
+        findViewById(android.R.id.content),
         title,
         Snackbar.LENGTH_LONG
     ).apply {
-        val snackView: View = activity.layoutInflater.inflate(
-            R.layout.snackbar_my_favorite_notify, activity.findViewById(android.R.id.content), false
-        )
-        snackView.findViewById<TextView>(R.id.txv_title).text = title
+        val binding = SnackbarMyFavoriteNotifyBinding.inflate(layoutInflater,this@showFavoriteSnackbar.findViewById(android.R.id.content), false)
+
+        binding.txvTitle.text = title
         (this.view as Snackbar.SnackbarLayout).apply {
             findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
                 visibility = View.INVISIBLE
             }
             background.alpha = 0
-            addView(snackView, 0)
+            addView(binding.root, 0)
             setPadding(0, 0, 0, 0)
         }
-        (snackView.layoutParams as MarginLayoutParams).bottomMargin = 60.dp
+        (binding.root.layoutParams as MarginLayoutParams).bottomMargin = 60.dp
         show()
     }
 }
@@ -1238,4 +1242,39 @@ fun Context.getIconSelector(selected: Int, unSelected: Int): Drawable {
         .setPressedDrawable(selectDrawable)
         .setUnPressedDrawable(unSelecteDrawable)
         .build()
+}
+fun AppCompatActivity.showBetReceiptDialog(
+    betResultData: Receipt?,
+    betParlayList: List<ParlayOdd>,
+    isMultiBet: Boolean,
+    containerId: Int,
+) {
+    supportFragmentManager.beginTransaction()
+        .replace(
+            containerId, BetReceiptFragment.newInstance(betResultData, betParlayList)
+        ).addToBackStack(BetReceiptFragment::class.java.simpleName).commit()
+}
+fun AppCompatActivity.showFavriteNotify(result: MyFavoriteNotify) {
+    when (result.type) {
+        FavoriteType.LEAGUE -> {
+            when (result.isFavorite) {
+                true -> showFavoriteSnackbar(MyFavoriteNotifyType.LEAGUE_ADD.ordinal)
+                false -> showFavoriteSnackbar(MyFavoriteNotifyType.LEAGUE_REMOVE.ordinal)
+            }
+        }
+
+        FavoriteType.MATCH -> {
+            when (result.isFavorite) {
+                true -> showFavoriteSnackbar(MyFavoriteNotifyType.MATCH_ADD.ordinal)
+                false -> showFavoriteSnackbar(MyFavoriteNotifyType.MATCH_REMOVE.ordinal)
+            }
+        }
+
+        FavoriteType.PLAY_CATE -> {
+            when (result.isFavorite) {
+                true -> showFavoriteSnackbar(MyFavoriteNotifyType.DETAIL_ADD.ordinal)
+                false -> showFavoriteSnackbar(MyFavoriteNotifyType.DETAIL_REMOVE.ordinal)
+            }
+        }
+    }
 }

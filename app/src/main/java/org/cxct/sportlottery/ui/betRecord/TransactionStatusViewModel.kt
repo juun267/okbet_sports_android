@@ -11,7 +11,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 
 
 class TransactionStatusViewModel(
@@ -21,7 +21,7 @@ class TransactionStatusViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-) : BaseBottomNavViewModel(
+) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,

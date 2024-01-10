@@ -20,8 +20,11 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.getKClass
 import org.cxct.sportlottery.net.flow.IUiView
+import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -270,15 +273,6 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
     }
 
     fun back() {
-//        if (activity is GameActivity) {
-//            val gameActivity = activity as GameActivity
-//            if (gameActivity.isFromPublicity) {
-//                gameActivity.finish()
-//                gameActivity.isFromPublicity = false
-//                return
-//            }
-//        }
-
         findNavController().navigateUp()
     }
 
@@ -288,9 +282,6 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
     }
 
     open fun isGuest(hasBottomNavigation: Boolean = true): Boolean {
-        return if (activity is BaseBottomNavActivity<*>)
-            (activity as BaseBottomNavActivity<*>).isGuest(hasBottomNavigation)
-        else
-            false
+        return  UserInfoRepository.userInfo.value?.testFlag == TestFlag.GUEST.index
     }
 }

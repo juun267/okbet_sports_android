@@ -297,7 +297,7 @@ class HotMatchView(
         setUpAdapter(fragment,
             HomeRecommendListener(onItemClickListener = { matchInfo ->
                 if (fragment.viewModel.isLogin.value != true) {
-                    (fragment.requireActivity() as MainTabActivity).showLoginNotify()
+                    (fragment.requireActivity() as MainTabActivity).showLoginSnackbar()
                 } else {
                     matchInfo?.let {
                         SportDetailActivity.startActivity(context, it)
@@ -311,7 +311,7 @@ class HotMatchView(
                     }
                     fragment.avoidFastDoubleClick()
                     if (fragment.viewModel.isLogin.value != true) {
-                        (fragment.requireActivity() as MainTabActivity).showLoginNotify()
+                        fragment.requireActivity().showLoginSnackbar()
                         return@HomeRecommendListener
                     }
                     val gameType = GameType.getGameType(gameTypeCode)

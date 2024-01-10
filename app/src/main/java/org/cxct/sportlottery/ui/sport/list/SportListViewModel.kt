@@ -24,7 +24,7 @@ import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMDE_FORMAT
@@ -38,7 +38,7 @@ open class SportListViewModel(
     infoCenterRepository: InfoCenterRepository,
     myFavoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository,
-) : BaseBottomNavViewModel(
+) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
@@ -89,7 +89,7 @@ open class SportListViewModel(
                 val leagueOddList = it.leagueOddsList
 
                 leagueOddList.sortOdds()
-                leagueOddList.getPlayCateNameMap()
+                leagueOddList.getPlayCateNameMap(matchType = MatchType.MY_EVENT.postValue)
                 leagueOddList.forEach { leagueOdd ->
                     leagueOdd.gameType =
                         GameType.getGameType(leagueOdd.matchOdds[0].matchInfo?.gameType!!)
@@ -98,7 +98,7 @@ open class SportListViewModel(
                     }
 
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.setupOddDiscountFixed()
+                        matchOdd.setupOddDiscount()
                         matchOdd.matchInfo?.let { matchInfo ->
 
                             matchInfo.startDateDisplay =
@@ -486,7 +486,24 @@ open class SportListViewModel(
             }
         }
     }
+    /**
+     * 根據賽事的oddsSort將盤口重新排序
+     */
+    private fun List<LeagueOdd>.sortOdds() {
+        this.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                val sortOrder = matchOdd.oddsSort?.split(",")
+                val oddsMap = matchOdd.oddsMap?.toSortedMap(compareBy<String> {
+                    sortOrder?.indexOf(it)
+                }.thenBy { it })
 
+                matchOdd.oddsMap?.clear()
+                if (oddsMap != null) {
+                    matchOdd.oddsMap?.putAll(oddsMap)
+                }
+            }
+        }
+    }
     /**
      * 根據賽事的oddsSort將盤口重新排序
      */

@@ -16,7 +16,7 @@ import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.*
 import java.text.Collator
 import java.util.*
@@ -28,7 +28,7 @@ class LeagueSelectViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     myFavoriteRepository: MyFavoriteRepository,
-) : BaseBottomNavViewModel(
+) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,

@@ -20,6 +20,7 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.updateDefaultHandicapType
 import retrofit2.Response
 import timber.log.Timber
@@ -39,10 +40,9 @@ abstract class BaseViewModel(
             _errorResultToken.postValue(Event(result))
         }
     }
-
-    private val _rainResult = MutableLiveData<Event<RedEnvelopeResult>>()
-    val rainResult: LiveData<Event<RedEnvelopeResult>>
-        get() = _rainResult
+    val notifyLogin: SingleLiveEvent<Boolean>
+        get() = mNotifyLogin
+     val mNotifyLogin = SingleLiveEvent<Boolean>()
 
     val isLogin: LiveData<Boolean>
         get() = loginRepository.isLogin
@@ -172,16 +172,6 @@ abstract class BaseViewModel(
                 if (result?.success == false && loginRepository.isLogin.value == true) {
                     loginRepository._kickedOut.value = Event(result.msg)
                 }
-            }
-        }
-    }
-
-    fun getRain() {
-        viewModelScope.launch {
-            doNetwork(MultiLanguagesApplication.appContext) {
-                OneBoSportApi.moneyService.getRainInfo()
-            }?.let { result ->
-                _rainResult.postValue(Event(result))
             }
         }
     }

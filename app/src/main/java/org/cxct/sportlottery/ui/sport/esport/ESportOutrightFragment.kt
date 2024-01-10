@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightAdapter2
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.showLoginSnackbar
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
 import java.util.ArrayList
@@ -131,10 +132,6 @@ class ESportOutrightFragment: BaseSportListFragment<SportListViewModel, Fragment
     }
 
     private fun initObserve() = viewModel.run {
-        notifyLogin.observe(viewLifecycleOwner) {
-            (activity as MainTabActivity).showLoginNotify()
-        }
-
         outrightList.observe(viewLifecycleOwner) {
             val data = it?.getContentIfNotHandled()?.outrightOddsListData?.leagueOdds ?: return@observe
             val list = mutableListOf<MatchOdd>()

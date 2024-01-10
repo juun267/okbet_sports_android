@@ -23,7 +23,7 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
@@ -58,7 +58,7 @@ import java.io.FileNotFoundException
  * @app_destination 个人中心
  */
 class ProfileCenterFragment :
-    BaseBottomNavigationFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+    BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
 

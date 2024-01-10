@@ -16,7 +16,7 @@ import org.cxct.sportlottery.util.GameConfigManager
 import kotlin.reflect.KClass
 
 abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
-    BaseFavoriteActivity<T>(clazz) {
+    BaseActivity<T>(clazz) {
 
     private val sharedPref: SharedPreferences by lazy {
         this.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
@@ -26,7 +26,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        viewModel.isLogin.observe(this) {
+            if (it == true) {
+                viewModel.getFavorite()
+            } else {
+                viewModel.clearFavorite()
+            }
+        }
         receiver.sysMaintenance.observe(this, Observer {
             if ((it?.status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
                 when (this) {

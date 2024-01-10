@@ -15,14 +15,13 @@ import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.loadMore
 
 // 指定类别的三方游戏
-class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewModel::class) {
+class PartLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::class) {
 
     companion object {
         val pageSize = 12

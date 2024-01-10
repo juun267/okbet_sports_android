@@ -15,8 +15,6 @@ import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
-import org.cxct.sportlottery.net.games.data.OKGamesHall
-import org.cxct.sportlottery.net.live.OKLiveRepository
 import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsDetail
@@ -37,8 +35,7 @@ import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommend
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.util.*
 import java.text.SimpleDateFormat
@@ -52,7 +49,7 @@ open class MainHomeViewModel(
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository,
-) : BaseBottomNavViewModel(
+) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,

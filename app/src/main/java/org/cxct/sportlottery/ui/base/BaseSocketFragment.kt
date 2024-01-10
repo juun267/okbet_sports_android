@@ -1,5 +1,10 @@
 package org.cxct.sportlottery.ui.base
 
+import android.os.Bundle
+import android.view.View
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import kotlin.reflect.KClass
 
 abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
@@ -8,7 +13,18 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
     val receiver by lazy {
         (activity as BaseSocketActivity<*>).receiver
     }
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        receiver.dataSourceChange.observe(viewLifecycleOwner) {
+            dataSourceChangeEven?.let {
+                showErrorPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = getString(R.string.message_source_change),
+                    hasCancel = false
+                ) { it.invoke() }
+            }
+        }
+    }
 
     protected fun subscribeSportChannelHall() {
         (activity as BaseSocketActivity<*>).subscribeSportChannelHall()
@@ -70,9 +86,21 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
     }
 
     protected fun getBetListPageVisible(): Boolean {
-        return when (val thisActivity = activity) {
-            is BaseBottomNavActivity<*> -> thisActivity.getBetListPageVisible()
+        return when (activity) {
+            is MainTabActivity-> (activity as MainTabActivity).getBetListPageVisible()
+            is SportDetailActivity -> (activity as SportDetailActivity).getBetListPageVisible()
             else -> false
         }
+    }
+    private var dataSourceChangeEven: (() -> Unit)? = null
+
+    /**
+     * 设置有新赛事数据监听回调。
+     *  重点!!!
+     *  页面加载完成后再调用该方法就行设置回调，
+     *  不然由于LiveData粘性事件的原因，在页面初始化的时候就有可能弹窗
+     */
+    fun setDataSourceChangeEvent(dataSourceChangeEven: () -> Unit) {
+        this.dataSourceChangeEven = dataSourceChangeEven
     }
 }
