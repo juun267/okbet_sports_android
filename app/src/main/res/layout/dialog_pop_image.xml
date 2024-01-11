@@ -3,9 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
     android:orientation="vertical">
 
+
+    <LinearLayout
+        android:id="@+id/linIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_15">
+        <TextView
+            android:id="@+id/tvArrowLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:textSize="20sp"
+            android:textColor="@color/color_FFFFFF"/>
+        <TextView
+            android:id="@+id/tvIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/color_FFFFFF"
+            tools:text="1/1"/>
+        <TextView
+            android:id="@+id/tvArrowRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:textSize="20sp"
+            android:textColor="@color/color_FFFFFF"/>
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        app:cardCornerRadius="@dimen/margin_16">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,15 +51,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="362:580"
-            app:layout_constraintCircleRadius="@dimen/margin_10"
             app:AutoPlayTime="3500"
             app:pointSelect="@drawable/dot_8_blue_sel"
             app:pointNormal="@drawable/dot_8_blue_nor"
-            android:adjustViewBounds="true"
+            app:pointsVisibility="false"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/btn_close"

@@ -5,11 +5,11 @@ import android.webkit.WebView
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_third_game.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.databinding.ActivityThirdGameBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
@@ -17,8 +17,14 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.common.WebActivity
+import org.cxct.sportlottery.ui.common.WebActivity.Companion.FIRM_CODE
+import org.cxct.sportlottery.ui.common.WebActivity.Companion.GAME_CATEGORY_CODE
+import org.cxct.sportlottery.ui.common.WebActivityImp
 import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
+import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.money.withdraw.BankActivity
 import org.cxct.sportlottery.ui.money.withdraw.WithdrawActivity
@@ -30,7 +36,7 @@ import org.cxct.sportlottery.util.isThirdTransferOpen
 import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
-open class ThirdGameActivity : WebActivity() {
+open class ThirdGameActivity : BindingActivity<MainViewModel, ActivityThirdGameBinding>() {
 
     private var mUserInfo: UserInfo? = null
 
@@ -39,30 +45,31 @@ open class ThirdGameActivity : WebActivity() {
 
     private val firmCode by lazy { intent.getStringExtra(FIRM_CODE) }
     private val gameType by lazy { intent.getStringExtra(GAME_CATEGORY_CODE) }
+    private val mUrl: String by lazy { intent?.getStringExtra(WebActivity.KEY_URL) ?: "about:blank" }
 
+    private val webActivityImp by lazy { WebActivityImp(this,this::overrideUrlLoading) }
 
-    override fun init() {
+    override fun onInitView()=binding.run {
         disableSystemUI()
-        setContentView(R.layout.activity_third_game)
-        setCookie()
-        setupWebView(web_view)
-        loadUrl(web_view)
+        webActivityImp.setCookie(mUrl)
+        webActivityImp.setupWebView(webView)
+        webView.loadUrl(mUrl)
         setupMenu()
         initObserve()
 
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
             if (it.maintain == 1 && firmCode == it.firmType /*&& gameType == it.gameType*/) {
-                motion_menu.gone()
+                motionMenu.gone()
                 showErrorPromptDialog(getString(R.string.error), getString(R.string.hint_game_maintenance)) {
                     finish()
                 }
             }
         }
     }
-
-    override fun overrideUrlLoading(view: WebView, url: String): Boolean {
+     fun overrideUrlLoading(view: WebView, url: String): Boolean {
         if (url.isEmptyStr()) {
-            return super.overrideUrlLoading(view, url)
+            view.loadUrl(url)
+            return false
         }
 
         val requestUrl = url.replace("https", "http", true)
@@ -71,8 +78,8 @@ open class ThirdGameActivity : WebActivity() {
             finish()
             return true
         }
-
-        return super.overrideUrlLoading(view, url)
+         view.loadUrl(url)
+        return false
     }
 
     private fun disableSystemUI() {
@@ -80,7 +87,7 @@ open class ThirdGameActivity : WebActivity() {
     }
 
     override fun onBackPressed() {
-        if (web_view.canGoBack()) {
+        if (binding.webView.canGoBack()) {
             super.onBackPressed()
             return
         }
@@ -90,14 +97,14 @@ open class ThirdGameActivity : WebActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        web_view.destroy()
+        binding.webView.destroy()
         if (isThirdTransferOpen()) {
             LoginRepository.allTransferOut()
         }
     }
 
     private fun setupMenu() {
-        motion_menu.setOnMenuListener(object : MotionFloatingMenu.OnMenuListener {
+        binding.motionMenu.setOnMenuListener(object : MotionFloatingMenu.OnMenuListener {
             override fun onHome() {
                 finish()
             }

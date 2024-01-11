@@ -26,6 +26,28 @@ enum class MatchType private constructor(val postValue: String, @StringRes val r
     IN24HR("IN24HR",R.string.P229);
 
     companion object {
+        fun getMatchType(matchType: String?): MatchType? {
+            return when (matchType) {
+                MAIN.postValue -> MAIN
+                IN_PLAY.postValue -> IN_PLAY
+                TODAY.postValue -> TODAY
+                EARLY.postValue -> EARLY
+                CS.postValue -> CS
+                PARLAY.postValue -> PARLAY
+                OUTRIGHT.postValue -> OUTRIGHT
+                AT_START.postValue -> AT_START
+                EPS.postValue -> EPS
+                MY_EVENT.postValue -> MY_EVENT
+                OTHER.postValue -> OTHER
+                OTHER_OUTRIGHT.postValue -> OTHER_OUTRIGHT
+                OTHER_EPS.postValue -> OTHER_EPS
+                DETAIL.postValue -> DETAIL
+                SINGLE.postValue -> SINGLE
+                IN12HR.postValue -> IN12HR
+                IN24HR.postValue -> IN24HR
+                else -> null
+            }
+        }
         fun getMatchTypeStringRes(matchType: String?): Int {
             return when (matchType) {
                 MAIN.postValue -> MAIN.resId

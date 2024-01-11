@@ -1,46 +1,46 @@
 package org.cxct.sportlottery.view.dialog.promotion
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.view.Gravity
-import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
+import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.youth.banner.indicator.CircleIndicator
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogPromotionPopupBinding
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.getMarketSwitch
-import org.cxct.sportlottery.util.isGooglePlayVersion
 
-class PromotionPopupDialog(val activity: AppCompatActivity, private val promotionPopupListener: () -> Unit) : AlertDialog(activity) {
+class PromotionPopupDialog(private val promotionPopupListener: () -> Unit) : BaseDialog<BaseViewModel>(
+    BaseViewModel::class) {
 
+    init {
+        setStyle(R.style.FullScreen)
+    }
     companion object{
-        fun needShow(activity: AppCompatActivity):Boolean{
-            if (activity.isDestroyed
-                || sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden) } != true) {
+        fun needShow():Boolean{
+            if (sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden) } != true) {
                 return false
             }
             return true
         }
     }
-    private var _binding: DialogPromotionPopupBinding? = null
-    private val binding get() = _binding!!
+    lateinit var binding : DialogPromotionPopupBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = DialogPromotionPopupBinding.inflate(activity.layoutInflater)
-        setContentView(binding.root)
-        window?.setLayout(
-            ScreenUtil.getScreenWidth(context) - 40.dp,
-            WindowManager.LayoutParams.WRAP_CONTENT
-        )
-        window?.setGravity(Gravity.CENTER)
-        window?.setBackgroundDrawableResource(android.R.color.transparent)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding= DialogPromotionPopupBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initView()
     }
 
