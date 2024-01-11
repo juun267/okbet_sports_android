@@ -80,7 +80,7 @@ class LotteryManager {
                 ScannerActivity::class,
                 LuckyWheelActivity::class -> false
                 WebActivity::class -> {
-                    !WebActivity.currentTag.isNullOrBlank()
+                    WebActivity.currentTag.isNullOrBlank()
                 }
                 else -> true
             }
