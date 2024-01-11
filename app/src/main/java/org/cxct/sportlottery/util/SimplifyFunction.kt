@@ -49,10 +49,6 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
-import org.cxct.sportlottery.network.common.QuickPlayCate
-import org.cxct.sportlottery.databinding.SnackbarLoginNotifyBinding
-import org.cxct.sportlottery.databinding.SnackbarMyFavoriteNotifyBinding
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
