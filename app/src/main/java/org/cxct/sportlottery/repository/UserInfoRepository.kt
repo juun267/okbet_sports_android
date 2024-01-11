@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.repository
 
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import com.google.gson.JsonElement
@@ -28,11 +26,6 @@ object UserInfoRepository {
     private val signService by lazy {
         RetrofitHolder.createSignApiService(SignService::class.java)
     }
-
-    private val sharedPref: SharedPreferences by lazy {
-        MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
-    }
-
 
     var checkedUserInfo = false //紀錄checkToken後是否獲取過UserInfo
 
