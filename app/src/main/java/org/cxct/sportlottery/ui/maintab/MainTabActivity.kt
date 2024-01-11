@@ -238,7 +238,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel>(MainTabViewModel::c
         }
         viewModel.notifyMyFavorite.observe(this) {
             it.getContentIfNotHandled()?.let { result ->
-                showFavriteNotify(result)
+                showFavoriteNotify(result)
             }
         }
         viewModel.showBetInfoSingle.observe(this) {

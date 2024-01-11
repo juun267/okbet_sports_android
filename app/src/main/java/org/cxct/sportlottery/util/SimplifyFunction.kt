@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.util
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -13,19 +12,16 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.text.Html
-import android.text.SpannableStringBuilder
-import android.text.Spanned
 import android.text.method.HideReturnsTransformationMethod
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.ColorRes
 import androidx.annotation.IdRes
-import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -44,19 +40,13 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.online_pay_fragment.*
-import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
-import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.android.synthetic.main.view_payment_maintenance.view.*
-import kotlinx.coroutines.flow.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
-import org.cxct.sportlottery.databinding.SnackbarLoginNotifyBinding
-import org.cxct.sportlottery.databinding.SnackbarMyFavoriteNotifyBinding
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
@@ -70,23 +60,18 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
 import org.cxct.sportlottery.ui.login.CaptchaDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
-import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
-import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
-import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -266,32 +251,6 @@ fun RecyclerView.getVisibleRangePosition(): List<Int> {
 
 
 /**
- * 設置大廳所需顯示的快捷玩法 (api未回傳的玩法需以“—”表示)
- * 2021.10.25 發現可能會回傳但是是傳null, 故新增邏輯, 該玩法odd為null時也做處理
- */
-fun MutableMap<String, List<Odd?>?>.setupQuickPlayCate(playCate: String) {
-    val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
-
-    playCateSort?.forEach {
-        if (!this.keys.contains(it) || this[it] == null) this[it] = mutableListOf(null, null, null)
-    }
-}
-
-/**
- * 根據QuickPlayCate的rowSort將盤口重新排序
- */
-fun MutableMap<String, List<Odd?>?>.sortQuickPlayCate(playCate: String) {
-    val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
-    val sortedList = this.toSortedMap(compareBy<String> {
-        val oddsIndex = playCateSort?.indexOf(it)
-        oddsIndex
-    }.thenBy { it })
-
-    this.clear()
-    this.putAll(sortedList)
-}
-
-/**
  * 調整標題文字間距
  * 中文之外無間距
  */
@@ -313,29 +272,6 @@ fun TextView.setTitleLetterSpacing2F() {
     }
 }
 
-/**
- * 设置textview文字渐变
- */
-fun TextView.setGradientSpan(startColor: Int, endColor: Int, isLeftToRight: Boolean) {
-    var spannableStringBuilder = SpannableStringBuilder(text)
-    var span = LinearGradientFontSpan(startColor, endColor, isLeftToRight)
-    spannableStringBuilder.setSpan(
-        span, 0, spannableStringBuilder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-    )
-    setText(spannableStringBuilder, TextView.BufferType.SPANNABLE)
-}
-
-/**
- * 特殊狀況需手動設定res(黑白模式)
- */
-fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
-    setBackgroundColor(
-        ContextCompat.getColor(
-            context, if (MultiLanguagesApplication.isNightMode) darkModeColor else lightModeColor
-        )
-    )
-}
-
 
 fun loginedRun(context: Context, block: () -> Unit): Boolean {
     if (LoginRepository.isLogined()) {
@@ -349,72 +285,57 @@ fun loginedRun(context: Context, block: () -> Unit): Boolean {
     context.startActivity(Intent(context, LoginOKActivity::class.java))
     return false
 }
+
+private fun snackText(context: Context, text: String): TextView {
+
+    val textView = TextView(context)
+    textView.gravity = Gravity.CENTER
+    textView.textSize = 14f
+    textView.setTextColor(context.getColor(R.color.color_FCFCFC))
+    textView.setBackgroundResource(R.color.color_317FFF_0760D4)
+    val lp = FrameLayout.LayoutParams(-1, 48.dp)
+    val dp8 = 8.dp
+    lp.leftMargin = dp8
+    lp.rightMargin = dp8
+    lp.topMargin = dp8
+    lp.bottomMargin = 60.dp
+    textView.text = text
+    textView.layoutParams = lp
+
+    return textView
+}
+
 fun FragmentActivity.showLoginSnackbar(@StringRes titleResId: Int = R.string.login_notify, @IdRes anchorViewId: Int?=null){
     Snackbar.make(
         findViewById(android.R.id.content),
         getString(R.string.login_notify),
         Snackbar.LENGTH_LONG
     ).apply {
-        val binding = SnackbarLoginNotifyBinding.inflate(layoutInflater,this@showLoginSnackbar.findViewById(android.R.id.content), false)
-        binding.tvNotify.text = getString(titleResId)
         (this.view as Snackbar.SnackbarLayout).apply {
             findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
                 visibility = View.INVISIBLE
             }
             background.alpha = 0
-            addView(binding.root, 0)
+            addView(snackText(context, getString(titleResId)), 0)
             setPadding(0, 0, 0, 0)
         }
-        (binding.root.layoutParams as MarginLayoutParams).bottomMargin = 60.dp
         anchorViewId?.let {
             setAnchorView(it)
         }
         show()
     }
 }
-fun FragmentActivity.showFavoriteSnackbar(favoriteNotifyType: Int){
-    val title = when(favoriteNotifyType){
-        MyFavoriteNotifyType.LEAGUE_ADD.code-> getString(R.string.myfavorite_notify_league_add)
-        MyFavoriteNotifyType.LEAGUE_REMOVE.code-> getString(R.string.myfavorite_notify_league_remove)
-        MyFavoriteNotifyType.MATCH_ADD.code-> getString(R.string.myfavorite_notify_match_add)
-        MyFavoriteNotifyType.MATCH_REMOVE.code-> getString(R.string.myfavorite_notify_match_remove)
-        MyFavoriteNotifyType.DETAIL_ADD.code -> getString(R.string.Pinned)
-        MyFavoriteNotifyType.DETAIL_REMOVE.code -> getString(R.string.Unpin)
-        else -> null
-    }
-    if (title.isNullOrEmpty()){
-        return
-    }
-    Snackbar.make(
-        findViewById(android.R.id.content),
-        title,
-        Snackbar.LENGTH_LONG
-    ).apply {
-        val binding = SnackbarMyFavoriteNotifyBinding.inflate(layoutInflater,this@showFavoriteSnackbar.findViewById(android.R.id.content), false)
+fun FragmentActivity.showFavoriteSnackbar(favoriteText: String){
 
-        binding.txvTitle.text = title
-        (this.view as Snackbar.SnackbarLayout).apply {
-            findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
-                visibility = View.INVISIBLE
-            }
-            background.alpha = 0
-            addView(binding.root, 0)
-            setPadding(0, 0, 0, 0)
-        }
-        (binding.root.layoutParams as MarginLayoutParams).bottomMargin = 60.dp
-        show()
+    val snackbar = Snackbar.make(findViewById(android.R.id.content), title, Snackbar.LENGTH_LONG)
+    (snackbar.view as Snackbar.SnackbarLayout).apply {
+        findViewById<TextView>(com.google.android.material.R.id.snackbar_text).visibility = View.INVISIBLE
+        background.alpha = 0
+        addView(snackText(context, favoriteText), 0)
+        setPadding(0, 0, 0, 0)
     }
 }
 
-
-/**
- * 移除所有ItemDecorations
- */
-fun <T : RecyclerView> T.removeItemDecorations() {
-    while (itemDecorationCount > 0) {
-        removeItemDecorationAt(0)
-    }
-}
 
 /**
  * 隊伍名稱過長處理 teamA v teamB
@@ -460,9 +381,6 @@ inline fun String?.isStatusOpen(): Boolean {
     return this == FLAG_OPEN
 }
 
-fun getCurrentOddsTypeName(): String {
-    return MultiLanguagesApplication.mInstance.sOddsType?:OddsType.EU.code
-}
 /**
  * 設置WebView的日、夜間模式背景色, 避免還在讀取時出現與日夜模式不符的顏色區塊
  * @since 夜間模式時, WebView尚未讀取完成時會顯示其預設背景(白色)
@@ -474,190 +392,6 @@ fun WebView.setWebViewCommonBackgroundColor() {
 }
 
 /**
- * 展開下拉選單
- * ##點擊覆蓋一個View在註冊頁的TextFieldBoxes上避免觸發TextFieldBoxes的行為
- * @param editText: 註冊頁中的ExtendedEditText
- * @param textFieldBoxes: 註冊頁中的TextFieldBoxes
- * @see org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
- * @see org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
- *
- * 取自
- * @see org.cxct.sportlottery.ui.component.StatusSpinnerView
- */
-//针对TextFormFieldBoxes和TextFieldBoxes控件类型写的重载方法
-@SuppressLint("ClickableViewAccessibility")
-fun View.setSpinnerView(
-    editText: EditText,
-    textFieldBoxes: TextFormFieldBoxes,
-    spinnerList: List<StatusSheetData>,
-    touchListener: () -> Unit,
-    itemSelectedListener: (data: StatusSheetData?) -> Unit,
-    popupWindowDismissListener: () -> Unit,
-) {
-    val spinnerAdapter: StatusSpinnerAdapter?
-
-    var selectItem: StatusSheetData
-    var mListPop = ListPopupWindow(context)
-
-    var rawY = 0F
-    setOnTouchListener { _, event ->
-        rawY = event?.rawY ?: 0F
-        false
-    }
-
-    setOnClickListener {
-        var totalHeight = 0F
-
-        for (i in 0..spinnerList.size) {
-            totalHeight += 40F.dpToPx
-        }
-        val currentHeight = context.screenHeight - rawY
-
-        if (totalHeight > currentHeight) {
-            mListPop.height = currentHeight.toInt() - 200
-        } else {
-            mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
-        }
-        if (mListPop.isShowing) {
-            mListPop.dismiss()
-        } else {
-            mListPop.show()
-        }
-
-        if (!editText.isFocused) {
-            //設置TextFieldBoxes為選中狀態, 但EditText不給予focus(不給予focus以不觸發系統鍵盤出現)
-            textFieldBoxes.setHasFocus(true, false)
-        }
-        //隱藏光標
-        editText.isCursorVisible = false
-
-        touchListener()
-    }
-
-    if (spinnerList.isNotEmpty()) {
-        val first = spinnerList[0]
-        first.isChecked = true
-        selectItem = first
-    }
-    spinnerAdapter = StatusSpinnerAdapter(spinnerList.toMutableList())
-    spinnerAdapter.setItmeColor(ContextCompat.getColor(context, R.color.color_FFFFFF_414655))
-    mListPop = ListPopupWindow(context)
-    mListPop.width = textFieldBoxes.width
-    mListPop.setAdapter(spinnerAdapter)
-
-    mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
-    mListPop.setBackgroundDrawable(
-        ContextCompat.getDrawable(
-            context, R.drawable.bg_play_category_pop
-        )
-    )
-
-    mListPop.anchorView = textFieldBoxes //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
-    mListPop.isModal = true //设置是否是模式
-    mListPop.setOnItemClickListener { _, _, position, _ ->
-        //隱藏EditText的光標
-        editText.isCursorVisible = false
-        mListPop.dismiss()
-        selectItem = spinnerList[position]
-        selectItem?.isChecked = true
-        spinnerList.find { it != selectItem && it.isChecked }?.isChecked = false
-        itemSelectedListener.invoke(selectItem)
-    }
-    //PopupWindow關閉時
-    mListPop.setOnDismissListener {
-        textFieldBoxes.hasFocus = false
-        editText.clearFocus()
-        popupWindowDismissListener()
-    }
-}
-
-//针对TextFormFieldBoxes和TextFieldBoxes控件类型写的重载方法
-@SuppressLint("ClickableViewAccessibility")
-fun View.setSpinnerView(
-    editText: EditText,
-    textFieldBoxes: TextFieldBoxes,
-    spinnerList: List<StatusSheetData>,
-    touchListener: () -> Unit,
-    itemSelectedListener: (data: StatusSheetData?) -> Unit,
-    popupWindowDismissListener: () -> Unit,
-) {
-    val spinnerAdapter: StatusSpinnerAdapter?
-
-    var selectItem: StatusSheetData?
-    var mListPop = ListPopupWindow(context)
-
-    var rawY = 0F
-    setOnTouchListener { _, event ->
-        rawY = event?.rawY ?: 0F
-        false
-    }
-
-    setOnClickListener {
-        var totalHeight = 0F
-
-        for (i in 0..spinnerList.size) {
-            totalHeight += 40F.dpToPx
-        }
-        val currentHeight = context.screenHeight - rawY
-
-        if (totalHeight > currentHeight) {
-            mListPop.height = currentHeight.toInt() - 200
-        } else {
-            mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
-        }
-        if (mListPop.isShowing) {
-            mListPop.dismiss()
-        } else {
-            mListPop.show()
-        }
-
-        if (!editText.isFocused) {
-            //設置TextFieldBoxes為選中狀態, 但EditText不給予focus(不給予focus以不觸發系統鍵盤出現)
-            textFieldBoxes.setHasFocus(true, false)
-        }
-        //隱藏光標
-        editText.isCursorVisible = false
-
-        touchListener()
-    }
-
-    if (spinnerList.isNotEmpty()) {
-        val first = spinnerList[0]
-        first.isChecked = true
-        selectItem = first
-    }
-    spinnerAdapter = StatusSpinnerAdapter(spinnerList.toMutableList())
-    spinnerAdapter.setItmeColor(ContextCompat.getColor(context, R.color.color_FFFFFF_414655))
-    mListPop = ListPopupWindow(context)
-    mListPop.width = textFieldBoxes.width
-    mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
-
-    mListPop.setBackgroundDrawable(
-        ContextCompat.getDrawable(
-            context, R.drawable.bg_play_category_pop
-        )
-    )
-    mListPop.setAdapter(spinnerAdapter)
-    mListPop.anchorView = textFieldBoxes //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
-    mListPop.isModal = true //设置是否是模式
-    mListPop.setOnItemClickListener { _, _, position, _ ->
-        //隱藏EditText的光標
-        editText.isCursorVisible = false
-        mListPop.dismiss()
-        selectItem = spinnerList[position]
-        selectItem?.isChecked = true
-        spinnerList.find { it != selectItem && it.isChecked }?.isChecked = false
-        itemSelectedListener.invoke(selectItem)
-    }
-    //PopupWindow關閉時
-    mListPop.setOnDismissListener {
-        textFieldBoxes.hasFocus = false
-        editText.clearFocus()
-        popupWindowDismissListener()
-    }
-}
-
-/**
  * 判斷盤口啟用參數是否有配置
  * @return true: 有配置, false: 沒有配置(為空或null)
  */
@@ -665,24 +399,11 @@ fun isHandicapShowSetup(): Boolean {
     return sConfigData?.handicapShow?.isEmpty() == false
 }
 
-/**
- * 判斷盤口類型是否有開放
- * 若sConfigData?.handicapShow為空或null則開放預設的四項(EU,HK,MY,ID)
- */
-fun isOddsTypeEnable(handicapType: HandicapType): Boolean {
-    return isOddsTypeEnable(handicapType.name)
-}
 
 fun isOddsTypeEnable(handicapTypeCode: String): Boolean {
     return !isHandicapShowSetup() || sConfigData?.handicapShow?.contains(handicapTypeCode) == true
 }
 
-/**
- * 根據盤口類型是否有開放顯示或隱藏View
- */
-fun View.setupOddsTypeVisibility(handicapType: HandicapType) {
-    visibility = if (isOddsTypeEnable(handicapType)) View.VISIBLE else View.GONE
-}
 
 /**
  * 獲取盤口類型預設盤口, 若未配置預設為原先的HK
@@ -1087,8 +808,8 @@ fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter<*>, block: ((Boolean) 
 
 fun String.formatHTML(): String {
     val head =
-        "<head>" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " + "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" + "</head>";
-    return "<html>$head<body>$this</body></html>";
+        "<head>" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " + "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" + "</head>"
+    return "<html>$head<body>$this</body></html>"
 }
 fun setExpandArrow(ivArrow: ImageView, isExpanded: Boolean,esportTheme: Boolean = false) {
     if (isExpanded) {
@@ -1148,13 +869,13 @@ fun Context.dividerView(
  * 设置充值提款渠道的维护状态
  */
 fun setupMoneyCfgMaintanince(rechfg: RechCfg, submitBtn: Button, linMaintaince: View) {
-    if (rechfg?.open== MoneyRechCfg.Switch.OPEN.code){
+    if (rechfg.open== MoneyRechCfg.Switch.OPEN.code){
         submitBtn.visible()
         linMaintaince.gone()
-    }else if(rechfg?.open== MoneyRechCfg.Switch.MAINTAINCE.code){
+    }else if(rechfg.open== MoneyRechCfg.Switch.MAINTAINCE.code){
         submitBtn.gone()
         linMaintaince.visible()
-        linMaintaince.linMaintenanceTip.isVisible = !rechfg?.frontDeskRemark.isNullOrEmpty()
+        linMaintaince.linMaintenanceTip.isVisible = !rechfg.frontDeskRemark.isNullOrEmpty()
         linMaintaince.tvTipsContent.text = rechfg.frontDeskRemark
     }
 }
@@ -1254,27 +975,35 @@ fun AppCompatActivity.showBetReceiptDialog(
             containerId, BetReceiptFragment.newInstance(betResultData, betParlayList)
         ).addToBackStack(BetReceiptFragment::class.java.simpleName).commit()
 }
-fun AppCompatActivity.showFavriteNotify(result: MyFavoriteNotify) {
-    when (result.type) {
-        FavoriteType.LEAGUE -> {
-            when (result.isFavorite) {
-                true -> showFavoriteSnackbar(MyFavoriteNotifyType.LEAGUE_ADD.ordinal)
-                false -> showFavoriteSnackbar(MyFavoriteNotifyType.LEAGUE_REMOVE.ordinal)
-            }
-        }
+fun AppCompatActivity.showFavoriteNotify(result: MyFavoriteNotify) {
 
-        FavoriteType.MATCH -> {
-            when (result.isFavorite) {
-                true -> showFavoriteSnackbar(MyFavoriteNotifyType.MATCH_ADD.ordinal)
-                false -> showFavoriteSnackbar(MyFavoriteNotifyType.MATCH_REMOVE.ordinal)
-            }
-        }
+    val isFavorite = result.isFavorite ?: return
 
-        FavoriteType.PLAY_CATE -> {
-            when (result.isFavorite) {
-                true -> showFavoriteSnackbar(MyFavoriteNotifyType.DETAIL_ADD.ordinal)
-                false -> showFavoriteSnackbar(MyFavoriteNotifyType.DETAIL_REMOVE.ordinal)
-            }
+    if (result.type == FavoriteType.LEAGUE) {
+        if (isFavorite) {
+            showFavoriteSnackbar(getString(R.string.myfavorite_notify_league_add))
+        } else {
+            showFavoriteSnackbar(getString(R.string.myfavorite_notify_league_remove))
         }
+        return
     }
+
+    if (result.type == FavoriteType.MATCH) {
+        if (isFavorite) {
+            showFavoriteSnackbar(getString(R.string.myfavorite_notify_match_add))
+        } else {
+            showFavoriteSnackbar(getString(R.string.myfavorite_notify_match_remove))
+        }
+        return
+    }
+
+    if (result.type == FavoriteType.PLAY_CATE) {
+        if (isFavorite) {
+            showFavoriteSnackbar(getString(R.string.Pinned))
+        } else {
+            showFavoriteSnackbar(getString(R.string.Unpin))
+        }
+        return
+    }
+
 }
