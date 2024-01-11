@@ -6,13 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.feedback.FeedBackRows
-import org.cxct.sportlottery.util.setDate2
 import org.cxct.sportlottery.util.setDateChangeLineTime
-import org.cxct.sportlottery.util.setDateTime
 
 class FeedbackListAdapter(var context: Context, private val clickListener: ItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
