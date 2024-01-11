@@ -193,30 +193,21 @@ class SportLeagueAdapter2(
 
     }
 
-    fun removeMatchOdd(matchOdd: MatchOdd) {
-        removeMatchOddByPosition(getItemPosition(matchOdd))
+    private fun removeMatchOdd(matchOdd: MatchOdd) {
+        val leagueOdd = matchOdd.parentNode as LeagueOdd
+        if (leagueOdd.childNode.isEmpty() || leagueOdd.childNode.size  == 1) {
+            remove(leagueOdd)
+        } else {
+            nodeRemoveData(leagueOdd, matchOdd)
+        }
     }
 
     fun removeMatchOdd(matchId: String) {
-        data.forEachIndexed { index, baseNode ->
+        data.forEach { baseNode ->
             if (baseNode is MatchOdd && baseNode.matchInfo?.id == matchId) {
-                removeMatchOddByPosition(index)
+                removeMatchOdd(baseNode)
                 return
             }
-        }
-    }
-
-    private fun removeMatchOddByPosition(position: Int) {
-        if (position < 0) {
-            return
-        }
-
-        val pre = getItemOrNull(position - 1)
-        val next = getItemOrNull(position + 1)
-        if (pre is LeagueOdd && (next is LeagueOdd || next == null)) {
-            removeAt(position - 1)
-        } else {
-            return removeAt(position)
         }
     }
 
