@@ -18,6 +18,7 @@ import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.interfaces.OnItemClickListener
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -73,7 +74,9 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
     var depositDate = Date()
     var depositDate2 = Date()
     var mCalendar: Calendar =Calendar.getInstance()
-
+    private val dailyConfigAdapter = DailyConfigAdapter{
+        updateDailyConfigSelect()
+    }
     private val dialogBinding by lazy {
         val contentView: ViewGroup? = activity?.window?.decorView?.findViewById(android.R.id.content)
         DialogBottomSheetIconAndTickBinding.inflate(layoutInflater,contentView,false) }
@@ -96,8 +99,8 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
         //提交
         btnSubmit.setTitleLetterSpacing()
         btnSubmit.setOnClickListener {
-            val participate = if(binding.linReceiveExtra.isVisible) 1 else 0
-            createMoneyAddRequest(participate)?.let {
+            val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
+            createMoneyAddRequest(activityType)?.let {
                 viewModel.rechargeSubmit(
                     it,
                     mMoneyPayWay?.rechType,
@@ -558,7 +561,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
                     etRechargeAmount.setCursor()
                     return@afterTextChanged
                 }
-                updateFirstDepositExtraMoney(it.toIntS(0))
+                dailyConfigAdapter.getSelectedItem()?.let { it1 -> updateFirstDepositExtraMoney(it1,it.toIntS(0)) }
                 checkRechargeAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     if (includeQuickMoney.root.isVisible) (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(
@@ -597,7 +600,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
         viewModel.apply {
             //充值金額
             setupEditTextFocusEvent(etRechargeAmount) {
-                updateFirstDepositExtraMoney(it.toIntS(0))
+                dailyConfigAdapter.getSelectedItem()?.let { it1 -> updateFirstDepositExtraMoney(it1,it.toIntS(0)) }
                 checkRechargeAmount(it, mSelectRechCfgs)
             }
             //微信
@@ -658,7 +661,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
     }
 
     //創建MoneyAddRequest
-    private fun createMoneyAddRequest(participate:Int): MoneyAddRequest? =binding.run{
+    private fun createMoneyAddRequest(activityType:Int?): MoneyAddRequest? =binding.run{
         return when (mMoneyPayWay?.rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 MoneyAddRequest(
@@ -677,7 +680,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
-                    participate = participate
+                    activityType = activityType
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -699,7 +702,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
-                    participate = participate
+                    activityType = activityType
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -721,7 +724,7 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
-                    participate = participate
+                    activityType = activityType
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -859,37 +862,35 @@ class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragm
         binding.linFirstDeposit.root.gone()
         binding.linReceiveExtra.gone()
     }
-    private fun initFirstDeposit(dailyConfig: DailyConfig) =binding.linFirstDeposit.run{
-        binding.linFirstDeposit.root.isVisible = dailyConfig.first==1
+    private fun initFirstDeposit(list: List<DailyConfig>) =binding.linFirstDeposit.run{
+        val availableList = list.filter { it.first==1 }
+        binding.linFirstDeposit.root.isVisible = availableList.isNotEmpty()
         linNoChoose.isSelected = true
-        linChooseReward.isSelected = false
+        rvFirstDeposit.adapter = dailyConfigAdapter
+        dailyConfigAdapter.setList(availableList)
+        dailyConfigAdapter.setOnItemClickListener { adapter, view, position ->
+
+        }
         linNoChoose.setOnClickListener {
-            linNoChoose.isSelected = true
-            linChooseReward.isSelected = false
-            binding.linReceiveExtra.isVisible = false
-            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0)
-        }
-        linChooseReward.setOnClickListener {
-            linNoChoose.isSelected = false
-            linChooseReward.isSelected = true
-            binding.linReceiveExtra.isVisible = true
-            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(dailyConfig.additional)
-            updateFirstDepositExtraMoney(binding.etRechargeAmount.getText().toIntS(0))
-        }
-        tvRewardTC.setOnClickListener {
-            FirstDepositNoticeDialog(dailyConfig.content).show(childFragmentManager,null)
-        }
-        tvPercent.text = "${dailyConfig.additional}%"
-        tvCapped.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(dailyConfig.capped,0)}"
-        tvRewardDesp.text = when{
-            dailyConfig.rewards==1&&dailyConfig.principal==0->getString(R.string.P279,dailyConfig.times.toString())
-            dailyConfig.rewards==0&&dailyConfig.principal==1->getString(R.string.P280,dailyConfig.times.toString())
-            dailyConfig.rewards==1&&dailyConfig.principal==1->getString(R.string.P281,dailyConfig.times.toString())
-            else -> ""
+            dailyConfigAdapter.clearSelected()
+            updateDailyConfigSelect()
         }
     }
-    private fun updateFirstDepositExtraMoney(rechargeMoney: Int){
-        val dailyConfig = viewModel.dailyConfigEvent.value
+    private fun updateDailyConfigSelect(){
+        val dailyConfig = dailyConfigAdapter.getSelectedItem()
+        if (dailyConfig==null){
+            binding.linFirstDeposit.linNoChoose.isSelected = true
+            binding.linReceiveExtra.isVisible = false
+            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0)
+        }else{
+            binding.linFirstDeposit.linNoChoose.isSelected = false
+            binding.linReceiveExtra.isVisible = true
+            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(dailyConfig.additional)
+            updateFirstDepositExtraMoney(dailyConfig,binding.etRechargeAmount.getText().toIntS(0))
+        }
+
+    }
+    private fun updateFirstDepositExtraMoney(dailyConfig: DailyConfig, rechargeMoney: Int){
         if (dailyConfig!=null && dailyConfig.first==1){
             val additional = dailyConfig.additional
             val capped = dailyConfig.capped

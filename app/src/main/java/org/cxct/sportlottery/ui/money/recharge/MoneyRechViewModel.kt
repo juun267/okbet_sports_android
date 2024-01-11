@@ -150,7 +150,7 @@ class MoneyRechViewModel(
         get() = _rechCheckMsg
     private var _rechCheckMsg = MutableLiveData<Event<String>>()
 
-    var dailyConfigEvent = SingleLiveEvent<DailyConfig>()
+    var dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
 
     //更新使用者資料
     fun getUserInfo() {
@@ -283,7 +283,7 @@ class MoneyRechViewModel(
         depositMoney: String,
         bankCode: String?,
         payer: String?,
-        participate: Int=0
+        activityType:Int?
     ) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
@@ -298,8 +298,8 @@ class MoneyRechViewModel(
                 "bankCode" to (bankCode ?: ""),
                 "depositMoney" to depositMoney,
                 "clientType" to "2",
-                "participate" to participate.toString(),
             ).apply {
+                activityType?.let { put("activityType",it.toString()) }
                 if (!payer.isNullOrEmpty())
                     put("payer", payer)
                 AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
@@ -329,7 +329,8 @@ class MoneyRechViewModel(
         mSelectRechCfgs: RechCfg?,
         depositMoney: String,
         payee: String?,
-        payeeName: String?
+        payeeName: String?,
+        activityType:Int?
     ) {
         checkRcgOnlineAccount(depositMoney, mSelectRechCfgs)
         if (onlineCryptoPayInput()) {
@@ -343,6 +344,7 @@ class MoneyRechViewModel(
                 "depositMoney" to depositMoney,
                 "clientType" to "2"
             ).apply {
+                activityType?.let { put("activityType",it.toString()) }
                 AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
                     put("appsFlyerId", it)
                     put("appsFlyerKey", BuildConfig.AF_APPKEY)

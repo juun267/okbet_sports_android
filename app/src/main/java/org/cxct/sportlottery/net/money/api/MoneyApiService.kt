@@ -15,5 +15,5 @@ interface MoneyApiService {
     suspend fun rechCheckStauts(@Body params: JsonObject): ApiResult<String>
 
     @GET(Constants.RECH_DAILY_CONFIG)
-    suspend fun rechDailyConfig(): ApiResult<DailyConfig>
+    suspend fun rechDailyConfig(): ApiResult<List<DailyConfig>>
 }
