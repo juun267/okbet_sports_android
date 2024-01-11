@@ -232,28 +232,5 @@ object ParlayLimitUtil {
         return result
     }
 
-    private fun initOddsList(): List<BigDecimal> {
-        val oddsList = ArrayList<BigDecimal>()
-        oddsList.add(BigDecimal("2.23"))
-        oddsList.add(BigDecimal("1.6"))
-        oddsList.add(BigDecimal("1.7"))
-        oddsList.add(BigDecimal("1.85"))
-        return oddsList
-    }
 
-    /**
-     * 單純印出
-     *
-     * @param parlayComList
-     */
-    @SuppressLint("NewApi")
-    private fun parlayComPrintln(parlayComList: List<ParlayCom>) {
-        for (parlayCom in parlayComList) {
-            println("parlayType: " + parlayCom.parlayType)
-            println("num: " + parlayCom.num)
-            println("comList: ")
-            parlayCom.getComList().forEach(Consumer { i: IntArray? -> println(Arrays.toString(i)) })
-            println("-----------------")
-        }
-    }
 }
