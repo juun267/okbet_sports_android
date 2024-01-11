@@ -56,9 +56,6 @@ object JumpUtil {
                         putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
                         putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
                         putExtra(WebActivity.TAG, tag)
-                        if (bettingStation != null) {
-                            putExtra(WebActivity.BET_STATION, bettingStation)
-                        }
                     }
                 )
             }

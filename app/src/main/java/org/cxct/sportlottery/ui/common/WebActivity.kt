@@ -4,10 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.view.View
 import android.webkit.*
+import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityWebBinding
 import org.cxct.sportlottery.network.bettingStation.BettingStation
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
@@ -15,7 +17,7 @@ import org.cxct.sportlottery.util.JumpUtil
 /**
  * Create by Simon Chang
  */
-open class WebActivity : BindingActivity<MainViewModel,ActivityWebBinding>() {
+open class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BindingActivity<MainViewModel,ActivityWebBinding>() {
     companion object {
         const val KEY_URL = "key-url"
         const val KEY_TITLE = "key-title"

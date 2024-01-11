@@ -69,6 +69,6 @@ object ServiceFloatingButton {
                 && activity !is MaintenanceActivity
                 && activity !is LaunchActivity
                 && activity !is ThirdGameActivity
-                && activity !is WebActivity
+                && activity !is WebActivity<*,*>
     }
 }

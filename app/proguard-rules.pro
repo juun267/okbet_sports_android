@@ -121,4 +121,5 @@
 
 #protobuf
 -keepclassmembers public class * extends com.google.protobuf.** {*;}
+-keep class androidx.lifecycle.LiveData { *; }
 

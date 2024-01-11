@@ -1,11 +1,11 @@
 package org.cxct.sportlottery.ui.promotion
 
+import org.cxct.sportlottery.databinding.ActivityWebBinding
 import org.cxct.sportlottery.ui.common.WebActivity
+import org.cxct.sportlottery.ui.maintab.MainViewModel
 
-class LuckyWheelActivity: WebActivity() {
-
+class LuckyWheelActivity: WebActivity<MainViewModel, ActivityWebBinding>() {
     override fun onInitView() {
-        binding.okWebView.cleanAllCache()
         super.onInitView()
     }
 }
