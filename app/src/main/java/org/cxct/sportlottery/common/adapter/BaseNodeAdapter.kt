@@ -163,8 +163,10 @@ abstract class BaseNodeAdapter(nodeList: MutableList<out BaseNode>? = null)
 
         // 先移除子项
         removeCount = removeChildAt(position)
-
         // 移除node自己
+        (this.data[position] as? BaseExpandNode)?.let { baseExpandNode->
+            this.data.onEach { it.childNode?.remove(baseExpandNode) }
+        }
         this.data.removeAt(position)
         removeCount += 1
 
