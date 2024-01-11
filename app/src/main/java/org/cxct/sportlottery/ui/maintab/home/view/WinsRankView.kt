@@ -21,15 +21,12 @@ import org.cxct.sportlottery.common.extentions.doOnDestory
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import splitties.coroutines.repeatWhileActive
 import kotlin.random.Random
 
 class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
@@ -112,10 +109,11 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     fun clearAllData(){
         httpBetDataList.clear()
         httpWinsDataList.clear()
-        gameRecordAdapter.setList(listOf())
+        gameRecordAdapter.setNewInstance(null)
     }
 
     private fun postLoop() {
+        stopPostLoop()
         recordHandler.sendEmptyMessageDelayed(3, (Random.nextLong(1000) + 400))
     }
 
@@ -166,7 +164,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private fun resetData(oldDataList: MutableList<RecordNewEvent>, newDataList: MutableList<RecordNewEvent>) {
         oldDataList.clear()
         oldDataList.addAll(gameRecordAdapter.data)
-        gameRecordAdapter.setList(newDataList)
+        gameRecordAdapter.setNewInstance(newDataList)
     }
 
     private fun reecordAdapterNotify(it: RecordNewEvent) {
