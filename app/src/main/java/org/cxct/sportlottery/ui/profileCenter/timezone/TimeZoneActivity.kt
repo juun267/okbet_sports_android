@@ -65,7 +65,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             selectItem = it
             sortList()
             val zone = java.util.TimeZone.getTimeZone(it.name)
-            zone.id = it.country_en + "/" + it.city_en
+//            zone.id = it.country_en + "/" + it.city_en
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 if (runCatching {zone.toZoneId() }.getOrNull() == null) {
