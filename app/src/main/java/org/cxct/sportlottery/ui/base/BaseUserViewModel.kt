@@ -43,8 +43,8 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
-import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import timber.log.Timber
+import java.math.BigDecimal
 import java.math.RoundingMode
 
 
@@ -588,7 +588,7 @@ abstract class BaseOddButtonViewModel(
     }
 
     protected fun MatchOdd.setupOddDiscount() {
-        val discount = userInfo.value?.discount ?: 1F
+        val discount = userInfo.value?.getDiscount(this.matchInfo?.gameType)?.toBigDecimalOrNull()?.toFloat() ?: BigDecimal.ONE.toFloat()
         this.oddsMap?.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
                 if (it.key == PlayCate.EPS.value) odd.setupEPSDiscount(discount)
@@ -688,10 +688,10 @@ abstract class BaseOddButtonViewModel(
     }
 
     protected fun org.cxct.sportlottery.network.odds.detail.MatchOdd.setupOddDiscount() {
-        val discount = userInfo.value?.discount ?: 1F
+        val discount = userInfo.value?.getDiscount(matchInfo.gameType)?.toBigDecimalOrNull() ?: BigDecimal.ONE
         this.odds.forEach { (key, value) ->
             value.odds.filterNotNull()?.forEach { odd ->
-                odd.setupOddsDiscount(key == PlayCate.LCS.value, key, discount)
+                odd.setupOddsDiscount(key == PlayCate.LCS.value, key, discount.toFloat())
             }
         }
     }
@@ -823,14 +823,6 @@ abstract class BaseOddButtonViewModel(
                 }
             }
         }
-        betInfoRepository.notifyBetInfoChanged()
-    }
-
-    fun updateBetInfoDiscount(discount: Float, newDiscount: Float) {
-        betInfoList.value?.peekContent()?.forEach { betInfoListData ->
-            betInfoListData.matchOdd.updateDiscount(discount, newDiscount)
-        }
-
         betInfoRepository.notifyBetInfoChanged()
     }
 

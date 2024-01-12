@@ -4,62 +4,48 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.SpreadState
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
+import org.cxct.sportlottery.util.DiscountUtils.applyDiscount
+import org.cxct.sportlottery.util.DiscountUtils.applyHKDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
+import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 @Parcelize
-@JsonClass(generateAdapter = true) @KeepMembers
+@KeepMembers
 data class MatchOdd(
-    @Json(name = "awayName")
     val awayName: String?,
-    @Json(name = "homeName")
     val homeName: String?,
-    @Json(name = "inplay")
     val inplay: Int,
-    @Json(name = "leagueId")
     val leagueId: String,
-    @Json(name = "leagueName")
     val leagueName: String?,
-    @Json(name = "matchId")
     val matchId: String,
-    @Json(name = "odds")
+    val originalOdds: String?,
     var odds: Double,
-    @Json(name = "hkOdds")
     var hkOdds: Double,
-    @Json(name = "malayOdds")
     var malayOdds: Double,
-    @Json(name = "indoOdds")
     var indoOdds: Double,
-    @Json(name = "oddsId")
     var oddsId: String,
-    @Json(name = "playCateId")
     val playCateId: Int,
-    @Json(name = "playCateName")
     val playCateName: String,
-    @Json(name = "playCode")
     val playCode: String,
-    @Json(name = "playId")
     val playId: Int,
-    @Json(name = "playName")
     val playName: String,
-    @Json(name = "producerId")
     val producerId: Int,
-    @Json(name = "spread")
     var spread: String,
-    @Json(name = "startTime")
     val startTime: Long?,
-    @Json(name = "status")
     var status: Int?,
-    @Json(name = "gameType")
     var gameType: String,
-    @Json(name = "homeScore")
     var homeScore: Int,
-    @Json(name = "awayScore")
     var awayScore: Int,
     override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
     override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
@@ -81,5 +67,50 @@ data class MatchOdd(
     var homeCornerKicks: Int? = null
     var awayCornerKicks: Int? = null
     var categoryCode: String? = null
+
+    /**
+     * 折扣率更新
+     */
+    fun updateDiscount(discount: BigDecimal) {
+        if (playCode != PlayCate.LCS.value) {
+            val oddsDiscountNullable = this.originalOdds?.toBigDecimalOrNull()?.applyDiscount(discount)
+            oddsDiscountNullable?.let { oddsDiscount ->
+                if (isOnlyEUType) {
+                    this.odds = oddsDiscount.toDouble()
+                    this.hkOdds = oddsDiscount.toDouble()
+                    this.malayOdds = oddsDiscount.toDouble()
+                    this.indoOdds = oddsDiscount.toDouble()
+                } else {
+                    val hkOddsDiscountNullable =
+                        originalOdds?.toBigDecimalOrNull()?.subtract(BigDecimal.ONE)?.applyHKDiscount(discount)
+                    odds = oddsDiscount.toDouble()
+                    hkOddsDiscountNullable?.let { hkOddsDiscount ->
+                        val hkOddsHalfUp = hkOddsDiscount.setScale(2, RoundingMode.HALF_UP).toDouble()
+                        hkOdds = hkOddsDiscount.toDouble()
+                        malayOdds = hkOddsHalfUp.convertToMYOdds()
+                        indoOdds = hkOddsHalfUp.convertToIndoOdds()
+                    }
+                }
+                //盤口為正常投注狀況時才去判斷是賠率值是否需要鎖盤
+                if (status == BetStatus.ACTIVATED.code) {
+                    updateBetStatus()
+                }
+            }
+        }
+    }
+    /**
+     * 歐盤賠率小於1或香港盤賠率小於0時需將盤口鎖上
+     *
+     * @since 根據不同用戶經折扣率(Discount), 水位(margin)計算過後可能與原盤口狀態不同
+     * @see org.cxct.sportlottery.network.bet.info.MatchOdd.updateBetStatus 若有調整此處一併調整
+     */
+    private fun updateBetStatus() {
+        //歐盤賠率小於1或香港盤賠率小於0
+        if (((this.odds?.toBigDecimal()?.setScale(2, RoundingMode.HALF_UP) ?: BigDecimal.ZERO) <= BigDecimal.ONE) ||
+            ((this.hkOdds?.toBigDecimal()?.setScale(2, RoundingMode.HALF_UP) ?: BigDecimal.ZERO) <= BigDecimal.ZERO)
+        ) {
+            this.status = BetStatus.LOCKED.code
+        }
+    }
 }
 

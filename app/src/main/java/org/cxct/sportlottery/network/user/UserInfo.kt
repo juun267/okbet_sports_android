@@ -1,7 +1,10 @@
 package org.cxct.sportlottery.network.user
 
 import androidx.annotation.Keep
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.UserGameTypeDiscount
 import org.cxct.sportlottery.network.common.UserRebate
 
 @Keep
@@ -28,7 +31,6 @@ data class UserInfo(
     var maxParlayBetMoney: Long? = null,
     //会员对应vip层级的单注冠军最大下注额
     var maxCpBetMoney: Long? = null,
-    var discount: Float? = null,
     var verified: Int? = null, // 是否通过实名验证,0:未通过 1:已通过 2:验证中 3:验证失败
     val perBetLimit: Int? = null,
     var oddsChangeOption: Int? = null,
@@ -50,9 +52,19 @@ data class UserInfo(
     val middleName: String?="",
     val lastName: String?="",
     val birthday: String?="",
+    var discountByGameTypeList: List<UserGameTypeDiscount>? = null
 ){
     fun isGlifeAccount():Boolean = vipType==1
     fun hasFullName() = !firstName.isEmptyStr() || !lastName.isEmptyStr()
     fun noneMiddleName() = middleName.isEmptyStr() || "N/A".equals(middleName, true)
+
+    fun getDiscount(gameType: GameType?): String? = getDiscount(gameType?.key)
+    fun getDiscount(gameType: String?): String? = discountByGameTypeList?.firstOrNull { it.gameType == gameType }?.discount
+    fun updateDiscountByGameTypeList(newDiscountByGameTypeList: List<FrontWsEvent.DiscountByGameTypeVO>?) {
+        newDiscountByGameTypeList?.forEach { newValueObject ->
+            discountByGameTypeList?.firstOrNull { it.gameType == newValueObject.gameType }?.discount =
+                newValueObject.discount
+        }
+    }
 }
 

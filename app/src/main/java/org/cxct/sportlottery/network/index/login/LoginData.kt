@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.index.login
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.network.common.UserGameTypeDiscount
 import org.cxct.sportlottery.network.common.UserRebate
 import org.cxct.sportlottery.network.user.info.LiveSyncUserInfoVO
 
@@ -27,7 +28,6 @@ data class LoginData(
     val maxBetMoney: Long?,
     val maxCpBetMoney: Long?,
     val maxParlayBetMoney: Long?,
-    var discount: Float?, //後台維修 暫時修改做測試 要改回va
     var deviceValidateStatus: Int?, //0: 未验证(需要驗證), 1: 已验证(不需要驗證)
     var verified: Int?,
     var liveSyncUserInfoVO: LiveSyncUserInfoVO?,
@@ -42,5 +42,6 @@ data class LoginData(
     val needOTPLogin: Boolean, // 账号长时间未登陆需要验证手机号
     val phone: String?,         // 账号长时间未登陆需要验证手机号时会返回
     val email: String?,
-    val firstPhoneGiveMoney: Boolean?// 注册绑定手机送金额
+    val firstPhoneGiveMoney: Boolean?,// 注册绑定手机送金额
+    val discountByGameTypeList: List<UserGameTypeDiscount>?
 ) : java.io.Serializable

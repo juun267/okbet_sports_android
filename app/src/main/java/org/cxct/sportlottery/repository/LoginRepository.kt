@@ -35,7 +35,6 @@ const val KEY_TOKEN = "token"
 const val KEY_ACCOUNT = "account"
 const val KEY_PLATFORM_ID = "platformId"
 const val KEY_ODDS_TYPE = "oddsType"
-const val KEY_DISCOUNT = "discount"
 const val KEY_USER_ID = "user_id"
 const val KEY_USER_LEVEL_ID = "user_Level_Id"
 
@@ -325,7 +324,6 @@ object LoginRepository {
             putString(KEY_TOKEN, loginData?.token)
             putLong(KEY_USER_ID, loginData?.userId ?: -1)
             putLong(KEY_PLATFORM_ID, loginData?.platformId ?: -1)
-            putFloat(KEY_DISCOUNT, loginData?.discount ?: 1f)
             apply()
         }
     }
@@ -377,9 +375,9 @@ object LoginRepository {
             userName = loginData.userName,
             userType = loginData.userType,
             userRebateList = loginData.userRebateList,
-            discount = loginData.discount,
             verified = loginData.verified,
             vipType = loginData.vipType,
+            discountByGameTypeList = loginData.discountByGameTypeList,
         )
 
     fun addRecentPlayGame(gameId: String): LinkedHashSet<String> {

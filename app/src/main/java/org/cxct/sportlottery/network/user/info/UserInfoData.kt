@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.user.info
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.network.common.UserGameTypeDiscount
 import org.cxct.sportlottery.network.common.UserRebate
 
 @JsonClass(generateAdapter = true) @KeepMembers
@@ -44,7 +45,6 @@ data class UserInfoData(
     @Json(name = "maxBetMoney") val maxBetMoney: Long?,
     @Json(name = "maxCpBetMoney") val maxCpBetMoney: Long?,
     @Json(name = "maxParlayBetMoney") val maxParlayBetMoney: Long?,
-    @Json(name = "discount") val discount: Float?,
     @Json(name = "verified") val verified: Int?, // 是否通过实名验证,0:未通过 1:已通过 2:验证中 3:验证失败
     @Json(name = "perBetLimit") val perBetLimit: Int?,
     @Json(name = "uwEnableTime") val uwEnableTime: Long? = 0,
@@ -63,6 +63,7 @@ data class UserInfoData(
     @Json(name = "permanentAddress") var permanentAddress: String?,
     @Json(name = "zipCode") var zipCode: String?,
     @Json(name = "permanentZipCode") var permanentZipCode: String?,
+    @Json(name = "discountByGameTypeList") val discountByGameTypeList: List<UserGameTypeDiscount>?,
     val firstName: String?="",
     val middleName: String?="",
     val lastName: String?="",
