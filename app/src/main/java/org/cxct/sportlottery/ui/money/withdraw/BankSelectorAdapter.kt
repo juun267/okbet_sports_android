@@ -17,9 +17,9 @@ class BankSelectorAdapter(val onSelect: (Bank)->Unit) : BindingAdapter<Bank, Ite
 
         selectedPosition = 0
 
-        if (data.isNotEmpty()) {
-            data[selectedPosition].isSelected = true
-            onSelect.invoke(data[0])
+        data.firstOrNull()?.let {
+            it.isSelected = true
+            onSelect.invoke(it)
         }
         notifyDataSetChanged()
     }
