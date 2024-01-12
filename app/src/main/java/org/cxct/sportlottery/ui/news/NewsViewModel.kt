@@ -1,12 +1,9 @@
 package org.cxct.sportlottery.ui.news
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.NewsType
@@ -16,7 +13,6 @@ import org.cxct.sportlottery.network.news.SportNewsRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.TimeUtil
-import org.json.JSONObject
 
 class NewsViewModel(
     androidContext: Application,

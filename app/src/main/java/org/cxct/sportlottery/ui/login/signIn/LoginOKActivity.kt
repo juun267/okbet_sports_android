@@ -34,8 +34,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.SelfLimitFrozeErrorDialog
-import org.cxct.sportlottery.ui.login.CaptchaDialog
-import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
 import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity

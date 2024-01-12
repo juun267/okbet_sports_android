@@ -27,7 +27,6 @@ import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.network.withdraw.uwcheck.UwCheckData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.*
 import java.math.RoundingMode
@@ -483,10 +482,6 @@ class WithdrawViewModel(
         }
     }
 
-    private fun checkInputBankCardDeleteData(fundPwd: String) {
-        checkWithdrawPassword(fundPwd)
-    }
-
     fun getMoneyConfigs() {
         viewModelScope.launch {
             loading()
@@ -585,12 +580,6 @@ class WithdrawViewModel(
             return false
         if (phoneNumberMsg.value != "")
             return false
-        if (withdrawPasswordMsg.value != "")
-            return false
-        return true
-    }
-
-    private fun checkBankCardDeleteData(): Boolean {
         if (withdrawPasswordMsg.value != "")
             return false
         return true
@@ -1133,7 +1122,6 @@ class WithdrawViewModel(
                     cityId
                 )
             }?.let { result ->
-                val bettingStationSheetList = mutableListOf<StatusSheetData>()
                 withContext(Dispatchers.Main) {
                     _bettingStationList.value = result.bettingStationList
                 }

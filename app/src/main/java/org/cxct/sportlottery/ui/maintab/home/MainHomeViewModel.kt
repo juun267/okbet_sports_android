@@ -48,7 +48,6 @@ open class MainHomeViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-    private val sportMenuRepository: SportMenuRepository,
 ) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,

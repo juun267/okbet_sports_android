@@ -20,16 +20,14 @@ class OKLiveViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
-    sportMenuRepository: SportMenuRepository,
+    favoriteRepository: MyFavoriteRepository
 ) : MainHomeViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
     betInfoRepository,
     infoCenterRepository,
-    favoriteRepository,
-    sportMenuRepository,
+    favoriteRepository
 ) {
 
     val providerResult: LiveData<OKGamesHall>

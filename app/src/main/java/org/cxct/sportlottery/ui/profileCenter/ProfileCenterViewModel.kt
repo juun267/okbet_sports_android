@@ -18,7 +18,6 @@ import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.SingleLiveEvent
 import java.io.File

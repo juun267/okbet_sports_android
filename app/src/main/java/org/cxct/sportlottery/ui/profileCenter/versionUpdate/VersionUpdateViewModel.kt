@@ -54,22 +54,6 @@ class VersionUpdateViewModel(
 
     //獲取 版本更新 API url，當 call API 失敗時，就使用下一順位的 serverUrl，重新 request，直到遍歷 ServerUrlList，或成功獲取 checkAppUpdate() 即停止
     private var mServerUrlIndex = 0
-    private fun getNextCheckAppUpdateUrl(index: Int): String {
-        return if (index in Constants.SERVER_URL_LIST.indices) {
-            val serverUrl = Constants.SERVER_URL_LIST[index]
-            Constants.currentServerUrl = serverUrl //紀錄當前選擇的 serverUrl
-            Constants.getCheckAppUpdateUrl(serverUrl)
-        } else ""
-    }
-
-    fun checkAppVersion() {
-        viewModelScope.launch(Dispatchers.IO) {
-            mServerUrlIndex = 0
-            check {
-                compareVersion(it)
-            }
-        }
-    }
 
     fun checkAppMinVersion() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -144,20 +128,6 @@ class VersionUpdateViewModel(
                 }
             }
         }
-    }
-
-    private fun compareVersion(result: CheckAppVersionResult) {
-        val isNewVersionCode = judgeNewVersion(result)
-        val versionList = result.version?.split("_")
-        val androidVersionCode = versionList?.get(0) ?: ""
-        val androidVersionName = versionList?.get(1) ?: ""
-        _appVersionState.postValue(
-            AppVersionState(
-                isNewVersionCode,
-                androidVersionCode,
-                androidVersionName
-            )
-        )
     }
 
     private fun compareMinVersion(result: CheckAppVersionResult) {

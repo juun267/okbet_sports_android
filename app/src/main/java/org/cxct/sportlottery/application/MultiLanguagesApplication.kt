@@ -136,7 +136,7 @@ class MultiLanguagesApplication : Application() {
     // 不需要在主线程初始化的进行异步初始化
     private fun asyncInit() = GlobalScope.async {
 
-        TimeZone.setDefault(TimeZoneUitl.timeZone)
+        runWithCatch { TimeZone.setDefault(TimeZoneUitl.timeZone) }
         //生成UUID作為設備識別碼
         setupDeviceCode()
         initAppsFlyerSDK()

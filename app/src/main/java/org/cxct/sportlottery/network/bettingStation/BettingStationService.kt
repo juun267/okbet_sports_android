@@ -14,8 +14,7 @@ import retrofit2.http.Query
 import retrofit2.http.POST
 
 interface BettingStationService {
-    @GET(Constants.BETTING_STATION_QUERY)
-    suspend fun bettingStationsQuery(): Response<BettingStationResult>
+
 
     @GET(Constants.BETTING_STATION_QUERY_INVITE)
     suspend fun queryPlatform(@Query("inviteCode") inviteCode: String): Response<CheckBettingResult>

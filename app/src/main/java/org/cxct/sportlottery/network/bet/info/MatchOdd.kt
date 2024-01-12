@@ -7,7 +7,6 @@ import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.SpreadState
 import org.cxct.sportlottery.common.proguards.KeepMembers
-import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
@@ -73,7 +72,6 @@ data class MatchOdd(
 
     @Transient
     var runnable: Runnable? = null //賠率變更，按鈕顏色變換任務
-    var betAddError: BetAddError? = null
     var oddsHasChanged = false
     var spreadState: Int = SpreadState.SAME
     var extInfo: String? = null //球員名稱
