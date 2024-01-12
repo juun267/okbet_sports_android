@@ -3,9 +3,6 @@
 package org.cxct.sportlottery.ui.maintab.menu.viewmodel
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
@@ -39,7 +36,7 @@ class SportLeftMenuViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-    val sportMenuRepository: SportMenuRepository,
+    private val sportMenuRepository: SportMenuRepository,
 ) : MainHomeViewModel(
     androidContext,
     userInfoRepository,
@@ -47,7 +44,6 @@ class SportLeftMenuViewModel(
     betInfoRepository,
     infoCenterRepository,
     favoriteRepository,
-    sportMenuRepository
 ) {
 
 

@@ -34,8 +34,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.SelfLimitFrozeErrorDialog
-import org.cxct.sportlottery.ui.login.CaptchaDialog
-import org.cxct.sportlottery.ui.login.VerifyCodeDialog
+import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
 import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
@@ -43,7 +42,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.boundsEditText.SimpleTextChangedWatcher
-import org.cxct.sportlottery.view.checkRegisterListener
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import splitties.activities.start
@@ -252,7 +250,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     if (event.login){
                         viewModel.dealWithLoginData(loginResult!!,it)
                     }else{
-
                         var inviteCode = binding.eetRecommendCode.text.toString()
                         //新的注册接口
                         val deviceSn = JPushInterface.getRegistrationID(this@LoginOKActivity)

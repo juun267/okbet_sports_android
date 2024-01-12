@@ -20,6 +20,7 @@ import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LogUtil
 
 class PromotionManager {
     companion object {
@@ -56,7 +57,7 @@ class PromotionManager {
         PromotionListActivity::class,
         PromotionDetailActivity::class -> false
         WebActivity::class -> {
-            !WebActivity.currentTag.isNullOrBlank()
+            WebActivity.currentTag.isNullOrBlank()
         }
         else -> true
     }

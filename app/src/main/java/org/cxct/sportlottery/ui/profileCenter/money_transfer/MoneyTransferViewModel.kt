@@ -20,7 +20,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TimeUtil
 
 class MoneyTransferViewModel(
@@ -53,16 +52,16 @@ class MoneyTransferViewModel(
     var inCode: String? = null
     var outCode: String? = null
 
-    val statusList = LocalUtils.getStringArray(R.array.transfer_state_array).map {
+    val statusList = androidContext.resources.getStringArray(R.array.transfer_state_array).map {
         when (it) {
-            LocalUtils.getString(R.string.log_state_processing) -> {
+            androidContext.getString(R.string.log_state_processing) -> {
                 StatusSheetData(Status.PROCESSING.code.toString(), it)
             }
-            LocalUtils.getString(R.string.recharge_state_success) -> {
+            androidContext.getString(R.string.recharge_state_success) -> {
                 StatusSheetData(Status.SUCCESS.code.toString(), it)
 
             }
-            LocalUtils.getString(R.string.recharge_state_failed) -> {
+            androidContext.getString(R.string.recharge_state_failed) -> {
                 StatusSheetData(Status.FAILED.code.toString(), it)
             }
             else -> {
@@ -234,7 +233,7 @@ class MoneyTransferViewModel(
 
     private fun setSubInSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
-        list.add(StatusSheetData(platCode, LocalUtils.getString(R.string.plat_money)))
+        list.add(StatusSheetData(platCode, androidContext.getString(R.string.plat_money)))
         resultList.forEach {
             list.add(StatusSheetData(it.code, it.showName))
         }
@@ -244,7 +243,7 @@ class MoneyTransferViewModel(
 
     private fun setSubOutSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
-        list.add(StatusSheetData(platCode, LocalUtils.getString(R.string.plat_money)))
+        list.add(StatusSheetData(platCode, androidContext.getString(R.string.plat_money)))
         resultList.forEach {
             list.add(StatusSheetData(it.code, it.showName))
         }
@@ -254,8 +253,8 @@ class MoneyTransferViewModel(
 
     private fun setRecordInSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
-        list.add(StatusSheetData(allPlat, LocalUtils.getString(R.string.all_in_plat)))
-        list.add(StatusSheetData(platCode, LocalUtils.getString(R.string.plat_money)))
+        list.add(StatusSheetData(allPlat, androidContext.getString(R.string.all_in_plat)))
+        list.add(StatusSheetData(platCode, androidContext.getString(R.string.plat_money)))
         resultList.forEach {
             list.add(StatusSheetData(it.code, it.showName))
         }
@@ -266,8 +265,8 @@ class MoneyTransferViewModel(
 
     private fun setRecordOutSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
-        list.add(StatusSheetData(allPlat, LocalUtils.getString(R.string.all_out_plat)))
-        list.add(StatusSheetData(platCode, LocalUtils.getString(R.string.plat_money)))
+        list.add(StatusSheetData(allPlat, androidContext.getString(R.string.all_out_plat)))
+        list.add(StatusSheetData(platCode, androidContext.getString(R.string.plat_money)))
         resultList.forEach {
             list.add(StatusSheetData(it.code, it.showName))
         }

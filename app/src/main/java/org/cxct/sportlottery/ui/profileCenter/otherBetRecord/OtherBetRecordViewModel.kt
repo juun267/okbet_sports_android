@@ -16,7 +16,6 @@ import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.de
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
-import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
@@ -88,7 +87,7 @@ class OtherBetRecordViewModel(
                 val thirdGameList = mutableListOf<GameFirmValues>()
                 val resultList = mutableListOf<StatusSheetData>()
 
-                resultList.add(StatusSheetData(allPlatTag, LocalUtils.getString(R.string.all_plat_type)))
+                resultList.add(StatusSheetData(allPlatTag, androidContext.getString(R.string.all_plat_type)))
                 for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
                     if (value.open == 1) {
                         thirdGameList.add(value)

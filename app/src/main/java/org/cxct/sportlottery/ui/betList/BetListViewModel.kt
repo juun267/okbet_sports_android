@@ -17,7 +17,6 @@ class BetListViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     myFavoriteRepository: MyFavoriteRepository,
-    private val sportMenuRepository: SportMenuRepository,
 ) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,

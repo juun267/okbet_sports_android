@@ -6,10 +6,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.ForgetPwdSelectAccountEvent
-import org.cxct.sportlottery.common.event.LoginSelectAccountEvent
 import org.cxct.sportlottery.databinding.ActivityForgetPassword2Binding
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.extentions.finishWithOK
@@ -20,7 +18,6 @@ import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordData
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.foget.reset.ResetPasswordActivity
-import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.checkEmail

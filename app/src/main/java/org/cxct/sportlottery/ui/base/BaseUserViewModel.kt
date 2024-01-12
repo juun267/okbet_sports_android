@@ -27,7 +27,6 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -745,11 +744,6 @@ abstract class BaseOddButtonViewModel(
                             newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
                         }
 
-                        //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
-                        if (oldItem.oddState != OddState.SAME.state && oldItem.status == BetStatus.ACTIVATED.code) {
-                            oldItem.betAddError = null
-                        }
-
                     }
                 }
             } catch (e: java.lang.Exception) {
@@ -758,46 +752,6 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
-    private fun updateItemForBetAddError(
-        oldItem: org.cxct.sportlottery.network.bet.info.MatchOdd,
-        newList: List<org.cxct.sportlottery.network.odds.Odd>,
-        betAddError: BetAddError
-    ) {
-        for (newItem in newList) {
-            //每次都先把字串清空
-            oldItem.betAddError = null
-
-            try {
-                newItem.let {
-                    var currentOddsType = MultiLanguagesApplication.mInstance.mOddsType.value
-                    if (it.odds == it.malayOdds) {
-                        currentOddsType = OddsType.EU
-                    }
-
-                    if (it.id == oldItem.oddsId) {
-                        if (betAddError == BetAddError.ODDS_HAVE_CHANGED) {
-                            oldItem.oddState = getOddState(
-                                getOdds(
-                                    oldItem, currentOddsType ?: OddsType.HK
-                                ), newItem
-                            )
-
-                            oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
-
-                            newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
-                            newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
-                            newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
-                        }
-
-                        newItem.status.let { status -> oldItem.status = status }
-                        oldItem.betAddError = betAddError
-                    }
-                }
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
 
     //更新投注限額
     fun updateBetLimit() {
