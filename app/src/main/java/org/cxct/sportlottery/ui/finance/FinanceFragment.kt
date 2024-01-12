@@ -129,7 +129,7 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
             dataList.add(record)
         }
 
-        recordAdapter.data = dataList
+        recordAdapter.setList(dataList)
     }
 
     override fun onStart() {
