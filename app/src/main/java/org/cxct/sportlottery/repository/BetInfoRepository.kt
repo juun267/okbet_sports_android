@@ -701,7 +701,7 @@ object BetInfoRepository {
                 }
 
                 else -> { //BetStatus.ACTIVATED.code
-                    it.matchOdd.betAddError != null
+//                    it.matchOdd.betAddError != null
                 }
             }
         }
@@ -781,7 +781,7 @@ object BetInfoRepository {
 
                 //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
                 if (oldItem.oddState != OddState.SAME.state && oldItem.status == BetStatus.ACTIVATED.code) {
-                    oldItem.betAddError = null
+//                    oldItem.betAddError = null
                 }
 
             }

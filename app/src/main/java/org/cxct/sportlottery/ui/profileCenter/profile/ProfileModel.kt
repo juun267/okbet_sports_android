@@ -13,7 +13,6 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LogUtil
 
 class ProfileModel(
     androidContext: Application,

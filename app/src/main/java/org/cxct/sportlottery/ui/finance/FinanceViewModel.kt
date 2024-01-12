@@ -340,8 +340,6 @@ class FinanceViewModel(
 
         loading()
 
-        val filter = { item: String? -> if (item == allTag || item.isNullOrBlank()) null else item }
-
         when {
             isFirstFetch -> {
                 redEnvelopeLogList.clear()

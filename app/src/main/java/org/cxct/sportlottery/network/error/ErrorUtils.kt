@@ -93,7 +93,6 @@ import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.money.list.SportBillResult
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteAllMatchResult
-import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
 import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
 import org.cxct.sportlottery.network.myfavorite.save.MyFavoriteBaseResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
@@ -225,10 +224,7 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return SportMenuFavoriteResult(it.code, it.msg, it.success, null) as T
                     }
-                    (url.contains(Constants.MYFAVORITE_MATCH_QUERY)) -> {
-                        @Suppress("UNCHECKED_CAST")
-                        return MyFavoriteMatchResult(it.code, it.msg, it.success, null, null) as T
-                    }
+
                     (url.contains(Constants.MYFAVORITE_SAVE)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return MyFavoriteBaseResult(it.code, it.msg, it.success, null) as T

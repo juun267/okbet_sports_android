@@ -20,7 +20,6 @@ import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
-import org.cxct.sportlottery.util.LocalUtils
 
 
 class SettlementViewModel(
@@ -454,7 +453,7 @@ class SettlementViewModel(
                         sportCodeList.add(
                             StatusSheetData(
                                 it.code,
-                                GameType.getGameTypeString(LocalUtils.getLocalizedContext(), it.code)
+                                GameType.getGameTypeString(androidContext, it.code)
                             )
                         )
                     }

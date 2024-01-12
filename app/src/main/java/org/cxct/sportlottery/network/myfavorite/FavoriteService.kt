@@ -3,7 +3,6 @@ package org.cxct.sportlottery.network.myfavorite
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteAllMatchResult
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
-import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
 import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
 import org.cxct.sportlottery.network.myfavorite.save.MyFavoriteBaseResult
 import org.cxct.sportlottery.network.myfavorite.save.SaveMyFavoriteRequest
@@ -15,11 +14,6 @@ interface FavoriteService {
 
     @POST(Constants.MYFAVORITE_QUERY)
     suspend fun getMyFavorite(): Response<SportMenuFavoriteResult>
-
-    @POST(Constants.MYFAVORITE_MATCH_QUERY)
-    suspend fun getMyFavoriteMatch(
-        @Body myFavoriteMatchRequest: MyFavoriteMatchRequest,
-    ): Response<MyFavoriteMatchResult>
 
     @POST(Constants.MYFAVORITE_SAVE)
     suspend fun saveMyFavorite(

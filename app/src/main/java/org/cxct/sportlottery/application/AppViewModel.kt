@@ -51,7 +51,7 @@ object AppViewModel {
     private val viewModelModule = module {
         viewModel { SplashViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
@@ -78,14 +78,14 @@ object AppViewModel {
         viewModel { SportListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { SportTabViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { CancelAccountViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MainHomeViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { MainHomeViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { ForgetViewModel(get(), get(), get(), get()) }
-        viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { BetListViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { BindInfoViewModel(get(), get(), get(), get()) }
         viewModel { RegisterInfoViewModel(get(), get(), get(), get()) }
-        viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { OKLiveViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { OKLiveViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { ChatViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { SportLeftMenuViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { RedeemViewModel(get(), get(), get(), get(), get(), get()) }
