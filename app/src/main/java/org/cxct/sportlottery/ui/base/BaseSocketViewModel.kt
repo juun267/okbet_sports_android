@@ -51,14 +51,14 @@ abstract class BaseSocketViewModel(
         }
     }
 
-    fun updateDiscount(discount: Double?) {
+    fun updateDiscount(discountByGameTypeList: List<FrontWsEvent.DiscountByGameTypeVO>?) {
         viewModelScope.launch {
-            if (discount == null) {
+            if (discountByGameTypeList.isNullOrEmpty()) {
                 viewModelScope.launch {
-                    doNetwork(androidContext) { userInfoRepository.getUserInfo() }
+                    doNetwork { userInfoRepository.getUserInfo() }
                 }
             } else {
-                userInfo.value?.userId?.let { userInfoRepository.updateDiscount(it, discount.toFloat()) }
+                userInfo.value?.userId?.let { userInfoRepository.updateDiscount(discountByGameTypeList) }
             }
         }
     }

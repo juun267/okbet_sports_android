@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -79,10 +80,6 @@ object UserInfoRepository {
 
     fun getUserLevelId(): Int {
         return KvUtils.decodeInt(KEY_USER_LEVEL_ID, -1)
-    }
-
-    fun getDiscount(): Float {
-        return MultiLanguagesApplication.getInstance()?.userInfo()?.discount ?: 1.0F
     }
 
     fun updatePayPwFlag(userId: Long) {
@@ -209,13 +206,10 @@ object UserInfoRepository {
 //        }
 //    }
 
-    suspend fun updateDiscount(userId: Long, discount: Float) {
-//        withContext(Dispatchers.IO) {
-//            userInfoDao.updateDiscount(userId, discount)
-//        }
-        var userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
-        userInfo?.discount = discount
-        MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+    suspend fun updateDiscount(discountByGameTypeList: List<FrontWsEvent.DiscountByGameTypeVO>?) {
+        val userInfo = MultiLanguagesApplication.mInstance.userInfo()
+        userInfo?.updateDiscountByGameTypeList(discountByGameTypeList)
+        MultiLanguagesApplication.mInstance.saveUserInfo(userInfo)
     }
 
     fun updateOddsChangeOption(option: Int) {
@@ -246,7 +240,6 @@ object UserInfoRepository {
             maxBetMoney = userInfoData.maxBetMoney,
             maxCpBetMoney = userInfoData.maxCpBetMoney,
             maxParlayBetMoney = userInfoData.maxParlayBetMoney,
-            discount = userInfoData.discount,
             verified = userInfoData.verified,
             perBetLimit = userInfoData.perBetLimit,
             uwEnableTime = userInfoData.uwEnableTime,
@@ -266,6 +259,7 @@ object UserInfoRepository {
             middleName = userInfoData.middleName,
             lastName = userInfoData.lastName,
             birthday = userInfoData.birthday,
+            discountByGameTypeList = userInfoData.discountByGameTypeList
         )
 
     suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {

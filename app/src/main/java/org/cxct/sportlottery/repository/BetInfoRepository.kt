@@ -820,4 +820,15 @@ object BetInfoRepository {
         newSpread != oldSpread -> SpreadState.DIFFERENT
         else -> SpreadState.SAME
     }
+    fun updateDiscount(newDiscountByGameTypeList: List<FrontWsEvent.DiscountByGameTypeVO>?) {
+
+
+        betInfoList.value?.peekContent()?.toList()?.forEach { betInfoListData ->
+            newDiscountByGameTypeList?.firstOrNull { it.gameType == betInfoListData.matchOdd.gameType }?.discount?.toBigDecimalOrNull()
+                ?.let {
+                    betInfoListData.matchOdd.updateDiscount(it)
+                }
+        }
+        notifyBetInfoChanged()
+    }
 }

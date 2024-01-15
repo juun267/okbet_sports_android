@@ -6,6 +6,8 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.common.MatchOdd
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.util.EncryptUtil
 import org.cxct.sportlottery.util.HTTPsUtil
@@ -217,8 +219,8 @@ import java.util.concurrent.TimeUnit
         isConnecting = false
     }
 
-    private fun sendMessageToActivity(channel: String, message: String?) {
-        message?.let { ServiceBroadcastReceiver.onReceiveMessage(channel, message) }
+    private fun sendMessageToActivity(channel: String, message: String?,gameType: String?) {
+        message?.let { ServiceBroadcastReceiver.onReceiveMessage(channel, message,gameType) }
     }
 
     private fun sendConnectStatusToActivity(connectStatus: ServiceConnectStatus) {
@@ -237,7 +239,7 @@ import java.util.concurrent.TimeUnit
      * mStompClient?.isConnected 可能實際上不代表Client連線成功
      * @param firstSubscribeData 是否使用訂閱後第一筆資料作為新資料直接顯示, 而非更新
      * */
-    private fun subscribeChannel(url: String) {
+    private fun subscribeChannel(url: String, gameType: String? = null) {
 
         if (mSubscribedMap.containsKey(url)) return
 
@@ -260,7 +262,7 @@ import java.util.concurrent.TimeUnit
                 if (BuildConfig.DEBUG) { // 仅开发模式执行，该段代码会进行数据解密会对性能有所影响
                     Timber.v("[$url] 訂閱接收訊息: ${EncryptUtil.uncompressProto(topicMessage.payload)}")
                 }
-                sendMessageToActivity(url, topicMessage.payload)
+                sendMessageToActivity(url, topicMessage.payload,gameType)
             }, { throwable ->
                 Timber.e("[$url] 訂閱通道失敗: $throwable")
             })
@@ -301,12 +303,12 @@ import java.util.concurrent.TimeUnit
         mOriginalSubscribedMap.clear()
     }
 
-    fun subscribeEventChannel(eventId: String?) {
+    fun subscribeEventChannel(eventId: String?,gameType: String? = null) {
         if (eventId == null) return
 
         val url = "$URL_EVENT/$mPlatformId/$eventId/$WS_END_TYPE"
         //val url = "$URL_EVENT/$mPlatformId/$eventId"
-        subscribeChannel(url)
+        subscribeChannel(url,gameType)
     }
 
     fun unsubscribeEventChannel(eventId: String?) {

@@ -37,13 +37,12 @@ import org.cxct.sportlottery.ui.sport.detail.adapter.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.view.IndicatorView
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import java.util.*
 
 class OddsDetailVH (
-    private val oddsAdapter: OddsDetailListAdapter2,
+    private val oddsAdapter: OddsDetailListAdapter,
     private val viewType: Int,
     itemView: View
 ) : RecyclerView.ViewHolder(itemView) {

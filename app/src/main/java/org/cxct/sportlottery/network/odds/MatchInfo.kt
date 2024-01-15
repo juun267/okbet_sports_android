@@ -23,6 +23,8 @@ data class MatchInfo(
     val homeName: String?,
     @Json(name = "id")
     override val id: String, //赛事或赛季id
+    @Json(name = "odds")
+    internal var originalOdds: String? = null, //赔率(load data)
     @Json(name = "playCateNum")
     override var playCateNum: Int?,
     @Json(name = "startTime")
