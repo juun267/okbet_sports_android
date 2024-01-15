@@ -445,10 +445,10 @@ open class SportListViewModel(
             result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds?.forEach { matchOdd ->
                     matchOdd.matchInfo?.categoryCode = leagueOdd.league?.categoryCode
+                    matchOdd.matchInfo?.gameType = result.outrightOddsListData.sport?.code
                     matchOdd?.oddsMap?.values?.forEach { oddList ->
                         oddList?.updateOddSelectState()
                     }
-
                     matchOdd?.setupOddDiscount()
                     //20220617 冠軍的排序字串切割方式不同, 跟進iOS odds給什麼就顯示什麼
 //                    matchOdd?.setupPlayCate()
