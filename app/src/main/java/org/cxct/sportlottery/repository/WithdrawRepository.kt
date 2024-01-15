@@ -15,16 +15,17 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 
+object SecurityEnter{
+    const val UPDATE_PW = 0//更新提款卡密碼
+    const val SETTING_PW = 1//設定提現密碼
+    const val COMPLETE_PROFILE_INFO = 2//完善個人資料
+    const val SETTING_PROFILE_INFO = 3//設定個人資料
+    const val BIND_BANK_CARD = 4//綁定銀行卡
+    const val INTO_WITHDRAW = 5
+}
+
 object WithdrawRepository {
 
-    enum class SecurityEnter(val code: Int){
-        UPDATE_PW(0),//更新提款卡密碼
-        SETTING_PW(1),//設定提現密碼
-        COMPLETE_PROFILE_INFO(2),//完善個人資料
-        SETTING_PROFILE_INFO(3),//設定個人資料
-        BIND_BANK_CARD(4),//綁定銀行卡
-        INTO_WITHDRAW(5)
-    }
 
     private val userInfoRepository = UserInfoRepository
 
@@ -83,12 +84,12 @@ object WithdrawRepository {
     //顯示驗證過了之後要繼續驗證前的邏輯
     suspend fun sendTwoFactor() {
         when (sConfigData?.enterCertified) {
-            SecurityEnter.SETTING_PW.ordinal -> settingCheckPermissions()
-            SecurityEnter.UPDATE_PW.ordinal -> withdrawCheckPermissions()
-            SecurityEnter.COMPLETE_PROFILE_INFO.ordinal -> checkProfileInfoComplete()
-            SecurityEnter.SETTING_PROFILE_INFO.ordinal -> checkSettingProfileInfoComplete()
-            SecurityEnter.BIND_BANK_CARD.ordinal -> checkBankCardPermissions()
-            SecurityEnter.INTO_WITHDRAW.ordinal -> checkIntoWithdraw()
+            SecurityEnter.SETTING_PW -> settingCheckPermissions()
+            SecurityEnter.UPDATE_PW -> withdrawCheckPermissions()
+            SecurityEnter.COMPLETE_PROFILE_INFO -> checkProfileInfoComplete()
+            SecurityEnter.SETTING_PROFILE_INFO -> checkSettingProfileInfoComplete()
+            SecurityEnter.BIND_BANK_CARD -> checkBankCardPermissions()
+            SecurityEnter.INTO_WITHDRAW -> checkIntoWithdraw()
         }
     }
 
@@ -158,7 +159,7 @@ object WithdrawRepository {
 
                 //是否需要顯示簡訊驗證 false: 需顯示簡訊驗證
                 if (twoFactorStatus == false) {
-                    sConfigData?.enterCertified = SecurityEnter.UPDATE_PW.ordinal
+                    sConfigData?.enterCertified = SecurityEnter.UPDATE_PW
                     mShowSecurityDialog.value = Event(true)
                 } else if (twoFactorStatus == true) {
                     //不需要簡訊驗證，提示需更新提款密碼
@@ -225,7 +226,7 @@ object WithdrawRepository {
             needUpdatePassWord -> {
                 //是否需要顯示簡訊驗證 false: 需顯示簡訊驗證
                 if (twoFactorStatus == false) {
-                    sConfigData?.enterCertified = SecurityEnter.SETTING_PW.ordinal
+                    sConfigData?.enterCertified = SecurityEnter.SETTING_PW
                     mShowSecurityDialog.value = Event(true)
                 } else if (twoFactorStatus == true) {
                     //不需要簡訊驗證，提示需更新提款密碼
@@ -248,7 +249,7 @@ object WithdrawRepository {
 
     //提款設置用
     private suspend fun checkSettingProfileInfoComplete() {
-        sConfigData?.enterCertified = SecurityEnter.SETTING_PROFILE_INFO.ordinal
+        sConfigData?.enterCertified = SecurityEnter.SETTING_PROFILE_INFO
         verifyProfileInfoComplete().let { verify ->
             val twoFactorStatus = checkTwoFactorStatus()
             //資料完整準備進入提款設置頁面
@@ -399,7 +400,7 @@ object WithdrawRepository {
 
             //是否需要顯示簡訊驗證 false: 需顯示簡訊驗證
             if (twoFactorStatus == false) {
-                sConfigData?.enterCertified = SecurityEnter.BIND_BANK_CARD.ordinal
+                sConfigData?.enterCertified = SecurityEnter.BIND_BANK_CARD
                 mShowSecurityDialog.value = Event(true)
             } else if (twoFactorStatus == true) {
                 //不需要簡訊驗證，提示需先綁定銀行卡
@@ -413,7 +414,7 @@ object WithdrawRepository {
     private suspend fun checkIntoWithdraw() {
         val twoFactorStatus = checkTwoFactorStatus()
         if (twoFactorStatus == false) {
-            sConfigData?.enterCertified = SecurityEnter.INTO_WITHDRAW.ordinal
+            sConfigData?.enterCertified = SecurityEnter.INTO_WITHDRAW
             mShowSecurityDialog.value = Event(true)
         } else {
             mIntoWithdraw.value = Event(true)

@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
+import org.cxct.sportlottery.network.money.list.Row
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.RechType
@@ -71,7 +72,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     }
 
     private fun resetListStatus() {
-        rechargeAdapter.setNewInstance(null)
+        rechargeAdapter.setList(null)
         refreshHelper.reset()
     }
 
