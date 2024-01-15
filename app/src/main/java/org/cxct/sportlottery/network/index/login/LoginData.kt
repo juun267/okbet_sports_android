@@ -1,11 +1,15 @@
 package org.cxct.sportlottery.network.index.login
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.UserGameTypeDiscount
 import org.cxct.sportlottery.network.common.UserRebate
 import org.cxct.sportlottery.network.user.info.LiveSyncUserInfoVO
 
+@Parcelize
 @KeepMembers
 data class LoginData(
     val fullName: String?, //真实名称
@@ -44,4 +48,4 @@ data class LoginData(
     val email: String?,
     val firstPhoneGiveMoney: Boolean?,// 注册绑定手机送金额
     val discountByGameTypeList: List<UserGameTypeDiscount>?
-) : java.io.Serializable
+) : Parcelable
