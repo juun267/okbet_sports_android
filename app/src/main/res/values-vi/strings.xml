@@ -1098,7 +1098,7 @@
     <string name="login_hint_account_all">Tên người dùng / SĐT / Email</string>
     <string name="password_login">Mật khẩu đăng nhập</string>
     <string name="or">hoặc</string>
-    <string name="login_privacy">Đăng ký biểu thị xác nhận rằng bạn trên 21 tuổi và đồng ý với Chính sách bảo mật ,Điều khoản &amp; điều kiện của chúng tôi</string>
+    <string name="login_privacy">Đăng ký biểu thị xác nhận rằng bạn trên 21 tuổi và đồng ý với Chính sách bảo mật, Điều khoản &amp; điều kiện của chúng tôi.</string>
     <string name="otp_login">Đăng nhập/đăng ký captcha</string>
     <string name="auth_login">Uỷ quyền Đăng nhập</string>
     <string name="set">Cài đặt</string>
