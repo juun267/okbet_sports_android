@@ -314,7 +314,7 @@ class WithdrawViewModel(
                     cardList.add(bankCard.apply {
                         transferType = TransferType.values().find { it.type == bankCard.uwType }
                             ?: TransferType.BANK
-                        maintainStatus = _rechargeConfigs.value?.banks?.firstOrNull{ bankCode==it.value }?.maintainStatus?:0
+                        maintainStatus = _rechargeConfigs.value?.banks?.firstOrNull{ bankCode.equals(it.value,true) }?.maintainStatus?:0
                     })
                 }
                 _bankCardList.value = cardList
@@ -347,7 +347,7 @@ class WithdrawViewModel(
             }?.let { result ->
                 _rechargeConfigs
                 result.bankCardList?.forEach { bankCardList->
-                    bankCardList.maintainStatus = _rechargeConfigs.value?.banks?.firstOrNull{ bankCardList.bankCode==it.value }?.maintainStatus?:0
+                    bankCardList.maintainStatus = _rechargeConfigs.value?.banks?.firstOrNull{ bankCardList.bankCode.equals(it.value,true) }?.maintainStatus?:0
                 }
                 myWithdrawCardList = result.bankCardList
                 checkTransferTypeExistence(result)
