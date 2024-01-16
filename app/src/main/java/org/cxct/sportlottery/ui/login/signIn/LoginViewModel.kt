@@ -104,7 +104,7 @@ class LoginViewModel(
             checkAllInputComplete()
         }
 
-    private var agreeChecked = true
+    var agreeChecked = true
         set(value) {
             field = value
             focusChangeCheckAllInputComplete()
