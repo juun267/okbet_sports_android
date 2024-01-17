@@ -296,12 +296,8 @@ class HotMatchView(
     private fun initAdapter(fragment: BaseFragment<*>) {
         setUpAdapter(fragment,
             HomeRecommendListener(onItemClickListener = { matchInfo ->
-                if (fragment.viewModel.isLogin.value != true) {
-                    (fragment.requireActivity() as MainTabActivity).showLoginSnackbar()
-                } else {
-                    matchInfo?.let {
-                        SportDetailActivity.startActivity(context, it)
-                    }
+                matchInfo?.let {
+                    SportDetailActivity.startActivity(context, it)
                 }
             },
 
@@ -310,10 +306,6 @@ class HotMatchView(
                         return@HomeRecommendListener
                     }
                     fragment.avoidFastDoubleClick()
-                    if (fragment.viewModel.isLogin.value != true) {
-                        fragment.requireActivity().showLoginSnackbar()
-                        return@HomeRecommendListener
-                    }
                     val gameType = GameType.getGameType(gameTypeCode)
                     if (gameType == null || matchInfo == null || fragment.requireActivity() !is MainTabActivity) {
                         return@HomeRecommendListener
@@ -333,8 +325,7 @@ class HotMatchView(
                     )
 
                     fragment.requireActivity().doOnStop(true) { // 延时加入注单，不然当前页面会弹出来注单列表
-                        val viewModel = fragment.viewModel as BaseSocketViewModel
-                        viewModel.updateMatchBetListData(fastBetDataBean)
+                        (fragment.viewModel as BaseSocketViewModel).updateMatchBetListData(fastBetDataBean)
                     }
                     SportDetailActivity.startActivity(fragment.requireContext(), matchInfo = matchInfo, matchType=matchType)
                 }, onClickPlayTypeListener = { _, _, _, _ ->
