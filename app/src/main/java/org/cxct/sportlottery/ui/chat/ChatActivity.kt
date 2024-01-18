@@ -8,6 +8,7 @@ import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.collectWith
+import org.cxct.sportlottery.common.extentions.showPromptDialog
 import org.cxct.sportlottery.databinding.ActivityChatBinding
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.util.setTextTypeFace

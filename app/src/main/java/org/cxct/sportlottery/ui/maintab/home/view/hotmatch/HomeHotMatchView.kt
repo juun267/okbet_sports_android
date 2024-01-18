@@ -255,10 +255,6 @@ class HomeHotMatchView(
             },
 
                 onClickBetListener = { gameTypeCode, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                    if (!fragment.mIsEnabled) {
-                        return@HomeRecommendListener
-                    }
-                    fragment.avoidFastDoubleClick()
                     val gameType = GameType.getGameType(gameTypeCode)
                     if (gameType == null || matchInfo == null || fragment.requireActivity() !is MainTabActivity) {
                         return@HomeRecommendListener

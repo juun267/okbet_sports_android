@@ -1,18 +1,27 @@
 package org.cxct.sportlottery.common.extentions
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
+import kotlinx.android.synthetic.main.layout_loading.view.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.databinding.LayoutLoadingBinding
 import org.cxct.sportlottery.util.ToastUtil
+import timber.log.Timber
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
 
@@ -119,13 +128,49 @@ fun toast(str: String) {
     ToastUtil.showToast(MultiLanguagesApplication.appContext, str, Toast.LENGTH_SHORT)
 }
 
-fun AppCompatActivity.addFragment(fragmentId: Int, fragment: Fragment) {
+fun FragmentActivity.addFragment(fragmentId: Int, fragment: Fragment) {
     supportFragmentManager.beginTransaction().add(
         fragmentId, fragment
     ).commitAllowingStateLoss()
 }
 
-fun AppCompatActivity.replaceFragment(fragmentId: Int, fragment: Fragment) {
+fun FragmentActivity.replaceFragment(fragmentId: Int, fragment: Fragment) {
     supportFragmentManager.beginTransaction().replace(fragmentId, fragment)
         .commitAllowingStateLoss()
+}
+//隱藏鍵盤
+fun FragmentActivity.hideSoftKeyboard() {
+    try {
+        val inputMethodManager = getSystemService(
+            Activity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+var loadingViewBinding: LayoutLoadingBinding?=null
+@SuppressLint("InflateParams")
+ fun FragmentActivity.loading(message: String?=null) {
+    if (loadingViewBinding == null) {
+        loadingViewBinding = LayoutLoadingBinding.inflate(layoutInflater)
+        val params = RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT
+        )
+        addContentView(loadingViewBinding!!.root, params)
+    } else {
+        loadingViewBinding!!.rlLoading.apply {
+            visibility = View.VISIBLE
+            isClickable = true
+        }
+    }
+    (loadingViewBinding!!.ivLoading.background as? AnimationDrawable)?.start()
+}
+
+/*关闭加载界面*/
+fun FragmentActivity.hideLoading() {
+    loadingViewBinding?.rlLoading?.apply {
+        visibility = View.GONE
+        (ivLoading.background as? AnimationDrawable)?.stop()
+    }
 }

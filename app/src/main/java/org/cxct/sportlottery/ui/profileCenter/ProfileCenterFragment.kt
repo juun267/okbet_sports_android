@@ -16,6 +16,7 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
@@ -193,16 +194,14 @@ class ProfileCenterFragment :
     }
 
     private fun setupRechargeButton() {
-        btn_recharge.setOnClickListener {
-            avoidFastDoubleClick()
+        btn_recharge.clickDelay{
             //Glife用户
             (activity as MainTabActivity).checkRechargeKYCVerify()
         }
     }
 
     private fun setupWithdrawButton() {
-        btn_withdraw.setOnClickListener {
-            avoidFastDoubleClick()
+        btn_withdraw.clickDelay {
             //Glife用户
             ToGcashDialog.showByClick{
                 viewModel.checkWithdrawKYCVerify()

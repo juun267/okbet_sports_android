@@ -22,9 +22,8 @@ import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.LoginGlifeOrRegistEvent
 import org.cxct.sportlottery.common.event.LoginSelectAccountEvent
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
-import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
-import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -206,7 +205,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun login() {
 
-        hideSoftKeyboard(this)
+        hideSoftKeyboard()
         if (viewModel.loginType == LOGIN_TYPE_CODE) {
             val account = binding.eetAccount.text.toString()
             val smsCode = binding.eetVerificationCode.text.toString()
@@ -502,7 +501,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun switchLoginType(loginType: Int) {
         viewModel.loginType = loginType
-        hideSoftKeyboard(this)
+        hideSoftKeyboard()
         (loginType == LOGIN_TYPE_CODE).let {
             lin_login_pwd.isVisible = !it
             lin_login_code.isVisible = it

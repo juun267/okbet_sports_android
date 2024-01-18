@@ -9,6 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.hideLoading
+import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.databinding.DialogBindphoneBinding
 import org.cxct.sportlottery.repository.sConfigData
@@ -93,7 +95,7 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
         }
     }
     private fun sendCode(identity: String?, validCode: String) = binding.btnSendSms.run {
-        loading()
+        requireActivity().loading()
         setBtnEnable(false)
         viewModel.sendSMSOrEmailCode("$inputPhoneNoOrEmail", "$identity", validCode)
     }
@@ -119,14 +121,14 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
         setText(R.string.get_security_code)
     }
     private fun toVerify() {
-        loading()
+        requireActivity().loading()
         hideSoftKeyboard(requireActivity())
         viewModel.resetEmailOrPhone("$inputPhoneNoOrEmail", "$smsCode")
     }
     private fun initObserve() = viewModel.run {
 
         sendCodeResult.observe(viewLifecycleOwner) { smsResult-> // 发送验证码
-            hideLoading()
+            requireActivity().hideLoading()
 
             if (smsResult.succeeded()) {
                 userName = smsResult.getData()?.userName
@@ -139,7 +141,7 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
         }
 
         resetResult.observe(viewLifecycleOwner) {
-            hideLoading()
+            requireActivity().hideLoading()
             if (it.second.succeeded()) {
                 dismiss()
                 if (it.second.getData()?.firstPhoneGiveMoney==true){

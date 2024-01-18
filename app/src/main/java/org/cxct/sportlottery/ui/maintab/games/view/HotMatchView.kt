@@ -16,10 +16,7 @@ import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.extentions.collectWith
-import org.cxct.sportlottery.common.extentions.doOnStop
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ViewHotGameBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
@@ -302,10 +299,6 @@ class HotMatchView(
             },
 
                 onClickBetListener = { gameTypeCode, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                    if (!fragment.mIsEnabled) {
-                        return@HomeRecommendListener
-                    }
-                    fragment.avoidFastDoubleClick()
                     val gameType = GameType.getGameType(gameTypeCode)
                     if (gameType == null || matchInfo == null || fragment.requireActivity() !is MainTabActivity) {
                         return@HomeRecommendListener

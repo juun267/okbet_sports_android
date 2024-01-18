@@ -129,7 +129,6 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
             }
 
             override fun onClose(){
-                avoidFastDoubleClick()
                 iv_back.performClick()
             }
         }
@@ -558,11 +557,6 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
 
     private fun initUI() {
         oddsAdapter = OddsDetailListAdapter2(OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
-            if (!mIsEnabled) {
-                return@OnOddClickListener
-            }
-
-            avoidFastDoubleClick()
             scoPlayCateNameForBetInfo?.let {
                 odd.spread = tranByPlayCode(this,odd.playCode, null,null,null)
             }

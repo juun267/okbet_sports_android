@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.OddStateViewHolderDetail
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
@@ -73,7 +74,7 @@ class TypeEPSAdapter : RecyclerView.Adapter<TypeEPSAdapter.ViewHolder>() {
 
             btnOdds.apply {
                 setupOddState(this, odd)
-                setOnClickListener {
+                clickDelay {
                     odd?.let { odd ->
                         onOddClickListener?.getBetInfoList(
                             odd,

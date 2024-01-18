@@ -16,6 +16,7 @@ import com.bigkoo.pickerview.view.TimePickerView
 import com.google.android.gms.location.*
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.databinding.FragmentBetStationBinding
 import org.cxct.sportlottery.network.bettingStation.AreaAll
 import org.cxct.sportlottery.network.bettingStation.BettingStation
@@ -36,7 +37,7 @@ import java.util.*
 class BetStationFragment : BindingFragment<WithdrawViewModel,FragmentBetStationBinding>() {
     
     private val stationAdapter by lazy { BetStationAdapter{
-        hideKeyboard()
+        requireActivity().hideSoftKeyboard()
         selectBettingStation = it
         binding.tvTime.text = getString(R.string.select_time)
         updateStation()
@@ -84,7 +85,7 @@ class BetStationFragment : BindingFragment<WithdrawViewModel,FragmentBetStationB
 
         initEditTextStatus(etAmount)
         initEditTextStatus(etPassword)
-        View.OnClickListener { hideKeyboard() }.let {
+        View.OnClickListener { requireActivity().hideSoftKeyboard() }.let {
             spinnerArea.setOnClickListener(it)
             spinnerCity.setOnClickListener(it)
           //  tv_time.setOnClickListener(it)

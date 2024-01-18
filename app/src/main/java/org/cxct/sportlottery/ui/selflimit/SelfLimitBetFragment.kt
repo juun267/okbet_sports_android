@@ -11,6 +11,7 @@ import androidx.core.text.isDigitsOnly
 import kotlinx.android.synthetic.main.fragment_self_limit_bet.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.PassVerifyEnum
+import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.common.extentions.toIntS
@@ -192,7 +193,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
     }
 
     private fun submit() {
-        hideKeyboard()
+        requireActivity().hideSoftKeyboard()
         val days = binding.etMount.text.toString()
         if (days.isEmptyStr()) {
             return

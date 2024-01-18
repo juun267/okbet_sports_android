@@ -636,7 +636,7 @@ class ChatFragment : BindingSocketFragment<ChatViewModel, FragmentChatBinding>()
     override fun onClick(v: View) {
         if (v == binding.vChatAction.ivUploadImage) {
             pickPhoto()
-            hideKeyboard()
+            requireActivity().hideSoftKeyboard()
             return
         }
 
@@ -648,12 +648,11 @@ class ChatFragment : BindingSocketFragment<ChatViewModel, FragmentChatBinding>()
 
             val input = binding.vChatAction.etInput.text.toString().replace("\n", "")
             if (input.isNullOrEmpty()) return
-            if (!mIsEnabled) {
+            if (!v.canDelayClick()) {
                 context?.let { showToast(getString(R.string.chat_speaking_too_often)) }
                 return
             }
-
-            avoidFastDoubleClick(delayMills = 1500) //避免短時間重複送出訊息
+            v.delayTime = 1500
             val sendMessage = setupSendMessage(input.toString())
             val liveMsgEntity = LiveMsgEntity()
             liveMsgEntity.content = sendMessage
@@ -661,7 +660,7 @@ class ChatFragment : BindingSocketFragment<ChatViewModel, FragmentChatBinding>()
             viewModel.chatSendMessage(liveMsgEntity)
             binding.vChatAction.etInput.setText("")
             viewModel.tagPairList.clear()
-            hideKeyboard()
+            requireActivity().hideSoftKeyboard()
             return
         }
 
@@ -757,7 +756,7 @@ class ChatFragment : BindingSocketFragment<ChatViewModel, FragmentChatBinding>()
                 RedPacketDialog.PacketListener(
                     onClickListener = { packetId, watchWord ->
                         viewModel.getLuckyBag(packetId, watchWord)
-                        hideKeyboard()
+                        requireActivity().hideSoftKeyboard()
                     },
                     onCancelListener = {
                     },

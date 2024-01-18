@@ -68,36 +68,38 @@ inline fun View.getColor(@ColorRes id: Int): Int {
 }
 
 //私有扩展属性，允许2次点击的间隔时间
-private var <T : View> T.delayTime: Long
-    get() = getTag(0x7FFF0001) as? Long ?: 0
+var <T : View> T.delayTime: Long
+    get() = getTag(0x7FFF0001) as? Long ?: 300
     set(value) {
         setTag(0x7FFF0001, value)
     }
 
 //私有扩展属性，记录点击时的时间戳
-private var <T : View> T.lastClickTime: Long
+var <T : View> T.lastClickTime: Long
     get() = getTag(0x7FFF0002) as? Long ?: 0
     set(value) {
         setTag(0x7FFF0002, value)
     }
 
 //私有扩展方法，判断能否触发点击事件
-private fun <T : View> T.canClick(): Boolean {
+fun <T : View> T.canDelayClick(fastHandler: (()->Unit)?=null): Boolean {
     var flag = false
     var now = System.currentTimeMillis()
     if (now - this.lastClickTime >= this.delayTime) {
         flag = true
         this.lastClickTime = now
+    }else{
+        fastHandler?.invoke()
     }
     return flag
 }
 
 //扩展点击事件，默认 300ms 内不能触发 2 次点击
-fun <T : View> T.clickWithDuration(time: Long = 300, block: (T) -> Unit) {
+fun <T : View> T.clickDelay(time: Long = 300,fastHandler: (()->Unit)?=null, listener: View.OnClickListener) {
     delayTime = time
     setOnClickListener {
-        if (canClick()) {
-            block(this)
+        if (canDelayClick(fastHandler)) {
+            listener.onClick(it)
         }
     }
 }

@@ -7,10 +7,7 @@ import com.drake.spannable.addSpan
 import com.drake.spannable.setSpan
 import com.drake.spannable.span.ColorSpan
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.bindFinish
-import org.cxct.sportlottery.common.extentions.finishWithOK
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityVerifyPhonenoBinding
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.ui.base.BindingActivity
@@ -52,7 +49,7 @@ class ResetWithdrawActivity: BindingActivity<LoginViewModel, ActivityVerifyPhone
             btnConfirm.setBtnEnable(it != null)
         }
         btnSendSms.setOnClickListener {
-            hideSoftKeyboard(this@ResetWithdrawActivity)
+            hideSoftKeyboard()
             showCaptchaDialog(supportFragmentManager)
                 { identity, validCode ->
                     loading()

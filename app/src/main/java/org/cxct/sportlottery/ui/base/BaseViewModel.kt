@@ -60,16 +60,8 @@ abstract class BaseViewModel(
     val networkExceptionUnavailable: LiveData<String>
         get() = _networkExceptionUnavailable
 
-    val networkExceptionTimeout: LiveData<String>
-        get() = _networkExceptionTimeout
-
-    val networkExceptionUnknown: LiveData<String>
-        get() = _networkExceptionUnknown
-
     private val _errorResultIndex = MutableLiveData<String>()
     private val _networkExceptionUnavailable = MutableLiveData<String>()
-    private val _networkExceptionTimeout = MutableLiveData<String>()
-    private val _networkExceptionUnknown = MutableLiveData<String>()
 
     enum class NetWorkResponseType(val code: Int) {
         REQUEST_TOO_FAST(400)

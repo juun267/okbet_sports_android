@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.listener.CustomListener
 import com.bigkoo.pickerview.view.TimePickerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -79,6 +80,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private lateinit var rvData: RecyclerView
     private lateinit var btnDialogTitle: TextView
     private lateinit var btnDialogDone: Button
+
+    val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(this) }
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: ArrayList<LocalMedia>?) {

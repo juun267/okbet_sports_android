@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.text.SpannableStringBuilder
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.hideLoading
+import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.repository.UserInfoRepository

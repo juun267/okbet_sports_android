@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddSpreadForSCOCompare
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.OddStateViewHolderDetail
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
@@ -120,7 +121,7 @@ class TypeSCOAdapter(
             btnOdds1st?.apply {
                 setupOdd(fOdd, oddsType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, fOdd)
-                setOnClickListener {
+                clickDelay {
                     fOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_first)) }
                 }
                 tv_name.text = context.getString(R.string.odds_button_name_first)
@@ -130,7 +131,7 @@ class TypeSCOAdapter(
             btnOddsAnt?.apply {
                 setupOdd(aOdd, oddsType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, aOdd)
-                setOnClickListener {
+                clickDelay {
                     aOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_any)) }
                 }
                 tv_name.text = context.getString(R.string.odds_button_name_ant)
@@ -140,7 +141,7 @@ class TypeSCOAdapter(
             btnOddsLast?.apply {
                 setupOdd(lOdd, oddsType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, lOdd)
-                setOnClickListener {
+                clickDelay {
                     lOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_last)) }
                 }
                 tv_name.text = context.getString(R.string.odds_button_name_last)
@@ -171,7 +172,7 @@ class TypeSCOAdapter(
             btnOdds?.apply {
                 setupOdd(odd, oddsType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, odd)
-                setOnClickListener {
+                clickDelay {
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
                 tv_name.visibility = View.GONE

@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.setSptText
 import org.cxct.sportlottery.databinding.ItemHotGameViewBinding
 import org.cxct.sportlottery.network.common.*
@@ -220,7 +221,7 @@ class ItemHotMatchHolder(
         playCateName: String,
         homeRecommendListener: HomeRecommendListener,
     ) {
-        setOnClickListener {
+        clickDelay {
             odd?.let { odd ->
                 homeRecommendListener.onClickBetListener(
                     gameType = data.gameType,

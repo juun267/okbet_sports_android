@@ -11,6 +11,7 @@ import android.os.Message
 import android.view.View
 import android.webkit.*
 import androidx.activity.result.contract.ActivityResultContracts
+import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel

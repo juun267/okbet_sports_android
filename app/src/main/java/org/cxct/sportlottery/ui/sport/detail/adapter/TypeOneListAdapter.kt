@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.PlayCode
 import org.cxct.sportlottery.network.odds.Odd
@@ -96,7 +97,7 @@ class TypeOneListAdapter(
                     adapterName = TypeOneListAdapter::class.java.name
                 )
                 setupOddState(this, odd)
-                setOnClickListener {
+                clickDelay {
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
                 when {

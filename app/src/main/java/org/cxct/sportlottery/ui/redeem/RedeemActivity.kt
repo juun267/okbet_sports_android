@@ -8,6 +8,8 @@ import kotlinx.android.synthetic.main.activity_redeem.viewNoData
 import kotlinx.android.synthetic.main.activity_withdraw_commission_detail.custom_tool_bar
 import kotlinx.android.synthetic.main.component_date_range_new_selector.view.btn_search
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
+import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.databinding.ActivityRedeemBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.TextUtil
@@ -84,8 +86,7 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
             binding.layoutHistoryRedeem.isVisible = true
         }
 
-        binding.dateSearchBar.btn_search.setOnClickListener {
-            avoidFastDoubleClick()
+        binding.dateSearchBar.btn_search.clickDelay {
             viewModel.redeemCodeHistory(
                 startTime = binding.dateSearchBar.startTime.toString(),
                 endTime = binding.dateSearchBar.endTime.toString(),

@@ -7,6 +7,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_money_transfer.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTransferFragmentDirections
@@ -40,20 +41,20 @@ class MoneyTransferActivity :
     }
 
     private fun initObserver() {
-        viewModel.loading.observe(this, {
+        viewModel.loading.observe(this) {
             if (it)
                 loading()
             else
                 hideLoading()
-        })
+        }
 
-        viewModel.isShowTitleBar.observe(this, {
+        viewModel.isShowTitleBar.observe(this) {
             ll_title_bar.visibility = if (it == true) View.VISIBLE else View.GONE
-        })
+        }
 
-        viewModel.toolbarName.observe(this, {
+        viewModel.toolbarName.observe(this) {
             tv_toolbar_title.text = it
-        })
+        }
     }
 
     private fun initOnClick() {

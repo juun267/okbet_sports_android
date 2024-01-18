@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.OddStateViewHolderDetail
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
@@ -55,7 +56,7 @@ class TypeSingleAdapter (
 
             setupOdd(odd, oddsType, gameType, matchInfo = oddsDetail.matchInfo)
             setupOddState(this, odd)
-            setOnClickListener {
+            clickDelay {
 //                    Timber.d("===洗刷刷-1 设置点击事件")
                 odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
             }

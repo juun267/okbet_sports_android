@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
+import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.databinding.ActivityPhoneVerifyBinding
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.repository.LoginRepository
@@ -55,7 +57,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
             }
 
             binding.constraintLayout -> {
-                hideSoftKeyboard(this)
+                hideSoftKeyboard()
             }
         }
     }
@@ -85,7 +87,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
             binding.eetVerificationCode.clearFocus()
             binding.etVerificationCode.clearFocus()
 
-            hideSoftKeyboard(this@PhoneVerifyActivity)
+            hideSoftKeyboard()
         }
         binding.eetVerificationCode.apply {
             checkRegisterListener {

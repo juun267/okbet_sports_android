@@ -4,6 +4,7 @@ package org.cxct.sportlottery.ui.profileCenter.nickname
 import kotlinx.android.synthetic.main.activity_edit_username.*
 import kotlinx.android.synthetic.main.layout_username.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.databinding.ActivityEditUsernameBinding
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
