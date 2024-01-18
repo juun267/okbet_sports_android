@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.component_date_range_new_selector.view.btn
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.hideLoading
+import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.ActivityRedeemBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.TextUtil

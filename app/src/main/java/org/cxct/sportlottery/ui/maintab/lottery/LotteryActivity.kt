@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_web.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
+import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil

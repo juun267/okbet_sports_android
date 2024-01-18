@@ -4,6 +4,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
+import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.ActivityWithdrawCommissionDetailBinding
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingActivity
