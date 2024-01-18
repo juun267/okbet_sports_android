@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.date_range_selector
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
@@ -99,8 +100,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
             rv_record.smoothScrollToPosition(0)
         }*/
 
-        date_range_selector.btn_search.setOnClickListener  {
-            avoidFastDoubleClick()
+        date_range_selector.btn_search.clickDelay  {
             viewModel.queryTransfers(startTime = date_range_selector.startTime.toString(),
                 endTime = date_range_selector.endTime.toString(),
                 firmTypeIn = selector_in_plat.selectedTag,

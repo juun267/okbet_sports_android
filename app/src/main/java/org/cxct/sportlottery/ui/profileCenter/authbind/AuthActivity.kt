@@ -6,6 +6,7 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog

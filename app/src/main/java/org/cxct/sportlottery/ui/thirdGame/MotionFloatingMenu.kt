@@ -10,6 +10,7 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.setPadding
 import kotlinx.android.synthetic.main.menu_motion_floating.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
 
 /**
  * @author Hewie
@@ -86,7 +87,7 @@ class MotionFloatingMenu @JvmOverloads constructor(
             mOnMenuListener?.onCashSave()
         }
 
-        motion_cash_get.setOnClickListener {
+        motion_cash_get.clickDelay {
             mOnMenuListener?.onCashGet()
         }
     }

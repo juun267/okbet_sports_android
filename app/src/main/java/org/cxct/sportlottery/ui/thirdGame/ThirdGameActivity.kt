@@ -6,9 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.collectWith
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityThirdGameBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
@@ -119,7 +117,6 @@ open class ThirdGameActivity : BindingActivity<MainViewModel, ActivityThirdGameB
 
             override fun onCashGet() {
                 if (checkLogin()) {
-                    avoidFastDoubleClick()
                     viewModel.checkWithdrawKYCVerify()
                 }
             }

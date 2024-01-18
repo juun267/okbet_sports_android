@@ -5,6 +5,8 @@ import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_feedback_main.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.hideLoading
+import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 
@@ -71,7 +73,7 @@ class FeedbackMainActivity : BaseSocketActivity<FeedbackViewModel>(FeedbackViewM
         viewModel.toolbarName.observe(this) {
             tv_toolbar_title.text = it
         }
-        viewModel.feedBackBaseResult.observe(this, {
+        viewModel.feedBackBaseResult.observe(this) {
             it?.getContentIfNotHandled()?.let { result ->
                 when (navController.currentDestination?.id) {
                     R.id.feedbackSubmitFragment -> {
@@ -79,7 +81,8 @@ class FeedbackMainActivity : BaseSocketActivity<FeedbackViewModel>(FeedbackViewM
                     }
                 }
 
-                val msgContent = if (result.success) getString(R.string.feedback_submit_succeed) else result.msg
+                val msgContent =
+                    if (result.success) getString(R.string.feedback_submit_succeed) else result.msg
                 val dialog = CustomAlertDialog(this).apply {
                     setTitle(this@FeedbackMainActivity.getString(R.string.prompt))
                     setMessage(msgContent)
@@ -87,7 +90,7 @@ class FeedbackMainActivity : BaseSocketActivity<FeedbackViewModel>(FeedbackViewM
                 }
                 dialog.show(supportFragmentManager, null)
             }
-        })
+        }
     }
 
 }

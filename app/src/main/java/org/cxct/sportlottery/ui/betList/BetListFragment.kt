@@ -221,11 +221,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 requireActivity().startLogin()
             }
 
-            cl_bet.setOnClickListener {
-                if (mIsEnabled) {
-                    avoidFastDoubleClick()
-                    addBet()
-                }
+            cl_bet.clickDelay {
+                addBet()
             }
 
             tv_remove_closed_selections.setOnClickListener { removeClosedPlat() }
@@ -397,7 +394,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 onBackPressed()
             }
         }
-        binding.btnParlaySingle.setOnClickListener {
+        binding.btnParlaySingle.clickDelay {
             switchCurrentBetMode()
         }
 
@@ -660,13 +657,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
 
     private fun clearCarts() {
-        if (mIsEnabled) {
-            avoidFastDoubleClick()
             runWithCatch { viewModel.betInfoList.removeObservers(viewLifecycleOwner) }  // viewLifecycleOwner 有可能空
             viewModel.removeBetInfoAll()
             setCurrentBetModeSingle()
             EventBusUtil.post(BetModeChangeEvent(SINGLE))
-        }
     }
 
     private fun setCurrentBetModeSingle() {
@@ -676,8 +670,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     }
 
     private fun switchCurrentBetMode() {
-        if (mIsEnabled) {
-            avoidFastDoubleClick()
             if (binding.btnParlaySingle.text == "+" + getString(R.string.bet_single)) {
                 //玩法变成单注
                 currentBetType = SINGLE
@@ -720,7 +712,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             betListRefactorAdapter?.notifyDataSetChanged()
             checkAllAmountCanBet()
             refreshAllAmount()
-        }
     }
 
     private fun getUserBalance(): Double {

@@ -5,6 +5,8 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.canDelayClick
+import org.cxct.sportlottery.common.extentions.replaceFragment
 import org.cxct.sportlottery.databinding.ActivityBetRecordBinding
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
@@ -31,11 +33,14 @@ class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>(
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     when(tab?.position) {
                         0 -> {
-                            avoidFastDoubleClick()
-                            replaceFragment(R.id.frameContainer,unsettledFragment)
+                            if (tab.view.canDelayClick()){
+                                replaceFragment(R.id.frameContainer,unsettledFragment)
+                            }
                         }
                         1 -> {
-                            avoidFastDoubleClick()
+                            if (tab.view.canDelayClick()){
+                                replaceFragment(R.id.frameContainer,unsettledFragment)
+                            }
                             replaceFragment(R.id.frameContainer,settledFragment)
                         }
                     }

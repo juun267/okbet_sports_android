@@ -8,11 +8,8 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.ForgetPwdSelectAccountEvent
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityForgetPassword2Binding
-import org.cxct.sportlottery.common.extentions.bindFinish
-import org.cxct.sportlottery.common.extentions.finishWithOK
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordData
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
@@ -69,7 +66,7 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::cla
 //        btnSendSms.setOnClickListener { YidunCaptcha.validateAction(this@ForgetPasswordActivity2,this@ForgetPasswordActivity2, { sendCode() }) }
 
         btnSendSms.setOnClickListener {
-            hideSoftKeyboard(this@ForgetPasswordActivity)
+            hideSoftKeyboard()
             showCaptchaDialog(supportFragmentManager) {
                     identity, validCode ->
                     sendCode(identity, validCode)
@@ -148,7 +145,7 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::cla
 
     private fun next() {
         loading()
-        hideSoftKeyboard(this@ForgetPasswordActivity)
+        hideSoftKeyboard()
         if (isPhoneWays()) {
             viewModel.getCheckPhone("$inputPhoneNo", "$smsCode")
         } else {

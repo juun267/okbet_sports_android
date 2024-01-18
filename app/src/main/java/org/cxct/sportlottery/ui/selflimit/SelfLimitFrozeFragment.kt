@@ -9,6 +9,7 @@ import androidx.core.text.isDigitsOnly
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.PassVerifyEnum
+import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.databinding.FragmentSelfLimitFrozeBinding
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -117,7 +118,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
             binding.btnConfirm.isEnabled = !showError
         }
 
-        viewModel.frozeResult.observe(viewLifecycleOwner, {
+        viewModel.frozeResult.observe(viewLifecycleOwner) {
             if (it.success) {
                 val dialog = CustomAlertDialog(requireActivity()).apply {
                     isCancelable = false
@@ -139,11 +140,11 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
                 }
                 dialog.show(childFragmentManager, null)
             }
-        })
+        }
     }
 
     private fun submit() {
-        hideKeyboard()
+        requireActivity().hideSoftKeyboard()
         CustomPasswordVerifyDialog.newInstance(PassVerifyEnum.FROZE, inputValue = binding.etFrozeDay.text.toString())
             .show(childFragmentManager, CustomPasswordVerifyDialog::class.java.simpleName)
     }

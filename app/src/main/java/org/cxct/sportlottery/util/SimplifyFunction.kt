@@ -1007,5 +1007,4 @@ fun AppCompatActivity.showFavoriteNotify(result: MyFavoriteNotify) {
         }
         return
     }
-
 }

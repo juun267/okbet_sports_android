@@ -235,7 +235,7 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
             setNextBtnStatus()
         }
         btnSendSms.setOnClickListener {
-            hideSoftKeyboard(this@ModifyBindInfoActivity)
+            hideSoftKeyboard()
             showCaptchaDialog(supportFragmentManager)
                 { identity, validCode ->
                     sendCode(identity, validCode)
@@ -307,7 +307,7 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
 
     private fun toVerify() {
         loading()
-        hideSoftKeyboard(this@ModifyBindInfoActivity)
+        hideSoftKeyboard()
         viewModel.verifyEmailOrPhoneCode("$inputPhoneNoOrEmail", "$smsCode")
     }
 

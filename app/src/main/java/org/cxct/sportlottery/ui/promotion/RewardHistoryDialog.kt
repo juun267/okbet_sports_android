@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.databinding.DialogRewardHistoryBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
@@ -62,7 +63,7 @@ class RewardHistoryDialog(val activityId: String): BaseDialog<MainHomeViewModel>
 
     private fun initObserve() = viewModel.run {
         rewardRecord.observe(viewLifecycleOwner) {
-            hideLoading()
+            requireActivity().hideLoading()
             totalCount = it.totalCount
             val datas = it.data
             if(datas.isNullOrEmpty()){

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.dialog_password_verify.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.PassVerifyEnum
+import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
@@ -99,7 +100,7 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
                             R.string.self_limit_fix_confirm
                         }
                     }
-                    showErrorPromptDialog(getString(title), it.msg) {}
+                    requireActivity().showErrorPromptDialog(getString(title), it.msg) {}
                 } else {
                     dismiss()
                 }

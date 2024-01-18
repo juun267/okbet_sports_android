@@ -10,9 +10,7 @@ import kotlinx.android.synthetic.main.layout_username.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
-import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.setOnClickListeners
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityRegisterInfoBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -203,7 +201,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
 
         //选择生日点击
         binding.tvBirthday.setOnClickListener {
-            hideSoftKeyboard(this)
+            hideSoftKeyboard()
             if (viewModel.filledBirthday) {
                 ToastUtil.showToastInCenter(this, getString(R.string.N887))
                 return@setOnClickListener
@@ -213,7 +211,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
 
         //选择省地址点击
         binding.tvAddress.setOnClickListener {
-            hideSoftKeyboard(this)
+            hideSoftKeyboard()
             if (viewModel.filledProvince) {
                 ToastUtil.showToastInCenter(this, getString(R.string.N887))
                 return@setOnClickListener
@@ -222,7 +220,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         }
 
         binding.tvCity.setOnClickListener {
-            hideSoftKeyboard(this)
+            hideSoftKeyboard()
             if (viewModel.filledCity) {
                 ToastUtil.showToastInCenter(this, getString(R.string.N887))
                 return@setOnClickListener
@@ -236,7 +234,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
 
         //选择薪资来源点击
         binding.tvSalary.setOnClickListener {
-            hideSoftKeyboard(this)
+            hideSoftKeyboard()
             if (viewModel.filledSalary) {
                 ToastUtil.showToastInCenter(this, getString(R.string.N887))
                 return@setOnClickListener

@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -175,7 +176,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
     private fun initObserver() {
         viewModel.loading.observe(viewLifecycleOwner) {
-            if (it) hideKeyboard()
+            if (it) requireActivity().hideSoftKeyboard()
             et_transfer_money.isEnabled = !it
         }
 

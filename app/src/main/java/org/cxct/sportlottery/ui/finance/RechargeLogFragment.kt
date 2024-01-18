@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.fragment_recharge_log.*
 import kotlinx.android.synthetic.main.fragment_recharge_log.rvlist
 import kotlinx.android.synthetic.main.fragment_recharge_log.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.network.money.list.Row
@@ -82,8 +83,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     }
 
     private fun setupSearch(view: View) {
-        date_range_selector.setOnClickSearchListener {
-            avoidFastDoubleClick()
+        date_range_selector.clickDelay {
             startReload()
         }
     }

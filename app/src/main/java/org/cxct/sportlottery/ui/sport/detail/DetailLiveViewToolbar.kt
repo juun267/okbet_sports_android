@@ -12,6 +12,7 @@ import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.common.extentions.visible
@@ -160,13 +161,13 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
     private fun initOnclick() = viewBinding.run {
-        ivLiveClose.setOnClickListener {
+        ivLiveClose.clickDelay {
             stopPlay()
             liveToolBarListener?.let {
                 it.onClose()
             }
         }
-        ivFullscreen.setOnClickListener {
+        ivFullscreen.clickDelay {
             showFullScreen(!isFullScreen)
             if (isFullScreen) {//全屏
                 liveToolBarListener?.onFullScreen(true)

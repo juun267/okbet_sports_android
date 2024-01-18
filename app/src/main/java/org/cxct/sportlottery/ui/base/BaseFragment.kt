@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.getKClass
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.net.flow.IUiView
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.UserInfoRepository
@@ -44,7 +44,6 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
         return _viewModel
     }
 
-    var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
 
     protected open fun createVM(clazz: KClass<T>): T {
         return getViewModel(clazz = clazz, owner = { ViewModelOwner.from(requireActivity(), requireActivity()) })
@@ -88,29 +87,12 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
     }
 
     open fun loading(message: String?) {
-        if (activity is BaseActivity<*>)
-            (activity as BaseActivity<*>).loading(message)
+        (activity as? BaseActivity<*>)?.loading(message)
     }
 
     /*关闭加载界面*/
     open fun hideLoading() {
-        if (activity is BaseActivity<*>)
-            (activity as BaseActivity<*>).hideLoading()
-    }
-
-    protected fun hideKeyboard() {
-        try {
-            //*隱藏軟鍵盤
-            val inputMethodManager =
-                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            val focusedView = activity?.currentFocus
-            if (inputMethodManager.isActive && focusedView != null) {
-                inputMethodManager.hideSoftInputFromWindow(focusedView.windowToken, 0)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
+        (activity as? BaseActivity<*>)?.hideLoading()
     }
 
     private var progressDialog: ProgressDialog? = null
@@ -130,7 +112,7 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
     }
 
     protected fun modifyFinish() {
-        hideKeyboard()
+        requireActivity().hideSoftKeyboard()
         clearFocus()
     }
 
@@ -247,24 +229,8 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
         )
     }
 
-    fun showBottomSheetDialog(
-        title: String?,
-        dataList: List<StatusSheetData>,
-        defaultData: StatusSheetData,
-        itemClickListener: StatusSheetAdapter.ItemCheckedListener,
-    ) {
-        if (activity is BaseActivity<*>) {
-            (activity as BaseActivity<*>).showBottomSheetDialog(
-                title,
-                dataList,
-                defaultData,
-                itemClickListener
-            )
-        }
-    }
-
     override fun onDestroy() {
-        hideKeyboard()
+       requireActivity().hideSoftKeyboard()
         super.onDestroy()
     }
 
@@ -276,12 +242,4 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
         findNavController().navigateUp()
     }
 
-    fun avoidFastDoubleClick(delayMills: Long? = 300) {
-        mIsEnabled = false
-        Handler(Looper.getMainLooper()).postDelayed({ mIsEnabled = true }, delayMills ?: 300)
-    }
-
-    open fun isGuest(hasBottomNavigation: Boolean = true): Boolean {
-        return  UserInfoRepository.userInfo.value?.testFlag == TestFlag.GUEST.index
-    }
 }

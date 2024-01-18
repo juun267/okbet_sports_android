@@ -142,7 +142,7 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::c
         }
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
-            hideKeyboard()
+            requireActivity().hideSoftKeyboard()
             if (!searchKey.isEmptyStr()) {
                 changePartGamesLabel(GameTab.TAB_SEARCH, searchKey)
                 startLoad {

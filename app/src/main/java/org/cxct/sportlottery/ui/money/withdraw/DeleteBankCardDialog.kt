@@ -9,7 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import kotlinx.android.synthetic.main.dialog_transfer_money.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.hideLoading
+import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.DialogDeleteBankcardBinding
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseDialog
@@ -57,7 +60,7 @@ class DeleteBankCardDialog(private val phoneNo: String,
 
     private fun initObserver() {
         viewModel.onEmsCodeSended.observe(this) {
-            hideLoading()
+            requireActivity().hideLoading()
 
             if (it?.success == true) {
                 CountDownUtil.smsCountDown(lifecycleScope, {
@@ -123,7 +126,7 @@ class DeleteBankCardDialog(private val phoneNo: String,
         tvCancel.setOnClickListener { dismiss() }
         btnSend.setOnClickListener {
             showCaptchaDialog(childFragmentManager) { identity, validCode ->
-                loading()
+                requireActivity().loading(null)
                 viewModel.senEmsCode(phoneNo, "$identity", validCode)
             }
         }

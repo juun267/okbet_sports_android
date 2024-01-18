@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
@@ -118,7 +119,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::clas
         setProviderVisible(false)
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
-            hideKeyboard()
+            requireActivity().hideSoftKeyboard()
             if (!searchKey.isEmptyStr()) {
                 changePartGamesLabel(GameTab.TAB_SEARCH, searchKey)
                 startLoad {
