@@ -53,7 +53,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.adapter.*
-import org.cxct.sportlottery.ui.sport.detail.adapter2.OddsDetailListAdapter2
+import org.cxct.sportlottery.ui.sport.detail.adapter2.OddsDetailListAdapter
 import org.cxct.sportlottery.ui.sport.detail.fragment.SportChartFragment
 import org.cxct.sportlottery.ui.sport.detail.fragment.SportToolBarTopFragment
 import org.cxct.sportlottery.util.*
@@ -100,7 +100,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
 
     private var matchType: MatchType = MatchType.DETAIL
     private var intoLive = false
-    private lateinit var oddsAdapter: OddsDetailListAdapter2
+    private lateinit var oddsAdapter: OddsDetailListAdapter
     private val tabCateAdapter:  TabCateAdapter by lazy {
         TabCateAdapter(OnItemSelectedListener {
             tabCateAdapter.selectedPosition = it
@@ -532,7 +532,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
 
     override fun onResume() {
         super.onResume()
-        matchInfo?.let { subscribeChannelEvent(it.id) }
+        matchInfo?.let { subscribeChannelEvent(it.id,it.gameType) }
         startTimer()
     }
 
@@ -556,7 +556,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
 
 
     private fun initUI() {
-        oddsAdapter = OddsDetailListAdapter2(OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
+        oddsAdapter = OddsDetailListAdapter(OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
             scoPlayCateNameForBetInfo?.let {
                 odd.spread = tranByPlayCode(this,odd.playCode, null,null,null)
             }
@@ -578,7 +578,6 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
             viewModel.updateMatchBetListData(fastBetDataBean)
         })
 
-        oddsAdapter.discount = viewModel.userInfo.value?.discount ?: 1.0F
         oddsAdapter.oddsDetailListener =  {
             viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, matchInfo?.gameType)
         }
@@ -651,10 +650,6 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
             it.getContentIfNotHandled()?.let { result ->
                 showFavoriteNotify(result)
             }
-        }
-
-        viewModel.userInfo.observe(this) { userInfo ->
-            oddsAdapter.discount = userInfo?.discount ?: 1.0F
         }
 
         viewModel.videoUrl.observe(this) { event ->
@@ -903,7 +898,9 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
         receiver.producerUp.observe(this) {
             it?.let {
                 unSubscribeChannelEventAll()
-                subscribeChannelEvent(matchInfo?.id)
+                matchInfo?.let {
+                    subscribeChannelEvent(it.id,it.gameType)
+                }
             }
         }
 
@@ -940,7 +937,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
     private fun getData() {
         matchInfo?.let {
             viewModel.getOddsDetail(it.id)
-            subscribeChannelEvent(it.id)
+            subscribeChannelEvent(it.id, it.gameType)
         }
         matchId?.let {
             viewModel.getOddsDetail(it)

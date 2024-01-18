@@ -431,7 +431,15 @@ message SportMaintainEvent {
 */
 message UserDiscountChangeEvent {
     string discount = 1;
+    repeated DiscountByGameTypeVO discountByGameTypeList = 2;
 }
+
+message DiscountByGameTypeVO {
+    string discount = 1;
+    string gameType = 2;
+}
+
+
 
 /**
 *   USER_INFO_CHANGE

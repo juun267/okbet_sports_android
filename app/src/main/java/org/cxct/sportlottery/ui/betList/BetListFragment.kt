@@ -97,7 +97,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
     private var oddsType: OddsType = OddsType.EU
 
-    private var discount = 1.0F
 
     private var betListRefactorAdapter: BetListRefactorAdapter? = null
 
@@ -155,7 +154,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-        initDiscount()
         initView()
         initObserver()
         initSocketObserver()
@@ -172,10 +170,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     override fun onDestroyView() {
         super.onDestroyView()
         binding.rvBetList.adapter = null
-    }
-
-    private fun initDiscount() {
-        discount = viewModel.userInfo.value?.discount ?: 1.0F
     }
 
     private fun initView() {
@@ -782,14 +776,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             oddsType = it
         }
 
-        viewModel.userInfo.observe(viewLifecycleOwner) {
-            it?.discount?.let { newDiscount ->
-                if (discount == newDiscount) return@observe
-
-                viewModel.updateBetInfoDiscount(discount, newDiscount)
-                discount = newDiscount
-            }
-        }
 
         viewModel.betInfoList.observe(viewLifecycleOwner) {
             it.peekContent().let { list ->

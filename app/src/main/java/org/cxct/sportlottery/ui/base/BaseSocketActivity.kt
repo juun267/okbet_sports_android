@@ -90,7 +90,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
 
         receiver.userDiscountChange.observe(this) {
-            viewModel.updateDiscount(it?.discount?.toDoubleOrNull())
+            viewModel.updateDiscount(it?.discountByGameTypeListList)
         }
 
         receiver.dataSourceChange.observe(this) {
@@ -147,9 +147,10 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     }
 
     fun subscribeChannelEvent(
-        eventId: String?
+        eventId: String?,
+        gameType: String?=null
     ) {
-        BackService.subscribeEventChannel(eventId)
+        BackService.subscribeEventChannel(eventId,gameType)
     }
 
     fun unSubscribeChannelHall(

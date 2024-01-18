@@ -11,7 +11,10 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.post
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.service.EventType
@@ -28,6 +31,8 @@ import timber.log.Timber
 import java.math.BigDecimal
 
 object ServiceBroadcastReceiver {
+
+    private val betInfoRepository: BetInfoRepository = BetInfoRepository
 
     val globalStop: LiveData<FrontWsEvent.GlobalStopEvent?>
         get() = _globalStop
@@ -107,7 +112,7 @@ object ServiceBroadcastReceiver {
         _serviceConnectStatus.postValue(connectStatus)
     }
 
-    fun onReceiveMessage(channelStr: String, messageStr: String) {
+    fun onReceiveMessage(channelStr: String, messageStr: String,gameType: String? = null) {
 
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -115,7 +120,7 @@ object ServiceBroadcastReceiver {
                 val eventsList = EncryptUtil.uncompressProto(messageStr)?.eventsList ?: return@launch
                 if (eventsList.isNotEmpty()) {
                     eventsList.forEach { event ->
-                        handleEvent(event, channelStr)
+                        handleEvent(event, channelStr,gameType)
                     }
                 }
 
@@ -126,7 +131,7 @@ object ServiceBroadcastReceiver {
         }
     }
 
-    private suspend fun handleEvent(event: FrontWsEvent.Event, channelStr: String) {
+    private suspend fun handleEvent(event: FrontWsEvent.Event, channelStr: String,gameType: String? = null) {
         when (val eventType = event.eventType) {
             EventType.NOTICE -> {
                 _notice.postValue(event.noticeEvent)
@@ -179,6 +184,9 @@ object ServiceBroadcastReceiver {
             //賠率折扣
             EventType.USER_DISCOUNT_CHANGE -> {
                 _userDiscountChange.postValue(event.userDiscountChangeEvent)
+                event.userDiscountChangeEvent.discountByGameTypeListList?.let { discount ->
+                    betInfoRepository.updateDiscount(discount)
+                }
             }
             //特定VIP层级的最新设定内容(會影響最大下注金額)
             EventType.USER_LEVEL_CONFIG_CHANGE -> {
@@ -213,9 +221,9 @@ object ServiceBroadcastReceiver {
 
                 // 登陆的用户计算赔率折扣
                 if (LoginRepository.isLogined()) {
-                    val discount = UserInfoRepository.getDiscount()
-                    if (discount != 1.0f) {
-                        data.setupOddDiscount(discount.toBigDecimal())
+                    val discount = MultiLanguagesApplication.mInstance.userInfo()?.getDiscount(data.gameType)?.toBigDecimalOrNull() ?: BigDecimal.ONE
+                    if (discount != BigDecimal.ONE) {
+                        data.setupOddDiscount(discount)
                     }
                 }
                 data.updateOddsSelectedState()
@@ -235,12 +243,13 @@ object ServiceBroadcastReceiver {
             //詳情頁賠率
             EventType.MATCH_ODDS_CHANGE -> {
                 val data = event.matchOddsChangeEvent.transferMatchOddsChangeEvent()
-
                 // 登陆的用户计算赔率折扣
                 if (LoginRepository.isLogined()) {
-                    val discount = UserInfoRepository.getDiscount()
-                    if (discount != 1.0f) {
-                        data.setupOddDiscount(discount.toBigDecimal())
+                    val discount =
+                        MultiLanguagesApplication.mInstance.userInfo()?.getDiscount(gameType)?.toBigDecimalOrNull()
+                            ?: BigDecimal.ONE
+                    if (discount != BigDecimal.ONE) {
+                        data.setupOddDiscount(discount)
                     }
                 }
                 data.updateOddsSelectedState()
@@ -348,6 +357,7 @@ object ServiceBroadcastReceiver {
         }
         return this
     }
+
 
     private fun OddsChangeEvent.sortOddsMap() {
         this.odds.sortOddsMap()

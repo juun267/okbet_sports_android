@@ -55,7 +55,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
     @SuppressLint("SetTextI18n")
     private fun initData() {
         loading()
-        viewModel.loginResult = intent.getSerializableExtra("data") as LoginResult?
+        viewModel.loginResult = intent.getParcelableExtra("data") as LoginResult?
         //请求地址列表
         viewModel.getAddressData()
         //请求薪资来源列表

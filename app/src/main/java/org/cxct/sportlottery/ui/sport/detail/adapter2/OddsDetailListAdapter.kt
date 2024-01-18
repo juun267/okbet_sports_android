@@ -13,11 +13,9 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
-import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
-import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 import org.cxct.sportlottery.view.DividerItemDecorator
 
-class OddsDetailListAdapter2(val onOddClickListener: OnOddClickListener)
+class OddsDetailListAdapter(val onOddClickListener: OnOddClickListener)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val CS = R.layout.content_odds_detail_list_cs
@@ -47,29 +45,6 @@ class OddsDetailListAdapter2(val onOddClickListener: OnOddClickListener)
                 }
             }
 
-        }
-
-    var discount: Float = 1.0F
-        set(value) {
-            if (field == value) return
-
-            oddsDetailDataList.forEach { oddsDetailListData ->
-                if (oddsDetailListData.gameType == PlayCate.EPS.value) {
-                    oddsDetailListData.oddArrayList.forEach { odd ->
-                        odd?.updateEPSDiscount(field, value)
-                    }
-                } else {
-                    //LCS的玩法不能使用DISCOUNT
-                    if (oddsDetailListData.gameType != PlayCate.LCS.value) {
-                        oddsDetailListData.oddArrayList.forEach { odd ->
-                            odd?.updateDiscount(field, value)
-                        }
-                    }
-                }
-            }
-
-            field = value
-            notifyDataSetChanged()
         }
 
 
