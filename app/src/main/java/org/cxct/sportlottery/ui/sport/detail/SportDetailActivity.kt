@@ -557,7 +557,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
 
 
     private fun initUI() {
-        oddsAdapter = OddsDetailListAdapter2(OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
+        oddsAdapter = OddsDetailListAdapter(OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
             scoPlayCateNameForBetInfo?.let {
                 odd.spread = tranByPlayCode(this,odd.playCode, null,null,null)
             }
