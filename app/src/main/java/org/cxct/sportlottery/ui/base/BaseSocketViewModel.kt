@@ -16,7 +16,7 @@ abstract class BaseSocketViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     val favoriteRepository: MyFavoriteRepository
-) : BaseOddButtonViewModel(androidContext, loginRepository,userInfoRepository, betInfoRepository, infoCenterRepository) {
+) : BaseUserViewModel(androidContext, loginRepository,userInfoRepository, betInfoRepository, infoCenterRepository) {
     val notifyMyFavorite = favoriteRepository.favorNotify
     val detailNotifyMyFavorite = favoriteRepository.detailFavorNotify
 

@@ -1,12 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
-import android.content.Context
-import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.showPromptDialog
 import org.cxct.sportlottery.util.showAllowingStateLoss
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.reflect.KClass

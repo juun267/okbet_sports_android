@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseUserViewModel
 import org.cxct.sportlottery.util.Event
 
 class RedEnveLopeModel(
@@ -16,14 +17,12 @@ class RedEnveLopeModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
-) : BaseSocketViewModel(
+) : BaseUserViewModel(
     androidContext,
-    userInfoRepository,
     loginRepository,
+    userInfoRepository,
     betInfoRepository,
     infoCenterRepository,
-    favoriteRepository
 ) {
     private val _redEnvelopePrizeResult = MutableLiveData<Event<RedEnvelopePrizeResult?>>()
     val redEnvelopePrizeResult: LiveData<Event<RedEnvelopePrizeResult?>>

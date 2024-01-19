@@ -71,7 +71,7 @@ object AppViewModel {
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { RedEnveLopeModel(get(), get(), get(), get(), get()) }
         viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SportViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { LeagueSelectViewModel(get(), get(), get(), get(), get(), get()) }

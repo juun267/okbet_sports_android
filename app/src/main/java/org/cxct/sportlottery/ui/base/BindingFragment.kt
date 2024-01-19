@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.common.extentions.createVBinding
-import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.base.BaseViewModel
 
 abstract class BindingFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM>(null) {
 
