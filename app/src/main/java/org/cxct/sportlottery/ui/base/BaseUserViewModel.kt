@@ -440,13 +440,18 @@ abstract class BaseUserViewModel(
                             it.matchOdd.oddsId,
                             getOdds(it.matchOdd, currentOddsTypes),
                             betAmount,
-                            currentOddsTypes.code
+                            currentOddsTypes.code,
+                            it.matchOdd.spread
                         )
                     )
                 } else {
                     matchList.add(
                         Odd(
-                            it.matchOdd.oddsId, null, null, null
+                            it.matchOdd.oddsId,
+                            null,
+                            null,
+                            null,
+                            it.matchOdd.spread
                         )
                     )
                 }
@@ -463,7 +468,8 @@ abstract class BaseUserViewModel(
                             .toDouble()
                         ,
                         betAmount,
-                        currentOddsTypes.code
+                        currentOddsTypes.code,
+                        it.matchOdd.spread
                     )
                 )
             }
