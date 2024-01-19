@@ -27,15 +27,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.showCurrencySign
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseUserViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
-import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
-import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 import org.cxct.sportlottery.view.StreamerTextView
 
 class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
@@ -62,7 +60,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
 
     private lateinit var fragment: LifecycleOwner
     private lateinit var activity: MainTabActivity
-    private lateinit var viewModel: BaseOddButtonViewModel
+    private lateinit var viewModel: BaseUserViewModel
     private var userModelEnable = true
     private var onlyShowSeach = true
     private var mailsIcon = R.drawable.icon_mails
@@ -271,7 +269,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     fun attach(
         fragment: Fragment,
         activity: MainTabActivity,
-        viewModel: BaseOddButtonViewModel,
+        viewModel: BaseUserViewModel,
         moneyViewEnable: Boolean = true,
         onlyShowSeach: Boolean = false,
     ) {

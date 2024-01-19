@@ -2,33 +2,21 @@ package org.cxct.sportlottery.ui.base
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
-import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.net.flow.IUiView
-import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetAdapter
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
 
 @SuppressLint("InflateParams")

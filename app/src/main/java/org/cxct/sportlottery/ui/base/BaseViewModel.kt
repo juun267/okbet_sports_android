@@ -3,18 +3,18 @@ package org.cxct.sportlottery.ui.base
 import android.app.Application
 import android.content.Context
 import androidx.annotation.Nullable
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.httpFormat
-import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.error.HttpError
-import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
-import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -176,4 +176,5 @@ abstract class BaseViewModel(
     fun launch(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(block = block)
     }
+
 }

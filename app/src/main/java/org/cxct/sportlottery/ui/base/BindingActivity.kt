@@ -3,8 +3,6 @@ package org.cxct.sportlottery.ui.base
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.common.extentions.createVBinding
-import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BaseViewModel
 
 abstract class BindingActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<VM>() {
 
