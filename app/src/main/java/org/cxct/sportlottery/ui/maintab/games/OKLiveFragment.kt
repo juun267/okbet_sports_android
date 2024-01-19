@@ -78,7 +78,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::clas
         showGameAll()
         initObservable()
         viewModel.getOKLiveHall()
-//        showOkGameDialog()
+        showOkLiveDialog()
     }
 
     private var requestTag: Any = Any()
@@ -243,7 +243,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::clas
 
     open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 
-    private fun showOkGameDialog() {
+    private fun showOkLiveDialog() {
         if (PopImageDialog.showOKLiveDialog) {
             PopImageDialog.showOKLiveDialog = false
             if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_OKLIVE.code)) {
