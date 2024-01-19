@@ -310,6 +310,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             } else {
                 ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_nor)
             }
+            btnGoogle.setBtnEnable(ivPrivacy.isSelected)
             viewModel.agreeChecked = ivPrivacy.isSelected
         }
 
