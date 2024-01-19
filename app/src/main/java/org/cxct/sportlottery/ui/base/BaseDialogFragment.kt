@@ -6,12 +6,12 @@ import org.cxct.sportlottery.common.extentions.runWithCatch
 
 open class BaseDialogFragment: DialogFragment() {
 
-    // 保留实例对象，在activity重建时直接使用保存的实例对象。避免DialogFragment没有无参构造函数时由系统重建引起的崩溃问题
-    protected open val isRetainInstance = true
-
-    init {
-        retainInstance = isRetainInstance
-    }
+//    // 保留实例对象，在activity重建时直接使用保存的实例对象。避免DialogFragment没有无参构造函数时由系统重建引起的崩溃问题
+//    protected open val isRetainInstance = true
+//
+//    init {
+//        retainInstance = isRetainInstance
+//    }
 
     override fun show(manager: FragmentManager, tag: String?) = runWithCatch {
         if (manager.isDestroyed) {

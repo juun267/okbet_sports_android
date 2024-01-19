@@ -8,7 +8,8 @@ data class Odd(
     val oid: String?,
     val odds: Double?,
     val stake: Double? = null,
-    val oddsType: String?
+    val oddsType: String?,
+    val spread: String?,
 ) {
     var matchType: MatchType? = null
 }
