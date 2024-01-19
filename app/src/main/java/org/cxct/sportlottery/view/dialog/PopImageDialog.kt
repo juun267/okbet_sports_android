@@ -41,6 +41,7 @@ class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
         var showOKGameDialog = true
         var showOKLiveDialog = true
         var showSportDialog = true
+        var showOKGamesHomeDialog = true
         fun checkImageTypeAvailable(imageType: Int) = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == LanguageManager.getSelectLanguage(
                 MultiLanguagesApplication.appContext).key && !it.imageName1.isNullOrEmpty()
