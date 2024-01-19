@@ -77,7 +77,7 @@ public abstract class AbstractConnectionProvider implements ConnectionProvider {
 //                throw new IllegalStateException("Not connected");
                 return null;
             } else {
-                Log.v(TAG, "Send STOMP message: " + stompMessage);
+//                Log.v(TAG, "Send STOMP message: " + stompMessage);
                 rawSend(stompMessage);
                 return null;
             }
@@ -114,7 +114,7 @@ public abstract class AbstractConnectionProvider implements ConnectionProvider {
     }
 
     protected void emitMessage(String stompMessage) {
-        Log.v(TAG, "Receive STOMP message: " + stompMessage);
+//        Log.v(TAG, "Receive STOMP message: " + stompMessage);
         messagesStream.onNext(stompMessage);
     }
 

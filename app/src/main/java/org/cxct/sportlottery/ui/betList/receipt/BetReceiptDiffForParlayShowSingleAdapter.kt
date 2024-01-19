@@ -116,11 +116,11 @@ class BetReceiptDiffForParlayShowSingleAdapter : ListAdapter<MatchOdd, RecyclerV
                         if (this.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
                             getOdds(this, oddsType ?: OddsType.EU) - 1
                         ) else TextUtil.formatForOdd(getOdds(this, oddsType))
-                    tv_play_content.text = setSpannedString(
-                        needShowSpread(playCateCode) && (matchType != MatchType.OUTRIGHT),
-                        playName,
-                        if (matchType != MatchType.OUTRIGHT) spread else ""
-                    )
+
+                    tv_play_content.text = playName
+                    tvSpread.text = if (matchType != MatchType.OUTRIGHT) spread else ""
+                    dividerTitle.isVisible = tvSpread.text.isNotEmpty()
+
                     tv_odds.text = "@ $formatForOdd"
 
 
@@ -135,19 +135,6 @@ class BetReceiptDiffForParlayShowSingleAdapter : ListAdapter<MatchOdd, RecyclerV
                     }
                 }
             }
-        }
-
-        private fun setSpannedString(
-            isShowSpread: Boolean,
-            playName: String?,
-            spread: String?
-        ): Spanned {
-            val color_FFFFFF_414655 = MultiLanguagesApplication.getChangeModeColorCode("#414655", "#FFFFFF")
-
-            val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$color_FFFFFF_414655>$playName</font> " else ""
-            val spreadStr = if (!spread.isNullOrEmpty() || isShowSpread) "<font color=$color_FFFFFF_414655>$spread</font> " else ""
-
-            return HtmlCompat.fromHtml(playNameStr + spreadStr, HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
     }
 }
