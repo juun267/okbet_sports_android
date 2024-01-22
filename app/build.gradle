@@ -101,6 +101,7 @@ android {
     productFlavors {
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
+            buildConfigField "String", "AF_APPKEY", "\"PFhWPPwiFS8BaLpFHDE3Rn\""
             applicationId "com.happysport.sl.test"
             manifestPlaceholders = [JPUSH_PKGNAME: applicationId,
                                     JPUSH_APPKEY : "2efc0f50829574b4db4b1dc8",
