@@ -129,11 +129,8 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
                     setPositiveClickListener {
                         dismiss()
                         viewModel.doLogoutCleanUser {
-                            run {
-//                                if (sConfigData?.thirdOpen == FLAG_OPEN)
-//                                    MainActivity.reStart(MultiLanguagesApplication.appContext)
-//                                else
-                                MainTabActivity.reStart(MultiLanguagesApplication.appContext)
+                            kotlin.runCatching {
+                                MainTabActivity.reStart(requireActivity())
                             }
                         }
                     }

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
+import android.media.Image
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -12,7 +13,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
@@ -78,7 +78,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::clas
         showGameAll()
         initObservable()
         viewModel.getOKLiveHall()
-        showOkLiveDialog()
+        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKLIVE.code)
     }
 
     private var requestTag: Any = Any()
@@ -243,16 +243,6 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::clas
 
     open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 
-    private fun showOkLiveDialog() {
-        if (PopImageDialog.showOKLiveDialog) {
-            PopImageDialog.showOKLiveDialog = false
-            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_OKLIVE.code)) {
-                requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_OKLIVE.code)
-                }).show(childFragmentManager, PopImageDialog::class.simpleName)
-            }
-        }
-    }
     fun search(key: String){
         if (isAdded){
             binding.topView.edtSearch.setText(key)

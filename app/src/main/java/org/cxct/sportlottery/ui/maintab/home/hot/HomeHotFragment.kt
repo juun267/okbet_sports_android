@@ -127,8 +127,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
     private fun initObservable() {
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
-            if (PopImageDialog.showHomeDialog) {
-                PopImageDialog.showHomeDialog = false
+            if (PopImageDialog.checkImageTypeEnable(ImageType.DIALOG_HOME.code)) {
                 if (PromotionPopupDialog.needShow()){
                     PromotionPopupDialog {
                         JumpUtil.toInternalWeb(getMainTabActivity(),
@@ -136,11 +135,7 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
                             getString(R.string.promotion))
                     }.show(parentFragmentManager)
                 }
-                if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_HOME.code)) {
-                    requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                        putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_HOME.code)
-                    }).show(childFragmentManager, PopImageDialog::class.simpleName)
-                }
+                PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_HOME.code)
             }
             if (viewModel.isLogin.value==true){
                 if (BindPhoneDialog.needShow()) {
