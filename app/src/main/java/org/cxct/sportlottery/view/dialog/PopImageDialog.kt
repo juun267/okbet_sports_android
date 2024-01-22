@@ -1,14 +1,13 @@
 package org.cxct.sportlottery.view.dialog
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
-import com.stx.xhb.androidx.XBanner
 import com.stx.xhb.androidx.transformers.Transformer
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -16,7 +15,6 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.DialogPopImageBinding
 import org.cxct.sportlottery.network.index.config.ImageData
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
@@ -29,23 +27,49 @@ import org.cxct.sportlottery.util.LogUtil
 /**
  * 顯示棋牌彈窗
  */
-class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
+class PopImageDialog(imageType: Int) : BaseDialog<BaseViewModel>(BaseViewModel::class) {
 
     init {
+        arguments = Bundle().apply {
+            putInt(IMAGE_TYPE, imageType)
+        }
         setStyle(R.style.FullScreen)
     }
 
     companion object {
-        const val IMAGE_TYPE = "imageType"
-        var showHomeDialog = true
-        var showOKGameDialog = true
-        var showOKLiveDialog = true
-        var showSportDialog = true
-        var showOKGamesHomeDialog = true
-        fun checkImageTypeAvailable(imageType: Int) = sConfigData?.imageList?.filter {
+        private const val IMAGE_TYPE = "imageType"
+        // DIALOG_HOME(7),
+//        DIALOG_SPORT(14),
+//        DIALOG_OKGAME(16),
+//        DIALOG_OKLIVE(25),
+//        DIALOG_OKGAMES_HOME(23),//OKGames包，默认进入棋牌页时候的活动弹窗
+        private var imageTypeEnableMap = mutableMapOf<Int, Boolean>(
+            ImageType.DIALOG_HOME.code to true,
+            ImageType.DIALOG_SPORT.code to true,
+            ImageType.DIALOG_OKGAME.code to true,
+            ImageType.DIALOG_OKLIVE.code to true,
+            ImageType.DIALOG_OKGAMES_HOME.code to true
+        )
+        fun resetImageType(){
+            imageTypeEnableMap.keys.forEach {
+                imageTypeEnableMap[it] = true
+            }
+        }
+        fun checkImageTypeEnable(imageType: Int): Boolean{
+            return imageTypeEnableMap[imageType]?:false
+        }
+
+        private fun checkImageTypeAvailable(imageType: Int) = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == LanguageManager.getSelectLanguage(
                 MultiLanguagesApplication.appContext).key && !it.imageName1.isNullOrEmpty()
         }?.isNotEmpty() == true
+
+        fun showDialog(manager: FragmentManager, imageType: Int) {
+            if (checkImageTypeAvailable(imageType) && imageTypeEnableMap[imageType] == true) {
+                PopImageDialog(imageType).show(manager)
+                imageTypeEnableMap[imageType] = false
+            }
+        }
     }
 
     lateinit var binding: DialogPopImageBinding
@@ -89,6 +113,7 @@ class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
             dismiss()
         }
     }
+
     private fun setUpBanner() = binding.run {
         val lang = LanguageManager.getSelectLanguage(context).key
         imageList = sConfigData?.imageList?.filter {
@@ -112,7 +137,7 @@ class PopImageDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
             (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
             view.setOnClickListener {
                 val realImageData = imageList.getOrNull(xbanner.bannerCurrentItem)
-                LogUtil.d("bannerCurrentItem="+xbanner.bannerCurrentItem+",jumpUrl="+realImageData?.appUrl)
+                LogUtil.d("bannerCurrentItem=" + xbanner.bannerCurrentItem + ",jumpUrl=" + realImageData?.appUrl)
                 realImageData?.let {
                     if (!it.appUrl.isNullOrEmpty()) {
                         JumpUtil.toInternalWeb(requireActivity(), it.appUrl, it.imageText1)

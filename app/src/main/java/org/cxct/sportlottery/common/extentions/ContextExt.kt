@@ -47,15 +47,3 @@ inline fun <reified T: Activity> Context.startActivity(
     startActivity(intent)
 }
 
-/**实例化 Fragment*/
-inline fun <reified T : Fragment> Context.newInstanceFragment(args: Bundle?): T {
-    val className = T::class.java.name;
-    val clazz = FragmentFactory.loadFragmentClass(
-        classLoader, className)
-    val f = clazz.getConstructor().newInstance()
-    if (args != null) {
-        args.classLoader = f.javaClass.classLoader
-        f.arguments = args
-    }
-    return f as T
-}
