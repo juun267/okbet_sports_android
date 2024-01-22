@@ -83,7 +83,7 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::c
         initObservable()
         viewModel.getOKGamesHall()
         viewModel.getJackpotData()
-        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKLIVE.code)
+        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKGAME.code)
         if (AgeVerifyDialog.isAgeVerifyNeedShow){
             AgeVerifyDialog.isAgeVerifyNeedShow =false
             AgeVerifyDialog(onConfirm = {}, onExit = {}).show(childFragmentManager)
