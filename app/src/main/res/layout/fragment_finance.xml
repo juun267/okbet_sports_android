@@ -8,7 +8,100 @@
     tools:context="org.cxct.sportlottery.ui.finance.FinanceFragment">
 
     <!-- 帳戶餘額 -->
-    <include layout="@layout/view_account_balance" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/account_balance_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_141414_F3F4F5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        tools:context=".ui.profileCenter.money_transfer.transfer.MoneyTransferSubFragment">
+
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="@dimen/margin_10"
+            android:background="@drawable/icon_mask_group"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="@dimen/margin_14">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="@dimen/margin_12"
+                    android:src="@drawable/ic_group_7130" />
+
+                <TextView
+                    android:id="@+id/tv_curent_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/now_balance"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/iv_deposit_tip"
+                    android:layout_width="@dimen/margin_15"
+                    android:layout_height="@dimen/margin_15"
+                    android:layout_marginTop="2dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/deposit_tips"
+                    android:layout_toRightOf="@+id/tv_curent_balance" />
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_currency_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/textSize20sp"
+                    tools:text="₱" />
+
+
+                <TextView
+                    android:id="@+id/tv_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="0"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/textSize20sp"
+                    tools:text="19940.000" />
+
+                <ImageView
+                    android:id="@+id/btn_refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_icon_money_refresh03"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"

@@ -1,27 +1,26 @@
 package org.cxct.sportlottery.ui.finance
 
-import android.os.Bundle
 import androidx.navigation.findNavController
-import kotlinx.android.synthetic.main.activity_finance.*
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.databinding.ActivityFinanceBinding
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity.Companion.RechargeViewLog
 
 /**
  * @app_destination 资金明细
  */
-class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::class) {
+class FinanceActivity : BindingActivity<FinanceViewModel,ActivityFinanceBinding>() {
 
     private val navController by lazy {
         findNavController(R.id.financeFragment)
     }
+    private val financeFragment by lazy {
+        supportFragmentManager.findFragmentById(R.id.financeFragment)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
-        setContentView(R.layout.activity_finance)
-
         setupToolbarBack()
 
         setupToolbarTitle(getString(R.string.fund_detail))
@@ -48,13 +47,14 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::c
                 }
                 getString(R.string.redenvelope_record) -> {
                     if (navController.currentDestination?.id == R.id.financeFragment)
-                    navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToRedEnvelopeFragment())
+                        navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToRedEnvelopeFragment())
                 }
             }
         }
 
         checkQuickJump()
     }
+
 
     private fun checkQuickJump() {
         intent.apply {
@@ -71,16 +71,18 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::c
     }
 
     private fun setupToolbarTitle(title: String) {
-        custom_tool_bar.titleText = title
+        binding.customToolBar.titleText = title
     }
 
     private fun setupToolbarBack() {
-        custom_tool_bar.setOnBackPressListener {
-            if (financeFragment.childFragmentManager.backStackEntryCount > 0) {
-                navController.navigateUp()
-                if (!financeFragment.isHidden) setupToolbarTitle(getString(R.string.fund_detail))
+        binding.customToolBar.setOnBackPressListener {
+            financeFragment?.let {
+                if (it.childFragmentManager.backStackEntryCount > 0) {
+                    navController.navigateUp()
+                    if (!it.isHidden) setupToolbarTitle(getString(R.string.fund_detail))
 
-            } else finish()
+                } else finish()
+            }
         }
     }
 

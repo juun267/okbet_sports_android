@@ -149,28 +149,37 @@ fun FragmentActivity.hideSoftKeyboard() {
         e.printStackTrace()
     }
 }
-var loadingViewBinding: LayoutLoadingBinding?=null
+
+//var loadingViewBinding: LayoutLoadingBinding?=null
+private val loadingViewId = View.generateViewId()
 @SuppressLint("InflateParams")
- fun FragmentActivity.loading(message: String?=null) {
-    if (loadingViewBinding == null) {
-        loadingViewBinding = LayoutLoadingBinding.inflate(layoutInflater)
+fun FragmentActivity.loading(message: String?=null) {
+    var loadingView = findViewById<View>(loadingViewId)
+    val loadingBinding: LayoutLoadingBinding
+    if (loadingView == null) {
+        loadingBinding = LayoutLoadingBinding.inflate(layoutInflater)
+        loadingView = loadingBinding.root.apply {
+            id = loadingViewId
+            tag = loadingBinding
+        }
         val params = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT
         )
-        addContentView(loadingViewBinding!!.root, params)
+        addContentView(loadingView, params)
     } else {
-        loadingViewBinding!!.rlLoading.apply {
+        loadingBinding = loadingView.tag as LayoutLoadingBinding
+        loadingBinding.rlLoading.apply {
             visibility = View.VISIBLE
             isClickable = true
         }
     }
-    (loadingViewBinding!!.ivLoading.background as? AnimationDrawable)?.start()
+    (loadingBinding.ivLoading.background as? AnimationDrawable)?.start()
 }
 
 /*关闭加载界面*/
 fun FragmentActivity.hideLoading() {
-    loadingViewBinding?.rlLoading?.apply {
-        visibility = View.GONE
-        (ivLoading.background as? AnimationDrawable)?.stop()
+    (findViewById<View>(loadingViewId)?.tag as? LayoutLoadingBinding)?.let {
+        it.root.visibility = View.GONE
+        (it.ivLoading.background as? AnimationDrawable)?.stop()
     }
 }

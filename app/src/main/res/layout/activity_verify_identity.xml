@@ -7,13 +7,14 @@
     tools:context=".ui.profileCenter.identity.VerifyIdentityActivity">
 
     <include
+        android:id="@id/toolbar"
         layout="@layout/view_base_tool_bar_no_drawer"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/identity_container"

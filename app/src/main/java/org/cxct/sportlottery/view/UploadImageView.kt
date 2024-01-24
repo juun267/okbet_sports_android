@@ -6,22 +6,26 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.view_upload.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ViewUploadBinding
+import splitties.systemservices.layoutInflater
 
 class UploadImageView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defaultStyle: Int = 0
 ) : LinearLayout(context, attributeSet, defaultStyle) {
+
     var uploadListener: UploadListener? = null
+    val binding by lazy {  ViewUploadBinding.inflate(layoutInflater) }
     init {
-        val view = LayoutInflater.from(context).inflate(R.layout.view_upload, this, false)
+        val view = binding.root
         addView(view)
 
         setupClickEvent()
     }
 
     private fun setupClickEvent() {
-        bg_upload.setOnClickListener{uploadListener?.upload() }
+        binding.bgUpload.setOnClickListener{uploadListener?.upload() }
     }
 
     class UploadListener(private val uploadClick: () -> Unit){

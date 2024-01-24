@@ -1,59 +1,45 @@
 package org.cxct.sportlottery.ui.feedback.suggest
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.fragment_feedback_submit.*
-import kotlinx.android.synthetic.main.view_submit_with_text_count.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.databinding.FragmentFeedbackSubmitBinding
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.util.countTextAmount
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 /**
  * @app_destination 意见反馈-填写建议
  */
-class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
+class FeedbackSubmitFragment : BindingFragment<FeedbackViewModel,FragmentFeedbackSubmitBinding>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onInitView(view: View) {
         viewModel.showToolbar(true)
         viewModel.setToolbarName(getString(R.string.feedback))
-        return inflater.inflate(R.layout.fragment_feedback_submit, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         initView()
         initButton()
     }
 
-    private fun initView() {
-        tv_input_count.text = String.format("%d / 500", 0)
-        et_content.countTextAmount {
-            tv_input_count.text = String.format("%d / 500", it)
-
-            ll_error.visibility = if (it > 0) View.GONE else View.VISIBLE
+    private fun initView()=binding.run{
+        tvInputCount.text = String.format("%d / 500", 0)
+        etContent.countTextAmount {
+            tvInputCount.text = String.format("%d / 500", it)
+            llError.visibility = if (it > 0) View.GONE else View.VISIBLE
             val textColor = if (it > 0) R.color.color_616161_b4b4b4 else R.color.color_F75452_E23434
-            tv_input_count.setTextColor(ContextCompat.getColor(tv_input_count.context, textColor))
+            tvInputCount.setTextColor(ContextCompat.getColor(tvInputCount.context, textColor))
         }
     }
 
-    private fun initButton() {
-        btn_submit.setOnClickListener {
-            if (et_content.text.trim().isNotEmpty()) {
-                viewModel.fbSave(et_content.text.toString())
+    private fun initButton()=binding.run {
+        btnSubmit.setOnClickListener {
+            if (etContent.text.trim().isNotEmpty()) {
+                viewModel.fbSave(etContent.text.toString())
             } else {
-                ll_error.visibility = View.VISIBLE
-                tv_input_count.setTextColor(ContextCompat.getColor(requireContext(),
-                    R.color.color_F75452_E23434))
+                llError.visibility = View.VISIBLE
+                tvInputCount.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_F75452_E23434))
             }
         }
-        btn_submit.setTitleLetterSpacing()
+        btnSubmit.setTitleLetterSpacing()
     }
 
 }

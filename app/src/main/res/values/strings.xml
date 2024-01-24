@@ -1206,9 +1206,6 @@
 
     <!--date time concat-->
 
-    <!--svg format-->
-    <string name="svg_format">&lt;svg xmlns=\u0027http://www.w3.org/2000/svg\u0027 xmlns:xlink=\u0027http://www.w3.org/1999/xlink\u0027 width=\u0027%d\u0027 height=\u0027%d\u0027 viewBox=\u00270 0 %d %d\u0027 &gt;%5$s&lt;/svg&gt;</string>
-
     <string name="splash_no_trans">/</string>
 
     <!--Language List-->

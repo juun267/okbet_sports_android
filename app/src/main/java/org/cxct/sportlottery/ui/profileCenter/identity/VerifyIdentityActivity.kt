@@ -1,27 +1,23 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
-import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.loading.Gloading
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.databinding.ActivityVerifyIdentityBinding
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class VerifyIdentityActivity :
-    BaseSocketActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+    BindingActivity<ProfileCenterViewModel,ActivityVerifyIdentityBinding>() {
 
     private val mNavController by lazy { (supportFragmentManager.findFragmentById(R.id.identity_container) as NavHostFragment).navController }
 
     private val loadingHolder by lazy { Gloading.wrapView(findViewById(R.id.identity_container)) }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_verify_identity)
+    override fun onInitView() {
         initToolbar()
         initObserver()
     }
@@ -77,25 +73,25 @@ class VerifyIdentityActivity :
         }
     }
 
-    private fun initToolbar() {
+    private fun initToolbar()=binding.toolbar.run {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        tv_toolbar_title.setTitleLetterSpacing()
-        btn_toolbar_back.setOnClickListener {
+        tvToolbarTitle.setTitleLetterSpacing()
+        btnToolbarBack.setOnClickListener {
             onBackPressed()
         }
     }
 
 
     fun setToolBar(title: String) {
-        tv_toolbar_title.text = title
+        binding.toolbar.tvToolbarTitle.text = title
     }
 
     fun setToolBarTitleForDetail() {
-        tv_toolbar_title.text = getString(R.string.scan_tool_bar)
+        binding.toolbar.tvToolbarTitle.text = getString(R.string.scan_tool_bar)
     }
 
     fun setToolBarTitleForReverify() {
-        tv_toolbar_title.text = getString(R.string.P211_1)
+        binding.toolbar.tvToolbarTitle.text = getString(R.string.P211_1)
     }
 
     override fun onBackPressed() {

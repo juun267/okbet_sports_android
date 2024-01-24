@@ -5,15 +5,12 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
-import kotlinx.android.synthetic.main.fragment_recharge_log.*
-import kotlinx.android.synthetic.main.fragment_recharge_log.rvlist
-import kotlinx.android.synthetic.main.fragment_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
-import org.cxct.sportlottery.network.money.list.Row
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.databinding.FragmentRechargeLogBinding
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
@@ -25,9 +22,8 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 /**
  * @app_destination 存款记录
  */
-class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class), OnItemClickListener {
+class RechargeLogFragment : BindingFragment<FinanceViewModel,FragmentRechargeLogBinding>(), OnItemClickListener {
 
-    override fun layoutId() = R.layout.fragment_recharge_log
     private lateinit var refreshHelper: RefreshHelper
 
     private val logDetailDialog by lazy {
@@ -36,11 +32,11 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private val rechargeAdapter by lazy { RechargeLogAdapter() }
 
-    override fun onBindView(view: View) {
-        iv_scroll_to_top.setOnClickListener { rvlist.smoothScrollToPosition(0) }
-        setupListColumn(view)
-        setupRechargeLogList(view)
-        setupSearch(view)
+    override fun onInitView(view: View) {
+        binding.ivScrollToTop.setOnClickListener { binding.rvlist.smoothScrollToPosition(0) }
+        setupListColumn()
+        setupRechargeLogList()
+        setupSearch()
         initObserver()
         reload()
     }
@@ -48,23 +44,23 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private fun reload(pageIndex: Int = 1, pageSize: Int = refreshHelper.pageSize) {
         viewModel.getUserRechargeList(pageIndex,
             pageSize,
-            date_range_selector.startTime.toString(),
-            date_range_selector.endTime.toString(),
-            selector_order_status.selectedTag,
-            selector_method_status.selectedTag)
+            binding.dateRangeSelector.startTime.toString(),
+            binding.dateRangeSelector.endTime.toString(),
+            binding.selectorOrderStatus.selectedTag,
+            binding.selectorMethodStatus.selectedTag)
     }
 
-    private fun setupListColumn(view: View) {
-        view.rech_log_recharge_amount.text = getString(R.string.recharge_log_recharge_amount)
+    private fun setupListColumn() {
+        binding.rechLogRechargeAmount.text = getString(R.string.recharge_log_recharge_amount)
     }
 
-    private fun setupRechargeLogList(view: View) {
+    private fun setupRechargeLogList()=binding.run {
         rvlist.setLinearLayoutManager()
         rvlist.adapter = rechargeAdapter
-        rechargeAdapter.setOnItemClickListener(this)
+        rechargeAdapter.setOnItemClickListener(this@RechargeLogFragment)
         rechargeAdapter.setEmptyView(LayoutInflater.from(view.context).inflate(R.layout.view_no_record, null))
         rvlist.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(view.context, R.drawable.recycleview_decoration)))
-        refreshHelper = RefreshHelper.of(rvlist, this, false, true)
+        refreshHelper = RefreshHelper.of(rvlist, this@RechargeLogFragment, false, true)
         refreshHelper.setLoadMoreListener(object : RefreshHelper.LoadMore {
             override fun onLoadMore(pageIndex: Int, pageSize: Int) {
                 reload(pageIndex, pageSize)
@@ -82,18 +78,17 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         reload()
     }
 
-    private fun setupSearch(view: View) {
-        date_range_selector.clickDelay {
+    private fun setupSearch() {
+        binding.dateRangeSelector.clickDelay {
             startReload()
         }
     }
 
     private fun initObserver() {
-
-        selector_method_status.setItemData(rechargeChannelList as MutableList<StatusSheetData>)
-        selector_order_status.setItemData(rechargeStateList as MutableList<StatusSheetData>)
-        selector_method_status.setOnItemSelectedListener { startReload() }
-        selector_order_status.setOnItemSelectedListener { startReload() }
+        binding.selectorMethodStatus.setItemData(rechargeChannelList as MutableList<StatusSheetData>)
+        binding.selectorOrderStatus.setItemData(rechargeStateList as MutableList<StatusSheetData>)
+        binding.selectorMethodStatus.setOnItemSelectedListener { startReload() }
+        binding.selectorOrderStatus.setOnItemSelectedListener { startReload() }
 
         viewModel.rechargeLogDataList.observe(viewLifecycleOwner) {
             if (it.first == null || it.first!!.size < refreshHelper.pageSize) {

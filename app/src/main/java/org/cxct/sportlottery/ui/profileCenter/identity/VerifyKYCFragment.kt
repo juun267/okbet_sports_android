@@ -1,10 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.graphics.Paint
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -12,18 +9,14 @@ import androidx.navigation.fragment.findNavController
 import com.bigkoo.pickerview.view.TimePickerView
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
-import kotlinx.android.synthetic.main.content_verify_identity_kyc.view.*
-import kotlinx.android.synthetic.main.content_verify_identity_kyc_head.*
-import kotlinx.android.synthetic.main.fragment_verify_identity_kyc.*
-import kotlinx.android.synthetic.main.view_status_spinner.view.*
+import kotlinx.android.synthetic.main.fragment_chart.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.FragmentVerifyIdentityKycBinding
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.login.signUp.info.DateTimePickerOptions
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
@@ -38,10 +31,9 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
-import kotlin.collections.ArrayList
 
 class VerifyKYCFragment :
-    BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+    BindingFragment<ProfileCenterViewModel,FragmentVerifyIdentityKycBinding>() {
     private var firstFile: File? = null
     private var headIdFile: File? = null
     private var secondFile: File? = null
@@ -172,7 +164,7 @@ class VerifyKYCFragment :
         checkSubmitStatus()
     }
 
-    private fun selectedHeadPhotoImg(file: File) {
+    private fun selectedHeadPhotoImg(file: File)=binding.identityHead.run {
         headIdFile = file
         tvUploadHeadPhoto.isVisible = true
         tvUploadHeadPhoto.text = getString(R.string.change_other_ID_photos)
@@ -181,36 +173,30 @@ class VerifyKYCFragment :
         checkSubmitStatus()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_verify_identity_kyc, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView(view: View) {
         (activity as VerifyIdentityActivity).setToolBar(getString(R.string.identity))
         initObserve()
         setupButton()
         setupUploadView()
-        initView(view)
+        initView()
         setEdittext()
         setSpinnerStyle()
     }
 
-    private fun initView(view: View) {
+    private fun initView()=binding.run {
         //PM - Tom Wang 跟QA 要求只跟設計稿一樣只開一個認證上傳，OK-860
         //2023年04月06日11:57:52 【OKBET-历史遗留问题-安卓】后台配置KYC认证数量最大是2个，安卓与其他端支持认证数量不一致（ftt103/Aa123456）
         val isShow2nd = sConfigData?.idUploadNumber.equals("2")
-        identity_2nd.isVisible = isShow2nd
-        tvSamplePhotoWithHead.paint.flags = Paint.UNDERLINE_TEXT_FLAG; //下划线
-        tvSamplePhotoWithHead.paint.isAntiAlias = true;//抗锯齿
-        tvSamplePhotoWithHead.setOnClickListener { VerificationTipDialog(it.context).show() }
+        identity2nd.root.isVisible = isShow2nd
+        identityHead.apply {
+            tvSamplePhotoWithHead.paint.flags = Paint.UNDERLINE_TEXT_FLAG; //下划线
+            tvSamplePhotoWithHead.paint.isAntiAlias = true;//抗锯齿
+            tvSamplePhotoWithHead.setOnClickListener { VerificationTipDialog(it.context).show() }
+        }
         setUserInfo()
     }
 
-    private fun setUserInfo() {
+    private fun setUserInfo()=binding.run {
         val userInfo = UserInfoRepository.loginedInfo() ?: return
 
         if (userInfo.hasFullName()) {
@@ -224,13 +210,13 @@ class VerifyKYCFragment :
             cbNoMiddleName.isChecked = noneMiddleName
             eedtMiddleName.isEnabled = !noneMiddleName
             eedtLastName.setText(userInfo.lastName)
-            et_birthday.setText(userInfo.birthday)
+            etBirthday.setText(userInfo.birthday)
         }
 
         eetFirstName.afterTextChanged { checkInput(eetFirstName, etFirstName) }
         eedtMiddleName.afterTextChanged { checkInput(eedtMiddleName, edtMiddleName, !cbNoMiddleName.isChecked) }
         eedtLastName.afterTextChanged { checkInput(eedtLastName, edtLastName) }
-        tv_birthday.setOnClickListener { showDateTimePicker() }
+        tvBirthday.setOnClickListener { showDateTimePicker() }
         cbNoMiddleName.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 eedtMiddleName.isEnabled = false
@@ -260,7 +246,7 @@ class VerifyKYCFragment :
 
     private var dateTimePicker: TimePickerView? = null
     private fun showDateTimePicker() {
-        KeyboadrdHideUtil.hideSoftKeyboard(tv_birthday)
+        KeyboadrdHideUtil.hideSoftKeyboard(binding.etBirthday)
         if (dateTimePicker != null) {
             dateTimePicker!!.show()
             return
@@ -272,7 +258,7 @@ class VerifyKYCFragment :
         tomorrow.add(Calendar.DAY_OF_MONTH, -1)
         dateTimePicker = DateTimePickerOptions(requireContext()).getBuilder { date, _ ->
             TimeUtil.dateToStringFormatYMD(date)?.let {
-                et_birthday.setText(it)
+                binding.etBirthday.setText(it)
                 checkSubmitStatus()
             }
         }
@@ -290,25 +276,25 @@ class VerifyKYCFragment :
         checkSubmitStatus()
     }
 
-    private fun setSpinnerStyle() {
-        identity_1st.selector_type.setOnItemSelectedListener { checkSubmitStatus() }
-        val constraintLayout = identity_1st.selector_type.cl_root
+    private fun setSpinnerStyle()=binding.run {
+        identity1st.selectorType.setOnItemSelectedListener { checkSubmitStatus() }
+        val constraintLayout = identity1st.selectorType.clRoot
         val constraintSet = ConstraintSet()
         constraintSet.clone(constraintLayout)
         constraintSet.clear(R.id.tv_name, ConstraintSet.END)
-        constraintSet.connect(R.id.tv_name, ConstraintSet.START, R.id.cl_root, ConstraintSet.START, 14)
+        constraintSet.connect(R.id.tv_name, ConstraintSet.START, R.id.clRoot, ConstraintSet.START, 14)
         constraintSet.clear(R.id.iv_arrow, ConstraintSet.START)
-        constraintSet.connect(R.id.iv_arrow, ConstraintSet.END, R.id.cl_root, ConstraintSet.END, 14)
+        constraintSet.connect(R.id.iv_arrow, ConstraintSet.END, R.id.clRoot, ConstraintSet.END, 14)
         constraintSet.applyTo(constraintLayout)
 
-        identity_2nd.selector_type.setOnItemSelectedListener { checkSubmitStatus() }
-        val constraintLayout2 = identity_2nd.selector_type.cl_root
+        identity2nd.selectorType.setOnItemSelectedListener { checkSubmitStatus() }
+        val constraintLayout2 = identity2nd.selectorType.clRoot
         val constraintSet2 = ConstraintSet()
         constraintSet2.clone(constraintLayout2)
         constraintSet2.clear(R.id.tv_name, ConstraintSet.END)
-        constraintSet2.connect(R.id.tv_name, ConstraintSet.START, R.id.cl_root, ConstraintSet.START, 14)
+        constraintSet2.connect(R.id.tv_name, ConstraintSet.START, R.id.clRoot, ConstraintSet.START, 14)
         constraintSet2.clear(R.id.iv_arrow, ConstraintSet.START)
-        constraintSet2.connect(R.id.iv_arrow, ConstraintSet.END, R.id.cl_root, ConstraintSet.END, 14)
+        constraintSet2.connect(R.id.iv_arrow, ConstraintSet.END, R.id.clRoot, ConstraintSet.END, 14)
         constraintSet2.applyTo(constraintLayout2)
     }
 
@@ -360,77 +346,77 @@ class VerifyKYCFragment :
         }
     }
 
-    private fun setupButton() {
-        btn_submit.setOnClickListener {
+    private fun setupButton()=binding.run {
+        btnSubmit.setOnClickListener {
             when {
                 firstFile == null -> {
                     showErrorPromptDialog(getString(R.string.prompt), getString(R.string.upload_fail)) {}
                 }
 
-                secondFile == null && identity_2nd.isVisible -> {
+                secondFile == null && identity2nd.root.isVisible -> {
                     showErrorPromptDialog(getString(R.string.prompt), getString(R.string.upload_fail)) {}
                 }
 
                 else -> {
                     loading()
-                    if (identity_2nd.isVisible)
+                    if (identity2nd.root.isVisible)
                         viewModel.uploadVerifyPhoto(
                             headIdFile!!,
                             firstFile!!,
-                            identity_1st.selector_type.selectedCode?.toInt(),
-                            identity_1st.ed_num.text.toString(),
+                            identity1st.selectorType.selectedCode?.toInt(),
+                            identity1st.edNum.text.toString(),
                             secondFile!!,
-                            identity_2nd.selector_type.selectedCode?.toInt(),
-                            identity_2nd.ed_num.text.toString(),
+                            identity2nd.selectorType.selectedCode?.toInt(),
+                            identity2nd.edNum.text.toString(),
                             firstName = eetFirstName.text.toString(),
                             middleName = eedtMiddleName.text.toString(),
                             lastName = eedtLastName.text.toString(),
-                            birthday = et_birthday.text.toString(),
+                            birthday = etBirthday.text.toString(),
                         )
                     else
                         viewModel.uploadVerifyPhoto(
                             headIdFile,
                             firstFile!!,
-                            identity_1st.selector_type.selectedCode?.toInt(),
-                            identity_1st.ed_num.text.toString(),
+                            identity1st.selectorType.selectedCode?.toInt(),
+                            identity1st.edNum.text.toString(),
                             firstName = eetFirstName.text.toString(),
                             middleName = eedtMiddleName.text.toString(),
                             lastName = eedtLastName.text.toString(),
-                            birthday = et_birthday.text.toString(),
+                            birthday = etBirthday.text.toString(),
                         )
                 }
             }
         }
 
-        btn_submit.setTitleLetterSpacing()
-        tv_service.setServiceClick(childFragmentManager)
+        btnSubmit.setTitleLetterSpacing()
+        tvService.setServiceClick(childFragmentManager)
     }
 
-    private fun setupUploadView() {
+    private fun setupUploadView()=binding.run {
 
-        identity_1st.apply {
+        identity1st.apply {
             this.tvUploadTip.isVisible = false
             this.tvUploadTip2.isVisible = false
-            this.txv_title_num.text = getString(R.string.kyc_num)
-            this.cl_pic.setOnClickListener {
+            this.txvTitleNum.text = getString(R.string.kyc_num)
+            this.clPic.setOnClickListener {
                 val dialog = PicSelectorDialog()
                 dialog.mSelectListener = mfirstSelectDocMediaListener
                 dialog.show(parentFragmentManager, VerifyKYCFragment::class.java.simpleName)
             }
         }
 
-        identity_2nd.apply {
+        identity2nd.apply {
             this.tvUploadTip.isVisible = false
             this.tvUploadTip2.isVisible = true
-            this.txv_title_num.text = getString(R.string.kyc_num2)
-            this.cl_pic.setOnClickListener {
+            this.txvTitleNum.text = getString(R.string.kyc_num2)
+            this.clPic.setOnClickListener {
                 val dialog = PicSelectorDialog()
                 dialog.mSelectListener = mSecondSelectPhotoMediaListener
                 dialog.show(parentFragmentManager, VerifyKYCFragment::class.java.simpleName)
             }
         }
-        identityHead.gone()
-        layoutUploadIdWithHead.setOnClickListener {
+        identityHead.root.gone()
+        identityHead.layoutUploadIdWithHead.setOnClickListener {
             val dialog = PicSelectorDialog()
             dialog.mSelectListener = mHeadIdListener
             dialog.show(parentFragmentManager, VerifyKYCFragment::class.java.simpleName)
@@ -438,56 +424,56 @@ class VerifyKYCFragment :
 
     }
 
-    private fun setupDocFile() {
-        val file = firstFile ?: return
-        identity_1st.apply {
-            this.btn_add_pic.isVisible = true
-            tv_upload_id_photo.text = getString(R.string.change_other_ID_photos)
-            img_pic.load(file.absolutePath, R.drawable.img_avatar_default)
-            cl_pic.isSelected = true
-            img_tri.isVisible = true
+    private fun setupDocFile() =binding.run{
+        val file = firstFile ?: return@run 
+        identity1st.apply {
+            btnAddPic.isVisible = true
+            tvUploadIdPhoto.text = getString(R.string.change_other_ID_photos)
+            imgPic.load(file.absolutePath, R.drawable.img_avatar_default)
+            clPic.isSelected = true
+            imgTri.isVisible = true
         }
     }
 
-    private fun setupPhotoFile() {
-        val file = secondFile ?: return
-        identity_2nd.apply {
-            btn_add_pic.isVisible = true
-            tv_upload_id_photo.text = getString(R.string.change_other_ID_photos)
-            img_pic.load(file.absolutePath, R.drawable.img_avatar_default)
-            cl_pic.isSelected = true
-            img_tri.isVisible = true
+    private fun setupPhotoFile()=binding.run {
+        val file = secondFile ?: return@run
+        identity2nd.apply {
+            btnAddPic.isVisible = true
+            tvUploadIdPhoto.text = getString(R.string.change_other_ID_photos)
+            imgPic.load(file.absolutePath, R.drawable.img_avatar_default)
+            clPic.isSelected = true
+            imgTri.isVisible = true
         }
     }
 
-    private fun checkSubmitStatus() {
-        btn_submit.isEnabled =
-            (firstFile != null && !identity_1st.selector_type.selectedCode.isNullOrBlank() && identity_1st.ed_num.text.isNotEmpty())
-                    && ((secondFile != null && identity_2nd.isVisible && !identity_2nd.selector_type.selectedCode.isNullOrBlank() && identity_2nd.ed_num.text.isNotEmpty()) || !identity_2nd.isVisible)
-                    && (identityHead.isGone||(identityHead.isVisible && headIdFile!=null))
-                    && (!etFirstName.isOnError && !edtLastName.isOnError && !edtMiddleName.isOnError && (et_birthday.isGone or et_birthday.text.toString().isNotEmpty()))
+    private fun checkSubmitStatus()=binding.run {
+        btnSubmit.isEnabled =
+            (firstFile != null && !identity1st.selectorType.selectedCode.isNullOrBlank() && identity1st.edNum.text.isNotEmpty())
+                    && ((secondFile != null && identity2nd.root.isVisible && !identity2nd.selectorType.selectedCode.isNullOrBlank() && identity2nd.edNum.text.isNotEmpty()) || !identity2nd.root.isVisible)
+                    && (identityHead.root.isGone||(identityHead.root.isVisible && headIdFile!=null))
+                    && (!etFirstName.isOnError && !edtLastName.isOnError && !edtMiddleName.isOnError && (etBirthday.isGone or etBirthday.text.toString().isNotEmpty()))
     }
 
-    private fun setEdittext() {
+    private fun setEdittext()=binding.run {
         val textWatcher = EditTextWatcher { checkSubmitStatus() }
-        identity_1st.ed_num.addTextChangedListener(textWatcher)
-        identity_2nd.ed_num.addTextChangedListener(textWatcher)
+        identity1st.edNum.addTextChangedListener(textWatcher)
+        identity2nd.edNum.addTextChangedListener(textWatcher)
     }
 
-    private fun getIdentityType() {
+    private fun getIdentityType()=binding.run {
         //根據config配置薪資來源選項
         val identityTypeList = mutableListOf<StatusSheetData>()
         sConfigData?.identityTypeList?.map { identityType ->
             identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
         }
         dataList = identityTypeList
-        identity_1st.selector_type.setItemData(dataList, isSelectedDefault = false)
-        identity_1st.selector_type.selectedListener = View.OnClickListener {
-            identity_1st.ic_recharge.setImageResource(R.drawable.ic_recharge_copy_30_2_selected)
+        identity1st.selectorType.setItemData(dataList, isSelectedDefault = false)
+        identity1st.selectorType.selectedListener = View.OnClickListener {
+            identity1st.icRecharge.setImageResource(R.drawable.ic_recharge_copy_30_2_selected)
         }
-        identity_2nd.selector_type.setItemData(dataList, isSelectedDefault = false)
-        identity_2nd.selector_type.selectedListener = View.OnClickListener {
-            identity_2nd.ic_recharge.setImageResource(R.drawable.ic_recharge_copy_30_2_selected)
+        identity2nd.selectorType.setItemData(dataList, isSelectedDefault = false)
+        identity2nd.selectorType.selectedListener = View.OnClickListener {
+            identity2nd.icRecharge.setImageResource(R.drawable.ic_recharge_copy_30_2_selected)
         }
     }
 

@@ -1,17 +1,14 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
-import android.os.Bundle
-import android.view.LayoutInflater
+
 import android.view.View
-import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
-import kotlinx.android.synthetic.main.fragment_credentials.*
-import kotlinx.android.synthetic.main.view_upload.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.databinding.FragmentCredentialsBinding
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.LocalUtils
@@ -23,7 +20,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 
-class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class CredentialsFragment : BindingFragment<ProfileCenterViewModel,FragmentCredentialsBinding>() {
     private var docFile: File? = null
     private var photoFile: File? = null
 
@@ -104,15 +101,7 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
         checkSubmitStatus()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_credentials, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView(view: View) {
         (activity as VerifyIdentityActivity).setToolBar(LocalUtils.getString(R.string.identity))
         initObserve()
         setupButton()
@@ -127,16 +116,16 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
     }
 
     private fun initObserve() {
-        viewModel.docUrlResult.observe(viewLifecycleOwner, {
+        viewModel.docUrlResult.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { result ->
                 if (!result.success) {
                     hideLoading()
                     showErrorPromptDialog(LocalUtils.getString(R.string.prompt), result.msg) {}
                 }
             }
-        })
+        }
 
-        viewModel.photoUrlResult.observe(viewLifecycleOwner, {
+        viewModel.photoUrlResult.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { result ->
                 hideLoading()
                 if (!result.success)
@@ -151,12 +140,12 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                     ) {
                         activity?.onBackPressed()
                     }*/
-                    
+
                 }
             }
-        })
+        }
 
-        viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner, { event ->
+        viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { result ->
                 hideLoading()
                 if (result.success) {
@@ -172,11 +161,11 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                     showErrorPromptDialog(LocalUtils.getString(R.string.prompt), result.msg) {}
                 }
             }
-        })
+        }
     }
 
-    private fun setupButton() {
-        btn_submit.setOnClickListener {
+    private fun setupButton()=binding.run {
+        btnSubmit.setOnClickListener {
             when {
                 docFile == null -> {
                     showErrorPromptDialog(LocalUtils.getString(R.string.prompt), LocalUtils.getString(R.string.upload_fail)) {}
@@ -191,25 +180,25 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 }
             }
         }
-        btn_submit.setTitleLetterSpacing()
+        btnSubmit.setTitleLetterSpacing()
 
-        btn_reset.setOnClickListener {
+        btnReset.setOnClickListener {
             clearMediaFile()
-            view_identity_doc.imgUploaded(false)
-            view_identity_photo.imgUploaded(false)
+            viewIdentityDoc.imgUploaded(false)
+            viewIdentityPhoto.imgUploaded(false)
             checkSubmitStatus()
         }
 
-        btn_reset.setTitleLetterSpacing()
+        btnReset.setTitleLetterSpacing()
     }
 
-    private fun setupUploadView() {
+    private fun setupUploadView()=binding.run {
         activity?.let { activityNotNull ->
-            view_identity_doc.apply {
+            viewIdentityDoc.apply {
                 imgUploaded(false)
-                tv_upload_title.text = LocalUtils.getString(R.string.upload_title)
-                tv_upload_tips.visibility = View.GONE
-                tv_upload.text = LocalUtils.getString(R.string.upload_content)
+                binding.tvUploadTitle.text = LocalUtils.getString(R.string.upload_title)
+                binding.tvUploadTips.visibility = View.GONE
+                binding.tvUpload.text = LocalUtils.getString(R.string.upload_content)
                 uploadListener = UploadImageView.UploadListener {
                     val dialog = PicSelectorDialog()
                     dialog.mSelectListener = mSelectDocMediaListener
@@ -217,11 +206,11 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 }
             }
 
-            view_identity_photo.apply {
+            viewIdentityPhoto.apply {
                 imgUploaded(false)
-                tv_upload_title.text = LocalUtils.getString(R.string.upload_photo_title)
-                tv_upload_tips.visibility = View.GONE
-                tv_upload.text = LocalUtils.getString(R.string.upload_photo_content)
+                binding.tvUploadTitle.text = LocalUtils.getString(R.string.upload_photo_title)
+                binding.tvUploadTips.visibility = View.GONE
+                binding.tvUpload.text = LocalUtils.getString(R.string.upload_photo_content)
                 uploadListener = UploadImageView.UploadListener {
                     val dialog = PicSelectorDialog()
                     dialog.mSelectListener = mSelectPhotoMediaListener
@@ -233,24 +222,24 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
 
     private fun setupDocFile() {
         docFile?.let { file ->
-            view_identity_doc.apply {
+            binding.viewIdentityDoc.apply {
                 imgUploaded(true)
-                Glide.with(iv_selected_media.context).load(file.absolutePath).apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(this.iv_selected_media)
+                Glide.with(requireContext()).load(file.absolutePath).apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(binding.ivSelectedMedia)
             }
         }
     }
 
     private fun setupPhotoFile() {
         photoFile?.let { file ->
-            view_identity_photo.apply {
+            binding.viewIdentityPhoto.apply {
                 imgUploaded(true)
-                Glide.with(iv_selected_media.context).load(file.absolutePath).apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(this.iv_selected_media)
+                Glide.with(requireContext()).load(file.absolutePath).apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(binding.ivSelectedMedia)
             }
         }
     }
 
     private fun checkSubmitStatus() {
-        btn_submit.isEnabled = docFile != null && photoFile != null
+        binding.btnSubmit.isEnabled = docFile != null && photoFile != null
     }
 
     private fun clearMediaFile() {
@@ -258,21 +247,21 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
         photoFile = null
     }
 
-    private fun UploadImageView.imgUploaded(uploaded: Boolean) {
+    private fun UploadImageView.imgUploaded(uploaded: Boolean)=binding.run {
         when (uploaded) {
             true -> {
-                bg_upload.visibility = View.INVISIBLE
-                iv_upload.visibility = View.INVISIBLE
-                tv_upload.visibility = View.INVISIBLE
+                bgUpload.visibility = View.INVISIBLE
+                ivUpload.visibility = View.INVISIBLE
+                tvUpload.visibility = View.INVISIBLE
 
-                iv_selected_media.visibility = View.VISIBLE
+                ivSelectedMedia.visibility = View.VISIBLE
             }
             false -> {
-                bg_upload.visibility = View.VISIBLE
-                iv_upload.visibility = View.VISIBLE
-                tv_upload.visibility = View.VISIBLE
+                bgUpload.visibility = View.VISIBLE
+                ivUpload.visibility = View.VISIBLE
+                tvUpload.visibility = View.VISIBLE
 
-                iv_selected_media.visibility = View.INVISIBLE
+                ivSelectedMedia.visibility = View.INVISIBLE
             }
         }
     }

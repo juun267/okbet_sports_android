@@ -3,16 +3,14 @@ package org.cxct.sportlottery.ui.feedback.record
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.databinding.FragmentFeedbackRecordListBinding
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.view.DividerItemDecorator
@@ -20,15 +18,14 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 /**
  * @app_destination 意见反馈-反馈记录
  */
-class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
+class FeedbackRecordListFragment : BindingFragment<FeedbackViewModel,FragmentFeedbackRecordListBinding>() {
 
     private val statusList by lazy {
         listOf(StatusSheetData(viewModel.allStatusTag, context?.getString(R.string.all_status)), StatusSheetData("0", context?.getString(R.string.feedback_not_reply_yet)), StatusSheetData("1", context?.getString(R.string.feedback_replied)))
     }
-
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         private fun scrollToTopControl(firstVisibleItemPosition: Int) {
-            iv_scroll_to_top.apply {
+            binding.ivScrollToTop.apply {
                 when {
                     firstVisibleItemPosition > 0 && alpha == 0f -> {
                         visibility = View.GONE
@@ -52,14 +49,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 viewModel.getFbQueryList(isReload = false, currentTotalCount = adapter?.itemCount ?: 0)
                 scrollToTopControl(firstVisibleItemPosition)
             }
-           /* if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
-
-
-            }else{
-                LogUtil.d("隐藏0")
-                tv_no_data.visibility = View.GONE
-
-            }*/
         }
     }
 
@@ -72,72 +61,69 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
             })
         }
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onInitView(view: View) {
         viewModel.showToolbar(true)
         viewModel.getFbQueryList(isReload = true, currentTotalCount = 0)//首次進來跟點選查詢都重新撈資料
         viewModel.setToolbarName(getString(R.string.feedback))
-        return inflater.inflate(R.layout.fragment_feedback_record_list, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         initView()
         initButton()
         initRecyclerView()
         initObserve()
     }
 
-    private fun initView() {
-        status_selector.setItemData(statusList as MutableList<StatusSheetData>)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
-    private fun initButton() {
-        iv_scroll_to_top.setOnClickListener {
-            rv_pay_type.smoothScrollToPosition(0)
+    private fun initView() {
+        binding.statusSelector.setItemData(statusList as MutableList<StatusSheetData>)
+    }
+
+    private fun initButton()=binding.run {
+        ivScrollToTop.setOnClickListener {
+            rvPayType.smoothScrollToPosition(0)
         }
 
-        date_range_selector.setOnClickSearchListener {
+        dateRangeSelector.setOnClickSearchListener {
             viewModel.getFbQueryList(
-                date_range_selector.startTime.toString(),
-                date_range_selector.endTime.toString(), status_selector.selectedTag,
+                dateRangeSelector.startTime.toString(),
+                dateRangeSelector.endTime.toString(), statusSelector.selectedTag,
                 true, 0)//首次進來跟點選查詢都重新撈資料
         }
     }
 
-    private fun initRecyclerView() {
-        rv_pay_type.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        rv_pay_type.adapter = adapter
-        rv_pay_type.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(rv_pay_type.context, R.drawable.recycleview_decoration)))
-        rv_pay_type.addOnScrollListener(recyclerViewOnScrollListener)
+    private fun initRecyclerView()=binding.rvPayType.run {
+        layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        adapter = adapter
+        addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.recycleview_decoration)))
+        addOnScrollListener(recyclerViewOnScrollListener)
     }
 
     private fun initObserve() {
-        viewModel.feedbackList.observe(this.viewLifecycleOwner) {
+        viewModel.feedbackList.observe(viewLifecycleOwner) {
             val listData = it ?: return@observe
             adapter?.data = listData
-            if ( !rv_pay_type.canScrollVertically(1)&&!listData.isNullOrEmpty()){
-                tv_no_data.visibility = View.VISIBLE
+            if ( !binding.rvPayType.canScrollVertically(1)&&!listData.isNullOrEmpty()){
+                binding.tvNoData.visibility = View.VISIBLE
             }else{
-                tv_no_data.visibility = View.INVISIBLE
+                binding.tvNoData.visibility = View.INVISIBLE
             }
 
             if (listData.size == 0) {
-                view_no_record.visibility = View.VISIBLE
-                rv_pay_type.visibility = View.GONE
+                binding.tvNoData.visibility = View.VISIBLE
+                binding.rvPayType.visibility = View.GONE
             } else {
-                view_no_record.visibility = View.GONE
-                rv_pay_type.visibility = View.VISIBLE
+                binding.tvNoData.visibility = View.GONE
+                binding.rvPayType.visibility = View.VISIBLE
             }
         }
 
-        viewModel.isFinalPage.observe(this.viewLifecycleOwner) {
+        viewModel.isFinalPage.observe(viewLifecycleOwner) {
             adapter?.isFinalPage = true
         }
     }
+
 
 
 

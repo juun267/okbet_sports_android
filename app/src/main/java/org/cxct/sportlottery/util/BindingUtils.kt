@@ -532,8 +532,3 @@ fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
     this.setText(spannableString, TextView.BufferType.SPANNABLE)
     this.highlightColor = Color.TRANSPARENT //設定點擊links的背景色
 }
-
-@BindingAdapter("svgDrawable")
-fun ImageView.setSvgDrawable(svgData: String?) {
-    this.setImageDrawable(SvgUtil.getSvgDrawable(context, svgData ?: SvgUtil.defaultIconPath))
-}

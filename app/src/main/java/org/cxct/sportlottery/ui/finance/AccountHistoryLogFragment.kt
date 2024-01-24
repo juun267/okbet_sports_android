@@ -1,20 +1,14 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_account_history_log.*
-import kotlinx.android.synthetic.main.activity_account_history_log.view.*
-import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
-import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.databinding.ActivityAccountHistoryLogBinding
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.AccountHistory
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -23,7 +17,7 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 /**
  * @app_destination 历史记录
  */
-class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
+class AccountHistoryLogFragment : BindingFragment<FinanceViewModel,ActivityAccountHistoryLogBinding>() {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
@@ -32,26 +26,16 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
             if (!recyclerView.canScrollVertically(1)) {
                 viewModel.getUserAccountHistory(
                     false,
-                    date_range_selector.startTime.toString(),
-                    date_range_selector.endTime.toString(),
-                    selector_order_status.selectedTag,
+                    binding.dateRangeSelector.startTime.toString(),
+                    binding.dateRangeSelector.endTime.toString(),
+                    binding.selectorOrderStatus.selectedTag,
                 )
             }
         }
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-           /* if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
-                viewModel.accountHistoryList.observe(this@AccountHistoryLogFragment) {
-                    if (it.isNullOrEmpty()){
-                        tv_no_data_history.visibility = View.GONE
-                    }else{
-                        tv_no_data_history.visibility = View.VISIBLE
-                    }
-                }
-            }else{
-                tv_no_data_history.visibility = View.GONE
-            }*/
+
         }
     }
 
@@ -59,21 +43,14 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
         AccountHistoryAdapter()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.activity_account_history_log, container, false).apply {
-
-            //setupListColumn(this)
-            setupRechargeLogList(this)
-            setupSearch(this)
-            initNoRecordView(this)
-        }
+    override fun onInitView(view: View) {
+        setupRechargeLogList()
+        setupSearch()
+        initNoRecordView()
     }
 
-    private fun initNoRecordView(view: View) {
-        view.view_no_record.list_no_record_img?.apply {
+    private fun initNoRecordView() {
+        binding.viewNoRecord.listNoRecordImg?.apply {
             viewTreeObserver.addOnGlobalLayoutListener {
                 val lp = layoutParams as LinearLayout.LayoutParams
                 lp.topMargin = 20.dp
@@ -82,23 +59,23 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
         }
     }
 
-    private fun setupRechargeLogList(view: View) {
-        view.rvlist.apply {
-            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    private fun setupRechargeLogList() {
+        binding.rvlist.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
             addOnScrollListener(recyclerViewOnScrollListener)
-            this.adapter = accountHistoryAdapter
+            adapter = accountHistoryAdapter
             addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
         }
     }
 
-    private fun setupSearch(view: View) {
-        view.date_range_selector.setOnClickSearchListener {
+    private fun setupSearch() {
+        binding.dateRangeSelector.setOnClickSearchListener {
             viewModel.getUserAccountHistory(
                 true,
-                date_range_selector.startTime.toString(),
-                date_range_selector.endTime.toString(),
-                selector_order_status.selectedTag
+                binding.dateRangeSelector.startTime.toString(),
+                binding.dateRangeSelector.endTime.toString(),
+                binding.selectorOrderStatus.selectedTag
             )
         }
     }
@@ -106,7 +83,7 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        selector_order_status.setItemData(accountHistoryStateList as MutableList<StatusSheetData>)
+        binding.selectorOrderStatus.setItemData(accountHistoryStateList as MutableList<StatusSheetData>)
 
 
         viewModel.isFinalPage.observe(this.viewLifecycleOwner) {
@@ -121,10 +98,10 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
 
         viewModel.accountHistoryList.observe(this.viewLifecycleOwner) {
             accountHistoryAdapter.data = it
-            if (!view.rvlist.canScrollVertically(1) && !it.isNullOrEmpty()) {
-                tv_no_data_history.visibility = View.VISIBLE
+            if (!binding.rvlist.canScrollVertically(1) && !it.isNullOrEmpty()) {
+                binding.tvNoDataHistory.visibility = View.VISIBLE
             } else {
-                tv_no_data_history.visibility = View.GONE
+                binding.tvNoDataHistory.visibility = View.GONE
             }
             setupNoRecordView(accountHistoryAdapter.data.isEmpty())
         }
@@ -134,9 +111,9 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
 
     private fun setupNoRecordView(visible: Boolean) {
         if (visible) {
-            view_no_record.visibility = View.VISIBLE
+            binding.viewNoRecord.root.visibility = View.VISIBLE
         } else {
-            view_no_record.visibility = View.GONE
+            binding.viewNoRecord.root.visibility = View.GONE
         }
     }
 

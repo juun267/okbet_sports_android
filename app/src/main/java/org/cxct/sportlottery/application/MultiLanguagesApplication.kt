@@ -18,7 +18,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
-import com.didichuxing.doraemonkit.DoKit
+//import com.didichuxing.doraemonkit.DoKit
 import com.xuexiang.xupdate.XUpdate
 import com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION
 import com.xuexiang.xupdate.utils.UpdateUtils
@@ -119,8 +119,8 @@ class MultiLanguagesApplication : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
             CrashHandler.setup(mInstance) //错误日志收集
-            DoKit.Builder(mInstance) //性能监控模块
-                .build()
+//            DoKit.Builder(mInstance) //性能监控模块
+//                .build()
         }
 
     }
