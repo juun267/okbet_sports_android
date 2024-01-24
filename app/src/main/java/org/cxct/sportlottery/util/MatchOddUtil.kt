@@ -131,7 +131,7 @@ object MatchOddUtil {
                     odd?.odds = oddsDiscount
                     odd?.hkOdds = odd?.hkOdds
                     val hkOddsHalfUp =
-                        ArithUtil.round(odd?.hkOdds, 2, RoundingMode.HALF_UP).toDouble()
+                        ArithUtil.round(odd?.hkOdds ?: 0.0, 2, RoundingMode.HALF_UP).toDouble()
                     odd?.malayOdds = hkOddsHalfUp.convertToMYOdds()
                     odd?.indoOdds = hkOddsHalfUp.convertToIndoOdds()
                 }
@@ -153,7 +153,7 @@ object MatchOddUtil {
                     odd?.odds = oddsDiscount
                     odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
                     val hkOddsHalfUp =
-                        ArithUtil.round(odd?.hkOdds, 2, RoundingMode.HALF_UP).toDouble()
+                        ArithUtil.round(odd?.hkOdds ?: 0.0, 2, RoundingMode.HALF_UP).toDouble()
                     odd?.malayOdds = hkOddsHalfUp.convertToMYOdds()
                     odd?.indoOdds = hkOddsHalfUp?.convertToIndoOdds()
                 }

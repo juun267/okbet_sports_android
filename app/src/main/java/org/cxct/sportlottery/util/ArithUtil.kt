@@ -14,22 +14,32 @@ object ArithUtil : DecimalFormatUtil() {
      * @param roundingMode 格式(四捨五入、無條件捨去...等)
      * @return 計算後的结果
      */
-    fun round(value: Double?, scale: Int, roundingMode: RoundingMode): String {
-        require(scale >= 0) { "保留的小数位数必须大于零" }
+    fun round(value: Double, scale: Int, roundingMode: RoundingMode): String {
+//        require(scale >= 0) { "保留的小数位数必须大于零" }
+        val vScale = if (scale < 0) 0 else scale
+
+        if (value == 0.0) {
+            return if (vScale == 0) {
+                "0"
+            } else {
+                "0." + "0".repeat(vScale)
+            }
+        }
+
         var zeroScale = ""
         zeroScale.apply {
-            for (i in 0 until scale) {
+            for (i in 0 until vScale) {
                 zeroScale += "0"
             }
         }
 
-        val formatPattern = if (scale == 0) {
+        val formatPattern = if (vScale == 0) {
             "0"
         } else {
             "0.${zeroScale}" // 不足位數 補0
         }
 
-        return doNumberFormat(value ?: 0, formatPattern) { decimalFormat ->
+        return doNumberFormat(value, formatPattern) { decimalFormat ->
             decimalFormat.roundingMode = roundingMode
             decimalFormat.isGroupingUsed = false
         }
@@ -40,12 +50,20 @@ object ArithUtil : DecimalFormatUtil() {
      * 20210112體育數值金額統一改成小數點後第三位
      */
     fun toMoneyFormat(value: Double?): String {
-        return round(value ?: 0.0, 2, RoundingMode.HALF_UP)
+        return if (value == null || value == 0.0) {
+            "0.00"
+        } else {
+            round(value, 2, RoundingMode.HALF_UP)
+        }
     }
 
 
-    fun toMoneyFormatFloor(value: Double?, scale: Int = 2): String {
-        return round(value ?: 0.0, scale, RoundingMode.FLOOR)
+    fun toMoneyFormatFloor(value: Double?): String {
+        return if (value == null) {
+            "0.00"
+        } else {
+            round(value, 2, RoundingMode.FLOOR)
+        }
     }
 
 
@@ -53,14 +71,25 @@ object ArithUtil : DecimalFormatUtil() {
      * 20210220 輸入欄位內提示之金額不顯示小數點
      */
     fun toMoneyFormatForHint(value: Double?): String {
-        return kotlin.runCatching { round(value ?: 0.0, 0, RoundingMode.HALF_UP) }.getOrNull()?:(value ?: 0.0).toString()
+        return if (value == null) {
+            "0"
+        } else {
+            round(value, 0, RoundingMode.HALF_UP)
+        }
     }
 
     /**
      * 20201015賠率、手續費率等，保留小數點後三位
      */
     fun toOddFormat(value: Double?, scale: Int = 2): String {
-        val rounded = round(value ?: 0.0, 4, RoundingMode.HALF_UP)
+        if (value == null || value == 0.0) {
+            return if (scale == 0) {
+                "0"
+            } else {
+                "0." + "0".repeat(scale)
+            }
+        }
+        val rounded = round(value, 4, RoundingMode.HALF_UP)
         return round(rounded.toDouble(), scale, RoundingMode.HALF_UP)
     }
 
@@ -68,21 +97,30 @@ object ArithUtil : DecimalFormatUtil() {
      * 20201124 贈送金額四捨五入到小數點第二位
      * */
     fun toBonusMoneyFormat(value: Double?): String {
-        return round(value ?: 0.0, 2, RoundingMode.HALF_UP)
+        if (value == null || value == 0.0) {
+            return "0.00"
+        }
+        return round(value, 2, RoundingMode.HALF_UP)
     }
 
     /**
      * 20220105 印度盤口無條件進位到小數點第二位
      * */
     fun oddIdfFormat(value: Double?): String {
-        return round(value ?: 0.0, 2, RoundingMode.UP)
+        if (value == null || value == 0.0) {
+            return "0.00"
+        }
+        return round(value, 2, RoundingMode.UP)
     }
 
     /**
      * 提款金額取整數
      */
     fun moneyToLong(value: String?): String {
-        return (value?.toDouble()?.toLong() ?: 0).toString()
+        if (value == null) {
+            return "0"
+        }
+        return value.toDouble().toLong().toString()
     }
 
     /**
@@ -121,19 +159,21 @@ object ArithUtil : DecimalFormatUtil() {
     fun div(
         v1: Double, v2: Double, scale: Int, roundMode: RoundingMode? = RoundingMode.HALF_UP
     ): Double {
-        require(scale >= 0) { "保留的小数位数必须大于零" }
+        val valueScale = if (scale < 0) 0 else scale
+//        require(scale >= 0) { "保留的小数位数必须大于零" }
         val b1 = v1.toBigDecimal()
         val b2 = v2.toBigDecimal()
         val divisor = if (b2.toDouble() == 0.0) BigDecimal(1.0) else b2
-        return b1.divide(divisor, scale, roundMode).toDouble()
+        return b1.divide(divisor, valueScale, roundMode).toDouble()
     }
 
     fun div(
         b1: BigDecimal, b2: BigDecimal, scale: Int, roundMode: RoundingMode? = RoundingMode.HALF_UP
     ): BigDecimal {
-        require(scale >= 0) { "保留的小数位数必须大于零" }
+        val valueScale = if (scale < 0) 0 else scale
+//        require(scale >= 0) { "保留的小数位数必须大于零" }
         val divisor = if (b2.toDouble() == 0.0) BigDecimal(1.0) else b2
-        return b1.divide(divisor, scale, roundMode)
+        return b1.divide(divisor, valueScale, roundMode)
     }
 
     /**

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/llToolBar"
         android:layout_width="match_parent"
@@ -20,26 +22,19 @@
             android:padding="7dp"
             android:src="@drawable/ic_union" />
 
-        <LinearLayout
-            android:id="@+id/ll_game_title"
+        <TextView
+            android:id="@+id/tv_game_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:paddingVertical="5dp">
-
-            <TextView
-                android:id="@+id/tv_game_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="@color/color_14366B"
-                android:fontFamily="@font/helvetica_normal"
-                android:textStyle="bold"
-                android:textSize="@dimen/textSize15sp"
-                tools:text="欧洲足球锦标赛2020" />
-        </LinearLayout>
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/color_14366B"
+            android:fontFamily="@font/helvetica_normal"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSize15sp"
+            tools:text="欧洲足球锦标赛2020" />
 
         <ImageView
             android:id="@+id/iv_refresh"
@@ -146,7 +141,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-
                         <TextView
                             android:id="@+id/tvFavoriteSymbol"
                             android:layout_width="wrap_content"
@@ -227,7 +221,9 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/tvLiveStream"
                             app:layout_constraintTop_toTopOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <View
                         android:id="@+id/viewToolCenter"
                         android:layout_width="match_parent"
@@ -244,8 +240,7 @@
                     app:contentInsetStart="0dp"
                     app:contentScrim="@color/transparent"
                     app:layout_collapseMode="pin"
-                    app:theme="@style/Widget.AppCompat.Toolbar"
-                    >
+                    app:theme="@style/Widget.AppCompat.Toolbar">
 
                     <include
                         android:id="@+id/collaps1"
@@ -259,13 +254,13 @@
                 android:id="@+id/lin_center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_191919_FCFCFC"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:orientation="vertical">
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_0.5"
                     android:background="@color/color_E1EDFF" />
+
                 <LinearLayout
                     android:id="@+id/lin_categroy"
                     android:layout_width="match_parent"
@@ -292,6 +287,7 @@
                         android:gravity="center"
                         android:paddingLeft="@dimen/margin_20"
                         android:paddingRight="@dimen/margin_15">
+
                         <ImageView
                             android:id="@+id/iv_arrow"
                             android:layout_width="@dimen/margin_20"
