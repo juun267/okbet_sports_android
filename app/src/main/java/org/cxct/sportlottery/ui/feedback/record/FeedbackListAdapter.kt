@@ -74,7 +74,7 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
         }
 
         fun bind(item: FeedBackRows, clickListener: ItemClickListener) {
-            tvTime.setDateChangeLineTime(item.lastFeedbackTime)
+            tvTime.setDateChangeLineTime(item.lastFeedbackTime?:item.addTime)
             tvDescription.text = item.content
             llContent.setOnClickListener {
                 clickListener.onClick(item)
