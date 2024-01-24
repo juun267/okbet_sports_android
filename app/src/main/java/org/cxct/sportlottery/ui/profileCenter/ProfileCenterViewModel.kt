@@ -18,25 +18,24 @@ import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseUserViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.SingleLiveEvent
 import java.io.File
 
 class ProfileCenterViewModel(
     androidContext: Application,
-    userInfoRepository: UserInfoRepository,
+    private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     private val avatarRepository: AvatarRepository,
     infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository
-) : BaseSocketViewModel(
+) : BaseUserViewModel(
     androidContext,
-    userInfoRepository,
     loginRepository,
+    userInfoRepository,
     betInfoRepository,
     infoCenterRepository,
-    favoriteRepository
 ) {
     val token = loginRepository.token
 

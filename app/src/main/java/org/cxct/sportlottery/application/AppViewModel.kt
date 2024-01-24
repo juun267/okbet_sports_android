@@ -63,14 +63,14 @@ object AppViewModel {
         viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SelfLimitViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get(), get(), get(), get()) }
-        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MaintenanceViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { NewsViewModel(get(), get(), get(), get()) }
         viewModel { RedEnveLopeModel(get(), get(), get(), get(), get()) }
         viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SportViewModel(get(), get(), get(), get(), get(), get()) }
