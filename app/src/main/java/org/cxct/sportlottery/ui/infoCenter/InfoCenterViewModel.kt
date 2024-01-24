@@ -9,6 +9,7 @@ import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseUserViewModel
 
 class InfoCenterViewModel(
     androidContext: Application,
@@ -16,14 +17,12 @@ class InfoCenterViewModel(
     infoCenterRepository: InfoCenterRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    favoriteRepository: MyFavoriteRepository
-) : BaseSocketViewModel(
+) : BaseUserViewModel(
     androidContext,
-    userInfoRepository,
     loginRepository,
+    userInfoRepository,
     betInfoRepository,
     infoCenterRepository,
-    favoriteRepository
 ) {
 
     enum class DataType { UNREAD, READ }//未讀,已讀

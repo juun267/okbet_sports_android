@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_141414_F3F4F5"
     android:orientation="vertical"
     android:paddingHorizontal="14dp"
@@ -46,7 +47,54 @@
             android:layout_height="wrap_content"/>
     </RelativeLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <include layout="@layout/view_submit_with_text_count" />
+        <LinearLayout
+            android:id="@+id/ll_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="14dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/btn_submit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_warnning"
+                android:text="@string/error_input_empty" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/error_input_empty"
+                android:textColor="@color/color_F75452_E23434"
+                android:textSize="@dimen/textSize14sp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginVertical="14dp"
+            android:background="@drawable/ic_submit"
+            android:gravity="center"
+            android:text="@string/submit"
+            android:textAllCaps="true"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
+            android:textSize="@dimen/textSize16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_error" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

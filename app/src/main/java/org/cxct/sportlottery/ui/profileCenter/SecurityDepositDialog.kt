@@ -8,20 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialog_security_deposit.*
-import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogSecurityDepositBinding
 
 class SecurityDepositDialog : DialogFragment() {
 
     var depositText: CharSequence = ""
     var daysLeftText: CharSequence = ""
+    private val binding by lazy { DialogSecurityDepositBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val view = inflater.inflate(R.layout.dialog_security_deposit, container, false)
+        val view = binding.root
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         return view
@@ -35,11 +35,11 @@ class SecurityDepositDialog : DialogFragment() {
     }
 
     private fun initViews() {
-        tvDeposit.text = depositText
-        tvDaysLeft.text = daysLeftText
+        binding.tvDeposit.text = depositText
+        binding.tvDaysLeft.text = daysLeftText
     }
 
     private fun initButton() {
-        tvConfirm.setOnClickListener { dismiss() }
+        binding.tvConfirm.setOnClickListener { dismiss() }
     }
 }

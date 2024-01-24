@@ -6,24 +6,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_info_center.*
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
+import org.cxct.sportlottery.databinding.ActivityInfoCenterBinding
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.MsgType
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
  * @app_destination 消息中心
  */
-class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
+class InfoCenterActivity : BindingActivity<InfoCenterViewModel,ActivityInfoCenterBinding>() {
 
     companion object {
         const val KEY_READ_PAGE = "key-read-page"
@@ -45,7 +43,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            iv_scroll_to_top.apply {
+            binding.ivScrollToTop.apply {
                 //置頂按鈕
                 when (recyclerView.canScrollVertically(-1)) {
                     true -> {
@@ -54,12 +52,12 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
                         when (currentPage == BEEN_READ) {
                             true -> viewModel.getUserMsgList(
                                 false,
-                                adapter.data.size,
+                                infoCenterAdapter.data.size,
                                 InfoCenterViewModel.DataType.READ
                             )
                             false -> viewModel.getUserMsgList(
                                 false,
-                                adapter.data.size,
+                                infoCenterAdapter.data.size,
                                 InfoCenterViewModel.DataType.UNREAD
                             )
                         }
@@ -77,7 +75,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
         }
     }
 
-    val adapter by lazy {
+    val infoCenterAdapter by lazy {
         InfoCenterAdapter(this@InfoCenterActivity).apply {
             setOnItemClickListener { adapter, view, position ->
 
@@ -93,23 +91,21 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
     }
 
     private fun markMessageReaded(bean: InfoCenterData) {
-        adapter.removeItem(bean)
+        infoCenterAdapter.removeItem(bean)
         viewModel.setDataRead(bean)
-        custom_tab_layout.firstTabText = String.format(resources.getString(R.string.inbox), ++readedNum)
+        binding.customTabLayout.firstTabText = String.format(resources.getString(R.string.inbox), ++readedNum)
         unReadedNum = Math.max(0, unReadedNum - 1)
-        custom_tab_layout.secondTabText = String.format(resources.getString(R.string.unread_letters), unReadedNum)
+        binding.customTabLayout.secondTabText = String.format(resources.getString(R.string.unread_letters), unReadedNum)
     }
 
     private var mNowLoading: Boolean = false
     private var readedNum = 0
     private var unReadedNum = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         viewModel.getMsgCount(MsgType.NOTICE_UNREAD)//未讀資料比數
         viewModel.getMsgCount(MsgType.NOTICE_READED)//已讀資料筆數
-        setContentView(R.layout.activity_info_center)
         initToolbar()
         initLiveData()
         initRecyclerView()
@@ -117,21 +113,21 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
         initSelectTab()
     }
 
-    private fun initToolbar() {
-        tv_toolbar_title.setTitleLetterSpacing()
-        tv_toolbar_title.text = getString(R.string.news_center)
-        btn_toolbar_back.setOnClickListener {
+    private fun initToolbar()=binding.toolbar.run {
+        tvToolbarTitle.setTitleLetterSpacing()
+        tvToolbarTitle.text = getString(R.string.news_center)
+        btnToolbarBack.setOnClickListener {
             finish()
         }
     }
 
     private fun initButton() {
 
-        iv_scroll_to_top.setOnClickListener {
-            rv_data.smoothScrollToPosition(0)
+        binding.ivScrollToTop.setOnClickListener {
+            binding.rvData.smoothScrollToPosition(0)
         }
 
-        custom_tab_layout.setCustomTabSelectedListener { position ->
+        binding.customTabLayout.setCustomTabSelectedListener { position ->
             when(position) {
                 0 -> {
                     selectReadTab()
@@ -144,37 +140,37 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
     }
 
     private fun selectReadTab() {
-        adapter.setNewData(mutableListOf())//清空資料
+        infoCenterAdapter.setList(mutableListOf())//清空資料
         viewModel.getMsgCount(MsgType.NOTICE_UNREAD)//未讀資料比數
         viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.READ)//已讀
         currentPage = BEEN_READ
-        iv_scroll_to_top.visibility = View.INVISIBLE
+        binding.ivScrollToTop.visibility = View.INVISIBLE
     }
 
     private fun selectUnReadTab() {
-        adapter.setNewData(mutableListOf())//清空資料
+        infoCenterAdapter.setList(mutableListOf())//清空資料
         viewModel.getMsgCount(MsgType.NOTICE_READED)//已讀資料筆數
         viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.UNREAD)//未讀
         currentPage = YET_READ
-        iv_scroll_to_top.visibility = View.INVISIBLE
+        binding.ivScrollToTop.visibility = View.INVISIBLE
     }
 
-    private fun initSelectTab() {
-        custom_tab_layout.firstTabText = String.format(resources.getString(R.string.inbox), 0)
-        custom_tab_layout.secondTabText = String.format(resources.getString(R.string.unread_letters), 0)
+    private fun initSelectTab()=binding.run {
+        customTabLayout.firstTabText = String.format(resources.getString(R.string.inbox), 0)
+        customTabLayout.secondTabText = String.format(resources.getString(R.string.unread_letters), 0)
         when (mDefaultShowPage) {
             BEEN_READ -> {
-                if (custom_tab_layout.selectedTabPosition == BEEN_READ) {
+                if (customTabLayout.selectedTabPosition == BEEN_READ) {
                     selectReadTab()
                 } else {
-                    custom_tab_layout.selectTab(BEEN_READ)
+                    customTabLayout.selectTab(BEEN_READ)
                 }
             }
             YET_READ -> {
-                if (custom_tab_layout.selectedTabPosition == YET_READ) {
+                if (customTabLayout.selectedTabPosition == YET_READ) {
                     selectUnReadTab()
                 } else {
-                    custom_tab_layout.selectTab(YET_READ)
+                    customTabLayout.selectTab(YET_READ)
                 }
             }
         }
@@ -182,46 +178,46 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
 
     private fun initLiveData() {
 
-        viewModel.onMessageReaded.observe(this) { adapter.removeItem(it) }
+        viewModel.onMessageReaded.observe(this) { infoCenterAdapter.removeItem(it) }
 
         //已讀訊息清單
-        viewModel.userReadMsgList.observe(this@InfoCenterActivity, Observer {
-            val userMsgList = it ?: return@Observer
+        viewModel.userReadMsgList.observe(this) {
+            val userMsgList = it ?: return@observe
             if (currentPage == BEEN_READ) {
                 if (InfoCenterRepository.isLoadMore) {
                     if (userMsgList.isNotEmpty()) {
-                        adapter.addData(userMsgList)//上拉加載
+                        infoCenterAdapter.addData(userMsgList)//上拉加載
                     }
                 } else {
-                    adapter.setNewInstance(userMsgList.toMutableList()) //重新載入
+                    infoCenterAdapter.setList(userMsgList.toMutableList()) //重新載入
                 }
             }
             viewModel.getResult()
-        })
+        }
         //已讀總筆數
-        viewModel.totalReadMsgCount.observe(this@InfoCenterActivity) {
+        viewModel.totalReadMsgCount.observe(this) {
             readedNum = it
-            custom_tab_layout.firstTabText = String.format(resources.getString(R.string.inbox), it)
+            binding.customTabLayout.firstTabText = String.format(resources.getString(R.string.inbox), it)
         }
         //未讀訊息清單
-        viewModel.userUnreadMsgList.observe(this@InfoCenterActivity, Observer {
-            val userMsgList = it ?: return@Observer
+        viewModel.userUnreadMsgList.observe(this) {
+            val userMsgList = it ?: return@observe
             if (currentPage == YET_READ) {
                 when(userMsgList.isNullOrEmpty()){
                     true ->{
-                        adapter.setNewData(mutableListOf())
+                        infoCenterAdapter.setList(mutableListOf())
                     }
                     false ->{
-                        adapter.setNewData(userMsgList.toMutableList()) //重新載入
+                        infoCenterAdapter.setList(userMsgList.toMutableList()) //重新載入
                     }
                 }
             }
             viewModel.getResult()
-        })
+        }
         //未讀總筆數
-        viewModel.totalUnreadMsgCount.observe(this@InfoCenterActivity) {
+        viewModel.totalUnreadMsgCount.observe(this) {
             unReadedNum = it
-            custom_tab_layout.secondTabText =
+            binding.customTabLayout.secondTabText =
                 String.format(resources.getString(R.string.unread_letters), it)
         }
         //Loading
@@ -236,9 +232,11 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
         }
     }
 
-    private fun initRecyclerView() {
-        rv_data.layoutManager = LinearLayoutManager(this@InfoCenterActivity, LinearLayoutManager.VERTICAL, false)
-        rv_data.adapter = adapter
-        rv_data.addOnScrollListener(recyclerViewOnScrollListener)
+    private fun initRecyclerView()=binding.rvData.run {
+        layoutManager = LinearLayoutManager(this@InfoCenterActivity, LinearLayoutManager.VERTICAL, false)
+        adapter = infoCenterAdapter
+        addOnScrollListener(recyclerViewOnScrollListener)
     }
+
+
 }

@@ -10,12 +10,9 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_withdraw_log.*
-import kotlinx.android.synthetic.main.activity_withdraw_log.view.*
-import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
-import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.databinding.ActivityWithdrawLogBinding
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.UWType
@@ -26,13 +23,13 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 /**
  * @app_destination 提款记录
  */
-class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
+class WithdrawLogFragment : BindingFragment<FinanceViewModel,ActivityWithdrawLogBinding>() {
     private var reserveTime: String = ""
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
             //TODO 位置改动 这个后续要删除掉 暂时隐藏
             private fun scrollToTopControl(firstVisibleItemPosition: Int) {
-                iv_scroll_to_top.apply {
+                binding.ivScrollToTop.apply {
                     when {
                         firstVisibleItemPosition > 0 && alpha == 0f -> {
                             // visibility = View.VISIBLE
@@ -57,10 +54,10 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                         (it as LinearLayoutManager).findFirstVisibleItemPosition()
                     viewModel.getUserWithdrawList(
                         false,
-                        date_range_selector.startTime.toString(),
-                        date_range_selector.endTime.toString(),
-                        selector_order_status.selectedTag,
-                        selector_method_status.selectedTag
+                        binding.dateRangeSelector.startTime.toString(),
+                        binding.dateRangeSelector.endTime.toString(),
+                        binding.selectorOrderStatus.selectedTag,
+                        binding.selectorMethodStatus.selectedTag
                     )
                     scrollToTopControl(firstVisibleItemPosition)
                 }
@@ -68,13 +65,13 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
                     viewModel.userWithdrawListResult.observe(this@WithdrawLogFragment) {
                         if (it.isNullOrEmpty()){
-                            tv_no_data.visibility = View.GONE
+                            binding.tvNoData.visibility = View.GONE
                         }else{
-                            tv_no_data.visibility = View.VISIBLE
+                            binding.tvNoData.visibility = View.VISIBLE
                         }
                     }
                 }else{
-                    tv_no_data.visibility = View.GONE
+                    binding.tvNoData.visibility = View.GONE
                 }
             }
 
@@ -101,40 +98,43 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
     }
 
+    override fun onInitView(view: View) {
+        binding.selectorOrderStatus.setItemData(withdrawStateList as MutableList<StatusSheetData>)
+        binding.selectorMethodStatus.setItemData(withdrawTypeList as MutableList<StatusSheetData>)
+        setupListColumn()
+        setupWithdrawLogList()
+        setupSearch()
+        initOnclick()
+        initNoRecordView()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_withdraw_log, container, false).apply {
-            this.selector_order_status.setItemData(withdrawStateList as MutableList<StatusSheetData>)
-            this.selector_method_status.setItemData(withdrawTypeList as MutableList<StatusSheetData>)
-            setupListColumn(this)
-            setupWithdrawLogList(this)
-            setupSearch(this)
-            initOnclick(this)
-            initNoRecordView(this)
+
         }
     }
 
-    private fun initOnclick(view: View) {
+    private fun initOnclick() =binding.run{
         //TODO 位置改动 这个方法要删除掉 暂时隐藏
-        view.iv_scroll_to_top.setOnClickListener {
-            view.rvlist.smoothScrollToPosition(0)
+        ivScrollToTop.setOnClickListener {
+            rvlist.smoothScrollToPosition(0)
         }
 
-        view.date_range_selector.setOnClickSearchListener {
+        dateRangeSelector.setOnClickSearchListener {
             viewModel.getUserWithdrawList(
-                true, date_range_selector.startTime.toString(),
-                date_range_selector.endTime.toString(),
-                selector_order_status.selectedTag,
-                selector_method_status.selectedTag
+                true, dateRangeSelector.startTime.toString(),
+                dateRangeSelector.endTime.toString(),
+                selectorOrderStatus.selectedTag,
+                selectorMethodStatus.selectedTag
             )
         }
     }
 
-    private fun initNoRecordView(view: View) {
-        view.view_no_record.list_no_record_img?.apply {
+    private fun initNoRecordView() {
+        binding.viewNoRecord.listNoRecordImg?.apply {
             viewTreeObserver.addOnGlobalLayoutListener {
                 val lp = layoutParams as LinearLayout.LayoutParams
                 lp.topMargin = 20.dp
@@ -143,12 +143,12 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
     }
 
-    private fun setupListColumn(view: View) {
-        view.rech_log_recharge_amount.text = getString(R.string.withdraw_amount)
+    private fun setupListColumn() {
+        binding.rechLogRechargeAmount.text = getString(R.string.withdraw_amount)
     }
 
-    private fun setupWithdrawLogList(view: View) {
-        view.rvlist.apply {
+    private fun setupWithdrawLogList() {
+        binding.rvlist.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addOnScrollListener(recyclerViewOnScrollListener)
             this.adapter = withdrawLogAdapter
@@ -163,8 +163,8 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
     }
 
-    private fun setupSearch(view: View) {
-        view.date_range_selector.btn_search.setOnClickListener {
+    private fun setupSearch() {
+        binding.dateRangeSelector.setOnClickSearchListener {
             viewModel.getUserWithdrawList(true)
         }
     }
@@ -217,9 +217,9 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private fun setupNoRecordView(visible: Boolean) {
         if (visible) {
-            view_no_record.visibility = View.VISIBLE
+            binding.viewNoRecord.root.visibility = View.VISIBLE
         } else {
-            view_no_record.visibility = View.GONE
+            binding.viewNoRecord.root.visibility = View.GONE
         }
     }
 

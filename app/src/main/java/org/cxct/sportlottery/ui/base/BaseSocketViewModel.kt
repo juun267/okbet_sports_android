@@ -11,7 +11,7 @@ import org.cxct.sportlottery.repository.*
 
 abstract class BaseSocketViewModel(
     androidContext: Application,
-    protected val userInfoRepository: UserInfoRepository,
+     val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,

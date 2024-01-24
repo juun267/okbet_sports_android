@@ -13,24 +13,23 @@ import org.cxct.sportlottery.network.feedback.FeedbackReplyRequest
 import org.cxct.sportlottery.network.feedback.FeedbackSaveRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseUserViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
 class FeedbackViewModel(
     androidContext: Application,
     private val feedbackRepository: FeedbackRepository,
-    userInfoRepository: UserInfoRepository,
+    val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
-) : BaseSocketViewModel(
+) : BaseUserViewModel(
     androidContext,
-    userInfoRepository,
     loginRepository,
+    userInfoRepository,
     betInfoRepository,
     infoCenterRepository,
-    favoriteRepository
 ) {
     val allStatusTag = "ALL_STATUS"
 

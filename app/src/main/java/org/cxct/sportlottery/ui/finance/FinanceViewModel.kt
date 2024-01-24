@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.money.list.*
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseUserViewModel
 import org.cxct.sportlottery.ui.finance.df.*
 import org.cxct.sportlottery.util.*
 
@@ -23,14 +24,12 @@ class FinanceViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
-) : BaseSocketViewModel(
+) : BaseUserViewModel(
     androidContext,
-    userInfoRepository,
     loginRepository,
+    userInfoRepository,
     betInfoRepository,
     infoCenterRepository,
-    favoriteRepository
 ) {
 
     val allTag = "ALL"

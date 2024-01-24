@@ -13,18 +13,18 @@ import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
-import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.databinding.FragmentProfileCenterBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
@@ -58,8 +58,7 @@ import java.io.FileNotFoundException
 /**
  * @app_destination 个人中心
  */
-class ProfileCenterFragment :
-    BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class ProfileCenterFragment : BindingFragment<ProfileCenterViewModel,FragmentProfileCenterBinding>() {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
 
@@ -68,9 +67,7 @@ class ProfileCenterFragment :
     private var noticeCount: Int = 0
     private var isGuest: Boolean? = null
 
-    override fun layoutId() = R.layout.fragment_profile_center
-
-    override fun onBindView(view: View) {
+    override fun onInitView(view: View) {
         initToolBar()
         setupNoticeButton()
         initView()
@@ -89,37 +86,37 @@ class ProfileCenterFragment :
     }
 
     private fun setupServiceButton() {
-        iv_customer_service.setServiceClick(childFragmentManager)
+        binding.ivCustomerService.setServiceClick(childFragmentManager)
     }
 
     private fun initView() {
-        tv_currency_type.text = sConfigData?.systemCurrencySign
+        binding.tvCurrencyType.text = sConfigData?.systemCurrencySign
         //信用盤打開，隱藏提款設置
         // btn_withdrawal_setting.setVisibilityByCreditSystem()
         //默认显示代理入口
-        btn_affiliate.isVisible = (sConfigData?.frontEntranceStatus != "0")
+        binding.btnAffiliate.isVisible = (sConfigData?.frontEntranceStatus != "0")
         //   btn_affiliate.setVisibilityByCreditSystem()
         mVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
             if (it.isNewVersion) {
                 //下载更新要做判断 当前有没有新版本
-                update_version.setOnClickListener {
+                binding.updateVersion.setOnClickListener {
                     //外部下載
                     JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
                     // startActivity(Intent(requireActivity(), VersionUpdateActivity::class.java))
                 }
-                iv_version_new.visibility = View.VISIBLE
+                binding.ivVersionNew.visibility = View.VISIBLE
                 return@observe
             }
 
-            update_version.setOnClickListener { }
-            iv_version_new.visibility = View.GONE
+            binding.updateVersion.setOnClickListener { }
+            binding.ivVersionNew.visibility = View.GONE
         }
 
         val version = " V${BuildConfig.VERSION_NAME}"
-        tv_current_version.text = version
-        tv_version_code.text = getString(R.string.current_version) + version
-        tv_withdraw_title.setTitleLetterSpacing2F()
-        tv_deposit_title.setTitleLetterSpacing2F()
+        binding.tvCurrentVersion.text = version
+        binding.tvVersionCode.text = getString(R.string.current_version) + version
+        binding.tvWithdrawTitle.setTitleLetterSpacing2F()
+        binding.tvDepositTitle.setTitleLetterSpacing2F()
     }
 
     fun initToolBar() {
@@ -178,7 +175,7 @@ class ProfileCenterFragment :
     }
 
     private fun setupEditNickname() {
-        rl_head.setOnClickListener {
+        binding.rlHead.setOnClickListener {
             fragmentManager?.let { it1 ->
                 val dialog = AvatarSelectorDialog()
                 dialog.mSelectListener = mSelectMediaListener
@@ -188,20 +185,20 @@ class ProfileCenterFragment :
     }
 
     private fun setupBalance() {
-        btn_refresh_money.setOnClickListener {
+        binding.btnRefreshMoney.setOnClickListener {
             getMoney()
         }
     }
 
     private fun setupRechargeButton() {
-        btn_recharge.clickDelay{
+        binding.btnRecharge.clickDelay{
             //Glife用户
             (activity as MainTabActivity).checkRechargeKYCVerify()
         }
     }
 
     private fun setupWithdrawButton() {
-        btn_withdraw.clickDelay {
+        binding.btnWithdraw.clickDelay {
             //Glife用户
             ToGcashDialog.showByClick{
                 viewModel.checkWithdrawKYCVerify()
@@ -210,52 +207,52 @@ class ProfileCenterFragment :
     }
 
     private fun getMoney() {
-        btn_refresh_money.refreshMoneyLoading()
+        binding.btnRefreshMoney.refreshMoneyLoading()
         viewModel.getMoneyAndTransferOut()
     }
 
     private fun setupLogout() {
-        iv_logout.setOnClickListener {
+        binding.ivLogout.setOnClickListener {
             //退出登录并还原所有用户设置
             viewModel.doLogoutAPI()
         }
     }
 
-    private fun setupMoreButtons() {
+    private fun setupMoreButtons()=binding.run {
 
-        block_amount.setVisibilityByMarketSwitch()
-        tv_terms_condition.setVisibilityByMarketSwitch()
-        btn_fund_detail.setVisibilityByMarketSwitch()
-        btn_help_center.setVisibilityByMarketSwitch()
-        btn_promotion.setVisibilityByMarketSwitch()
-        btn_other_bet_record.setVisibilityByMarketSwitch()
-        btn_affiliate.setVisibilityByMarketSwitch()
-        btn_about_us.setVisibilityByMarketSwitch()
-        iv_profile.setOnClickListener {
+        blockAmount.setVisibilityByMarketSwitch()
+        tvTermsCondition.setVisibilityByMarketSwitch()
+        btnFundDetail.setVisibilityByMarketSwitch()
+        btnHelpCenter.setVisibilityByMarketSwitch()
+        btnPromotion.setVisibilityByMarketSwitch()
+        btnOtherBetRecord.setVisibilityByMarketSwitch()
+        btnAffiliate.setVisibilityByMarketSwitch()
+        btnAboutUs.setVisibilityByMarketSwitch()
+        ivProfile.setOnClickListener {
             startActivity(Intent(requireActivity(), ProfileActivity::class.java))
         }
         btnRedeem.setOnClickListener {
             startActivity(Intent(requireActivity(),RedeemActivity::class.java))
         }
         //額度轉換
-        btn_account_transfer.setOnClickListener {
+        btnAccountTransfer.setOnClickListener {
             startActivity(Intent(requireActivity(), MoneyTransferActivity::class.java))
         }
         //其他投注記錄
-        btn_other_bet_record.setOnClickListener {
+        btnOtherBetRecord.setOnClickListener {
             startActivity(Intent(requireActivity(), OtherBetRecordActivity::class.java))
         }
 
         //資金明細
-        btn_fund_detail.setOnClickListener {
+        btnFundDetail.setOnClickListener {
             startActivity(Intent(requireActivity(), FinanceActivity::class.java))
         }
         //優惠活動
-        btn_promotion.setOnClickListener {
+        btnPromotion.setOnClickListener {
             startActivity(PromotionListActivity::class.java)
         }
         //代理加盟
-        btn_affiliate.setOnClickListener {
+        btnAffiliate.setOnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getAffiliateUrl(requireContext()),
@@ -264,22 +261,22 @@ class ProfileCenterFragment :
         }
         //自我約束
         if (sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null) {
-            btn_self_limit.visibility = View.GONE
+            btnSelfLimit.visibility = View.GONE
         } else {
-            btn_self_limit.visibility = View.VISIBLE
-            btn_self_limit.setOnClickListener {
+            btnSelfLimit.visibility = View.VISIBLE
+            btnSelfLimit.setOnClickListener {
                 startActivity(Intent(requireActivity(), SelfLimitActivity::class.java))
             }
         }
         //赛果结算
-        btn_game_settlement.setOnClickListener {
+        btnGameSettlement.setOnClickListener {
             //检查是否关闭入口
             checkSportStatus(requireActivity() as BaseActivity<*>) {
                 startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
             }
         }
         //时区切换
-        btn_time_zone.setOnClickListener {
+        btnTimeZone.setOnClickListener {
             startActivity(Intent(requireActivity(), TimeZoneActivity::class.java))
         }
         /**
@@ -287,7 +284,7 @@ class ProfileCenterFragment :
          */
         when (LanguageManager.getSelectLanguage(requireContext())) {
             LanguageManager.Language.ZH, LanguageManager.Language.EN -> {
-                lin_help_sub.children.filter { it is TextView }.forEach {
+                linHelpSub.children.filter { it is TextView }.forEach {
                     (it.layoutParams as LinearLayout.LayoutParams).apply {
                         this.weight = 0f
                     }
@@ -295,7 +292,7 @@ class ProfileCenterFragment :
             }
 
             else -> {
-                lin_help_sub.children.filter { it is TextView }.forEach {
+                linHelpSub.children.filter { it is TextView }.forEach {
                     (it.layoutParams as LinearLayout.LayoutParams).apply {
                         this.weight = 0f
                     }
@@ -303,11 +300,11 @@ class ProfileCenterFragment :
             }
         }
         //幫助中心
-        btn_help_center.setOnClickListener {
+        btnHelpCenter.setOnClickListener {
             startActivity(Intent(requireActivity(), HelpCenterActivity::class.java))
         }
         //关于我们
-        btn_about_us.setOnClickListener {
+        btnAboutUs.setOnClickListener {
             startActivity(
                 Intent(
                     requireActivity(),
@@ -332,7 +329,7 @@ class ProfileCenterFragment :
     private fun initObserve() {
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let {
-                tv_account_balance.text = TextUtil.format(it)
+                binding.tvAccountBalance.text = TextUtil.format(it)
             }
         }
 
@@ -542,22 +539,22 @@ class ProfileCenterFragment :
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateUI(userInfo: UserInfo?) {
-        Glide.with(this)
+    private fun updateUI(userInfo: UserInfo?)=binding.run {
+        Glide.with(requireContext())
             .load(userInfo?.iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
-            .into(iv_head1) //載入頭像
+            .into(ivHead1) //載入頭像
 
-        tv_user_nickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
+        tvUserNickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
             userInfo?.userName
         } else {
             userInfo?.nickName
         }
         bindVerifyStatus(userInfo)
-        btn_edit_nickname.visibility =
+        btnEditNickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
-        label_user_name.text = "${getString(R.string.username)}："
-        tv_user_username.text = userInfo?.userName
+        labelUserName.text = "${getString(R.string.username)}："
+        tvUserUsername.text = userInfo?.userName
 //        if (getRemainDay(userInfo?.uwEnableTime) > 0) {
 //            ivNotice.visibility = View.VISIBLE
 //            ivNotice.setOnClickListener {
@@ -579,17 +576,17 @@ class ProfileCenterFragment :
         // 三方游戏开启并且自动转换关闭的情况下才先额度转换的开关
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         val thirdTransferOpen = sConfigData?.thirdTransferOpen == FLAG_OPEN
-        btn_account_transfer.visibility =
+        binding.btnAccountTransfer.visibility =
             if (thirdOpen && !thirdTransferOpen) View.VISIBLE else View.GONE
     }
 
     private fun updateCreditAccountUI() {
-        lin_wallet_operation.setVisibilityByMarketSwitch()
+        binding.linWalletOperation.setVisibilityByMarketSwitch()
     }
 
     //有 child activity 給定 notice button 顯示
     private fun setupNoticeButton() {
-        iv_user_notice.setOnClickListener {InfoCenterActivity.startWith(it.context, noticeCount > 0) }
+        binding.ivUserNotice.setOnClickListener {InfoCenterActivity.startWith(it.context, noticeCount > 0) }
     }
 
     private fun updateNoticeCount(noticeCount: Int) {
@@ -607,7 +604,7 @@ class ProfileCenterFragment :
     }
 
     private fun updateNoticeButton() {
-        iv_circle?.visibility =
+        binding.ivCircle.visibility =
             (if (noticeCount > 0 && isGuest == false) View.VISIBLE else View.GONE)
     }
 
@@ -616,7 +613,7 @@ class ProfileCenterFragment :
         VerifyIdentityDialog().show(childFragmentManager, null)
     }
     private fun bindVerifyStatus(userInfo: UserInfo?) {
-        tvKycStatus.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
+        binding.tvKycStatus.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
 
         when (userInfo?.verified) {
@@ -644,12 +641,12 @@ class ProfileCenterFragment :
     }
 
     private fun setVerify(text: Int, colorResId: Int) {
-        tvKycStatus.setText(text)
+        binding.tvKycStatus.setText(text)
         val bgDrawable = DrawableCreator.Builder()
             .setSolidColor(ContextCompat.getColor(requireContext(), colorResId))
             .setSizeHeight(18.dp.toFloat())
             .setCornersRadius(9.dp.toFloat())
             .build()
-        tvKycStatus.setBackgroundDrawable(bgDrawable)
+        binding.tvKycStatus.setBackgroundDrawable(bgDrawable)
     }
 }

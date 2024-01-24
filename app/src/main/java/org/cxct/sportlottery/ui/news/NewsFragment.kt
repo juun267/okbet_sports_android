@@ -1,9 +1,7 @@
 package org.cxct.sportlottery.ui.news
 
 import android.graphics.Typeface
-import android.os.Bundle
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -13,18 +11,14 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.fragment_news.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentNewsBinding
 import org.cxct.sportlottery.network.common.NewsType
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 
-class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
-    private var _binding: FragmentNewsBinding? = null
-
-    private val binding get() = _binding!!
+class NewsFragment : BindingFragment<NewsViewModel,FragmentNewsBinding>() {
 
     private val tabLayoutSelectedListener by lazy {
         object : TabLayout.OnTabSelectedListener {
@@ -86,14 +80,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
 
     private var newsType: NewsType = NewsType.GAME
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentNewsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onInitView(view: View) {
         initViews()
         initObservers()
         queryNewsData(true)
@@ -157,14 +144,14 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
     }
 
     private fun initObservers() {
-        viewModel.newsList.observe(viewLifecycleOwner, {
+        viewModel.newsList.observe(viewLifecycleOwner) {
             newsAdapter.newsList = it
-            lin_empty.isVisible = it.isEmpty()
-        })
+            binding.linEmpty.root.isVisible = it.isEmpty()
+        }
 
-        viewModel.showAllNews.observe(viewLifecycleOwner, {
+        viewModel.showAllNews.observe(viewLifecycleOwner) {
             newsAdapter.showAllNews = it
-        })
+        }
 
 //        viewModel.loading.observe(viewLifecycleOwner, {
 //            if (it) loading() else hideLoading()
@@ -178,7 +165,5 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
             tabLayout.removeOnTabSelectedListener(tabLayoutSelectedListener)
             rvNews.removeOnScrollListener(recyclerViewOnScrollListener)
         }
-
-        _binding = null
     }
 }

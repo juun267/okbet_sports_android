@@ -3,29 +3,24 @@ package org.cxct.sportlottery.ui.finance
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_redenvelope_log.*
-import kotlinx.android.synthetic.main.activity_redenvelope_log.view.*
-import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
-import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.databinding.ActivityRedenvelopeLogBinding
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.DividerItemDecorator
 
-class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
+class RedEnvelopeHistoryFragment : BindingFragment<FinanceViewModel,ActivityRedenvelopeLogBinding>() {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
 
             private fun scrollToTopControl(firstVisibleItemPosition: Int) {
-                iv_scroll_to_top.apply {
+                binding.ivScrollToTop.apply {
                     when {
                         firstVisibleItemPosition > 0 && alpha == 0f -> {
                             visibility = View.VISIBLE
@@ -50,8 +45,8 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
                         (it as LinearLayoutManager).findFirstVisibleItemPosition()
                     viewModel.getRedEnvelopeHistoryList(
                         false,
-                        date_range_selector.startTime.toString(),
-                        date_range_selector.endTime.toString(),
+                        binding.dateRangeSelector.startTime.toString(),
+                        binding.dateRangeSelector.endTime.toString(),
                     )
                     scrollToTopControl(firstVisibleItemPosition)
                 }
@@ -60,35 +55,30 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
 
     private val redEnvelopeLogAdapter by lazy { RedEnvelopeLogAdapter() }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_redenvelope_log, container, false).apply {
-            setupLogList(this)
-            setupSearch(this)
-            initOnclick(this)
-            initNoRecordView(this)
-        }
+    override fun onInitView(view: View) {
+        setupLogList()
+        setupSearch()
+        initOnclick()
+        initNoRecordView()
     }
 
-    private fun initOnclick(view: View) {
 
-        view.iv_scroll_to_top.setOnClickListener {
-            view.rvlist.smoothScrollToPosition(0)
+    private fun initOnclick() {
+
+        binding.ivScrollToTop.setOnClickListener {
+            binding.rvlist.smoothScrollToPosition(0)
         }
 
-        view.date_range_selector.setOnClickSearchListener {
+        binding.dateRangeSelector.setOnClickSearchListener {
             viewModel.getRedEnvelopeHistoryList(
-                true, date_range_selector.startTime.toString(),
-                date_range_selector.endTime.toString(),
+                true, binding.dateRangeSelector.startTime.toString(),
+                binding.dateRangeSelector.endTime.toString(),
             )
         }
     }
 
-    private fun initNoRecordView(view: View) {
-        view.view_no_record.list_no_record_img?.apply {
+    private fun initNoRecordView() {
+        binding.viewNoRecord.listNoRecordImg?.apply {
             viewTreeObserver.addOnGlobalLayoutListener {
                 val lp = layoutParams as LinearLayout.LayoutParams
                 lp.topMargin = 20.dp
@@ -97,8 +87,8 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
         }
     }
 
-    private fun setupLogList(view: View) {
-        view.rvlist.apply {
+    private fun setupLogList() {
+        binding.rvlist.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
             addOnScrollListener(recyclerViewOnScrollListener)
@@ -114,8 +104,8 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
         }
     }
 
-    private fun setupSearch(view: View) {
-        view.date_range_selector.btn_search.setOnClickListener {
+    private fun setupSearch() {
+        binding.dateRangeSelector.setOnClickSearchListener {
             viewModel.getRedEnvelopeHistoryList(true)
         }
     }
@@ -140,10 +130,12 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
 
     private fun setupNoRecordView(visible: Boolean) {
         if (visible) {
-            view_no_record.visibility = View.VISIBLE
+            binding.viewNoRecord.root.visibility = View.VISIBLE
         } else {
-            view_no_record.visibility = View.GONE
+            binding.viewNoRecord.root.visibility = View.GONE
         }
     }
+
+
 
 }

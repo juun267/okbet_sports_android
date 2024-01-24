@@ -54,15 +54,15 @@ object AppViewModel {
         viewModel { MainViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { HelpCenterViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { InfoCenterViewModel(get(), get(), get(), get(), get()) }
+        viewModel { HelpCenterViewModel(get(), get(), get(), get()) }
         viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SelfLimitViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { FinanceViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { FinanceViewModel(get(), get(), get(), get(), get()) }
         viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
