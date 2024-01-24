@@ -150,7 +150,7 @@ class BetStationFragment : BindingFragment<WithdrawViewModel,FragmentBetStationB
                 }
                 var distance = location?.distanceTo(desloc)
                 tvStationDistance.text = ArithUtil.round(
-                    distance?.div(1000)?.toDouble(),
+                    distance?.div(1000)?.toDouble() ?: 0.0,
                     2,
                     RoundingMode.HALF_UP
                 ) + getString(R.string.km)
