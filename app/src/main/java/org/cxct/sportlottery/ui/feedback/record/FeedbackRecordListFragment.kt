@@ -46,13 +46,13 @@ class FeedbackRecordListFragment : BindingFragment<FeedbackViewModel,FragmentFee
             super.onScrolled(recyclerView, dx, dy)
             recyclerView.layoutManager?.let {
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                viewModel.getFbQueryList(isReload = false, currentTotalCount = adapter?.itemCount ?: 0)
+                viewModel.getFbQueryList(isReload = false, currentTotalCount = feedbackListAdapter?.itemCount ?: 0)
                 scrollToTopControl(firstVisibleItemPosition)
             }
         }
     }
 
-    val adapter by lazy {
+    val feedbackListAdapter by lazy {
         context?.let {
             FeedbackListAdapter(it, FeedbackListAdapter.ItemClickListener { data ->
                 view?.findNavController()?.navigate(R.id.action_feedbackRecordListFragment_to_feedbackDetailFragment)
@@ -95,7 +95,7 @@ class FeedbackRecordListFragment : BindingFragment<FeedbackViewModel,FragmentFee
 
     private fun initRecyclerView()=binding.rvPayType.run {
         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        adapter = adapter
+        adapter = feedbackListAdapter
         addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.recycleview_decoration)))
         addOnScrollListener(recyclerViewOnScrollListener)
     }
@@ -103,7 +103,7 @@ class FeedbackRecordListFragment : BindingFragment<FeedbackViewModel,FragmentFee
     private fun initObserve() {
         viewModel.feedbackList.observe(viewLifecycleOwner) {
             val listData = it ?: return@observe
-            adapter?.data = listData
+            feedbackListAdapter?.data = listData
             if ( !binding.rvPayType.canScrollVertically(1)&&!listData.isNullOrEmpty()){
                 binding.tvNoData.visibility = View.VISIBLE
             }else{
@@ -120,7 +120,7 @@ class FeedbackRecordListFragment : BindingFragment<FeedbackViewModel,FragmentFee
         }
 
         viewModel.isFinalPage.observe(viewLifecycleOwner) {
-            adapter?.isFinalPage = true
+            feedbackListAdapter?.isFinalPage = true
         }
     }
 
