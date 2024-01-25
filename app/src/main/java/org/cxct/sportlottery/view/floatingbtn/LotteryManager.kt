@@ -12,6 +12,7 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.lottery.LotteryInfo
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
@@ -198,7 +199,7 @@ class LotteryManager {
 
     fun clickOpenFloatBtn() {
         activity?.let {
-            JumpUtil.toLottery(it, Constants.getLotteryH5Url(it, viewModel!!.loginRepository.token))
+            JumpUtil.toLottery(it, Constants.getLotteryH5Url(it, LoginRepository.token))
         }
     }
 
@@ -208,7 +209,7 @@ class LotteryManager {
     }
 
     fun isLogin(): Boolean {
-        return viewModel?.isLogin?.value == true
+        return LoginRepository.isLogin?.value == true
     }
 
     fun getLotteryInfo() {

@@ -32,22 +32,12 @@ import timber.log.Timber
 import java.util.*
 
 class SportViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    myFavoriteRepository: MyFavoriteRepository,
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    myFavoriteRepository,
+    androidContext
 ) {
 
-    val token = loginRepository.token
+    val token = LoginRepository.token
 
     val playCate: LiveData<Event<String?>>
         get() = _playCate
@@ -55,8 +45,8 @@ class SportViewModel(
     val searchResult: LiveData<Event<Pair<String, List<SearchResult>?>>>
         get() = _searchResult
 
-    val showBetUpperLimit = betInfoRepository.showBetUpperLimit
-    val showBetBasketballUpperLimit = betInfoRepository.showBetBasketballUpperLimit
+    val showBetUpperLimit = BetInfoRepository.showBetUpperLimit
+    val showBetBasketballUpperLimit = BetInfoRepository.showBetBasketballUpperLimit
 
     private val _playCate = MutableLiveData<Event<String?>>()
     private val _searchResult = MutableLiveData<Event<Pair<String, List<SearchResult>?>>>()
@@ -245,7 +235,7 @@ class SportViewModel(
                     result.oddsDetailData?.matchOdd?.sortOddsMap()
                     result.oddsDetailData?.matchOdd?.setupIsOnlyEUType()
                     result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
-                        betInfoRepository.betInfoList.value?.peekContent()?.let { list ->
+                        BetInfoRepository.betInfoList.value?.peekContent()?.let { list ->
                             value.odds.forEach { odd ->
                                 odd?.isSelected = list.any {
                                     it.matchOdd.oddsId == odd?.id

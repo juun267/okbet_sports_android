@@ -18,11 +18,8 @@ import org.cxct.sportlottery.util.NetworkUtil
 import timber.log.Timber
 
 class VersionUpdateViewModel(
-    androidContext: Application,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
+    androidContext: Application
+) : BaseViewModel(androidContext) {
 
     companion object {
         const val KEY_LAST_SHOW_UPDATE_TIME = "key-last-show-update-time"

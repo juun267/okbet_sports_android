@@ -518,7 +518,7 @@ class ProfileCenterFragment : BindingFragment<ProfileCenterViewModel,FragmentPro
                 startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
             }
         }
-        viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner) {
+        InfoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner) {
             updateNoticeCount(it.size)
         }
 

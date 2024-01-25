@@ -21,7 +21,7 @@ import org.cxct.sportlottery.network.index.login.*
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity.Companion.LOGIN_TYPE_PWD
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
@@ -29,12 +29,8 @@ import org.cxct.sportlottery.util.*
 
 
 class LoginViewModel(
-    androidContext: Application,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    private val userInfoRepository: UserInfoRepository,
-) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
+    androidContext: Application
+) : BaseSocketViewModel(androidContext) {
 
     val loginResult: LiveData<LoginResult>
         get() = _loginResult
@@ -120,7 +116,7 @@ class LoginViewModel(
 
 
         //預設存帳號
-        loginRepository.account = account
+        LoginRepository.account = account
         val loginResult = doNetwork { LoginRepository.login(loginRequest) }
 
         if (loginResult != null && !loginResult.success) {
@@ -154,7 +150,7 @@ class LoginViewModel(
     fun loginOrReg(account: String, smsCode: String, inviteCode: String) {
         AFInAppEventUtil.logEvent("loginOrReg","account",account)
         loading()
-        loginRepository.account = account
+        LoginRepository.account = account
         val loginRequest = LoginRequest(
             account = account,
             password = null,
@@ -162,7 +158,7 @@ class LoginViewModel(
             inviteCode = inviteCode
         )
 
-        doRequest({ loginRepository.loginOrReg(loginRequest) }) {
+        doRequest({ LoginRepository.loginOrReg(loginRequest) }) {
             it?.let { launch { dealWithLoginResult(it) } }
             hideLoading()
         }
@@ -171,7 +167,7 @@ class LoginViewModel(
     fun loginGoogle(token: String) {
         AFInAppEventUtil.logEvent("loginGoogle","token",token)
         loading()
-        doRequest({ loginRepository.googleLogin(token, inviteCode = Constants.getInviteCode()) }) {
+        doRequest({ LoginRepository.googleLogin(token, inviteCode = Constants.getInviteCode()) }) {
             hideLoading()
             it?.let { launch { dealWithLoginResult(it) } }
         }
@@ -180,7 +176,7 @@ class LoginViewModel(
     fun regPlatformUser(token: String,loginRequest: LoginRequest) {
         AFInAppEventUtil.logEvent("regPlatformUser","account",loginRequest.account)
         loading()
-        doRequest({ loginRepository.regPlatformUser(token,loginRequest) }) {
+        doRequest({ LoginRepository.regPlatformUser(token,loginRequest) }) {
             hideLoading()
             it?.let { launch { dealWithLoginResult(it) } }
         }
@@ -230,7 +226,7 @@ class LoginViewModel(
                 put("email",loginData.email.toString())
             })
         }
-        loginRepository.setUpLoginData(loginData)
+        LoginRepository.setUpLoginData(loginData)
         RegisterSuccessDialog.ifNew = loginData.ifnew==true
         RegisterSuccessDialog.loginFirstPhoneGiveMoney = loginData.firstPhoneGiveMoney==true
         AFInAppEventUtil.regAndLogin(HashMap<String, Any>().apply {
@@ -241,7 +237,7 @@ class LoginViewModel(
         checkBasicInfo(loginResult) {
             //继续登录
             if (loginData.deviceValidateStatus == 1)
-                runWithCatch { userInfoRepository.getUserInfo() }
+                runWithCatch { UserInfoRepository.getUserInfo() }
             _loginResult.postValue(loginResult!!)
         }
     }
@@ -264,10 +260,10 @@ class LoginViewModel(
         viewModelScope.launch {
             //用户完善信息开关
             val infoSwitchDefered =
-                async { doNetwork(androidContext) { loginRepository.getUserInfoSwitch() } }
+                async { doNetwork(androidContext) { LoginRepository.getUserInfoSwitch() } }
             //是否已完善信息
             val userInfoCheckDefered =
-                async { doNetwork(androidContext) { loginRepository.getUserInfoCheck() } }
+                async { doNetwork(androidContext) { LoginRepository.getUserInfoCheck() } }
             val infoSwitchResult = infoSwitchDefered.await()
             val userInfoCheck = userInfoCheckDefered.await()
             if (infoSwitchResult != null && userInfoCheck != null) {
@@ -282,7 +278,7 @@ class LoginViewModel(
                     block()
                 }
             } else {
-//            loginRepository.clear()
+//            LoginRepository.clear()
                 block()
             }
         }
@@ -291,7 +287,7 @@ class LoginViewModel(
     fun loginFacebook(token: String) {
         loading()
         doRequest({
-            loginRepository.facebookLogin(token,
+            LoginRepository.facebookLogin(token,
                 inviteCode = Constants.getInviteCode())
         }) {
             it?.let { launch { dealWithLoginResult(it) } }
@@ -299,7 +295,7 @@ class LoginViewModel(
     }
 
     fun sendLoginDeviceSms(token: String) {
-        doRequest({ loginRepository.sendLoginDeviceSms(token) }) { result ->
+        doRequest({ LoginRepository.sendLoginDeviceSms(token) }) { result ->
             result?.let { _loginSmsResult.postValue(result) }
         }
     }
@@ -313,7 +309,7 @@ class LoginViewModel(
         )
 
         doRequest({
-            loginRepository.validateLoginDeviceSms(token,
+            LoginRepository.validateLoginDeviceSms(token,
                 validateRequest)
         }) { result ->
             if (result == null) {
@@ -321,14 +317,14 @@ class LoginViewModel(
             }
             //手機驗證成功後, 獲取最新的用戶資料
             if (result.success) {
-                launch { runWithCatch { userInfoRepository.getUserInfo() } }
+                launch { runWithCatch { UserInfoRepository.getUserInfo() } }
             }
             _validResult.postValue(result)
         }
     }
 
     fun loginAsGuest() {
-        doRequest({ loginRepository.loginForGuest() }) {
+        doRequest({ LoginRepository.loginForGuest() }) {
             it?.let { _loginResult.value = it }
         }
     }

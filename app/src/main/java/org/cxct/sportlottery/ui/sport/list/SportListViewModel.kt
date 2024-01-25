@@ -31,20 +31,9 @@ import org.cxct.sportlottery.util.TimeUtil.YMDE_FORMAT
 import kotlin.collections.ArrayList
 
 open class SportListViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    myFavoriteRepository: MyFavoriteRepository,
-    private val sportMenuRepository: SportMenuRepository,
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    myFavoriteRepository,
+    androidContext
 ) {
 
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
@@ -523,7 +512,7 @@ open class SportListViewModel(
      */
     private fun List<Odd?>.updateOddSelectState() {
         this.forEach { odd ->
-            odd?.isSelected = betInfoRepository.betInfoList.value?.peekContent()
+            odd?.isSelected = BetInfoRepository.betInfoList.value?.peekContent()
                 ?.any { betInfoListData ->
                     betInfoListData.matchOdd.oddsId == odd?.id
                 } == true

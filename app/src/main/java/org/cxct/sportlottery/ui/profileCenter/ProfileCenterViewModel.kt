@@ -18,28 +18,18 @@ import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.base.BaseUserViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.SingleLiveEvent
 import java.io.File
 
 class ProfileCenterViewModel(
-    androidContext: Application,
-    private val userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    private val avatarRepository: AvatarRepository,
-    infoCenterRepository: InfoCenterRepository,
-) : BaseUserViewModel(
-    androidContext,
-    loginRepository,
-    userInfoRepository,
-    betInfoRepository,
-    infoCenterRepository,
+    androidContext: Application
+) : BaseSocketViewModel(
+    androidContext
 ) {
-    val token = loginRepository.token
+    val token = LoginRepository.token
 
-    val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
+    val editIconUrlResult: LiveData<Event<IconUrlResult?>> = AvatarRepository.editIconUrlResult
 
     val docUrlResult: LiveData<Event<UploadImgResult>>
         get() = _docUrlResult
@@ -67,7 +57,7 @@ class ProfileCenterViewModel(
     fun getUserInfo() {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                userInfoRepository.getUserInfo()
+                UserInfoRepository.getUserInfo()
             }
         }
     }
@@ -76,7 +66,7 @@ class ProfileCenterViewModel(
     fun uploadImage(uploadImgRequest: UploadImgRequest) {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                avatarRepository.uploadImage(uploadImgRequest)
+                AvatarRepository.uploadImage(uploadImgRequest)
             }
         }
     }
@@ -259,7 +249,7 @@ class ProfileCenterViewModel(
     fun getUserVerified() {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                userInfoRepository.getUserInfo()
+                UserInfoRepository.getUserInfo()
             }?.let { result ->
                 if (result.success) {
                     _userVerifiedType.postValue(Event(result.userInfoData?.verified))
@@ -275,7 +265,7 @@ class ProfileCenterViewModel(
 
     fun loadUserInfo() {
         viewModelScope.launch {
-            doRequest({ userInfoRepository.getUserInfo()}) {
+            doRequest({ UserInfoRepository.getUserInfo()}) {
                 userInfoEvent.value = Any()
             }
         }

@@ -11,21 +11,9 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 
 class SportTabViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    myFavoriteRepository: MyFavoriteRepository,
-    sportMenuRepository: SportMenuRepository,
+    androidContext: Application
 ) : SportListViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    myFavoriteRepository,
-    sportMenuRepository
+    androidContext
 ) {
 
     val sportMenuResult: LiveData<ApiResult<SportMenuData>>

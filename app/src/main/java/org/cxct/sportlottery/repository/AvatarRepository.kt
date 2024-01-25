@@ -13,7 +13,7 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 
-class AvatarRepository(private val androidContext: Context) {
+object AvatarRepository {
     private val _editIconUrlResult = MutableLiveData<Event<IconUrlResult?>>()
     val editIconUrlResult: LiveData<Event<IconUrlResult?>>
         get() = _editIconUrlResult
@@ -35,7 +35,7 @@ class AvatarRepository(private val androidContext: Context) {
                     Event(
                         IconUrlResult(
                             -1,
-                            androidContext.getString(R.string.unknown_error),
+                            MultiLanguagesApplication.mInstance.getString(R.string.unknown_error),
                             false,
                             null
                         )
@@ -83,7 +83,7 @@ class AvatarRepository(private val androidContext: Context) {
                     Event(
                         IconUrlResult(
                             -1,
-                            androidContext.getString(R.string.unknown_error),
+                            MultiLanguagesApplication.mInstance.getString(R.string.unknown_error),
                             false,
                             null
                         )
@@ -110,7 +110,7 @@ class AvatarRepository(private val androidContext: Context) {
                     Event(
                         IconUrlResult(
                             -1,
-                            androidContext.getString(R.string.unknown_error),
+                            MultiLanguagesApplication.mInstance.getString(R.string.unknown_error),
                             false,
                             null
                         )

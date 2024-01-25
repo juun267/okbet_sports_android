@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.RedEnvelopeResult
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.common.WebActivity
@@ -218,6 +219,6 @@ class RedEnvelopeManager {
     }
 
     fun isLogin(): Boolean {
-        return viewModel?.isLogin?.value == true
+        return LoginRepository.isLogined()
     }
 }

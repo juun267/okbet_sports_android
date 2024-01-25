@@ -5,25 +5,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 
 class MainViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository
+    androidContext: Application
 ) : MainHomeViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository,
-) {
-    val token
-        get() = loginRepository.token
-
-    val userId = loginRepository.userId
-
-
-
-}
+    androidContext
+)

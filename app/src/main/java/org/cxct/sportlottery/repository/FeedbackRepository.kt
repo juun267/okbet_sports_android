@@ -5,7 +5,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.feedback.*
 import retrofit2.Response
 
-class FeedbackRepository {
+object FeedbackRepository {
 
     suspend fun getFbQueryList(feedbackListRequest: FeedbackListRequest): Response<FeedbackListResult> {
         return OneBoSportApi.feedbackService.getFbQueryList(feedbackListRequest)

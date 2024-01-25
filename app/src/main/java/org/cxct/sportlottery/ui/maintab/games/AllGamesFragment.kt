@@ -8,8 +8,8 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerGameListAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
@@ -108,7 +108,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::
 
         collectList.observe(viewLifecycleOwner) {
 
-            if(viewModel.loginRepository.isLogined()){
+            if(LoginRepository.isLogined()){
                 if(it.second.isNullOrEmpty()){
                     binding.gameViewCollect.gone()
                     return@observe
@@ -164,7 +164,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::
             if(list.isNullOrEmpty()){
                 return@observe
             }
-            if(viewModel.loginRepository.isLogined()){
+            if(LoginRepository.isLogined()){
                 binding.gameViewRecent.visible()
                 //初始化最近游戏数据
                 binding.gameViewRecent

@@ -23,19 +23,9 @@ import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
 class MoneyTransferViewModel(
-    androidContext: Application,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    userInfoRepository: UserInfoRepository,
-    favoriteRepository: MyFavoriteRepository
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
+    androidContext
 ) {
 
     companion object {

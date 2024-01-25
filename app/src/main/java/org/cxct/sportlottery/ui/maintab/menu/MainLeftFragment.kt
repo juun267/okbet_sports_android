@@ -20,6 +20,7 @@ import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentMainLeftBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.sConfigData
@@ -82,7 +83,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         binding.rvLanguage.addItemDecoration(GridItemDecoration(8.dp, 10.dp, Color.TRANSPARENT,false))
         binding.rvLanguage.adapter = languageAdapter
         languageAdapter.setOnItemClickListener { adapter, _, position ->
-            viewModel.betInfoRepository.clear()
+            BetInfoRepository.clear()
             selectLanguage(adapter.getItem(position) as LanguageManager.Language)
         }
     }

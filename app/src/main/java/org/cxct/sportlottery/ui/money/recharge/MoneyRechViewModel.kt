@@ -27,29 +27,18 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.QueryUtil.toUrlParamsFormat
 
 class MoneyRechViewModel(
-    androidContext: Application,
-    private val moneyRepository: MoneyRepository,
-    private val avatarRepository: AvatarRepository,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
+    androidContext
 ) {
 
-    val token = loginRepository.token
+    val token = LoginRepository.token
 
     val rechargeConfigs: LiveData<MoneyRechCfgData?>
         get() = _rechargeConfigs
@@ -136,9 +125,9 @@ class MoneyRechViewModel(
     private var _bankIDErrorMsg = MutableLiveData<String>()
 
     //上傳支付截圖
-    val voucherUrlResult: LiveData<Event<String>> = avatarRepository.voucherUrlResult
+    val voucherUrlResult: LiveData<Event<String>> = AvatarRepository.voucherUrlResult
     //上传支付截图
-    val uploadPayResult:LiveData<Event<UploadImgResult?>> = avatarRepository.uploadResult
+    val uploadPayResult:LiveData<Event<UploadImgResult?>> = AvatarRepository.uploadResult
     //线上首次充值提示文字
     val onlinePayFirstRechargeTips: LiveData<Event<String?>>
         get() = _onlinePayFirstRechargeTips
@@ -154,7 +143,7 @@ class MoneyRechViewModel(
     fun getUserInfo() {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                userInfoRepository.getUserInfo()
+                UserInfoRepository.getUserInfo()
             }
         }
     }
@@ -247,7 +236,7 @@ class MoneyRechViewModel(
                 return
             viewModelScope.launch {
                 doNetwork(androidContext) {
-                    moneyRepository.rechargeAdd(moneyAddRequest)
+                    MoneyRepository.rechargeAdd(moneyAddRequest)
                 }.let {
                     it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
                     _transferPayResult.value = it
@@ -263,7 +252,7 @@ class MoneyRechViewModel(
         if (checkTransferPayInput()) {
             viewModelScope.launch {
                 doNetwork(androidContext) {
-                    moneyRepository.rechargeAdd(moneyAddRequest)
+                    MoneyRepository.rechargeAdd(moneyAddRequest)
                 }.let {
                     it?.result = rechargeMoney//金額帶入result
                     _cryptoPayResult.value = it
@@ -291,7 +280,7 @@ class MoneyRechViewModel(
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val rechCfgId = (mSelectRechCfgs?.id ?: "").toString()
             val queryMap = hashMapOf(
-                "x-session-token" to (loginRepository.token ?: ""),
+                "x-session-token" to (LoginRepository.token ?: ""),
                 "rechCfgId" to rechCfgId,
                 "bankCode" to (bankCode ?: ""),
                 "depositMoney" to depositMoney,
@@ -335,7 +324,7 @@ class MoneyRechViewModel(
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val rechCfgId = (mSelectRechCfgs?.id ?: "").toString()
             val queryMap = hashMapOf(
-                "x-session-token" to (loginRepository.token ?: ""),
+                "x-session-token" to (LoginRepository.token ?: ""),
                 "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
                 "payee" to (payee ?: ""),
                 "payeeName" to (payeeName ?: ""),
@@ -502,7 +491,7 @@ class MoneyRechViewModel(
      * @return true: 首次, false: 非首次
      */
     private fun checkFirstRecharge(): Boolean {
-        return userInfo.value?.firstRechTime.isNullOrEmpty()
+        return UserInfoRepository.userInfo.value?.firstRechTime.isNullOrEmpty()
     }
 
     fun checkRcgNormalOnlineAccount(rechargeAccount: String) {
@@ -673,7 +662,7 @@ class MoneyRechViewModel(
     fun uploadImage(uploadImgRequest: UploadImgRequest) {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                avatarRepository.uploadVoucher(uploadImgRequest)
+                AvatarRepository.uploadVoucher(uploadImgRequest)
             }
         }
     }

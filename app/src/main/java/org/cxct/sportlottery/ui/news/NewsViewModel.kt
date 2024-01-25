@@ -10,22 +10,13 @@ import org.cxct.sportlottery.network.common.NewsType
 import org.cxct.sportlottery.network.news.News
 import org.cxct.sportlottery.network.news.NewsResult
 import org.cxct.sportlottery.network.news.SportNewsRequest
-import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.base.BaseUserViewModel
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.TimeUtil
 
 class NewsViewModel(
-    androidContext: Application,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
+    androidContext: Application
 ) : BaseViewModel(
-    androidContext,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
+    androidContext
 ) {
 
     companion object {

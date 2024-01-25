@@ -1,46 +1,38 @@
 package org.cxct.sportlottery.ui.profileCenter.authbind
 
 import android.content.Intent
-import android.os.Bundle
 import android.widget.TextView
-import kotlinx.android.synthetic.main.activity_auth.*
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
-import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
+import org.cxct.sportlottery.databinding.ActivityAuthBinding
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.util.AuthManager
-import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setServiceClick
 import org.cxct.sportlottery.util.setStartDrawable
 
 /**
  * @app_destination 修改暱稱
  */
-class AuthActivity : BaseSocketActivity<AuthViewModel>(AuthViewModel::class) {
+class AuthActivity : BindingActivity<AuthViewModel,ActivityAuthBinding>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        setContentView(R.layout.activity_auth)
-        tv_toolbar_title.text = getString(R.string.auth_login)
+        binding.toolBar.tvToolbarTitle.text = getString(R.string.auth_login)
         initButton()
         setupServiceButton()
         initObserve()
         viewModel.getUserInfo()
     }
 
-
-    private fun initButton() {
-        btn_toolbar_back.setOnClickListener {
+    private fun initButton()=binding.run {
+        toolBar.btnToolbarBack.setOnClickListener {
             finish()
         }
 
-        tv_check_google.setOnClickListener {
+        tvCheckGoogle.setOnClickListener {
             AuthManager.authGoogle(this@AuthActivity)
         }
-        tv_check_facebook.setOnClickListener {
+        tvCheckFacebook.setOnClickListener {
             AuthManager.authFacebook(this@AuthActivity, { token ->
                 viewModel.bindFacebook(token)
             }, { errorMsg ->
@@ -55,8 +47,8 @@ class AuthActivity : BaseSocketActivity<AuthViewModel>(AuthViewModel::class) {
     private fun initObserve() {
         viewModel.userInfo.observe(this) {
             it?.let {
-                tv_check_google.setChecked(it.googleBind)
-                tv_check_facebook.setChecked(it.facebookBind)
+                binding.tvCheckGoogle.setChecked(it.googleBind)
+                binding.tvCheckFacebook.setChecked(it.facebookBind)
             }
         }
         viewModel.bindGoogleResult.observe(this) {
@@ -97,7 +89,7 @@ class AuthActivity : BaseSocketActivity<AuthViewModel>(AuthViewModel::class) {
     }
 
     private fun setupServiceButton() {
-        tv_customer_service.setServiceClick(supportFragmentManager)
+        binding.tvCustomerService.setServiceClick(supportFragmentManager)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

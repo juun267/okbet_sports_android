@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.ConfigResource
 import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.setupDefaultHandicapType
@@ -23,14 +24,8 @@ import timber.log.Timber
 import kotlin.random.Random
 
 class SplashViewModel(
-    androidContext: Application,
-    private val hostRepository: HostRepository,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
-) : BaseSocketViewModel(androidContext,userInfoRepository,loginRepository, betInfoRepository, infoCenterRepository,favoriteRepository) {
+    androidContext: Application
+) : BaseViewModel(androidContext) {
 
     //當獲取 host 失敗時，就使用下一順位的 serverUrl，重新 request，直到遍歷 ServerUrlList，或成功獲取 host 即停止
     private var mServerUrlIndex = 0
@@ -55,7 +50,7 @@ class SplashViewModel(
      * P.S 不管 getHost() 有無成功，其他 web server API 都使用 getBaseUrl() 來獲取 host
      */
     fun checkLocalHost() {
-        val hostUrl = hostRepository.hostUrl
+        val hostUrl = HostRepository.hostUrl
 
         viewModelScope.launch {
             if (hostUrl.isNotEmpty()) {
@@ -74,7 +69,7 @@ class SplashViewModel(
                     }
                     if (checkHostResult?.success == false) {
                         Timber.i("==> check token fail : do getHost")
-                        loginRepository.clear()
+                        LoginRepository.clear()
                         getHost()
                         return@launch
                     }
@@ -104,7 +99,7 @@ class SplashViewModel(
     }
 
     fun getConfig() {
-        val hostUrl = hostRepository.hostUrl
+        val hostUrl = HostRepository.hostUrl
         viewModelScope.launch {
             val retrofit =
                 RequestManager.instance.createRetrofit(hostUrl.httpFormat())
@@ -139,8 +134,8 @@ class SplashViewModel(
     }
 
     fun goNextPage() = viewModelScope.launch {
-            if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
-                runWithCatch { userInfoRepository.getUserInfo() }
+            if (!UserInfoRepository.checkedUserInfo && LoginRepository.isLogined()) {
+                runWithCatch { UserInfoRepository.getUserInfo() }
             }
              _skipHomePage.postValue(true)
         }
@@ -189,7 +184,7 @@ class SplashViewModel(
                 }
                 if (checkHostResult?.success == false) {
                     Timber.i("==> check token fail : do getHost")
-                    loginRepository.clear()
+                    LoginRepository.clear()
                     getHost()
                     return@launch
                 }
@@ -223,7 +218,7 @@ class SplashViewModel(
     }
 
     private fun setConfig(result: ConfigResult?) {
-        hostRepository.platformId = result?.configData?.platformId ?: -1
+        HostRepository.platformId = result?.configData?.platformId ?: -1
         sConfigData = result?.configData
         result?.configData?.let { ConfigResource.preloadResource(it) }
         setupDefaultHandicapType()
@@ -240,7 +235,7 @@ class SplashViewModel(
 
     private fun setStoreBaseUrl(baseUrl: String) {
         Timber.i("Final choice store host: $baseUrl")
-        hostRepository.hostUrl = baseUrl
+        HostRepository.hostUrl = baseUrl
     }
 
     private fun setRandomSocketUrl(wsHost: String) {

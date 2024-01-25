@@ -13,23 +13,13 @@ import org.cxct.sportlottery.network.feedback.FeedbackReplyRequest
 import org.cxct.sportlottery.network.feedback.FeedbackSaveRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.base.BaseUserViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
 class FeedbackViewModel(
-    androidContext: Application,
-    private val feedbackRepository: FeedbackRepository,
-    val userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-) : BaseUserViewModel(
-    androidContext,
-    loginRepository,
-    userInfoRepository,
-    betInfoRepository,
-    infoCenterRepository,
+    androidContext: Application
+) : BaseSocketViewModel(
+    androidContext
 ) {
     val allStatusTag = "ALL_STATUS"
 
@@ -123,7 +113,7 @@ class FeedbackViewModel(
                         startTime = startTime,
                         endTime = endTime,
                         status = filter(status))
-                    feedbackRepository.getFbQueryList(feedbackListRequest)
+                    FeedbackRepository.getFbQueryList(feedbackListRequest)
                 }
                 //判斷是不是可以再加載
                 mNeedMoreLoading = (mCurrentTotalCount + (result?.rows?.size
@@ -148,7 +138,7 @@ class FeedbackViewModel(
         val feedbackSaveRequest = FeedbackSaveRequest(content = content)
         viewModelScope.launch {
             doNetwork(androidContext) {
-                feedbackRepository.fbSave(feedbackSaveRequest)
+                FeedbackRepository.fbSave(feedbackSaveRequest)
             }?.let { result ->
                 _feedBackBaseResult.value = Event(result)
             }
@@ -161,7 +151,7 @@ class FeedbackViewModel(
             _isLoading.value = true
             val feedbackReplyRequest = FeedbackReplyRequest(content, feedbackCode.toString(), 0, 6)
             doNetwork(androidContext) {
-                feedbackRepository.fbReply(feedbackReplyRequest)
+                FeedbackRepository.fbReply(feedbackReplyRequest)
             }.let {
                 if (it?.success == true) fbQueryDetail()
             }
@@ -173,7 +163,7 @@ class FeedbackViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             doNetwork(androidContext) {
-                feedbackRepository.fbQueryDetail(dataID.toString())
+                FeedbackRepository.fbQueryDetail(dataID.toString())
             }.let { result ->
                 if (result?.rows?.size ?: 0 > 0) _feedbackDetail.value = result?.rows
             }
@@ -184,7 +174,7 @@ class FeedbackViewModel(
     fun getUserInfo() {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                userInfoRepository.getUserInfo()
+                UserInfoRepository.getUserInfo()
             }
             userID = result?.userInfoData?.userId
         }
