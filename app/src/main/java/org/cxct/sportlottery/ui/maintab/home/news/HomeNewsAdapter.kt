@@ -16,7 +16,7 @@ class HomeNewsAdapter : BindingAdapter<NewsItem, ItemHomeNewsBinding>() {
         vb: ItemHomeNewsBinding,
         item: NewsItem,
     ) = vb.run {
-        ivCover.roundOf(item.image, 7.dp, R.drawable.img_banner01)
+        ivCover.roundOf(item.image, 8.dp, R.drawable.img_banner01)
         tvTitle.text = item.title
         tvTime.text = TimeUtil.timeFormat(item.createTimeInMillisecond,
             TimeUtil.NEWS_TIME_FORMAT,
