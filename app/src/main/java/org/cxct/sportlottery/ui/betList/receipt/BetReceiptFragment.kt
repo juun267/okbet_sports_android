@@ -261,11 +261,11 @@ class BetReceiptFragment :
             refreshBetStatusFunction = { time ->
                 lin_result_status_processing?.visible()
                 lin_result_status?.gone()
-                tvBetProcessingStatus?.text = getString(R.string.str_in_play_bet_confirmed) + "（${time}S）"
+                tvBetProcessingStatus?.text = getString(R.string.str_in_play_bet_confirmed)
             }
 
             refreshBetStatusFinishFunction = {
-                tvBetProcessingStatus?.text = getString(R.string.str_in_play_bet_confirmed)+ " "
+                tvBetProcessingStatus?.text = getString(R.string.str_in_play_bet_confirmed)
                 //倒计时结束后，不处理
 //                lin_result_status_processing?.gone()
 //                lin_result_status?.visible()
