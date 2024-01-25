@@ -115,7 +115,7 @@ class IDTypeSelectorDialog(private val context: FragmentActivity, private val li
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         RxPermissions(context).request(Manifest.permission.CAMERA).subscribe { onNext ->
             if (onNext) {
-                val item = idAdapter.getItem(position)
+                val item = idAdapter.getItemOrNull(position) ?: return@subscribe
                 TakeIDPhotoActivity.start(context, item.id, item.type, item.name)
             } else {
                 ToastUtil.showToast(context, context.getString(R.string.N980))
