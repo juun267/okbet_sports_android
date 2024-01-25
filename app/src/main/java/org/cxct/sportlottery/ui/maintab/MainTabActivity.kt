@@ -618,8 +618,11 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel>(MainTabViewModel::c
         checkSportStatus(this) {
             tabHelper.clearSelected()
             navToPosition(INDEX_ESPORT)
-            binding.root.postDelayed(200){
-                (fragmentHelper.getCurrentFragment() as ESportFragment)?.setJumpSport(matchType,gameType)
+            binding.root.postDelayed(200) {
+                val fragment = fragmentHelper.getCurrentFragment()
+                if (fragment is ESportFragment) {
+                    fragment.setJumpSport(matchType,gameType)
+                }
             }
         }
     }

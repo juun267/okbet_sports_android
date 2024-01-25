@@ -543,7 +543,7 @@ abstract class BaseUserViewModel(
                     RecentDataManager.addRecent(RecentRecord(0,gameType = gameType,categoryCode = it))
                 }
             }else{
-                RecentDataManager.addRecent(RecentRecord(0,gameType = normalBetList.first().matchOdd.gameType))
+                RecentDataManager.addRecent(RecentRecord(0,gameType = gameType))
             }
 
             if (!haveSingleItemFailed && !haveParlayItemFailed) {
