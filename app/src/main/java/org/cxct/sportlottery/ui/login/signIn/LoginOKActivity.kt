@@ -481,7 +481,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun showErrorDialog(errorMsg: String?) {
-        val dialog = CustomAlertDialog(this)
+        val dialog = CustomAlertDialog()
         dialog.setMessage(errorMsg)
         dialog.setNegativeButtonText(null)
         dialog.setCanceledOnTouchOutside(false)

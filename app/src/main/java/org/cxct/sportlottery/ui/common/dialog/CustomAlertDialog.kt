@@ -5,24 +5,22 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Spanned
 import android.text.TextUtils
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
 import androidx.annotation.ColorRes
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.databinding.DialogCustomAlertBinding
 import org.cxct.sportlottery.ui.base.BaseDialogFragment
-import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
  * 常用提示對話框
@@ -32,24 +30,23 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
  * this.setCanceledOnTouchOutside(false) //disable 點擊外部關閉 dialog
  * this.setCancelable(false) //disable 按實體鍵 BACK 關閉 dialog
  */
-class CustomAlertDialog(private val mContext: Context? = null) : BaseDialogFragment() {
+class CustomAlertDialog : BaseDialogFragment() {
 
+    var isError = false
     private var mTitle: String? = null
     private var mMessage: String? = null
     private var mSpannedMessage: Spanned? = null
-    private var mPositiveText: String? = mContext?.getString(R.string.btn_confirm)
-    private var mNegativeText: String? = mContext?.getString(R.string.btn_cancel)
+    private var mPositiveText: String? = null
+    private var mNegativeText: String? = null
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
-    private var mGravity = Gravity.CENTER
     private var mTextColor = R.color.color_9FADC6_535D76
     private var mNegateTextColor = R.color.color_FFFFFF_414655
-    private var isShowDivider: Boolean = false
-    private var isShowDividerBottom: Boolean = true
     var dissmisCallback: ((CustomAlertDialog) -> Unit)? = null
 
     var isShowing = dialog?.isShowing
-    var mScrollViewMarginHorizon: Int = 0
+
+    private lateinit var binding: DialogCustomAlertBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,84 +54,54 @@ class CustomAlertDialog(private val mContext: Context? = null) : BaseDialogFragm
         savedInstanceState: Bundle?,
     ): View? {
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        return inflater.inflate(R.layout.dialog_custom_alert, container, false)
+        binding = DialogCustomAlertBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         initView(view)
     }
 
-    private fun initView(view: View) {
-        when (mTitle) {
-            null -> tv_title.visibility = View.GONE
-            else -> tv_title.text = mTitle
-        }
+    private fun initView(view: View) = binding.run {
+        tvTitle.text = mTitle
+        tvTitle.isVisible = !mTitle.isEmptyStr()
+        ivStatus.setImageResource(if (isError) R.drawable.img_dialog_negative else R.drawable.img_dialog_positive)
 
-        val params = (view.layoutParams as MarginLayoutParams?) ?: MarginLayoutParams(-2, -2)
-        val margin = 26.dp
-        params.leftMargin = margin
-        params.topMargin = margin
-        params.rightMargin = margin
-        params.bottomMargin = margin
-        view.layoutParams = params
+        (blockBottomBar.parent as View).setPadding(0, 0, 0, 0)
 
-        tv_message.gravity = mGravity
-        when {
-            mSpannedMessage != null -> tv_message.text = mSpannedMessage
-            mMessage == null -> sv_block_content.visibility = View.GONE
-            else -> tv_message.text = mMessage
+        if (mSpannedMessage != null) {
+            tvMessage.text = mSpannedMessage
+        } else {
+            tvMessage.text = mMessage
         }
 
         if (mPositiveText == null) {
-            btn_positive.visibility = View.GONE
-        } else btn_positive.text = mPositiveText
+            btnPositive.visibility = View.GONE
+        } else {
+            btnPositive.text = mPositiveText
+        }
 
         if (mNegativeText == null) {
-            btn_negative.visibility = View.GONE
-        } else btn_negative.text = mNegativeText
-
-        if (mPositiveText == null || mNegativeText == null) {
-            view_line.visibility = View.GONE
+            btnNegative.visibility = View.GONE
+        } else {
+            btnNegative.text = mNegativeText
         }
+
 
         if (mPositiveText == null && mNegativeText == null) {
-            block_bottom_bar.visibility = View.GONE
+            blockBottomBar.visibility = View.GONE
         }
 
-        val contentParams = sv_block_content.layoutParams as ConstraintLayout.LayoutParams
-        if (mScrollViewMarginHorizon != 0) {
-            contentParams.leftMargin = mScrollViewMarginHorizon.dp
-            contentParams.rightMargin = mScrollViewMarginHorizon.dp
-        }
+        tvMessage.setTextColor(ContextCompat.getColor(tvMessage.context, mTextColor))
+        btnNegative.setTextColor(ContextCompat.getColor(btnNegative.context, mNegateTextColor))
 
-        tv_message.setTextColor(ContextCompat.getColor(context ?: requireContext(), mTextColor))
-        btn_negative.setTextColor(
-            ContextCompat.getColor(
-                context ?: requireContext(), mNegateTextColor
-            )
-        )
-        divider2.visibility = if (isShowDivider) View.VISIBLE else View.GONE
-        divider.visibility = if (isShowDividerBottom) View.VISIBLE else View.GONE
-
-        btn_positive.setOnClickListener(mPositiveClickListener)
-        btn_negative.setOnClickListener(mNegativeClickListener)
+        btnPositive.setOnClickListener(mPositiveClickListener)
+        btnNegative.setOnClickListener(mNegativeClickListener)
     }
 
-    ////
-    //以下設定要在 dialog.show() 之前才有效果
-    ////
     fun setTitle(title: String?) {
         mTitle = title
-    }
-
-    fun setShowDivider(show: Boolean?) {
-        isShowDivider = show ?: false
-    }
-
-    fun setShowDividerBottom(show: Boolean?) {
-        isShowDividerBottom = show ?: true
     }
 
     fun setMessage(message: String?) {
@@ -154,10 +121,6 @@ class CustomAlertDialog(private val mContext: Context? = null) : BaseDialogFragm
         mSpannedMessage = spanned
     }
 
-    fun setGravity(gravity: Int) {
-        mGravity = gravity
-    }
-
     /**
      * @param positiveText: Positive 按鈕文字，若給 null 則隱藏按鈕
      */
@@ -175,8 +138,6 @@ class CustomAlertDialog(private val mContext: Context? = null) : BaseDialogFragm
     fun setPositiveClickListener(positiveClickListener: View.OnClickListener) {
         mPositiveClickListener = positiveClickListener
     }
-
-    fun getPositivebtn(): View = btn_positive
 
     fun setNegativeClickListener(negativeClickListener: View.OnClickListener) {
         mNegativeClickListener = negativeClickListener
@@ -201,7 +162,7 @@ class CustomAlertDialog(private val mContext: Context? = null) : BaseDialogFragm
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         dissmisCallback?.invoke(this)
-        removeDialogTag(mContext, getMessageTag())
+        removeDialogTag(activity, getMessageTag())
     }
 
     override fun show(manager: FragmentManager, tag: String?) = runWithCatch {
@@ -209,14 +170,8 @@ class CustomAlertDialog(private val mContext: Context? = null) : BaseDialogFragm
             return@runWithCatch
         }
 
-        if (isAdded) { runWithCatch { dismissAllowingStateLoss() } }
-        modifyPrivateField("mDismissed", false)
-        modifyPrivateField("mShownByMe", true)
-        val ft = manager.beginTransaction()
-        ft.add(this, tag)
-        ft.commitAllowingStateLoss()
-
-        addDialogTag(mContext, getMessageTag())
+        super.show(manager, tag)
+        addDialogTag(activity, getMessageTag())
     }
 
 

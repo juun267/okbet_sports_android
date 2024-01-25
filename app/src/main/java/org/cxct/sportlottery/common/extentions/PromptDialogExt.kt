@@ -15,7 +15,7 @@ fun FragmentActivity.showTokenPromptDialog(errorMessage: String, positiveClickLi
         if (mTokenPromptDialog != null)
             return
 
-        mTokenPromptDialog = CustomAlertDialog(this).apply {
+        mTokenPromptDialog = CustomAlertDialog().apply {
             setTextColor(R.color.color_E44438_e44438)
             setTitle(getString(R.string.prompt))
             setMessage(errorMessage)

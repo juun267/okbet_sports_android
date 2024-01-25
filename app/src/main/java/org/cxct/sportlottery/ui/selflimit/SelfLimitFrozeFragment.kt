@@ -120,7 +120,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
 
         viewModel.frozeResult.observe(viewLifecycleOwner) {
             if (it.success) {
-                val dialog = CustomAlertDialog(requireActivity()).apply {
+                val dialog = CustomAlertDialog().apply {
                     isCancelable = false
                     setTitle(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm))
                     setMessage(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm_done))

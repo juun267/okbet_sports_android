@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialog_custom_alert.*
+import kotlinx.android.synthetic.main.dialog_self_limit_froze.*
 import org.cxct.sportlottery.R
 
 /**

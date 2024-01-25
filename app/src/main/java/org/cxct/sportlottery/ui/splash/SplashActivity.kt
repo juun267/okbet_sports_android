@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.splash
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
@@ -15,7 +13,6 @@ import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -96,7 +93,7 @@ class SplashActivity : BindingActivity<SplashViewModel,ActivitySplashBinding>() 
 
     //過程中任一流程請求失敗，點擊確定按鈕重試
     private fun showErrorRetryDialog(title: String, message: String) {
-        val dialog = CustomAlertDialog(this)
+        val dialog = CustomAlertDialog()
         dialog.setTitle(title)
         dialog.setMessage(message)
         dialog.setCanceledOnTouchOutside(false)

@@ -115,7 +115,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
             if (!apiResult.success) {
                 //顯示彈窗
-                val customAlertDialog = CustomAlertDialog(this@MoneyRechargeActivity)
+                val customAlertDialog = CustomAlertDialog()
                 with(customAlertDialog) {
                     setTitle(LocalUtils.getString(R.string.prompt))
                     setMessage(apiResult.msg)
@@ -140,7 +140,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
             if (!cryptoResult.success) {
                 //顯示彈窗
-                val customAlertDialog = CustomAlertDialog(this@MoneyRechargeActivity)
+                val customAlertDialog = CustomAlertDialog()
                 with(customAlertDialog) {
                     setTitle(LocalUtils.getString(R.string.prompt))
                     setMessage(cryptoResult.msg)

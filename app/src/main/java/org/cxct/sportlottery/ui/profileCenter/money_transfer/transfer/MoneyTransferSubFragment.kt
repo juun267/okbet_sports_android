@@ -199,7 +199,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         viewModel.transferResult.observe(viewLifecycleOwner) { result ->
             result?.getContentIfNotHandled()?.let { it ->
                 context?.let { context ->
-                    val dialog = CustomAlertDialog(context).apply {
+                    val dialog = CustomAlertDialog().apply {
                         setTitle(context.getString(R.string.prompt))
                         setMessage(if (it.success) context.getString(R.string.transfer_money_succeed) else it.msg)
                         setPositiveClickListener { view ->
