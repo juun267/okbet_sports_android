@@ -173,7 +173,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         })
         binding.btnLogin.requestFocus()
-        if (binding.eetAccount.text.length > 0) {
+        if (binding.eetAccount.text.isNotEmpty()) {
             binding.btnLogin.setBtnEnable(true)
         }
     }
@@ -299,18 +299,32 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
     }
 
-    private fun setupPrivacy() {
-        binding.tvPrivacy.setVisibilityByMarketSwitch()
+    private fun setupPrivacy() = binding.run {
+
+        ivPrivacy.setVisibilityByMarketSwitch()
+        ivPrivacy.isSelected = true
+        ivPrivacy.setOnClickListener {
+            ivPrivacy.isSelected = !ivPrivacy.isSelected
+            if (ivPrivacy.isSelected) {
+                ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_sel)
+            } else {
+                ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_nor)
+            }
+            btnGoogle.setBtnEnable(ivPrivacy.isSelected)
+            viewModel.agreeChecked = ivPrivacy.isSelected
+        }
+
+        tvPrivacy.setVisibilityByMarketSwitch()
 //        binding.tvPrivacy.setOnCheckedChangeListener { buttonView, isChecked ->
 //            viewModel.agreeChecked = isChecked
 //        }
-        binding.tvPrivacy.makeLinks(
+        tvPrivacy.makeLinks(
             Pair(
                 applicationContext.getString(R.string.login_privacy_policy),
                 View.OnClickListener {
                     JumpUtil.toInternalWeb(
-                        this,
-                        Constants.getPrivacyRuleUrl(this),
+                        it.context,
+                        Constants.getPrivacyRuleUrl(it.context),
                         resources.getString(R.string.login_privacy_policy)
                     )
                 })
@@ -320,8 +334,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 applicationContext.getString(R.string.login_terms_conditions),
                 View.OnClickListener {
                     JumpUtil.toInternalWeb(
-                        this,
-                        Constants.getAgreementRuleUrl(this),
+                        it.context,
+                        Constants.getAgreementRuleUrl(it.context),
                         resources.getString(R.string.login_terms_conditions)
                     )
                 })
