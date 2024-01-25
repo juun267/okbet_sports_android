@@ -5,20 +5,10 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 
 class MainTabViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
+    androidContext
 ) {
-    val showBetUpperLimit = betInfoRepository.showBetUpperLimit
-    val showBetBasketballUpperLimit = betInfoRepository.showBetBasketballUpperLimit
+    val showBetUpperLimit = BetInfoRepository.showBetUpperLimit
+    val showBetBasketballUpperLimit = BetInfoRepository.showBetBasketballUpperLimit
 }

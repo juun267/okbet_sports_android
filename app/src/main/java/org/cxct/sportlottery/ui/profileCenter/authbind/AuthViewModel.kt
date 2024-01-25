@@ -12,20 +12,9 @@ import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
 
 class AuthViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
-    private val avatarRepository: AvatarRepository,
+    androidContext: Application
 ) : BaseSocketViewModel(
     androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
 ) {
     val bindGoogleResult: LiveData<Event<AuthBindResult>>
         get() = _bindGoogleResult
@@ -37,14 +26,14 @@ class AuthViewModel(
 
     fun getUserInfo() {
         viewModelScope.launch {
-            runWithCatch { userInfoRepository.getUserInfo() }
+            runWithCatch { UserInfoRepository.getUserInfo() }
         }
     }
 
     fun bindGoogle(token: String) {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                loginRepository.bindGoogle(token)
+                LoginRepository.bindGoogle(token)
             }?.let {
                 _bindGoogleResult.postValue(Event(it))
             }
@@ -54,7 +43,7 @@ class AuthViewModel(
     fun bindFacebook(token: String) {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                loginRepository.bindFaceBook(token)
+                LoginRepository.bindFaceBook(token)
             }?.let {
                 _bindFacebookResult.postValue(Event(it))
             }

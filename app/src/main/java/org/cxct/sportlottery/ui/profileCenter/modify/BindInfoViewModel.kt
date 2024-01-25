@@ -12,11 +12,8 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 class BindInfoViewModel(
-    androidContext: Application,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
+    androidContext: Application
+) : BaseViewModel(androidContext) {
 
     val sendCodeResult = MutableLiveData<ApiResult<SendCodeRespnose>>()                 // 发送验证码
     val verifyResult = MutableLiveData<ApiResult<SendCodeRespnose>>()                   // 验证验证码

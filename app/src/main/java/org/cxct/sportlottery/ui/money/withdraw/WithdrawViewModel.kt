@@ -34,20 +34,9 @@ import kotlin.math.min
 
 
 class WithdrawViewModel(
-    androidContext: Application,
-    private val moneyRepository: MoneyRepository,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
+    androidContext
 ) {
     val submitEnable: LiveData<Boolean>
         get() = _submitEnable
@@ -384,7 +373,7 @@ class WithdrawViewModel(
             viewModelScope.launch {
                 loading()
                 doNetwork(androidContext) {
-                    val userId = userInfoRepository.userInfo?.value?.userId.toString()
+                    val userId = UserInfoRepository.userInfo?.value?.userId.toString()
                     OneBoSportApi.bankService.bankAdd(
                         createBankAddRequest(
                             securityCode,
@@ -487,7 +476,7 @@ class WithdrawViewModel(
             loading()
             getMoneyAndTransferOut()
             doNetwork(androidContext) {
-                moneyRepository.getRechCfg()
+                MoneyRepository.getRechCfg()
             }?.let { result ->
                 result.rechCfg?.let { moneyRechCfgData ->
                     uwBankType =

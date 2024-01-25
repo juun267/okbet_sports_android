@@ -44,19 +44,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 open class MainHomeViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository,
+    androidContext
 ) {
 
     private val _publicityRecommend = MutableLiveData<Event<List<Recommend>>>()
@@ -427,7 +417,7 @@ open class MainHomeViewModel(
         baseActivity: BaseActivity<*>,
     ) {
 //        Timber.e("gameData: $gameData")
-        if (loginRepository.isLogin.value != true) {
+        if (LoginRepository.isLogin.value != true) {
             _enterThirdGameResult.postValue(Pair(firmType,
                 EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER, null, "", gameEntryTagName)))
             return

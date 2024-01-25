@@ -49,62 +49,62 @@ import org.koin.dsl.module
 object AppViewModel {
 
     private val viewModelModule = module {
-        viewModel { SplashViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { MainViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
-        viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { InfoCenterViewModel(get(), get(), get(), get(), get()) }
-        viewModel { HelpCenterViewModel(get(), get(), get(), get()) }
-        viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { SelfLimitViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { FinanceViewModel(get(), get(), get(), get(), get()) }
-        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
-        viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MaintenanceViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { NewsViewModel(get(), get(), get(), get()) }
-        viewModel { RedEnveLopeModel(get(), get(), get(), get(), get()) }
-        viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { SportViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { LeagueSelectViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { SportListViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { SportTabViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { CancelAccountViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MainHomeViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { ForgetViewModel(get(), get(), get(), get()) }
-        viewModel { BetListViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { BindInfoViewModel(get(), get(), get(), get()) }
-        viewModel { RegisterInfoViewModel(get(), get(), get(), get()) }
-        viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { OKLiveViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { ChatViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { SportLeftMenuViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { RedeemViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { SplashViewModel(get()) }
+        viewModel { MoneyRechViewModel(get()) }
+        viewModel { MainViewModel(get()) }
+        viewModel { LoginViewModel(get()) }
+        viewModel { SettlementViewModel(get()) }
+        viewModel { InfoCenterViewModel(get()) }
+        viewModel { HelpCenterViewModel(get()) }
+        viewModel { WithdrawViewModel(get()) }
+        viewModel { ProfileModel(get()) }
+        viewModel { ModifyProfileInfoViewModel(get()) }
+        viewModel { SettingPasswordViewModel(get()) }
+        viewModel { FeedbackViewModel(get()) }
+        viewModel { SelfLimitViewModel(get()) }
+        viewModel { FinanceViewModel(get()) }
+        viewModel { ProfileCenterViewModel(get()) }
+        viewModel { VersionUpdateViewModel(get()) }
+        viewModel { MoneyTransferViewModel(get()) }
+        viewModel { MaintenanceViewModel(get()) }
+        viewModel { OtherBetRecordViewModel(get()) }
+        viewModel { AccountHistoryViewModel(get()) }
+        viewModel { TransactionStatusViewModel(get()) }
+        viewModel { NewsViewModel(get()) }
+        viewModel { RedEnveLopeModel(get()) }
+        viewModel { MainTabViewModel(get()) }
+        viewModel { SportViewModel(get()) }
+        viewModel { LeagueSelectViewModel(get()) }
+        viewModel { SportListViewModel(get()) }
+        viewModel { SportTabViewModel(get()) }
+        viewModel { CancelAccountViewModel(get()) }
+        viewModel { MainHomeViewModel(get()) }
+        viewModel { ForgetViewModel(get()) }
+        viewModel { BetListViewModel(get()) }
+        viewModel { AuthViewModel(get()) }
+        viewModel { BindInfoViewModel(get()) }
+        viewModel { RegisterInfoViewModel(get()) }
+        viewModel { OKGamesViewModel(get()) }
+        viewModel { OKLiveViewModel(get()) }
+        viewModel { ChatViewModel(get()) }
+        viewModel { SportLeftMenuViewModel(get()) }
+        viewModel { RedeemViewModel(get()) }
     }
 
     private val repoModule = module {
         single { UserInfoRepository }
         single { LoginRepository }
         single { SportMenuRepository }
-        single { SettlementRepository() }
+        single { SettlementRepository }
         single { InfoCenterRepository }
         single { MoneyRepository }
         single { BetInfoRepository }
-        single { AvatarRepository(get()) }
-        single { FeedbackRepository() }
-        single { HostRepository(get()) }
+        single { AvatarRepository }
+        single { FeedbackRepository }
+        single { HostRepository }
         single { WithdrawRepository }
-        single { MyFavoriteRepository() }
-        single { SelfLimitRepository() }
+        single { FavoriteRepository }
+        single { SelfLimitRepository }
         single { GamePlayNameRepository }
     }
 

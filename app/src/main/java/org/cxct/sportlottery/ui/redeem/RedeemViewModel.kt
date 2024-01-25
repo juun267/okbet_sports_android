@@ -9,28 +9,13 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.RedeemCodeHistoryResponse
 import org.cxct.sportlottery.network.money.RedeemCodeResponse
 import org.cxct.sportlottery.network.money.list.SportBillListRequest
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.MyFavoriteRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.TimeUtil
 
 class RedeemViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
+    androidContext
 ) {
 
     var page = 1

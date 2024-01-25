@@ -27,10 +27,7 @@ import timber.log.Timber
 
 
 abstract class BaseViewModel(
-    val androidContext: Application,
-    val loginRepository: LoginRepository,
-    val betInfoRepository: BetInfoRepository,
-    val infoCenterRepository: InfoCenterRepository
+    val androidContext: Application
 ) : ViewModel() {
 
     companion object {
@@ -39,16 +36,6 @@ abstract class BaseViewModel(
         fun postErrorResut(result: BaseResult) {
             _errorResultToken.postValue(Event(result))
         }
-    }
-    val notifyLogin: SingleLiveEvent<Boolean>
-        get() = mNotifyLogin
-     val mNotifyLogin = SingleLiveEvent<Boolean>()
-
-    val isLogin: LiveData<Boolean>
-        get() = loginRepository.isLogin
-
-    val isKickedOut: LiveData<Event<String?>> by lazy {
-        loginRepository.kickedOut
     }
 
     val errorResultIndex: LiveData<String>
@@ -130,48 +117,6 @@ abstract class BaseViewModel(
         }
         return errorResult
     }
-
-    fun doLogoutAPI() {
-        viewModelScope.launch {
-            runCatching { loginRepository.logoutAPI() }
-        }
-    }
-    fun doCleanToken() {
-        viewModelScope.launch {
-            betInfoRepository.clear()
-            infoCenterRepository.clear()
-            loginRepository.logout()
-            BackService.cleanUserChannel()
-        }
-    }
-
-    fun doLogoutCleanUser(finishFunction: () -> Unit) {
-        viewModelScope.launch {
-            betInfoRepository.clear()
-            infoCenterRepository.clear()
-            loginRepository.logout()
-            //退出登入後盤口回到預設
-            updateDefaultHandicapType()
-            finishFunction.invoke()
-        }
-    }
-
-    fun checkIsUserAlive() {
-        viewModelScope.launch {
-            doNetwork(MultiLanguagesApplication.appContext) {
-                loginRepository.checkIsUserAlive()
-            }.let { result ->
-                if (result?.success == false && loginRepository.isLogin.value == true) {
-                    loginRepository._kickedOut.value = Event(result.msg)
-                }
-            }
-        }
-    }
-
-    fun getLoginBoolean(): Boolean {
-        return loginRepository.isLogin.value ?: false
-    }
-
 
     fun launch(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(block = block)

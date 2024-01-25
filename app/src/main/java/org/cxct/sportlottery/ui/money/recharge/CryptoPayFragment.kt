@@ -40,6 +40,7 @@ import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
@@ -732,7 +733,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
     //上传凭证接口
     private fun uploadImg(file: File) {
-        val userId = viewModel.loginRepository.userId.toString()
+        val userId = LoginRepository.userId.toString()
         val uploadImgRequest =
             UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.VOUCHER)
         viewModel.uploadImage(uploadImgRequest)

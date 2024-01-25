@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.activity_self_limit.*
 import kotlinx.android.synthetic.main.custom_tab_layout.view.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading

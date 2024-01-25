@@ -1,35 +1,31 @@
 package org.cxct.sportlottery.ui.maintenance
 
-import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.core.view.isVisible
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_maintenance.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
-import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.databinding.ActivityMaintenanceBinding
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.JumpUtil
 
-class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(MaintenanceViewModel::class) {
+class MaintenanceActivity : BindingActivity<MaintenanceViewModel,ActivityMaintenanceBinding>() {
 
     enum class MaintainType(val value: Int) {
         NORMAL(0), FIXING(1)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         ImmersionBar.with(this)
             .statusBarDarkFont(true)
             .transparentStatusBar()
             .fitsSystemWindows(false)
             .init()
-        setContentView(R.layout.activity_maintenance)
         findViewById<View>(R.id.root).fitsSystemStatus()
         initObserver()
         initServiceButton(sConfigData)
@@ -47,7 +43,7 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
             when (it?.configData?.maintainStatus) {
                 FLAG_OPEN -> {
                     //仍然維護中則更新該平台目前的維護資訊
-                    tv_maintenance_time.text = it.configData.maintainInfo
+                    binding.tvMaintenanceTime.text = it.configData.maintainInfo
                 }
                 else -> {
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
@@ -71,8 +67,8 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
         val serviceUrl = configData?.customerServiceUrl
         val serviceUrl2 = configData?.customerServiceUrl2
 
-        btn_service.isVisible = !TextUtils.isEmpty(serviceUrl) || !TextUtils.isEmpty(serviceUrl2)
-        btn_service.setOnClickListener {
+        binding.btnService.isVisible = !TextUtils.isEmpty(serviceUrl) || !TextUtils.isEmpty(serviceUrl2)
+        binding.btnService.setOnClickListener {
 
             if (!TextUtils.isEmpty(serviceUrl)) {
                 JumpUtil.toExternalWeb(this@MaintenanceActivity, serviceUrl)

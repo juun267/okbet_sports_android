@@ -716,7 +716,7 @@ class ChatFragment : BindingSocketFragment<ChatViewModel, FragmentChatBinding>()
     }
 
     private fun uploadImg(file: File) {
-        val userId = viewModel.loginRepository.userId.toString()
+        val userId = LoginRepository.userId.toString()
         val uploadImgRequest =
             UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)

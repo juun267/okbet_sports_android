@@ -23,20 +23,9 @@ import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 
 
 class SettlementViewModel(
-    androidContext: Application,
-    private val settlementRepository: SettlementRepository,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
+    androidContext
 ) {
 
     private val _matchResultPlayListResult = MutableLiveData<MatchResultPlayListResult>()
@@ -85,7 +74,7 @@ class SettlementViewModel(
         requestListener.requestIng(true)
         viewModelScope.launch {
             doNetwork(androidContext) {
-                settlementRepository.resultList(
+                SettlementRepository.resultList(
                     pagingParams = pagingParams,
                     timeRangeParams = timeRangeParams,
                     gameType = gameType,
@@ -261,7 +250,7 @@ class SettlementViewModel(
         requestListener.requestIng(true)
         viewModelScope.launch {
             doNetwork(androidContext) {
-                settlementRepository.resultPlayList(matchId)
+                SettlementRepository.resultPlayList(matchId)
             }?.let { result ->
                 if (result.success)
                     makeUpMatchDetailData(result.matchResultPlayList, clickedItem, gameType)
@@ -306,7 +295,7 @@ class SettlementViewModel(
         requestListener.requestIng(true)
         viewModelScope.launch {
             doNetwork(androidContext) {
-                settlementRepository.resultOutRightList(gameType = gameType)
+                SettlementRepository.resultOutRightList(gameType = gameType)
             }?.let { result ->
                 //重組資料結構
                 reformatOutrightResultData(result).let {

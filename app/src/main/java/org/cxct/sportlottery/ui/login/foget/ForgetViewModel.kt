@@ -8,19 +8,13 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.forgetPassword.*
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 
 class ForgetViewModel(
-    androidContext: Application,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
+    androidContext: Application
+) : BaseViewModel(androidContext) {
 
     val smsResult: LiveData<SendSmsResult?>
         get() = _smsResult

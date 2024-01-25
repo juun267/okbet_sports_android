@@ -35,20 +35,9 @@ import java.util.*
  * @property uniqueChatMessageList 聊天室訊息內容
  */
 class ChatViewModel(
-    androidContext: Application,
-    private val avatarRepository: AvatarRepository,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository) {
+    androidContext) {
 
     var isFirstInit = true
 
@@ -61,7 +50,7 @@ class ChatViewModel(
     private val _chatEvent = MutableSharedFlow<ChatEvent>(replay = 0)
     val chatEvent = _chatEvent.asSharedFlow()
 
-    val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
+    val editIconUrlResult: LiveData<Event<IconUrlResult?>> = AvatarRepository.editIconUrlResult
 
     val connStatus = ChatRepository.chatConnStatus
 
@@ -278,7 +267,7 @@ class ChatViewModel(
                             chatReceiveContent as ChatReceiveContent<ChatPersonalRedEnvelopeResult>
                         )))
 
-                        if (loginRepository.isLogin.value == true) getUnPacket(ChatRepository.chatRoomID)
+                        if (LoginRepository.isLogin.value == true) getUnPacket(ChatRepository.chatRoomID)
 
                         _chatEvent.emit(
                             ChatEvent.PersonalRedEnvelope(
@@ -336,7 +325,7 @@ class ChatViewModel(
     override fun checkLoginStatus(): Boolean {
         viewModelScope.launch {
            queryList().join()
-            if (loginRepository.isLogin.value == true) {
+            if (LoginRepository.isLogin.value == true) {
                 Timber.i("[Chat] 已登入(一般用户,游客) 執行chatInit")
                 chatInit()
             } else {
@@ -391,7 +380,7 @@ class ChatViewModel(
             if (sign == null) {
                 Timber.i("[Chat] 執行 getSign")
                 ChatRepository.chatRoom?.let {
-                    val signResult = userInfoRepository.getSign(it.constraintType,it.dataStatisticsRange)
+                    val signResult = UserInfoRepository.getSign(it.constraintType,it.dataStatisticsRange)
                     sign = signResult.getData()
                     errorMsg = signResult.msg
                 }
@@ -576,7 +565,7 @@ class ChatViewModel(
 
     //上傳聊天室圖片
     fun uploadImage(uploadImgRequest: UploadImgRequest) = launch {
-        doNetwork(androidContext) { avatarRepository.uploadChatImage(uploadImgRequest) }
+        doNetwork(androidContext) { AvatarRepository.uploadChatImage(uploadImgRequest) }
     }
 
     /**
@@ -654,7 +643,7 @@ class ChatViewModel(
 
     private fun startCheckToken() {
         try {
-            if (loginRepository.isLogin.value == true) {
+            if (LoginRepository.isLogin.value == true) {
                 if (chatTimer == null) {
                     chatTimer = Timer()
                     chatTimer?.schedule(object : TimerTask() {

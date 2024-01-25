@@ -16,19 +16,9 @@ import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class SettingPasswordViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
+    androidContext
 ) {
 
     private val _updatePwdResult = MutableLiveData<NetResult?>()
@@ -100,7 +90,7 @@ class SettingPasswordViewModel(
             }
 
             if (result?.success == true)
-                userInfoRepository.updatePayPwFlag(updateFundPwdRequest.userId)
+                UserInfoRepository.updatePayPwFlag(updateFundPwdRequest.userId)
 
             _updateFundPwdResult.postValue(result)
         }

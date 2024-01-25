@@ -9,36 +9,27 @@ import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.base.BaseUserViewModel
 
 class InfoCenterViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-) : BaseUserViewModel(
-    androidContext,
-    loginRepository,
-    userInfoRepository,
-    betInfoRepository,
-    infoCenterRepository,
+    androidContext: Application
+) : BaseSocketViewModel(
+    androidContext
 ) {
 
     enum class DataType { UNREAD, READ }//未讀,已讀
 
     //未讀資料
-    val userUnreadMsgList = infoCenterRepository.unreadList
+    val userUnreadMsgList = InfoCenterRepository.unreadList
 
     //已讀資料
-    val userReadMsgList = infoCenterRepository.readedList
+    val userReadMsgList = InfoCenterRepository.readedList
 
     //未讀總數目
-    val totalUnreadMsgCount = infoCenterRepository.totalUnreadMsgCount
+    val totalUnreadMsgCount = InfoCenterRepository.totalUnreadMsgCount
 
 
     //已讀總數目
-    val totalReadMsgCount = infoCenterRepository.totalReadMsgCount
+    val totalReadMsgCount = InfoCenterRepository.totalReadMsgCount
 
     //Loading
     val isLoading: LiveData<Boolean>
@@ -83,7 +74,7 @@ class InfoCenterViewModel(
                 }
             }
             mIsReadNextRequestPage = 1
-            infoCenterRepository.clearList()
+            InfoCenterRepository.clearList()
         }
         when (dataType) {
             DataType.UNREAD -> {
@@ -92,7 +83,7 @@ class InfoCenterViewModel(
                         val result = doNetwork(androidContext) {
                             val infoCenterRequest =
                                 InfoCenterRequest(mUnReadNextRequestPage, pageSize, 0)
-                            infoCenterRepository.getUserNoticeList(infoCenterRequest)
+                            InfoCenterRepository.getUserNoticeList(infoCenterRequest)
                         }
                         //判斷是不是可以再加載
                         mNeedMoreLoadingUnRead =
@@ -111,7 +102,7 @@ class InfoCenterViewModel(
                         val result = doNetwork(androidContext) {
                             val infoCenterRequest =
                                 InfoCenterRequest(mIsReadNextRequestPage, pageSize, 1)
-                            infoCenterRepository.getUserNoticeList(infoCenterRequest)
+                            InfoCenterRepository.getUserNoticeList(infoCenterRequest)
                         }
                         //判斷是不是可以再加載
                         mNeedMoreLoadingRead =
@@ -136,7 +127,7 @@ class InfoCenterViewModel(
     fun getMsgCount(dataType: MsgType) {
         viewModelScope.launch {
             try {
-                infoCenterRepository.getMsgCount(dataType.code)
+                InfoCenterRepository.getMsgCount(dataType.code)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -147,17 +138,17 @@ class InfoCenterViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             val response = doNetwork(androidContext) {
-                infoCenterRepository.setMsgRead(bean.id.toString())
+                InfoCenterRepository.setMsgRead(bean.id.toString())
                 //原本的邏輯是"未讀的資料打開要變成已讀" 並且更新Tab，2022/06/16要求修改，先註解保留原本邏輯
 //                val infoCenterRequest =
 //                    InfoCenterRequest(mUnReadNextRequestPage, pageSize, 0)
-//                infoCenterRepository.getUserNoticeList(infoCenterRequest)
+//                InfoCenterRepository.getUserNoticeList(infoCenterRequest)
             }
 
             if (response?.success == true) {
                 _onMessageReaded.postValue(bean)
             }
-//            infoCenterRepository.getMsgCount(MsgType.NOTICE_READED.code)
+//            InfoCenterRepository.getMsgCount(MsgType.NOTICE_READED.code)
             _isLoading.value = false
         }
     }

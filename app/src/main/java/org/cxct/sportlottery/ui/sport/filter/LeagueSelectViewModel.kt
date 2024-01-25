@@ -22,19 +22,9 @@ import java.text.Collator
 import java.util.*
 
 class LeagueSelectViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    myFavoriteRepository: MyFavoriteRepository,
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    myFavoriteRepository,
+    androidContext
 ) {
 
     val leagueList: LiveData<MutableList<LeagueOdd>>

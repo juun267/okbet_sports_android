@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.user.selflimit.PerBetLimitRequest
 import org.cxct.sportlottery.network.user.selflimit.PerBetLimitResult
 import retrofit2.Response
 
-class SelfLimitRepository {
+object SelfLimitRepository {
 
     suspend fun froze(frozeRequest: FrozeRequest): Response<FrozeResult> {
         return OneBoSportApi.userService.froze(frozeRequest)

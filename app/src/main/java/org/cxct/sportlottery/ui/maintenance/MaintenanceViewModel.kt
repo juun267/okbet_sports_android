@@ -9,25 +9,14 @@ import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.setupDefaultHandicapType
 
 
 class MaintenanceViewModel(
-    androidContext: Application,
-    private val hostRepository: HostRepository,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
-) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
+    androidContext: Application
+) : BaseViewModel(
+    androidContext
 ) {
 
 
@@ -37,7 +26,7 @@ class MaintenanceViewModel(
 
     //获取配置文件
     fun getConfig() {
-        val hostUrl = hostRepository.hostUrl
+        val hostUrl = HostRepository.hostUrl
 
         viewModelScope.launch {
             if (hostUrl.isNotEmpty()) {
