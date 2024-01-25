@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.user
 
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.LOCK_MONEY
 import org.cxct.sportlottery.network.Constants.ODDS_CHANGE_OPTION
 import org.cxct.sportlottery.network.Constants.PASSWORD_VERIFY
@@ -14,6 +15,7 @@ import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.network.Constants.USER_WITHDRAW_INFO
 import org.cxct.sportlottery.network.NetResult
+import org.cxct.sportlottery.network.bettingStation.AreaAllResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
@@ -28,6 +30,9 @@ import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoRequest
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
+import org.cxct.sportlottery.ui.profileCenter.profile.Uide
+import org.cxct.sportlottery.ui.profileCenter.profile.UserInfoDetailsEntity
+import org.cxct.sportlottery.ui.profileCenter.profile.WorkNameEntity
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -74,5 +79,19 @@ interface UserService {
 
     @POST(ODDS_CHANGE_OPTION)
     suspend fun oddsChangeOption(@Body oddsChangeOption : OddsChangeOptionRequest) : Response<NetResult>
+
+    @POST(Constants.AREA_UNIVERSAL)
+    suspend fun getAreaUniversal(): Response<AreaAllResult>
+
+    @GET(Constants.WORKS_QUERYALL)
+    suspend fun getWorksQueryAll(): Response<WorkNameEntity>
+
+    @GET(Constants.USER_QUERYUSERINFODETAILS)
+    suspend fun userQueryUserInfoDetails(): Response<UserInfoDetailsEntity>
+
+    @POST(Constants.USER_COMPLETEUSERDETAILS)
+    suspend fun userCompleteUserDetails(
+        @Body uide: Uide
+    ): Response<NetResult>
 
 }

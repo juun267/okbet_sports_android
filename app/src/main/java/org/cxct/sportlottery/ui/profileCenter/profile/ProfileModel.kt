@@ -54,6 +54,9 @@ class ProfileModel(
     //职业 列表
     val workList: ArrayList<DialogBottomDataEntity> = ArrayList()
 
+    //性别：男,女,其他
+    val genderList = arrayOf(DialogBottomDataEntity())
+
     private val _userDetail = MutableLiveData<UserInfoDetailsEntity>()
     val userDetail: LiveData<UserInfoDetailsEntity> //使用者餘額
         get() = _userDetail
@@ -94,7 +97,7 @@ class ProfileModel(
             launch {
                 //用户信息详情查询
                 doNetwork(androidContext) {
-                    OneBoSportApi.bettingStationService.userQueryUserInfoDetails()
+                    OneBoSportApi.userService.userQueryUserInfoDetails()
                 }?.let {
                     it.let {
                         _userDetail.postValue(it)
@@ -128,7 +131,7 @@ class ProfileModel(
 
             //获取省市数据
             doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.getAreaUniversal()
+                OneBoSportApi.userService.getAreaUniversal()
             }?.let {
                 areaData = it
                 var dbde = it.areaAll.countries.find { it.name.contains("PHILIPPINES") }
@@ -148,7 +151,7 @@ class ProfileModel(
 
             //获取所有工作性质列表
             doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.getWorksQueryAll()
+                OneBoSportApi.userService.getWorksQueryAll()
             }?.let {
                 it.let {
                     it.rows.forEach { rowsItem ->
@@ -159,7 +162,7 @@ class ProfileModel(
 
             //用户信息详情查询
             doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.userQueryUserInfoDetails()
+                OneBoSportApi.userService.userQueryUserInfoDetails()
             }?.let {
                 _userDetail.postValue(it)
                 if (areaData == null) {
@@ -209,7 +212,7 @@ class ProfileModel(
     fun userCompleteUserDetails(uide: Uide) {
         launch {
             doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.userCompleteUserDetails(uide)
+                OneBoSportApi.userService.userCompleteUserDetails(uide)
             }?.let {
                 it.let {
                 }

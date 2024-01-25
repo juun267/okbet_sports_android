@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.profile
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -15,18 +14,17 @@ import com.bigkoo.pickerview.view.TimePickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
-import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.include_user_profile.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.databinding.ActivityProfileBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
-import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
 import org.cxct.sportlottery.ui.login.signUp.info.DateTimePickerOptions
@@ -55,7 +53,7 @@ import java.util.Calendar
 /**
  * @app_destination 个人设置
  */
-class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
+class ProfileActivity : BindingActivity<ProfileModel,ActivityProfileBinding>() {
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
@@ -120,11 +118,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        setContentView(R.layout.activity_profile)
-
         initView()
         initButton()
         initObserve()
@@ -132,11 +127,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         setupLogout()
         viewModel.getUserSalaryList()
         initBottomDialog()
-
     }
 
     private fun setupLogout() {
-        btn_sign_out.setOnClickListener {
+        binding.btnSignOut.setOnClickListener {
             viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser { MainTabActivity.reStart(this) }
         }
@@ -147,26 +141,26 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         viewModel.getUserInfo()
     }
 
-    private fun initView() {
-        custom_tool_bar.titleText = getString(R.string.profile_info)
+    private fun initView()=binding.run {
+        customToolBar.titleText = getString(R.string.profile_info)
         sConfigData?.apply {
-            ll_qq_number.isVisible = enableWithdrawQQ.isStatusOpen()
-            ll_e_mail.isVisible = enableWithdrawEmail.isStatusOpen()
-            ll_phone_number.isVisible = enableWithdrawPhone.isStatusOpen()
-            ll_wechat.isVisible = enableWithdrawWechat.isStatusOpen()
-            ll_real_name.isVisible = enableWithdrawFullName.isStatusOpen()
+            llQqNumber.isVisible = enableWithdrawQQ.isStatusOpen()
+            llEMail.isVisible = enableWithdrawEmail.isStatusOpen()
+            llPhoneNumber.isVisible = enableWithdrawPhone.isStatusOpen()
+            llWechat.isVisible = enableWithdrawWechat.isStatusOpen()
+            llRealName.isVisible = enableWithdrawFullName.isStatusOpen()
         }
-        tv_pass_word.text =
+        tvPassWord.text =
             if (viewModel.userInfo.value?.passwordSet == true) getString(R.string.set) else getString(
                 R.string.edit
             )
     }
 
-    private fun initButton() {
-        custom_tool_bar.setOnBackPressListener { finish() }
+    private fun initButton()=binding.run {
+        customToolBar.setOnBackPressListener { finish() }
         //設定個人資訊頁面
         setupToInfoSettingPage()
-        btn_head.setOnClickListener {
+        btnHead.setOnClickListener {
             val dialog = AvatarSelectorDialog()
             dialog.mSelectListener = mSelectMediaListener
             dialog.show(supportFragmentManager, null)
@@ -225,37 +219,37 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         bottomSheet.show()
     }
 
-    private fun setupToInfoSettingPage() {
+    private fun setupToInfoSettingPage()=binding.run {
         //真實姓名
-        ll_real_name.setOnClickListener {
+        llRealName.setOnClickListener {
             startActivity(EditUserNameActivity::class.java)
 //            securityCodeEnter = SecurityCodeEnterType.REALNAME
 //            viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
         }
         //暱稱
-        btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
+        btnNickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
         //出生地
         llPlaceOfBirth.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.PlaceOfBirth) }
 
         llZipCodeCurrent.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.ZipCode) }
         //密碼設置
-        btn_pwd_setting.setOnClickListener {
+        btnPwdSetting.setOnClickListener {
             securityCodeEnter = SecurityCodeEnterType.PW
             viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
         }
         //登录授权
-        lin_auth.setOnClickListener { startActivity(AuthActivity::class.java) }
+        linAuth.setOnClickListener { startActivity(AuthActivity::class.java) }
         //QQ號碼
-        ll_qq_number.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.QQNumber) }
+        llQqNumber.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.QQNumber) }
         //郵箱
-        ll_e_mail.setOnClickListener { editBindInfo(ModifyType.Email) }
+        llEMail.setOnClickListener { editBindInfo(ModifyType.Email) }
         //手機號碼
-        ll_phone_number.setOnClickListener { editBindInfo(ModifyType.PhoneNumber) }
+        llPhoneNumber.setOnClickListener { editBindInfo(ModifyType.PhoneNumber) }
         //微信
-        ll_wechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
+        llWechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
         //實名制
-        ll_verified.setOnClickListener {
-            if (ll_verified.isEnabled)
+        llVerified.setOnClickListener {
+            if (llVerified.isEnabled)
                 startActivity(VerifyIdentityActivity::class.java)
         }
         llNationality.setOnClickListener {
@@ -330,6 +324,20 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 )
             }
         }
+        llGender.setOnClickListener {
+            showBottomDialog(
+                viewModel.workList,
+                resources.getString(R.string.J905),
+                tvNatureOfWork.text.toString()
+            ) {
+                tvNatureOfWork.text = it.name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        gender = it.name
+                    )
+                )
+            }
+        }
         //address
         llAddressCurrent.setOnClickListener {
             putExtraForProfileInfoActivity(ModifyType.Address)
@@ -353,7 +361,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 true
             ) {
                 if (it.id == 6) {
-                    val dialog = SourceOfIncomeDialog(this)
+                    val dialog = SourceOfIncomeDialog(this@ProfileActivity)
                     dialog.setPositiveClickListener(object :
                         SourceOfIncomeDialog.OnPositiveListener {
                         override fun positiveClick(str: String) {
@@ -385,9 +393,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 }
             }
         }
-        ll_cancel_account.isVisible = Constants.isVersonControl
+        llCancelAccount.isVisible = Constants.isVersonControl
         //注销账号
-        ll_cancel_account.setOnClickListener { startActivity(CancelAccountActivity::class.java) }
+        llCancelAccount.setOnClickListener { startActivity(CancelAccountActivity::class.java) }
         llBirthday.setOnClickListener { dateTimePicker?.show() }
     }
 
@@ -466,7 +474,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun updateAvatar(iconUrl: String?) {
-        iv_head.load("$iconUrl", R.drawable.ic_person_avatar)
+        binding.ivHead.load("$iconUrl", R.drawable.ic_person_avatar)
     }
 
     private fun uploadImg(file: File) {
@@ -507,66 +515,66 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 //                tvZipCodeCurrent.text = checkStr(it.zipCode)
 //                tvPlaceOfBirth.text = checkStr(it.placeOfBirth)
                 updateAvatar(it.iconUrl)
-                tv_nickname.text = it.nickName
-                tv_member_account.text = it.userName
-                tv_id.text = it.userId.toString()
-                tv_real_name.text = it.fullName
+                binding.tvNickname.text = it.nickName
+                binding.tvMemberAccount.text = it.userName
+                binding.tvId.text = it.userId.toString()
+                binding.tvRealName.text = it.fullName
                 setWithdrawInfo(it)
             }
-            ll_verified.isVisible =
+            binding.llVerified.isVisible =
                 sConfigData?.realNameWithdrawVerified.isStatusOpen() || sConfigData?.realNameRechargeVerified.isStatusOpen()
-            tv_pass_word.text =
+            binding.tvPassWord.text =
                 if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
-            setIdentifyStatus(ll_verified.isVisible&&it?.verified==VerifiedType.PASSED.value)
+            setIdentifyStatus(binding.llVerified.isVisible&&it?.verified==VerifiedType.PASSED.value)
             viewModel.userDetail.value?.let { setIdentityDetail(it) }
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
-                    ll_verified.isEnabled = true
-                    ll_verified.isClickable = true
-                    tv_verified.text = getString(R.string.kyc_passed)
+                     binding.llVerified.isEnabled = true
+                     binding.llVerified.isClickable = true
+                     binding.tvVerified.text = getString(R.string.kyc_passed)
                 }
 
                 VerifiedType.NOT_YET.value, VerifiedType.VERIFIED_FAILED.value -> {
-                    ll_verified.isEnabled = true
-                    ll_verified.isClickable = true
-                    tv_verified.text = getString(R.string.kyc_unverified)
+                     binding.llVerified.isEnabled = true
+                     binding.llVerified.isClickable = true
+                     binding.tvVerified.text = getString(R.string.kyc_unverified)
 
                 }
 
                 VerifiedType.REVERIFIED_NEED.value -> {
-                    ll_verified.isEnabled = true
-                    ll_verified.isClickable = true
-                    tv_verified.text = getString(R.string.P211)
+                     binding.llVerified.isEnabled = true
+                     binding.llVerified.isClickable = true
+                     binding.tvVerified.text = getString(R.string.P211)
 
                 }
 
                 VerifiedType.VERIFYING.value, VerifiedType.VERIFIED_WAIT.value -> {
-                    ll_verified.isEnabled = true
-                    ll_verified.isClickable = true
-                    tv_verified.text = getString(R.string.kyc_unverifing)
+                     binding.llVerified.isEnabled = true
+                     binding.llVerified.isClickable = true
+                     binding.tvVerified.text = getString(R.string.kyc_unverifing)
 
                 }
                 VerifiedType.REVERIFYING.value -> {
-                    ll_verified.isEnabled = true
-                    ll_verified.isClickable = true
-                    tv_verified.text = getString(R.string.P196)
+                     binding.llVerified.isEnabled = true
+                     binding.llVerified.isClickable = true
+                     binding.tvVerified.text = getString(R.string.P196)
 
                 }
 
                 else -> {
-                    ll_verified.isEnabled = true
-                    ll_verified.isClickable = true
-                    tv_verified.text = getString(R.string.kyc_unverified)
+                     binding.llVerified.isEnabled = true
+                     binding.llVerified.isClickable = true
+                     binding.tvVerified.text = getString(R.string.kyc_unverified)
 
                 }
             }
 
             if (it?.setted == FLAG_NICKNAME_IS_SET) {
-                btn_nickname.isEnabled = false
-                icon_arrow_nickname.visibility = View.GONE
+                binding.btnNickname.isEnabled = false
+                binding.iconArrowNickname.visibility = View.GONE
             } else {
-                btn_nickname.isEnabled = true
-                icon_arrow_nickname.visibility = View.VISIBLE
+                binding.btnNickname.isEnabled = true
+                binding.iconArrowNickname.visibility = View.VISIBLE
             }
 
         }
@@ -659,15 +667,15 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
     }
 
-    private fun setWithdrawInfo(userInfo: UserInfo) = userInfo.run {
-        judgeImproveInfo(ll_real_name, tv_real_name, icon_real_name, fullName)
-        judgeImproveInfo(ll_qq_number, tv_qq_number, icon_qq_number, qq)
-        judgeImproveInfo(ll_e_mail, tv_e_mail, icon_e_mail, email, true)
-        judgeImproveInfo(ll_phone_number, tv_phone_number, icon_phone_number, phone, true)
-        judgeImproveInfo(ll_wechat, tv_we_chat, icon_wechat, wechat)
+    private fun setWithdrawInfo(userInfo: UserInfo) = binding.run {
+        judgeImproveInfo(llRealName, tvRealName, iconRealName, userInfo.fullName)
+        judgeImproveInfo(llQqNumber, tvQqNumber, iconQqNumber, userInfo.qq)
+        judgeImproveInfo(llEMail, tvEMail, iconEMail, userInfo.email, true)
+        judgeImproveInfo(llPhoneNumber, tvPhoneNumber, iconPhoneNumber, userInfo.phone, true)
+        judgeImproveInfo(llWechat, tvWeChat, iconWechat, userInfo.wechat)
         if (viewModel.userInfo.value?.isGlifeAccount()==true){
-            ll_phone_number.isEnabled = false
-            icon_phone_number.gone()
+            llPhoneNumber.isEnabled = false
+            iconPhoneNumber.gone()
         }
     }
 
@@ -761,6 +769,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         tvCityPermanent.text = checkStr(it.t.permanentCity)
         tvAddressPermanent.text = checkStr(it.t.permanentAddress)
         tvZipCodePermanent.text = checkStr(it.t.permanentZipCode)
+        tvGender.text = checkStr(it.t.gender)
     }
     private fun setIdentifyStatus(verified: Boolean){
         val iconViews = arrayOf(
@@ -777,6 +786,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             iconCityPermanent,
             iconAddressPermanent,
             iconZipCodePermanent,
+            iconGender,
         )
         if (verified){
             setViewGone(*iconViews)
@@ -797,6 +807,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             llCityPermanent,
             llAddressPermanent,
             llZipCodePermanent,
+            llGender,
         )
         setViewClickable(!verified,*itemViews)
     }

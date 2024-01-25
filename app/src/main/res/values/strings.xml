@@ -1690,4 +1690,7 @@
     <string name="LT050_1">Support</string>
     <string name="A002">Please verify that you are 21 years of ages or older to enter this site</string>
     <string name="ageVerify">Age Verification</string>
+    <string name="J905">Gender</string>
+    <string name="N809">Male</string>
+    <string name="N810">Female</string>
 </resources>
