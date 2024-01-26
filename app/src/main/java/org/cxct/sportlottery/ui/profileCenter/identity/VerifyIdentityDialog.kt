@@ -6,11 +6,12 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialog_verify_identity.*
-import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogVerifyIdentityBinding
 import org.cxct.sportlottery.util.setServiceClick
 
 class VerifyIdentityDialog: DialogFragment() {
+
+    private val binding by lazy { DialogVerifyIdentityBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -19,7 +20,7 @@ class VerifyIdentityDialog: DialogFragment() {
     ): View? {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setCustomDialogStyle()
-        return inflater.inflate(R.layout.dialog_verify_identity, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,10 +28,10 @@ class VerifyIdentityDialog: DialogFragment() {
         initButton()
     }
 
-    private fun initButton() {
-        btn_close.setOnClickListener { dismiss() }
-        btn_service.setServiceClick(childFragmentManager)
-        btn_check.setOnClickListener {
+    private fun initButton()=binding.run {
+        btnClose.setOnClickListener { dismiss() }
+        btnService.root.setServiceClick(childFragmentManager)
+        btnCheck.setOnClickListener {
             startActivity(Intent(context, VerifyIdentityActivity::class.java))
             dismiss()
         }

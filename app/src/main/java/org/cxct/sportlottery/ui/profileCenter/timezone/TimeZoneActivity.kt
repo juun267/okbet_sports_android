@@ -1,53 +1,47 @@
 package org.cxct.sportlottery.ui.profileCenter.timezone
 
 import android.os.Build
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_timezone.*
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.databinding.ActivityTimezoneBinding
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeZoneUitl
-import org.cxct.sportlottery.util.setTitleLetterSpacing
 import timber.log.Timber
 
 /**
  * @app_destination 外觀(日間/夜間)切換-时区切换
  */
-class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+class TimeZoneActivity : BindingActivity<MainViewModel,ActivityTimezoneBinding>() {
 
     lateinit var adapter: TimeZoneAdapter
     private var originItems = listOf<TimeZone>()
     private var selectItem: TimeZone? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        setContentView(R.layout.activity_timezone)
         initToolbar()
         initView()
     }
 
-    private fun initToolbar() {
-        tv_toolbar_title.setTitleLetterSpacing()
-        tv_toolbar_title.text = getString(R.string.timezone)
-        btn_toolbar_back.setOnClickListener {
+    private fun initToolbar()=binding.run {
+        toolBar.titleText = getString(R.string.timezone)
+        toolBar.setOnBackPressListener {
             finish()
         }
     }
 
-    private fun initView() {
-        et_search.addTextChangedListener(object:TextWatcher{
+    private fun initView()=binding.run {
+        etSearch.addTextChangedListener(object:TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -60,7 +54,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 }
             }
         })
-        rv_list.layoutManager=LinearLayoutManager(this,RecyclerView.VERTICAL,false)
+        rvList.layoutManager=LinearLayoutManager(this@TimeZoneActivity,RecyclerView.VERTICAL,false)
         adapter= TimeZoneAdapter(ItemClickListener {
             selectItem = it
             sortList()
@@ -88,7 +82,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         selectItem = findCurrentZone()
 
         withContext(Dispatchers.Main) {
-            rv_list.adapter = adapter
+            binding.rvList.adapter = adapter
             sortList()
         }
     }
@@ -105,7 +99,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun sortList() {
-        val key = et_search.text.toString().trim()
+        val key = binding.etSearch.text.toString().trim()
         var currentItems = arrayListOf<TimeZone>()
         currentItems.addAll(originItems)
         currentItems.forEach { item ->
@@ -140,7 +134,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
 
         adapter.setItems(currentItems, commitCallback)
-        lin_empty.visibility = if (currentItems.isNullOrEmpty()) View.VISIBLE else View.GONE
+        binding.linEmpty.root.visibility = if (currentItems.isNullOrEmpty()) View.VISIBLE else View.GONE
     }
 
     private val commitCallback = Runnable {
@@ -149,22 +143,22 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun scrollTop() {
-        rv_list.removeCallbacks(topRunnable)
-        rv_list.postDelayed(topRunnable, 100)
+        binding.rvList.removeCallbacks(topRunnable)
+        binding.rvList.postDelayed(topRunnable, 100)
     }
 
     private val topRunnable = Runnable {
-        if (rv_list == null) {
+        if (binding.rvList == null) {
             return@Runnable
         }
-        if ((rv_list.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0) {
-            rv_list.smoothScrollToPosition(0)
+        if ((binding.rvList.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0) {
+            binding.rvList.smoothScrollToPosition(0)
         }
     }
 
     override fun onStop() {
         super.onStop()
-        rv_list.removeCallbacks(topRunnable)
+        binding.rvList.removeCallbacks(topRunnable)
     }
 
 }

@@ -1,10 +1,8 @@
 package org.cxct.sportlottery.view.statusSelector
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -13,13 +11,13 @@ import android.widget.ListPopupWindow
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
-import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
-import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ViewStatusSpinnerBinding
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.KeyboadrdHideUtil
 import org.cxct.sportlottery.util.ScreenUtil
+import splitties.systemservices.layoutInflater
 
 class StatusSpinnerView @JvmOverloads constructor(
     context: Context,
@@ -61,21 +59,22 @@ class StatusSpinnerView @JvmOverloads constructor(
     var selectedListener: OnClickListener ? = null
 
     var selectedTag: String? = ""
-        get() = tv_name.tag?.toString()
+        get() = binding.tvName.tag?.toString()
 
     var selectedCode: String? = ""
         get() = selectItem?.code
 
-    init {
-        val view = LayoutInflater.from(context).inflate(R.layout.view_status_spinner, null)
-        addView(view)
-        view.apply {
+    val binding by lazy { ViewStatusSpinnerBinding.inflate(layoutInflater) }
 
-            iv_arrow.setImageResource(arrowImg)
-            tv_name.tag = ""
-            tv_name.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
-            tv_name.setTextColor(ContextCompat.getColor(context, R.color.color_C9CFD7))
-            tv_name.gravity = textGravity
+    init {
+        addView(binding.root)
+        binding.run {
+
+            ivArrow.setImageResource(arrowImg)
+            tvName.tag = ""
+            tvName.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
+            tvName.setTextColor(ContextCompat.getColor(context, R.color.color_C9CFD7))
+            tvName.gravity = textGravity
             setOnClickListener {
                 this@StatusSpinnerView.callOnClick()
                 if (!KeyboadrdHideUtil.isActive(it.context)) {
@@ -102,14 +101,14 @@ class StatusSpinnerView @JvmOverloads constructor(
         spinnerAdapter = StatusSpinnerAdapter(dataList)
         spinnerAdapter!!.setItmeColor(resources.getColor(R.color.color_FFFFFF))
         mListPop = ListPopupWindow(context)
-        cl_root.doOnLayout {
+        binding.clRoot.doOnLayout {
             var listWidth = typedArray.getDimension(R.styleable.StatusBottomSheetStyle_listWidth,
                 0F
             )
             if (listWidth > 0) {
                 mListPop.width = listWidth.toInt()
             } else {
-                mListPop.width = cl_root.width - 10.dp
+                mListPop.width = binding.clRoot.width - 10.dp
             }
         }
         mListPop.height = LayoutParams.WRAP_CONTENT
@@ -132,10 +131,10 @@ class StatusSpinnerView @JvmOverloads constructor(
             )
         }
         mListPop.setOnDismissListener {
-            iv_arrow.setImageResource(arrowImg)
+            binding.ivArrow.setImageResource(arrowImg)
         }
         mListPop.setAdapter(spinnerAdapter)
-        mListPop.anchorView = cl_root  //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+        mListPop.anchorView = binding.clRoot  //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.isModal = true //设置是否是模式
         mListPop.verticalOffset = 5
         mListPop.horizontalOffset = 5.dp
@@ -161,21 +160,21 @@ class StatusSpinnerView @JvmOverloads constructor(
     private fun showListPop() {
         if (mListPop.isShowing) {
             mListPop.dismiss()
-            iv_arrow.setImageResource(arrowImg)
+            binding.ivArrow.setImageResource(arrowImg)
         } else {
-            mListPop.horizontalOffset = (cl_root.width - mListPop.width) / 2
+            mListPop.horizontalOffset = (binding.clRoot.width - mListPop.width) / 2
             mListPop.show()
-            iv_arrow.setImageResource(arrowImgUp)
+            binding.ivArrow.setImageResource(arrowImgUp)
         }
     }
 
     fun setBetStationStyle(){
         ConstraintSet().apply {
-            clone(cl_root)
+            clone(binding.clRoot)
             clear(R.id.tv_name, ConstraintSet.END)
             clear(R.id.iv_arrow, ConstraintSet.START)
             connect(R.id.iv_arrow, ConstraintSet.END, R.id.cl_root, ConstraintSet.END, 6.dp)
-            applyTo(cl_root)
+            applyTo(binding.clRoot)
         }
     }
 
@@ -215,12 +214,12 @@ class StatusSpinnerView @JvmOverloads constructor(
     }
 
     fun setSelectInfo(data: StatusSheetData?) {
-        tv_name.tag = data?.code
-        tv_name.text = data?.showName
+        binding.tvName.tag = data?.code
+        binding.tvName.text = data?.showName
         selectedListener?.onClick(null)
-        tv_name.setTextColor(ContextCompat.getColor(context, R.color.color_414655))
+        binding.tvName.setTextColor(ContextCompat.getColor(context, R.color.color_414655))
     }
     fun setNameGravity(gravity: Int){
-        tv_name.gravity = gravity
+        binding.tvName.gravity = gravity
     }
 }
