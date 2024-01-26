@@ -12,6 +12,7 @@ import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT_2
 import java.util.*
@@ -74,7 +75,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     fun setOnClickSearchListener (search: () -> Unit) {
-        btn_search.setOnClickListener {
+        btn_search.clickDelay {
             search.invoke()
         }
     }

@@ -9,9 +9,10 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.nickname.ModifyProfileInfoActivity">
 
-    <include
+    <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/tool_bar"
-        layout="@layout/view_base_tool_bar_no_drawer" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"

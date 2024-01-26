@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <LinearLayout
-        android:id="@+id/ll_qq_number"
+        android:id="@+id/lin_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -47,7 +47,7 @@
 
 
         <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
-            android:id="@+id/et_qq_number"
+            android:id="@+id/eet_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_14"

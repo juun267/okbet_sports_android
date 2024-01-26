@@ -1,22 +1,17 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.findNavController
-import kotlinx.android.synthetic.main.fragment_money_transfer.*
-import kotlinx.android.synthetic.main.view_account_balance_2.*
-import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.FragmentMoneyTransferBinding
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.refreshMoneyLoading
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
-class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
+class MoneyTransferFragment : BindingFragment<MoneyTransferViewModel,FragmentMoneyTransferBinding>() {
 
     private val rvAdapter by lazy {
         MoneyTransferAdapter(ItemClickListener {
@@ -26,32 +21,26 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
         })
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onInitView(view: View) {
         viewModel.setToolbarName(getString(R.string.account_transfer))
         viewModel.showTitleBar(true)
-        return inflater.inflate(R.layout.fragment_money_transfer, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         initView()
         initOnclick()
         initObserver()
     }
 
-    private fun initView() {
-        rv_plat.adapter = rvAdapter
-        btn_recycle.setTitleLetterSpacing()
-        tv_currency_type.text = sConfigData?.systemCurrencySign
+    private fun initView()=binding.run {
+        rvPlat.adapter = rvAdapter
+        btnRecycle.setTitleLetterSpacing()
+        layoutBalance.tvCurrencyType.text = sConfigData?.systemCurrencySign
     }
 
-    private fun initOnclick() {
-        btn_recycle.setOnClickListener {
+    private fun initOnclick()=binding.run {
+        btnRecycle.setOnClickListener {
             viewModel.recycleAllMoney()
         }
 
-        layout_balance.btn_refresh.setOnClickListener {
+        layoutBalance.btnRefresh.setOnClickListener {
             it.refreshMoneyLoading()
             viewModel.getMoneyAndTransferOut()
         }
@@ -68,7 +57,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.apply {
-                layout_balance.tv_account_balance.text = TextUtil.format(it)
+                binding.layoutBalance.tvAccountBalance.text = TextUtil.format(it)
             }
         }
 
@@ -86,7 +75,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
         viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
             if (it == null) return@observe
             rvAdapter.addFooterAndSubmitList(it)
-            btn_recycle.isEnabled = it.any { data -> data.money != 0.0 }
+            binding.btnRecycle.isEnabled = it.any { data -> data.money != 0.0 }
 
         }
     }

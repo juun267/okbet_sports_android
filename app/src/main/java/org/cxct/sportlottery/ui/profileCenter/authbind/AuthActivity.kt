@@ -5,6 +5,7 @@ import android.widget.TextView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.databinding.ActivityAuthBinding
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.AuthManager
 import org.cxct.sportlottery.util.setServiceClick
 import org.cxct.sportlottery.util.setStartDrawable
@@ -12,7 +13,7 @@ import org.cxct.sportlottery.util.setStartDrawable
 /**
  * @app_destination 修改暱稱
  */
-class AuthActivity : BaseActivity<AuthViewModel,ActivityAuthBinding>() {
+class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
@@ -24,10 +25,9 @@ class AuthActivity : BaseActivity<AuthViewModel,ActivityAuthBinding>() {
     }
 
     private fun initButton()=binding.run {
-        toolBar.btnToolbarBack.setOnClickListener {
+        toolBar.setOnBackPressListener {
             finish()
         }
-
         tvCheckGoogle.setOnClickListener {
             AuthManager.authGoogle(this@AuthActivity)
         }

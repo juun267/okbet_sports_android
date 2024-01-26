@@ -1,26 +1,20 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.graphics.Typeface
-import android.os.Bundle
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import kotlinx.android.synthetic.main.edittext_login.view.*
-import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
-import kotlinx.android.synthetic.main.view_account_balance_2.*
-import kotlinx.android.synthetic.main.view_account_balance_2.view.*
-import kotlinx.android.synthetic.main.view_status_selector.view.*
+import kotlinx.android.synthetic.main.fragment_main_right.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.databinding.FragmentMoneyTransferSubBinding
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.ArithUtil
@@ -32,7 +26,7 @@ import timber.log.Timber
 import java.math.BigDecimal
 
 
-class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
+class MoneyTransferSubFragment : BindingFragment<MoneyTransferViewModel,FragmentMoneyTransferSubBinding>() {
 
     private val gameDataArg: MoneyTransferSubFragmentArgs by navArgs()
     private var isPlatReversed = false
@@ -42,57 +36,51 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     private val defaultUnit = 1.0 //預設unit
     private val thirdTransferUnit = sConfigData?.thirdTransferUnit
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
+    override fun onInitView(view: View) {
         viewModel.setToolbarName(getString(R.string.transfer_info))
         viewModel.showTitleBar(false)
-        return inflater.inflate(R.layout.fragment_money_transfer_sub, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         initView()
         initOnclick()
         initObserver()
         viewModel.getAllBalance()
     }
 
-    private fun initView() {
+    private fun initView()=binding.run{
 
-        tv_balance.setText(R.string.title_current_money)
+        tvBanlance.setText(R.string.title_current_money)
         moveAnim(isPlatReversed)
         viewModel.initCode()
         //region 靠左置中＆移除padding
-        out_account.tv_selected.gravity = Gravity.START or Gravity.CENTER
-        out_account.tv_selected.setPadding(0, 0, 0, 0)
-        in_account.tv_selected.gravity = Gravity.START or Gravity.CENTER
-        in_account.tv_selected.setPadding(0, 0, 0, 0)
+        outAccount.viewBinding.tvSelected.run {
+            gravity = Gravity.START or Gravity.CENTER
+            setPadding(0, 0, 0, 0)
+        }
+        inAccount.viewBinding.tvSelected.run {
+            gravity = Gravity.START or Gravity.CENTER
+            setPadding(0, 0, 0, 0)
+        }
         //endregion
-        out_account.selectedText = getString(R.string.plat_money)
-        in_account.selectedText = gameDataArg.gameData.showName
+        outAccount.selectedText = getString(R.string.plat_money)
+        inAccount.selectedText = gameDataArg.gameData.showName
         gameMoney = gameDataArg.gameData.money ?: 0.0
-        layout_balance.tv_currency_type.text = sConfigData?.systemCurrencySign
+        layoutBalance.tvCurrencyType.text = sConfigData?.systemCurrencySign
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
-        et_transfer_money.afterTextChanged {
+        etTransferMoney.afterTextChanged {
             if (it.isEmptyStr()) {
-                et_transfer_money.setError("")
+                etTransferMoney.setError("")
                 return@afterTextChanged
             }
 
             val enable = it.toBigDecimal() > BigDecimal(0)
-            btn_transfer.isEnabled = enable
+            btnTransfer.isEnabled = enable
             if (enable) {
-                et_transfer_money.setError("")
+                etTransferMoney.setError("")
             } else {
-                et_transfer_money.setError(getString(R.string.error_input_amount))
+                etTransferMoney.setError(getString(R.string.error_input_amount))
             }
         }
-        btn_transfer.setTitleLetterSpacing()
+        btnTransfer.setTitleLetterSpacing()
         val hint =
             if (thirdTransferUnit == null) {
                 useDefaultUnit = true
@@ -104,19 +92,20 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                     ArithUtil.toMoneyFormatForHint(thirdTransferUnit))
             }
         Timber.d("thirdTransferUnit: $thirdTransferUnit, hint: $hint")
-        et_transfer_money.setMaxLength(20)
-        et_transfer_money.setHint(hint)
-        et_transfer_money.apply {
-            tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-            tv_title.setTextColor(resources.getColor(R.color.color_535D76))
-            tv_title.setTypeface(Typeface.DEFAULT)
-            et_input.minHeight = 50.dp
-            v_bottom_line.visibility = View.INVISIBLE
-            btn_clear.setImageResource(R.drawable.ic_clear_gray)
-            btn_clear.setPadding(2, 2, 2, 2)
+        etTransferMoney.apply {
+            setMaxLength(20)
+            setHint(hint)
+            binding.apply {
+                tvTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                tvTitle.setTextColor(resources.getColor(R.color.color_535D76))
+                tvTitle.setTypeface(Typeface.DEFAULT)
+                etInput.minHeight = 50.dp
+                vBottomLine.visibility = View.INVISIBLE
+                btnClear.setImageResource(R.drawable.ic_clear_gray)
+                btnClear.setPadding(2, 2, 2, 2)
+            }
             clearIsShow = false
         }
-
     }
 
     private fun setupSelectedTag() {
@@ -126,73 +115,73 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         if (viewModel.inCode == null) {
             viewModel.inCode = gameDataArg.gameData.code
         }
-        out_account.selectedTag = viewModel.outCode
-        in_account.selectedTag = viewModel.inCode
-//        Timber.e("out_account.selectedTag: ${out_account.selectedTag}")
-//        Timber.e("in_account.selectedTag: ${in_account.selectedTag}")
+        binding.outAccount.selectedTag = viewModel.outCode
+        binding.inAccount.selectedTag = viewModel.inCode
+//        Timber.e("outAccount.selectedTag: ${outAccount.selectedTag}")
+//        Timber.e("inAccount.selectedTag: ${inAccount.selectedTag}")
     }
 
-    private fun initOnclick() {
+    private fun initOnclick()=binding.run {
 
         val rotateAnimation = AnimationUtils.loadAnimation(activity, R.anim.rotate)
 
-        iv_spin.setOnClickListener {
-            iv_spin.startAnimation(rotateAnimation)
+        ivSpin.setOnClickListener {
+            ivSpin.startAnimation(rotateAnimation)
             isPlatReversed = !isPlatReversed
             setupSelectedTag()
             moveAnim(isPlatReversed)
         }
 
-        layout_balance.btn_refresh.setOnClickListener {
+        layoutBalance.btnRefresh.setOnClickListener {
             it.refreshMoneyLoading()
             viewModel.getMoneyAndTransferOut()
         }
-        btn_transfer.setOnClickListener {
-            et_transfer_money.clearFocus()
-            val transferMoneyText = et_transfer_money.getText()
+        btnTransfer.setOnClickListener {
+            etTransferMoney.clearFocus()
+            val transferMoneyText = etTransferMoney.getText()
             if (transferMoneyText.isEmpty()) {
-                et_transfer_money.setError(getString(R.string.error_input_empty))
+                etTransferMoney.setError(getString(R.string.error_input_empty))
                 return@setOnClickListener
             }
             if (transferMoneyText == "0") {
-                et_transfer_money.setError(getString(R.string.error_input_amount))
+                etTransferMoney.setError(getString(R.string.error_input_amount))
                 return@setOnClickListener
             }
-            viewModel.transfer(isPlatReversed, out_account.selectedTag, in_account.selectedTag, et_transfer_money.getText().toLongOrNull())
+            viewModel.transfer(isPlatReversed, outAccount.selectedTag, inAccount.selectedTag, etTransferMoney.getText().toLongOrNull())
         }
 
-        out_account.setOnItemSelectedListener {
+        outAccount.setOnItemSelectedListener {
             viewModel.outCode = it.code
             viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
-            in_account.excludeSelected("${it.code}")
+            inAccount.excludeSelected("${it.code}")
         }
 
-        in_account.setOnItemSelectedListener {
+        inAccount.setOnItemSelectedListener {
             viewModel.inCode = it.code
             viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
-            out_account.excludeSelected("${it.code}")
+            outAccount.excludeSelected("${it.code}")
         }
     }
 
     private fun initObserver() {
         viewModel.loading.observe(viewLifecycleOwner) {
             if (it) requireActivity().hideSoftKeyboard()
-            et_transfer_money.isEnabled = !it
+            binding.etTransferMoney.isEnabled = !it
         }
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.apply {
-                layout_balance.tv_account_balance.text = TextUtil.format(it)
+                binding.layoutBalance.tvAccountBalance.text = TextUtil.format(it)
             }
         }
 
         viewModel.subInPlatSheetList.observe(viewLifecycleOwner) {
-            in_account.dataList = it
+            binding.inAccount.dataList = it
             setupSelectedTag()
         }
 
         viewModel.subOutPlatSheetList.observe(viewLifecycleOwner) {
-            out_account.dataList = it
+            binding.outAccount.dataList = it
             setupSelectedTag()
         }
 
@@ -218,17 +207,17 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         }
     }
 
-    private fun moveAnim(isReversed: Boolean) {
+    private fun moveAnim(isReversed: Boolean)=binding.run {
 
         val constraintSet = ConstraintSet()
 
         constraintSet.apply {
             if (isReversed) {
-                tv_title_in.text = getString(R.string.out_account)
-                tv_title_out.text = getString(R.string.in_account)
-                in_account.bottomSheetTitleText = getString(R.string.select_plat)
-                out_account.bottomSheetTitleText = getString(R.string.select_plat)
-                clone(constraint_layout)
+                tvTitleIn.text = getString(R.string.out_account)
+                tvTitleOut.text = getString(R.string.in_account)
+                inAccount.bottomSheetTitleText = getString(R.string.select_plat)
+                outAccount.bottomSheetTitleText = getString(R.string.select_plat)
+                clone(constraintLayout)
                 connect(R.id.ll_in,
                     ConstraintSet.TOP,
                     ConstraintSet.PARENT_ID,
@@ -237,11 +226,11 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_in, ConstraintSet.BOTTOM, 10.dp)
                 connect(R.id.ll_out, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, 10.dp)
             } else {
-                tv_title_in.text = getString(R.string.in_account)
-                tv_title_out.text = getString(R.string.out_account)
-                in_account.bottomSheetTitleText = getString(R.string.select_plat)
-                out_account.bottomSheetTitleText = getString(R.string.select_plat)
-                clone(constraint_layout)
+                tvTitleIn.text = getString(R.string.in_account)
+                tvTitleOut.text = getString(R.string.out_account)
+                inAccount.bottomSheetTitleText = getString(R.string.select_plat)
+                outAccount.bottomSheetTitleText = getString(R.string.select_plat)
+                clone(constraintLayout)
                 connect(R.id.ll_out,
                     ConstraintSet.TOP,
                     ConstraintSet.PARENT_ID,
@@ -251,6 +240,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 connect(R.id.ll_in, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, 10.dp)
             }
         }
-        constraintSet.applyTo(constraint_layout)
+        constraintSet.applyTo(constraintLayout)
     }
 }
