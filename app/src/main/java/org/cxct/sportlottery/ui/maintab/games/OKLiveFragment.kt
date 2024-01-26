@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.games
 
-import android.media.Image
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -78,7 +77,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::clas
         showGameAll()
         initObservable()
         viewModel.getOKLiveHall()
-        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKLIVE.code)
+        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKLIVE)
     }
 
     private var requestTag: Any = Any()

@@ -19,7 +19,6 @@ import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
@@ -83,7 +82,7 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::c
         initObservable()
         viewModel.getOKGamesHall()
         viewModel.getJackpotData()
-        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKGAME.code)
+        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKGAME)
         if (AgeVerifyDialog.isAgeVerifyNeedShow){
             AgeVerifyDialog.isAgeVerifyNeedShow =false
             AgeVerifyDialog(onConfirm = {}, onExit = {}).show(childFragmentManager)

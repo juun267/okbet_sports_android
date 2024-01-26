@@ -91,7 +91,7 @@ class SportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Bind
     override fun onInitView(view: View) {
         initToolBar()
         initTabLayout()
-        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_SPORT.code)
+        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_SPORT)
     }
 
     override fun onBindViewStatus(view: View) {

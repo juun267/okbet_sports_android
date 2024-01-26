@@ -22,7 +22,7 @@ class PromotionPopupDialog(private val promotionPopupListener: () -> Unit) : Bas
     }
     companion object{
         fun needShow():Boolean{
-            if (sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden) } != true) {
+            if (sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION && !it.imageName3.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden) } != true) {
                 return false
             }
             return true
@@ -49,7 +49,7 @@ class PromotionPopupDialog(private val promotionPopupListener: () -> Unit) : Bas
         val promotionList = mutableListOf<PromotionData>()
         sConfigData?.imageList?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })?.map { imageData ->
             //最多顯示9筆
-            if (promotionList.size < 9 && imageData.imageType == ImageType.PROMOTION.code && !imageData.imageName3.isNullOrEmpty() && (!getMarketSwitch() && !imageData.isHidden)) {
+            if (promotionList.size < 9 && imageData.imageType == ImageType.PROMOTION && !imageData.imageName3.isNullOrEmpty() && (!getMarketSwitch() && !imageData.isHidden)) {
                 promotionList.add(
                     PromotionData(
                         imgUrl = "${sConfigData?.resServerHost}${imageData.imageName3}",

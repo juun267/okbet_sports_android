@@ -19,6 +19,8 @@ import org.cxct.sportlottery.ui.profileCenter.modify.BindInfoViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.KeyboadrdHideUtil.Companion.hideSoftKeyboard
 import org.cxct.sportlottery.view.checkRegisterListener
+import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
+import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
 
 class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
 
@@ -33,6 +35,18 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
                 return false
             }
             return afterLoginOrRegist
+        }
+
+        fun bindBindPhoneDialog(priority: Int, fm: () -> FragmentManager): PriorityDialog? {
+            if (!needShow()) {
+                return null
+            }
+
+            return object : BasePriorityDialog<BindInfoViewModel>() {
+                override fun getFragmentManager() = fm.invoke()
+                override fun priority() = priority
+                override fun createDialog() = BindPhoneDialog()
+            }
         }
     }
 

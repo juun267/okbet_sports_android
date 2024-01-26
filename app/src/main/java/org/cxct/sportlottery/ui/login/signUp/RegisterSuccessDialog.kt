@@ -15,6 +15,8 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setupSummary
+import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
+import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
 import org.cxct.sportlottery.view.isVisible
 
 class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>(BaseViewModel::class) {
@@ -24,6 +26,18 @@ class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>
         var loginFirstPhoneGiveMoney = false
         fun needShow():Boolean{
             return ifNew
+        }
+
+        fun buildRegisterSuccessDialog(priority: Int, fm: () -> FragmentManager, callback: () -> Unit): PriorityDialog? {
+            if (!needShow()) {
+                return null
+            }
+
+            return object : BasePriorityDialog<BaseViewModel>() {
+                override fun getFragmentManager() = fm.invoke()
+                override fun priority() = priority
+                override fun createDialog() = RegisterSuccessDialog(callback)
+            }
         }
     }
 

@@ -23,6 +23,8 @@ import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
+import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
 
 /**
  * 顯示棋牌彈窗
@@ -44,19 +46,16 @@ class PopImageDialog(imageType: Int) : BaseDialog<BaseViewModel>(BaseViewModel::
 //        DIALOG_OKLIVE(25),
 //        DIALOG_OKGAMES_HOME(23),//OKGames包，默认进入棋牌页时候的活动弹窗
         private var imageTypeEnableMap = mutableMapOf<Int, Boolean>(
-            ImageType.DIALOG_HOME.code to true,
-            ImageType.DIALOG_SPORT.code to true,
-            ImageType.DIALOG_OKGAME.code to true,
-            ImageType.DIALOG_OKLIVE.code to true,
-            ImageType.DIALOG_OKGAMES_HOME.code to true
+            ImageType.DIALOG_HOME to true,
+            ImageType.DIALOG_SPORT to true,
+            ImageType.DIALOG_OKGAME to true,
+            ImageType.DIALOG_OKLIVE to true,
+            ImageType.DIALOG_OKGAMES_HOME to true
         )
         fun resetImageType(){
             imageTypeEnableMap.keys.forEach {
                 imageTypeEnableMap[it] = true
             }
-        }
-        fun checkImageTypeEnable(imageType: Int): Boolean{
-            return imageTypeEnableMap[imageType]?:false
         }
 
         private fun checkImageTypeAvailable(imageType: Int) = sConfigData?.imageList?.filter {
@@ -68,6 +67,24 @@ class PopImageDialog(imageType: Int) : BaseDialog<BaseViewModel>(BaseViewModel::
             if (checkImageTypeAvailable(imageType) && imageTypeEnableMap[imageType] == true) {
                 PopImageDialog(imageType).show(manager)
                 imageTypeEnableMap[imageType] = false
+            }
+        }
+
+        fun buildImageDialog(priority: Int, imageType: Int, fm: () -> FragmentManager): PriorityDialog? {
+            if (!checkImageTypeAvailable(imageType) || imageTypeEnableMap[imageType] != true) {
+                return null
+            }
+
+            return object : BasePriorityDialog<BaseViewModel>() {
+                init {
+                    observerDismiss { imageTypeEnableMap[imageType] = false }
+                }
+                override fun createDialog() = PopImageDialog(imageType)
+
+                override fun getFragmentManager() = fm.invoke()
+
+                override fun priority() = priority
+
             }
         }
     }
@@ -167,7 +184,7 @@ class PopImageDialog(imageType: Int) : BaseDialog<BaseViewModel>(BaseViewModel::
             XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }.toMutableList()
         LogUtil.toJson(images)
-        if (imageType == ImageType.DIALOG_HOME.code && images.isNotEmpty()) {
+        if (imageType == ImageType.DIALOG_HOME && images.isNotEmpty()) {
             xbanner.visible()
         }
         xbanner.setBannerData(images)
