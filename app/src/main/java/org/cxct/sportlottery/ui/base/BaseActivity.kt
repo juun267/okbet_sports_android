@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 import com.gyf.immersionbar.ImmersionBar
 import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.createVBinding
 import org.cxct.sportlottery.common.extentions.getKClass
 import org.cxct.sportlottery.util.ResourceWrapper
 import org.cxct.sportlottery.view.floatingbtn.LotteryManager
@@ -22,24 +24,31 @@ import kotlin.reflect.KClass
 /**
  * 框架封装，共用方法调用，这里不放业务相关的代码
  */
-abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCompatActivity() {
+abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>(clazz: KClass<VM>? = null) : AppCompatActivity()  {
 
-    val viewModel: T by viewModel(clazz = clazz ?: getKClass(0) as KClass<T>)
+    val viewModel: VM by viewModel(clazz = clazz ?: getKClass(0) as KClass<VM>)
+    protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
 
     override fun onStart() {
         super.onStart()
-        RedEnvelopeManager.instance.bind(this as BaseActivity<BaseViewModel>)
-        LotteryManager.instance.bind(this as BaseActivity<BaseViewModel>)
-        LuckyWheelManager.instance.bind(this as BaseActivity<BaseViewModel>)
-        PromotionManager.instance.bind(this as BaseActivity<BaseViewModel>)
+        RedEnvelopeManager.instance.bind(this)
+        LotteryManager.instance.bind(this)
+        LuckyWheelManager.instance.bind(this)
+        PromotionManager.instance.bind(this)
     }
 
     private var firstCrate = false
     override fun onCreate(savedInstanceState: Bundle?) {
         firstCrate = true
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+        onInitView()
+        onInitData()
 //        ServiceFloatingButton.targetActivity(this)
     }
+    protected abstract fun onInitView()
+
+    protected open fun onInitData() { }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         firstCrate = true

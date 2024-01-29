@@ -15,8 +15,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.common.WebActivity.Companion.FIRM_CODE
 import org.cxct.sportlottery.ui.common.WebActivity.Companion.GAME_CATEGORY_CODE
@@ -34,7 +33,7 @@ import org.cxct.sportlottery.util.isThirdTransferOpen
 import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
-open class ThirdGameActivity : BindingActivity<MainViewModel, ActivityThirdGameBinding>() {
+open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBinding>() {
 
     private var mUserInfo: UserInfo? = null
 

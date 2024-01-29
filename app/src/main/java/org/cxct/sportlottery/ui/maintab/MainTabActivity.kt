@@ -67,7 +67,7 @@ import splitties.activities.start
 import kotlin.system.exitProcess
 
 
-class MainTabActivity : BaseSocketActivity<MainTabViewModel>(MainTabViewModel::class) {
+class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBinding>(MainTabViewModel::class) {
 
     val gamesViewModel by viewModel<OKGamesViewModel>()
     private val fragmentHelper: FragmentHelper by lazy {
@@ -114,12 +114,9 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel>(MainTabViewModel::c
         }
     }
 
-    private val binding by lazy { ActivityMainTabBinding.inflate(layoutInflater) }
     private lateinit var tabHelper: MainTabInflate
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun onInitView() {
         ImmersionBar.with(this)
             .statusBarDarkFont(true)
             .transparentStatusBar()
@@ -143,7 +140,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel>(MainTabViewModel::c
                 if (currentFragment is SportFragment) {
                     showSportLeftMenu()
                 } else {
-                    showMainLeftMenu(currentFragment.javaClass as Class<BaseFragment<*>>?)
+                    showMainLeftMenu(currentFragment.javaClass as Class<BaseFragment<*,*>>?)
                 }
                 false
             }
@@ -288,7 +285,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel>(MainTabViewModel::c
             it.getContentIfNotHandled()?.let { event ->
                 TransformInDialog(event.first, event.second, event.third) {
                     enterThirdGame(it, event.first)
-                }.show(supportFragmentManager, null)
+                }.show(supportFragmentManager)
             }
         }
 
@@ -368,7 +365,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel>(MainTabViewModel::c
     }
 
 
-    fun showMainLeftMenu(contentFragment: Class<BaseFragment<*>>?) {
+    fun showMainLeftMenu(contentFragment: Class<BaseFragment<*,*>>?) {
         fragmentHelper2.show(MainLeftFragment::class.java, Bundle()) { fragment, _ ->
             fragment.openWithFragment(contentFragment)
         }

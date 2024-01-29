@@ -4,11 +4,11 @@ import android.content.Intent
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityHelpCenterBinding
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.util.JumpUtil
 
-class HelpCenterActivity : BindingActivity<HelpCenterViewModel,ActivityHelpCenterBinding>() {
+class HelpCenterActivity : BaseActivity<HelpCenterViewModel, ActivityHelpCenterBinding>() {
 
 
     override fun onInitView() {

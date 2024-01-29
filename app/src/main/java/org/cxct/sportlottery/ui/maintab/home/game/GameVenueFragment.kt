@@ -8,15 +8,15 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass
 
 
-abstract class GameVenueFragment<VM : BaseViewModel, VB>: BindingFragment<VM, FragmentGamevenueBinding>() {
+abstract class GameVenueFragment<VM : BaseViewModel, VB>: BaseFragment<VM, FragmentGamevenueBinding>() {
 
     override fun createVM(clazz: KClass<VM>): VM {
         return getViewModel(clazz = clazz)
@@ -27,10 +27,6 @@ abstract class GameVenueFragment<VM : BaseViewModel, VB>: BindingFragment<VM, Fr
 
     protected fun showLoadingView() = loadingHolder.showLoading()
     protected fun hideLoadingView() = loadingHolder.showLoadSuccess()
-
-    override fun createRootView(inflater: LayoutInflater,
-                                container: ViewGroup?,
-                                savedInstanceState: Bundle?) = loadingHolder.wrapper
 
     override fun onInitView(view: View) {
         binding.rvcGameType.setLinearLayoutManager()

@@ -13,7 +13,7 @@ import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -28,7 +28,7 @@ import kotlin.system.exitProcess
 /**
  * @app_destination 啟動頁
  */
-class SplashActivity : BindingActivity<SplashViewModel,ActivitySplashBinding>() {
+class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
     private var enterTime=0L
@@ -161,10 +161,10 @@ class SplashActivity : BindingActivity<SplashViewModel,ActivitySplashBinding>() 
         }
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
-            if (it.isForceUpdate || it.isShowUpdateDialog)
+//            if (it.isForceUpdate || it.isShowUpdateDialog)
                 showAppDownloadDialog(it.isForceUpdate, it.version, it.checkAppVersionResult)
-            else
-                viewModel.goNextPage()
+//            else
+//                viewModel.goNextPage()
         }
 
         viewModel.skipHomePage.observe(this) {
@@ -201,7 +201,7 @@ class SplashActivity : BindingActivity<SplashViewModel,ActivitySplashBinding>() 
         lastVersion: String,
         checkAppVersionResult: CheckAppVersionResult?,
     ) {
-        AppDownloadDialog(this,
+        AppDownloadDialog(
             isForceUpdate,
             lastVersion,
             checkAppVersionResult,
@@ -217,7 +217,7 @@ class SplashActivity : BindingActivity<SplashViewModel,ActivitySplashBinding>() 
                     viewModel.goNextPage()
                 }
 
-            }).show()
+            }).show(supportFragmentManager)
     }
 
     override fun onDestroy() {

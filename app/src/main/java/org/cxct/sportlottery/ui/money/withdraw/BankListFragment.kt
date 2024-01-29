@@ -14,14 +14,14 @@ import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.PAYMAYA
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 /**
  * @app_destination 提款设置
  */
-class BankListFragment : BindingFragment<WithdrawViewModel,FragmentBankListBinding>() {
+class BankListFragment : BaseFragment<WithdrawViewModel,FragmentBankListBinding>() {
 
     private val mNavController by lazy {
         findNavController()
@@ -56,7 +56,7 @@ class BankListFragment : BindingFragment<WithdrawViewModel,FragmentBankListBindi
                     DeleteBankCardDialog(phoneNo!!) { pwd, code ->
                         loading()
                         viewModel.deleteBankCard(it.id.toString(), pwd, code)
-                    }.show(childFragmentManager, null)
+                    }.show(childFragmentManager)
                 }
 
             )

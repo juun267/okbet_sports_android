@@ -1,9 +1,5 @@
 package org.cxct.sportlottery.ui.login
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.GlobalScope
@@ -20,7 +16,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.KeyboadrdHideUtil.Companion.hideSoftKeyboard
 import org.cxct.sportlottery.view.checkRegisterListener
 
-class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
+class BindPhoneDialog: BaseDialog<BindInfoViewModel,DialogBindphoneBinding>() {
 
     companion object{
         private var instance: BindPhoneDialog?=null
@@ -39,25 +35,15 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
     init {
         setStyle(R.style.FullScreen)
     }
-    lateinit var binding : DialogBindphoneBinding
     private var inputPhoneNoOrEmail: String="" // 输入的手机号或者邮箱，不为空即为输入的号码格式正确
     private var smsCode: String = "" // 短信或者邮箱验证码
     private var userName: String? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding= DialogBindphoneBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
         initView()
         initObserve()
     }
+
     private fun initView()=binding.run {
         tvAmount.text = "${sConfigData?.firstPhoneGiveMoney?:0}"
         tvName.text = getString(R.string.P235,"${sConfigData?.systemCurrencySign}${sConfigData?.firstPhoneGiveMoney?:0}")

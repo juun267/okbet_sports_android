@@ -5,13 +5,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ActivityVerifyIdentityBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class VerifyIdentityActivity :
-    BindingActivity<ProfileCenterViewModel,ActivityVerifyIdentityBinding>() {
+    BaseActivity<ProfileCenterViewModel, ActivityVerifyIdentityBinding>() {
 
     private val mNavController by lazy { (supportFragmentManager.findFragmentById(R.id.identity_container) as NavHostFragment).navController }
 

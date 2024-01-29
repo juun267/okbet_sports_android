@@ -10,7 +10,7 @@ import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.databinding.FragmentRechargeLogBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
@@ -22,7 +22,7 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 /**
  * @app_destination 存款记录
  */
-class RechargeLogFragment : BindingFragment<FinanceViewModel,FragmentRechargeLogBinding>(), OnItemClickListener {
+class RechargeLogFragment : BaseFragment<FinanceViewModel, FragmentRechargeLogBinding>(), OnItemClickListener {
 
     private lateinit var refreshHelper: RefreshHelper
 
@@ -114,9 +114,7 @@ class RechargeLogFragment : BindingFragment<FinanceViewModel,FragmentRechargeLog
         viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 if (logDetailDialog.dialog?.isShowing != true) {
-                    logDetailDialog.show(parentFragmentManager,
-                        RechargeLogFragment::class.java.simpleName
-                    )
+                    logDetailDialog.show(parentFragmentManager)
                 }
             }
         }

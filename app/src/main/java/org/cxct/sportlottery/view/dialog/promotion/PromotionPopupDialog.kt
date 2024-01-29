@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.view.dialog.promotion
 
-import android.os.Bundle
-import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.youth.banner.indicator.CircleIndicator
 import org.cxct.sportlottery.R
@@ -14,8 +12,8 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.getMarketSwitch
 
-class PromotionPopupDialog(private val promotionPopupListener: () -> Unit) : BaseDialog<BaseViewModel>(
-    BaseViewModel::class) {
+class PromotionPopupDialog(private val promotionPopupListener: () -> Unit)
+    : BaseDialog<BaseViewModel,DialogPromotionPopupBinding>() {
 
     init {
         setStyle(R.style.FullScreen)
@@ -28,19 +26,8 @@ class PromotionPopupDialog(private val promotionPopupListener: () -> Unit) : Bas
             return true
         }
     }
-    lateinit var binding : DialogPromotionPopupBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding= DialogPromotionPopupBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
         initView()
     }
 

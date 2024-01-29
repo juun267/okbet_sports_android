@@ -17,7 +17,7 @@ import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setupSummary
 import org.cxct.sportlottery.view.isVisible
 
-class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>(BaseViewModel::class) {
+class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel,DialogRegisterSuccessBinding>() {
 
     companion object{
         var ifNew = false
@@ -30,19 +30,8 @@ class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>
     init {
         setStyle(R.style.FullScreen)
     }
-    lateinit var binding : DialogRegisterSuccessBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding=DialogRegisterSuccessBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
         initView()
     }
     private fun initView() {

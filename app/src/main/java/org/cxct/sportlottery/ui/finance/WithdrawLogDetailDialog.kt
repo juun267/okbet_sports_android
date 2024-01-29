@@ -22,32 +22,15 @@ import kotlin.math.abs
 /**
  * @app_destination 提款详情弹窗
  */
-class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
+class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel,DialogWithdrawLogDetailBinding>() {
     init {
         setStyle(R.style.CustomDialogStyle)
     }
 
-    private val binding by lazy { DialogWithdrawLogDetailBinding.inflate(layoutInflater) }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return binding.root.apply {
-            setupConfirmButton()
-        }
-    }
-
-    private fun setupConfirmButton() {
+    override fun onInitView()=binding.run {
         binding.logDetailConfirm.setOnClickListener {
             dismiss()
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)=binding.run {
-        super.onViewCreated(view, savedInstanceState)
         wdLogDetailRemarksLeft.text = getString(R.string.N064) + "："
         viewModel.withdrawLogDetail.observe(this@WithdrawLogDetailDialog.viewLifecycleOwner) { event ->
             event.peekContent().let { it ->

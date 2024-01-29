@@ -161,7 +161,7 @@ class OKGamesViewModel(
     /**
      * 进入OKgame游戏
      */
-    fun requestEnterThirdGame(gameData: OKGameBean, baseActivity: BaseActivity<*>) {
+    fun requestEnterThirdGame(gameData: OKGameBean, baseActivity: BaseActivity<*,*>) {
         RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         requestEnterThirdGame(
             "${gameData.firmType}",

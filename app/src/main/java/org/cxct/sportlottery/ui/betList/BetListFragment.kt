@@ -57,7 +57,7 @@ import java.math.BigDecimal
  * 畫面會依照注單數量(viewModel.betInfoList)動態調整高度
  * if (size == 1) { 單一注單 } else { 多筆注單 or 空注單 }
  */
-class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::class) {
+class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBinding>() {
 
 
     companion object {
@@ -92,8 +92,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
      *  BASKETBALL_ENDING_CARD 2
      */
     private var currentBetType: Int = 0
-
-    private lateinit var binding: FragmentBetListBinding
 
     private var oddsType: OddsType = OddsType.EU
 
@@ -144,15 +142,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         )
     )
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentBetListBinding.inflate(layoutInflater)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView(view: View) {
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         initView()
         initObserver()

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityWithdrawLogBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.UWType
@@ -23,7 +23,7 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 /**
  * @app_destination 提款记录
  */
-class WithdrawLogFragment : BindingFragment<FinanceViewModel,ActivityWithdrawLogBinding>() {
+class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBinding>() {
     private var reserveTime: String = ""
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
@@ -201,10 +201,7 @@ class WithdrawLogFragment : BindingFragment<FinanceViewModel,ActivityWithdrawLog
             if (it.getContentIfNotHandled() == null) return@observe
 
             if (logDetailDialog.dialog?.isShowing != true) {
-                logDetailDialog.show(
-                    parentFragmentManager,
-                    WithdrawLogFragment::class.java.simpleName
-                )
+                logDetailDialog.show(parentFragmentManager)
             }
         }
 

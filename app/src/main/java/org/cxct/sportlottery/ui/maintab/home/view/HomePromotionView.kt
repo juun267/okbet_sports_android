@@ -29,7 +29,7 @@ class HomePromotionView(context: Context, attrs: AttributeSet) : LinearLayout(co
 
     }
 
-    fun setup(fragment: BaseFragment<MainHomeViewModel>) = binding.run {
+    fun setup(fragment: BaseFragment<MainHomeViewModel,*>) = binding.run {
         viewModel = fragment.viewModel
         viewModel.activityImageList.observe(fragment){
             //优惠banne让判断是否首页显示

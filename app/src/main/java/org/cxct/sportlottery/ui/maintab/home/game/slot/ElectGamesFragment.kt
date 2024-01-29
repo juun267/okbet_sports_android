@@ -26,7 +26,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import splitties.views.rightPadding
 
-open class ElectGamesFragment<M, VB>: GameVenueFragment<OKGamesViewModel, FragmentGamevenueBinding>() {
+open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, FragmentGamevenueBinding>() {
 
     private val tabAdapter = ElectTabAdapter() {
         gameAdapter2.findFirmPosition(it.id)?.let { rightManager.scrollToPositionWithOffset(it, 0) }

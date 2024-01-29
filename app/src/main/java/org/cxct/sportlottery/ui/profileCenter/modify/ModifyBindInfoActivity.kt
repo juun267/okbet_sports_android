@@ -28,7 +28,7 @@ import org.cxct.sportlottery.util.drawable.DrawableCreator
 
 
 // 验证绑定的手机号或者邮箱
-class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel::class) {
+class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel,ActivityModifyBindInfoBinding>() {
 
     companion object {
         fun start(context: Activity, @ModifyType modifyType:  Int, requestCode: Int, phone: String?, email: String?, oldInfo: String? = null) {
@@ -41,7 +41,6 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
         }
     }
 
-    private val binding by lazy { ActivityModifyBindInfoBinding.inflate(layoutInflater) }
     private val phone by lazy { intent.getStringExtra("phone") }
     private val email by lazy { intent.getStringExtra("email") }
     private val oldInfo by lazy { intent.getStringExtra("oldInfo") }
@@ -62,8 +61,8 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
             getString(if (isModifyPhone()) R.string.set_phone_no else R.string.set_email)
         }
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onInitView() {
         setStatusBarDarkFont()
         setContentView(binding.root)
         initObserve()

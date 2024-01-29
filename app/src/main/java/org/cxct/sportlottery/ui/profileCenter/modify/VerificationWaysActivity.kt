@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import kotlinx.android.synthetic.main.activity_forget_ways.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.databinding.ActivityForgetWaysBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
@@ -15,7 +15,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.util.setServiceClick
 
-class VerificationWaysActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::class)  {
+class VerificationWaysActivity: BaseActivity<ForgetViewModel,ActivityForgetWaysBinding>()  {
 
     companion object {
 
@@ -34,16 +34,14 @@ class VerificationWaysActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::c
     private val requestVerification = 100
     private fun isModifyPhoneNo() = ModifyType.PhoneNumber == modifyType
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusBarDarkFont()
-        setContentView(R.layout.activity_forget_ways)
         initView()
     }
 
-    private fun initView() {
-        bindFinish(btn_back)
-        cl_live_chat.setServiceClick(supportFragmentManager)
+    private fun initView() =binding.run{
+        bindFinish(btnBack)
+        clLiveChat.setServiceClick(supportFragmentManager)
         setTitle()
         btnPhoneWays.setText(R.string.verify_phone_no)
         btnEmailWays.setText(R.string.verify_email)
@@ -75,7 +73,7 @@ class VerificationWaysActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::c
                 R.string.edit_email
             }
         }
-        tv_title_forget_password.setText(title)
+        binding.tvTitleForgetPassword.setText(title)
     }
 
     private fun toVerify(phone: String?, email: String?) {

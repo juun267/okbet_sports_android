@@ -3,13 +3,14 @@ package org.cxct.sportlottery.ui.finance
 import androidx.navigation.findNavController
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityFinanceBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity.Companion.RechargeViewLog
 
 /**
  * @app_destination 资金明细
  */
-class FinanceActivity : BindingActivity<FinanceViewModel,ActivityFinanceBinding>() {
+class FinanceActivity : BaseSocketActivity<FinanceViewModel, ActivityFinanceBinding>(FinanceViewModel::class) {
 
     private val navController by lazy {
         findNavController(R.id.financeFragment)

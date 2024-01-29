@@ -24,7 +24,7 @@ import timber.log.Timber
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
-class WebActivityImp(val activity: BaseActivity<*>,val overrideUrlLoading: (view: WebView, url: String)->Boolean) {
+class WebActivityImp(val activity: BaseActivity<*,*>,val overrideUrlLoading: (view: WebView, url: String)->Boolean) {
 
     private var mUploadCallbackAboveL: ValueCallback<Array<Uri>>? = null
     private var mUploadMessage: ValueCallback<Uri?>? = null

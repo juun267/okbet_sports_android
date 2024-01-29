@@ -24,7 +24,7 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
@@ -59,7 +59,7 @@ import java.io.FileNotFoundException
 /**
  * @app_destination 个人中心
  */
-class ProfileCenterFragment : BindingFragment<ProfileCenterViewModel,FragmentProfileCenterBinding>() {
+class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfileCenterBinding>() {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
 
@@ -272,7 +272,7 @@ class ProfileCenterFragment : BindingFragment<ProfileCenterViewModel,FragmentPro
         //赛果结算
         btnGameSettlement.setOnClickListener {
             //检查是否关闭入口
-            checkSportStatus(requireActivity() as BaseActivity<*>) {
+            checkSportStatus(requireActivity() as BaseActivity<*,*>) {
                 startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
             }
         }

@@ -16,7 +16,7 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.FragmentVerifyIdentityKycBinding
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.login.signUp.info.DateTimePickerOptions
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
@@ -32,8 +32,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
 
-class VerifyKYCFragment :
-    BindingFragment<ProfileCenterViewModel,FragmentVerifyIdentityKycBinding>() {
+class VerifyKYCFragment : BaseFragment<ProfileCenterViewModel,FragmentVerifyIdentityKycBinding>() {
     private var firstFile: File? = null
     private var headIdFile: File? = null
     private var secondFile: File? = null

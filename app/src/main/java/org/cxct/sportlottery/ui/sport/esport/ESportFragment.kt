@@ -18,7 +18,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -35,7 +35,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import splitties.fragments.start
 import kotlin.reflect.KClass
 
-class ESportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
+class ESportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
 
     override fun createVM(clazz: KClass<SportTabViewModel>): SportTabViewModel {
         return getViewModel(clazz = clazz)

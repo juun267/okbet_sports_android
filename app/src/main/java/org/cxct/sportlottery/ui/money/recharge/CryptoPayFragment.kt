@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -17,24 +15,12 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
-import kotlinx.android.synthetic.main.crypto_pay_fragment.*
-import kotlinx.android.synthetic.main.crypto_pay_fragment.btn_submit
-import kotlinx.android.synthetic.main.crypto_pay_fragment.cv_account
-import kotlinx.android.synthetic.main.crypto_pay_fragment.cv_currency
-import kotlinx.android.synthetic.main.crypto_pay_fragment.linMaintenance
-import kotlinx.android.synthetic.main.crypto_pay_fragment.tv_fee_amount
-import kotlinx.android.synthetic.main.crypto_pay_fragment.tv_fee_rate
-import kotlinx.android.synthetic.main.crypto_pay_fragment.tv_rate
-import kotlinx.android.synthetic.main.crypto_pay_fragment.tv_recharge_money
-import kotlinx.android.synthetic.main.crypto_pay_fragment.txv_account
-import kotlinx.android.synthetic.main.crypto_pay_fragment.txv_currency
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
-import kotlinx.android.synthetic.main.edittext_login.view.*
-import kotlinx.android.synthetic.main.online_crypto_pay_fragment.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.show
+import org.cxct.sportlottery.databinding.CryptoPayFragmentBinding
+import org.cxct.sportlottery.databinding.DialogBottomSheetIconAndTickBinding
 import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
@@ -47,7 +33,6 @@ import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
 import org.cxct.sportlottery.view.LoginEditText
-import org.cxct.sportlottery.view.isVisible
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -58,7 +43,7 @@ import kotlin.math.abs
 /**
  * @app_destination 存款-虚拟币转账
  */
-class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
+class CryptoPayFragment : BaseFragment<MoneyRechViewModel,CryptoPayFragmentBinding>(MoneyRechViewModel::class) {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
 
@@ -88,21 +73,13 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     var depositDate = Date()
     var depositDate2 = Date()
     var mCalendar: Calendar =Calendar.getInstance()
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.crypto_pay_fragment, container, false)
-    }
 
     fun setArguments(moneyPayWay: MoneyPayWayData?): CryptoPayFragment {
         mMoneyPayWay = moneyPayWay
         return this
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onInitView(view: View) {
         initBottomSheetData()
         initView()
         initButton()
@@ -113,10 +90,10 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         setAccountBottomSheet()
     }
 
-    private fun initButton() {
+    private fun initButton()=binding.run {
         //提交
-        btn_submit.setTitleLetterSpacing()
-        btn_submit.setOnClickListener {
+        btnSubmit.setTitleLetterSpacing()
+        btnSubmit.setOnClickListener {
             createMoneyAddRequest().let {
                 viewModel.rechargeCryptoSubmit(
                     it,
@@ -125,39 +102,37 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 )
             }
         }
-        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,binding.linMaintenance.root) }
 
         //年月日的时间选择器
-        ll_recharge_time.setOnClickListener {
+        llRechargeTime.setOnClickListener {
             dateTimePicker.show()
         }
         //时分秒的选择器
-        ll_recharge_time2.setOnClickListener {
+        llRechargeTime2.setOnClickListener {
             dateTimePickerHMS.show()
         }
         //選擇幣種
-        cv_currency.setOnClickListener {
+        cvCurrency.setOnClickListener {
             currencyBottomSheet.show()
         }
         //充值帳號
-        cv_account.setOnClickListener {
+        cvAccount.setOnClickListener {
             accountBottomSheet.show()
         }
         //複製
-        btn_qr_copy.setOnClickListener {
+        btnQrCopy.setOnClickListener {
             val clipboard =
                 activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-            val clipData = ClipData.newPlainText(null, txv_payee.text)
+            val clipData = ClipData.newPlainText(null, txvPayee.text)
             clipboard?.setPrimaryClip(clipData)
             ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
         }
         //上傳照片
-        cv_upload_image.setOnClickListener {
-            this.activity?.let {
-                val dialog = RechargePicSelectorDialog()
-                dialog.mSelectListener = mSelectMediaListener
-                dialog.show(it.supportFragmentManager, null)
-            }
+        cvUpload.setOnClickListener {
+            val dialog = RechargePicSelectorDialog()
+            dialog.mSelectListener = mSelectMediaListener
+            dialog.show(requireActivity().supportFragmentManager, null)
         }
         //去充值
       /*  btn_qr_recharge.setOnClickListener {
@@ -174,7 +149,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }*/
     }
 
-    private fun initView() {
+    private fun initView()=binding.run {
         resetEvent()
         setupTextChangeEvent()
         setupFocusEvent()
@@ -182,20 +157,20 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         updateMoneyRange()
         refreshCurrencyType(currentCurrency)
 
-        tv_recharge_money.text = String.format(
+        tvRechargeMoney.text = String.format(
             resources.getString(R.string.txv_recharge_money),
             sConfigData?.systemCurrencySign,
             "0.00"
         )
 
         if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0)  //返利
-            tv_fee_amount.text = String.format(
+            tvFeeAmount.text = String.format(
                 getString(R.string.hint_feeback_amount),
                 sConfigData?.systemCurrencySign,
                 "0.00"
             )
         else
-            tv_fee_amount.text = String.format(
+            tvFeeAmount.text = String.format(
                 getString(R.string.hint_fee_amount),
                 sConfigData?.systemCurrencySign,
                 "0.00"
@@ -208,12 +183,12 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         //充值個數訊息
         viewModel.rechargeAccountMsg.observe(viewLifecycleOwner) {
-            et_recharge_amount.setError(it)
+            binding.etRechargeAmount.setError(it)
         }
 
         //區塊鏈交易ID訊息
         viewModel.hashCodeErrorMsg.observe(viewLifecycleOwner) {
-            et_transaction_id.setError(it)
+            binding.etTransactionId.setError(it)
         }
         //API回傳結果
         viewModel.cryptoPayResult.observe(viewLifecycleOwner) {
@@ -225,20 +200,20 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.voucherPathErrorMsg.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { url ->
                 if (url.isNotEmpty()) {
-                    cv_upload.isActivated = true
-                    tv_upload.text = url
-                    tv_upload.setTextColor(
+                    binding.cvUpload.isActivated = true
+                    binding.tvUpload.text = url
+                    binding.tvUpload.setTextColor(
                         ContextCompat.getColor(
-                            tv_upload.context,
+                            requireContext(),
                             R.color.color_F75452_E23434
                         )
                     )
                 } else {
-                    cv_upload.isActivated = false
-                    tv_upload.text = resources.getString(R.string.title_reupload_pic)
-                    tv_upload.setTextColor(
+                    binding.cvUpload.isActivated = false
+                    binding.tvUpload.text = resources.getString(R.string.title_reupload_pic)
+                    binding.tvUpload.setTextColor(
                         ContextCompat.getColor(
-                            tv_upload.context,
+                            requireContext(),
                             R.color.color_BBBBBB_333333
                         )
                     )
@@ -249,11 +224,11 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         //上傳支付截圖
         viewModel.voucherUrlResult.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { result ->
-                Glide.with(this).load(result).into(img_screen_shot)
-                ic_screen_shot.visibility = View.GONE
-                img_screen_shot.visibility = View.VISIBLE
-                tv_click.visibility = View.GONE
-                tv_upload.text = String.format(resources.getString(R.string.title_reupload_pic))
+                Glide.with(this).load(result).into(binding.imgScreenShot)
+                binding.icScreenShot.visibility = View.GONE
+                binding.imgScreenShot.visibility = View.VISIBLE
+                binding.tvClick.visibility = View.GONE
+                binding.tvUpload.text = String.format(resources.getString(R.string.title_reupload_pic))
                 voucherUrl = result
                 checkVoucherUrl(voucherUrl.toString())
             }
@@ -268,7 +243,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         dateTimePicker = TimePickerBuilder(activity) { date, _ ->
             try {
                 depositDate = date
-                txv_recharge_time.text = TimeUtil.dateToStringFormatYMD(date)
+                binding.txvRechargeTime.text = TimeUtil.dateToStringFormatYMD(date)
                 upDataTimeYMD()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -284,13 +259,13 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             .setSubmitText(getString(R.string.picker_submit))
             .setSubmitColor(
                 ContextCompat.getColor(
-                    txv_recharge_time.context,
+                    binding.txvRechargeTime.context,
                     R.color.color_7F7F7F_999999
                 )
             )
             .setCancelColor(
                 ContextCompat.getColor(
-                    txv_recharge_time.context,
+                    binding.txvRechargeTime.context,
                     R.color.color_7F7F7F_999999
                 )
             )
@@ -302,7 +277,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         dateTimePickerHMS = TimePickerBuilder(activity) { date, _ ->
             try {
                 depositDate2 = date
-                txv_recharge_time2.text = TimeUtil.dateToStringFormatHMS(date)
+                binding.txvRechargeTime2.text = TimeUtil.dateToStringFormatHMS(date)
                 upDataTimeHMS()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -317,13 +292,13 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             .setSubmitText(getString(R.string.picker_submit))
             .setSubmitColor(
                 ContextCompat.getColor(
-                    txv_recharge_time2.context,
+                    binding.txvRechargeTime2.context,
                     R.color.color_7F7F7F_999999
                 )
             )
             .setCancelColor(
                 ContextCompat.getColor(
-                    txv_recharge_time2.context,
+                    binding.txvRechargeTime2.context,
                     R.color.color_7F7F7F_999999
                 )
             )
@@ -353,22 +328,22 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         }
     }
-    private fun checkVoucherUrl(url: String) {
+    private fun checkVoucherUrl(url: String)=binding.run {
         if (url.isNotEmpty()) {
-            cv_upload.isActivated = false
-            tv_upload.text = resources.getString(R.string.title_reupload_pic)
-            tv_upload.setTextColor(
+            cvUpload.isActivated = false
+            tvUpload.text = resources.getString(R.string.title_reupload_pic)
+            tvUpload.setTextColor(
                 ContextCompat.getColor(
-                    tv_upload.context,
+                    requireContext(),
                     R.color.color_BBBBBB_333333
                 )
             )
         } else {
-            cv_upload.isActivated = true
-            tv_upload.text = resources.getString(R.string.title_upload_pic_plz)
-            tv_upload.setTextColor(
+            cvUpload.isActivated = true
+            tvUpload.text = resources.getString(R.string.title_upload_pic_plz)
+            tvUpload.setTextColor(
                 ContextCompat.getColor(
-                    tv_upload.context,
+                    requireContext(),
                     R.color.color_F75452_E23434
                 )
             )
@@ -381,15 +356,10 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             //支付渠道
             val contentView: ViewGroup? =
                 activity?.window?.decorView?.findViewById(android.R.id.content)
-            val bottomSheetView =
-                layoutInflater.inflate(
-                    R.layout.dialog_bottom_sheet_icon_and_tick,
-                    contentView,
-                    false
-                )
+            val bottomSheetViewBinding = DialogBottomSheetIconAndTickBinding.inflate(layoutInflater,contentView,false)
             currencyBottomSheet = BottomSheetDialog(this.requireContext())
             currencyBottomSheet.apply {
-                setContentView(bottomSheetView)
+                setContentView(bottomSheetViewBinding.root)
                 currencyBtsAdapter = BtsRvAdapter(
                     mCurrencyBottomSheetList,
                     BtsRvAdapter.BankAdapterListener { bankCard, _ ->
@@ -398,12 +368,12 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                         resetEvent()
                         dismiss()
                     })
-                rv_bank_item.layoutManager =
+                bottomSheetViewBinding.rvBankItem.layoutManager =
                     LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                rv_bank_item.adapter = currencyBtsAdapter
-                tv_game_type_title.text =
+                bottomSheetViewBinding.rvBankItem.adapter = currencyBtsAdapter
+                bottomSheetViewBinding.tvGameTypeTitle.text =
                     String.format(resources.getString(R.string.title_choose_currency))
-                currencyBottomSheet.btn_close.setOnClickListener {
+                bottomSheetViewBinding.btnClose.setOnClickListener {
                     this.dismiss()
                 }
             }
@@ -417,15 +387,10 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             //支付帳號
             val accountContentView: ViewGroup? =
                 activity?.window?.decorView?.findViewById(android.R.id.content)
-            val accountBottomSheetView =
-                layoutInflater.inflate(
-                    R.layout.dialog_bottom_sheet_icon_and_tick,
-                    accountContentView,
-                    false
-                )
+            val bottomSheetViewBinding = DialogBottomSheetIconAndTickBinding.inflate(layoutInflater,accountContentView,false)
             accountBottomSheet = BottomSheetDialog(this.requireContext())
             accountBottomSheet.apply {
-                setContentView(accountBottomSheetView)
+                setContentView(bottomSheetViewBinding.root)
                 accountBtsAdapter = BtsRvAdapter(
                     mAccountBottomSheetList,
                     BtsRvAdapter.BankAdapterListener { _, position ->
@@ -433,12 +398,12 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                         resetEvent()
                         dismiss()
                     })
-                rv_bank_item.layoutManager =
+                bottomSheetViewBinding.rvBankItem.layoutManager =
                     LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                rv_bank_item.adapter = accountBtsAdapter
-                tv_game_type_title.text =
+                bottomSheetViewBinding.rvBankItem.adapter = accountBtsAdapter
+                bottomSheetViewBinding.tvGameTypeTitle.text =
                     String.format(resources.getString(R.string.title_choose_recharge_account))
-                accountBottomSheet.btn_close.setOnClickListener {
+                bottomSheetViewBinding.btnClose.setOnClickListener {
                     this.dismiss()
                 }
             }
@@ -450,18 +415,18 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
 
     //重置畫面事件
-    private fun resetEvent() {
+    private fun resetEvent()=binding.run {
         clearFocus()
-        et_recharge_amount.setText("")
-        et_transaction_id.setText("")
-        tv_upload.text = String.format(resources.getString(R.string.title_upload_pic))
-        tv_click.visibility = View.VISIBLE
+        etRechargeAmount.setText("")
+        etTransactionId.setText("")
+        tvUpload.text = String.format(resources.getString(R.string.title_upload_pic))
+        tvClick.visibility = View.VISIBLE
 
         //清空圖片
-        ic_screen_shot.visibility = View.VISIBLE
-        img_screen_shot.visibility = View.GONE
-        img_screen_shot.invalidate()
-        img_screen_shot.setImageBitmap(null)
+        icScreenShot.visibility = View.VISIBLE
+        imgScreenShot.visibility = View.GONE
+        imgScreenShot.invalidate()
+        imgScreenShot.setImageBitmap(null)
         voucherUrl = ""
 
         viewModel.clearnRechargeStatus()
@@ -506,21 +471,21 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     //依據選擇的支付渠道，刷新UI
     @SuppressLint("SetTextI18n")
-    private fun refreshSelectRechCfgs(selectRechCfgs: RechCfg?) {
+    private fun refreshSelectRechCfgs(selectRechCfgs: RechCfg?)=binding.run {
 
         try {
             //地址QR code
             if (selectRechCfgs?.qrCode.isNullOrEmpty()) {
-                img_qr.visibility = View.INVISIBLE
+                imgQr.visibility = View.INVISIBLE
             } else {
-                img_qr.visibility = View.VISIBLE
-                Glide.with(this).load(selectRechCfgs?.qrCode).into(img_qr)
+                imgQr.visibility = View.VISIBLE
+                Glide.with(requireContext()).load(selectRechCfgs?.qrCode).into(imgQr)
             }
             //充值個數hint
             updateMoneyRange()
 
             //匯率
-            tv_rate.text = String.format(
+            tvRate.text = String.format(
                 getString(R.string.hint_rate),
                 ArithUtil.toMoneyFormat(selectRechCfgs?.exchangeRate)
             )
@@ -528,28 +493,28 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             //手續費率/返利
             when {
                 selectRechCfgs?.rebateFee == 0.0 || selectRechCfgs?.rebateFee == null -> {
-                    tv_fee_rate.gone()
-                    tv_fee_amount.gone()
-                    tv_fee_rate.text =
+                    tvFeeRate.gone()
+                    tvFeeAmount.gone()
+                    tvFeeRate.text =
                         String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
-                    tv_fee_amount.text = String.format(
+                    tvFeeAmount.text = String.format(
                         getString(R.string.hint_fee_amount),
                         sConfigData?.systemCurrencySign,
                         "0.00"
                     )
                 }
                 selectRechCfgs.rebateFee > 0.0 -> {
-                    tv_fee_rate.show()
-                    tv_fee_amount.show()
-                    tv_fee_rate.text = String.format(
+                    tvFeeRate.show()
+                    tvFeeAmount.show()
+                    tvFeeRate.text = String.format(
                         getString(R.string.hint_feeback_rate),
                         ArithUtil.toMoneyFormat(selectRechCfgs.rebateFee.times(100))
                     ) + "%"
                 }
                 else -> {
-                    tv_fee_rate.show()
-                    tv_fee_amount.show()
-                    tv_fee_rate.text = String.format(
+                    tvFeeRate.show()
+                    tvFeeAmount.show()
+                    tvFeeRate.text = String.format(
                         getString(R.string.hint_fee_rate),
                         ArithUtil.toMoneyFormat(ArithUtil.mul(abs(selectRechCfgs.rebateFee), 100.0))
                     ) + "%"
@@ -557,38 +522,38 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             }
 
             //充幣地址
-            txv_payee.text = selectRechCfgs?.payee
+            txvPayee.text = selectRechCfgs?.payee
 
             //存款时间年月日
-            txv_recharge_time.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
+            txvRechargeTime.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
             //存款时间时分秒
-            txv_recharge_time2.text = TimeUtil.dateToStringFormatHMS(Date())
+            txvRechargeTime2.text = TimeUtil.dateToStringFormatHMS(Date())
             //備註
-            txv_remark.visibility = View.VISIBLE
-            txv_remark.text = selectRechCfgs?.remark
+            txvRemark.visibility = View.VISIBLE
+            txvRemark.text = selectRechCfgs?.remark
 
             //更新充值金額&手續費金額
-            refreshMoneyDetail(et_recharge_amount.getText())
-            mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btn_submit,linMaintenance) }
+            refreshMoneyDetail(etRechargeAmount.getText())
+            mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,binding.linMaintenance.root) }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setupTextChangeEvent() {
+    private fun setupTextChangeEvent()=binding.run {
         viewModel.apply {
             //充值個數
-            et_recharge_amount.afterTextChanged {
+            etRechargeAmount.afterTextChanged {
                 if (it.startsWith("0") && it.length > 1) {
-                    et_recharge_amount.setText(et_recharge_amount.getText().replace("0", ""))
-                    et_recharge_amount.setCursor()
+                    etRechargeAmount.setText(etRechargeAmount.getText().replace("0", ""))
+                    etRechargeAmount.setCursor()
                     return@afterTextChanged
                 }
 
-                if (et_recharge_amount.getText().length > 6) {
-                    et_recharge_amount.setText(et_recharge_amount.getText().substring(0, 6))
-                    et_recharge_amount.setCursor()
+                if (etRechargeAmount.getText().length > 6) {
+                    etRechargeAmount.setText(etRechargeAmount.getText().substring(0, 6))
+                    etRechargeAmount.setCursor()
                     return@afterTextChanged
                 }
 
@@ -597,46 +562,46 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 refreshMoneyDetail(it)
 
                 if (mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
-                    tv_fee_rate.gone()
-                    tv_fee_amount.gone()
-                    tv_fee_rate.text =
+                    tvFeeRate.gone()
+                    tvFeeAmount.gone()
+                    tvFeeRate.text =
                         String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
-                    tv_fee_amount.text = String.format(
+                    tvFeeAmount.text = String.format(
                         getString(R.string.hint_fee_amount),
                         sConfigData?.systemCurrencySign,
                         "0.00"
                     )
                 }else{
-                    tv_fee_rate.show()
-                    tv_fee_amount.show()
+                    tvFeeRate.show()
+                    tvFeeAmount.show()
                 }
             }
 
             //區塊鏈交易ID
-            et_transaction_id.afterTextChanged {
+            etTransactionId.afterTextChanged {
                 checkHashCode(it)
             }
         }
     }
 
     //更新充值金額&手續費金額
-    private fun refreshMoneyDetail(rechargeAmount: String) {
+    private fun refreshMoneyDetail(rechargeAmount: String)=binding.run {
         if (rechargeAmount.isEmpty() || rechargeAmount.isBlank()) {
-            tv_recharge_money.text =
+            tvRechargeMoney.text =
                 String.format(
                     resources.getString(R.string.txv_recharge_money),
                     sConfigData?.systemCurrencySign,
                     "0.00"
                 )
             if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
-                tv_fee_amount.text =
+                tvFeeAmount.text =
                     String.format(
                         getString(R.string.hint_feeback_amount),
                         sConfigData?.systemCurrencySign,
                         "0.00"
                     )
             } else {
-                tv_fee_amount.text =
+                tvFeeAmount.text =
                     String.format(
                         getString(R.string.hint_fee_amount),
                         sConfigData?.systemCurrencySign,
@@ -645,7 +610,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             }
         } else {
             //充值金額
-            tv_recharge_money.text = String.format(
+            tvRechargeMoney.text = String.format(
                 resources.getString(R.string.txv_recharge_money), sConfigData?.systemCurrencySign,
                 ArithUtil.toMoneyFormat(
                     rechargeAmount.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)
@@ -653,7 +618,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             )
             //返利/手續費金額
             if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
-                tv_fee_amount.text =
+                tvFeeAmount.text =
                     String.format(
                         getString(R.string.hint_feeback_amount), sConfigData?.systemCurrencySign,
                         ArithUtil.toMoneyFormat(
@@ -665,7 +630,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
                     )
             } else {
-                tv_fee_amount.text = String.format(
+                tvFeeAmount.text = String.format(
                     getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign,
                     ArithUtil.toMoneyFormat(
                         abs(
@@ -678,24 +643,24 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
     }
 
-    private fun setupFocusEvent() {
+    private fun setupFocusEvent()=binding.run {
         viewModel.apply {
             //充值個數
-            setupEditTextFocusEvent(et_recharge_amount) {
+            setupEditTextFocusEvent(etRechargeAmount) {
                 checkRechargeAccount(
                     it,
                     mSelectRechCfgs
                 )
             }
             //區塊鏈交易ID
-            setupEditTextFocusEvent(et_transaction_id) { checkHashCode(et_transaction_id.getText()) }
+            setupEditTextFocusEvent(etTransactionId) { checkHashCode(etTransactionId.getText()) }
         }
     }
 
     private fun setupEditTextFocusEvent(customEditText: LoginEditText, event: (String) -> Unit) {
         customEditText.setEditTextOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
-                event.invoke(customEditText.et_input.text.toString())
+                event.invoke(customEditText.getText())
         }
     }
 //选择图片回调监听
@@ -746,7 +711,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     //修改hint
     private fun updateMoneyRange() {
-        et_recharge_amount.setHint(
+        binding.etRechargeAmount.setHint(
             String.format(
                 getString(R.string.edt_hint_crypto_pay_count),
                 TextUtil.formatBetQuota(mSelectRechCfgs?.minMoney?.toInt() ?: 0),
@@ -760,8 +725,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         return MoneyAddRequest(
             rechCfgId = mSelectRechCfgs?.id ?: 0,
             bankCode = null,
-            depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
-                et_recharge_amount.getText()
+            depositMoney = if (binding.etRechargeAmount.getText().isNotEmpty()) {
+                binding.etRechargeAmount.getText()
             } else {
                 ""
             },
@@ -774,9 +739,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             appsFlyerKey = BuildConfig.AF_APPKEY,
             appsFlyerPkgName = BuildConfig.APPLICATION_ID
         ).apply {
-            payee = txv_payee.text.toString()//充幣地址
-            payeeName = txv_account.text.toString()//火幣網
-            txHashCode = et_transaction_id.getText()
+            payee = binding.txvPayee.text.toString()//充幣地址
+            payeeName = binding.txvAccount.text.toString()//火幣網
+            txHashCode = binding.etTransactionId.getText()
             voucherPath = voucherUrl
         }
     }
@@ -791,7 +756,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             getAccountBottomSheetList(mSelectRechCfgs?.prodName ?: "")
             refreshAccount(0)//預設帶入第一筆帳戶資料
 
-            txv_currency.text = mSelectRechCfgs?.prodName ?: ""
+            binding.txvCurrency.text = mSelectRechCfgs?.prodName ?: ""
         } else {
             mSelectRechCfgs = null
         }
@@ -800,7 +765,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     //更新充值帳號
     private fun refreshAccount(position: Int) {
         if (mAccountBottomSheetList.size > 0) {
-            txv_account.text = mAccountBottomSheetList[position].bankName
+            binding.txvAccount.text = mAccountBottomSheetList[position].bankName
         }
         mSelectRechCfgs = filterRechCfgsList[currentCurrency]?.get(position)
         refreshSelectRechCfgs(mSelectRechCfgs)

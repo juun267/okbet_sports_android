@@ -1,24 +1,19 @@
 package org.cxct.sportlottery.ui.profileCenter.otherBetRecord
 
-import android.os.Bundle
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.util.setTitleLetterSpacing
+import org.cxct.sportlottery.databinding.ActivityOtherBetRecordBinding
+import org.cxct.sportlottery.ui.base.BaseActivity
 
-class OtherBetRecordActivity :
-    BaseSocketActivity<OtherBetRecordViewModel>(OtherBetRecordViewModel::class) {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+class OtherBetRecordActivity : BaseActivity<OtherBetRecordViewModel,ActivityOtherBetRecordBinding>(OtherBetRecordViewModel::class) {
+
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        setContentView(R.layout.activity_other_bet_record)
         initToolbar()
     }
 
-    private fun initToolbar() {
-        tv_toolbar_title.setTitleLetterSpacing()
-        tv_toolbar_title.text = getString(R.string.other_bet_record)
-        btn_toolbar_back.setOnClickListener {
+    private fun initToolbar()=binding.toolBar.run {
+        titleText = getString(R.string.other_bet_record)
+        setOnBackPressListener {
             onBackPressed()
         }
     }

@@ -24,7 +24,7 @@ import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.ChatRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.chat.adapter.ChatMessageListAdapter3
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -43,7 +43,7 @@ import java.util.ArrayList
  * @description init 失敗重新執行 getSign 最多嘗試三次
  * @app_destination 聊天室 - 大廳群聊
  */
-class ChatFragment : BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
+class ChatFragment : BaseSocketFragment<ChatViewModel, FragmentChatBinding>(),
     View.OnClickListener {
 
     private var isShowScrollBottom = false //列表正在底部附近才會自動滾至下一則訊息

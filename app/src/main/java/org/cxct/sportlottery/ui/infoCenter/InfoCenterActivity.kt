@@ -15,13 +15,13 @@ import org.cxct.sportlottery.databinding.ActivityInfoCenterBinding
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.MsgType
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
  * @app_destination 消息中心
  */
-class InfoCenterActivity : BindingActivity<InfoCenterViewModel,ActivityInfoCenterBinding>() {
+class InfoCenterActivity : BaseActivity<InfoCenterViewModel, ActivityInfoCenterBinding>() {
 
     companion object {
         const val KEY_READ_PAGE = "key-read-page"

@@ -8,7 +8,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentCredentialsBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.LocalUtils
@@ -20,7 +20,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 
-class CredentialsFragment : BindingFragment<ProfileCenterViewModel,FragmentCredentialsBinding>() {
+class CredentialsFragment : BaseFragment<ProfileCenterViewModel,FragmentCredentialsBinding>() {
     private var docFile: File? = null
     private var photoFile: File? = null
 

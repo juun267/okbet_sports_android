@@ -13,20 +13,20 @@ import com.luck.picture.lib.config.SelectModeConfig
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.luck.picture.lib.language.LanguageConfig
-import kotlinx.android.synthetic.main.dialog_selector_dialog.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogSelectorDialogBinding
 import org.cxct.sportlottery.ui.base.BaseDialogFragment
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.selectpicture.ImageCompressEngine
-import org.cxct.sportlottery.util.selectpicture.ImageFileCropEngine
 
 class PicSelectorDialog : BaseDialogFragment() {
 
     var mSelectListener: OnResultCallbackListener<LocalMedia>? = null
+    private val binding by lazy { DialogSelectorDialogBinding.inflate(layoutInflater) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        return inflater.inflate(R.layout.dialog_selector_dialog, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,20 +35,20 @@ class PicSelectorDialog : BaseDialogFragment() {
         initEvent()
     }
 
-    private fun initView() {
-        tv_title.text = String.format(getString(R.string.prompt))
-        tv_message.text = String.format(getString(R.string.upload_dialog_content))
-        btn_negative.text = String.format(getString(R.string.upload_dialog_camera))
-        btn_positive.text = String.format(getString(R.string.upload_dialog_gallery))
+    private fun initView()=binding.run {
+        tvTitle.text = String.format(getString(R.string.prompt))
+        tvMessage.text = String.format(getString(R.string.upload_dialog_content))
+        btnNegative.text = String.format(getString(R.string.upload_dialog_camera))
+        btnPositive.text = String.format(getString(R.string.upload_dialog_gallery))
     }
 
-    private fun initEvent() {
-        btn_positive.setOnClickListener {
+    private fun initEvent()=binding.run {
+        btnPositive.setOnClickListener {
             pickPhoto() //進入相簿流程
             dismiss()
         }
 
-        btn_negative.setOnClickListener {
+        btnNegative.setOnClickListener {
             openCamera() //進入照相流程
             dismiss()
         }
@@ -95,7 +95,7 @@ class PicSelectorDialog : BaseDialogFragment() {
     }
 
     fun setTitle(titleName: String?) {
-        tv_title.text = titleName
+        binding.tvTitle.text = titleName
     }
 
     override fun show(manager: FragmentManager, tag: String?) {

@@ -26,7 +26,6 @@ import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
@@ -45,7 +44,7 @@ import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
 import timber.log.Timber
 
-class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>() {
+class MainLeftFragment : BaseFragment<MainViewModel, FragmentMainLeftBinding>() {
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
 
@@ -65,7 +64,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
     private fun initView() = binding.run {
         linHead.setPadding(linHead.paddingLeft,
             ImmersionBar.getStatusBarHeight(requireActivity()),linHead.paddingRight,linHead.paddingBottom)
-        promotionView.setup(this@MainLeftFragment as BaseFragment<MainHomeViewModel>)
+        promotionView.setup(this@MainLeftFragment as BaseFragment<MainHomeViewModel,*>)
         ivClose.setOnClickListener { close() }
         ivHome.setOnClickListener {
             getMainTabActivity().backMainHome()
@@ -110,7 +109,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
             R.string.B001
         ){
             //检查是否关闭入口
-            checkSportStatus(requireActivity() as BaseActivity<*>){
+            checkSportStatus(requireActivity() as BaseActivity<*,*>){
                 close()
                 getMainTabActivity().jumpToInplaySport()
             }
@@ -240,9 +239,9 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         getMainTabActivity().closeDrawerLayout()
     }
 
-    private var currentContent: Class<BaseFragment<*>>? = null
+    private var currentContent: Class<BaseFragment<*,*>>? = null
 
-    fun openWithFragment(menuContentFragment: Class<BaseFragment<*>>?) {
+    fun openWithFragment(menuContentFragment: Class<BaseFragment<*,*>>?) {
         currentContent = menuContentFragment
         lastItem?.isSelected =false
         if (menuContentFragment == null) {
@@ -326,7 +325,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
 
     private fun scanQR() {
 
-        val scanPhotoDialog = ScanPhotoDialog(requireContext())
+        val scanPhotoDialog = ScanPhotoDialog()
         scanPhotoDialog.tvCameraScanClickListener = {
             RxPermissions(this).request(Manifest.permission.CAMERA).subscribe { onNext ->
                 if (onNext) {
@@ -341,7 +340,7 @@ class MainLeftFragment : BindingFragment<MainViewModel, FragmentMainLeftBinding>
         }
 
         scanPhotoDialog.tvAlbumClickListener = { selectAlbum() }
-        scanPhotoDialog.show()
+        scanPhotoDialog.show(childFragmentManager)
     }
 
     private fun selectAlbum() {

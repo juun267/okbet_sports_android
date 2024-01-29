@@ -3,14 +3,14 @@ package org.cxct.sportlottery.ui.news
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivitySportNewsBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.view.DateRangeSearchView2
 import org.cxct.sportlottery.view.loadMore
 
 /**
  * 体育侧边栏新闻列表
  */
-class SportNewsActivity : BindingActivity<NewsViewModel,ActivitySportNewsBinding>() {
+class SportNewsActivity : BaseActivity<NewsViewModel, ActivitySportNewsBinding>() {
     private val newsAdapter=RecyclerSportNewsAdapter()
     //时间区间控件
     private var timeRangeView: DateRangeSearchView2?=null

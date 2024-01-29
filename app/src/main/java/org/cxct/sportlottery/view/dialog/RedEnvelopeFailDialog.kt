@@ -1,17 +1,14 @@
 package org.cxct.sportlottery.view.dialog
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import kotlinx.android.synthetic.main.dialog_redenvelope_fail.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogRedenvelopeFailBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
-class RedEnvelopeFailDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
+class RedEnvelopeFailDialog : BaseDialog<BaseViewModel,DialogRedenvelopeFailBinding>() {
     init {
         setStyle(R.style.FullScreen)
     }
@@ -25,22 +22,14 @@ class RedEnvelopeFailDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
             }
         }
     }
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.dialog_redenvelope_fail, container, false)
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView()=binding.run {
         startAnimation()
-        btn_ok.setOnClickListener {
+        btnOk.setOnClickListener {
             dismiss()
         }
         val errorDesc = arguments?.getString(ERROR_DESC).orEmpty()
-        if (errorDesc.isNotEmpty()) tv_error_desc.text = errorDesc
+        if (errorDesc.isNotEmpty()) tvErrorDesc.text = errorDesc
     }
 
     fun startAnimation() {
@@ -55,10 +44,10 @@ class RedEnvelopeFailDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
                 repeatMode = Animation.REVERSE
                 duration = 2000
             }.let {
-                iv_buble_1.startAnimation(it)
-                iv_buble_2.startAnimation(it)
-                iv_buble_3.startAnimation(it)
-                iv_buble_4.startAnimation(it)
+                binding.ivBuble1.startAnimation(it)
+                binding.ivBuble2.startAnimation(it)
+                binding.ivBuble3.startAnimation(it)
+                binding.ivBuble4.startAnimation(it)
             }
     }
 }

@@ -12,8 +12,7 @@ import com.luck.picture.lib.config.SelectModeConfig
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.luck.picture.lib.language.LanguageConfig
-import kotlinx.android.synthetic.main.dialog_avatar_selector.*
-import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogAvatarSelectorBinding
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.selectpicture.ImageCompressEngine
 import org.cxct.sportlottery.util.selectpicture.ImageFileCropEngine
@@ -21,9 +20,10 @@ import org.cxct.sportlottery.util.selectpicture.ImageFileCropEngine
 class AvatarSelectorDialog: BottomSheetDialogFragment() {
 
     var mSelectListener:  OnResultCallbackListener<LocalMedia>? = null
+    private val binding by lazy { DialogAvatarSelectorBinding.inflate(layoutInflater) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_avatar_selector, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,12 +33,12 @@ class AvatarSelectorDialog: BottomSheetDialogFragment() {
     }
 
     private fun initEvent() {
-        btn_choose_photo.setOnClickListener {
+        binding.btnChoosePhoto.setOnClickListener {
             pickPhoto() //進入相簿流程
             dismiss()
         }
 
-        btn_take_photo.setOnClickListener {
+        binding.btnTakePhoto.setOnClickListener {
             openCamera() //進入照相流程
             dismiss()
         }

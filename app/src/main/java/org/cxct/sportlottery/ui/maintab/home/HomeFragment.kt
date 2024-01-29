@@ -22,7 +22,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData.Companion.okGameOpened
 import org.cxct.sportlottery.repository.StaticData.Companion.okLiveOpened
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
@@ -38,7 +38,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
 import timber.log.Timber
 
-class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
+class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
 
     fun getCurrentFragment() = fragmentHelper2.currentFragment()
     private fun getMainTabActivity() = activity as MainTabActivity
@@ -66,7 +66,6 @@ class HomeFragment : BindingFragment<MainHomeViewModel,FragmentHomeBinding>() {
         if (fragmentClass == LiveGamesFragment::class.java && !okLiveOpened()) {
             return@HomeMenuAdapter false
         }
-
         fragmentHelper2.show(fragmentClass) { fragment, _ ->
 
         }

@@ -20,7 +20,7 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import kotlin.math.abs
@@ -29,7 +29,7 @@ import kotlin.math.abs
  * @app_destination 在线支付
  */
 @SuppressLint("SetTextI18n")
-class OnlinePayFragment : BindingFragment<MoneyRechViewModel, OnlinePayFragmentBinding>() {
+class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBinding>() {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
 

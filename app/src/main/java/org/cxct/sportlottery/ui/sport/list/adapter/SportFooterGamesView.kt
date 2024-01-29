@@ -41,7 +41,7 @@ class SportFooterGamesView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr), OnItemClickListener {
 
     private val okGamesAdapter by lazy { SportFootGameAdapter(::onFavoriteClick,gameEntryType = GameEntryType.OKGAMES, showFavorite = false,esportTheme=esportTheme).apply { setOnItemClickListener(this@SportFooterGamesView) } }
-    private lateinit var fragment: BaseFragment<*>
+    private lateinit var fragment: BaseFragment<*,*>
     private lateinit var okGamesViewModel: OKGamesViewModel
     private lateinit var noMoreText: TextView
     private lateinit var moreLabelLayout: LinearLayout
@@ -123,7 +123,7 @@ class SportFooterGamesView @JvmOverloads constructor(
         }
         addView(homeBottomView)
     }
-    fun setUp(fragment: BaseFragment<*>, viewmodel: OKGamesViewModel) {
+    fun setUp(fragment: BaseFragment<*,*>, viewmodel: OKGamesViewModel) {
         this.fragment = fragment
         this.okGamesViewModel = viewmodel
         initObserver(fragment, viewmodel)
@@ -132,7 +132,7 @@ class SportFooterGamesView @JvmOverloads constructor(
         okGamesAdapter.bindLifecycleOwner(fragment)
     }
 
-    private fun initObserver(lifecycleOwner: BaseFragment<*>, viewmodel: OKGamesViewModel) = viewmodel.run {
+    private fun initObserver(lifecycleOwner: BaseFragment<*,*>, viewmodel: OKGamesViewModel) = viewmodel.run {
 
         sportFooterGames.observe(lifecycleOwner) {
             if (it.isNullOrEmpty()) {

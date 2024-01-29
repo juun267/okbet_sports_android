@@ -23,7 +23,7 @@ import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.bettingStation.City
 import org.cxct.sportlottery.network.bettingStation.Province
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.LoginEditText
@@ -34,7 +34,7 @@ import java.util.*
 /**
  * @app_destination 提款-网点预约
  */
-class BetStationFragment : BindingFragment<WithdrawViewModel,FragmentBetStationBinding>() {
+class BetStationFragment : BaseFragment<WithdrawViewModel,FragmentBetStationBinding>() {
     
     private val stationAdapter by lazy { BetStationAdapter{
         requireActivity().hideSoftKeyboard()
@@ -272,7 +272,7 @@ class BetStationFragment : BindingFragment<WithdrawViewModel,FragmentBetStationB
                         TimeUtil.HM_FORMAT_SS
                     ) ?: "",
                 )
-            }?.show(childFragmentManager,DeductDialog::class.java.name)
+            }?.show(childFragmentManager)
         }
     }
 

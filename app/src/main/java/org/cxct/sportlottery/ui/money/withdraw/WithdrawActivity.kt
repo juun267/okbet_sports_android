@@ -1,19 +1,16 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
-import android.content.Intent
-import android.os.Bundle
 import androidx.core.view.isVisible
-import androidx.navigation.findNavController
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.ActivityWithdrawBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
  * @app_destination 提款
  */
-class WithdrawActivity : BindingActivity<WithdrawViewModel,ActivityWithdrawBinding>() {
+class WithdrawActivity : BaseActivity<WithdrawViewModel, ActivityWithdrawBinding>() {
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)

@@ -38,7 +38,7 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
     private val gameRecordAdapter by lazy { HomeWinRankAdapter().apply { setOnItemClickListener(this@HomeWinRankView) } }
     private val httpBetDataList: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
     private val httpWinsDataList: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新大奖
-    private lateinit var fragment: BaseFragment<out MainHomeViewModel>
+    private lateinit var fragment: BaseFragment<out MainHomeViewModel,*>
 
     init {
         orientation = VERTICAL
@@ -83,7 +83,7 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
         callApiHandler.removeCallbacksAndMessages(null)
     }
 
-    fun setUp(fragment: BaseFragment<out MainHomeViewModel>,  blockBetRequest: () -> Unit, blockWinsRequest: () -> Unit) {
+    fun setUp(fragment: BaseFragment<out MainHomeViewModel,*>,  blockBetRequest: () -> Unit, blockWinsRequest: () -> Unit) {
         fragment.viewModel.recordBetHttp.observe(fragment) {
             if (!it.isNullOrEmpty()) {
                 onNewHttpBetData(it.reversed())

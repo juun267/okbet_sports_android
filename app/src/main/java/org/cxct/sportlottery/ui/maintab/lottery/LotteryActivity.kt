@@ -17,6 +17,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
+import org.cxct.sportlottery.databinding.ActivityWebBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
@@ -29,27 +30,20 @@ import org.cxct.sportlottery.view.webView.OkWebViewClient
 /**
  * Create by Simon Chang
  */
-open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+open class LotteryActivity : BaseActivity<MainViewModel,ActivityWebBinding>(MainViewModel::class) {
     companion object {
         const val KEY_URL = "key-url"
     }
 
     private val mUrl: String by lazy { intent?.getStringExtra(KEY_URL) ?: "about:blank" }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        init()
-    }
-
-    open fun init() {
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        setContentView(R.layout.activity_web)
         custom_tool_bar.visibility = View.GONE
         okWebView.addJavascriptInterface(LotteryJsInterface(this), LotteryJsInterface.name)
         setupWebView(okWebView)
         loadUrl(okWebView)
     }
-
 
     @SuppressLint("WebViewApiAvailability")
     fun setupWebView(webView: OkWebView) {

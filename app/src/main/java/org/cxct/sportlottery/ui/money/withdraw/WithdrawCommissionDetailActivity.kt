@@ -7,7 +7,7 @@ import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.ActivityWithdrawCommissionDetailBinding
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
@@ -15,7 +15,7 @@ import java.util.*
  * @app_destination 提款-提款详情
  */
 class WithdrawCommissionDetailActivity :
-    BindingActivity<WithdrawViewModel,ActivityWithdrawCommissionDetailBinding>() {
+    BaseActivity<WithdrawViewModel, ActivityWithdrawCommissionDetailBinding>() {
 
     private val commissionDetailAdapter = CommissionDetailAdapter()
 

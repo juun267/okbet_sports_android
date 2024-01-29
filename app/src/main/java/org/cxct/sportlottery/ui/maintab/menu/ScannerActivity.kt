@@ -20,14 +20,11 @@ import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 
-class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+class ScannerActivity : BaseActivity<MainViewModel,ActivityScannerBinding>(MainViewModel::class) {
 
     private lateinit var codeScanner: CodeScanner
     private var animator: ValueAnimator? = null
 
-    private val binding by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-        ActivityScannerBinding.inflate(layoutInflater)
-    }
     private val scannerView by lazy {
         binding.scannerView
     }
@@ -35,9 +32,7 @@ class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         binding.ivScan
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun onInitView() {
         ImmersionBar.with(this).statusBarDarkFont(false).transparentStatusBar()
             .fitsSystemWindows(false).init()
         initCodeScanner()

@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.include_bet_record_endscore.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.FragmentBetDetailsBinding
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
@@ -25,13 +26,11 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScorePlatCateName
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::class) {
+class BetDetailsFragment : BaseFragment<BetListViewModel,FragmentBetDetailsBinding>() {
     //复制的注单列表的适配器
     private val detailAdapter by lazy { TransactionRecordDetailAdapter() }
-    override fun layoutId() = R.layout.fragment_bet_details
 
-    override fun onBindView(view: View) {
-        super.onBindView(view)
+    override fun onInitView(view: View) {
         val row = arguments?.get("data") as Row?
         val detailRow =
             arguments?.get("detailRow") as org.cxct.sportlottery.network.bet.settledDetailList.Row?

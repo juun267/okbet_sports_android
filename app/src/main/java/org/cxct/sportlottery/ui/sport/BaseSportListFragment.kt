@@ -27,7 +27,7 @@ import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
@@ -53,7 +53,7 @@ import kotlin.reflect.KClass
  * 2.除了首次需要先加载menu接口外，之后都是simple/list接口和menu并发执行，并更新上下各自相关的布局
  * 3.updateSportType的时候，需要判断是否需要更新列表
  */
-abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListViewModel, FragmentSportList2Binding>() {
+abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewModel, FragmentSportList2Binding>() {
 
     override fun createVM(clazz: KClass<SportListViewModel>) = getViewModel(clazz = clazz)
 
@@ -446,7 +446,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
      * 通过父fragment来加载sport/menu 接口数据
      */
     protected fun getMenuDataByParent(isESportType: Boolean=false ){
-        val sportParentFrament = (parentFragment as BaseFragment<SportTabViewModel>)
+        val sportParentFrament = (parentFragment as BaseFragment<SportTabViewModel,*>)
         if (sportParentFrament != null) {
             sportParentFrament.viewModel.sportMenuResult.value?.let { viewModel.loadSportMenu(it, matchType, isESportType = isESportType) }
         }

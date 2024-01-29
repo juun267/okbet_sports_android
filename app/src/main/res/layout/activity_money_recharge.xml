@@ -13,8 +13,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/view_base_tool_bar_no_drawer" />
-
+        <org.cxct.sportlottery.view.CustomTopToolbar
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <FrameLayout
             android:layout_width="match_parent"

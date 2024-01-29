@@ -8,11 +8,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.canDelayClick
 import org.cxct.sportlottery.common.extentions.replaceFragment
 import org.cxct.sportlottery.databinding.ActivityBetRecordBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.bindSportMaintenance
 
-class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>() {
+class BetRecordActivity: BaseActivity<MainViewModel, ActivityBetRecordBinding>() {
     //未结单
     private val unsettledFragment by lazy { UnsettledFragment() }
     //已结单

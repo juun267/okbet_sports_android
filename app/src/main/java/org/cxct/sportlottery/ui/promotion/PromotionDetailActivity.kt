@@ -2,13 +2,6 @@ package org.cxct.sportlottery.ui.promotion
 
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
-import android.text.Html
-import android.view.View
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.core.os.postDelayed
 import androidx.core.view.postDelayed
 import org.cxct.sportlottery.R
@@ -17,20 +10,16 @@ import org.cxct.sportlottery.databinding.ActivityPromotionDetailBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PromotionSuccessDialog
-import org.cxct.sportlottery.view.webView.OkWebViewClient
-import org.cxct.sportlottery.view.webView.WebViewCallBack
-import org.koin.android.ext.android.bind
-import timber.log.Timber
 import java.util.*
 
 
 class PromotionDetailActivity :
-    BindingActivity<MainHomeViewModel, ActivityPromotionDetailBinding>() {
+    BaseActivity<MainHomeViewModel, ActivityPromotionDetailBinding>() {
 
     companion object {
         fun start(context: Context, data: ActivityImageList) {
@@ -71,7 +60,7 @@ class PromotionDetailActivity :
             binding.tvReward.text = TextUtil.formatMoney(0)
             binding.linApply.isEnabled = false
             binding.linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
-            PromotionSuccessDialog.newInstance().show(supportFragmentManager,null)
+            PromotionSuccessDialog.newInstance().show(supportFragmentManager)
         }
         viewModel.dailyConfigEvent.observe(this){
             val dailyConfig = it.firstOrNull { it.activityType == activityData?.activityType }

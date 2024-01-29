@@ -10,14 +10,14 @@ import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentLeftSportGameBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.StaticData
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.*
 
-class LeftGameFragment: BindingFragment<MainViewModel,FragmentLeftSportGameBinding>() {
+class LeftGameFragment: BaseFragment<MainViewModel, FragmentLeftSportGameBinding>() {
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
 

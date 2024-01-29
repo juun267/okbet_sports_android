@@ -14,11 +14,11 @@ import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentNewsBinding
 import org.cxct.sportlottery.network.common.NewsType
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 
-class NewsFragment : BindingFragment<NewsViewModel,FragmentNewsBinding>() {
+class NewsFragment : BaseFragment<NewsViewModel,FragmentNewsBinding>() {
 
     private val tabLayoutSelectedListener by lazy {
         object : TabLayout.OnTabSelectedListener {

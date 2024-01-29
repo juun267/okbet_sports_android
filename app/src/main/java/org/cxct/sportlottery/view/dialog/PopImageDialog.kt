@@ -1,9 +1,6 @@
 package org.cxct.sportlottery.view.dialog
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -27,7 +24,7 @@ import org.cxct.sportlottery.util.LogUtil
 /**
  * 顯示棋牌彈窗
  */
-class PopImageDialog() : BaseDialog<BaseViewModel>(BaseViewModel::class) {
+class PopImageDialog() : BaseDialog<BaseViewModel,DialogPopImageBinding>() {
 
     init {
         setStyle(R.style.FullScreen)
@@ -73,25 +70,13 @@ class PopImageDialog() : BaseDialog<BaseViewModel>(BaseViewModel::class) {
         }
     }
 
-    private lateinit var binding: DialogPopImageBinding
-    private val imageType by lazy { arguments?.getInt(IMAGE_TYPE) }
-    private lateinit var imageList: List<ImageData>
+    val imageType by lazy { arguments?.getInt(IMAGE_TYPE) }
+    lateinit var imageList: List<ImageData>
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        binding = DialogPopImageBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
         initClick()
         setUpBanner()
     }
-
 
     private fun initClick() = binding.run {
         tvArrowLeft.text = "<"

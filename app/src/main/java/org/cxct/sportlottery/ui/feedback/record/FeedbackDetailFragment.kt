@@ -4,14 +4,14 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentFeedbackDetailBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
  * @app_destination 反馈记录-反馈详情
  */
-class FeedbackDetailFragment : BindingFragment<FeedbackViewModel,FragmentFeedbackDetailBinding>() {
+class FeedbackDetailFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackDetailBinding>() {
 
     val feedbackListDetailAdapter by lazy {
         viewModel.userID?.let { FeedbackListDetailAdapter(it) }

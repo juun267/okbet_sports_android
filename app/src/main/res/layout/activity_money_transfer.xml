@@ -9,8 +9,10 @@
     android:background="@color/color_FFFFFF"
     tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity">
 
-    <include
-        layout="@layout/view_base_tool_bar_no_drawer"/>
+    <org.cxct.sportlottery.view.CustomTopToolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:id="@+id/ll_title_bar"

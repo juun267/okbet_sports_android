@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentFeedbackRecordListBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.view.DividerItemDecorator
@@ -18,7 +18,7 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 /**
  * @app_destination 意见反馈-反馈记录
  */
-class FeedbackRecordListFragment : BindingFragment<FeedbackViewModel,FragmentFeedbackRecordListBinding>() {
+class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackRecordListBinding>() {
 
     private val statusList by lazy {
         listOf(StatusSheetData(viewModel.allStatusTag, context?.getString(R.string.all_status)), StatusSheetData("0", context?.getString(R.string.feedback_not_reply_yet)), StatusSheetData("1", context?.getString(R.string.feedback_replied)))

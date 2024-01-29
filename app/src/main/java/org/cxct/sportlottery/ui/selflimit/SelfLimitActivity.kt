@@ -1,41 +1,29 @@
 package org.cxct.sportlottery.ui.selflimit
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import kotlinx.android.synthetic.main.activity_self_limit.*
-import kotlinx.android.synthetic.main.custom_tab_layout.view.*
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.ActivitySelfLimitBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
  * @app_destination 自我禁制
  */
-class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewModel::class) {
+class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel,ActivitySelfLimitBinding>(SelfLimitViewModel::class) {
 
-    private lateinit var binding: ActivitySelfLimitBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySelfLimitBinding.inflate(layoutInflater)
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
-        setContentView(binding.root)
-
         initToolbar()
         initView()
         initLiveData()
     }
 
-    private fun initToolbar() {
-        tv_toolbar_title.setTitleLetterSpacing()
-        tv_toolbar_title.text = getString(R.string.self_limit)
-        btn_toolbar_back.setOnClickListener {
+    private fun initToolbar()=binding.toolBar.run {
+        titleText = getString(R.string.self_limit)
+        setOnBackPressListener{
             onBackPressed()
         }
     }
@@ -47,7 +35,7 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
                 addFragment(SelfLimitBetFragment())
             }
         }
-        binding.customTabLayout.tab_layout_custom.setupWithViewPager(binding.vpSelfLimit)
+        binding.customTabLayout.tabLayoutCustom.setupWithViewPager(binding.vpSelfLimit)
     }
 
     private fun initLiveData() {
@@ -57,11 +45,11 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
         }
 
         viewModel.isShowToolbar.observe(this) {
-            custom_tab_layout.visibility = it
+            binding.customTabLayout.visibility = it
         }
 
         viewModel.toolbarName.observe(this) {
-            tv_toolbar_title.text = it
+            binding.toolBar.titleText = it
         }
     }
 

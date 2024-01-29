@@ -36,7 +36,7 @@ import java.util.*
  * @create 2023/3/30
  * @description
  */
-class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
+class ChatPhotoFragment : BaseFragment<ChatViewModel,FragmentChatPhotoBinding>() {
 
     companion object {
         const val PHOTO_URL = "photo_url"
@@ -49,26 +49,16 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
         }
     }
 
-    private lateinit var binding: FragmentChatPhotoBinding
 
     private lateinit var photoUrl: String
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        binding = FragmentChatPhotoBinding.inflate(layoutInflater)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView(view: View) {
         photoUrl = arguments?.getString(PHOTO_URL) ?: ""
         initBlur()
         initPhoto()
         initToolbar()
     }
+
 
     private fun initBlur() {
         binding.bvBlock.setupWith(activity?.window?.decorView?.rootView as ViewGroup)

@@ -49,11 +49,9 @@ import splitties.activities.start
 /**
  * @app_destination 登入
  */
-class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
+class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>() {
 
     private val loginScope = CoroutineScope(Dispatchers.Main)
-
-    private lateinit var binding: ActivityLoginOkBinding
 
     companion object {
         private const val SELF_LIMIT = 1130
@@ -76,16 +74,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private var countDownGoing = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         ImmersionBar.with(this)
             .statusBarDarkFont(true)
             .transparentStatusBar()
             .statusBarView(v_statusbar)
             .fitsSystemWindows(false)
             .init()
-        binding = ActivityLoginOkBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         setupSummary(binding.includeSubtitle.tvSummary)
         initOnClick()
         setupInvite()
@@ -108,7 +103,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }else{
             switchLoginType(loginType)
         }
-
     }
 
     private fun initOnClick() {

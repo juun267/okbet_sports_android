@@ -8,8 +8,10 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.otherBetRecord.OtherBetRecordActivity">
 
-    <include
-        layout="@layout/view_base_tool_bar_no_drawer"/>
+    <org.cxct.sportlottery.view.CustomTopToolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <fragment
         android:id="@+id/my_nav_host_fragment"

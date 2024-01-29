@@ -42,7 +42,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private val gameRecordAdapter by lazy { OkGameRecordAdapter().apply { setOnItemClickListener(this@WinsRankView) } }
     private val httpBetDataList: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
     private val httpWinsDataList: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新大奖
-    private lateinit var fragment: BaseFragment<out MainHomeViewModel>
+    private lateinit var fragment: BaseFragment<out MainHomeViewModel,*>
 
     init {
         LayoutInflater.from(context).inflate(R.layout.layout_wins_rank, this, true)
@@ -89,7 +89,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
         callApiHandler.removeCallbacksAndMessages(null)
     }
 
-    fun setUp(fragment: BaseFragment<out MainHomeViewModel>,  blockBetRequest: () -> Unit, blockWinsRequest: () -> Unit) {
+    fun setUp(fragment: BaseFragment<out MainHomeViewModel,*>,  blockBetRequest: () -> Unit, blockWinsRequest: () -> Unit) {
         fragment.doOnDestory {
             stopCallApiLoop()
             stopPostLoop()

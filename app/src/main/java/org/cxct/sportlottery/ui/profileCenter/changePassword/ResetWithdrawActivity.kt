@@ -10,13 +10,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityVerifyPhonenoBinding
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.checkSMSCode
 import org.cxct.sportlottery.view.checkWithdrawPassword
 
-class ResetWithdrawActivity: BindingActivity<LoginViewModel, ActivityVerifyPhonenoBinding>() {
+class ResetWithdrawActivity: BaseActivity<LoginViewModel, ActivityVerifyPhonenoBinding>() {
 
     private val phoneNo by lazy { intent.getStringExtra("phone")!! }
 

@@ -21,7 +21,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerInPlayAdapter
@@ -36,7 +36,7 @@ import org.cxct.sportlottery.view.rumWithSlowRequest
 import org.cxct.sportlottery.view.updateLastRequestTime
 import org.greenrobot.eventbus.EventBus
 
-class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftSportBetBinding>() {
+class LeftSportBetFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLeftSportBetBinding>() {
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
 

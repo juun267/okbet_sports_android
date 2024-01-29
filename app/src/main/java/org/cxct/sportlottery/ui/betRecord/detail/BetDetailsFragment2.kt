@@ -1,32 +1,22 @@
 package org.cxct.sportlottery.ui.betRecord.detail
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentBetDetails2Binding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betRecord.ParlayType
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerDetailBetAdapter
-import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.copyToClipboard
-import org.cxct.sportlottery.view.onClick
-import org.cxct.sportlottery.view.setColors
-import java.util.Locale
 
-class BetDetailsFragment2 : BindingFragment<AccountHistoryViewModel, FragmentBetDetails2Binding>() {
+class BetDetailsFragment2 : BaseFragment<AccountHistoryViewModel, FragmentBetDetails2Binding>() {
     private var mAdapter :RecyclerDetailBetAdapter?=null
 
     override fun onInitView(view: View) = binding.run {

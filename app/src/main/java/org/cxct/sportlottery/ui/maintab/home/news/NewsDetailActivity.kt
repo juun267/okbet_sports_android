@@ -20,7 +20,7 @@ import java.util.*
 
 
 class NewsDetailActivity :
-    org.cxct.sportlottery.ui.base.BindingActivity<MainHomeViewModel, ActivityNewsDetailBinding>() {
+    org.cxct.sportlottery.ui.base.BaseActivity<MainHomeViewModel, ActivityNewsDetailBinding>() {
 
     companion object {
         fun start(context: Context, newsItem: NewsItem) {

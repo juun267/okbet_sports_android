@@ -10,11 +10,11 @@ import org.cxct.sportlottery.databinding.ActivityMaintenanceBinding
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.JumpUtil
 
-class MaintenanceActivity : BindingActivity<MaintenanceViewModel,ActivityMaintenanceBinding>() {
+class MaintenanceActivity : BaseActivity<MaintenanceViewModel, ActivityMaintenanceBinding>() {
 
     enum class MaintainType(val value: Int) {
         NORMAL(0), FIXING(1)

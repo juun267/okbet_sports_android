@@ -1,14 +1,8 @@
 package org.cxct.sportlottery.ui.redeem
 
-import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_redeem.rvRedeem
-import kotlinx.android.synthetic.main.activity_redeem.viewNoData
-import kotlinx.android.synthetic.main.activity_withdraw_commission_detail.custom_tool_bar
-import kotlinx.android.synthetic.main.component_date_range_new_selector.view.btn_search
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.ActivityRedeemBinding
@@ -16,17 +10,13 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.view.dialog.RedeemDialog
 
-class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::class) {
+class RedeemActivity : BaseSocketActivity<RedeemViewModel,ActivityRedeemBinding>(RedeemViewModel::class) {
 
-
-    private lateinit var binding: ActivityRedeemBinding
     val redeemAdapter by lazy {
         RedeemAdapter()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityRedeemBinding.inflate(layoutInflater)
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(binding.root)
         initView()
@@ -49,13 +39,12 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
                 redeemAdapter.data.clear()
             }
             it.rows?.let { it1 -> redeemAdapter.addData(it1) }
-            viewNoData.isVisible = redeemAdapter.data.isEmpty()
+            binding.viewNoData.root.isVisible = redeemAdapter.data.isEmpty()
         }
     }
 
-
     private fun initView() {
-        custom_tool_bar.setOnBackPressListener {
+        binding.customToolBar.setOnBackPressListener {
             finish()
         }
         binding.btnReset.setOnClickListener {
@@ -87,7 +76,7 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
             binding.layoutHistoryRedeem.isVisible = true
         }
 
-        binding.dateSearchBar.btn_search.clickDelay {
+        binding.dateSearchBar.setOnClickSearchListener {
             viewModel.redeemCodeHistory(
                 startTime = binding.dateSearchBar.startTime.toString(),
                 endTime = binding.dateSearchBar.endTime.toString(),
@@ -95,8 +84,8 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
             )
         }
 
-        rvRedeem.adapter = redeemAdapter
-        rvRedeem.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.rvRedeem.adapter = redeemAdapter
+        binding.rvRedeem.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 recyclerView.layoutManager?.let {

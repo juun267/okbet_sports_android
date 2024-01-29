@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRedenvelopeLogBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.DividerItemDecorator
 
-class RedEnvelopeHistoryFragment : BindingFragment<FinanceViewModel,ActivityRedenvelopeLogBinding>() {
+class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel, ActivityRedenvelopeLogBinding>() {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {

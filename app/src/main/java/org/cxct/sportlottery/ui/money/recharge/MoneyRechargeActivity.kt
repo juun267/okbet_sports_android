@@ -1,16 +1,14 @@
 package org.cxct.sportlottery.ui.money.recharge
 
-import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
-import kotlinx.android.synthetic.main.activity_money_recharge.*
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
+import org.cxct.sportlottery.databinding.ActivityMoneyRechargeBinding
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -22,7 +20,7 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
 /**
  * @app_destination 存款
  */
-class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
+class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMoneyRechargeBinding>(MoneyRechViewModel::class) {
 
     companion object {
         const val RechargeViewLog = "rechargeViewLog"
@@ -44,11 +42,8 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
     private var cryptoResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //沉浸式颜色修改
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
-        setContentView(R.layout.activity_money_recharge)
         initToolbar()
         initRecyclerView()
         initLiveData()
@@ -58,9 +53,8 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
     }
 
     private fun initToolbar() {
-        tv_toolbar_title.setTitleLetterSpacing()
-        tv_toolbar_title.text = getString(R.string.J285)
-        btn_toolbar_back.setOnClickListener {
+        binding.toolBar.titleText = getString(R.string.J285)
+        binding.toolBar.setOnBackPressListener {
             finish()
         }
     }
@@ -71,7 +65,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
     private fun getMoneyConfig() {
         loading()
-        custom_tab_layout.visibility = View.GONE
+        binding.customTabLayout.visibility = View.GONE
         viewModel.getRechCfg()
     }
 
@@ -81,11 +75,11 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
             hideLoading()
             gotTransferPay = true
             transferPayList = it ?: return@Observer
-            custom_tab_layout.firstTabVisibility = if (transferPayList.size > 0) {
+            binding.customTabLayout.firstTabVisibility = if (transferPayList.size > 0) {
                 transferPageChange()
                 View.VISIBLE
             } else {
-                custom_tab_layout.selectTab(RechargeType.ONLINE_PAY.tabPosition)
+                binding.customTabLayout.selectTab(RechargeType.ONLINE_PAY.tabPosition)
                 View.GONE
             }
 
@@ -95,8 +89,8 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
         viewModel.onlinePayList.observe(this@MoneyRechargeActivity, Observer {
             gotOnlinePay = true
             onlinePayList = it ?: return@Observer
-            custom_tab_layout.secondTabVisibility = if (onlinePayList.size > 0) {
-                if (custom_tab_layout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition) {
+            binding.customTabLayout.secondTabVisibility = if (onlinePayList.size > 0) {
+                if (binding.customTabLayout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition) {
                     onlinePageChange()
                 }
                 View.VISIBLE
@@ -190,7 +184,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
 
     private fun initTabLayout() {
-        custom_tab_layout.setCustomTabSelectedListener { position ->
+        binding.customTabLayout.setCustomTabSelectedListener { position ->
             when (position) {
                 RechargeType.TRANSFER_PAY.tabPosition -> {
                     transferPageChange()
@@ -221,17 +215,17 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
         )
     }
 
-    private fun initView() {
-        if ((!transferPayList.isNullOrEmpty() && custom_tab_layout.selectedTabPosition == RechargeType.TRANSFER_PAY.tabPosition)
-            || (!onlinePayList.isNullOrEmpty() && custom_tab_layout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition)
+    private fun initView()=binding.run {
+        if ((!transferPayList.isNullOrEmpty() && customTabLayout.selectedTabPosition == RechargeType.TRANSFER_PAY.tabPosition)
+            || (!onlinePayList.isNullOrEmpty() && customTabLayout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition)
         ) {
-            block_no_type.visibility = View.VISIBLE
-            rv_pay_type.visibility = View.GONE
-            fl_pay_type_container.visibility = View.GONE
+            blockNoType.visibility = View.VISIBLE
+            rvPayType.visibility = View.GONE
+            flPayTypeContainer.visibility = View.GONE
         } else {
-            block_no_type.visibility = View.GONE
-            rv_pay_type.visibility = View.VISIBLE
-            fl_pay_type_container.visibility = View.VISIBLE
+            blockNoType.visibility = View.GONE
+            rvPayType.visibility = View.VISIBLE
+            flPayTypeContainer.visibility = View.VISIBLE
         }
     }
 
@@ -264,16 +258,16 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
         ft.commitAllowingStateLoss()
     }
 
-    private fun initRecyclerView() {
+    private fun initRecyclerView()=binding.rvPayType.run {
         bankTypeAdapter = MoneyBankTypeAdapter(MoneyBankTypeAdapter.ItemClickListener {
             switchFragment(getPayFragment(it), it.rechType)
             this@MoneyRechargeActivity.currentFocus?.clearFocus()
             viewModel.clearnRechargeStatus()
         })
-        rv_pay_type.layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 4)
-        rv_pay_type.adapter = bankTypeAdapter
-        if (rv_pay_type.itemDecorationCount == 0) {
-            rv_pay_type.addItemDecoration(
+        layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 4)
+        adapter = bankTypeAdapter
+        if (itemDecorationCount == 0) {
+            addItemDecoration(
                 GridSpacingItemDecoration(
                     4,
                     10.dp,
@@ -288,7 +282,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
      */
     private fun updateTabLayoutVisibility() {
         if (gotOnlinePay && gotTransferPay) {
-            custom_tab_layout.visibility = if (!transferPayList.isNullOrEmpty() && !onlinePayList.isNullOrEmpty()) View.VISIBLE else View.GONE
+            binding.customTabLayout.visibility = if (!transferPayList.isNullOrEmpty() && !onlinePayList.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
     }
 }

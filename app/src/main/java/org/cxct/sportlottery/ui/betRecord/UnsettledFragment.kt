@@ -15,21 +15,20 @@ import org.cxct.sportlottery.databinding.FragmentUnsettledBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.service.order_settlement.Status
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.isVisible
-import org.cxct.sportlottery.view.loadMore
 import org.cxct.sportlottery.view.rumWithSlowRequest
 import java.util.*
 
 /**
  * 未结单列表
  */
-class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnsettledBinding>() {
+class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettledBinding>() {
     private var mAdapter = RecyclerUnsettledAdapter()
     private val oneDay = 60 * 60 * 24 * 1000
     private val refreshHelper by lazy { RefreshHelper.of(binding.recyclerUnsettled, this, false) }

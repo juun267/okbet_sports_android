@@ -5,13 +5,12 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import org.cxct.sportlottery.BuildConfig
+import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.net.flow.IUiView
@@ -21,53 +20,56 @@ import kotlin.reflect.KClass
 
 @SuppressLint("InflateParams")
 // 不需要传入参数了，通过反射获取类型
-open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null) : VisibilityFragment() ,IUiView{
+abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(private val clazz: KClass<VM>? = null): VisibilityFragment() ,IUiView{
 
-    private lateinit var _viewModel: T
-    val viewModel: T
+    private lateinit var _viewModel: VM
+    val viewModel: VM
     get() {
         if (!::_viewModel.isInitialized) {
-            _viewModel = createVM(clazz = clazz ?: getKClass(0) as KClass<T>)
+            _viewModel = createVM(clazz = clazz ?: getKClass(0) as KClass<VM>)
         }
         return _viewModel
     }
 
-
-    protected open fun createVM(clazz: KClass<T>): T {
+    protected open fun createVM(clazz: KClass<VM>): VM {
         return getViewModel(clazz = clazz, owner = { ViewModelOwner.from(requireActivity(), requireActivity()) })
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (BuildConfig.DEBUG) {
-            Log.e("For Test", "======>>> BaseFragment ${this::class.java.name}")
-        }
-    }
+    protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
+
+    fun context() = binding.root.context
+    private var _first = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel = createVM(clazz = clazz ?: getKClass(0) as KClass<T>)
-        return createRootView(inflater, container, savedInstanceState)
+        _viewModel = createVM(clazz = clazz ?: getKClass(0) as KClass<VM>)
+        return  binding.root
     }
-
-    protected open fun createRootView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(layoutId(), container, false)
-    }
-
-    protected open fun layoutId() = 0
-    protected open fun onBindView(view: View) { }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        onBindView(view)
+        if (_first) {
+            _first = false
+            onInitView(view)
+        }
+        onBindViewStatus(view)
+        onInitData()
     }
+
+
+    // 该方法在整个生命周期中只会执行一次(类似与RecyclerView.Adapter的oonCreateViewHolder)
+    protected abstract fun onInitView(view: View)
+
+    /**
+     * 与onInitView方法不同在于每次onViewCreated都会执行，对于都Fragment切换时会发生多次onCreateView的情况
+     *  该方法可以用于将View设置回初始状态(类似与RecyclerView.Adapter的onBindViewHolder)
+     */
+    protected open fun onBindViewStatus(view: View) { }
+
+    // 该方法每次onCreateView后都会执行
+    protected open fun onInitData() { }
+
 
     /*弹出加载界面*/
     open fun loading() {
@@ -75,12 +77,12 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
     }
 
     open fun loading(message: String?) {
-        (activity as? BaseActivity<*>)?.loading(message)
+        requireActivity().loading(message)
     }
 
     /*关闭加载界面*/
     open fun hideLoading() {
-        (activity as? BaseActivity<*>)?.hideLoading()
+        requireActivity().hideLoading()
     }
 
     private var progressDialog: ProgressDialog? = null
@@ -105,26 +107,20 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
     }
 
     fun showPromptDialogNoCancel(title: String, message: String, positiveClickListener: () -> Unit) {
-        if (activity is BaseActivity<*>) {
-            (activity as BaseActivity<*>).showPromptDialogNoCancel(title, message, positiveClickListener)
-        }
+        requireActivity().showPromptDialogNoCancel(title, message, positiveClickListener)
     }
 
     fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit) {
-        if (activity is BaseActivity<*>) {
-            (activity as BaseActivity<*>).showPromptDialog(title, message, positiveClickListener)
-        }
+        requireActivity().showPromptDialog(title, message, positiveClickListener)
     }
 
     fun showErrorPromptDialog(title: String, message: String, hasCancel:Boolean = true, positiveClickListener: () -> Unit) {
-        if (activity is BaseActivity<*>) {
-            (activity as BaseActivity<*>).showErrorPromptDialog(
-                title,
-                SpannableStringBuilder().append(message),
-                hasCancel,
-                positiveClickListener
-            )
-        }
+        requireActivity().showErrorPromptDialog(
+            title,
+            SpannableStringBuilder().append(message),
+            hasCancel,
+            positiveClickListener
+        )
     }
 
     fun showPromptDialog(
@@ -133,21 +129,20 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
         success: Boolean,
         positiveClickListener: () -> Unit,
     ) {
-        if (activity is BaseActivity<*>) {
             if (success) {
-                (activity as BaseActivity<*>).showPromptDialog(
+                requireActivity().showPromptDialog(
                     title,
                     message,
                     positiveClickListener
                 )
             } else {
-                (activity as BaseActivity<*>).showErrorPromptDialog(
+                requireActivity().showErrorPromptDialog(
                     title,
                     message,
                     positiveClickListener
                 )
             }
-        }
+
     }
 
     fun showPromptDialog(
@@ -156,22 +151,20 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
         success: Boolean,
         positiveClickListener: () -> Unit,
     ) {
-        if (activity is BaseActivity<*>) {
-            if (success) {
-                (activity as BaseActivity<*>).showPromptDialog(
-                    title,
-                    message,
-                    null,
-                    positiveClickListener,
-                    isError = false,
-                    hasCancle = false)
-            } else {
-                (activity as BaseActivity<*>).showErrorPromptDialog(
-                    title,
-                    message.toString(),
-                    positiveClickListener
-                )
-            }
+        if (success) {
+            requireActivity().showPromptDialog(
+                title,
+                message,
+                null,
+                positiveClickListener,
+                isError = false,
+                hasCancle = false)
+        } else {
+            requireActivity().showErrorPromptDialog(
+                title,
+                message.toString(),
+                positiveClickListener
+            )
         }
     }
 
@@ -182,16 +175,16 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
         isOutsideCancelable: Boolean,
         positiveClickListener: () -> Unit,
     ) {
-        if (activity is BaseActivity<*>) {
+        if (activity is BaseActivity<*,*>) {
             if (success) {
-                (activity as BaseActivity<*>).showPromptDialog(
+                (activity as BaseActivity<*,*>).showPromptDialog(
                     title,
                     message,
                     isOutsideCancelable = isOutsideCancelable,
                     positiveClickListener
                 )
             } else {
-                (activity as BaseActivity<*>).showErrorPromptDialog(
+                (activity as BaseActivity<*,*>).showErrorPromptDialog(
                     title,
                     message.toString(),
                     positiveClickListener
@@ -207,7 +200,7 @@ open class BaseFragment<T : BaseViewModel>(private val clazz: KClass<T>? = null)
         isShowDivider: Boolean,
         positiveClickListener: () -> Unit?,
     ) {
-        (activity as BaseActivity<*>).showPromptDialog(
+        requireActivity().showPromptDialog(
             title,
             message,
             buttonText,

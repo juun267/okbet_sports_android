@@ -397,7 +397,7 @@ object ServiceBroadcastReceiver {
     private set
 
     fun addOddsChangeListener(lifecycleOwner: LifecycleOwner, listener: OddsChangeListener) {
-        if (lifecycleOwner is BaseFragment<*> && !lifecycleOwner.isVisibleToUser()) {
+        if (lifecycleOwner is BaseFragment<*,*> && !lifecycleOwner.isVisibleToUser()) {
             return
         }
         // 如果某个页面需要订阅赔率变化，发现赛事订阅了但是赔率没变化此时可以从这里排查。是不是回调监听被其他地方抢注了

@@ -41,7 +41,7 @@ class HomeHotMatchView(
 
     val binding = ViewHomeHotMatchBinding.inflate(layoutInflater, this)
     private var adapter: HomeHotMatchAdapter? = null
-    private var fragment: BaseFragment<*>? = null
+    private var fragment: BaseFragment<*,*>? = null
 
     init {
         orientation = VERTICAL
@@ -89,7 +89,7 @@ class HomeHotMatchView(
     /**
      * 初始化热门赛事控件
      */
-    fun onCreate(data: LiveData<Event<List<Recommend>>>,oddsTypeLiveData: LiveData<OddsType>, fragment: BaseFragment<*>?) {
+    fun onCreate(data: LiveData<Event<List<Recommend>>>,oddsTypeLiveData: LiveData<OddsType>, fragment: BaseFragment<*,*>?) {
         if (fragment == null) {
             return
         }
@@ -103,17 +103,12 @@ class HomeHotMatchView(
         if (fragment is BaseSocketFragment) {
             initSocketObservers(fragment.receiver, fragment.getViewLifecycleOwner(), fragment)
         }
-        //初始化ws广播监听
-        if (fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>) {
-            initSocketObservers(fragment.receiver, fragment.getViewLifecycleOwner(), fragment)
-        }
-
     }
 
     /**
      * 数据变量监听
      */
-    private fun initDataObserve(data: LiveData<Event<List<Recommend>>>, oddsTypeLiveData: LiveData<OddsType>,fragment: BaseFragment<*>) {
+    private fun initDataObserve(data: LiveData<Event<List<Recommend>>>, oddsTypeLiveData: LiveData<OddsType>,fragment: BaseFragment<*,*>) {
 
         oddsTypeLiveData.observe(fragment.viewLifecycleOwner) { adapter?.oddsType = it }
         data.observe(fragment.viewLifecycleOwner) {
@@ -141,7 +136,7 @@ class HomeHotMatchView(
     private fun initSocketObservers(
         receiver: ServiceBroadcastReceiver,
         viewLifecycleOwner: LifecycleOwner,
-        fragment: BaseFragment<*>
+        fragment: BaseFragment<*,*>
     ) {
 
         //观察比赛状态改变
@@ -246,7 +241,7 @@ class HomeHotMatchView(
     }
 
 
-    private fun initAdapter(fragment: BaseFragment<*>) {
+    private fun initAdapter(fragment: BaseFragment<*,*>) {
         setUpAdapter(fragment,
             HomeRecommendListener(onItemClickListener = { matchInfo ->
                 matchInfo?.let {
@@ -292,29 +287,21 @@ class HomeHotMatchView(
         binding.recyclerHotGame.scrollToPosition(0)
     }
 
-    private fun subscribeChannelHall(recommend: Recommend, fragment: BaseFragment<*>) {
+    private fun subscribeChannelHall(recommend: Recommend, fragment: BaseFragment<*,*>) {
         if (fragment is BaseSocketFragment) {
-            fragment.subscribeChannel2HotMatch(
-                recommend.matchInfo?.gameType, recommend.matchInfo?.id
-            )
-        }
-        if (fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>) {
             fragment.subscribeChannel2HotMatch(
                 recommend.matchInfo?.gameType, recommend.matchInfo?.id
             )
         }
     }
 
-    private fun unSubscribeChannelHall(fragment: BaseFragment<*>) {
-        if (fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>) {
-            fragment.unSubscribeChannel2HotMatch()
-        }
+    private fun unSubscribeChannelHall(fragment: BaseFragment<*,*>) {
         if (fragment is BaseSocketFragment) {
             fragment.unSubscribeChannel2HotMatch()
         }
     }
 
-    fun onResume(fragment: BaseFragment<*>) {
+    fun onResume(fragment: BaseFragment<*,*>) {
         //关闭/显示   热门赛事
         setVisible()
         adapter?.notifyDataSetChanged()

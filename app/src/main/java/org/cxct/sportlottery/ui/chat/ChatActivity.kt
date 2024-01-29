@@ -10,10 +10,10 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.showPromptDialog
 import org.cxct.sportlottery.databinding.ActivityChatBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.setTextTypeFace
 
-class ChatActivity : BindingActivity<ChatViewModel, ActivityChatBinding>() {
+class ChatActivity : BaseActivity<ChatViewModel, ActivityChatBinding>() {
 
     private val marqueeAdapter by lazy { ChatMarqueeAdapter() }
 

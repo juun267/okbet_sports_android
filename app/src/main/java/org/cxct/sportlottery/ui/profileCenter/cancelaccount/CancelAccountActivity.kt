@@ -5,7 +5,7 @@ import android.text.method.HideReturnsTransformationMethod
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityCancelAccountBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
@@ -14,7 +14,7 @@ import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationM
  * 注销账号页面  ios需要安卓暂时不需要 此页面隐藏
  */
 
-class CancelAccountActivity :BindingActivity<CancelAccountViewModel,ActivityCancelAccountBinding>() {
+class CancelAccountActivity : BaseActivity<CancelAccountViewModel, ActivityCancelAccountBinding>() {
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
@@ -22,7 +22,6 @@ class CancelAccountActivity :BindingActivity<CancelAccountViewModel,ActivityCanc
         onClick()
         initObserve()
     }
-
     private fun initObserve() {
         viewModel.cancelResult.observe(this, Observer {
             if (it.success){
@@ -37,17 +36,17 @@ class CancelAccountActivity :BindingActivity<CancelAccountViewModel,ActivityCanc
     }
     private fun onClick()=binding.run{
 
-        etQqNumber.endIconImageButton.setOnClickListener{
-            if (etQqNumber.endIconResourceId == R.drawable.ic_eye_open) {
+        eetPassword.endIconImageButton.setOnClickListener{
+            if (eetPassword.endIconResourceId == R.drawable.ic_eye_open) {
                 etPassword.transformationMethod =
                     AsteriskPasswordTransformationMethod()
-                etQqNumber.setEndIcon(R.drawable.ic_eye_close)
+                eetPassword.setEndIcon(R.drawable.ic_eye_close)
             } else {
-                etQqNumber.setEndIcon(R.drawable.ic_eye_open)
+                eetPassword.setEndIcon(R.drawable.ic_eye_open)
                 etPassword.transformationMethod =
                     HideReturnsTransformationMethod.getInstance()
             }
-            etQqNumber.hasFocus = true
+            eetPassword.hasFocus = true
             etPassword.setSelection(etPassword.text.toString().length)
         }
         btnCancelAccount.setOnClickListener{
