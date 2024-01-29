@@ -115,11 +115,7 @@ object BetPlayCateFunction {
 
         return numPlatMap?.minByOrNull { map ->
             val platNumber: String = map.key?.split(":")?.let { list ->
-                if (list.isNotEmpty()) {
-                    list[1]
-                } else {
-                    "0"
-                }
+                list.getOrElse(1) { "0" }
             } ?: "0" //取":"後的數字
 
             try {
