@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
@@ -92,7 +91,7 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
     override fun onInitView(view: View) {
         initToolBar()
         initTabLayout()
-        showSportDialog()
+        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_SPORT.code)
     }
 
     override fun onBindViewStatus(view: View) {
@@ -426,16 +425,6 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
         viewModel.getSportMenuData(isNew = true)
     }
 
-    private fun showSportDialog(){
-        if (PopImageDialog.showSportDialog) {
-            PopImageDialog.showSportDialog = false
-            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_SPORT.code)) {
-                requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_SPORT.code)
-                }).show(childFragmentManager, PopImageDialog::class.simpleName)
-            }
-        }
-    }
     private fun tabLayoutSelect(matchType: MatchType){
        val todayIndex= matchTypeTodayTab.indexOf(matchType)
         if (todayIndex>=0){

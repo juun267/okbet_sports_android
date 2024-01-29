@@ -33,7 +33,8 @@ enum class ImageType(val code: Int) {
     DIALOG_HOME(7),
     DIALOG_SPORT(14),
     DIALOG_OKGAME(16),
-    DIALOG_OKLIVE(-1),
+    DIALOG_OKLIVE(25),
+    DIALOG_OKGAMES_HOME(23),//OKGames包，默认进入棋牌页时候的活动弹窗
     LOGIN_SUMMARY(20)
 }
 

@@ -12,7 +12,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
@@ -27,7 +26,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 
 // okgames主Fragment
-class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding>() {
+class OKLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::class) {
 
     val gameItemViewPool by lazy {
         RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(0, 20) }
@@ -60,15 +59,24 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
 
      inline fun mainTabActivity() = activity as MainTabActivity
 
-    override fun onInitView(view: View) {
+    override fun createRootView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentOkgamesBinding.inflate(layoutInflater)
         fragmentHelper = FragmentHelper(childFragmentManager, R.id.fragmentContainer, arrayOf(
-            Param(AllLiveFragment::class.java), Param(PartLiveFragment::class.java)
-        ))
+                Param(AllLiveFragment::class.java), Param(PartLiveFragment::class.java)
+            )
+        )
+        return binding.root
+    }
+
+    override fun onBindView(view: View) {
         initToolBar()
         initTopView()
         showGameAll()
         initObservable()
         viewModel.getOKLiveHall()
+        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKLIVE.code)
     }
     private var requestTag: Any = Any()
     private var requestBlock: ((Int) -> Unit)? = null
@@ -232,16 +240,6 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
 
     open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 
-    private fun showOkGameDialog() {
-        if (PopImageDialog.showOKLiveDialog) {
-            PopImageDialog.showOKLiveDialog = false
-            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_OKLIVE.code)) {
-                requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_OKLIVE.code)
-                }).show(childFragmentManager, PopImageDialog::class.simpleName)
-            }
-        }
-    }
     fun search(key: String){
         if (isAdded){
             binding.topView.edtSearch.setText(key)

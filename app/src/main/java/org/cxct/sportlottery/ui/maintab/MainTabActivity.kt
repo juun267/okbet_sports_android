@@ -103,14 +103,11 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         /**
          * fromLoginOrReg  是否来自登录或者注册页面
          */
-        fun reStart(context: Context, showDialog: Boolean = false,fromLoginOrReg: Boolean = false) {
+        fun reStart(context: Context,fromLoginOrReg: Boolean = false) {
             if (fromLoginOrReg){
                 ToGcashDialog.needShow = true
+                PopImageDialog.resetImageType()
             }
-            PopImageDialog.showHomeDialog = showDialog
-            PopImageDialog.showSportDialog = showDialog
-            PopImageDialog.showOKGameDialog = showDialog
-            PopImageDialog.showOKLiveDialog = showDialog
             val intent = Intent(context, MainTabActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
@@ -618,8 +615,11 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         checkSportStatus(this) {
             tabHelper.clearSelected()
             navToPosition(INDEX_ESPORT)
-            binding.root.postDelayed(200){
-                (fragmentHelper.getCurrentFragment() as ESportFragment)?.setJumpSport(matchType,gameType)
+            binding.root.postDelayed(200) {
+                val fragment = fragmentHelper.getCurrentFragment()
+                if (fragment is ESportFragment) {
+                    fragment.setJumpSport(matchType,gameType)
+                }
             }
         }
     }
