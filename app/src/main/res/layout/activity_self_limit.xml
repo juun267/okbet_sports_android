@@ -8,7 +8,10 @@
     android:background="@color/color_141414_F3F4F5"
     tools:context=".ui.feedback.FeedbackMainActivity">
 
-    <include layout="@layout/view_base_tool_bar_no_drawer" />
+    <org.cxct.sportlottery.view.CustomTopToolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <View
         android:background="@color/color_80334266_E3E8EE"
         android:layout_width="match_parent"

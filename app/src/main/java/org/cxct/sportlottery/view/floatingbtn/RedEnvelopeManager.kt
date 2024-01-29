@@ -44,7 +44,7 @@ class RedEnvelopeManager {
             }
         }
     private var viewModel: BaseViewModel? = null
-    private var activity: BaseActivity<BaseViewModel>? = null
+    private var activity: BaseActivity<*,*>? = null
     private var closeDialog: CustomAlertDialog? = null
     private var redEnvelopeReceiveDialog: RedEnvelopeReceiveDialog? = null
     private var floatRootView: RedEnvelopeFloatingButton? = null
@@ -56,7 +56,7 @@ class RedEnvelopeManager {
      * 注意：若viewmodel被回收，则无法请求网络
      *
      */
-    open fun bind(activity: BaseActivity<BaseViewModel>) {
+    open fun bind(activity: BaseActivity<*,*>) {
         this.viewModel = activity.viewModel
         this.activity = activity
         startTimer()

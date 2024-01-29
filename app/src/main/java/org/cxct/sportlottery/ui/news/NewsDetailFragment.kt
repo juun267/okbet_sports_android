@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.news
 import android.view.View
 import androidx.navigation.fragment.navArgs
 import org.cxct.sportlottery.databinding.FragmentNewsDeatilBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 
 /**

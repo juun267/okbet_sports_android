@@ -15,19 +15,18 @@ import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.loadMore
 
 // 指定类别的三方游戏
-class PartLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::class) {
+class PartLiveFragment : BaseFragment<OKLiveViewModel,FragmentPartOkgamesBinding>() {
 
     companion object {
         val pageSize = 12
     }
-
-    private lateinit var binding: FragmentPartOkgamesBinding
 
     private inline fun mOkLiveFragment() = parentFragment as OKLiveFragment
     private val gameChildAdapter by lazy {
@@ -48,16 +47,7 @@ class PartLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::cl
     private val loadingHolder: Gloading.Holder by lazy {
         Gloading.from(LoadingAdapter(emptyString = R.string.N883, emptyIcon = R.drawable.ic_no_data, bgColor = Color.TRANSPARENT)).wrap(View(context))
     }
-
-    override fun createRootView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return FragmentPartOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
-    }
-
-    override fun onBindView(view: View) {
+    override fun onInitView(view: View) {
         initObserve()
         initGameList()
         bindClick()

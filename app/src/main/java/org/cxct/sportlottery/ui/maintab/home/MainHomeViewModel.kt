@@ -292,7 +292,7 @@ open class MainHomeViewModel(
     /**
      * 进入OKgame游戏
      */
-    fun homeOkGamesEnterThirdGame(gameData: OKGameBean, baseActivity: BaseActivity<*>) {
+    fun homeOkGamesEnterThirdGame(gameData: OKGameBean, baseActivity: BaseActivity<*,*>) {
         RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         requestEnterThirdGame(
             "${gameData.firmType}",
@@ -414,7 +414,7 @@ open class MainHomeViewModel(
         gameCode: String,
         gameCategory: String,
         gameEntryTagName: String,
-        baseActivity: BaseActivity<*>,
+        baseActivity: BaseActivity<*,*>,
     ) {
 //        Timber.e("gameData: $gameData")
         if (LoginRepository.isLogin.value != true) {
@@ -543,7 +543,7 @@ open class MainHomeViewModel(
     private fun getGameBalance(
         firmType: String,
         thirdGameResult: EnterThirdGameResult,
-        baseActivity: BaseActivity<*>,
+        baseActivity: BaseActivity<*,*>,
     ) {
         doRequest({ OneBoSportApi.thirdGameService.getAllBalance() }) { result ->
             baseActivity.hideLoading()

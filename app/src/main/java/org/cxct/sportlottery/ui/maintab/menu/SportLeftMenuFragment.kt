@@ -14,7 +14,7 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportLeftMenuBinding
 import org.cxct.sportlottery.repository.showCurrencySign
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.util.*
@@ -25,7 +25,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 
 class SportLeftMenuFragment :
-    BindingSocketFragment<SportLeftMenuViewModel, FragmentSportLeftMenuBinding>() {
+    BaseSocketFragment<SportLeftMenuViewModel, FragmentSportLeftMenuBinding>() {
     private fun getMainTabActivity() = activity as MainTabActivity
 
     //Betting sport

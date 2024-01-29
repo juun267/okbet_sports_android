@@ -122,8 +122,8 @@ class TransformInDialog(val firmType: String,
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
             if (firmType == it.firmType && it.maintain == 1) {
 
-                if (context is BaseActivity<*>) {
-                    val act = context as BaseActivity<*>
+                if (context is BaseActivity<*,*>) {
+                    val act = context as BaseActivity<*,*>
                     commonCheckDialog(
                         context = act,
                         fm = act.supportFragmentManager,

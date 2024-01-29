@@ -1,9 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -16,9 +13,8 @@ import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.util.*
 
 // OkGames所有分类
-class AllGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::class) {
+class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesBinding>() {
 
-    private lateinit var binding: FragmentAllOkgamesBinding
     private val gameListAdapter= RecyclerGameListAdapter()
     private var categoryList = mutableListOf<OKGamesCategory>()
 
@@ -26,13 +22,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::
     private fun okGamesFragment() = parentFragment as OKGamesFragment
     private fun getMainTabActivity() = activity as MainTabActivity
 
-    override fun createRootView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
-    ): View {
-        return FragmentAllOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
-    }
-
-    override fun onBindView(view: View) {
+    override fun onInitView(view: View) {
         unSubscribeChannelHallAll()
         initObserve()
         onBindGamesView()

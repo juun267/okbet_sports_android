@@ -15,13 +15,13 @@ import org.cxct.sportlottery.databinding.FragmentNewsHomeBinding
 import org.cxct.sportlottery.net.PageInfo
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 
-class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHomeBinding>() {
+class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeBinding>() {
 
     private var categoryId = NewsRepository.NEWS_OKBET_ID
 

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.extentions.hideLoading
@@ -13,9 +12,7 @@ import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.databinding.ActivityLoginVerifyBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
-import org.cxct.sportlottery.network.index.login.LoginRequest
-import org.cxct.sportlottery.ui.base.BindingActivity
-import org.cxct.sportlottery.ui.login.VerifyCodeDialog
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
 import org.cxct.sportlottery.util.CountDownUtil
 import org.cxct.sportlottery.util.EventBusUtil
@@ -24,7 +21,7 @@ import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.util.showCaptchaDialog
 import org.cxct.sportlottery.view.checkRegisterListener
 
-class LoginVerifyActivity: BindingActivity<LoginViewModel, ActivityLoginVerifyBinding>() {
+class LoginVerifyActivity: BaseActivity<LoginViewModel, ActivityLoginVerifyBinding>() {
 
     companion object {
 

@@ -51,7 +51,7 @@ class TrialGameDialog(private val mContext: Context,
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifeScope) {
             if (firmType == it.firmType && it.maintain == 1) {
 
-                if (mContext is BaseActivity<*>) {
+                if (mContext is BaseActivity<*,*>) {
                     commonCheckDialog(
                         context = mContext,
                         fm = mContext.supportFragmentManager,

@@ -14,7 +14,6 @@ import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.PAYMAYA
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.ToastUtil
 

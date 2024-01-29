@@ -27,7 +27,7 @@ import splitties.activities.start
 /**
  * @app_destination 通过手机号或者邮箱重置登录密码
  */
-class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::class) {
+class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPassword2Binding>(ForgetViewModel::class) {
 
     companion object {
 
@@ -41,7 +41,6 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         }
     }
 
-    private val binding by lazy { ActivityForgetPassword2Binding.inflate(layoutInflater) }
     private val ways by lazy { intent.getIntExtra("retrieveWays", 1) }
     private var inputPhoneNo: String? = null // 输入的手机号，不为空即为输入的号码格式正确
     private var inputEmail: String? = null // 输入的邮箱，不为空即为输入的号码格式正确
@@ -50,10 +49,8 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::cla
 
     private inline fun isPhoneWays() = 1 == ways
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusBarDarkFont()
-        setContentView(binding.root)
         initView()
         initObserve()
         EventBusUtil.targetLifecycle(this)

@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.widget.Toast
+import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
@@ -29,12 +30,8 @@ import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.ToastUtil
 import kotlin.reflect.KClass
 
-abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
-    BaseActivity<T>(clazz) {
-
-    private val sharedPref: SharedPreferences by lazy {
-        this.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
-    }
+abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(clazz: KClass<VM>) :
+    BaseActivity<VM,VB>(clazz) {
 
     val receiver = ServiceBroadcastReceiver
     

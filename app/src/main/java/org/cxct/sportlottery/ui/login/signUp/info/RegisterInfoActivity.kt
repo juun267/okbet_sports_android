@@ -24,9 +24,7 @@ import java.util.*
 /**
  * 注册补充用户信息
  */
-class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoViewModel::class) {
-
-    private lateinit var binding: ActivityRegisterInfoBinding
+class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel,ActivityRegisterInfoBinding>(RegisterInfoViewModel::class) {
 
     //生日选择
     private var dateTimePicker: TimePickerView? = null
@@ -41,16 +39,12 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
     private var salaryPicker: OptionsPickerView<String>? = null
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityRegisterInfoBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onInitView() {
         KeyboadrdHideUtil.init(this)
         initToolsBar()
         initView()
         initData()
     }
-
 
     @SuppressLint("SetTextI18n")
     private fun initData() {

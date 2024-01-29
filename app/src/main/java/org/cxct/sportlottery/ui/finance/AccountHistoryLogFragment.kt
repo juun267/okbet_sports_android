@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityAccountHistoryLogBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.AccountHistory
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -17,7 +17,7 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 /**
  * @app_destination 历史记录
  */
-class AccountHistoryLogFragment : BindingFragment<FinanceViewModel,ActivityAccountHistoryLogBinding>() {
+class AccountHistoryLogFragment : BaseFragment<FinanceViewModel, ActivityAccountHistoryLogBinding>() {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 

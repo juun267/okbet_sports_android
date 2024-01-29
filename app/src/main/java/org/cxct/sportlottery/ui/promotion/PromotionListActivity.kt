@@ -5,14 +5,12 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityPromotionListBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
-import org.cxct.sportlottery.network.index.config.ImageData
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
-class PromotionListActivity : BindingActivity<MainHomeViewModel, ActivityPromotionListBinding>() {
+class PromotionListActivity : BaseActivity<MainHomeViewModel, ActivityPromotionListBinding>() {
 
     override fun onInitView() {
         setStatusbar(R.color.color_FFFFFF, true)

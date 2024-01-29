@@ -26,7 +26,7 @@ class LuckyWheelManager {
     }
     private var startTime: Long=0
     private var endTime: Long=0
-    private var activity: BaseActivity<BaseViewModel>? = null
+    private var activity: BaseActivity<*,*>? = null
     private var floatRootView: LuckyWheelFloatingButton? = null
     private var clickClose = false
 
@@ -37,7 +37,7 @@ class LuckyWheelManager {
      * 注意：若viewmodel被回收，则无法请求网络
      *
      */
-    open fun bind(activity: BaseActivity<BaseViewModel>) {
+    open fun bind(activity: BaseActivity<*,*>) {
         this.activity = activity
         bindview()
     }

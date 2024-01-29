@@ -38,13 +38,13 @@ class ToGcashDialog(val visibleNoReminder: Boolean = true) : BaseDialog<BaseView
             if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount()) {
                 if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_TIP_FLAG, false)&&needShow) {
                     needShow=false
-                    ToGcashDialog().show((AppManager.currentActivity() as BaseActivity<*>).supportFragmentManager,ToGcashDialog.javaClass.name)
+                    ToGcashDialog().show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToGcashDialog.javaClass.name)
                 }
             }
         }
         fun showByClick(next: () -> Unit){
             if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount()) {
-                ToGcashDialog(false).show((AppManager.currentActivity() as BaseActivity<*>).supportFragmentManager,ToGcashDialog.javaClass.name)
+                ToGcashDialog(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToGcashDialog.javaClass.name)
                 return
             }
             next.invoke()

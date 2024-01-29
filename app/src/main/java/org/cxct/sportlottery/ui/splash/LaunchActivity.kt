@@ -20,7 +20,7 @@ import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.databinding.ActivityLaunchBinding
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.util.KvUtils
@@ -29,7 +29,7 @@ import org.cxct.sportlottery.util.KvUtils
 /**
  * @app_destination 啟動頁
  */
-class LaunchActivity : BindingActivity<SplashViewModel,ActivityLaunchBinding>() {
+class LaunchActivity : BaseActivity<SplashViewModel, ActivityLaunchBinding>() {
 
     private val skipHomePage by lazy { intent.getBooleanExtra("skipHomePage", true) }
     private val imageUrls by lazy { intent.getSerializableExtra("imageUrls") as ArrayList<String> }

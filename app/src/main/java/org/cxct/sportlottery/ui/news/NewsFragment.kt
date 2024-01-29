@@ -14,7 +14,6 @@ import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentNewsBinding
 import org.cxct.sportlottery.network.common.NewsType
-import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 

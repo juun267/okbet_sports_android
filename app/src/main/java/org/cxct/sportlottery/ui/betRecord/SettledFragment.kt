@@ -12,7 +12,7 @@ import org.cxct.sportlottery.databinding.FragmentSettledBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.repository.showCurrencySign
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
@@ -28,7 +28,7 @@ import java.util.*
 /**
  * 已结单列表
  */
-class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettledBinding>() {
+class SettledFragment : BaseFragment<AccountHistoryViewModel, FragmentSettledBinding>() {
     private val mAdapter = RecyclerUnsettledAdapter()
     private val oneDay = 60 * 60 * 24 * 1000
     private val refreshHelper by lazy { RefreshHelper.of(binding.recyclerSettled, this, false) }

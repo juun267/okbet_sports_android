@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.sport.search
 
-import android.os.Bundle
 import android.text.Selection
 import android.view.Gravity
 import android.view.View
@@ -15,15 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
 import com.zhy.view.flowlayout.TagFlowLayout.OnTagClickListener
-import kotlinx.android.synthetic.main.activity_sport_search.btnToolbarBack
-import kotlinx.android.synthetic.main.activity_sport_search.etSearch
-import kotlinx.android.synthetic.main.activity_sport_search.historyTitle
-import kotlinx.android.synthetic.main.activity_sport_search.ivClear
-import kotlinx.android.synthetic.main.activity_sport_search.rvSearchResult
-import kotlinx.android.synthetic.main.activity_sport_search.sportSearchHistoryTag
-import kotlinx.android.synthetic.main.activity_sport_search.tvSearch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.databinding.ActivitySportSearchBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.chat.hideSoftInput
 import org.cxct.sportlottery.ui.sport.SportViewModel
@@ -31,7 +24,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.bindSportMaintenance
 import org.cxct.sportlottery.view.EmptyView
 
-class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::class) {
+class SportSearchtActivity : BaseSocketActivity<SportViewModel,ActivitySportSearchBinding>(SportViewModel::class) {
 
     private var searchHistoryList = mutableListOf<String>()
     private val searchResultAdapter by lazy { SportSearchResultAdapter() }
@@ -58,9 +51,9 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
                 var ivDel = pv.findViewById<ImageView>(R.id.sportSearchHistoryDelete)
                 ivDel.setOnClickListener {
                     searchHistoryList.remove(t)
-                    ivClear.isGone = searchHistoryList.isEmpty()
+                    binding.ivClear.isGone = searchHistoryList.isEmpty()
                     MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
-                    sportSearchHistoryTag.adapter = getSearchTagAdapter()
+                    binding.sportSearchHistoryTag.adapter = getSearchTagAdapter()
                 }
                 tvName.text = t
                 return pv
@@ -69,11 +62,9 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusbar(R.color.color_FFFFFF, true)
-        setContentView(R.layout.activity_sport_search)
-        btnToolbarBack.setOnClickListener { onBackPressed() }
+        binding.btnToolbarBack.setOnClickListener { onBackPressed() }
         initRecyclerView()
         initSearchView()
         initObservable()
@@ -82,14 +73,14 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
     }
 
     private fun setHistoryLayoutVisible(visible: Boolean) {
-        sportSearchHistoryTag.isVisible = visible
-        historyTitle.isVisible = visible
+        binding.sportSearchHistoryTag.isVisible = visible
+        binding.historyTitle.isVisible = visible
         val searchResultVisible = !visible
-        rvSearchResult.isVisible = searchResultVisible
+        binding.rvSearchResult.isVisible = searchResultVisible
         tvNoMore.isVisible = (searchResultVisible && searchResultAdapter.getDataCount() > 0)
     }
 
-    private fun initSearchView() {
+    private fun initSearchView()=binding.run {
         etSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 setHistoryLayoutVisible(true)
@@ -124,7 +115,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
         })
     }
 
-    private fun initSearch() {
+    private fun initSearch()=binding.run {
         setHistoryLayoutVisible(true)
         MultiLanguagesApplication.searchHistory?.let { searchHistoryList = it }
         ivClear.isGone = searchHistoryList.isEmpty()
@@ -143,7 +134,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
         tvSearch.text = getString(R.string.C001)
     }
 
-    private fun startSearch() {
+    private fun startSearch()=binding.run {
         searchKey = etSearch.text.toString()
         if (searchKey.isNotEmpty()) {
             if (searchHistoryList.any { it == searchKey }) {
@@ -171,9 +162,9 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
         ivClear.isGone = searchHistoryList.isEmpty()
     }
 
-    private fun initRecyclerView() {
-        rvSearchResult.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        val emptyView = EmptyView(this)
+    private fun initRecyclerView()=binding.run {
+        rvSearchResult.layoutManager = LinearLayoutManager(this@SportSearchtActivity, RecyclerView.VERTICAL, false)
+        val emptyView = EmptyView(this@SportSearchtActivity)
         emptyView.setEmptyImg(R.drawable.bg_search_nodata)
         emptyView.setEmptyText(getString(R.string.no_search_match))
         searchResultAdapter.setEmptyView(emptyView)

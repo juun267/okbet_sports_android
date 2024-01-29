@@ -3,12 +3,11 @@ package org.cxct.sportlottery.ui.news
 import androidx.navigation.findNavController
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityNewsBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
 
 /**
  * @app_destination 最新消息
  */
-class NewsActivity : BindingActivity<NewsViewModel,ActivityNewsBinding>() {
+class NewsActivity : BaseActivity<NewsViewModel,ActivityNewsBinding>() {
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)

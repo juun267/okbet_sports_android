@@ -6,7 +6,6 @@ import com.drake.spannable.span.CenterImageSpan
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.KYCEvent
 import org.cxct.sportlottery.databinding.FragmentVerifyIdentityKyc2Binding
-import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil

@@ -4,14 +4,14 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentFeedbackSubmitBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.util.countTextAmount
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 /**
  * @app_destination 意见反馈-填写建议
  */
-class FeedbackSubmitFragment : BindingFragment<FeedbackViewModel,FragmentFeedbackSubmitBinding>() {
+class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackSubmitBinding>() {
 
     override fun onInitView(view: View) {
         viewModel.showToolbar(true)

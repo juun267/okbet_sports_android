@@ -18,13 +18,13 @@ import org.cxct.sportlottery.network.common.ESportType
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 
 class SportToolBarTopFragment :
-    BindingSocketFragment<SportViewModel, ViewDetailHeadToolbar1Binding>() {
+    BaseSocketFragment<SportViewModel, ViewDetailHeadToolbar1Binding>() {
 
     private var isInited = false
     private val matchInfo by lazy {
@@ -32,16 +32,15 @@ class SportToolBarTopFragment :
     }
 
     private var newMatchInfo: MatchInfo? = null
-    override fun createRootView(
+    override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val frameLayout = FrameLayout(inflater.context)
         frameLayout.layoutParams = ViewGroup.LayoutParams(-1, -1)
-        frameLayout.addView(super.createRootView(inflater, container, savedInstanceState))
+        frameLayout.addView(super.onCreateView(inflater, container, savedInstanceState))
         isInited = true
         return frameLayout
     }
-
 
     private var timeText: String? = null
     private var timeEnable = true

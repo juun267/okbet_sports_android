@@ -3,7 +3,7 @@ package org.cxct.sportlottery.ui.aboutMe
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityAboutMeBinding
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
@@ -11,7 +11,7 @@ import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 /**
  * @app_destination 关于我们
  */
-class AboutMeActivity : BindingActivity<HelpCenterViewModel, ActivityAboutMeBinding>() {
+class AboutMeActivity : BaseActivity<HelpCenterViewModel, ActivityAboutMeBinding>() {
 
 
     override fun onInitView() {

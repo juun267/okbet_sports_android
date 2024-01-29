@@ -13,7 +13,6 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityKycFormBinding
 import org.cxct.sportlottery.net.user.data.OCRInfo
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.login.signUp.info.DateTimePickerOptions
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.EventBusUtil
@@ -23,7 +22,7 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import java.util.*
 
-class KYCFormActivity: BindingActivity<ProfileCenterViewModel, ActivityKycFormBinding>() {
+class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBinding>() {
 
     companion object {
 

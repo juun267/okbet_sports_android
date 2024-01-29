@@ -22,7 +22,7 @@ import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 /**
  * @app_destination 忘记密码
  */
-class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::class) {
+class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBinding>(ForgetViewModel::class) {
 
     companion object {
 
@@ -34,14 +34,11 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
         }
     }
 
-    private val binding by lazy { ActivityRestPasswordBinding.inflate(layoutInflater) }
     private val userName by lazy { "${intent.getSerializableExtra("userName")}" }
     private val byPhoneNumber by lazy { intent.getBooleanExtra("byPhoneNumber", true) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusBarDarkFont()
-        setContentView(binding.root)
         initView()
         initObserver()
     }

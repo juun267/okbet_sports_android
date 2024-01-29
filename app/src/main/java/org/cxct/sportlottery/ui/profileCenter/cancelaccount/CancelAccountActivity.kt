@@ -5,7 +5,6 @@ import android.text.method.HideReturnsTransformationMethod
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityCancelAccountBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
@@ -14,7 +13,7 @@ import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationM
  * 注销账号页面  ios需要安卓暂时不需要 此页面隐藏
  */
 
-class CancelAccountActivity :BindingActivity<CancelAccountViewModel,ActivityCancelAccountBinding>() {
+class CancelAccountActivity :BaseActivity<CancelAccountViewModel,ActivityCancelAccountBinding>() {
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)

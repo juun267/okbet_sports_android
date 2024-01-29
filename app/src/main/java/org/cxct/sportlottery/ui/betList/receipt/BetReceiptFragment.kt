@@ -35,7 +35,7 @@ import timber.log.Timber
  * @app_destination 注單收據
  */
 class BetReceiptFragment :
-    BaseSocketFragment<BetListViewModel>(BetListViewModel::class) {
+    BaseSocketFragment<BetListViewModel,FragmentBetReceiptBinding>() {
 
     private var betResultData: Receipt? = null
 
@@ -52,17 +52,7 @@ class BetReceiptFragment :
             }
     }
 
-    val binding: FragmentBetReceiptBinding by lazy {
-        FragmentBetReceiptBinding.inflate(layoutInflater)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        return binding.root
-    }
-
-    override fun onBindView(view: View) {
+    override fun onInitView(view: View) {
         initObserver()
         initView()
     }

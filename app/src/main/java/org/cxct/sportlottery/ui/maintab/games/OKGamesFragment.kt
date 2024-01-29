@@ -29,13 +29,12 @@ import org.cxct.sportlottery.view.dialog.PopImageDialog
 
 
 // okgames主Fragment
-class OKGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::class) {
+class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBinding>() {
 
     val gameItemViewPool by lazy {
         RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(0, 20) }
     }
 
-    private lateinit var binding: FragmentOkgamesBinding
     private val fragmentHelper by lazy {
         FragmentHelper(
             childFragmentManager, R.id.fragmentContainer, arrayOf(
@@ -69,13 +68,8 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::c
 
     private inline fun mainTabActivity() = activity as MainTabActivity
 
-    override fun createRootView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        return FragmentOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
-    }
 
-    override fun onBindView(view: View) {
+    override fun onInitView(view: View) {
         initToolBar()
         initTopView()
         showGameAll()
@@ -299,4 +293,5 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::c
             changePartGames(okgamesFirm)
         }
     }
+
 }

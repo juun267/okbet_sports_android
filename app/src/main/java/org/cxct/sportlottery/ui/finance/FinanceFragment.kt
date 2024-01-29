@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.content.Context
-import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
@@ -15,7 +14,7 @@ import org.cxct.sportlottery.databinding.FragmentFinanceBinding
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.SecurityDepositDialog
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -24,7 +23,7 @@ import org.cxct.sportlottery.util.refreshMoneyLoading
 /**
  * @app_destination 資金明細
  */
-class FinanceFragment : BindingFragment<FinanceViewModel,FragmentFinanceBinding>(), OnItemClickListener {
+class FinanceFragment : BaseFragment<FinanceViewModel, FragmentFinanceBinding>(), OnItemClickListener {
 
     private val recordAdapter by lazy { FinanceRecordAdapter(this@FinanceFragment) }
 

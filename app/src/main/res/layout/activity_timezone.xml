@@ -8,11 +8,12 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    tools:context=".ui.menu.ChangeLanguageDialog"
     tools:ignore="SpUsage,RtlSymmetry">
 
-
-    <include layout="@layout/view_base_tool_bar_no_drawer" />
+  <org.cxct.sportlottery.view.CustomTopToolbar
+      android:id="@+id/toolBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"

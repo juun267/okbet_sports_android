@@ -67,10 +67,8 @@ import timber.log.Timber
 import java.util.*
 
 
-class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::class),
+class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSportBinding>(SportViewModel::class),
     TimerManager {
-
-    private val binding by lazy { ActivityDetailSportBinding.inflate(layoutInflater) }
 
     companion object {
         fun startActivity(
@@ -114,13 +112,13 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
         })
     }
 
-    val tvToolBarHomeName by lazy { binding.collapsToolbar.tv_toolbar_home_name }
-    val tvToolBarAwayName by lazy { binding.collapsToolbar.tv_toolbar_away_name }
-    val ivToolbarHomeLogo by lazy { binding.collapsToolbar.ivToolbarHomeLogo }
-    val ivToolbarAwayLogo by lazy { binding.collapsToolbar.ivToolbarAwayLogo }
-    val tvToolbarHomeScore by lazy { binding.collapsToolbar.tv_toolbar_home_score }
-    val tvToolbarAwayScore by lazy { binding.collapsToolbar.tv_toolbar_away_score }
-    val tvToolbarNoStart by lazy { binding.collapsToolbar.linNoStart }
+    val tvToolBarHomeName by lazy { binding.collaps1.tvToolbarHomeName }
+    val tvToolBarAwayName by lazy { binding.collaps1.tvToolbarAwayName }
+    val ivToolbarHomeLogo by lazy { binding.collaps1.ivToolbarHomeLogo }
+    val ivToolbarAwayLogo by lazy { binding.collaps1.ivToolbarAwayLogo }
+    val tvToolbarHomeScore by lazy { binding.collaps1.tvToolbarHomeScore }
+    val tvToolbarAwayScore by lazy { binding.collaps1.tvToolbarAwayScore }
+    val tvToolbarNoStart by lazy { binding.collaps1.linNoStart }
 
     private val liveToolBarListener by lazy {
         object : DetailLiveViewToolbar.LiveToolBarListener {
@@ -147,9 +145,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
 
     private var delayObserver: Runnable? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun onInitView() {
         initData()
         initToolBar()
         initUI()
@@ -168,7 +164,6 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
         }
         binding.root.postDelayed(delayObserver, 300)
     }
-
 
     fun initToolBar() = binding.run {
         setStatusbar(R.color.color_FFFFFF,true)

@@ -16,7 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentChartBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.chat.RecycleViewDivider
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.adapter.RcvChartAdapter
@@ -24,7 +24,7 @@ import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.util.fromJson
 import timber.log.Timber
 
-class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>() {
+class SportChartFragment : BaseFragment<SportViewModel, FragmentChartBinding>() {
 
     private var matchInfo: MatchInfo? = null
 

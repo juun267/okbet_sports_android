@@ -37,7 +37,7 @@ class LotteryManager {
     }
 
     private var viewModel: BaseViewModel? = null
-    private var activity: BaseActivity<BaseViewModel>? = null
+    private var activity: BaseActivity<*,*>? = null
     private var floatRootView: LotteryFloatingButton? = null
     private var countdownTimer: Timer? = null
     private var showStartTime: Long = 0
@@ -51,13 +51,13 @@ class LotteryManager {
      * 注意：若viewmodel被回收，则无法请求网络
      *
      */
-    fun bind(activity: BaseActivity<BaseViewModel>) {
+    fun bind(activity: BaseActivity<*,*>) {
         this.viewModel = activity.viewModel
         this.activity = activity
         startShow()
     }
 
-    fun onDestroy(activity: BaseActivity<*>) {
+    fun onDestroy(activity: BaseActivity<*,*>) {
         if (this.activity == activity) {
             this.activity = null
             this.viewModel = null

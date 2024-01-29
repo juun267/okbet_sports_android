@@ -5,13 +5,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.ActivityFeedbackMainBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 
 /**
  * @app_destination 建议反馈
  */
-class FeedbackMainActivity : BindingActivity<FeedbackViewModel,ActivityFeedbackMainBinding>() {
+class FeedbackMainActivity : BaseActivity<FeedbackViewModel, ActivityFeedbackMainBinding>() {
     private val navController by lazy { findNavController(R.id.myNavHostFragment) }
 
     override fun onInitView() {

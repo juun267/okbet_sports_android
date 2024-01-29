@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
@@ -39,21 +38,21 @@ class HotMatchView(
 
     val binding = ViewHotGameBinding.inflate(layoutInflater, this, true)
     private var adapter: HotMatchAdapter? = null
-    private var fragment: BaseFragment<*>? = null
+    private var fragment: BaseFragment<*,*>? = null
 
     init {
         initView()
     }
 
-    private fun initView() {
+    private fun initView()=binding.run {
         val manager = LinearLayoutManager(context)
         initRecyclerView(manager)
         //右滑动
-        iv_right.onClick {
+        ivRight.onClick {
             scrollRecycler(manager, true)
         }
         //左滑动
-        iv_left.onClick {
+        ivLeft.onClick {
             scrollRecycler(manager, false)
         }
 
@@ -74,30 +73,30 @@ class HotMatchView(
 
     }
 
-    private fun initRecyclerView(manager: LinearLayoutManager) {
+    private fun initRecyclerView(manager: LinearLayoutManager)=binding.recyclerHotGame.run {
         manager.orientation = LinearLayoutManager.HORIZONTAL
-        recycler_hot_game.layoutManager = manager
-        recycler_hot_game.addItemDecoration(
+        layoutManager = manager
+        addItemDecoration(
             DividerItemDecorator(
                 ContextCompat.getDrawable(
                     context, R.drawable.divider_trans
                 )
             )
         )
-        recycler_hot_game.itemAnimator?.changeDuration = 0
-        PagerSnapHelper().attachToRecyclerView(recycler_hot_game)
+        itemAnimator?.changeDuration = 0
+        PagerSnapHelper().attachToRecyclerView(this)
 
         //滚动监听   显示/隐藏 左右两个滑动按钮
-        recycler_hot_game.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val position = manager.findFirstCompletelyVisibleItemPosition()
                 //屏幕中没有完整的item 前后都能滑动
                 if (position == -1) {
-                    iv_left.visible()
-                    iv_right.visible()
-                    ivBackPage.alpha = 1.0f
-                    ivForwardPage.alpha = 1.0f
+                    binding.ivLeft.visible()
+                    binding.ivRight.visible()
+                    binding.ivBackPage.alpha = 1.0f
+                    binding.ivForwardPage.alpha = 1.0f
                 } else {
                     //检测是否需要隐藏 前进/后退 imageView
                     scrollImageStatus(position)
@@ -123,7 +122,7 @@ class HotMatchView(
     /**
      * 初始化热门赛事控件
      */
-    fun onCreate(data: LiveData<Event<List<Recommend>>>,oddsTypeLiveData: LiveData<OddsType>, fragment: BaseFragment<*>?) {
+    fun onCreate(data: LiveData<Event<List<Recommend>>>,oddsTypeLiveData: LiveData<OddsType>, fragment: BaseFragment<*,*>?) {
         if (fragment == null) {
             return
         }
@@ -134,20 +133,15 @@ class HotMatchView(
         initAdapter(fragment)
 
         //初始化ws广播监听
-        if (fragment is BaseSocketFragment) {
+        if (fragment is BaseSocketFragment<*,*>) {
             initSocketObservers(fragment.receiver, fragment.getViewLifecycleOwner(), fragment)
         }
-        //初始化ws广播监听
-        if (fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>) {
-            initSocketObservers(fragment.receiver, fragment.getViewLifecycleOwner(), fragment)
-        }
-
     }
 
     /**
      * 数据变量监听
      */
-    private fun initDataObserve(data: LiveData<Event<List<Recommend>>>, oddsTypeLiveData: LiveData<OddsType>,fragment: BaseFragment<*>) {
+    private fun initDataObserve(data: LiveData<Event<List<Recommend>>>, oddsTypeLiveData: LiveData<OddsType>,fragment: BaseFragment<*,*>) {
         data.observe(fragment.viewLifecycleOwner) {
 
             //api获取热门赛事列表
@@ -165,7 +159,7 @@ class HotMatchView(
                     unSubscribeChannelHall(fragment)
                 if (isVisible) {
                     adapter?.data = data
-                    recycler_hot_game.post { firstVisibleRange() }
+                    binding.recyclerHotGame.post { firstVisibleRange() }
                 }
             }
         }
@@ -180,7 +174,7 @@ class HotMatchView(
     private fun initSocketObservers(
         receiver: ServiceBroadcastReceiver,
         viewLifecycleOwner: LifecycleOwner,
-        fragment: BaseFragment<*>
+        fragment: BaseFragment<*,*>
     ) {
 
         //观察比赛状态改变
@@ -290,7 +284,7 @@ class HotMatchView(
     }
 
 
-    private fun initAdapter(fragment: BaseFragment<*>) {
+    private fun initAdapter(fragment: BaseFragment<*,*>) {
         setUpAdapter(fragment,
             HomeRecommendListener(onItemClickListener = { matchInfo ->
                 matchInfo?.let {
@@ -331,39 +325,28 @@ class HotMatchView(
         lifecycleOwner: LifecycleOwner, homeRecommendListener: HomeRecommendListener
     ) {
         adapter = HotMatchAdapter(lifecycleOwner, homeRecommendListener)
-        recycler_hot_game.adapter = adapter
+        binding.recyclerHotGame.adapter = adapter
         scrollImageStatus(0)
     }
 
-    private fun subscribeChannelHall(recommend: Recommend, fragment: BaseFragment<*>) {
+    private fun subscribeChannelHall(recommend: Recommend, fragment: BaseFragment<*,*>) {
         if (fragment is BaseSocketFragment) {
-            fragment.subscribeChannel2HotMatch(
-                recommend.matchInfo?.gameType, recommend.matchInfo?.id
-            )
-        }
-        if (fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>) {
             fragment.subscribeChannel2HotMatch(
                 recommend.matchInfo?.gameType, recommend.matchInfo?.id
             )
         }
     }
 
-    private fun unSubscribeChannelHall(fragment: BaseFragment<*>) {
-        if (fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>) {
-            fragment.unSubscribeChannel2HotMatch()
-        }
-        if (fragment is BaseSocketFragment) {
+    private fun unSubscribeChannelHall(fragment: BaseFragment<*,*>) {
+        if (fragment is BaseSocketFragment<*, *>) {
             fragment.unSubscribeChannel2HotMatch()
         }
     }
 
-    fun onResume(fragment: BaseFragment<*>) {
+    fun onResume(fragment: BaseFragment<*,*>) {
         //关闭/显示   热门赛事
         goneWithSportSwitch()
         if (fragment is BaseSocketFragment) {
-            fragment.receiver.addOddsChangeListener(fragment, mOddsChangeListener)
-        }
-        if (fragment is BindingSocketFragment<*, *>) {
             fragment.receiver.addOddsChangeListener(fragment, mOddsChangeListener)
         }
         adapter?.notifyDataSetChanged()
@@ -434,24 +417,24 @@ class HotMatchView(
         if (position < 0) {
             position = 0
         }
-        recycler_hot_game.smoothScrollToPosition(position)
+        binding.recyclerHotGame.smoothScrollToPosition(position)
     }
 
 
-    private fun scrollImageStatus(position: Int) {
+    private fun scrollImageStatus(position: Int)=binding.run {
         if (position == 0) {
-            iv_left.gone()
+            ivLeft.gone()
             ivBackPage.alpha = 0.5f
         } else {
-            iv_left.visible()
+            ivLeft.visible()
             ivBackPage.alpha = 1f
         }
         adapter?.let {
             if (position == it.data.size - 1) {
-                iv_right.gone()
+                ivRight.gone()
                 ivForwardPage.alpha = 0.5f
             } else {
-                iv_right.visible()
+                ivRight.visible()
                 ivForwardPage.alpha = 1f
             }
         }
@@ -466,8 +449,8 @@ class HotMatchView(
     @SuppressLint("SuspiciousIndentation")
     private fun firstVisibleRange(): Boolean {
         if (fragment?.activity == null
-            || recycler_hot_game == null
-            || recycler_hot_game.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
+            || binding.recyclerHotGame == null
+            || binding.recyclerHotGame.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
             return false
         }
         val adapter = adapter as HotMatchAdapter
@@ -475,7 +458,7 @@ class HotMatchView(
             return false
         }
         var needSubscribe = false
-        recycler_hot_game.getVisibleRangePosition().forEach { position ->
+        binding.recyclerHotGame.getVisibleRangePosition().forEach { position ->
             if (position < adapter.data.size) {
                 val recommend = adapter.data[position]
                 subscribeChannelHall(recommend, fragment!!)

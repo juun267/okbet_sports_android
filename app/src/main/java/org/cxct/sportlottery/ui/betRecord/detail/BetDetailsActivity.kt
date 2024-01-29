@@ -13,19 +13,14 @@ import org.cxct.sportlottery.util.setupSportStatusChange
 /**
  * 串关组合详情
  */
-class BetDetailsActivity : BaseSocketActivity<BetListViewModel>(BetListViewModel::class){
-
-    private lateinit var binding: ActivityBetDetailsBinding
+class BetDetailsActivity : BaseSocketActivity<BetListViewModel,ActivityBetDetailsBinding>(BetListViewModel::class){
 
     private val betDetailsFragment by lazy { BetDetailsFragment() }
 
     private val betDetailsFragment2 by lazy { BetDetailsFragment2() }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        binding = ActivityBetDetailsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         initView()
         initData()
     }

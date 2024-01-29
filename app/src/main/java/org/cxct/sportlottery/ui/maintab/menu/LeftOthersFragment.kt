@@ -18,7 +18,7 @@ import org.cxct.sportlottery.databinding.FragmentLeftOthersBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.news.SportNewsActivity
@@ -30,7 +30,7 @@ import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
 import timber.log.Timber
 
-class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftOthersBinding>() {
+class LeftOthersFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLeftOthersBinding>() {
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
 

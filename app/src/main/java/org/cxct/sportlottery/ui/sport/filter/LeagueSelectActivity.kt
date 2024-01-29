@@ -15,6 +15,7 @@ import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
 import org.cxct.sportlottery.common.event.SelectMatchEvent
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.loading.Gloading
+import org.cxct.sportlottery.databinding.ActivityLeagueSelectBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.TimeRangeParams
@@ -31,7 +32,7 @@ import java.util.*
 
 
 class LeagueSelectActivity :
-    BaseSocketActivity<LeagueSelectViewModel>(LeagueSelectViewModel::class) {
+    BaseSocketActivity<LeagueSelectViewModel,ActivityLeagueSelectBinding>(LeagueSelectViewModel::class) {
     companion object {
         fun start(
             context: Context,
@@ -66,11 +67,8 @@ class LeagueSelectActivity :
 
     private val loading by lazy { Gloading.wrapView(rv_league) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusbar(R.color.color_FFFFFF, true)
-        setContentView(R.layout.activity_league_select)
-
         bindFinish(btnCancel)
         loading.showLoading()
         setDateListView()

@@ -15,10 +15,8 @@ import com.appsflyer.AppsFlyerLib
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.bigkoo.pickerview.view.TimePickerView
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.interfaces.OnItemClickListener
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -36,7 +34,6 @@ import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.view.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*
@@ -53,7 +50,7 @@ import kotlin.math.abs
 /**
  * @app_destination 存款-转账支付  //存款时间格式需要修改
  */
-class TransferPayFragment : BindingFragment<MoneyRechViewModel, TransferPayFragmentBinding>() {
+class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragmentBinding>() {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
 

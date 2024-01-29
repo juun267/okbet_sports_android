@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentVerifyIdentityDetailNewBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 

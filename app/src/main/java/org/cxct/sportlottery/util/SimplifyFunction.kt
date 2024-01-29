@@ -756,22 +756,6 @@ fun View.setBtnEnable(enable: Boolean) {
         0.5f
     }
 }
-
-fun BaseFragment<SportListViewModel>.showErrorMsgDialog(msg: String) {
-    val dialog = CustomAlertDialog()
-    dialog.setTitle(resources.getString(R.string.prompt))
-    dialog.setMessage(msg)
-    dialog.setTextColor(R.color.color_E44438_e44438)
-    dialog.setNegativeButtonText(null)
-    dialog.setPositiveClickListener {
-        dialog.dismiss()
-        back()
-    }
-    dialog.setCanceledOnTouchOutside(false)
-    dialog.isCancelable = false
-    dialog.show(childFragmentManager, null)
-}
-
 fun <T> BaseQuickAdapter<T, *>.doOnVisiableRange(block: (Int, T) -> Unit) {
     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
     val first = layoutManager.findFirstVisibleItemPosition()

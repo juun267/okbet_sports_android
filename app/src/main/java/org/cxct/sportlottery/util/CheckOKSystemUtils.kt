@@ -15,7 +15,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 /**
  * 检查是否关闭体育入口
  */
-fun checkSportStatus(activity: BaseActivity<*>, block: () -> Unit) {
+fun checkSportStatus(activity: BaseActivity<*,*>, block: () -> Unit) {
     if(getSportEnterIsClose()){
         activity.showPromptDialogNoCancel(message = activity.getString(R.string.N969)) { }
 //        ToastUtil.showToast(context, context.getString(R.string.N969))
@@ -57,7 +57,7 @@ fun setupSportStatusChange(lifecycleOwner: LifecycleOwner, block: (isOpen:Boolea
 }
 
 
-fun BaseActivity<*>.bindSportMaintenance() {
+fun BaseActivity<*,*>.bindSportMaintenance() {
     ServiceBroadcastReceiver.sportMaintenance.observe(this){
         if (it.status == 1) {
             showPromptDialogNoCancel(message = getString(R.string.N969)) { finish() }

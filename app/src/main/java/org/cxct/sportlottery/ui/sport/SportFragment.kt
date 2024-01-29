@@ -20,7 +20,7 @@ import org.cxct.sportlottery.network.sport.Menu
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -39,7 +39,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
 
-class SportFragment: BindingSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
+class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
 
     override fun createVM(clazz: KClass<SportTabViewModel>) = getViewModel(clazz = clazz)
 

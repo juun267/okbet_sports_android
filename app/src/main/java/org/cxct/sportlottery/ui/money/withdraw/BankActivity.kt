@@ -1,17 +1,16 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
-import android.os.Bundle
 import androidx.navigation.findNavController
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.databinding.ActivityBankBinding
 import org.cxct.sportlottery.network.money.config.TransferType
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 
 /**
  * @app_destination 提款設置
  */
-class BankActivity : BindingActivity<WithdrawViewModel,ActivityBankBinding>() {
+class BankActivity : BaseActivity<WithdrawViewModel, ActivityBankBinding>() {
 
     companion object {
         const val ModifyBankTypeKey = "modify_bank_type_key"

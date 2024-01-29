@@ -32,7 +32,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     data class MenuTab(@DrawableRes val selectedIcon: Int,
                        @DrawableRes val norIcon: Int,
                        @StringRes val name: Int,
-                       val content: Class<out BaseFragment<*>>?)
+                       val content: Class<out BaseFragment<*,*>>?)
 
     private val datas = mutableListOf<MenuTab?>()
 
@@ -102,7 +102,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
 
     override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab?>) { }
 
-    private fun setMaintanence(linMaintenance: View, fragmentClass: Class<out BaseFragment<*>>?){
+    private fun setMaintanence(linMaintenance: View, fragmentClass: Class<out BaseFragment<*,*>>?){
         if ((fragmentClass == SportVenueFragment::class.java || fragmentClass == ESportVenueFragment::class.java)
             && getSportEnterIsClose()) {
             linMaintenance.visible()

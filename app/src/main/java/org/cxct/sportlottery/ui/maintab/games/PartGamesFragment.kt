@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.graphics.Color
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,13 +20,12 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.loadMore
 
 // 指定类别的三方游戏
-class PartGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::class) {
+class PartGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentPartOkgamesBinding>() {
 
     companion object {
         val pageSize = 12
     }
 
-    private lateinit var binding: FragmentPartOkgamesBinding
 
     private inline fun okGamesFragment() = parentFragment as OKGamesFragment
     private val gameChildAdapter by lazy {
@@ -50,15 +47,7 @@ class PartGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel:
         Gloading.from(LoadingAdapter(emptyString = R.string.N883, emptyIcon = R.drawable.ic_no_data, bgColor = Color.TRANSPARENT)).wrap(View(context))
     }
 
-    override fun createRootView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return FragmentPartOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
-    }
-
-    override fun onBindView(view: View) {
+    override fun onInitView(view: View) {
         initObserve()
         initGameList()
         bindClick()

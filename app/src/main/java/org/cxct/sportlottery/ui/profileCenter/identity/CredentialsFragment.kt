@@ -8,7 +8,6 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentCredentialsBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.LocalUtils

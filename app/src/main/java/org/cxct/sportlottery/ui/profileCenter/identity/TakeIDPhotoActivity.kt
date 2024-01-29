@@ -16,7 +16,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityTakeidPhotoBinding
 import org.cxct.sportlottery.net.user.data.OCRInfo
-import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.selectpicture.PictureSelectorUtils
@@ -30,7 +29,7 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 import kotlin.math.abs
 
-class TakeIDPhotoActivity: BindingActivity<ProfileCenterViewModel, ActivityTakeidPhotoBinding>()
+class TakeIDPhotoActivity: BaseActivity<ProfileCenterViewModel, ActivityTakeidPhotoBinding>()
     , SensorEventListener {
 
     companion object {

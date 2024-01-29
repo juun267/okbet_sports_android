@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.view.floatingbtn
 
+import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.viewModelScope
@@ -28,7 +29,7 @@ class PromotionManager {
             PromotionManager()
         }
     }
-    private var activity: BaseActivity<BaseViewModel>? = null
+    private var activity: Activity? = null
     private var floatRootView: PromotionFloatingButton? = null
     private var clickClose = false
 
@@ -39,7 +40,7 @@ class PromotionManager {
      * 注意：若viewmodel被回收，则无法请求网络
      *
      */
-    open fun bind(activity: BaseActivity<BaseViewModel>) {
+    open fun bind(activity: Activity) {
         this.activity = activity
         bindview()
     }

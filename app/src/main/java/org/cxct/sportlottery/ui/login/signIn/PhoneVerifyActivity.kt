@@ -25,10 +25,9 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
 import java.util.*
 
 
-class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
+class PhoneVerifyActivity : BaseActivity<LoginViewModel,ActivityPhoneVerifyBinding>(LoginViewModel::class),
     View.OnClickListener {
 
-    private lateinit var binding: ActivityPhoneVerifyBinding
     private var mSmsTimer: Timer? = null
 
     companion object {
@@ -62,17 +61,13 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         ImmersionBar.with(this)
             .statusBarDarkFont(true)
             .transparentStatusBar()
             .statusBarView(v_statusbar)
             .fitsSystemWindows(false)
             .init()
-        binding = ActivityPhoneVerifyBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
         initView()
         initObserve()
     }

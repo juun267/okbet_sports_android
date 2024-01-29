@@ -2,9 +2,7 @@ package org.cxct.sportlottery.ui.selflimit
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.text.isDigitsOnly
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -22,10 +20,9 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
  * @app_destination 自我禁制-帳號登入限制
  */
 @SuppressLint("SetTextI18n")
-class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel::class),
+class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimitFrozeBinding>(),
     View.OnClickListener {
 
-    private lateinit var binding: FragmentSelfLimitFrozeBinding
     private var minFrozeDay = sConfigData?.minFrozeDay ?: 0
 
     override fun onClick(v: View?) {
@@ -43,19 +40,9 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
         }
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onInitView(view: View) {
         viewModel.showToolbar(true)
         viewModel.setToolbarName(getString(R.string.self_limit))
-        binding = FragmentSelfLimitFrozeBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         initView()
         initObserve()
         initEditText()

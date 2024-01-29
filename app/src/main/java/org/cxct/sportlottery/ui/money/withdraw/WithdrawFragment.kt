@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
@@ -19,12 +18,10 @@ import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.money.withdraw.BankActivity.Companion.ModifyBankTypeKey
 import org.cxct.sportlottery.ui.money.withdraw.BankActivity.Companion.TransferTypeAddSwitch
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
-import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.math.min
@@ -32,7 +29,7 @@ import kotlin.math.min
 /**
  * @app_destination 提款-tab
  */
-class WithdrawFragment : BindingFragment<WithdrawViewModel,FragmentWithdrawBinding>() {
+class WithdrawFragment : BaseFragment<WithdrawViewModel,FragmentWithdrawBinding>() {
 
     private lateinit var bankCardAdapter: WithdrawBankCardAdapter
     private var withdrawBankCardData: BankCardList? = null

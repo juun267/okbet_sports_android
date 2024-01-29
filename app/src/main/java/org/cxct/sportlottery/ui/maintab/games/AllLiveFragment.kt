@@ -18,11 +18,10 @@ import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setupSportStatusChange
 
 // OkGames所有分类
-class AllLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::class) {
+class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBinding>() {
     private val gameListAdapter= RecyclerLiveListAdapter()
     private fun getMainTabActivity() = activity as MainTabActivity
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
-    private lateinit var binding: FragmentAllOkliveBinding
     private var categoryList = mutableListOf<OKGamesCategory>()
 
     private var p3ogProviderFirstPosi: Int = 0
@@ -32,13 +31,8 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::cla
 
 
     private fun okLiveFragment() = parentFragment as OKLiveFragment
-    override fun createRootView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
-    ): View {
-        return FragmentAllOkliveBinding.inflate(layoutInflater).apply { binding = this }.root
-    }
 
-    override fun onBindView(view: View) {
+    override fun onInitView(view: View) {
         unSubscribeChannelHallAll()
         initObserve()
         onBindGamesView()

@@ -15,7 +15,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.KEY_TOKEN
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -32,7 +32,7 @@ import org.cxct.sportlottery.view.dialog.promotion.PromotionPopupDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
+class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
 
      fun getMainTabActivity() = activity as MainTabActivity
      private fun getHomeFragment() = parentFragment as HomeFragment
