@@ -27,12 +27,9 @@ import org.cxct.sportlottery.util.LogUtil
 /**
  * 顯示棋牌彈窗
  */
-class PopImageDialog(imageType: Int) : BaseDialog<BaseViewModel>(BaseViewModel::class) {
+class PopImageDialog() : BaseDialog<BaseViewModel>(BaseViewModel::class) {
 
     init {
-        arguments = Bundle().apply {
-            putInt(IMAGE_TYPE, imageType)
-        }
         setStyle(R.style.FullScreen)
     }
 
@@ -66,15 +63,19 @@ class PopImageDialog(imageType: Int) : BaseDialog<BaseViewModel>(BaseViewModel::
 
         fun showDialog(manager: FragmentManager, imageType: Int) {
             if (checkImageTypeAvailable(imageType) && imageTypeEnableMap[imageType] == true) {
-                PopImageDialog(imageType).show(manager)
+                val dialog = PopImageDialog()
+                val bundle = Bundle()
+                bundle.putInt(IMAGE_TYPE, imageType)
+                dialog.arguments = bundle
+                dialog.show(manager)
                 imageTypeEnableMap[imageType] = false
             }
         }
     }
 
-    lateinit var binding: DialogPopImageBinding
-    val imageType by lazy { arguments?.getInt(IMAGE_TYPE) }
-    lateinit var imageList: List<ImageData>
+    private lateinit var binding: DialogPopImageBinding
+    private val imageType by lazy { arguments?.getInt(IMAGE_TYPE) }
+    private lateinit var imageList: List<ImageData>
 
     override fun onCreateView(
         inflater: LayoutInflater,
