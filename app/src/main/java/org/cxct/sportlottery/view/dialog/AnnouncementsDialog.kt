@@ -72,8 +72,10 @@ class AnnouncementsDialog: BaseDialogFragment() {
 
         val recyclerView = RecyclerView(ctx)
         recyclerView.setLinearLayoutManager()
+        recyclerView.setPadding(0, 0, 0, 8.dp)
+        recyclerView.clipToPadding = false
         recyclerView.adapter = adapter
-        rootView.addView(recyclerView, LinearLayout.LayoutParams(-1, -1))
+        rootView.addView(recyclerView, LinearLayout.LayoutParams(-1, 384.dp))
 
         return rootView
     }
@@ -90,7 +92,7 @@ class AnnouncementsDialog: BaseDialogFragment() {
         override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             val textView = AppCompatTextView(parent.context)
             textView.textSize = 12f
-            val dp10 = 10.dp
+            val dp10 = 12.dp
             val params = LinearLayout.LayoutParams(-1, -2)
             params.leftMargin = dp10
             params.topMargin = dp10

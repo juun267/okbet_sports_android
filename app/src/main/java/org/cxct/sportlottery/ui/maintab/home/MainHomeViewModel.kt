@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -676,8 +675,7 @@ open class MainHomeViewModel(
     }
 
     fun getSystemNotice() {
-        callApi({ NewsRepository.getMessageList(1, 10, NewsType.SYSTEM) }) {
-            Log.e("For Test", "=======>>>> getSystemNotice 11111 ${it.getData()?.let { JsonUtil.toJson(it) }}")
+        callApi({ NewsRepository.getMessageList(1, 10, NewsType.PLAT) }) {
             it.getData()?.let { systemNotice.postValue(it) }
         }
     }
