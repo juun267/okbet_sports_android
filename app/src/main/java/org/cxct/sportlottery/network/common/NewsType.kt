@@ -1,5 +1,9 @@
 package org.cxct.sportlottery.network.common
 
-enum class NewsType(val code: Int) {
-    SYSTEM(1), PLAT(2), GAME(3)
+object NewsType {
+
+    const val SYSTEM = 1
+    const val PLAT = 2
+    const val GAME = 3
+
 }

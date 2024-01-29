@@ -42,7 +42,7 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel>(BindInfoViewModel::class) {
                 return null
             }
 
-            return object : BasePriorityDialog<BindInfoViewModel>() {
+            return object : BasePriorityDialog<BindPhoneDialog>() {
                 override fun getFragmentManager() = fm.invoke()
                 override fun priority() = priority
                 override fun createDialog() = BindPhoneDialog()

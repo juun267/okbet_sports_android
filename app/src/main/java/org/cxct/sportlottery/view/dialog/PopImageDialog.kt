@@ -75,7 +75,7 @@ class PopImageDialog(imageType: Int) : BaseDialog<BaseViewModel>(BaseViewModel::
                 return null
             }
 
-            return object : BasePriorityDialog<BaseViewModel>() {
+            return object : BasePriorityDialog<PopImageDialog>() {
                 init {
                     observerDismiss { imageTypeEnableMap[imageType] = false }
                 }

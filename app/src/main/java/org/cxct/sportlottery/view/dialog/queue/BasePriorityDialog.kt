@@ -1,16 +1,15 @@
 package org.cxct.sportlottery.view.dialog.queue
 
 import androidx.fragment.app.FragmentManager
-import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.base.BaseDialogFragment
 
-abstract class BasePriorityDialog<T : BaseViewModel>: PriorityDialog {
+abstract class BasePriorityDialog<T : BaseDialogFragment>: PriorityDialog {
 
     open fun getTag(): String? = null
-    abstract fun createDialog(): BaseDialog<T>
+    abstract fun createDialog(): BaseDialogFragment
     abstract fun getFragmentManager(): FragmentManager
 
-    private var dialog: BaseDialog<T>? = null
+    private var dialog: BaseDialogFragment? = null
     private var dismissCallback: (() -> Unit)? = null
     private var showCallback: (() -> Unit)? = null
 

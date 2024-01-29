@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.hot
 
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.AgeVerifyDialog
+import org.cxct.sportlottery.view.dialog.AnnouncementsDialog
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.cxct.sportlottery.view.dialog.queue.DialogQueueManager
@@ -29,6 +31,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
 
+    private val PRIORITY_SYSTEM_NOTICE = 90
     private val PRIORITY_DIALOG_HOME = 100
     private val PRIORITY_BIND_PHONE = 200
     private val PRIORITY_REGISTER_SUCCESS = 300
@@ -97,6 +100,8 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
         winsRankView.setUp(this@HomeHotFragment, { viewModel.getBetRecord() }, { viewModel.getWinRecord() })
         bettingStationView.setup(this@HomeHotFragment)
         initObservable()
+
+        viewModel.getSystemNotice()
     }
 
 
@@ -127,37 +132,52 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
 
     }
 
-    private var dialogQueueManager: DialogQueueManager? = null
+    private val dialogQueueManager by lazy { DialogQueueManager(this) }
+    private var isShowed = false
+    private var announcementsShowed = false
     private fun showDialogs() {
-        if (dialogQueueManager != null) {
+        if (isShowed) {
             return
         }
 
-        val dialogQueue = DialogQueueManager(this)
+        isShowed = true
         val fmProvider = ::getParentFragmentManager
         PopImageDialog.buildImageDialog(PRIORITY_DIALOG_HOME, ImageType.DIALOG_HOME, fmProvider)?.let {
-            dialogQueue.enqueue(it)
+            dialogQueueManager.enqueue(it)
         }
 
         if (viewModel.isLogin.value == true){
             BindPhoneDialog.bindBindPhoneDialog(PRIORITY_BIND_PHONE, fmProvider)?.let {
-                dialogQueue.enqueue(it)
+                dialogQueueManager.enqueue(it)
             }
 
             RegisterSuccessDialog.buildRegisterSuccessDialog(PRIORITY_REGISTER_SUCCESS, fmProvider) {
                 RegisterSuccessDialog { getMainTabActivity().checkRechargeKYCVerify() }
             }?.let {
-                dialogQueue.enqueue(it)
+                dialogQueueManager.enqueue(it)
             }
 
         }
 
         AgeVerifyDialog.buildAgeVerifyDialog(PRIORITY_AGE_VERIFY, fmProvider)?.let {
-            dialogQueue.enqueue(it)
+            dialogQueueManager.enqueue(it)
         }
 
-        dialogQueue.showNext()
-        dialogQueueManager = dialogQueue
+        showAnnouncementsDialog()
+
+        dialogQueueManager.showNext()
+    }
+
+    private fun showAnnouncementsDialog() {
+        if (announcementsShowed) {
+            return
+        }
+        viewModel.systemNotice.value?.let { notice->
+            AnnouncementsDialog.buildAnnouncementsDialog(notice, PRIORITY_SYSTEM_NOTICE, ::getParentFragmentManager)?.let { dialog ->
+                announcementsShowed = true
+                dialogQueueManager.enqueue(dialog)
+            }
+        }
     }
 
     private fun initObservable() {
@@ -175,6 +195,12 @@ class HomeHotFragment : BindingSocketFragment<MainHomeViewModel, FragmentHomeHot
             }else{
                 binding.hotMatchView.gone()
                 binding.hotEsportView.gone()
+            }
+        }
+
+        viewModel.systemNotice.observe(viewLifecycleOwner) {
+            if (isShowed) {
+                showAnnouncementsDialog()
             }
         }
     }

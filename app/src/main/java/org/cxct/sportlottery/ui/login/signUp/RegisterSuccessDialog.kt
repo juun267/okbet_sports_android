@@ -33,7 +33,7 @@ class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>
                 return null
             }
 
-            return object : BasePriorityDialog<BaseViewModel>() {
+            return object : BasePriorityDialog<RegisterSuccessDialog>() {
                 override fun getFragmentManager() = fm.invoke()
                 override fun priority() = priority
                 override fun createDialog() = RegisterSuccessDialog(callback)

@@ -66,7 +66,7 @@ class NewsViewModel(
 
         loadingNews=true
         viewModelScope.launch {
-            val params= SportNewsRequest(NewsType.SYSTEM.code,(sportStartTime?:0).toString(),(sportEndTime?:0).toString(),sportPageIndex,sportPageSize)
+            val params= SportNewsRequest(NewsType.SYSTEM, (sportStartTime?:0).toString(),(sportEndTime?:0).toString(),sportPageIndex,sportPageSize)
             val result= doNetwork(androidContext) {
                 OneBoSportApi.newsService.getMessageListByTime(params)
             }
@@ -78,7 +78,7 @@ class NewsViewModel(
             }
         }
     }
-    fun getNewsData(newsType: NewsType, refresh: Boolean = false) {
+    fun getNewsData(newsType: Int, refresh: Boolean = false) {
         if ((!refresh && ((newsResult.value?.total ?: 0) <= (newsList.value?.size ?: 0))) || loadingNews) return
 
         loadingNews = true
@@ -88,7 +88,7 @@ class NewsViewModel(
 
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.newsService.getMessageList(newsType.code, newsPage, NEWS_PAGE_SIZE)
+                OneBoSportApi.newsService.getMessageList(newsType, newsPage, NEWS_PAGE_SIZE)
             }?.let { newsResponse ->
                 if (newsResponse.success) {
                     newsResponse.setupNewsDate()

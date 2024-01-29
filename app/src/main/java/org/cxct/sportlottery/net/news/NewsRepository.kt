@@ -6,18 +6,24 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.PageInfo
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.news.api.NewsApi
+import org.cxct.sportlottery.net.news.api.NoticeApi
 import org.cxct.sportlottery.net.news.data.NewsCategory
 import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.manager.RequestManager
+import org.cxct.sportlottery.network.news.News
 import org.cxct.sportlottery.repository.sConfigData
 
 object NewsRepository {
+
+    private val noticeApi: NoticeApi by lazy {  RetrofitHolder.createApiService(NoticeApi::class.java) }
 
     private val newsApi: NewsApi by lazy {
         RetrofitHolder.createNewRetrofit(sConfigData?.cmsUrl ?: Constants.getBaseUrl())
             .create(NewsApi::class.java)
     }
+
     const val SORT_CREATE_TIME ="CREATE_TIME"
     const val SORT_DEFAULT ="SORT"
 
@@ -79,6 +85,8 @@ object NewsRepository {
         params.addProperty("sort", sort)
         return newsApi.getNewsDetail(params)
     }
+
+    suspend fun getMessageList(page: Int, pageSize: Int, messageType: Int) = noticeApi.getMessageList(messageType, page, pageSize)
 
 
 }

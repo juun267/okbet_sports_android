@@ -30,7 +30,7 @@ class AgeVerifyDialog(val onConfirm: ()->Unit,val onExit: ()->Unit) : BaseDialog
             }
 
             isAgeVerifyNeedShow = false
-            return object : BasePriorityDialog<BaseViewModel>() {
+            return object : BasePriorityDialog<AgeVerifyDialog>() {
                 override fun getFragmentManager() = fm.invoke()
                 override fun priority() = priority
                 override fun createDialog() = AgeVerifyDialog(onConfirm = {}, onExit = {})
