@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentMoneyTransferRecordBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 
 /**
  * @app_destination 转换记录
  */
-class MoneyTransferRecordFragment : BindingFragment<MoneyTransferViewModel,FragmentMoneyTransferRecordBinding>() {
+class MoneyTransferRecordFragment : BaseFragment<MoneyTransferViewModel,FragmentMoneyTransferRecordBinding>() {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 

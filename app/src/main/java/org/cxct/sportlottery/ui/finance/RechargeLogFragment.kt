@@ -114,9 +114,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel, FragmentRechargeLogBi
         viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 if (logDetailDialog.dialog?.isShowing != true) {
-                    logDetailDialog.show(parentFragmentManager,
-                        RechargeLogFragment::class.java.simpleName
-                    )
+                    logDetailDialog.show(parentFragmentManager)
                 }
             }
         }

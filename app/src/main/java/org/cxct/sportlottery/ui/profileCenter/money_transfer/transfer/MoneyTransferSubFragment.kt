@@ -14,7 +14,7 @@ import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.FragmentMoneyTransferSubBinding
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.ArithUtil
@@ -26,7 +26,7 @@ import timber.log.Timber
 import java.math.BigDecimal
 
 
-class MoneyTransferSubFragment : BindingFragment<MoneyTransferViewModel,FragmentMoneyTransferSubBinding>() {
+class MoneyTransferSubFragment : BaseFragment<MoneyTransferViewModel,FragmentMoneyTransferSubBinding>() {
 
     private val gameDataArg: MoneyTransferSubFragmentArgs by navArgs()
     private var isPlatReversed = false

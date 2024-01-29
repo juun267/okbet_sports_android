@@ -5,13 +5,13 @@ import androidx.navigation.findNavController
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentMoneyTransferBinding
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.refreshMoneyLoading
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
-class MoneyTransferFragment : BindingFragment<MoneyTransferViewModel,FragmentMoneyTransferBinding>() {
+class MoneyTransferFragment : BaseFragment<MoneyTransferViewModel,FragmentMoneyTransferBinding>() {
 
     private val rvAdapter by lazy {
         MoneyTransferAdapter(ItemClickListener {

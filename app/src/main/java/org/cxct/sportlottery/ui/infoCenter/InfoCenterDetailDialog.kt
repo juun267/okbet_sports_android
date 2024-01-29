@@ -8,7 +8,7 @@ import org.cxct.sportlottery.databinding.DialogInfoCenterDetailListBinding
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.ui.base.BaseDialog
 
-class InfoCenterDetailDialog: BaseDialog<InfoCenterViewModel>(InfoCenterViewModel::class) {
+class InfoCenterDetailDialog: BaseDialog<InfoCenterViewModel,DialogInfoCenterDetailListBinding>() {
 
 
     private var data: InfoCenterData? = null
@@ -19,25 +19,12 @@ class InfoCenterDetailDialog: BaseDialog<InfoCenterViewModel>(InfoCenterViewMode
             return field
         }
 
-    private val binding by lazy { DialogInfoCenterDetailListBinding.inflate(layoutInflater) }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onInitView() {
         binding.apply {
             infoCenterViewModel = this@InfoCenterDetailDialog.viewModel
             lifecycleOwner = this@InfoCenterDetailDialog
             infoCenterData = infoCenterData
         }
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         binding.infoCenterDetailConfirm.setOnClickListener {
             dismiss()
         }
@@ -47,4 +34,5 @@ class InfoCenterDetailDialog: BaseDialog<InfoCenterViewModel>(InfoCenterViewMode
             binding.txvDetail.text = it.content
         }
     }
+
 }

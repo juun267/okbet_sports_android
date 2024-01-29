@@ -60,7 +60,7 @@ class PromotionDetailActivity :
             binding.tvReward.text = TextUtil.formatMoney(0)
             binding.linApply.isEnabled = false
             binding.linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
-            PromotionSuccessDialog.newInstance().show(supportFragmentManager,null)
+            PromotionSuccessDialog.newInstance().show(supportFragmentManager)
         }
         viewModel.dailyConfigEvent.observe(this){
             val dailyConfig = it.firstOrNull { it.activityType == activityData?.activityType }

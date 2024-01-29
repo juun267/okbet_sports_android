@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
 import org.cxct.sportlottery.ui.profileCenter.modify.ModifyBindInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType

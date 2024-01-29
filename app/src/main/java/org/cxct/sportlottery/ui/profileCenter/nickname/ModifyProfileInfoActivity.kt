@@ -11,7 +11,7 @@ import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.ActivityModifyProfileInfoBinding
 import org.cxct.sportlottery.network.common.BaseResult
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
@@ -22,7 +22,7 @@ import org.cxct.sportlottery.view.checkRegisterListener
 /**
  * @app_destination 修改暱稱
  */
-class ModifyProfileInfoActivity : BindingActivity<ModifyProfileInfoViewModel,ActivityModifyProfileInfoBinding>() {
+class ModifyProfileInfoActivity : BaseActivity<ModifyProfileInfoViewModel,ActivityModifyProfileInfoBinding>() {
 
     private val modifyType by lazy { intent.getIntExtra(MODIFY_INFO, ModifyType.NickName) }
 
@@ -85,8 +85,8 @@ class ModifyProfileInfoActivity : BindingActivity<ModifyProfileInfoViewModel,Act
                 llAddressParent.visibility = View.VISIBLE
                 eetllAddress.checkRegisterListener {
                     val isActivated = !it.isNullOrEmpty()
-                    btn_confirm.isEnabled = isActivated
-                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                    btnConfirm.isEnabled = isActivated
+                    btnConfirm.alpha = if (isActivated) 1f else 0.5f
                 }
                 eetllAddress.setText("")
                 tvAddressRedTips.text =
@@ -100,8 +100,8 @@ class ModifyProfileInfoActivity : BindingActivity<ModifyProfileInfoViewModel,Act
                 llZipCode.visibility = View.VISIBLE
                 eetllZipCode.checkRegisterListener {
                     val isActivated = !it.isNullOrEmpty()
-                    btn_confirm.isEnabled = isActivated
-                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                    btnConfirm.isEnabled = isActivated
+                    btnConfirm.alpha = if (isActivated) 1f else 0.5f
                 }
                 eetllZipCode.setText("")
             }
@@ -111,8 +111,8 @@ class ModifyProfileInfoActivity : BindingActivity<ModifyProfileInfoViewModel,Act
                 llZipCode.visibility = View.VISIBLE
                 eetllZipCode.checkRegisterListener {
                     val isActivated = !it.isNullOrEmpty()
-                    btn_confirm.isEnabled = isActivated
-                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                    btnConfirm.isEnabled = isActivated
+                    btnConfirm.alpha = if (isActivated) 1f else 0.5f
                 }
                 eetllZipCode.setText("")
             }
@@ -123,47 +123,47 @@ class ModifyProfileInfoActivity : BindingActivity<ModifyProfileInfoViewModel,Act
 
             ModifyType.QQNumber -> {
                 toolBar.titleText = getString(R.string.qq_number)
-                ll_qq_number.visibility = View.VISIBLE
+                llQqNumber.visibility = View.VISIBLE
             }
 
             ModifyType.Email -> {
-                ll_e_mail.visibility = View.VISIBLE
+                llEMail.visibility = View.VISIBLE
             }
 
             ModifyType.PhoneNumber -> {
                 toolBar.titleText = getString(R.string.phone_number)
-                ll_phone_number.visibility = View.VISIBLE
+                llPhoneNumber.visibility = View.VISIBLE
             }
 
             ModifyType.WeChat -> {
                 toolBar.titleText = getString(R.string.we_chat)
-                ll_wechat.visibility = View.VISIBLE
+                llWechat.visibility = View.VISIBLE
             }
         }
     }
 
-    private fun setupInputFieldVerify() {
+    private fun setupInputFieldVerify()=binding.run {
         //真實姓名
-        setEditTextFocusChangeMethod(eet_real_name)
+        setEditTextFocusChangeMethod(eetRealName)
         //QQ號碼
-        setEditTextFocusChangeMethod(eet_qq_number)
+        setEditTextFocusChangeMethod(eetQqNumber)
         //郵箱
-        setEditTextFocusChangeMethod(eet_e_mail)
+        setEditTextFocusChangeMethod(eetEMail)
         //手機號碼
-        setEditTextFocusChangeMethod(eet_phone_number)
+        setEditTextFocusChangeMethod(eetPhoneNumber)
         //微信
-        setEditTextFocusChangeMethod(eet_we_chat)
+        setEditTextFocusChangeMethod(eetWeChat)
     }
 
-    private fun setupNickName() {
+    private fun setupNickName()=binding.run {
         toolBar.titleText = getString(R.string.change_nickname)
-        ll_nickname.visibility = View.VISIBLE
-        eet_nickname.filterSpecialCharacters()
-        setEditTextFocusChangeMethod(eet_nickname)
-        eet_nickname.maxLines = 1
+        llNickname.visibility = View.VISIBLE
+        eetNickname.filterSpecialCharacters()
+        setEditTextFocusChangeMethod(eetNickname)
+        eetNickname.maxLines = 1
         val nickNameMinLength = 2
         val nickNameMaxLength = 6
-        eet_nickname.checkRegisterListener {
+        eetNickname.checkRegisterListener {
             val msg = when {
                 it.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
                 !VerifyConstUtil.verifyLengthRange(it, nickNameMinLength, nickNameMaxLength) -> {
@@ -177,11 +177,11 @@ class ModifyProfileInfoActivity : BindingActivity<ModifyProfileInfoViewModel,Act
                 else -> null
             }
             val isActivated = TextUtils.isEmpty(msg)
-            et_nickname.setError(msg, isActivated)
-            btn_confirm.isEnabled = isActivated
-            btn_confirm.alpha = if (isActivated) 1f else 0.5f
+            etNickname.setError(msg, isActivated)
+            btnConfirm.isEnabled = isActivated
+            btnConfirm.alpha = if (isActivated) 1f else 0.5f
         }
-        eet_nickname.setText("") // 设置空触发输入检查
+        eetNickname.setText("") // 设置空触发输入检查
     }
 
     private fun setEditTextFocusChangeMethod(editText: ExtendedEditText) {
@@ -191,28 +191,28 @@ class ModifyProfileInfoActivity : BindingActivity<ModifyProfileInfoViewModel,Act
         }
     }
 
-    private fun initButton() {
+    private fun initButton()=binding.run {
         toolBar.setOnBackPressListener {
             finish()
         }
 
-        btn_confirm.setOnClickListener {
+        btnConfirm.setOnClickListener {
             checkInputData()
         }
 //        et_real_name.afterTextChanged {
 //            viewModel.checkFullName(applicationContext, it)
 //        }
-        btn_confirm.setTitleLetterSpacing()
+        btnConfirm.setTitleLetterSpacing()
     }
 
-    private fun checkInputData() {
+    private fun checkInputData()=binding.run {
         val inputText = when (modifyType) {
-            ModifyType.RealName -> eet_real_name.text
-            ModifyType.QQNumber -> eet_qq_number.text
-            ModifyType.Email -> eet_e_mail.text
-            ModifyType.WeChat -> eet_we_chat.text
-            ModifyType.PhoneNumber -> eet_phone_number.text
-            ModifyType.NickName -> eet_nickname.text
+            ModifyType.RealName -> eetRealName.text
+            ModifyType.QQNumber -> eetQqNumber.text
+            ModifyType.Email -> eetEMail.text
+            ModifyType.WeChat -> eetWeChat.text
+            ModifyType.PhoneNumber -> eetPhoneNumber.text
+            ModifyType.NickName -> eetNickname.text
             ModifyType.PlaceOfBirth -> eetPlaceOfBirth.text
             ModifyType.Address -> eetllAddress.text
             ModifyType.AddressP -> eetllAddress.text
@@ -245,27 +245,27 @@ class ModifyProfileInfoActivity : BindingActivity<ModifyProfileInfoViewModel,Act
     private fun setupEditTextErrorMsgObserve() {
         viewModel.apply {
             nickNameErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_nickname.setError(it, false)
+                binding.etNickname.setError(it, false)
             })
 
             fullNameErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_real_name.setError(it, false)
+                binding.etRealName.setError(it, false)
             })
 
             qqErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_qq_number.setError(it, false)
+                binding.etQqNumber.setError(it, false)
             })
 
             eMailErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_e_mail.setError(it, false)
+                binding.etEMail.setError(it, false)
             })
 
             phoneErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_phone_number.setError(it, false)
+                binding.etPhoneNumber.setError(it, false)
             })
 
             weChatErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_we_chat.setError(it, false)
+                binding.etWeChat.setError(it, false)
             })
         }
     }

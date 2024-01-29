@@ -104,7 +104,7 @@ class PartLiveFragment : BaseFragment<OKLiveViewModel,FragmentPartOkgamesBinding
     }
 
     private fun bindLabels() {
-        if (!::binding.isInitialized) {
+        if (!isAdded) {
             return
         }
 
@@ -141,7 +141,7 @@ class PartLiveFragment : BaseFragment<OKLiveViewModel,FragmentPartOkgamesBinding
         if (list?.size ?: 0 >= pageSize) {
             pageIndx++
         }
-        if (::binding.isInitialized) {
+        if (isAdded) {
             if (gameChildAdapter.dataCount() == 0) {
                 loadingHolder.showEmpty()
             }

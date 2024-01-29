@@ -6,6 +6,7 @@ import com.drake.spannable.span.CenterImageSpan
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.KYCEvent
 import org.cxct.sportlottery.databinding.FragmentVerifyIdentityKyc2Binding
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
@@ -13,7 +14,7 @@ import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.greenrobot.eventbus.ThreadMode
 
-class VerifyKYCFragment2: BindingFragment<ProfileCenterViewModel, FragmentVerifyIdentityKyc2Binding>() {
+class VerifyKYCFragment2: BaseFragment<ProfileCenterViewModel, FragmentVerifyIdentityKyc2Binding>() {
 
     override fun onInitView(view: View) {
         val bg = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_F8F9FD)

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOtherBetRecordBinding
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
@@ -20,7 +20,7 @@ import java.util.*
 /**
  * @app_destination 其他投注
  */
-class OtherBetRecordFragment : BindingFragment<OtherBetRecordViewModel,FragmentOtherBetRecordBinding>() {
+class OtherBetRecordFragment : BaseFragment<OtherBetRecordViewModel,FragmentOtherBetRecordBinding>() {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 

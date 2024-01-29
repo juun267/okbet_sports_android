@@ -7,6 +7,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.ActivityEditUsernameBinding
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.util.VerifyConstUtil
 import org.cxct.sportlottery.util.setBtnEnable
@@ -18,8 +19,8 @@ class EditUserNameActivity: BaseActivity<ModifyProfileInfoViewModel, ActivityEdi
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        binding.toolBar.btnToolbarBack.setOnClickListener { finish() }
-        binding.toolBar.tvToolbarTitle.text = getString(R.string.real_name)
+        binding.toolBar.setOnBackPressListener { finish() }
+        binding.toolBar.titleText = getString(R.string.real_name)
         initEditText()
         initObserver()
         viewModel.loading.observe(this) {

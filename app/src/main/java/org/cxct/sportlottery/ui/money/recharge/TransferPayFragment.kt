@@ -34,6 +34,7 @@ import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.view.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*

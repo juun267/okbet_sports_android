@@ -126,7 +126,7 @@ class LeftOthersFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLeftO
     }
     private fun scanQR() {
 
-        val scanPhotoDialog = ScanPhotoDialog(requireContext())
+        val scanPhotoDialog = ScanPhotoDialog()
         scanPhotoDialog.tvCameraScanClickListener = {
             RxPermissions(this).request(Manifest.permission.CAMERA).subscribe { onNext ->
                 if (onNext) {
@@ -140,7 +140,7 @@ class LeftOthersFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLeftO
         }
 
         scanPhotoDialog.tvAlbumClickListener = { selectAlbum() }
-        scanPhotoDialog.show()
+        scanPhotoDialog.show(childFragmentManager)
     }
     private fun selectAlbum() {
         PictureSelectUtil.pictureSelect(requireActivity(),

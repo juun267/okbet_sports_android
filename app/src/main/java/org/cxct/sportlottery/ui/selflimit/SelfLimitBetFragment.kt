@@ -183,7 +183,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimitBe
             return
         }
         CustomPasswordVerifyDialog.newInstance(PassVerifyEnum.BET, inputValue = days)
-            .show(childFragmentManager, CustomPasswordVerifyDialog::class.java.simpleName)
+            .show(childFragmentManager)
     }
 
     private fun updateBetLimit(text: String) {

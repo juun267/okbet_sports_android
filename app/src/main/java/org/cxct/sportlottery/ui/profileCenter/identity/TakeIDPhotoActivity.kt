@@ -16,6 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityTakeidPhotoBinding
 import org.cxct.sportlottery.net.user.data.OCRInfo
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.selectpicture.PictureSelectorUtils

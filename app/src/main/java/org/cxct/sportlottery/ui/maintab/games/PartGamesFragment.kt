@@ -111,7 +111,7 @@ class PartGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentPartOkgame
     }
 
     private fun bindLabels() {
-        if (!::binding.isInitialized) {
+        if (!isAdded) {
             return
         }
 
@@ -148,7 +148,7 @@ class PartGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentPartOkgame
         if (list?.size ?: 0 >= pageSize) {
             pageIndx++
         }
-        if (::binding.isInitialized) {
+        if (isAdded) {
             if (gameChildAdapter.dataCount() == 0) {
                 loadingHolder.showEmpty()
             } else {

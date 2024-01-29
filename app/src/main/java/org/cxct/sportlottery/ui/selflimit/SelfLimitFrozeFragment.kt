@@ -132,8 +132,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimit
 
     private fun submit() {
         requireActivity().hideSoftKeyboard()
-        CustomPasswordVerifyDialog.newInstance(PassVerifyEnum.FROZE, inputValue = binding.etFrozeDay.text.toString())
-            .show(childFragmentManager, CustomPasswordVerifyDialog::class.java.simpleName)
+        CustomPasswordVerifyDialog.newInstance(PassVerifyEnum.FROZE, inputValue = binding.etFrozeDay.text.toString()).show(childFragmentManager)
     }
 
 }

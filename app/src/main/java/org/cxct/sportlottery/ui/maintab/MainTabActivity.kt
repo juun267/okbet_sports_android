@@ -288,7 +288,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             it.getContentIfNotHandled()?.let { event ->
                 TransformInDialog(event.first, event.second, event.third) {
                     enterThirdGame(it, event.first)
-                }.show(supportFragmentManager, null)
+                }.show(supportFragmentManager)
             }
         }
 

@@ -11,6 +11,7 @@ import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentReverifyRdentityKycBinding
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
@@ -19,7 +20,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 
-class ReverifyKYCFragment: BindingFragment<ProfileCenterViewModel, FragmentReverifyRdentityKycBinding>() {
+class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverifyRdentityKycBinding>() {
 
 
     private val loadingHolder by lazy { Gloading.wrapView(binding.llContent) }

@@ -8,14 +8,14 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.ActivityForgetWaysBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.util.setServiceClick
 
-class VerificationWaysActivity: BindingActivity<ForgetViewModel,ActivityForgetWaysBinding>()  {
+class VerificationWaysActivity: BaseActivity<ForgetViewModel,ActivityForgetWaysBinding>()  {
 
     companion object {
 

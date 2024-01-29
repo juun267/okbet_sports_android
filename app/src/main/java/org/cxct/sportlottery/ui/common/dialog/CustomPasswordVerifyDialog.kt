@@ -3,14 +3,11 @@ package org.cxct.sportlottery.ui.common.dialog
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import kotlinx.android.synthetic.main.dialog_password_verify.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.PassVerifyEnum
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.common.extentions.toIntS
+import org.cxct.sportlottery.databinding.DialogPasswordVerifyBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.util.MD5Util
@@ -20,7 +17,7 @@ import org.cxct.sportlottery.util.MD5Util
  * @create 2022/6/6
  * @description
  */
-class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewModel::class) {
+class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel,DialogPasswordVerifyBinding>() {
 
     init {
         setStyle(R.style.CustomDialogStyle)
@@ -39,52 +36,44 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.dialog_password_verify, container, false)
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
         initView()
         initPasswordExitText()
         initObserve()
     }
 
-    private fun initView() {
+    private fun initView()=binding.run {
         when (arguments?.getSerializable(PASSWORD_VERIFY) as PassVerifyEnum) {
             PassVerifyEnum.FROZE -> {
-                tv_title.text = getString(R.string.self_limit_confirm)
-                tv_message.text = getString(R.string.self_limit_input_password_for_confirm)
+                tvTitle.text = getString(R.string.self_limit_confirm)
+                tvMessage.text = getString(R.string.self_limit_input_password_for_confirm)
             }
             PassVerifyEnum.BET -> {
-                tv_title.text = getString(R.string.self_limit_fix_confirm)
-                tv_message.text = getString(R.string.self_limit_input_password_for_modification)
+                tvTitle.text = getString(R.string.self_limit_fix_confirm)
+                tvMessage.text = getString(R.string.self_limit_input_password_for_modification)
             }
         }
 
-        tv_submit.setOnClickListener {
+        tvSubmit.setOnClickListener {
             submit()
         }
 
-        tv_close.setOnClickListener {
+        tvClose.setOnClickListener {
             dismiss()
         }
     }
 
-    private fun initPasswordExitText() {
+    private fun initPasswordExitText()=binding.run {
         /* 同login頁面設定*/
-        tfb_password.endIconImageButton.setOnClickListener {
-            if (tfb_password.endIconResourceId == R.drawable.ic_eye_open) {
-                et_password.transformationMethod = PasswordTransformationMethod.getInstance()
-                tfb_password.setEndIcon(R.drawable.ic_eye_close)
+        tfbPassword.endIconImageButton.setOnClickListener {
+            if (tfbPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                tfbPassword.setEndIcon(R.drawable.ic_eye_close)
             } else {
-                tfb_password.setEndIcon(R.drawable.ic_eye_open)
-                et_password.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                tfbPassword.setEndIcon(R.drawable.ic_eye_open)
+                etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
             }
-            et_password.setSelection(et_password.text.toString().length)
+            etPassword.setSelection(etPassword.text.toString().length)
         }
     }
 
@@ -111,7 +100,7 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
     private fun submit() {
         val enum = arguments?.getSerializable(PASSWORD_VERIFY) as PassVerifyEnum
         val inputValue = arguments?.getString(INPUT_VALUE)
-        val password = et_password.text.toString()
+        val password = binding.etPassword.text.toString()
         when (enum) {
             PassVerifyEnum.FROZE -> {
                 if (!checkPassword(password)) return
@@ -130,7 +119,7 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
 
     private fun checkPassword(password: String): Boolean {
         if (password.isBlank()) {
-            tfb_password.setError(getString(R.string.error_input_empty), false)
+            binding.tfbPassword.setError(getString(R.string.error_input_empty), false)
             return false
         }
         return true

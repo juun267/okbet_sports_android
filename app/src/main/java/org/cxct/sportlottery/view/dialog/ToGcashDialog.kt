@@ -2,8 +2,6 @@ package org.cxct.sportlottery.view.dialog
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import android.view.*
 import androidx.core.view.isVisible
 import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.R
@@ -20,8 +18,7 @@ import org.cxct.sportlottery.util.KvUtils.GLIFE_TIP_FLAG
 /**
  * glife 用户点击存取款跳转gcash
  */
-class ToGcashDialog(val visibleNoReminder: Boolean = true) : BaseDialog<BaseViewModel>(
-    BaseViewModel::class) {
+class ToGcashDialog(private val visibleNoReminder: Boolean = true) : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
     init {
         setStyle(R.style.FullScreen)
     }
@@ -54,19 +51,8 @@ class ToGcashDialog(val visibleNoReminder: Boolean = true) : BaseDialog<BaseView
 
     private var mPositiveClickListener: OnPositiveListener? = null
     private var mNegativeClickListener: OnNegativeListener? = null
-    private lateinit var binding: DialogToGcashBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        binding=DialogToGcashBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
         isCancelable = false
         binding.btnGlifeCancel.setOnClickListener {
             if (visibleNoReminder) {

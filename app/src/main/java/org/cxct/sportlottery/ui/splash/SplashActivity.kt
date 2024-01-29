@@ -201,7 +201,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
         lastVersion: String,
         checkAppVersionResult: CheckAppVersionResult?,
     ) {
-        AppDownloadDialog(this,
+        AppDownloadDialog(
             isForceUpdate,
             lastVersion,
             checkAppVersionResult,
@@ -217,7 +217,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
                     viewModel.goNextPage()
                 }
 
-            }).show()
+            }).show(supportFragmentManager)
     }
 
     override fun onDestroy() {

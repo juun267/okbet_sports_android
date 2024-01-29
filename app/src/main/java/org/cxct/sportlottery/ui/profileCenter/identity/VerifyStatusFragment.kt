@@ -4,13 +4,14 @@ import android.view.View
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentVerifyStatusBinding
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setServiceClick
 
 class VerifyStatusFragment :
-    BindingFragment<ProfileCenterViewModel,FragmentVerifyStatusBinding>() {
+    BaseFragment<ProfileCenterViewModel,FragmentVerifyStatusBinding>() {
 
     override fun onInitView(view: View) {
         if (viewModel.userInfo.value?.verified == ProfileActivity.VerifiedType.REVERIFYING.value) {

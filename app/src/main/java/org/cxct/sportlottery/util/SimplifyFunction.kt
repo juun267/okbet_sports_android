@@ -954,10 +954,7 @@ fun AppCompatActivity.showBetReceiptDialog(
     isMultiBet: Boolean,
     containerId: Int,
 ) {
-    supportFragmentManager.beginTransaction()
-        .replace(
-            containerId, BetReceiptFragment.newInstance(betResultData, betParlayList)
-        ).addToBackStack(BetReceiptFragment::class.java.simpleName).commit()
+    replaceFragment(containerId, BetReceiptFragment.newInstance(betResultData, betParlayList))
 }
 fun AppCompatActivity.showFavoriteNotify(result: MyFavoriteNotify) {
 

@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.login
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,32 +21,20 @@ import org.cxct.sportlottery.view.checkSMSCode
 /**
  * 顯示棋牌彈窗
  */
-class VerifyCodeDialog(val callBack: (identity: String, validCode: String) -> Unit): BaseDialog<LoginViewModel>(LoginViewModel::class) {
+class VerifyCodeDialog(val callBack: (identity: String, validCode: String) -> Unit): BaseDialog<LoginViewModel,DialogVerifyCodeBinding>() {
 
     init {
         setStyle(R.style.CustomDialogStyle)
     }
-    lateinit var binding: DialogVerifyCodeBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        binding = DialogVerifyCodeBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
         binding.apply {
             eetVerificationCode.requestFocus()
             eetVerificationCode.checkSMSCode(etVerificationCode) { btnSure.setBtnEnable(!it.isEmptyStr()) }
         }
 
-
         //不分手机上弹窗宽度会撑满，需重新设置下左右间距
-        (view.layoutParams as MarginLayoutParams?)?.run {
+        (binding.root.layoutParams as MarginLayoutParams?)?.run {
             leftMargin = 15.dp
             rightMargin = 15.dp
         }
@@ -56,7 +43,6 @@ class VerifyCodeDialog(val callBack: (identity: String, validCode: String) -> Un
         setupValidCode()
         initClick()
     }
-
     private fun initClick() =binding.run{
         btnSure.setOnClickListener {
             viewModel.validCodeResult.value?.validCodeData?.identity?.let { it1 ->

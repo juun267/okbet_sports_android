@@ -7,11 +7,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.ActivityMoneyTransferBinding
-import org.cxct.sportlottery.ui.base.BindingActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTransferFragmentDirections
 
-class MoneyTransferActivity : BindingActivity<MoneyTransferViewModel,ActivityMoneyTransferBinding>() {
+class MoneyTransferActivity : BaseActivity<MoneyTransferViewModel,ActivityMoneyTransferBinding>() {
 
     private val navController by lazy { findNavController(R.id.my_nav_host_fragment) }
 

@@ -201,10 +201,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
             if (it.getContentIfNotHandled() == null) return@observe
 
             if (logDetailDialog.dialog?.isShowing != true) {
-                logDetailDialog.show(
-                    parentFragmentManager,
-                    WithdrawLogFragment::class.java.simpleName
-                )
+                logDetailDialog.show(parentFragmentManager)
             }
         }
 

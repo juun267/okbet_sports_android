@@ -1,30 +1,20 @@
 package org.cxct.sportlottery.view.dialog
 
-import android.app.Dialog
-import android.content.Context
-import android.view.Gravity
-import android.view.WindowManager
-import android.widget.TextView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogScanCameraPhotoBinding
-import org.cxct.sportlottery.ui.base.BaseBindingDialog
-import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 
-class ScanPhotoDialog(mContext: Context) : BaseBindingDialog<DialogScanCameraPhotoBinding>(mContext,
-DialogScanCameraPhotoBinding::inflate) {
+class ScanPhotoDialog : BaseDialog<BaseViewModel,DialogScanCameraPhotoBinding>() {
 
-
+    init {
+        setStyle(R.style.FullScreen)
+    }
     var tvAlbumClickListener: (() -> Unit)? = null
     var tvCameraScanClickListener: (() -> Unit)? = null
 
-
-
-    override fun initHeightParams(): Int = 115.dp
-
-    override fun initWidthParams(): Int = 245.dp
-
-    override fun initView() {
+    override fun onInitView() {
         binding.apply {
             tvAlbum.background = DrawableCreatorUtils.getCommonBackgroundStyle(
                 20,

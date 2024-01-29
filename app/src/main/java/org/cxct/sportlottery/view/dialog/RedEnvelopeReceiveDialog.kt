@@ -10,15 +10,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.*
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.fragment_red_envelope_receive.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentRedEnvelopeReceiveBinding
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
@@ -29,7 +26,7 @@ import java.lang.ref.WeakReference
 import java.util.*
 
 class RedEnvelopeReceiveDialog(
-) : BaseDialog<RedEnveLopeModel>(RedEnveLopeModel::class) {
+) : BaseDialog<RedEnveLopeModel,FragmentRedEnvelopeReceiveBinding>() {
 
     init {
         setStyle(R.style.FullScreen)
@@ -79,10 +76,6 @@ class RedEnvelopeReceiveDialog(
 //    紅包38x48(小)速率:05s20
 //    福袋 40x54 速率:07s14
 
-    private val viewBinding by lazy {
-        FragmentRedEnvelopeReceiveBinding.inflate(layoutInflater)
-    }
-
     //  private val BARRAGE_GAP_MIN_DURATION: Int = 1200
     private val BARRAGE_GAP_DURATION: Long = 1200
     private val BARRAGE_GAP_START_DURATION: Long = 100
@@ -98,15 +91,8 @@ class RedEnvelopeReceiveDialog(
     private var successDialog: RedEnvelopeSuccessDialog? = null
     private var failDialog: RedEnvelopeFailDialog? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View = viewBinding.root
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
         ImmersionBar.with(this).init();
         initView()
         initObserve()
@@ -163,7 +149,7 @@ class RedEnvelopeReceiveDialog(
     }
 
 
-    private fun setContentView() {
+    private fun setContentView()=binding.run {
         mHandler.sendEmptyMessageDelayed(0, BARRAGE_GAP_START_DURATION)
         context?.let { it ->
             TranslateAnimation(
@@ -174,19 +160,19 @@ class RedEnvelopeReceiveDialog(
                 repeatMode = Animation.REVERSE
                 repeatCount = Animation.INFINITE
             }.let {
-                viewBinding.ivLightBall.startAnimation(it)
+                ivLightBall.startAnimation(it)
             }
             AlphaAnimation(0.3f, 1f).apply {
                 duration = 1500
                 repeatMode = Animation.REVERSE
                 repeatCount = Animation.INFINITE
             }.let {
-                viewBinding.ivBgTop.startAnimation(it)
+                ivBgTop.startAnimation(it)
             }
         }
 
-        viewBinding.ivRedClose.setOnClickListener {
-            iv_radiance.clearAnimation()
+        ivRedClose.setOnClickListener {
+            ivRadiance.clearAnimation()
             dismiss()
         }
     }
@@ -216,7 +202,7 @@ class RedEnvelopeReceiveDialog(
                     randomY =
                         (Random().nextInt((p!!.y * (0.2 + 0.05 * i)).toInt()) + image!!.height * 1.3).toInt()
                     layoutParams1!!.setMargins(randomX, -randomY, 0, 0)
-                    viewBinding.relativeLayout.addView(image, layoutParams1)
+                    binding.relativeLayout.addView(image, layoutParams1)
                     var duration = map[bitmap1]
                     startAnimation(image, 0f, duration)
                     image!!.setOnClickListener {

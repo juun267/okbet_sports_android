@@ -1,14 +1,12 @@
 package org.cxct.sportlottery.view.transform
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.dialog_transfer_money.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.databinding.DialogTransferMoneyBinding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
@@ -26,23 +24,14 @@ class TransformInDialog(val firmType: String,
                         val thirdGameResult: EnterThirdGameResult,
                         val gameBalance: Double,
                         val callback:(EnterThirdGameResult) -> Unit):
-    BaseDialog<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
+    BaseDialog<MoneyTransferViewModel,DialogTransferMoneyBinding>() {
 
     init {
         setStyle(R.style.CustomDialogStyle)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return layoutInflater.inflate(R.layout.dialog_transfer_money, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //不分手机上弹窗宽度会撑满，需重新设置下左右间距
-        (view.layoutParams as ViewGroup.MarginLayoutParams?)?.run {
+    override fun onInitView() {
+        (binding.root.layoutParams as ViewGroup.MarginLayoutParams?)?.run {
             val m = 30f.dp
             leftMargin = m
             rightMargin = m
@@ -51,6 +40,7 @@ class TransformInDialog(val firmType: String,
         initView()
         initObserver()
     }
+
 
     private fun getUserBalance() = LoginRepository.userMoney.value ?: 0 as Double
 

@@ -18,8 +18,6 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityModifyBindInfoBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BindingActivity
-import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.view.checkEmail
 import org.cxct.sportlottery.view.checkPhoneNum
 import org.cxct.sportlottery.view.checkSMSCode
@@ -30,7 +28,7 @@ import org.cxct.sportlottery.util.drawable.DrawableCreator
 
 
 // 验证绑定的手机号或者邮箱
-class ModifyBindInfoActivity: BindingActivity<BindInfoViewModel,ActivityModifyBindInfoBinding>() {
+class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel,ActivityModifyBindInfoBinding>() {
 
     companion object {
         fun start(context: Activity, @ModifyType modifyType:  Int, requestCode: Int, phone: String?, email: String?, oldInfo: String? = null) {

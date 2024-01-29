@@ -175,7 +175,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel,FragmentWithdrawBinding>
                         null,
                     )
                 }
-            }?.show(childFragmentManager,DeductDialog::class.java.name)
+            }?.show(childFragmentManager)
         }
 
         btnWithdraw.setTitleLetterSpacing()

@@ -1,24 +1,15 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
-import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
-import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import kotlinx.android.synthetic.main.dialog_transfer_money.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.DialogDeleteBankcardBinding
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.util.CountDownUtil
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.util.showCaptchaDialog
@@ -29,23 +20,13 @@ import org.cxct.sportlottery.view.isVisible
 
 
 class DeleteBankCardDialog(private val phoneNo: String,
-                           private val onResult: (String, String) -> Unit): BaseDialog<WithdrawViewModel>(WithdrawViewModel::class) {
+                           private val onResult: (String, String) -> Unit): BaseDialog<WithdrawViewModel,DialogDeleteBankcardBinding>() {
 
     override fun setDefaulStyle() {  }
 
-    private lateinit var binding: DialogDeleteBankcardBinding
     private var countDownGoing = false
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DialogDeleteBankcardBinding.inflate(inflater)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        //不分手机上弹窗宽度会撑满，需重新设置下左右间距
-
-
-
+    override fun onInitView() {
         initWindowAttr()
         initPassWordInputStyle()
         initEditTextObserver()

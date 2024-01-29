@@ -13,6 +13,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityKycFormBinding
 import org.cxct.sportlottery.net.user.data.OCRInfo
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.signUp.info.DateTimePickerOptions
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.EventBusUtil

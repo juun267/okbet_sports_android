@@ -17,7 +17,7 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        binding.toolBar.tvToolbarTitle.text = getString(R.string.auth_login)
+        binding.toolBar.titleText = getString(R.string.auth_login)
         initButton()
         setupServiceButton()
         initObserve()

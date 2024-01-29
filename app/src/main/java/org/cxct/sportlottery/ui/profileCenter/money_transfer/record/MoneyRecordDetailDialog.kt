@@ -13,28 +13,16 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.*
 
-class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
+class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel,DialogMoneyTransferRecordDetailBinding>() {
     init {
         setStyle(R.style.CustomDialogStyle)
     }
-    private val binding by lazy { DialogMoneyTransferRecordDetailBinding.inflate(layoutInflater) }
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return binding.root
-    }
-
     private var data :Row? = null
     get() {
         return arguments?.getParcelable("data")
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) =binding.run{
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onInitView()=binding.run {
         data?.apply {
             logDetailStatusSubtitle.text = "${getString(R.string.transfer_money)}：${showCurrencySign}"
             logDetailAmountSubtitle.text = "${getString(R.string.in_account)}："
@@ -53,5 +41,4 @@ class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel>(MoneyTransfer
             dismiss()
         }
     }
-
 }

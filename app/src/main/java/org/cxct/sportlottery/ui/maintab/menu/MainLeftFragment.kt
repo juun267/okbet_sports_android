@@ -325,7 +325,7 @@ class MainLeftFragment : BaseFragment<MainViewModel, FragmentMainLeftBinding>() 
 
     private fun scanQR() {
 
-        val scanPhotoDialog = ScanPhotoDialog(requireContext())
+        val scanPhotoDialog = ScanPhotoDialog()
         scanPhotoDialog.tvCameraScanClickListener = {
             RxPermissions(this).request(Manifest.permission.CAMERA).subscribe { onNext ->
                 if (onNext) {
@@ -340,7 +340,7 @@ class MainLeftFragment : BaseFragment<MainViewModel, FragmentMainLeftBinding>() 
         }
 
         scanPhotoDialog.tvAlbumClickListener = { selectAlbum() }
-        scanPhotoDialog.show()
+        scanPhotoDialog.show(childFragmentManager)
     }
 
     private fun selectAlbum() {

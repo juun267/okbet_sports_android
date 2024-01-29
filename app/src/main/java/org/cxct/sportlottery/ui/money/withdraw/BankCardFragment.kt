@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.util.*
