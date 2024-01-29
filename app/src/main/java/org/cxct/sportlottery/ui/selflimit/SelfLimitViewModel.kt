@@ -19,20 +19,9 @@ import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
 
 class SelfLimitViewModel(
-    androidContext: Application,
-    private val repository: SelfLimitRepository,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
+    androidContext
 ) {
 
     //Loading
@@ -81,7 +70,7 @@ class SelfLimitViewModel(
     fun getUserInfo() {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                userInfoRepository.getUserInfo()
+                UserInfoRepository.getUserInfo()
             }
             userID = result?.userInfoData?.userId
             result?.let {
@@ -112,7 +101,7 @@ class SelfLimitViewModel(
                 if (!passwordVerifyResult.success) return@launch
 
                 doNetwork(androidContext) {
-                    repository.froze(FrozeRequest(day))
+                    SelfLimitRepository.froze(FrozeRequest(day))
                 }?.let {
                     _frozeResult.postValue(it)
                 }
@@ -129,7 +118,7 @@ class SelfLimitViewModel(
                 if (!passwordVerifyResult.success) return@launch
 
                 doNetwork(androidContext) {
-                    repository.setPerBetLimit(PerBetLimitRequest(mount))
+                    SelfLimitRepository.setPerBetLimit(PerBetLimitRequest(mount))
                 }?.let {
                     _perBetLimitResult.postValue(it)
                 }

@@ -637,7 +637,8 @@
                     android:foreground="@drawable/fg_ripple"
                     android:gravity="center"
                     android:minHeight="46dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
 
                     <TextView

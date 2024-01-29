@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.money.withdraw.BankActivity
 import org.cxct.sportlottery.ui.money.withdraw.WithdrawActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
@@ -348,6 +349,20 @@ class ProfileCenterFragment : BindingFragment<ProfileCenterViewModel,FragmentPro
             }
         }
 
+        viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
+            hideLoading()
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    startActivity(Intent(requireActivity(), MoneyRechargeActivity::class.java))
+                } else {
+                    showPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.message_recharge_maintain)
+                    ) {}
+                }
+            }
+        }
+
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
 
             it.getContentIfNotHandled()?.let { b ->
@@ -518,7 +533,7 @@ class ProfileCenterFragment : BindingFragment<ProfileCenterViewModel,FragmentPro
                 startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
             }
         }
-        viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner) {
+        InfoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner) {
             updateNoticeCount(it.size)
         }
 
@@ -527,15 +542,15 @@ class ProfileCenterFragment : BindingFragment<ProfileCenterViewModel,FragmentPro
             updateUserIdentity(it?.testFlag)
         }
 
-        viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
+
+        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
                 else
-                    viewModel.checkRechargeSystem()
+                    viewModel.checkWithdrawSystem()
             }
         }
-
     }
 
     @SuppressLint("SetTextI18n")

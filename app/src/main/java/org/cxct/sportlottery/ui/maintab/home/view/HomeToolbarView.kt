@@ -25,9 +25,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.showCurrencySign
-import org.cxct.sportlottery.ui.base.BaseUserViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -60,7 +61,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
 
     private lateinit var fragment: LifecycleOwner
     private lateinit var activity: MainTabActivity
-    private lateinit var viewModel: BaseUserViewModel
+    private lateinit var viewModel: BaseSocketViewModel
     private var userModelEnable = true
     private var onlyShowSeach = true
     private var mailsIcon = R.drawable.icon_mails
@@ -217,7 +218,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
                 it?.let { bindMoneyText(it) }
             }
 
-            infoCenterRepository.unreadNoticeList.observe(fragment) {
+            InfoCenterRepository.unreadNoticeList.observe(fragment) {
                 mailsNum = it.size
                 updateMailsIcon()
             }
@@ -269,7 +270,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     fun attach(
         fragment: Fragment,
         activity: MainTabActivity,
-        viewModel: BaseUserViewModel,
+        viewModel: BaseSocketViewModel,
         moneyViewEnable: Boolean = true,
         onlyShowSeach: Boolean = false,
     ) {

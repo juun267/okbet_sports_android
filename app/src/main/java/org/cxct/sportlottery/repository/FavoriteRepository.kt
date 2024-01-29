@@ -14,7 +14,7 @@ import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TextUtil
 import retrofit2.Response
 
-class MyFavoriteRepository {
+object FavoriteRepository {
 
     val favorSportList: LiveData<List<String>>
         get() = _favorSportList

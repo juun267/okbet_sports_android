@@ -15,22 +15,11 @@ import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
 
 class ProfileModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
-    private val avatarRepository: AvatarRepository,
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
+    androidContext
 ) {
-    val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
+    val editIconUrlResult: LiveData<Event<IconUrlResult?>> = AvatarRepository.editIconUrlResult
 
     //薪资来源string 列表
     val salaryStringList: ArrayList<DialogBottomDataEntity> = ArrayList()
@@ -63,7 +52,7 @@ class ProfileModel(
     fun uploadImage(uploadImgRequest: UploadImgRequest) {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                avatarRepository.uploadImage(uploadImgRequest)
+                AvatarRepository.uploadImage(uploadImgRequest)
             }
         }
     }
@@ -87,7 +76,7 @@ class ProfileModel(
 
     fun getUserInfo() {
         viewModelScope.launch {
-            runWithCatch { userInfoRepository.getUserInfo() }
+            runWithCatch { UserInfoRepository.getUserInfo() }
         }
         if (!salaryStringList.isEmpty()) {
 

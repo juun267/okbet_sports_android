@@ -11,7 +11,7 @@ import org.cxct.sportlottery.network.outright.OutrightResultListRequest
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import retrofit2.Response
 
-class SettlementRepository() {
+object SettlementRepository {
 
     suspend fun resultList(
         pagingParams: PagingParams?,

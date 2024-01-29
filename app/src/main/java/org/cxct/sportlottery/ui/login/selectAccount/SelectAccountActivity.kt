@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.ui.login.selectAccount
 
+import androidx.core.content.ContextCompat
+import org.cxct.sportlottery.R
 import android.text.Html
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.core.content.ContextCompat
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.ForgetPwdSelectAccountEvent
 import org.cxct.sportlottery.common.event.LoginGlifeOrRegistEvent
 import org.cxct.sportlottery.common.event.LoginSelectAccountEvent

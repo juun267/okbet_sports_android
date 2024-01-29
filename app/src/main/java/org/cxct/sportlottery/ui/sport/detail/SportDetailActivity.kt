@@ -141,6 +141,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
     //进来后默认切到指定tab
     private val tabCode by lazy { intent.getStringExtra("tabCode") }
     private val matchId by lazy { intent.getStringExtra("matchId") }
+    private var isFlowing = false
     private lateinit var topBarFragmentList: List<Fragment>
     private lateinit var sportToolBarTopFragment: SportToolBarTopFragment
     private lateinit var sportChartFragment: SportChartFragment
@@ -743,7 +744,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel>(SportViewModel::c
         }
 
         viewModel.favorPlayCateList.observe(this) {
-       
+
             val playCate = it.find { playCate ->
                 playCate.gameType == matchInfo?.gameType
             }

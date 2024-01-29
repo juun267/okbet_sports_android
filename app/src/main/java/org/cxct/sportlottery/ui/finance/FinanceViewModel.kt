@@ -10,26 +10,16 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.QueryByBettingStationIdResult
 import org.cxct.sportlottery.network.money.list.*
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
-import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.base.BaseUserViewModel
 import org.cxct.sportlottery.ui.finance.df.*
 import org.cxct.sportlottery.util.*
 
 const val pageSize = 20
 
 class FinanceViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-) : BaseUserViewModel(
-    androidContext,
-    loginRepository,
-    userInfoRepository,
-    betInfoRepository,
-    infoCenterRepository,
+    androidContext: Application
+) : BaseSocketViewModel(
+    androidContext
 ) {
 
     val allTag = "ALL"

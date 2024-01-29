@@ -3,50 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="@dimen/margin_12"
     android:foreground="@drawable/fg_ripple">
 
+
+    <ImageView
+        android:id="@+id/ivCover"
+        android:layout_width="106dp"
+        android:layout_height="62dp"
+        android:scaleType="centerCrop" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/margin_8">
 
-        <ImageView
-            android:id="@+id/ivCover"
-            android:layout_width="93dp"
-            android:layout_height="62dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img_banner01" />
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:layout_marginLeft="@dimen/margin_8">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/color_313F56"
+            android:textSize="@dimen/textSize14sp"
+            android:lines="2"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            tools:text="OKBet supports Miss Grand PH for the upcoming. Max  lines..." />
 
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/color_313F56"
-                android:textSize="@dimen/textSize14sp"
-                android:lines="2"
-                android:ellipsize="end"
-                android:textStyle="bold"
-                tools:text="OKBet supports Miss Grand PH for the upcoming. Max  lines..." />
-
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Feb 12, 202310:16AM"
-                android:textColor="@color/color_6D7693"
-                android:textSize="@dimen/textSize12sp" />
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Feb 12, 202310:16AM"
+            android:textColor="@color/color_6D7693"
+            android:textSize="@dimen/textSize12sp" />
     </LinearLayout>
 
 

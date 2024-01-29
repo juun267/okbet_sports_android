@@ -19,7 +19,6 @@ import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
@@ -83,7 +82,11 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::c
         initObservable()
         viewModel.getOKGamesHall()
         viewModel.getJackpotData()
-        showOkGameDialog()
+        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKGAME.code)
+        if (AgeVerifyDialog.isAgeVerifyNeedShow){
+            AgeVerifyDialog.isAgeVerifyNeedShow =false
+            AgeVerifyDialog(onConfirm = {}, onExit = {}).show(childFragmentManager)
+        }
     }
 
     private var requestTag: Any = Any()
@@ -263,20 +266,6 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel>(OKGamesViewModel::c
 
     open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 
-    private fun showOkGameDialog() {
-        if (PopImageDialog.showOKGameDialog) {
-            PopImageDialog.showOKGameDialog = false
-            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_OKGAME.code)) {
-                requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_OKGAME.code)
-                }).show(childFragmentManager, PopImageDialog::class.simpleName)
-            }
-        }
-        if (AgeVerifyDialog.isAgeVerifyNeedShow){
-            AgeVerifyDialog.isAgeVerifyNeedShow =false
-            AgeVerifyDialog(onConfirm = {}, onExit = {}).show(childFragmentManager)
-        }
-    }
     fun setupProvider(firmList:MutableList<OKGamesFirm>)=binding.topView.run{
         setProviderItems(firmList)
         setProviderVisible(firmList.isNotEmpty())

@@ -19,7 +19,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.MyFavoriteRepository
+import org.cxct.sportlottery.repository.FavoriteRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -30,20 +30,9 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.LanguageManager.makeUseLanguage
 
 class SportLeftMenuViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
-    private val sportMenuRepository: SportMenuRepository,
+    androidContext: Application
 ) : MainHomeViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository,
+    androidContext
 ) {
 
 
@@ -57,7 +46,7 @@ class SportLeftMenuViewModel(
     val sportCountEvent=SingleLiveEvent<Int>()
 
     fun isLogin(): Boolean {
-        return loginRepository.isLogined()
+        return LoginRepository.isLogined()
     }
 
 
@@ -238,7 +227,7 @@ class SportLeftMenuViewModel(
                 )
             }?.let {
                 //更新到用户设置
-                userInfoRepository.updateOddsChangeOption(option)
+                UserInfoRepository.updateOddsChangeOption(option)
             }
         }
     }
@@ -246,7 +235,7 @@ class SportLeftMenuViewModel(
     fun getInPlayList() {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                sportMenuRepository.getSportMenu(
+                SportMenuRepository.getSportMenu(
                     TimeUtil.getNowTimeStamp().toString(),
                     TimeUtil.getTodayStartTimeStamp().toString()
                 )

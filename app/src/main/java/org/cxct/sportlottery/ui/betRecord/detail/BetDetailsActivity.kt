@@ -6,7 +6,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.replaceFragment
 import org.cxct.sportlottery.databinding.ActivityBetDetailsBinding
 import org.cxct.sportlottery.network.bet.list.Row
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.util.setupSportStatusChange

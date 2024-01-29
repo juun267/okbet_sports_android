@@ -11,22 +11,12 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 
 class BetListViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    myFavoriteRepository: MyFavoriteRepository,
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    myFavoriteRepository,
+    androidContext
 ) {
     val parlayList: LiveData<MutableList<ParlayOdd>>
-        get() = betInfoRepository.parlayList
+        get() = BetInfoRepository.parlayList
 
     fun updateOddsChangeOption(option: Int) {
         viewModelScope.launch {
@@ -35,7 +25,7 @@ class BetListViewModel(
                     OddsChangeOptionRequest(option)
                 )
             }?.let { result ->
-                userInfoRepository.updateOddsChangeOption(option)
+                UserInfoRepository.updateOddsChangeOption(option)
             }
         }
     }

@@ -21,19 +21,9 @@ import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class ModifyProfileInfoViewModel(
-    androidContext: Application,
-    userInfoRepository: UserInfoRepository,
-    loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository
+    androidContext: Application
 ) : BaseSocketViewModel(
-    androidContext,
-    userInfoRepository,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository,
-    favoriteRepository
+    androidContext
 ) {
 
     private val _loading = MutableLiveData<Boolean>()
@@ -141,7 +131,7 @@ class ModifyProfileInfoViewModel(
                     when (modifyType) {
                         ModifyType.PlaceOfBirth -> {
                             uide.placeOfBirth?.let { it1 ->
-                                userInfoRepository.updatePlaceOfBirth(
+                                UserInfoRepository.updatePlaceOfBirth(
                                     it1
                                 )
                             }
@@ -149,7 +139,7 @@ class ModifyProfileInfoViewModel(
 
                         ModifyType.Address -> {
                             uide.address?.let { it1 ->
-                                userInfoRepository.updateaddress(
+                                UserInfoRepository.updateaddress(
                                     it1
                                 )
                             }
@@ -157,7 +147,7 @@ class ModifyProfileInfoViewModel(
 
                         ModifyType.AddressP -> {
                             uide.permanentAddress?.let { it1 ->
-                                userInfoRepository.updatePermanentAddress(
+                                UserInfoRepository.updatePermanentAddress(
                                     it1
                                 )
                             }
@@ -165,7 +155,7 @@ class ModifyProfileInfoViewModel(
 
                         ModifyType.ZipCode -> {
                             uide.zipCode?.let { it1 ->
-                                userInfoRepository.updateZipCode(
+                                UserInfoRepository.updateZipCode(
                                     it1
                                 )
                             }
@@ -173,7 +163,7 @@ class ModifyProfileInfoViewModel(
 
                         ModifyType.ZipCodeP -> {
                             uide.permanentZipCode?.let { it1 ->
-                                userInfoRepository.updatepermanentZipCode(
+                                UserInfoRepository.updatepermanentZipCode(
                                     it1
                                 )
                             }
@@ -267,7 +257,7 @@ class ModifyProfileInfoViewModel(
         @ModifyType modifyType: Int,
         inputContent: String
     ): WithdrawInfoRequest {
-        val userId = loginRepository.userId
+        val userId = LoginRepository.userId
         return when (modifyType) {
             ModifyType.RealName -> {
                 WithdrawInfoRequest(userId = userId, fullName = inputContent)
@@ -282,7 +272,7 @@ class ModifyProfileInfoViewModel(
     }
 
     private suspend fun updateUserInfoDao(@ModifyType modifyType: Int, inputContent: String) {
-        userInfoRepository.apply {
+        UserInfoRepository.apply {
             val userId = userInfo?.value?.userId ?: -1
             when (modifyType) {
                 ModifyType.RealName -> updateFullName(userId, inputContent)
@@ -310,9 +300,9 @@ class ModifyProfileInfoViewModel(
             }
 
             if (result?.success == true) {
-                val userId = userInfoRepository.userInfo?.value?.userId ?: -1
-                userInfoRepository.updateNickname(userId, nickname)
-                userInfoRepository.updateSetted(userId, FLAG_NICKNAME_IS_SET)
+                val userId = UserInfoRepository.userInfo?.value?.userId ?: -1
+                UserInfoRepository.updateNickname(userId, nickname)
+                UserInfoRepository.updateSetted(userId, FLAG_NICKNAME_IS_SET)
             }
 
             _nicknameResult.postValue(result)
@@ -378,7 +368,7 @@ class ModifyProfileInfoViewModel(
             hideLoading()
             if (it.succeeded()) {
                 val fullName = "$firstName${if (middelName == null) "" else " $middelName"} $lastName"
-                userInfoRepository.updateFullName(LoginRepository.userId, fullName)
+                UserInfoRepository.updateFullName(LoginRepository.userId, fullName)
             }
             userNameChangeResult.value = Pair(it.succeeded(), it.msg)
         }

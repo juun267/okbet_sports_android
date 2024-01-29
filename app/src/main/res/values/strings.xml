@@ -1153,8 +1153,8 @@
     <string name="login_hint_account">Phone Number / Email</string>
     <string name="password_login">Password Login</string>
     <string name="or">Or</string>
-    <string name="login_privacy">Agree to T&amp;C and Privacy Policy and confirm that I am at least 21 years old.</string>
-    <string name="login_terms_conditions">T&amp;C</string>
+    <string name="login_privacy">By Signing up, you are confirming that you are above 21 years old, and agreed to our Privacy Policy and Terms &amp; Conditions.</string>
+    <string name="login_terms_conditions">Terms &amp; Conditions</string>
     <string name="login_privacy_policy">Privacy Policy</string>
     <string name="otp_login">OTP Login</string>
     <string name="auth_login">Authorization Login</string>
@@ -1511,7 +1511,17 @@
     <string name="P131">OKBET Member Account</string>
     <string name="P132">OKBET x Glife Member Account</string>
     <string name="P130">Select Your OKBET Account</string>
+    <string name="viber">Viber</string>
     <string name="N064">Remarks</string>
+
+    <string name="N592">Sorry</string>
+    <string name="P151">Redeem</string>
+    <string name="P152">Redeem Code</string>
+    <string name="P153">Redeem History</string>
+    <string name="P156">Rewards</string>
+    <string name="D016">Submit</string>
+    <string name="J044">Reset</string>
+    <string name="J652">Time</string>
 
     <string name="N944">Bet record</string>
     <string name="N947">Sports rules</string>
@@ -1571,7 +1581,6 @@
     <string name="N948">Single betting</string>
     <string name="P159">Apply</string>
     <string name="H019">Total valid bet</string>
-    <string name="P156">Rewards</string>
     <string name="P169">Promotion Details</string>
     <string name="D045">Details</string>
     <string name="J645">To</string>
@@ -1579,7 +1588,6 @@
     <string name="N417">Rejected</string>
     <string name="P150">Reminder Of Turnover</string>
     <string name="P149">Please complete %s valid turnover before requesting a withdrawal. (as per PAGCOR regulations, 1x turnover is need for every deposit transaction and bonus turnover requirement). For more assistance, kindly contact customer service.</string>
-    <string name="viber">Viber</string>
     <string name="P161">Basketball Ending Total Score</string>
     <string name="P162">Basketball Ending 1st</string>
     <string name="P163">Basketball Ending 2nd</string>
@@ -1587,13 +1595,6 @@
     <string name="P165">Basketball Ending 4th</string>
 
 
-    <string name="N592">Sorry</string>
-    <string name="P151">Redeem</string>
-    <string name="P152">Redeem Code</string>
-    <string name="P153">Redeem History</string>
-    <string name="D016">Submit</string>
-    <string name="J044">Reset</string>
-    <string name="J652">Time</string>
     <string name="P170">you got</string>
     <string name="Congratulations">Congratulations</string>
     <string name="P120">Payout</string>
@@ -1603,29 +1604,30 @@
     <string name="P176">Continue as OKBET x Glife member</string>
     <string name="P175">Become a new OKBET member</string>
     <string name="P184">Featured OKLive</string>
+    <string name="N938">Not started</string>
     <string name="P183">Agent Deposit</string>
     <string name="P173">What’s your mobile number？</string>
     <string name="P174">We’ll send a OTP code to your mobile number</string>
     <string name="P181">Register Or Login with Verification Code</string>
     <string name="P199">OKBET Awards</string>
-    <string name="N938">Not started</string>
-    <string name="P204">Bets</string>
     <string name="J653_1">Game Vendor</string>
+    <string name="bets">Bets</string>
+    <string name="P204">Bets</string>
     <string name="P211">Additional info</string>
     <string name="P207">Selfie Picture</string>
     <string name="P208">Upload Selfie Picture Documents，the file size should be under 500KB</string>
     <string name="P209">Proof of income</string>
     <string name="P198">Click to upload the picture</string>
     <string name="P211_1">Additional information</string>
-    <string name="P205">Transfer</string>
-    <string name="P206">Transfers The Balance Of All Other Game Accounts To The Account Balance.</string>
-    <string name="P212">Transfer To Account Balance</string>
     <string name="P185">First Name</string>
     <string name="P186">Middle Name</string>
     <string name="P187">Last Name</string>
     <string name="P188">Don‘t Have</string>
     <string name="P189">Tips: Your real name should match the name on the submitted ID.</string>
     <string name="N280">Format doesn\'t match</string>
+    <string name="P205">Transfer</string>
+    <string name="P206">Transfers The Balance Of All Other Game Accounts To The Account Balance.</string>
+    <string name="P212">Transfer To Account Balance</string>
     <string name="P215">The Cardholder\'s Name should match your registered full name. If you have any questions, please contact our Customer Service.</string>
     <string name="P216">Redeem Code Deposit</string>
     <string name="P218">OTP verification code</string>
@@ -1637,8 +1639,8 @@
     <string name="P228">In Next 12 Hours</string>
     <string name="P229">In Next 24 Hours</string>
     <string name="P230">Casino</string>
-    <string name="P196">Under review</string>
     <string name="P234">Email Us</string>
+    <string name="P196">Under review</string>
     <string name="P235">Set Phone Number Get %s</string>
     <string name="P236">Thank you for registering with us.</string>
     <string name="P237">You have received %s as a welcome gift!</string>

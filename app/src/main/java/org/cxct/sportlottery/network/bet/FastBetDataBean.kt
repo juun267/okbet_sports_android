@@ -2,12 +2,14 @@ package org.cxct.sportlottery.network.bet
 
 import android.os.Parcel
 import android.os.Parcelable
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.ChannelType
 
+@KeepMembers
 data class FastBetDataBean (
     val matchType: MatchType,
     val gameType: GameType,

@@ -28,9 +28,12 @@ import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.games.OkGameProvidersAdapter
 import org.cxct.sportlottery.ui.maintab.games.adapter.GamesTabAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.drawable.DrawableCreator
+import org.cxct.sportlottery.util.getMarketSwitch
 import org.cxct.sportlottery.view.IndicatorWidget
 
 
@@ -134,7 +137,7 @@ class OKGamesTopView @JvmOverloads constructor(
     private fun setUpBannerData(imgType: Int) {
         val lang = LanguageManager.getSelectLanguage(context).key
         var imageList = sConfigData?.imageList?.filter {
-            it.imageType == imgType && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden)
+            it.imageType == imgType && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(getMarketSwitch() && it.isHidden)
         }
             ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
 
