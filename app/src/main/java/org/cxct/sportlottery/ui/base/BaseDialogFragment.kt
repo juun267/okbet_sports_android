@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
+import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import org.cxct.sportlottery.common.extentions.runWithCatch
@@ -12,6 +13,11 @@ open class BaseDialogFragment: DialogFragment() {
 //    init {
 //        retainInstance = isRetainInstance
 //    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        view?.let { v ->  (v.parent as ViewGroup?)?.let {it.removeView(v)} }
+    }
 
     override fun show(manager: FragmentManager, tag: String?) = runWithCatch {
         if (manager.isDestroyed) {
