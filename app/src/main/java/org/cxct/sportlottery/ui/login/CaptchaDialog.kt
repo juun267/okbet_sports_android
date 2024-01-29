@@ -16,12 +16,13 @@ import org.cxct.sportlottery.util.LogUtil
 /**
  * 顯示棋牌彈窗
  */
-class CaptchaDialog(val callback: (ticket: String, randstr: String)-> Unit) : BaseDialog<LoginViewModel>(LoginViewModel::class) {
+class CaptchaDialog : BaseDialog<LoginViewModel>(LoginViewModel::class) {
 
     init {
         setStyle(R.style.FullScreen)
     }
 
+    var callback: ((ticket: String, randstr: String) -> Unit)? = null
     lateinit var binding: DialogCaptchaBinding
 
     override fun onCreateView(
@@ -55,7 +56,7 @@ class CaptchaDialog(val callback: (ticket: String, randstr: String)-> Unit) : Ba
             LogUtil.d("ret=${ret},ticket=${ticket},randstr=${randstr}")
             if (ret==0) {
                 this@CaptchaDialog.activity?.runOnUiThread {
-                    callback.invoke(ticket,randstr)
+                    callback?.invoke(ticket,randstr)
                 }
             }
             dismiss()

@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.login
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,11 +21,13 @@ import org.cxct.sportlottery.view.checkSMSCode
 /**
  * 顯示棋牌彈窗
  */
-class VerifyCodeDialog(val callBack: (identity: String, validCode: String) -> Unit): BaseDialog<LoginViewModel>(LoginViewModel::class) {
+class VerifyCodeDialog: BaseDialog<LoginViewModel>(LoginViewModel::class) {
 
     init {
         setStyle(R.style.CustomDialogStyle)
     }
+
+    var callBack: ((identity: String, validCode: String) -> Unit)? = null
     lateinit var binding: DialogVerifyCodeBinding
 
     override fun onCreateView(
