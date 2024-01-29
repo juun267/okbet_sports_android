@@ -26,7 +26,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 
 // okgames主Fragment
-class OKLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::class) {
+class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding>() {
 
     val gameItemViewPool by lazy {
         RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(0, 20) }
@@ -59,18 +59,10 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel>(OKLiveViewModel::clas
 
      inline fun mainTabActivity() = activity as MainTabActivity
 
-    override fun createRootView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentOkgamesBinding.inflate(layoutInflater)
+    override fun onInitView(view: View) {
         fragmentHelper = FragmentHelper(childFragmentManager, R.id.fragmentContainer, arrayOf(
-                Param(AllLiveFragment::class.java), Param(PartLiveFragment::class.java)
-            )
-        )
-        return binding.root
-    }
-
-    override fun onBindView(view: View) {
+            Param(AllLiveFragment::class.java), Param(PartLiveFragment::class.java)
+        ))
         initToolBar()
         initTopView()
         showGameAll()

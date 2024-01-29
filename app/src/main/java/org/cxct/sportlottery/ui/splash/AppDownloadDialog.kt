@@ -7,9 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.view.View
-import android.widget.FrameLayout.LayoutParams
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.FragmentActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.xuexiang.xupdate.XUpdate
 import com.xuexiang.xupdate._XUpdate
@@ -36,33 +34,28 @@ class AppDownloadDialog(
 ) : BaseDialog<BaseViewModel,DialogAppDownloadBinding>() {
 
     init {
-        setStyle(R.style.CustomDialogStyle)
+        setStyle(R.style.FullScreen)
     }
-    private val mRxPermissions = RxPermissions(requireActivity())
+    private val mRxPermissions by lazy { RxPermissions(requireActivity()) }
 
     companion object {
         var mFileUrl: String? = null
     }
-
-    override fun dismiss() {
-        super.dismiss()
-
-    }
-
-    override fun onInitView() {
+    
+    override fun onInitView()=binding.run {
         isCancelable = false
-        tv_title.text = MultiLanguagesApplication.stringOf(R.string.find_new_version)
-        btn_cancel.text = MultiLanguagesApplication.stringOf(R.string.btn_pass)
-        btn_cancel.visibility = if (mIsForce) View.GONE else View.VISIBLE
-        btn_cancel.setOnClickListener {
+        tvTitle.text = MultiLanguagesApplication.stringOf(R.string.find_new_version)
+        btnCancel.text = MultiLanguagesApplication.stringOf(R.string.btn_pass)
+        btnCancel.visibility = if (mIsForce) View.GONE else View.VISIBLE
+        btnCancel.setOnClickListener {
             mOnDownloadCallBack.goHomeActivity()
             dismiss()
         }
             if (mFileUrl.isNullOrEmpty())
-                btn_download.text = MultiLanguagesApplication.stringOf(R.string.update)
+                btnDownload.text = MultiLanguagesApplication.stringOf(R.string.update)
             else
-                btn_download.text = MultiLanguagesApplication.stringOf(R.string.install)
-        btn_download.setOnClickListener {
+                btnDownload.text = MultiLanguagesApplication.stringOf(R.string.install)
+        btnDownload.setOnClickListener {
             if (BuildConfig.FLAVOR != "google") {
                 if (mFileUrl.isNullOrEmpty())
                     doInternalDownload()
@@ -80,22 +73,22 @@ class AppDownloadDialog(
             }
         }
 
-        block_progress_bar.visibility = View.GONE
-        label_new_version.text = String.format(requireContext().getString(R.string.version_name), mLastVersion)
-        tv_current_version.text = "v${BuildConfig.VERSION_NAME}"
-        tv_new_version.text = "v${mLastVersion.split("_")[1]}"
-        btn_download.setTitleLetterSpacing()
-        btn_cancel.setTitleLetterSpacing()
+        blockProgressBar.visibility = View.GONE
+        labelNewVersion.text = String.format(requireContext().getString(R.string.version_name), mLastVersion)
+        tvCurrentVersion.text = "v${BuildConfig.VERSION_NAME}"
+        tvNewVersion.text = "v${mLastVersion.split("_")[1]}"
+        btnDownload.setTitleLetterSpacing()
+        btnCancel.setTitleLetterSpacing()
     }
 
     //內部下載
     @SuppressLint("CheckResult")
-    private fun doInternalDownload() {
+    private fun doInternalDownload()=binding.run {
         //先請求存取權限，再行下載
         mRxPermissions
             .requestWriteStorageWithApi33(grantFun= {
-                block_bottom_bar.visibility = View.GONE
-                block_progress_bar.visibility = View.VISIBLE
+                blockBottomBar.visibility = View.GONE
+                blockProgressBar.visibility = View.VISIBLE
                 XUpdate.newBuild(requireContext())
                     .apkCacheDir(requireContext().cacheDir.absolutePath) //设置下载缓存的根目录
                     .build()
@@ -110,18 +103,18 @@ class AppDownloadDialog(
                         }
 
                         override fun onCompleted(file: File): Boolean {
-                            btn_download.isEnabled = true
-                            btn_download.text = MultiLanguagesApplication.stringOf(R.string.install)
-                            block_bottom_bar.visibility = View.VISIBLE
+                            btnDownload.isEnabled = true
+                            btnDownload.text = MultiLanguagesApplication.stringOf(R.string.install)
+                            blockBottomBar.visibility = View.VISIBLE
                             mFileUrl = file.absolutePath
                             return false
                         }
 
                         override fun onError(throwable: Throwable) {
-                            btn_download.isEnabled = true
-                            btn_download.text = MultiLanguagesApplication.stringOf(R.string.update)
-                            block_bottom_bar.visibility = View.VISIBLE
-                            block_progress_bar.visibility = View.GONE
+                            btnDownload.isEnabled = true
+                            btnDownload.text = MultiLanguagesApplication.stringOf(R.string.update)
+                            blockBottomBar.visibility = View.VISIBLE
+                            blockProgressBar.visibility = View.GONE
                             ToastUtil.showToastInCenter(context, getString(R.string.download_fail))
                         }
                     })

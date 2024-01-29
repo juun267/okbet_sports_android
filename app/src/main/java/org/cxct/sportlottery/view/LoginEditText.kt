@@ -11,7 +11,6 @@ import android.text.method.DigitsKeyListener
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.View.OnFocusChangeListener
@@ -19,16 +18,13 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.annotation.IntDef
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.EdittextLoginBinding
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
 import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
@@ -42,29 +38,29 @@ class LoginEditText @JvmOverloads constructor(
 
     private var mVerificationCodeBtnOnClickListener: OnClickListener? = null
     private var mOnFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-        v_bottom_line.isSelected = hasFocus
-        block_editText.isSelected = hasFocus
+        binding.vBottomLine.isSelected = hasFocus
+        binding.blockEditText.isSelected = hasFocus
         setError(null)
     }
 
     var eyeVisibility
-        get() = btn_eye.visibility
+        get() = binding.btnEye.visibility
         set(value) {
-            btn_eye.visibility = value
+            binding.btnEye.visibility = value
         }
 
     var clearIsShow
-        get() = btn_clear.visibility == View.VISIBLE
+        get() = binding.btnClear.visibility == View.VISIBLE
         set(value) {
-            btn_clear.visibility = if (value) View.VISIBLE else View.GONE
+            binding.btnClear.visibility = if (value) View.VISIBLE else View.GONE
         }
 
     private var clearListener: OnClickListener? = null
 
     var getAllIsShow
-        get() = btn_withdraw_all.visibility == View.VISIBLE
+        get() = binding.btnWithdrawAll.visibility == View.VISIBLE
         set(value) {
-            btn_withdraw_all.visibility = if (value) View.VISIBLE else View.GONE
+            binding.btnWithdrawAll.visibility = if (value) View.VISIBLE else View.GONE
         }
 
     private var inputType: Int = 0
@@ -74,7 +70,7 @@ class LoginEditText @JvmOverloads constructor(
     }
 
     private val editable by lazy { typedArray.getBoolean(R.styleable.CustomView_cvEditable, true) }
-    val binding by lazy { EdittextLoginBinding.inflate(layoutInflater) }
+    val binding by lazy { EdittextLoginBinding.inflate(layoutInflater,this,false) }
 
     init {
         addView(binding.root)
@@ -95,7 +91,7 @@ class LoginEditText @JvmOverloads constructor(
                 etInput.isEnabled = false
                 etInput.inputType = InputType.TYPE_NULL
                 etInput.isFocusable = false
-                btn_clear.visibility = View.GONE
+                btnClear.visibility = View.GONE
             }
             typedArray.getInt(R.styleable.CustomView_cvEms, -1).let {
                 if (it > 0) {
@@ -107,7 +103,7 @@ class LoginEditText @JvmOverloads constructor(
                     tvTitle.minEms = it
                 }
             }
-            block_verification_code.visibility = if (typedArray.getBoolean(
+            blockVerificationCode.visibility = if (typedArray.getBoolean(
                     R.styleable.CustomView_cvEnableVerificationCode,
                     false
                 )
@@ -134,11 +130,11 @@ class LoginEditText @JvmOverloads constructor(
                         clearIsShow = false
                 }
 
-            tv_start.visibility =
+            tvStart.visibility =
                 typedArray.getInt(R.styleable.CustomView_necessarySymbol, 0x00000008) //預設隱藏 需要再打開
-            btn_withdraw_all.visibility = View.GONE //預設關閉 需要再打開
-            btn_clear.visibility = View.GONE
-            btn_eye.visibility =
+            btnWithdrawAll.visibility = View.GONE //預設關閉 需要再打開
+            btnClear.visibility = View.GONE
+            btnEye.visibility =
                 if (inputType == 0x00000081 || inputType == 0x00000012) View.VISIBLE else View.GONE
 
             //控制物件與下方的間距, default = 10dp
@@ -150,7 +146,7 @@ class LoginEditText @JvmOverloads constructor(
             val dividerColor: Int =
                 typedArray.getResourceId(R.styleable.CustomView_cvDividerColor, 0)
             if (dividerColor != 0) {
-                v_divider.setBackgroundResource(dividerColor)
+                vDivider.setBackgroundResource(dividerColor)
             }
         }
         afterTextChanged { }
@@ -168,12 +164,12 @@ class LoginEditText @JvmOverloads constructor(
     }
 
     private fun setupEye()=binding.run{
-        btn_eye.setOnClickListener {
-            if (cb_eye.isChecked) {
-                cb_eye.isChecked = false
+        btnEye.setOnClickListener {
+            if (cbEye.isChecked) {
+                cbEye.isChecked = false
                 etInput.transformationMethod = PasswordTransformationMethod.getInstance() //不顯示
             } else {
-                cb_eye.isChecked = true
+                cbEye.isChecked = true
                 etInput.transformationMethod = HideReturnsTransformationMethod.getInstance() //顯示
             }
             etInput.setSelection(etInput.length())
@@ -195,9 +191,9 @@ class LoginEditText @JvmOverloads constructor(
             }
         }
         clearListener?.let {
-            btn_clear.setOnClickListener(it)
+            btnClear.setOnClickListener(it)
         } ?: run {
-            btn_clear.setOnClickListener {
+            btnClear.setOnClickListener {
                 etInput.setText("")
             }
         }
@@ -207,8 +203,8 @@ class LoginEditText @JvmOverloads constructor(
     }
 
     private fun setupVerificationCode() {
-        iv_verification_code.setOnClickListener {
-            iv_verification_code.visibility = View.GONE
+        binding.ivVerificationCode.setOnClickListener {
+            binding.ivVerificationCode.visibility = View.GONE
             mVerificationCodeBtnOnClickListener?.onClick(it)
         }
     }
@@ -227,8 +223,8 @@ class LoginEditText @JvmOverloads constructor(
     }
 
     fun setVerificationCode(bitmap: Bitmap?) {
-        iv_verification_code.visibility = View.VISIBLE
-        Glide.with(this).load(bitmap).into(iv_verification_code)
+        binding.ivVerificationCode.visibility = View.VISIBLE
+        Glide.with(this).load(bitmap).into(binding.ivVerificationCode)
     }
 
     fun setTitle(value: String?) {
@@ -239,23 +235,23 @@ class LoginEditText @JvmOverloads constructor(
         binding.etInput.hint = value
     }
 
-    fun setError(value: String?) {
-        tv_error.text = value
+    fun setError(value: String?)=binding.run {
+        tvError.text = value
         if (value.isEmptyStr()) {
-            tv_error.visibility = View.GONE
-            block_editText.isActivated = false
-            v_bottom_line.visibility = View.INVISIBLE
-            v_bottom_line.isActivated = false
+            tvError.visibility = View.GONE
+            blockEditText.isActivated = false
+            vBottomLine.visibility = View.INVISIBLE
+            vBottomLine.isActivated = false
         } else {
-            tv_error.visibility = View.VISIBLE
-            v_bottom_line.visibility = View.VISIBLE
-            block_editText.isActivated = true
-            v_bottom_line.isActivated = true
+            tvError.visibility = View.VISIBLE
+            vBottomLine.visibility = View.VISIBLE
+            blockEditText.isActivated = true
+            vBottomLine.isActivated = true
         }
     }
 
     fun setMarginBottom(px: Int) {
-        (layout.layoutParams as LayoutParams).setMargins(0, 0, 0, px)
+        (binding.layout.layoutParams as LayoutParams).setMargins(0, 0, 0, px)
     }
 
     fun showLine(show: Boolean) {
@@ -302,7 +298,7 @@ class LoginEditText @JvmOverloads constructor(
     }
 
     fun getAllButton(clickGetAll: (EditText) -> Unit) {
-        btn_withdraw_all.setOnClickListener {
+        binding.btnWithdrawAll.setOnClickListener {
             clickGetAll(binding.etInput)
         }
     }
@@ -318,7 +314,7 @@ class LoginEditText @JvmOverloads constructor(
     annotation class Visibility
 
     fun setNecessarySymbolVisibility(@Visibility visibility: Int) {
-        tv_start.visibility = visibility
+        binding.tvStart.visibility = visibility
     }
 }
 

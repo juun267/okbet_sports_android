@@ -161,10 +161,10 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
         }
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
-            if (it.isForceUpdate || it.isShowUpdateDialog)
+//            if (it.isForceUpdate || it.isShowUpdateDialog)
                 showAppDownloadDialog(it.isForceUpdate, it.version, it.checkAppVersionResult)
-            else
-                viewModel.goNextPage()
+//            else
+//                viewModel.goNextPage()
         }
 
         viewModel.skipHomePage.observe(this) {
