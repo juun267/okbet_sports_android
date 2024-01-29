@@ -40,7 +40,7 @@ class CaptchaDialog() : BaseDialog<LoginViewModel,DialogCaptchaBinding>() {
             LogUtil.d("ret=${ret},ticket=${ticket},randstr=${randstr}")
             if (ret==0) {
                 this@CaptchaDialog.activity?.runOnUiThread {
-                    callback？.invoke(ticket,randstr)
+                    callback?.invoke(ticket,randstr)
                 }
             }
             dismiss()

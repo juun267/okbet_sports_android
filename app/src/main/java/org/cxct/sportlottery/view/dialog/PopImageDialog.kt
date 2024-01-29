@@ -24,7 +24,7 @@ import org.cxct.sportlottery.util.LogUtil
 /**
  * 顯示棋牌彈窗
  */
-class PopImageDialog() : BaseDialog<BaseViewModel,DialogPopImageBinding>() {
+class PopImageDialog : BaseDialog<BaseViewModel,DialogPopImageBinding>() {
 
     init {
         setStyle(R.style.FullScreen)
