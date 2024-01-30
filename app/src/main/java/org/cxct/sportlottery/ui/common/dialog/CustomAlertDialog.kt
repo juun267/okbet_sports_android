@@ -93,7 +93,8 @@ class CustomAlertDialog : BaseDialogFragment() {
             blockBottomBar.visibility = View.GONE
         }
 
-        tvMessage.setTextColor(ContextCompat.getColor(tvMessage.context, mTextColor))
+//        tvMessage.setTextColor(ContextCompat.getColor(tvMessage.context, mTextColor))
+        tvMessage.setTextColor(ContextCompat.getColor(tvMessage.context, R.color.color_9FADC6_535D76))
         btnNegative.setTextColor(ContextCompat.getColor(btnNegative.context, mNegateTextColor))
 
         btnPositive.setOnClickListener(mPositiveClickListener)
