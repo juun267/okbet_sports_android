@@ -11,8 +11,9 @@ import org.cxct.sportlottery.net.news.data.NewsCategory
 import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.manager.RequestManager
+import org.cxct.sportlottery.network.common.NewsType
 import org.cxct.sportlottery.network.news.News
+import org.cxct.sportlottery.network.news.SportNewsRequest
 import org.cxct.sportlottery.repository.sConfigData
 
 object NewsRepository {
@@ -86,7 +87,9 @@ object NewsRepository {
         return newsApi.getNewsDetail(params)
     }
 
-    suspend fun getMessageList(page: Int, pageSize: Int, messageType: Int) = noticeApi.getMessageList(messageType, page, pageSize)
+    suspend fun getMessageList(page: Int, pageSize: Int, messageType: Int):ApiResult<ArrayList<News>> {
+        return noticeApi.getMessageList(SportNewsRequest(NewsType.SYSTEM, page = page, pageSize = pageSize, typelist = arrayOf(1, 2, 3)))
+    }
 
 
 }

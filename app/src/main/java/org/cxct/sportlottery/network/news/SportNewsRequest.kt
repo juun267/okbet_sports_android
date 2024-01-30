@@ -7,8 +7,9 @@ import org.cxct.sportlottery.network.common.TimeRangeParams
 @KeepMembers
 class SportNewsRequest(
     val messageType:Int,
-    override val startTime: String? = null,
-                       override val endTime: String? = null,
-                       override val page: Int? = 1,
-                       override val pageSize: Int? = 20): TimeRangeParams, PagingParams {
+    val startTime: String? = null,
+    val endTime: String? = null,
+    val page: Int? = 1,
+    val pageSize: Int? = 20,
+    val typelist: Array<Int>? = null) {
 }
