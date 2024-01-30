@@ -5,7 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.AreaAllResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
@@ -55,7 +58,11 @@ class ProfileModel(
     val workList: ArrayList<DialogBottomDataEntity> = ArrayList()
 
     //性别：男,女,其他
-    val genderList = arrayOf(DialogBottomDataEntity())
+    val genderList = arrayListOf(
+        DialogBottomDataEntity(androidContext.getString(R.string.N809),false,1),
+        DialogBottomDataEntity(androidContext.getString(R.string.N810),false,0),
+        DialogBottomDataEntity(androidContext.getString(R.string.other),false,2)
+    )
 
     private val _userDetail = MutableLiveData<UserInfoDetailsEntity>()
     val userDetail: LiveData<UserInfoDetailsEntity> //使用者餘額
@@ -70,7 +77,9 @@ class ProfileModel(
             }
         }
     }
-
+    fun getGenderName(id: Int?): String? {
+        return genderList.firstOrNull { it.id == id }?.name
+    }
     fun getSalaryName(id: Int,default: String): String {
         var sdf = salaryStringList.find { it.id == id }
         return if (sdf == null || sdf.name.isEmpty()) {
@@ -99,8 +108,9 @@ class ProfileModel(
                 doNetwork(androidContext) {
                     OneBoSportApi.userService.userQueryUserInfoDetails()
                 }?.let {
-                    it.let {
-                        _userDetail.postValue(it)
+                    _userDetail.postValue(it)
+                    it.t.gender?.let { gender->
+                        genderList.onEach { it.flag = it.id== gender }
                     }
                 }
             }
@@ -185,7 +195,6 @@ class ProfileModel(
             }
         }
     }
-
     fun updateCityData(id: Int) {
         if (areaData == null) {
             return
