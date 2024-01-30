@@ -13,13 +13,11 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setupSummary
 import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
 import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
-import org.cxct.sportlottery.view.isVisible
 
-class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>(BaseViewModel::class) {
+class RegisterSuccessDialog: BaseDialog<BaseViewModel>(BaseViewModel::class) {
 
     companion object{
         var ifNew = false
@@ -36,7 +34,7 @@ class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>
             return object : BasePriorityDialog<RegisterSuccessDialog>() {
                 override fun getFragmentManager() = fm.invoke()
                 override fun priority() = priority
-                override fun createDialog() = RegisterSuccessDialog(callback)
+                override fun createDialog() = RegisterSuccessDialog().apply { onRecharge = callback }
             }
         }
     }
@@ -45,6 +43,7 @@ class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>
         setStyle(R.style.FullScreen)
     }
     lateinit var binding : DialogRegisterSuccessBinding
+    var onRecharge: (()->Unit)?=null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,7 +69,7 @@ class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel>
         setupSummary(binding.tvSummary)
         binding.btnRecharge.setOnClickListener {
             dismissAllowingStateLoss()
-            onRecharge.invoke()
+            onRecharge?.invoke()
         }
         setOnClickListeners(binding.ivClose,binding.btnConfirm){
             dismissAllowingStateLoss()
