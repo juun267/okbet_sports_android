@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.net.sport
 
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
@@ -8,12 +9,11 @@ import org.cxct.sportlottery.net.sport.data.RecommendLeague
 import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.util.TimeUtil
-import org.json.JSONObject
 
 object SportRepository {
 
     private val sportApi by lazy { RetrofitHolder.createApiService(SportService::class.java) }
-
+    val _sportMenuResultEvent = MutableLiveData<ApiResult<SportMenuData>>()
     /**
      * isNew 则不返回categoryList参数
      */

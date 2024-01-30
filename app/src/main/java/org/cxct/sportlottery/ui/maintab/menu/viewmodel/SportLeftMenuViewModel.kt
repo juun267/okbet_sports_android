@@ -15,12 +15,8 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.user.odds.OddsChangeOptionRequest
-import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.HandicapType
-import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.FavoriteRepository
-import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
@@ -233,13 +229,8 @@ class SportLeftMenuViewModel(
     }
 
     fun getInPlayList() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                SportMenuRepository.getSportMenu(
-                    TimeUtil.getNowTimeStamp().toString(),
-                    TimeUtil.getTodayStartTimeStamp().toString()
-                )
-            }?.sportMenuData?.let { sportMenuList ->
+        callApi({SportRepository.getSportMenu(true)}){
+            it.getData()?.let { sportMenuList ->
                 inplayList.postValue(sportMenuList.menu.inPlay.items)
             }
         }

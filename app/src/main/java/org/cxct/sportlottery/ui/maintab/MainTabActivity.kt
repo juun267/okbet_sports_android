@@ -130,6 +130,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
+        viewModel.getSportMenuFilter()
     }
 
     private fun onTabClick(tabName: Int): Boolean {

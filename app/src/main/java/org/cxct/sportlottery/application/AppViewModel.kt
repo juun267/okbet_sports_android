@@ -94,7 +94,6 @@ object AppViewModel {
     private val repoModule = module {
         single { UserInfoRepository }
         single { LoginRepository }
-        single { SportMenuRepository }
         single { SettlementRepository }
         single { InfoCenterRepository }
         single { MoneyRepository }
