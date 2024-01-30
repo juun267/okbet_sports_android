@@ -11,10 +11,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
+import org.cxct.sportlottery.common.extentions.showPromptDialog
 import org.cxct.sportlottery.databinding.ActivityRedeemBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.view.dialog.RedeemDialog
 
 class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::class) {
 
@@ -36,11 +36,12 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
                     var str = getString(R.string.P170)
                     showRedeemDialog(
                         "$str ₱${entity.rewards?.let { it1 -> TextUtil.format(it1) }} !",
-                        getString(R.string.Congratulations)
+                        getString(R.string.Congratulations),
+                        true
                     )
                 }
             } else {
-                showRedeemDialog(it.msg, resources.getString(R.string.N592))
+                showRedeemDialog(it.msg, resources.getString(R.string.N592), false)
             }
             hideLoading()
         }
@@ -111,11 +112,8 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
         })
     }
 
-    private fun showRedeemDialog(msg: String, title: String) {
-        val dialog = RedeemDialog(this)
-        dialog.setContentMsg(msg)
-        dialog.setTitle(title)
-        dialog.show()
+    private fun showRedeemDialog(msg: String, title: String, success: Boolean) {
+        showPromptDialog(title = title, errorMessage = msg, buttonText = null, positiveClickListener = {}, isError = !success)
     }
 
 }
