@@ -1,8 +1,12 @@
 package org.cxct.sportlottery.ui.redeem
 
 import android.os.Bundle
+import androidx.core.text.toSpanned
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.drake.spannable.addSpan
+import com.drake.spannable.setSpan
+import com.drake.spannable.span.ColorSpan
 import kotlinx.android.synthetic.main.activity_redeem.rvRedeem
 import kotlinx.android.synthetic.main.activity_redeem.viewNoData
 import kotlinx.android.synthetic.main.activity_withdraw_commission_detail.custom_tool_bar
@@ -33,15 +37,21 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
         viewModel.newsResult.observe(this) {
             if (it.success) {
                 it.entity?.let { entity ->
-                    var str = getString(R.string.P170)
-                    showRedeemDialog(
-                        "$str ₱${entity.rewards?.let { it1 -> TextUtil.format(it1) }} !",
-                        getString(R.string.Congratulations),
-                        true
-                    )
+                    val color = getColor(R.color.color_535D76)
+                    val msg = getString(R.string.P170).setSpan(ColorSpan(color))
+                        .addSpan("₱${entity.rewards?.let { it1 -> TextUtil.format(it1) }}", ColorSpan(getColor(R.color.color_025BE8)))
+                        .addSpan("!", ColorSpan(color)).toSpanned()
+
+                    showPromptDialog(title = getString(R.string.Congratulations),
+                        message = msg,
+                        positiveClickListener = {})
                 }
             } else {
-                showRedeemDialog(it.msg, resources.getString(R.string.N592), false)
+                showPromptDialog(title = resources.getString(R.string.N592),
+                    errorMessage = it.msg,
+                    buttonText = null,
+                    positiveClickListener = {},
+                    isError = true)
             }
             hideLoading()
         }
@@ -110,10 +120,6 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
                 }
             }
         })
-    }
-
-    private fun showRedeemDialog(msg: String, title: String, success: Boolean) {
-        showPromptDialog(title = title, errorMessage = msg, buttonText = null, positiveClickListener = {}, isError = !success)
     }
 
 }
