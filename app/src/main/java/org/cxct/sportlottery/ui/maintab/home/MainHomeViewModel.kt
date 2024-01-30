@@ -59,8 +59,6 @@ open class MainHomeViewModel(
         get() = _gotConfig
     private val _gotConfig = MutableLiveData<Event<Boolean>>()
 
-    private val _sportMenuFilterList =
-        MutableLiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>()
     private val _messageListResult = MutableLiveData<Event<MessageListResult?>>()
     val messageListResult: LiveData<Event<MessageListResult?>>
         get() = _messageListResult
@@ -195,20 +193,6 @@ open class MainHomeViewModel(
                     _hotESportMatch.postValue(Pair(gameType.key,resultRecommend.result.recommendList))
                 }
                 notifyFavorite(FavoriteType.MATCH)
-            }
-        }
-    }
-
-    //獲取體育篩選菜單
-    fun getSportMenuFilter() {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.sportService.getSportListFilter()
-            }
-
-            result?.let {
-                PlayCateMenuFilterUtils.filterList = it.t?.sportMenuList
-                _sportMenuFilterList.postValue(Event(it.t?.sportMenuList))
             }
         }
     }

@@ -14,7 +14,6 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentMainLeftBinding
@@ -35,6 +34,7 @@ import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
+import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -116,7 +116,6 @@ class MainLeftFragment : BaseFragment<MainViewModel, FragmentMainLeftBinding>() 
         }.apply {
             isVisible=StaticData.okSportOpened()
         }
-        menuOKLive.tag="menuOKLive"
         menuOKLive.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_oklive_sel, R.drawable.ic_left_menu_oklive_nor),
             R.string.P160
@@ -127,7 +126,6 @@ class MainLeftFragment : BaseFragment<MainViewModel, FragmentMainLeftBinding>() 
         }.apply {
             isVisible = !getMarketSwitch() && StaticData.okLiveOpened()
         }
-        menuOKGames.tag="menuOKGames"
         menuOKGames.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_okgame_sel, R.drawable.ic_left_menu_okgame_nor),
             R.string.J203
@@ -138,7 +136,6 @@ class MainLeftFragment : BaseFragment<MainViewModel, FragmentMainLeftBinding>() 
         }.apply {
             isVisible = !getMarketSwitch() && StaticData.okGameOpened()
         }
-        menuESport.tag="menuESport"
         menuESport.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_esport_sel, R.drawable.ic_left_menu_esport_nor),
             R.string.esports
@@ -172,7 +169,6 @@ class MainLeftFragment : BaseFragment<MainViewModel, FragmentMainLeftBinding>() 
         }.apply {
             setVisibilityByMarketSwitch()
         }
-        menuNews.tag="menuNews"
         menuNews.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),
             R.string.N909
@@ -254,12 +250,14 @@ class MainLeftFragment : BaseFragment<MainViewModel, FragmentMainLeftBinding>() 
         if (!isAdded){
             return
         }
+        lastItem?.isSelected =false
         lastItem = when(currentContent) {
+            SportFragment::class.java -> binding.menuSport
             OKGamesFragment::class.java -> binding.menuOKGames
             OKLiveFragment::class.java -> binding.menuOKLive
             ESportFragment::class.java -> binding.menuESport
             NewsHomeFragment::class.java -> binding.menuNews
-            else -> lastItem
+            else -> null
         }
         lastItem?.isSelected=true
     }

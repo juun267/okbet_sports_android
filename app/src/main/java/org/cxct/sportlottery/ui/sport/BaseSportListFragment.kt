@@ -18,6 +18,7 @@ import org.cxct.sportlottery.common.event.SelectMatchEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
+import org.cxct.sportlottery.net.sport.SportRepository
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -446,10 +447,7 @@ abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewMod
      * 通过父fragment来加载sport/menu 接口数据
      */
     protected fun getMenuDataByParent(isESportType: Boolean=false ){
-        val sportParentFrament = (parentFragment as BaseFragment<SportTabViewModel,*>)
-        if (sportParentFrament != null) {
-            sportParentFrament.viewModel.sportMenuResult.value?.let { viewModel.loadSportMenu(it, matchType, isESportType = isESportType) }
-        }
+        SportRepository._sportMenuResultEvent.value?.let { viewModel.loadSportMenu(it, matchType, isESportType = isESportType) }
     }
 
 
