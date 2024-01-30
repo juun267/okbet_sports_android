@@ -39,8 +39,8 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
                 it.entity?.let { entity ->
                     val color = getColor(R.color.color_535D76)
                     val msg = getString(R.string.P170).setSpan(ColorSpan(color))
-                        .addSpan("₱${entity.rewards?.let { it1 -> TextUtil.format(it1) }}", ColorSpan(getColor(R.color.color_025BE8)))
-                        .addSpan("!", ColorSpan(color)).toSpanned()
+                        .addSpan(" ₱${entity.rewards?.let { it1 -> TextUtil.format(it1) }}", ColorSpan(getColor(R.color.color_025BE8)))
+                        .addSpan(" !", ColorSpan(color)).toSpanned()
 
                     showPromptDialog(title = getString(R.string.Congratulations),
                         message = msg,
