@@ -2,17 +2,21 @@ package org.cxct.sportlottery.view.dialog
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OVER_SCROLL_ALWAYS
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -24,9 +28,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.network.news.News
 import org.cxct.sportlottery.ui.base.BaseDialogFragment
-import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
+import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
 import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
 
@@ -75,6 +79,17 @@ class AnnouncementsDialog: BaseDialogFragment() {
         recyclerView.setPadding(0, 0, 0, 8.dp)
         recyclerView.clipToPadding = false
         recyclerView.adapter = adapter
+        recyclerView.isScrollbarFadingEnabled = false
+        recyclerView.isVerticalScrollBarEnabled = true
+        recyclerView.overScrollMode = OVER_SCROLL_ALWAYS
+        recyclerView.setWillNotDraw(false)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            recyclerView.verticalScrollbarThumbDrawable = ShapeDrawable()
+                .setHeight(20.dp)
+                .setWidth(4.dp)
+                .setSolidColor(Color.parseColor("#C1CEE1"))
+        }
+
         rootView.addView(recyclerView, LinearLayout.LayoutParams(-1, 384.dp))
 
         return rootView

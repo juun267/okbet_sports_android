@@ -88,7 +88,7 @@ object NewsRepository {
     }
 
     suspend fun getMessageList(page: Int, pageSize: Int, messageType: Int):ApiResult<ArrayList<News>> {
-        return noticeApi.getMessageList(SportNewsRequest(NewsType.SYSTEM, page = page, pageSize = pageSize, typelist = arrayOf(1, 2, 3)))
+        return noticeApi.getMessageList(SportNewsRequest(messageType, page = page, pageSize = pageSize, typelist = arrayOf(3)))
     }
 
 
