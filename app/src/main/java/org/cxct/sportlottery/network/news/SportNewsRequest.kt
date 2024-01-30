@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.network.news
 
 import org.cxct.sportlottery.common.proguards.KeepMembers
-import org.cxct.sportlottery.network.common.PagingParams
-import org.cxct.sportlottery.network.common.TimeRangeParams
 
 @KeepMembers
 class SportNewsRequest(
@@ -11,5 +9,5 @@ class SportNewsRequest(
     val endTime: String? = null,
     val page: Int? = 1,
     val pageSize: Int? = 20,
-    val typelist: Array<Int>? = null) {
+    val typeList: Array<Int>? = null) {
 }
