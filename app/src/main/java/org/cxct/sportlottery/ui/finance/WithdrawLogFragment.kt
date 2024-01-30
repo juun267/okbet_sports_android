@@ -107,15 +107,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
         initOnclick()
         initNoRecordView()
     }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_withdraw_log, container, false).apply {
 
-        }
-    }
 
     private fun initOnclick() =binding.run{
         //TODO 位置改动 这个方法要删除掉 暂时隐藏

@@ -69,14 +69,12 @@ class StatusSpinnerView @JvmOverloads constructor(
     init {
         addView(binding.root)
         binding.run {
-
             ivArrow.setImageResource(arrowImg)
             tvName.tag = ""
             tvName.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
             tvName.setTextColor(ContextCompat.getColor(context, R.color.color_C9CFD7))
             tvName.gravity = textGravity
-            setOnClickListener {
-                this@StatusSpinnerView.callOnClick()
+            clRoot.setOnClickListener {
                 if (!KeyboadrdHideUtil.isActive(it.context)) {
                     showListPop()
                     return@setOnClickListener
