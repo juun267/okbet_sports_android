@@ -6,7 +6,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.BetInfo
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.common.enums.ChannelType
 
 class BetInfoListData(
     var matchOdd: MatchOdd,

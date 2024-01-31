@@ -185,7 +185,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        WinsDialog(adapter.getItem(position) as RecordNewEvent, context as AppCompatActivity) { betRecode ->
+        WinsDialog(adapter.getItem(position) as RecordNewEvent) { betRecode ->
             if (!betRecode.isSportBet()) {
                 val okGameBean = OKGameBean(
                     id = 0,
@@ -219,7 +219,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
             }
 
-        }.show()
+        }.show((context as AppCompatActivity).supportFragmentManager)
     }
 
     private fun enterGame(recordNewEvent: RecordNewEvent) {

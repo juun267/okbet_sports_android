@@ -7,7 +7,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.common.enums.ChannelType
 
 @KeepMembers
 data class FastBetDataBean (

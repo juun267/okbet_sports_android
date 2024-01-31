@@ -10,10 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.common.enums.BetStatus
-import org.cxct.sportlottery.common.enums.OddState
-import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.enums.SpreadState
+import org.cxct.sportlottery.common.enums.*
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.FastBetDataBean

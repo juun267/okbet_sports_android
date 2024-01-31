@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.base
+package org.cxct.sportlottery.common.enums
 
 enum class ChannelType() {
     HALL, EVENT
