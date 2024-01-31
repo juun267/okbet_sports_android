@@ -13,9 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import kotlinx.android.synthetic.main.button_bet.cl_bet
-import kotlinx.android.synthetic.main.button_bet.tv_login
-import kotlinx.android.synthetic.main.button_bet.tv_remove_closed_selections
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
@@ -201,18 +198,18 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
         }
     }
 
-    private fun initBtnEvent() {
-        binding.btnBet.apply {
-            tv_login.setOnClickListener {
+    private fun initBtnEvent()=binding.run {
+        btnBet.apply {
+            binding.tvLogin.setOnClickListener {
                 needUpdateBetLimit = true
                 requireActivity().startLogin()
             }
 
-            cl_bet.clickDelay {
+            binding.clBet.clickDelay {
                 addBet()
             }
 
-            tv_remove_closed_selections.setOnClickListener { removeClosedPlat() }
+            binding.tvRemoveClosedSelections.setOnClickListener { removeClosedPlat() }
         }
     }
 

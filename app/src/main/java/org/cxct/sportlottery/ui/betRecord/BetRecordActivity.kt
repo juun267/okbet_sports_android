@@ -19,8 +19,6 @@ class BetRecordActivity: BaseActivity<MainViewModel, ActivityBetRecordBinding>()
     private val settledFragment by lazy { SettledFragment() }
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        setContentView(binding.root)
-
         binding.run {
             customToolBar.apply {
                 tv_toolbar_title.typeface = Typeface.DEFAULT_BOLD

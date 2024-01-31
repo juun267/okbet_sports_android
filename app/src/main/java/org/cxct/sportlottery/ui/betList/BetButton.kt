@@ -6,9 +6,9 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.button_bet.view.*
-import kotlinx.android.synthetic.main.view_global_loading.view.text
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ButtonBetBinding
+import splitties.systemservices.layoutInflater
 import timber.log.Timber
 
 
@@ -21,7 +21,7 @@ class BetButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-
+    val binding by lazy { ButtonBetBinding.inflate(layoutInflater,this,true) }
     init {
         init()
     }
@@ -70,19 +70,18 @@ class BetButton @JvmOverloads constructor(
 
 
     private fun init() {
-        inflate(context, R.layout.button_bet, this)
         setUpBetContent()
     }
 
     private fun setUpBetContent() {
         val betContent = context.getString(R.string.betting)
-        tv_bet.text = betContent
+        binding.tvBet.text = betContent
         setupBetClickable()
     }
 
 
     private fun setupLogin(isLogin: Boolean) {
-        tv_login.visibility = if (isLogin) View.GONE else View.VISIBLE
+        binding.tvLogin.visibility = if (isLogin) View.GONE else View.VISIBLE
     }
 
 
@@ -93,24 +92,24 @@ class BetButton @JvmOverloads constructor(
         val opt4 = isParlay && currentBetListCounts == 1
         val betClickable = !(opt1 || opt3 || opt4)
         Timber.d("setupBetClickable: betClickable:${betClickable} opt1:${opt1} op2:${true} opt3:${opt3} opt4:${opt4}")
-        cl_bet.apply {
+        binding.clBet.apply {
             isSelected = betClickable
             isClickable = betClickable
         }
     }
 
     fun setBtnText(text:String){
-        tv_bet.text = text
+        binding.tvBet.text = text
     }
 
     fun setOddsButtonChangeStyle() {
-        cl_bet.background = AppCompatResources.getDrawable(
+        binding.clBet.background = AppCompatResources.getDrawable(
             context, R.drawable.selector_button_radius_5_betting_change
         )
     }
 
     fun resetButtonStyle(){
-        cl_bet.background = AppCompatResources.getDrawable(
+        binding.clBet.background = AppCompatResources.getDrawable(
             context,R.drawable.selector_button_radius_5_bet
         )
     }

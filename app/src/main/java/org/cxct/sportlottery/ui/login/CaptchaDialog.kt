@@ -12,7 +12,7 @@ import org.cxct.sportlottery.util.LogUtil
 /**
  * 顯示棋牌彈窗
  */
-class CaptchaDialog() : BaseDialog<LoginViewModel,DialogCaptchaBinding>() {
+class CaptchaDialog : BaseDialog<LoginViewModel,DialogCaptchaBinding>() {
 
     init {
         setStyle(R.style.FullScreen)
@@ -21,8 +21,7 @@ class CaptchaDialog() : BaseDialog<LoginViewModel,DialogCaptchaBinding>() {
 
     override fun onInitView() {
         binding.okWebView.apply {
-            setBackgroundColor(0);
-            background.alpha = 0
+            setBackgroundColor(0)
             addJavascriptInterface(JsBridge(),"jsBridge")
             val lang = when(LanguageManager.getSelectLanguage(context)){
                 LanguageManager.Language.ZH->"zh-cn"
