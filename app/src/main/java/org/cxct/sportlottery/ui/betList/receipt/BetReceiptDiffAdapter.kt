@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 
@@ -118,6 +119,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+    fun removeAllRunnable() {
+        runWithCatch { mRunnableList.onEach { it?.let { it1 -> mHandler.removeCallbacks(it1) } } }
     }
 
     override fun getItemViewType(position: Int): Int {

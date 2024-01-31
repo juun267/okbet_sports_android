@@ -2,14 +2,13 @@ package org.cxct.sportlottery.ui.betList.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.view.LayoutInflater
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
+import org.cxct.sportlottery.databinding.PopupwindowTipsBinding
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
@@ -21,11 +20,11 @@ class BetListPopupWindow @JvmOverloads constructor(
         initView()
     }
 
-    private lateinit var view: View
+    lateinit var binding: PopupwindowTipsBinding
 
     private fun initView() {
-        view = View.inflate(context, R.layout.popupwindow_tips, null)
-        contentView = view
+        binding=PopupwindowTipsBinding.inflate(LayoutInflater.from(context))
+        contentView = binding.root
         setBackgroundDrawable(null)
         isOutsideTouchable = true
     }
@@ -39,8 +38,6 @@ class BetListPopupWindow @JvmOverloads constructor(
         tvNameText: String? = null,
         itemData: BetInfoListData
     ) {
-        val tvContent = view.findViewById<TextView>(R.id.tvContent)
-        val ivBackground = view.findViewById<ImageView>(R.id.ivPopupWindowTipsBg)
 
         val showPopAsTop: (TextView, String?) -> Unit = { it, it2 ->
             if (isShowing) {
@@ -48,16 +45,16 @@ class BetListPopupWindow @JvmOverloads constructor(
             }
 
             it.setTextColor(it.context.getColor(R.color.color_025BE8))
-            tvContent.text = it2
+            binding.tvContent.text = it2
             val xOff: Int
             val yOff = (-50).dp
             if (it == tvMatchAway) {
                 xOff = (-20).dp
-                ivBackground.background =
+                binding.ivPopupWindowTipsBg.background =
                     AppCompatResources.getDrawable(it.context, R.drawable.bg_popup_tips_right)
             } else {
                 xOff = (-5).dp
-                ivBackground.background =
+                binding.ivPopupWindowTipsBg.background =
                     AppCompatResources.getDrawable(it.context, R.drawable.bg_popup_tips_left)
             }
             showAsDropDown(it, xOff, yOff)
