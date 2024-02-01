@@ -1,14 +1,18 @@
 package org.cxct.sportlottery.ui.redeem
 
+import androidx.core.text.toSpanned
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.drake.spannable.addSpan
+import com.drake.spannable.setSpan
+import com.drake.spannable.span.ColorSpan
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
+import org.cxct.sportlottery.common.extentions.showPromptDialog
 import org.cxct.sportlottery.databinding.ActivityRedeemBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.view.dialog.RedeemDialog
 
 class RedeemActivity : BaseSocketActivity<RedeemViewModel,ActivityRedeemBinding>(RedeemViewModel::class) {
 
@@ -23,14 +27,21 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel,ActivityRedeemBinding>
         viewModel.newsResult.observe(this) {
             if (it.success) {
                 it.entity?.let { entity ->
-                    var str = getString(R.string.P170)
-                    showRedeemDialog(
-                        "$str ₱${entity.rewards?.let { it1 -> TextUtil.format(it1) }} !",
-                        getString(R.string.Congratulations)
-                    )
+                    val color = getColor(R.color.color_535D76)
+                    val msg = getString(R.string.P170).setSpan(ColorSpan(color))
+                        .addSpan(" ₱${entity.rewards?.let { it1 -> TextUtil.format(it1) }}", ColorSpan(getColor(R.color.color_025BE8)))
+                        .addSpan(" !", ColorSpan(color)).toSpanned()
+
+                    showPromptDialog(title = getString(R.string.Congratulations),
+                        message = msg,
+                        positiveClickListener = {})
                 }
             } else {
-                showRedeemDialog(it.msg, resources.getString(R.string.N592))
+                showPromptDialog(title = resources.getString(R.string.N592),
+                    errorMessage = it.msg,
+                    buttonText = null,
+                    positiveClickListener = {},
+                    isError = true)
             }
             hideLoading()
         }
@@ -98,13 +109,6 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel,ActivityRedeemBinding>
                 }
             }
         })
-    }
-
-    private fun showRedeemDialog(msg: String, title: String) {
-        val dialog = RedeemDialog(this)
-        dialog.setContentMsg(msg)
-        dialog.setTitle(title)
-        dialog.show()
     }
 
 }

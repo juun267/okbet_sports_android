@@ -111,7 +111,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel,FragmentBankCardBinding>
 
             val msg = getString(R.string.P215)
             val cxt = it.context
-            CustomAlertDialog(cxt).apply {
+            CustomAlertDialog().apply {
 
                 setTitle(cxt.getString(R.string.prompt))
                 setMessage(msg)

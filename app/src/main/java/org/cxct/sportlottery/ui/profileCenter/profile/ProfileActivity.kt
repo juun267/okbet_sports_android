@@ -604,7 +604,7 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
         //簡訊驗證失敗
         viewModel.errorMessageDialog.observe(this) {
             val errorMsg = it ?: getString(R.string.unknown_error)
-            CustomAlertDialog(this).apply {
+            CustomAlertDialog().apply {
                 setMessage(errorMsg)
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)

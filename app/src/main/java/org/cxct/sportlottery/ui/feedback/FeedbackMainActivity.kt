@@ -75,7 +75,7 @@ class FeedbackMainActivity : BaseActivity<FeedbackViewModel, ActivityFeedbackMai
 
                 val msgContent =
                     if (result.success) getString(R.string.feedback_submit_succeed) else result.msg
-                val dialog = CustomAlertDialog(this).apply {
+                val dialog = CustomAlertDialog().apply {
                     setTitle(this@FeedbackMainActivity.getString(R.string.prompt))
                     setMessage(msgContent)
                     setNegativeButtonText(null)

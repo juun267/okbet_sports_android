@@ -29,11 +29,11 @@ fun commonCheckDialog(
         return
     }
 
-    CustomAlertDialog(context).apply {
+    CustomAlertDialog().apply {
         if (isError) {
             setTextColor(R.color.color_E44438_e44438)
         }
-        setShowDivider(isShowDivider)
+        this@apply.isError = isError
         setTitle(title)
         setMessage(errorMessageSpan)
         setPositiveButtonText(buttonText ?: context.getString(R.string.btn_confirm))
@@ -64,11 +64,11 @@ fun commonCheckDialog(
         return
     }
 
-    CustomAlertDialog(context).apply {
+    CustomAlertDialog().apply {
         if (isError) {
             setTextColor(R.color.color_E44438_e44438)
         }
-        setShowDivider(isShowDivider)
+        this@apply.isError = isError
         setTitle(title)
         setMessage(errorMessage)
         setPositiveButtonText(buttonText ?: context.getString(R.string.btn_confirm))
@@ -100,12 +100,12 @@ fun commonTwoButtonDialog(
         return dialog
     }
 
-    CustomAlertDialog(context).apply {
+    CustomAlertDialog().apply {
         dialog = this
         if (isError) {
             setTextColor(R.color.color_E44438_e44438)
         }
-        setShowDivider(isShowDivider)
+        this@apply.isError = isError
         setTitle(title)
         setMessage(errorMessage)
         setPositiveButtonText(buttonText ?: context.getString(R.string.btn_confirm))
@@ -131,8 +131,9 @@ fun phoneNumCheckDialog(context: Context, fm: FragmentManager) {
     if (checkDialogIsShowing(context, errorMsg)) {
         return
     }
-    CustomAlertDialog(context).apply {
+    CustomAlertDialog().apply {
         setTitle(context.getString(R.string.prompt))
+        this@apply.isError = true
         setMessage(errorMsg)
         setNegativeButtonText(null)
         setCanceledOnTouchOutside(false)

@@ -93,7 +93,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
 
     //過程中任一流程請求失敗，點擊確定按鈕重試
     private fun showErrorRetryDialog(title: String, message: String) {
-        val dialog = CustomAlertDialog(this)
+        val dialog = CustomAlertDialog()
         dialog.setTitle(title)
         dialog.setMessage(message)
         dialog.setCanceledOnTouchOutside(false)
