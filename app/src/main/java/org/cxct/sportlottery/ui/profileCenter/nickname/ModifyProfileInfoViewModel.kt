@@ -124,7 +124,7 @@ class ModifyProfileInfoViewModel(
     private fun userCompleteUserDetails(@ModifyType modifyType: Int, uide: Uide) {
         launch {
             doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.userCompleteUserDetails(uide)
+                OneBoSportApi.userService.userCompleteUserDetails(uide)
             }?.let {
                 it.let {
                     _nicknameResult.postValue(it)

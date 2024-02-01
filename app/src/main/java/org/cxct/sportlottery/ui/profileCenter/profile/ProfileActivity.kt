@@ -73,7 +73,7 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
 
     private var securityCodeEnter = SecurityCodeEnterType.REALNAME
 
-    private var dialogBtmAdapter = DialogBottomDataAdapter(this)
+    private var dialogBtmAdapter = DialogBottomDataAdapter()
     private lateinit var rvData: RecyclerView
     private lateinit var btnDialogTitle: TextView
     private lateinit var btnDialogDone: Button
@@ -319,6 +319,20 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
                 viewModel.userCompleteUserDetails(
                     Uide(
                         natureOfWork = it.name
+                    )
+                )
+            }
+        }
+        llGender.setOnClickListener {
+            showBottomDialog(
+                viewModel.genderList,
+                resources.getString(R.string.J905),
+                tvGender.text.toString()
+            ) {
+                tvGender.text = it.name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        gender = it.id
                     )
                 )
             }
@@ -754,6 +768,7 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
         tvCityPermanent.text = checkStr(it.t.permanentCity)
         tvAddressPermanent.text = checkStr(it.t.permanentAddress)
         tvZipCodePermanent.text = checkStr(it.t.permanentZipCode)
+        tvGender.text = checkStr(viewModel.getGenderName(it.t.gender))
     }
     private fun setIdentifyStatus(verified: Boolean)=binding.run{
         val iconViews = arrayOf(
@@ -770,6 +785,7 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
             iconCityPermanent,
             iconAddressPermanent,
             iconZipCodePermanent,
+            iconGender,
         )
         if (verified){
             setViewGone(*iconViews)
@@ -790,6 +806,7 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
             llCityPermanent,
             llAddressPermanent,
             llZipCodePermanent,
+            llGender,
         )
         setViewClickable(!verified,*itemViews)
     }

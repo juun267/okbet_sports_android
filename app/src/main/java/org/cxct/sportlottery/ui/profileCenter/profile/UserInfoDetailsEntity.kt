@@ -12,6 +12,7 @@ data class UserInfoDetailsEntity(
 data class Uide(
     var address: String? = "",
     val birthday: String? = "",
+    val gender: Int?=null,
     val city: String? = "",
     val nationality: String? = "",
     val natureOfWork: String? = "",

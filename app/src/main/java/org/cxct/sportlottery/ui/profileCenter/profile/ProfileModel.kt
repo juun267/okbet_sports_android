@@ -5,7 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.AreaAllResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
@@ -43,6 +46,13 @@ class ProfileModel(
     //职业 列表
     val workList: ArrayList<DialogBottomDataEntity> = ArrayList()
 
+    //性别：男,女,其他
+    val genderList = arrayListOf(
+        DialogBottomDataEntity(androidContext.getString(R.string.N809),false,1),
+        DialogBottomDataEntity(androidContext.getString(R.string.N810),false,0),
+        DialogBottomDataEntity(androidContext.getString(R.string.other),false,2)
+    )
+
     private val _userDetail = MutableLiveData<UserInfoDetailsEntity>()
     val userDetail: LiveData<UserInfoDetailsEntity> //使用者餘額
         get() = _userDetail
@@ -56,7 +66,9 @@ class ProfileModel(
             }
         }
     }
-
+    fun getGenderName(id: Int?): String? {
+        return genderList.firstOrNull { it.id == id }?.name
+    }
     fun getSalaryName(id: Int,default: String): String {
         var sdf = salaryStringList.find { it.id == id }
         return if (sdf == null || sdf.name.isEmpty()) {
@@ -83,10 +95,11 @@ class ProfileModel(
             launch {
                 //用户信息详情查询
                 doNetwork(androidContext) {
-                    OneBoSportApi.bettingStationService.userQueryUserInfoDetails()
+                    OneBoSportApi.userService.userQueryUserInfoDetails()
                 }?.let {
-                    it.let {
-                        _userDetail.postValue(it)
+                    _userDetail.postValue(it)
+                    it.t.gender?.let { gender->
+                        genderList.onEach { it.flag = it.id== gender }
                     }
                 }
             }
@@ -117,7 +130,7 @@ class ProfileModel(
 
             //获取省市数据
             doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.getAreaUniversal()
+                OneBoSportApi.userService.getAreaUniversal()
             }?.let {
                 areaData = it
                 var dbde = it.areaAll.countries.find { it.name.contains("PHILIPPINES") }
@@ -137,7 +150,7 @@ class ProfileModel(
 
             //获取所有工作性质列表
             doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.getWorksQueryAll()
+                OneBoSportApi.userService.getWorksQueryAll()
             }?.let {
                 it.let {
                     it.rows.forEach { rowsItem ->
@@ -148,7 +161,7 @@ class ProfileModel(
 
             //用户信息详情查询
             doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.userQueryUserInfoDetails()
+                OneBoSportApi.userService.userQueryUserInfoDetails()
             }?.let {
                 _userDetail.postValue(it)
                 if (areaData == null) {
@@ -171,7 +184,6 @@ class ProfileModel(
             }
         }
     }
-
     fun updateCityData(id: Int) {
         if (areaData == null) {
             return
@@ -198,7 +210,7 @@ class ProfileModel(
     fun userCompleteUserDetails(uide: Uide) {
         launch {
             doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.userCompleteUserDetails(uide)
+                OneBoSportApi.userService.userCompleteUserDetails(uide)
             }?.let {
                 it.let {
                 }
