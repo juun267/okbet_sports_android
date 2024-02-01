@@ -9,6 +9,7 @@ import org.cxct.sportlottery.common.extentions.canDelayClick
 import org.cxct.sportlottery.common.extentions.replaceFragment
 import org.cxct.sportlottery.databinding.ActivityBetRecordBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.bindSportMaintenance
 
@@ -58,6 +59,9 @@ class BetRecordActivity: BaseActivity<MainViewModel, ActivityBetRecordBinding>()
         super.onInitData()
         //默认选中未结单
         replaceFragment(R.id.frameContainer,unsettledFragment)
+        ServiceBroadcastReceiver.orderSettlement.observe(this) {
+            viewModel.getSettlementNotification(it)
+        }
     }
 
 }

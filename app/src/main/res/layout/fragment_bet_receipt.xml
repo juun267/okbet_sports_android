@@ -234,7 +234,7 @@
                     android:id="@+id/tvBetProcessingStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="滚球注单确认中（9S）"
+                    android:text="滚球注单确认中"
                     android:textColor="@color/color_E38902"
                     android:textSize="14sp" />
 
