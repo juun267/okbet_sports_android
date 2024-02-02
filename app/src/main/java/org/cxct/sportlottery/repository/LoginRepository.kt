@@ -113,7 +113,7 @@ object LoginRepository {
         return if (isLogined()) mUserMoney.value ?: 0.0 else 0.0
     }
 
-    var lastMoneyTime = 0L
+    private var lastMoneyTime = 0L
 
     /**
      *  获取平台余额，并转出三方游戏余额
@@ -281,7 +281,7 @@ object LoginRepository {
     }
 
     private fun capitalize(s: String?): String {
-        if (s == null || s.isEmpty()) {
+        if (s.isNullOrEmpty()) {
             return ""
         }
         val first = s[0]

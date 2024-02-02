@@ -675,7 +675,7 @@ open class MainHomeViewModel(
     }
 
     fun getSystemNotice() {
-        callApi({ NewsRepository.getMessageList(1, 10, NewsType.PLAT) }) {
+        callApi({ NewsRepository.getMessageList(1, 20, NewsType.PLAT) }) {
             it.getData()?.let { systemNotice.postValue(it) }
         }
     }
