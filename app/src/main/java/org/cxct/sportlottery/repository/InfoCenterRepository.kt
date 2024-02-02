@@ -17,14 +17,6 @@ enum class MsgType(var code: Int) {
 
 object InfoCenterRepository {
 
-    init {
-        ServiceBroadcastReceiver.userNotice.observeForever  {
-            it.getContentIfNotHandled()?.userNoticeListList?.let { list ->
-                setUserNoticeList(list)
-            }
-        }
-    }
-
     val unreadNoticeList: LiveData<List<InfoCenterData>>
         get() = _unreadNoticeList
     private val _unreadNoticeList = MutableLiveData<List<InfoCenterData>>(listOf())
@@ -48,6 +40,14 @@ object InfoCenterRepository {
         get() = _totalReadMsgCount
     private var _totalReadMsgCount = MutableLiveData<Int>()
     var isLoadMore = false
+
+    init {
+        ServiceBroadcastReceiver.userNotice.observeForever  {
+            it.getContentIfNotHandled()?.userNoticeListList?.let { list ->
+                setUserNoticeList(list)
+            }
+        }
+    }
 
     suspend fun getUserNoticeList(infoCenterRequest: InfoCenterRequest): Response<InfoCenterResult> {
         val response = OneBoSportApi.infoCenterService.getInfoList(infoCenterRequest)
