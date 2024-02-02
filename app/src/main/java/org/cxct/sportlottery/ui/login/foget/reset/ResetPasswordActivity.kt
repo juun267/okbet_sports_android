@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.widget.EditText
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.activity_rest_password.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityRestPasswordBinding
@@ -114,8 +113,8 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBi
             return
         }
 
-        val confirmPassword = eet_confirm_password_forget.text.toString()
-        val newPassword = eet_login_password_forget.text.toString()
+        val confirmPassword = binding.eetConfirmPasswordForget.text.toString()
+        val newPassword = binding.eetLoginPasswordForget.text.toString()
         if (confirmPassword != newPassword) {
             ToastUtil.showToast(this, LocalUtils.getString(R.string.error_tips_confirm_password))
             return

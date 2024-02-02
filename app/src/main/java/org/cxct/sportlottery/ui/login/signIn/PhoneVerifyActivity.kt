@@ -9,7 +9,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
@@ -65,7 +64,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel,ActivityPhoneVerifyBindi
         ImmersionBar.with(this)
             .statusBarDarkFont(true)
             .transparentStatusBar()
-            .statusBarView(v_statusbar)
+            .statusBarView(binding.vTop.root)
             .fitsSystemWindows(false)
             .init()
         initView()

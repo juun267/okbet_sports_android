@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/color_F0F5FA">
 
@@ -19,9 +20,128 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include
-                layout="@layout/layout_username"/>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/etFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/color_FFFFFF"
+                    android:paddingHorizontal="14dp"
+                    android:paddingBottom="3dp"
+                    app:hintText="@string/P185"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/P185"
+                    app:labelTextStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eetFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:maxEms="30"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/edtMiddleName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/color_FFFFFF"
+                    android:paddingHorizontal="14dp"
+                    app:hintText="@string/P186"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/P186"
+                    app:labelTextStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eedtMiddleName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:maxEms="25"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+                <CheckBox
+                    android:id="@+id/cbNoMiddleName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="25dp"
+                    android:text="@string/P188" />
+
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/edtLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/color_FFFFFF"
+                    android:paddingHorizontal="14dp"
+                    app:hintText="@string/P187"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/P187"
+                    app:labelTextStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eedtLastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:maxEms="25"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingHorizontal="14dp"
+                android:lineSpacingExtra="2dp"
+                android:textColor="@color/color_ff0000"
+                android:textSize="12sp"
+                android:text="@string/P189"/>
 
         </LinearLayout>
 

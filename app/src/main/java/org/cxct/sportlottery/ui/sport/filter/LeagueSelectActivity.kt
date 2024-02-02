@@ -3,13 +3,11 @@ package org.cxct.sportlottery.ui.sport.filter
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_league_select.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
 import org.cxct.sportlottery.common.event.SelectMatchEvent
@@ -65,11 +63,11 @@ class LeagueSelectActivity :
 
     private lateinit var outRightLeagueAdapter: OutrightLeagueSelectAdapter
 
-    private val loading by lazy { Gloading.wrapView(rv_league) }
+    private val loading by lazy { Gloading.wrapView(binding.rvLeague) }
 
     override fun onInitView() {
         setStatusbar(R.color.color_FFFFFF, true)
-        bindFinish(btnCancel)
+        bindFinish(binding.btnCancel)
         loading.showLoading()
         setDateListView()
         bindSportMaintenance()
@@ -93,7 +91,7 @@ class LeagueSelectActivity :
         viewModel.getOddsList(gameType, matchType, startTime, endTime, isDateSelected,categoryCodeList)
     }
 
-    private fun initLeagues() {
+    private fun initLeagues()=binding.run {
         leagueSelectAdapter = LeagueSelectAdapter(::setSelectSum)
         btnAllSelect.setOnClickListener { setSelectSum(leagueSelectAdapter.selectAll()) }
         btnReverseSelect.setOnClickListener { setSelectSum(leagueSelectAdapter.reverseSelect()) }
@@ -114,7 +112,7 @@ class LeagueSelectActivity :
         }
     }
 
-    private fun initOutrightLeagues() {
+    private fun initOutrightLeagues()=binding.run {
         outRightLeagueAdapter = OutrightLeagueSelectAdapter(::setSelectSum)
         btnAllSelect.setOnClickListener { setSelectSum(outRightLeagueAdapter.selectAll()) }
         btnReverseSelect.setOnClickListener { setSelectSum(outRightLeagueAdapter.reverseSelect()) }
@@ -135,14 +133,14 @@ class LeagueSelectActivity :
         }
     }
 
-    private fun setIndexbar(indexArr: Array<CharSequence>, indexOfChar: (CharSequence) -> Int) {
+    private fun setIndexbar(indexArr: Array<CharSequence>, indexOfChar: (CharSequence) -> Int)=binding.run {
         //自定义索引数组，默认是26个大写字母
         indexBar.textArray = indexArr
         //添加相关监听
         indexBar.setOnIndexLetterChangedListener(object : IndexBar.OnIndexLetterChangedListener {
             override fun onTouched(touched: Boolean) {
                 //TODO 手指按下和抬起会回调这里
-                iv_union.isVisible = touched
+                ivUnion.isVisible = touched
             }
 
             override fun onLetterChanged(indexChar: CharSequence, index: Int, y: Float) {
@@ -151,18 +149,18 @@ class LeagueSelectActivity :
                 if (pos > 0) {
                     linearLayoutManager.scrollToPositionWithOffset(pos, 0)
                 }
-                iv_union.y = y + cv_index.top
-                iv_union.text = indexChar
+                ivUnion.y = y + cvIndex.top
+                ivUnion.text = indexChar
             }
         })
     }
 
-    private fun setupMatchListView(adapter: BaseNodeAdapter, updateIndexBar: (Int) -> Unit) {
+    private fun setupMatchListView(adapter: BaseNodeAdapter, updateIndexBar: (Int) -> Unit){
         linearLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        rv_league.layoutManager = linearLayoutManager
-        rv_league.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(this, R.drawable.bg_decoration_filter)))
-        rv_league.adapter = adapter
-        rv_league.setOnScrollChangeListener { _, _, _, _, _ ->
+        binding.rvLeague.layoutManager = linearLayoutManager
+        binding.rvLeague.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(this, R.drawable.bg_decoration_filter)))
+        binding.rvLeague.adapter = adapter
+        binding.rvLeague.setOnScrollChangeListener { _, _, _, _, _ ->
             val firstCompletelyVisibleItemPosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition()
             if (firstCompletelyVisibleItemPosition >= 0) {
                 updateIndexBar(firstCompletelyVisibleItemPosition)
@@ -173,10 +171,10 @@ class LeagueSelectActivity :
     private fun setDateListView(){
         when (matchType) {
             MatchType.EARLY, MatchType.CS -> {
-                linDate.isVisible = true
-                rvDate.layoutManager = GridLayoutManager(this,3)
-                if (rvDate.itemDecorationCount==0)
-                rvDate.addItemDecoration(GridItemDecoration(8.dp,12.dp,Color.TRANSPARENT,false))
+                binding.linDate.isVisible = true
+                binding.rvDate.layoutManager = GridLayoutManager(this,3)
+                if (binding.rvDate.itemDecorationCount==0)
+                    binding.rvDate.addItemDecoration(GridItemDecoration(8.dp,12.dp,Color.TRANSPARENT,false))
                 val names = mutableListOf<String>(
                     getString(R.string.label_all),
                     getString(R.string.home_tab_today),
@@ -213,10 +211,10 @@ class LeagueSelectActivity :
                         true
                     )
                 }
-                rvDate.adapter = selectDateAdapter
+                binding.rvDate.adapter = selectDateAdapter
             }
             else -> {
-                linDate.isVisible = false
+                binding.linDate.isVisible = false
             }
         }
     }
@@ -267,7 +265,7 @@ class LeagueSelectActivity :
     }
 
     private fun setSelectSum(num: Int) {
-        btnConfirm.isEnabled = num > 0
+        binding.btnConfirm.isEnabled = num > 0
     }
 
 

@@ -7,7 +7,6 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.view_home_okgame.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ViewHomeOkliveBinding
@@ -50,7 +49,7 @@ class HomeOkLiveView(context: Context, attrs: AttributeSet) : LinearLayout(conte
             this@HomeOkLiveView.isVisible = gameAdapter.dataCount() > 0
         }
 
-        tvMore.onClick {
+        binding.tvMore.onClick {
             if(StaticData.okLiveOpened()){
                 (fragment.activity as MainTabActivity).jumpToOkLive()
             }else{

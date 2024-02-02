@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityNewsDetailBinding
@@ -36,7 +35,7 @@ class NewsDetailActivity :
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(binding.root)
         binding.customToolBar.apply {
-            tv_toolbar_title.paint.isFakeBoldText = true
+            binding.tvToolbarTitle.paint.isFakeBoldText = true
             setOnBackPressListener { finish() }
         }
         binding.okWebContent.apply {

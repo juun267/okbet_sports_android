@@ -16,8 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
-import kotlinx.android.synthetic.main.layout_loading.view.*
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.LayoutLoadingBinding
 import org.cxct.sportlottery.util.ToastUtil

@@ -6,8 +6,6 @@ import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.view.*
-import kotlinx.android.synthetic.main.fragment_other_bet_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible

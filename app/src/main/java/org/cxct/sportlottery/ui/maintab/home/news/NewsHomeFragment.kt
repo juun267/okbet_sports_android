@@ -3,10 +3,6 @@ package org.cxct.sportlottery.ui.maintab.home.news
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.include_home_news.*
-import kotlinx.android.synthetic.main.view_home_news.rvNews
-import kotlinx.android.synthetic.main.view_home_news.tvCateName
-import kotlinx.android.synthetic.main.view_home_news.tvMore
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
@@ -51,7 +47,7 @@ class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeB
         }
     }
 
-    private fun initRecyclerView() = rvNews.run {
+    private fun initRecyclerView() = binding.includeNews.rvNews.run {
         layoutManager = setLinearLayoutManager()
         adapter = HomeNewsAdapter().apply {
             setOnItemClickListener { adapter, _, position ->
@@ -67,7 +63,7 @@ class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeB
             setupShowMore(it)
         }
     }
-    private fun initNews() {
+    private fun initNews()=binding.includeNews.run {
         tvCateName.text = getString(R.string.N912)
         tvMore.gone()
 //            ivMore.gone()
@@ -82,7 +78,7 @@ class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeB
     }
 
     private fun setupNews(pageNum: Int, newsList: List<NewsItem>) {
-        (rvNews.adapter as HomeNewsAdapter).apply {
+        (binding.includeNews.rvNews.adapter as HomeNewsAdapter).apply {
             if (pageNum > 1) {
                 addData(newsList)
             } else {

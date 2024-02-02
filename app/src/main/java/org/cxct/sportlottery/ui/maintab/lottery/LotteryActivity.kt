@@ -12,8 +12,6 @@ import android.os.Bundle
 import android.os.Message
 import android.view.View
 import android.webkit.*
-import kotlinx.android.synthetic.main.activity_web.*
-import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
@@ -39,10 +37,10 @@ open class LotteryActivity : BaseActivity<MainViewModel,ActivityWebBinding>(Main
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        custom_tool_bar.visibility = View.GONE
-        okWebView.addJavascriptInterface(LotteryJsInterface(this), LotteryJsInterface.name)
-        setupWebView(okWebView)
-        loadUrl(okWebView)
+        binding.customToolBar.visibility = View.GONE
+        binding.okWebView.addJavascriptInterface(LotteryJsInterface(this), LotteryJsInterface.name)
+        setupWebView(binding.okWebView)
+        loadUrl(binding.okWebView)
     }
 
     @SuppressLint("WebViewApiAvailability")
@@ -178,8 +176,8 @@ open class LotteryActivity : BaseActivity<MainViewModel,ActivityWebBinding>(Main
     }
 
     override fun onBackPressed() {
-        if (okWebView.canGoBack()) {
-            okWebView.goBack()
+        if (binding.okWebView.canGoBack()) {
+            binding.okWebView.goBack()
         } else {
             super.onBackPressed()
         }

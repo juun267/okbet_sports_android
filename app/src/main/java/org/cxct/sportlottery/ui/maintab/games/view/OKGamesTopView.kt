@@ -4,11 +4,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -18,6 +15,7 @@ import androidx.viewpager.widget.ViewPager
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.databinding.LayoutOkgamesTopBinding
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -34,7 +32,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.util.getMarketSwitch
-import org.cxct.sportlottery.view.IndicatorWidget
+import splitties.systemservices.layoutInflater
 
 
 class OKGamesTopView @JvmOverloads constructor(
@@ -43,15 +41,8 @@ class OKGamesTopView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : LinearLayoutCompat(context, attrs, defStyle), XBanner.OnItemClickListener {
 
-    val edtSearch: EditText by lazy { findViewById(R.id.edtSearchGames) }
-    private val indicatorView: IndicatorWidget by lazy { findViewById(R.id.indicatorView) }
+     val binding by lazy { LayoutOkgamesTopBinding.inflate(layoutInflater,this, true) }
     private lateinit var gameTabAdapter: GamesTabAdapter
-    private val rcvGamesTab by lazy { findViewById<RecyclerView>(R.id.rcvGamesTab) }
-    private val bannerCard by lazy { findViewById<View>(R.id.bannerCard) }
-    private val rvOkgameProviders by lazy { findViewById<RecyclerView>(R.id.rv_okgame_providers) }
-    private val okgameP3LayoutProivder by lazy { findViewById<LinearLayout>(R.id.okgame_p3_layout_proivder) }
-    private val ivProvidersLeft by lazy { findViewById<ImageView>(R.id.iv_providers_left) }
-    private val ivProvidersRight by lazy { findViewById<ImageView>(R.id.iv_providers_right) }
     private var p3ogProviderFirstPosi: Int = 0
     private var p3ogProviderLastPosi: Int = 3
     private val providersAdapter by lazy { OkGameProvidersAdapter() }
@@ -64,8 +55,6 @@ class OKGamesTopView @JvmOverloads constructor(
     var onTableClick: ((OKGameTab) -> Boolean)? = null
 
     init {
-        orientation = VERTICAL
-        LayoutInflater.from(context).inflate(R.layout.layout_okgames_top, this, true)
         initView()
     }
 
@@ -84,8 +73,8 @@ class OKGamesTopView @JvmOverloads constructor(
     }
 
     private fun initSearch() {
-        edtSearch.onConfirm { key -> onSearchTextChanged?.invoke(key) }
-        findViewById<View>(R.id.ivSearch).setOnClickListener { onSearchTextChanged?.invoke(edtSearch.text.toString()) }
+        binding.edtSearchGames.onConfirm { key -> onSearchTextChanged?.invoke(key) }
+        findViewById<View>(R.id.ivSearch).setOnClickListener { onSearchTextChanged?.invoke(binding.edtSearchGames.text.toString()) }
         findViewById<View>(R.id.searchLayout).background = DrawableCreator.Builder()
             .setSolidColor(Color.WHITE)
             .setCornersRadius(8.dp.toFloat())
@@ -96,9 +85,9 @@ class OKGamesTopView @JvmOverloads constructor(
         val w = 12.dp.toFloat()
         val h = 4.dp.toFloat()
         val color = resources.getColor(R.color.color_7599FF)
-        indicatorView.itemPadding = 1.dp
-        indicatorView.defaultDrawable = createIndicatorDrawable(h, h, color, 0.5f)
-        indicatorView.selectedDrawable = createIndicatorDrawable(w, h, color, 1f)
+        binding.indicatorView.itemPadding = 1.dp
+        binding.indicatorView.defaultDrawable = createIndicatorDrawable(h, h, color, 0.5f)
+        binding.indicatorView.selectedDrawable = createIndicatorDrawable(w, h, color, 1f)
     }
 
     private fun createIndicatorDrawable(
@@ -116,21 +105,21 @@ class OKGamesTopView @JvmOverloads constructor(
             .build()
     }
 
-    fun setupTables() {
-        rcvGamesTab.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
-        rcvGamesTab.setLinearLayoutManager(RecyclerView.HORIZONTAL)
-        rcvGamesTab.adapter = gameTabAdapter
+    fun setupTables()=binding.rcvGamesTab.run {
+        addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
+        setLinearLayoutManager(RecyclerView.HORIZONTAL)
+        adapter = gameTabAdapter
     }
 
     fun backAll() {
         gameTabAdapter.backToAll()
-        rcvGamesTab.smoothScrollToPosition(0)
+        binding.rcvGamesTab.smoothScrollToPosition(0)
     }
 
     fun changeSelectedGameTab(tab: OKGameTab) {
         val position = gameTabAdapter.changeSelectedTab(tab)
         if (position >= 0) {
-            rcvGamesTab.smoothScrollToPosition(position)
+            binding.rcvGamesTab.smoothScrollToPosition(position)
         }
     }
 
@@ -142,13 +131,13 @@ class OKGamesTopView @JvmOverloads constructor(
             ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
 
         val loopEnable = imageList?.size ?: 0 > 1
-        indicatorView.isVisible = loopEnable
+        binding.indicatorView.isVisible = loopEnable
 
         if (imageList.isNullOrEmpty()) {
-            bannerCard.visibility = GONE
+            binding.bannerCard.visibility = GONE
             return
         }
-        bannerCard.visibility = visibility
+        binding.bannerCard.visibility = visibility
         okgamesBanner.setHandLoop(loopEnable)
         okgamesBanner.setAutoPlayAble(loopEnable)
         okgamesBanner.setOnItemClickListener(this)
@@ -162,10 +151,10 @@ class OKGamesTopView @JvmOverloads constructor(
         }
 
         okgamesBanner.setBannerData(images.toMutableList())
-        indicatorView.setupIndicator(okgamesBanner.realCount)
+        binding.indicatorView.setupIndicator(okgamesBanner.realCount)
         okgamesBanner.setOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                indicatorView.update(position % okgamesBanner.realCount)
+                binding.indicatorView.update(position % okgamesBanner.realCount)
             }
         })
     }
@@ -189,7 +178,7 @@ class OKGamesTopView @JvmOverloads constructor(
         }
         gameTabAdapter.addData(tabs)
     }
-    fun initProvider(){
+    fun initProvider()=binding.run{
         ivProvidersLeft.alpha = 0.5F
 
         var okGameProLLM = rvOkgameProviders.setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
@@ -255,13 +244,13 @@ class OKGamesTopView @JvmOverloads constructor(
             onProviderSelect.invoke(providersAdapter.getItem(position))
         }
     }
-    fun setProviderArrowVisible(visible: Boolean){
+    fun setProviderArrowVisible(visible: Boolean)=binding.run{
         if (visible)
              setViewVisible(ivProvidersLeft, ivProvidersRight)
         else
              setViewGone(ivProvidersLeft, ivProvidersRight)
     }
-    fun setProviderVisible(visible: Boolean){
+    fun setProviderVisible(visible: Boolean)=binding.run{
         if (visible)
             setViewVisible(rvOkgameProviders, okgameP3LayoutProivder)
         else

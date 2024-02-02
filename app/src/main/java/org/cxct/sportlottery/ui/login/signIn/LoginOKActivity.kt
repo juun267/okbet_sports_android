@@ -12,8 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import cn.jpush.android.api.JPushInterface
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_login_ok.*
-import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -78,7 +76,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>() {
         ImmersionBar.with(this)
             .statusBarDarkFont(true)
             .transparentStatusBar()
-            .statusBarView(v_statusbar)
+            .statusBarView(binding.vTop.root)
             .fitsSystemWindows(false)
             .init()
         setupSummary(binding.includeSubtitle.tvSummary)
@@ -105,11 +103,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>() {
         }
     }
 
-    private fun initOnClick() {
-        binding.btnBack.setOnClickListener { finish() }
-        tv_pwd_login.setOnClickListener { switchLoginType(LOGIN_TYPE_PWD) }
-        tv_code_login.setOnClickListener { switchLoginType(LOGIN_TYPE_CODE) }
-        tv_forget_password.setOnClickListener { startActivity(ForgetWaysActivity::class.java) }
+    private fun initOnClick()=binding.run {
+        btnBack.setOnClickListener { finish() }
+        tvPwdLogin.setOnClickListener { switchLoginType(LOGIN_TYPE_PWD) }
+        tvCodeLogin.setOnClickListener { switchLoginType(LOGIN_TYPE_CODE) }
+        tvForgetPassword.setOnClickListener { startActivity(ForgetWaysActivity::class.java) }
     }
 
     private fun setupInvite() {
@@ -277,14 +275,14 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>() {
     }
 
     private fun setupAuthLogin() {
-        btn_google.setOnClickListener {
+        binding.btnGoogle.setOnClickListener {
 //            if (binding.cbPrivacy.isChecked) {
                 googleLogin()
 //            }
 
         }
 
-        btn_facebook.setOnClickListener {
+        binding.btnFacebook.setOnClickListener {
 //            AuthManager.authFacebook(this@LoginOKActivity, { token ->
 //                viewModel.loginFacebook(token)
 //            }, { errorMsg ->
@@ -511,11 +509,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>() {
         viewModel.loginType = loginType
         hideSoftKeyboard()
         (loginType == LOGIN_TYPE_CODE).let {
-            lin_login_pwd.isVisible = !it
-            lin_login_code.isVisible = it
-            tv_pwd_login.isVisible = it
-            tv_code_login.isVisible = !it
-            tv_forget_password.isVisible = !it
+            binding.linLoginPwd.isVisible = !it
+            binding.linLoginCode.isVisible = it
+            binding.tvPwdLogin.isVisible = it
+            binding.tvCodeLogin.isVisible = !it
+            binding.tvForgetPassword.isVisible = !it
             binding.includeSubtitle.tvSubTitle1.isVisible = it
             binding.includeSubtitle.tvSubTitle2.isVisible = it
             if (it) {

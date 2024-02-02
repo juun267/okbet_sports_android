@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.betRecord.detail
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_help_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.replaceFragment
 import org.cxct.sportlottery.databinding.ActivityBetDetailsBinding
@@ -55,7 +54,7 @@ class BetDetailsActivity : BaseSocketActivity<BetListViewModel,ActivityBetDetail
 
 
     private fun initView() {
-        custom_tool_bar.setOnBackPressListener {
+        binding.customToolBar.setOnBackPressListener {
             finish()
         }
     }
