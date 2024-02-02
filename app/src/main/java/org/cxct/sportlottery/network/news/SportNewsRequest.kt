@@ -8,4 +8,5 @@ class SportNewsRequest(
     val startTime: String? = null,
     val endTime: String? = null,
     val page: Int? = 1,
-    val pageSize: Int? = 20)
+    val pageSize: Int? = 20,
+    val typeList: Array<Int>? = null)
