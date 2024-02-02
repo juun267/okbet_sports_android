@@ -80,4 +80,9 @@ class RegisterSuccessDialog: BaseDialog<BaseViewModel>(BaseViewModel::class) {
         super.show(manager)
         ifNew =false
     }
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        super.show(manager, tag)
+        ifNew =false
+    }
 }

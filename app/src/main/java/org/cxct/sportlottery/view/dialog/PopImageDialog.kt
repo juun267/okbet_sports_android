@@ -77,7 +77,9 @@ class PopImageDialog(imageType: Int) : BaseDialog<BaseViewModel>(BaseViewModel::
 
             return object : BasePriorityDialog<PopImageDialog>() {
                 init {
-                    observerDismiss { imageTypeEnableMap[imageType] = false }
+                    observerShow {
+                        imageTypeEnableMap[imageType] = false
+                    }
                 }
                 override fun createDialog() = PopImageDialog(imageType)
 
