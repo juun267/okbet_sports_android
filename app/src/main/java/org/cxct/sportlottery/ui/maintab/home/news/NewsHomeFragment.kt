@@ -140,6 +140,7 @@ class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeB
             binding.clBanner.visible()
         }
         binding.xbanner.setHandLoop(loopEnable)
+        binding.xbanner.setAutoPlayAble(loopEnable)
         binding.xbanner.setOnItemClickListener { banner, model, view, position ->
             val jumpUrl = (model as XBannerImage).jumpUrl
             if (jumpUrl.isNullOrEmpty()) {

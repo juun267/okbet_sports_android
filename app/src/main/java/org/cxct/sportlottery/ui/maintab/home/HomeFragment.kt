@@ -152,6 +152,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         }
         var xbanner = binding.topBanner
         xbanner.setHandLoop(loopEnable)
+        xbanner.setAutoPlayAble(loopEnable)
         xbanner.setOnItemClickListener { banner, model, view, position ->
             val jumpUrl = (model as XBannerImage).jumpUrl
             if (jumpUrl.isNullOrEmpty()) {
