@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.news
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
+import android.widget.RadioButton
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.include_home_news.*
 import kotlinx.android.synthetic.main.view_home_news.rvNews
@@ -28,16 +29,12 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.getMarketSwitch
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 import timber.log.Timber
 
 class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeBinding>() {
 
-    private var categoryId = NewsRepository.NEWS_OKBET_ID
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private val PAGE_SIZE = 4
@@ -50,11 +47,13 @@ class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeB
         setUpBanner()
     }
 
-    override fun onInitData() {
+    override fun onBindViewStatus(view: View) {
+        super.onBindViewStatus(view)
         initObservable()
-        if (currentPage == 1) { // 第一次进来的时候
-            viewModel.getPageNews(currentPage, PAGE_SIZE, categoryId)
-        }
+        viewModel.getNewsCategory()
+//        if (currentPage == 1) { // 第一次进来的时候
+//            viewModel.getPageNews(currentPage, PAGE_SIZE, categoryId)
+//        }
     }
 
     fun initToolBar() = binding.homeToolbar.run {
@@ -80,17 +79,32 @@ class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeB
             setupNews(it.pageNum, it.records ?: listOf())
             setupShowMore(it)
         }
+        viewModel.newsCategory.observe(this){
+            binding.includeNews.apply {
+                tabNews.removeAllTabs()
+                it.forEach {
+                    tabNews.addTab(tabNews.newTab().setTag(it.id).setText(it.categoryName))
+                }
+                tabNews.getTabAt(0)?.select()
+                getSelectCategoryId()?.let {
+                    viewModel.getPageNews(1, PAGE_SIZE, it)
+                }
+            }
+        }
     }
     private fun initNews() {
         tvCateName.text = getString(R.string.N912)
         tvMore.gone()
 //            ivMore.gone()
         tabNews.addOnTabSelectedListener(TabSelectedAdapter { tab, _ ->
-            categoryId = if (tab.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
-            viewModel.getPageNews(1, PAGE_SIZE, categoryId)
+            getSelectCategoryId()?.let {
+                viewModel.getPageNews(1, PAGE_SIZE, it)
+            }
         })
         binding.tvShowMore.setOnClickListener {
-            viewModel.getPageNews(currentPage + 1, PAGE_SIZE, categoryId)
+            getSelectCategoryId()?.let {
+                viewModel.getPageNews(currentPage + 1, PAGE_SIZE, it)
+            }
         }
         binding.bottomView.bindServiceClick(childFragmentManager)
     }
@@ -104,6 +118,7 @@ class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeB
             }
         }
     }
+    private fun getSelectCategoryId():Int?=binding.includeNews.tabNews.getTabAt(binding.includeNews.tabNews.selectedTabPosition)?.tag as? Int
 
     private fun setupShowMore(pageInfo: PageInfo<NewsItem>) {
         binding.tvShowMore.apply {
