@@ -134,7 +134,6 @@ class OKGamesTopView @JvmOverloads constructor(
             return
         }
         binding.bannerCard.visibility = visibility
-        binding.bannerCard.visibility = visibility
         binding.xbanner.apply {
             setHandLoop(loopEnable)
             setAutoPlayAble(loopEnable)

@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.core.view.isVisible
 import androidx.core.view.marginRight
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -60,6 +61,7 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
         viewModel = fragment.viewModel
         viewModel.newsCategory.observe(fragment) {
             binding.tabNews.removeAllTabs()
+            binding.root.isVisible = it.isNotEmpty()
             it.forEach {
                 val itemBinding = TabHomeNewsBinding.inflate(layoutInflater)
                 binding.tabNews.addTab(binding.tabNews.newTab().setTag(it.id).setCustomView(itemBinding.root))
