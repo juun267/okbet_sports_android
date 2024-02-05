@@ -47,6 +47,7 @@
             app:tabPaddingEnd="10dp"
             app:tabPaddingStart="10dp"
             app:tabRippleColor="@null"
+            android:minWidth="@dimen/margin_10"
             app:tabSelectedTextColor="@color/color_025BE8"
             app:tabTextColor="@color/color_303C55">
 
