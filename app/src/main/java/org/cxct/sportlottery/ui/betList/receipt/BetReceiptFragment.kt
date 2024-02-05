@@ -246,7 +246,7 @@ class BetReceiptFragment :
             refreshBetStatusFunction = { time ->
                 binding.linResultStatusProcessing.visible()
                 binding.linResultStatus.gone()
-                binding.tvBetProcessingStatus.text = getString(R.string.str_in_play_bet_confirmed)
+                binding.tvBetProcessingStatus.text = requireContext().getString(R.string.str_in_play_bet_confirmed)
             }
 
             refreshBetStatusFinishFunction = {
