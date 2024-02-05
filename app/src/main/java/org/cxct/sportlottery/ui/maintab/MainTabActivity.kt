@@ -13,7 +13,6 @@ import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -243,13 +242,13 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         }
         viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true) {
-                showLoginSnackbar(R.string.bet_notify_max_limit,R.id.parlayFloatWindow)
+                showLoginSnackbar(R.string.bet_notify_max_limit,binding.parlayFloatWindow.id)
             }
         }
 
         viewModel.showBetBasketballUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true) {
-                showLoginSnackbar(R.string.bet_basketball_notify_max_limit,R.id.parlayFloatWindow)
+                showLoginSnackbar(R.string.bet_basketball_notify_max_limit,binding.parlayFloatWindow.id)
             }
         }
 
@@ -318,7 +317,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         //移除选中的投注信息
         betListFragment?.viewModel?.removeBetInfoAll()
         //隐藏购物车view
-        parlayFloatWindow?.gone()
+        binding.parlayFloatWindow?.gone()
     }
 
     /**
@@ -340,27 +339,27 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     }
 
     open fun openDrawerLayout() {
-        drawerLayout.openDrawer(Gravity.LEFT)
+        binding.drawerLayout.openDrawer(Gravity.LEFT)
     }
 
     fun closeDrawerLayout() {
-        drawerLayout.closeDrawer(Gravity.LEFT)
+        binding.drawerLayout.closeDrawer(Gravity.LEFT)
     }
 
     private fun initDrawerLayout() {
-//        drawerLayout.setScrimColor(Color.TRANSPARENT)
+//        binding.drawerLayout.setScrimColor(Color.TRANSPARENT)
 
-        drawerLayout.addDrawerListener(object : SimpleDrawerListener() {
+        binding.drawerLayout.addDrawerListener(object : SimpleDrawerListener() {
             override fun onDrawerOpened(drawerView: View) {
                 if (drawerView.tag == "LEFT") {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT)
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT)
                 } else {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT)
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT)
                 }
             }
 
             override fun onDrawerClosed(drawerView: View) {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
         })
     }
@@ -392,11 +391,11 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     fun initMenu() {
         try {
             //關閉側邊欄滑動行為
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-            drawerLayout.setScrimColor(getColor(R.color.transparent_black_20))
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            binding.drawerLayout.setScrimColor(getColor(R.color.transparent_black_20))
 //            //選單選擇結束要收起選單
-            left_menu.layoutParams.width = MetricsUtil.getScreenWidth() //動態調整側邊欄寬
-            right_menu.layoutParams.width = MetricsUtil.getScreenWidth()-30.dp //動態調整側邊欄寬
+            binding.leftMenu.layoutParams.width = MetricsUtil.getScreenWidth() //動態調整側邊欄寬
+            binding.rightMenu.layoutParams.width = MetricsUtil.getScreenWidth()-30.dp //動態調整側邊欄寬
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -406,9 +405,9 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMenuEvent(event: MenuEvent) {
         if (event.open) {
-            drawerLayout.openDrawer(event.gravity)
+            binding.drawerLayout.openDrawer(event.gravity)
         } else {
-            drawerLayout.closeDrawer(event.gravity)
+            binding.drawerLayout.closeDrawer(event.gravity)
         }
     }
 
@@ -429,16 +428,16 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     fun onBetModeChangeEvent(event: BetModeChangeEvent) {
         if (event.currentMode == BetListFragment.SINGLE) {
             BetInfoRepository.currentBetType = BetListFragment.SINGLE
-            parlayFloatWindow.gone()
+            binding.parlayFloatWindow.gone()
         } else if (event.currentMode == BetListFragment.BASKETBALL_ENDING_CARD) {
             BetInfoRepository.currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
             if (betListCount != 0) {
-                parlayFloatWindow.visible()
+                binding.parlayFloatWindow.visible()
             }
         } else {
             BetInfoRepository.currentBetType = BetListFragment.PARLAY
             if (betListCount != 0) {
-                parlayFloatWindow.visible()
+                binding.parlayFloatWindow.visible()
             }
         }
     }
@@ -447,8 +446,8 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     //系统方法
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (drawerLayout?.isOpen == true) {
-                drawerLayout?.close()
+            if (binding.drawerLayout?.isOpen == true) {
+                binding.drawerLayout?.close()
                 return false
             }
             if (!showBottomNavBar()) {
@@ -493,7 +492,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     fun updateBetListCount(num: Int) {
         betListCount = num
         setupBetBarVisiblity()
-        parlayFloatWindow.updateCount(betListCount.toString())
+        binding.parlayFloatWindow.updateCount(betListCount.toString())
         if (num > 0) viewModel.getMoneyAndTransferOut()
     }
 
@@ -508,17 +507,17 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         if (betListCount == 0
             || !needShowBetBar
             || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
-            parlayFloatWindow.gone()
+            binding.parlayFloatWindow.gone()
             return
         }
 
         if (BetInfoRepository.currentBetType == BetListFragment.PARLAY) {
-            parlayFloatWindow.setBetText(getString(R.string.conspire))
-            parlayFloatWindow.updateCount(betListCount.toString())
+            binding.parlayFloatWindow.setBetText(getString(R.string.conspire))
+            binding.parlayFloatWindow.updateCount(betListCount.toString())
         } else {
-            parlayFloatWindow.setBetText(getString(R.string.bet_slip))
+            binding.parlayFloatWindow.setBetText(getString(R.string.bet_slip))
         }
-        parlayFloatWindow.visible()
+        binding.parlayFloatWindow.visible()
     }
 
      fun initBottomNavigation() {
@@ -561,7 +560,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
     private fun setupBottomNavBarVisibility(isVisible: Boolean) {
         if (betListCount == 0) {
-            parlayFloatWindow.gone()
+            binding.parlayFloatWindow.gone()
         }
     }
 

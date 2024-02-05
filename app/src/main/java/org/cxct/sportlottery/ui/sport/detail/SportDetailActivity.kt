@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.webkit.*
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
@@ -20,19 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.AppBarLayout.LayoutParams
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.*
-import kotlinx.android.synthetic.main.activity_detail_sport.*
-import kotlinx.android.synthetic.main.activity_detail_sport.fl_bet_list
-import kotlinx.android.synthetic.main.activity_detail_sport.parlayFloatWindow
-import kotlinx.android.synthetic.main.activity_main_tab.*
-import kotlinx.android.synthetic.main.bet_bar_layout.view.*
-import kotlinx.android.synthetic.main.content_baseball_status.*
-import kotlinx.android.synthetic.main.fragment_sport_list2.view.*
-import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.*
-import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.view.*
-import kotlinx.android.synthetic.main.view_toolbar_detail_live.*
-import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.extentions.*
@@ -52,7 +41,8 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.common.enums.ChannelType
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.sport.SportViewModel
-import org.cxct.sportlottery.ui.sport.detail.adapter.*
+import org.cxct.sportlottery.ui.sport.detail.adapter.DetailTopFragmentStateAdapter
+import org.cxct.sportlottery.ui.sport.detail.adapter.TabCateAdapter
 import org.cxct.sportlottery.ui.sport.detail.adapter2.OddsDetailListAdapter
 import org.cxct.sportlottery.ui.sport.detail.fragment.SportChartFragment
 import org.cxct.sportlottery.ui.sport.detail.fragment.SportToolBarTopFragment
@@ -99,17 +89,14 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
     private var matchType: MatchType = MatchType.DETAIL
     private var intoLive = false
     private lateinit var oddsAdapter: OddsDetailListAdapter
-    private val tabCateAdapter:  TabCateAdapter by lazy {
-        TabCateAdapter(OnItemSelectedListener {
-            tabCateAdapter.selectedPosition = it
-            (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                rv_cat, RecyclerView.State(), tabCateAdapter.selectedPosition
+    private val tabCateAdapter = TabCateAdapter {
+            (binding.rvCat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                binding.rvCat, RecyclerView.State(), it
             )
             viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(it)?.code?.let { code ->
                 checkSportGuideState(code)
                 oddsAdapter.notifyDataSetChangedByCode(code)
             }
-        })
     }
 
     val tvToolBarHomeName by lazy { binding.collaps1.tvToolbarHomeName }
@@ -127,7 +114,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             }
 
             override fun onClose(){
-                iv_back.performClick()
+                binding.ivBack.performClick()
             }
         }
     }
@@ -215,8 +202,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         sportToolBarTopFragment = topBarFragmentList[0] as SportToolBarTopFragment
         sportChartFragment = topBarFragmentList[1] as SportChartFragment
 
-        binding.detailToolBarViewPager.adapter =
-            DetailTopFragmentStateAdapter(this@SportDetailActivity, topBarFragmentList.toMutableList())
+        binding.detailToolBarViewPager.adapter = DetailTopFragmentStateAdapter(this@SportDetailActivity, topBarFragmentList.toMutableList())
         hIndicator.run {
             setIndicatorColor(context.getColor(R.color.color_FFFFFF), context.getColor(R.color.color_025BE8)
             )
@@ -280,31 +266,31 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
 
     }
 
-    fun showFullScreen(enable: Boolean) {
+    fun showFullScreen(enable: Boolean)=binding.run {
         if (enable) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-            lin_center.isVisible = false
+            linCenter.isVisible = false
             llToolBar.gone()
             vpContainer.isVisible = false
-            live_view_tool_bar.isVisible = true
-            collaps_toolbar.isVisible = false
+            liveViewToolBar.isVisible = true
+            collapsToolbar.isVisible = false
             clToolContent.gone()
-            app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+            appBarLayout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
             setScrollEnable(false)
         } else {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            lin_center.isVisible = true
+            linCenter.isVisible = true
             llToolBar.visible()
             vpContainer.isVisible = false
-            live_view_tool_bar.isVisible = true
+            liveViewToolBar.isVisible = true
             clToolContent.visible()
-            collaps_toolbar.isVisible = true
-            app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            collapsToolbar.isVisible = true
+            appBarLayout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             setScrollEnable(true)
         }
 
 
-        live_view_tool_bar.updateLayoutParams {
+        liveViewToolBar.updateLayoutParams {
             if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 width = MATCH_PARENT
                 height = if (enable) MATCH_PARENT else WRAP_CONTENT
@@ -320,14 +306,14 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
      * 设置是否可以滑动折叠
      */
     private fun setScrollEnable(enable: Boolean) {
-        (app_bar_layout.getChildAt(0).layoutParams as LayoutParams).apply {
+        (binding.appBarLayout.getChildAt(0).layoutParams as AppBarLayout.LayoutParams).apply {
             scrollFlags = if (enable) (SCROLL_FLAG_SCROLL)
             else SCROLL_FLAG_NO_SCROLL
         }
     }
 
     private fun setResetScrollEnable(enable: Boolean) {
-        (app_bar_layout.getChildAt(0).layoutParams as LayoutParams).apply {
+        (binding.appBarLayout.getChildAt(0).layoutParams as AppBarLayout.LayoutParams).apply {
             scrollFlags = if (enable) (SCROLL_FLAG_SCROLL or SCROLL_FLAG_EXIT_UNTIL_COLLAPSED or SCROLL_FLAG_SNAP)
                 else SCROLL_FLAG_NO_SCROLL
         }
@@ -335,7 +321,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
 
 
     private fun setupLiveView() {
-        live_view_tool_bar.setupToolBarListener(liveToolBarListener)
+        binding.liveViewToolBar.setupToolBarListener(liveToolBarListener)
     }
 
      fun initBottomNavigation() {
@@ -381,9 +367,9 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
                     viewModel.getLiveInfo(it)
                 }
             } else {
-                live_view_tool_bar.liveUrl = matchInfo.pullRtmpUrl
+                binding.liveViewToolBar.liveUrl = matchInfo.pullRtmpUrl
                 if (intoLive) {
-                    live_view_tool_bar.showLive()
+                    binding.liveViewToolBar.showLive()
                 }
             }
         }
@@ -399,11 +385,11 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
                 }
                 selectMenuTab(1)
                 setResetScrollEnable(true)
-                live_view_tool_bar.videoUrl?.let {
+                binding.liveViewToolBar.videoUrl?.let {
                     binding.vpContainer.gone()
-                    live_view_tool_bar.visible()
-                    collaps_toolbar.visible()
-                    live_view_tool_bar.showVideo()
+                    binding.liveViewToolBar.visible()
+                    binding.collapsToolbar.visible()
+                    binding.liveViewToolBar.showVideo()
 //                setScrollEnable(false)
                 }
             }
@@ -420,12 +406,12 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
                 }
                 selectMenuTab(2)
                 setResetScrollEnable(true)
-                live_view_tool_bar.animeUrl?.let {
+                binding.liveViewToolBar.animeUrl?.let {
                     binding.vpContainer.gone()
-                    live_view_tool_bar.visible()
-                    collaps_toolbar.visible()
+                    binding.liveViewToolBar.visible()
+                    binding.collapsToolbar.visible()
 //                    collaps_toolbar.iv_toolbar_bg.isVisible = false
-                    live_view_tool_bar.showAnime()
+                    binding.liveViewToolBar.showAnime()
 //                startDelayHideTitle()
 //                setScrollEnable(false)
                 }
@@ -459,7 +445,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         matchType = intent.getSerializableExtra("matchType") as MatchType
         intoLive = intent.getBooleanExtra("intoLive", false)
         matchInfo?.let {
-            tv_game_title.text = it.leagueName
+            binding.tvGameTitle.text = it.leagueName
             startTime = (it.leagueTime?:0).toLong()
             if (it.gameType == GameType.ES.key){
                 setESportTheme()
@@ -534,7 +520,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
 
     override fun onPause() {
         super.onPause()
-        live_view_tool_bar.stopPlay()
+        binding.liveViewToolBar.stopPlay()
         cancelTimer()
     }
 
@@ -546,15 +532,15 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
     override fun onDestroy() {
         super.onDestroy()
         viewModel.clearLiveInfo()
-        live_view_tool_bar.release()
+        binding.liveViewToolBar.release()
         delayObserver?.let { binding.root.removeCallbacks(it) }
     }
 
 
-    private fun initUI() {
+    private fun initUI()=binding.run {
         oddsAdapter = OddsDetailListAdapter(OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
             scoPlayCateNameForBetInfo?.let {
-                odd.spread = tranByPlayCode(this,odd.playCode, null,null,null)
+                odd.spread = tranByPlayCode(this@SportDetailActivity,odd.playCode, null,null,null)
             }
 
             val matchOdd = matchOdd ?: return@OnOddClickListener
@@ -578,13 +564,13 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, matchInfo?.gameType)
         }
         oddsAdapter.sportCode = GameType.getGameType(matchInfo?.gameType)
-        rv_detail.addItemDecoration(SpaceItemDecoration(this, R.dimen.margin_4))
-        (rv_detail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        rv_detail.adapter = oddsAdapter
-        rv_detail.setLinearLayoutManager()
+        rvDetail.addItemDecoration(SpaceItemDecoration(this@SportDetailActivity, R.dimen.margin_4))
+        (rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        rvDetail.adapter = oddsAdapter
+        rvDetail.setLinearLayoutManager()
         oddsAdapter.setPreloadItem()
 
-        rv_cat.apply {
+        rvCat.apply {
             adapter = tabCateAdapter
             layoutManager = ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             itemAnimator?.changeDuration = 0
@@ -606,7 +592,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         isShowOdd(true)
 //        initAnim()
 
-        rv_detail.setupBackTop(ivBackTop, 300.dp,tabCode)
+        rvDetail.setupBackTop(ivBackTop, 300.dp,tabCode)
     }
 
     private fun removeObserver() {
@@ -631,7 +617,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
 
         viewModel.matchLiveInfo.observe(this) {
             val matchRound = it?.peekContent() ?: return@observe
-            live_view_tool_bar.liveUrl = if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
+            binding.liveViewToolBar.liveUrl = if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
             if (intoLive) {
                 showLive()
             }
@@ -649,11 +635,11 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         }
 
         viewModel.videoUrl.observe(this) { event ->
-            event?.getContentIfNotHandled()?.let { live_view_tool_bar.videoUrl = it }
+            event?.getContentIfNotHandled()?.let { binding.liveViewToolBar.videoUrl = it }
         }
 
         viewModel.animeUrl.observe(this) { event ->
-            event?.getContentIfNotHandled()?.let { live_view_tool_bar.animeUrl = it }
+            event?.getContentIfNotHandled()?.let { binding.liveViewToolBar.animeUrl = it }
         }
 
         viewModel.showBetInfoSingle.observe(this) {
@@ -670,7 +656,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             result.setupPlayCateTab()
             try {
                 val selectedPosition = tabCateAdapter.selectedPosition
-                val dataList = tabCateAdapter.dataList
+                val dataList = tabCateAdapter.data
                 if (selectedPosition < dataList.size) {
                     oddsAdapter.notifyDataSetChangedByCode(dataList[selectedPosition].code)
                 }
@@ -679,7 +665,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
                 return@observe
             }
 
-            rv_detail.post { rv_detail.requestLayout() }
+            binding.rvDetail.post { binding.rvDetail.requestLayout() }
             matchOdd = result.oddsDetailData?.matchOdd
             setupLiveView()
 
@@ -695,13 +681,13 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
                 oddsAdapter.awayName = away
             }
             //endregion
-            tv_toolbar_home_name.text = matchInfo.homeName ?: ""
-            tv_toolbar_away_name.text = matchInfo.awayName ?: ""
+            binding.collaps1.tvToolbarHomeName.text = matchInfo.homeName ?: ""
+            binding.collaps1.tvToolbarAwayName.text = matchInfo.awayName ?: ""
             sportToolBarTopFragment.updateMatchInfo(matchInfo, true)
             if (matchId != null) {
-                tv_game_title.text = matchInfo.leagueName
+                binding.tvGameTitle.text = matchInfo.leagueName
                 updateMenu(matchInfo)
-                ivFavorite.isSelected = matchInfo.isFavorite
+                binding.ivFavorite.isSelected = matchInfo.isFavorite
                 oddsAdapter.sportCode = GameType.getGameType(matchInfo.gameType)
                 oddsAdapter.notifyDataSetChanged()
             }
@@ -791,18 +777,18 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
     }
 
     private fun showLive() {
-        live_view_tool_bar.liveUrl?.let {
-            live_view_tool_bar.isVisible = true
-            collaps_toolbar.isVisible = true
-            vpContainer.isVisible = false
-            live_view_tool_bar.showLive()
+        binding.liveViewToolBar.liveUrl?.let {
+            binding.liveViewToolBar.isVisible = true
+            binding.collapsToolbar.isVisible = true
+            binding.vpContainer.isVisible = false
+            binding.liveViewToolBar.showLive()
         }
     }
 
 
-    private fun isShowOdd(isShowOdd: Boolean) {
-        rv_detail.isVisible = isShowOdd
-        lin_categroy.isVisible = isShowOdd
+    private fun isShowOdd(isShowOdd: Boolean)=binding.run {
+        rvDetail.isVisible = isShowOdd
+        linCategroy.isVisible = isShowOdd
         vDivider.isVisible = isShowOdd
     }
 
@@ -832,8 +818,8 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             )
 
             if (isNeedUpdate) {
-                tv_toolbar_home_name.text = matchInfo?.homeName ?: ""
-                tv_toolbar_away_name.text = matchInfo?.awayName ?: ""
+                binding.collaps1.tvToolbarHomeName.text = matchInfo?.homeName ?: ""
+                binding.collaps1.tvToolbarAwayName.text = matchInfo?.awayName ?: ""
                 sportToolBarTopFragment.updateMatchInfo(matchOdd.matchInfo)
                 Handler(Looper.getMainLooper()).postDelayed({
                     sportChartFragment.updateMatchInfo(matchOdd.matchInfo)
@@ -945,21 +931,21 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
     private fun OddsDetailResult.setupPlayCateTab() {
         val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
         if (playCateTypeList?.isNotEmpty() != true) {
-            rv_cat.gone()
+            binding.rvCat.gone()
             return
         }
 
         //如果是从篮球末位比分进入，拿到数据后，自动切换到篮球末位比分到tab下
-        if (tabCateAdapter.dataList.isEmpty() && tabCode == MatchType.END_SCORE.postValue) {
+        if (tabCateAdapter.data.isEmpty() && tabCode == MatchType.END_SCORE.postValue) {
             val index = playCateTypeList.indexOfFirst { it.code == tabCode }
             if (index >= 0) {
                 tabCateAdapter.selectedPosition = index
             }
         }
 
-        tabCateAdapter.dataList = playCateTypeList
-        (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-            rv_cat, RecyclerView.State(), tabCateAdapter.selectedPosition
+        tabCateAdapter.setList(playCateTypeList)
+        (binding.rvCat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+            binding.rvCat, RecyclerView.State(), tabCateAdapter.selectedPosition
         )
     }
 
@@ -991,8 +977,8 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
 
         if (dsgView == null) {
             dsgView = DetailSportGuideView(this)
-            val parent = parlayFloatWindow.parent as ViewGroup
-            parent.addView(dsgView, fl_bet_list.indexOfChild(parlayFloatWindow), ViewGroup.LayoutParams(-1, -1))
+            val parent = binding.parlayFloatWindow.parent as ViewGroup
+            parent.addView(dsgView, binding.flBetList.indexOfChild(binding.parlayFloatWindow), ViewGroup.LayoutParams(-1, -1))
         }
         dsgView!!.visible()
     }

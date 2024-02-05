@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.betRecord
 import android.graphics.Typeface
 import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.canDelayClick
 import org.cxct.sportlottery.common.extentions.replaceFragment
@@ -22,8 +21,8 @@ class BetRecordActivity: BaseActivity<MainViewModel, ActivityBetRecordBinding>()
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         binding.run {
             customToolBar.apply {
-                tv_toolbar_title.typeface = Typeface.DEFAULT_BOLD
-                tv_toolbar_title.setTextColor(ContextCompat.getColor(this.context,R.color.color_000000))
+                binding.tvToolbarTitle.typeface = Typeface.DEFAULT_BOLD
+                binding.tvToolbarTitle.setTextColor(ContextCompat.getColor(this.context,R.color.color_000000))
                 setOnBackPressListener {
                     finish()
                 }

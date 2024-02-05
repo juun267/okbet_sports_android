@@ -3,9 +3,6 @@ package org.cxct.sportlottery.ui.maintab.menu
 import android.annotation.SuppressLint
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_sport_search.*
-import kotlinx.android.synthetic.main.fragment_main_left.*
-import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone

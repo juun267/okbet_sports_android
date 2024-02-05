@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.nickname
 
 
-import kotlinx.android.synthetic.main.activity_edit_username.*
-import kotlinx.android.synthetic.main.layout_username.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
@@ -31,12 +29,12 @@ class EditUserNameActivity: BaseActivity<ModifyProfileInfoViewModel, ActivityEdi
         }
     }
 
-    private fun initEditText() {
+    private fun initEditText()=binding.run {
         eetFirstName.checkRegisterListener { checkInput(eetFirstName, etFirstName, true) }
         eedtMiddleName.checkRegisterListener { checkInput(eedtMiddleName, edtMiddleName, !cbNoMiddleName.isChecked) }
         eedtLastName.checkRegisterListener { checkInput(eedtLastName, edtLastName, true) }
-        btnConfirm.setBtnEnable(false)
-        btnConfirm.setOnClickListener { change() }
+        binding.btnConfirm.setBtnEnable(false)
+        binding.btnConfirm.setOnClickListener { change() }
         cbNoMiddleName.setOnCheckedChangeListener { _, isChecked ->
 
             if (isChecked) {
@@ -53,8 +51,8 @@ class EditUserNameActivity: BaseActivity<ModifyProfileInfoViewModel, ActivityEdi
         }
     }
 
-    private fun resetConfirmEnable() {
-        btnConfirm.setBtnEnable((eetFirstName.text.toString().isNotEmpty() && !etFirstName.isOnError)
+    private fun resetConfirmEnable()=binding.run {
+        binding.btnConfirm.setBtnEnable((eetFirstName.text.toString().isNotEmpty() && !etFirstName.isOnError)
                 && (eedtLastName.text.toString().isNotEmpty() && !edtLastName.isOnError)
                 && (eedtMiddleName.text.toString().isNotEmpty() && !edtMiddleName.isOnError))
     }
@@ -73,7 +71,7 @@ class EditUserNameActivity: BaseActivity<ModifyProfileInfoViewModel, ActivityEdi
         resetConfirmEnable()
     }
 
-    private fun change() {
+    private fun change()=binding.run {
         val firstName = eetFirstName.text.toString()
         val middelName = eedtMiddleName.text.toString()
         val lastName = eedtLastName.text.toString()

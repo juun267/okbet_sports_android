@@ -41,6 +41,7 @@ class OKGamesTopView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : LinearLayoutCompat(context, attrs, defStyle), XBanner.OnItemClickListener {
 
+     val binding by lazy { LayoutOkgamesTopBinding.inflate(layoutInflater,this, true) }
     private lateinit var gameTabAdapter: GamesTabAdapter
     private var p3ogProviderFirstPosi: Int = 0
     private var p3ogProviderLastPosi: Int = 3
@@ -51,7 +52,6 @@ class OKGamesTopView @JvmOverloads constructor(
     private val binding by lazy { LayoutOkgamesTopBinding.inflate(layoutInflater,this,true) }
 
     init {
-        orientation = VERTICAL
         initView()
     }
 
@@ -102,10 +102,10 @@ class OKGamesTopView @JvmOverloads constructor(
             .build()
     }
 
-    fun setupTables() {
-        binding.rcvGamesTab.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
-        binding.rcvGamesTab.setLinearLayoutManager(RecyclerView.HORIZONTAL)
-        binding.rcvGamesTab.adapter = gameTabAdapter
+    fun setupTables()=binding.rcvGamesTab.run {
+        addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
+        setLinearLayoutManager(RecyclerView.HORIZONTAL)
+        adapter = gameTabAdapter
     }
 
     fun backAll() {
@@ -134,6 +134,7 @@ class OKGamesTopView @JvmOverloads constructor(
             binding.bannerCard.visibility = GONE
             return
         }
+        binding.bannerCard.visibility = visibility
         binding.bannerCard.visibility = visibility
         binding.xbanner.apply {
             setHandLoop(loopEnable)

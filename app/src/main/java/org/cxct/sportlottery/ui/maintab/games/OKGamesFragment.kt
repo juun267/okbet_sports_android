@@ -6,7 +6,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.layout_okgames_top.view.jackpotView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.*
@@ -99,23 +98,23 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBindi
             binding.topView.setTabsData(it?.categoryList?.toMutableList())
         }
         if (org.cxct.sportlottery.repository.sConfigData?.jackpotSwitch==1) {
-            binding.topView.jackpotView.visible()
-            binding.topView.jackpotView.initBorder(viewModel.viewModelScope)
+            binding.topView.binding.jackpotView.visible()
+            binding.topView.binding.jackpotView.initBorder(viewModel.viewModelScope)
             jackpotData.observe(viewLifecycleOwner) {
                 if (it.isNullOrEmpty()) {
                     return@observe
                 }
-                binding.topView.jackpotView.visible()
-                binding.topView.jackpotView.setJackPotNumber(it.toDouble())
+                binding.topView.binding.jackpotView.visible()
+                binding.topView.binding.jackpotView.setJackPotNumber(it.toDouble())
             }
             ServiceBroadcastReceiver.jackpotChange.observe(viewLifecycleOwner) {
                 if (it.isNullOrEmpty()) {
                     return@observe
                 }
-                binding.topView.jackpotView.setJackPotNumber(it.toDouble())
+                binding.topView.binding.jackpotView.setJackPotNumber(it.toDouble())
             }
         }else{
-            binding.topView.jackpotView.gone()
+            binding.topView.binding.jackpotView.gone()
         }
 
         gamesList.observe(viewLifecycleOwner) {
@@ -264,7 +263,7 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBindi
     }
     fun search(key: String){
         if (isAdded){
-            binding.topView.setSeachText(key)
+            binding.topView.binding.edtSearchGames.setText(key)
             changePartGamesLabel(GameTab.TAB_SEARCH, key)
             startLoad {
                 viewModel.searchGames(

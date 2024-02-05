@@ -6,8 +6,6 @@ import androidx.core.widget.addTextChangedListener
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.bigkoo.pickerview.view.TimePickerView
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.layout_username.*
-import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.extentions.*
@@ -274,7 +272,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel,ActivityRegister
         ImmersionBar.with(this)
             .statusBarDarkFont(true)
             .transparentStatusBar()
-            .statusBarView(v_statusbar)
+            .statusBarView(binding.vTop.root)
             .fitsSystemWindows(false)
             .init()
     }

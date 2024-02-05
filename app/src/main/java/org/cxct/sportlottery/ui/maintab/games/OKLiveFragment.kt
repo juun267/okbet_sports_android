@@ -234,7 +234,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
 
     fun search(key: String){
         if (isAdded){
-            binding.topView.setSeachText(key)
+            binding.topView.binding.edtSearchGames.setText(key)
             changePartGamesLabel(GameTab.TAB_SEARCH, key)
             startLoad {
                 viewModel.searchGames(
