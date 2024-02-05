@@ -20,8 +20,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <ImageView
+                android:id="@+id/ivCover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_12"
+                android:visibility="gone"
+                android:src="@drawable/img_banner_news"/>
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clBanner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_12">

@@ -121,7 +121,12 @@ class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeB
         }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
+            binding.ivCover.visible()
+            binding.clBanner.gone()
             return
+        }else{
+            binding.ivCover.gone()
+            binding.clBanner.visible()
         }
         binding.xbanner.setHandLoop(loopEnable)
         binding.xbanner.setOnItemClickListener { banner, model, view, position ->
