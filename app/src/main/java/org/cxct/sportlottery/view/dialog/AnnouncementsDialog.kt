@@ -63,7 +63,7 @@ class AnnouncementsDialog: BaseDialogFragment() {
         title.textSize = 18f
         title.typeface = Typeface.DEFAULT_BOLD
         title.gravity = Gravity.CENTER
-        title.setText(R.string.LT054COPY)
+        title.setText(R.string.P286)
         titleLayout.addView(title, FrameLayout.LayoutParams(-1, -1))
 
         val ivClose = AppCompatImageView(ctx)

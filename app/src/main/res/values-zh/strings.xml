@@ -1619,4 +1619,5 @@
     <string name="LT050_1">客服</string>
     <string name="A002">请确认您已年满21岁，才能进入本网站</string>
     <string name="ageVerify">年龄验证</string>
+    <string name="P286">公告</string>
 </resources>
