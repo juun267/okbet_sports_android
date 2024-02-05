@@ -49,7 +49,6 @@ class OKGamesTopView @JvmOverloads constructor(
 
     var onSearchTextChanged: ((String) -> Unit)? = null
     var onTableClick: ((OKGameTab) -> Boolean)? = null
-    private val binding by lazy { LayoutOkgamesTopBinding.inflate(layoutInflater,this,true) }
 
     init {
         initView()
@@ -71,8 +70,8 @@ class OKGamesTopView @JvmOverloads constructor(
 
     private fun initSearch() {
         binding.edtSearchGames.onConfirm { key -> onSearchTextChanged?.invoke(key) }
-        findViewById<View>(R.id.ivSearch).setOnClickListener { onSearchTextChanged?.invoke(binding.edtSearchGames.text.toString()) }
-        findViewById<View>(R.id.searchLayout).background = DrawableCreator.Builder()
+        binding.ivSearch.setOnClickListener { onSearchTextChanged?.invoke(binding.edtSearchGames.text.toString()) }
+        binding.searchLayout.background = DrawableCreator.Builder()
             .setSolidColor(Color.WHITE)
             .setCornersRadius(8.dp.toFloat())
             .build()
