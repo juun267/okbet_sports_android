@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.home.hot
 
-import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
