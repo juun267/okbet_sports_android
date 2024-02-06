@@ -11,7 +11,7 @@ class FeedbackListDetailAdapter(var userId: Int) :
 
     init {
         addItemType(0,R.layout.content_feedback_record_detail_rv_left)
-        addItemType(userId,R.layout.content_feedback_record_detail_rv_right)
+        addItemType(1,R.layout.content_feedback_record_detail_rv_right)
     }
     override fun convert(holder: BaseViewHolder, item: FeedBackRows) {
        if(holder.itemViewType==0){
