@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.feedback.FeedbackSaveRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 class FeedbackViewModel(
@@ -125,8 +126,7 @@ class FeedbackViewModel(
                 } else if (isReload) {
                     _feedbackList.value = mutableListOf()
                 }
-
-                if (!mNeedMoreLoading) _isFinalPage.postValue(true)
+                _isFinalPage.postValue(!mNeedMoreLoading&&!result?.rows.isNullOrEmpty())
             }
 //            _isLoading.value = false
         }
