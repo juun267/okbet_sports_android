@@ -40,7 +40,8 @@ class OddsDetailListAdapter(val onOddClickListener: OnOddClickListener)
                     val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
                     if (odd?.isSelected != oddSelected) {
                         odd?.isSelected = oddSelected
-                        notifyItemChanged(index, odd?.id)
+                        val realIndex = itemList.indexOf(data)
+                        notifyItemChanged(realIndex, odd?.id)
                     }
                 }
             }
