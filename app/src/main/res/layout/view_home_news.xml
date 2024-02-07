@@ -38,6 +38,7 @@
             android:orientation="horizontal">
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabNews"
+                app:tabTextAppearance="@style/NoCaseTab"
                 android:layout_width="match_parent"
                 android:layout_height="28dp"
                 android:layout_weight="1"

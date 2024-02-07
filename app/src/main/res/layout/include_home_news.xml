@@ -37,6 +37,7 @@
         android:paddingRight="@dimen/margin_12">
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabNews"
+            app:tabTextAppearance="@style/NoCaseTab"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
