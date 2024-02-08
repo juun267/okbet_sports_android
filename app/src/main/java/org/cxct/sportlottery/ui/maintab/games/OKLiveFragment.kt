@@ -99,7 +99,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
 
 
     private fun initTopView() = binding.topView.run {
-        setup(this@OKLiveFragment, ImageType.BANNER_OKLIVE.code, gameType = "oklive")
+        setup(this@OKLiveFragment, ImageType.BANNER_OKLIVE, gameType = "oklive")
         setProviderSelect {
             backGameAll()
             showGameAll()

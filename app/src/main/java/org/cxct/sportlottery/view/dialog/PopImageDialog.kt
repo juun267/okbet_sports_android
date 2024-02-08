@@ -22,6 +22,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
 import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
+import splitties.bundle.put
 
 /**
  * 顯示棋牌彈窗
@@ -79,7 +80,7 @@ class PopImageDialog : BaseDialog<BaseViewModel,DialogPopImageBinding>() {
                         imageTypeEnableMap[imageType] = false
                     }
                 }
-                override fun createDialog() = PopImageDialog(imageType)
+                override fun createDialog() = PopImageDialog().apply { arguments = Bundle().apply { put(IMAGE_TYPE,imageType) } }
 
                 override fun getFragmentManager() = fm.invoke()
 

@@ -182,7 +182,6 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
 
     private fun initObservable() {
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
-            viewModel.getSportMenuFilter()
             showDialogs()
         }
 

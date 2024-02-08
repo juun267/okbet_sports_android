@@ -127,7 +127,7 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBindi
 
 
     private fun initTopView() = binding.topView.run {
-        setup(this@OKGamesFragment, ImageType.BANNER_OKGAMES.code)
+        setup(this@OKGamesFragment, ImageType.BANNER_OKGAMES)
         setProviderSelect {
             backGameAll()
             showGameAll()
