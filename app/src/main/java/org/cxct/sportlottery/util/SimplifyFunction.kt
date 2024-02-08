@@ -840,7 +840,7 @@ fun Context.dividerView(
 }
  fun setupSummary(tvSummary: TextView) {
     sConfigData?.imageList?.filter {
-                it.imageType == ImageType.LOGIN_SUMMARY.code
+                it.imageType == ImageType.LOGIN_SUMMARY
                 && it.lang == LanguageManager.getSelectLanguage(tvSummary.context).key
                 && !it.imageText1.isNullOrEmpty()
                 && !getMarketSwitch() }?.sortedByDescending { it.imageSort }?.firstOrNull()?.imageText1.let {

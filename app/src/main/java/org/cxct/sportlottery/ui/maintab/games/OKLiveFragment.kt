@@ -68,7 +68,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
         showGameAll()
         initObservable()
         viewModel.getOKLiveHall()
-        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKLIVE.code)
+        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKLIVE)
     }
     private var requestTag: Any = Any()
     private var requestBlock: ((Int) -> Unit)? = null

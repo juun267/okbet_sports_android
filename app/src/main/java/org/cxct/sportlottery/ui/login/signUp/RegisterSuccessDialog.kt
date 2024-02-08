@@ -13,11 +13,11 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setupSummary
-import org.cxct.sportlottery.view.isVisible
+import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
+import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
 
-class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel,DialogRegisterSuccessBinding>() {
+class RegisterSuccessDialog: BaseDialog<BaseViewModel,DialogRegisterSuccessBinding>() {
 
     companion object{
         var ifNew = false
@@ -25,11 +25,24 @@ class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel,
         fun needShow():Boolean{
             return ifNew
         }
+
+        fun buildRegisterSuccessDialog(priority: Int, fm: () -> FragmentManager, callback: () -> Unit): PriorityDialog? {
+            if (!needShow()) {
+                return null
+            }
+
+            return object : BasePriorityDialog<RegisterSuccessDialog>() {
+                override fun getFragmentManager() = fm.invoke()
+                override fun priority() = priority
+                override fun createDialog() = RegisterSuccessDialog().apply { onRecharge = callback }
+            }
+        }
     }
 
     init {
         setStyle(R.style.FullScreen)
     }
+    var onRecharge: (()->Unit)?=null
 
     override fun onInitView() {
         initView()
@@ -45,7 +58,7 @@ class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel,
         setupSummary(binding.tvSummary)
         binding.btnRecharge.setOnClickListener {
             dismissAllowingStateLoss()
-            onRecharge.invoke()
+            onRecharge?.invoke()
         }
         setOnClickListeners(binding.ivClose,binding.btnConfirm){
             dismissAllowingStateLoss()
@@ -54,6 +67,11 @@ class RegisterSuccessDialog(val onRecharge: ()->Unit): BaseDialog<BaseViewModel,
 
      override fun show(manager: FragmentManager) {
         super.show(manager)
+        ifNew =false
+    }
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        super.show(manager, tag)
         ifNew =false
     }
 }

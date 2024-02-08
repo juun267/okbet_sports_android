@@ -1,11 +1,15 @@
 package org.cxct.sportlottery.ui.base
 
+import android.content.DialogInterface
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import org.cxct.sportlottery.common.extentions.runWithCatch
 
 open class BaseDialogFragment: DialogFragment() {
+
+    var onDismissListener: (() -> Unit)? = null
+    var onShowListener: (() -> Unit)? = null
 
 //    // 保留实例对象，在activity重建时直接使用保存的实例对象。避免DialogFragment没有无参构造函数时由系统重建引起的崩溃问题
 //    protected open val isRetainInstance = true
@@ -31,6 +35,8 @@ open class BaseDialogFragment: DialogFragment() {
         val ft = manager.beginTransaction()
         ft.add(this, tag)
         ft.commitAllowingStateLoss()
+
+        onShowListener?.invoke()
     }
 
     protected fun modifyPrivateField(fieldName: String, newValue: Any) {
@@ -46,5 +52,11 @@ open class BaseDialogFragment: DialogFragment() {
     override fun dismissAllowingStateLoss() = runWithCatch {
         if (isAdded) { super.dismissAllowingStateLoss() }
     }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDismissListener?.invoke()
+    }
+
 
 }
