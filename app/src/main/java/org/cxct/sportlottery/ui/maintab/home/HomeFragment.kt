@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.repository.ConfigRepository
+import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData.Companion.okGameOpened
 import org.cxct.sportlottery.repository.StaticData.Companion.okLiveOpened
@@ -141,10 +142,9 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
     }
 
     private fun setUpBanner() {
-        val imageType = 2
         val lang = LanguageManager.getSelectLanguage(context).key
         var imageList = sConfigData?.imageList?.filter {
-            it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden)
+            it.imageType == ImageType.BANNER_HOME.code && it.lang == lang && !it.imageName1.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden)
         }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
@@ -152,6 +152,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         }
         var xbanner = binding.topBanner
         xbanner.setHandLoop(loopEnable)
+        xbanner.setAutoPlayAble(loopEnable)
         xbanner.setOnItemClickListener { banner, model, view, position ->
             val jumpUrl = (model as XBannerImage).jumpUrl
             if (jumpUrl.isNullOrEmpty()) {

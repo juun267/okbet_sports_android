@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_F8F9FD"
     android:orientation="vertical">
 
@@ -24,7 +25,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/margin_12"
+                android:visibility="gone"
                 android:src="@drawable/img_banner_news"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_12">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvBanner"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintDimensionRatio="366:188"
+                android:elevation="0dp"
+                app:cardElevation="@dimen/margin_0.5"
+                app:cardCornerRadius="@dimen/margin_8">
+
+                <com.stx.xhb.androidx.XBanner
+                    android:id="@+id/xbanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:AutoPlayTime="3500"
+                    app:pageChangeDuration="800"
+                    app:pointLeftRightPadding="2dp"
+                    app:pointNormal="@drawable/dot_6_trans_white"
+                    app:pointSelect="@drawable/dot_6_white"
+                    app:showIndicatorInCenter="false"
+                    app:pointsPosition="RIGHT"/>
+
+            </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <include
                 android:id="@+id/includeNews"
                 layout="@layout/include_home_news"/>

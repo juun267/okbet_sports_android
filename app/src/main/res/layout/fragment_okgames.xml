@@ -35,9 +35,6 @@
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="scroll"/>
 
-
-
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout

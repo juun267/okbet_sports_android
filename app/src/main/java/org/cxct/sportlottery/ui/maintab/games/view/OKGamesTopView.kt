@@ -47,10 +47,6 @@ class OKGamesTopView @JvmOverloads constructor(
     private var p3ogProviderLastPosi: Int = 3
     private val providersAdapter by lazy { OkGameProvidersAdapter() }
 
-    private val okgamesBanner: XBanner by lazy {
-        findViewById<XBanner>(R.id.xbanner).apply { setOnItemClickListener(this@OKGamesTopView) }
-    }
-
     var onSearchTextChanged: ((String) -> Unit)? = null
     var onTableClick: ((OKGameTab) -> Boolean)? = null
 
@@ -74,8 +70,8 @@ class OKGamesTopView @JvmOverloads constructor(
 
     private fun initSearch() {
         binding.edtSearchGames.onConfirm { key -> onSearchTextChanged?.invoke(key) }
-        findViewById<View>(R.id.ivSearch).setOnClickListener { onSearchTextChanged?.invoke(binding.edtSearchGames.text.toString()) }
-        findViewById<View>(R.id.searchLayout).background = DrawableCreator.Builder()
+        binding.ivSearch.setOnClickListener { onSearchTextChanged?.invoke(binding.edtSearchGames.text.toString()) }
+        binding.searchLayout.background = DrawableCreator.Builder()
             .setSolidColor(Color.WHITE)
             .setCornersRadius(8.dp.toFloat())
             .build()
@@ -138,23 +134,25 @@ class OKGamesTopView @JvmOverloads constructor(
             return
         }
         binding.bannerCard.visibility = visibility
-        okgamesBanner.setHandLoop(loopEnable)
-        okgamesBanner.setAutoPlayAble(loopEnable)
-        okgamesBanner.setOnItemClickListener(this)
-        okgamesBanner.loadImage { _, model, view, _ ->
-            (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
+        binding.xbanner.apply {
+            setHandLoop(loopEnable)
+            setAutoPlayAble(loopEnable)
+            setOnItemClickListener(this@OKGamesTopView)
+            loadImage { _, model, view, _ ->
+                (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
+            }
         }
+
 
         val host = sConfigData?.resServerHost
         val images = imageList.map {
             XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }
-
-        okgamesBanner.setBannerData(images.toMutableList())
-        binding.indicatorView.setupIndicator(okgamesBanner.realCount)
-        okgamesBanner.setOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+        binding.xbanner.setBannerData(images.toMutableList())
+        binding.indicatorView.setupIndicator(binding.xbanner.realCount)
+        binding.xbanner.setOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                binding.indicatorView.update(position % okgamesBanner.realCount)
+                binding.indicatorView.update(position % binding.xbanner.realCount)
             }
         })
     }
@@ -258,6 +256,9 @@ class OKGamesTopView @JvmOverloads constructor(
     }
     fun setProviderItems(firmList: MutableList<OKGamesFirm>){
         providersAdapter.setNewInstance(firmList)
+    }
+    fun setSeachText(key: String){
+        binding.edtSearchGames.setText(key)
     }
 
 }

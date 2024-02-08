@@ -1,10 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.games
 
-import android.os.Bundle
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
@@ -130,7 +127,7 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBindi
 
 
     private fun initTopView() = binding.topView.run {
-        setup(this@OKGamesFragment, 12)
+        setup(this@OKGamesFragment, ImageType.BANNER_OKGAMES.code)
         setProviderSelect {
             backGameAll()
             showGameAll()

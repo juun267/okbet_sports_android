@@ -5,7 +5,7 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.HandicapType.NULL
-import org.cxct.sportlottery.repository.ImageType.PROMOTION
+import org.cxct.sportlottery.repository.ImageType.DIALOG_PROMOTION
 import org.cxct.sportlottery.util.KvUtils
 
 const val FLAG_OPEN = "1"
@@ -22,11 +22,15 @@ enum class TestFlag(val index: Long) { NORMAL(0), GUEST(1), TEST(2) } //是否�
 /**
  * config圖片清單類型
  *
- * @property PROMOTION app端優惠活動彈窗
+ * @property DIALOG_PROMOTION app端優惠活動彈窗
  * @see org.cxct.sportlottery.network.index.config.ConfigData.imageList
  * @see org.cxct.sportlottery.network.index.config.ImageData.imageType
  */
 object ImageType {
+    val BANNER_HOME = 2//首页banner
+    val BANNER_OKGAMES = 12//棋牌banner
+    val BANNER_OKLIVE = 18//真人banner
+    val BANNER_NEWS = 27//新闻banner
     val PROMOTION_LIST = 4
     val PROMOTION = 5
     val DIALOG_HOME = 7

@@ -28,8 +28,6 @@ object NewsRepository {
     const val SORT_CREATE_TIME ="CREATE_TIME"
     const val SORT_DEFAULT ="SORT"
 
-    const val NEWS_OKBET_ID = 12
-    const val NEWS_SPORT_ID = 13
 
     private fun paramDevice(): JsonObject {
         val params = JsonObject()
@@ -52,14 +50,14 @@ object NewsRepository {
     }
 
     suspend fun getRecommendNews(
-        pageNum: Int,
-        pageSize: Int,
-        categoryIds: List<Int>,
+//        pageNum: Int,
+//        pageSize: Int,
+//        categoryIds: List<Int>,
     ): ApiResult<List<NewsCategory>> {
         val params = JsonObject()
-        params.addProperty("pageNum", pageNum)
-        params.addProperty("pageSize", pageSize)
-        params.add("categoryIds", Gson().toJsonTree(categoryIds))
+//        params.addProperty("pageNum", pageNum)
+//        params.addProperty("pageSize", pageSize)
+//        params.add("categoryIds", Gson().toJsonTree(categoryIds))
         return newsApi.getListRecommend(params)
     }
 
