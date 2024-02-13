@@ -207,9 +207,10 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     }
 
     private fun initObserve() {
-
         ConfigRepository.onNewConfig(this) {
-            GamePlayNameRepository.getIndexResourceJson()
+            if (GamePlayNameRepository.resourceList==null) {
+                GamePlayNameRepository.getIndexResourceJson()
+            }
         }
 
         //设置体育服务监听

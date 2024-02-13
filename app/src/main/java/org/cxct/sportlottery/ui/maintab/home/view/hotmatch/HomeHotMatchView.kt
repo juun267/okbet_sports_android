@@ -237,10 +237,6 @@ class HomeHotMatchView(
                     }
                 }
             }
-
-        }
-        receiver.refreshInForeground.observe(viewLifecycleOwner){
-
         }
     }
 

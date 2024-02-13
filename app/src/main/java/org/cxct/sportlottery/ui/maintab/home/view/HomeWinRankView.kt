@@ -9,10 +9,13 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.doOnDestory
+import org.cxct.sportlottery.common.extentions.doOnPause
+import org.cxct.sportlottery.common.extentions.doWhenLife
 import org.cxct.sportlottery.databinding.ViewHomeWinRankBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.common.GameType
@@ -20,6 +23,7 @@ import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.RecentDataManager
 import org.cxct.sportlottery.util.RecentRecord
 import org.cxct.sportlottery.util.setTextTypeFace
@@ -94,16 +98,19 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
                 onNewHttpWinsData(it.reversed())
             }
         }
-        fragment.doOnDestory {
-            stopCallApiLoop()
-            stopPostLoop()
-        }
         this.fragment = fragment
         betRequest = blockBetRequest
         winsRequest = blockWinsRequest
+        startLoopCall()
+    }
+    fun startLoopCall(){
         postLoop()
         postCallApiLoop()
         loadData()
+    }
+    fun stopLoopCall(){
+        stopCallApiLoop()
+        stopPostLoop()
     }
 
     fun loadData() {

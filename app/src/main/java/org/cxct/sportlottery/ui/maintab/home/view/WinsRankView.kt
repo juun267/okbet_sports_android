@@ -90,15 +90,19 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     fun setUp(fragment: BaseFragment<out MainHomeViewModel,*>,  blockBetRequest: () -> Unit, blockWinsRequest: () -> Unit) {
-        fragment.doOnDestory {
-            stopCallApiLoop()
-            stopPostLoop()
-        }
         this.fragment = fragment
         betRequest = blockBetRequest
         winsRequest = blockWinsRequest
+        startLoopCall()
+    }
+    fun startLoopCall(){
         postLoop()
         postCallApiLoop()
+        loadData()
+    }
+    fun stopLoopCall(){
+        stopCallApiLoop()
+        stopPostLoop()
     }
 
     fun loadData() {

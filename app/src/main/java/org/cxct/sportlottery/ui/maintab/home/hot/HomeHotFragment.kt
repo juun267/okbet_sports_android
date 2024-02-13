@@ -234,5 +234,13 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         }
     }
 
+    override fun onVisibleExceptFirst() {
+        super.onVisibleExceptFirst()
+        binding.winsRankView.startLoopCall()
+    }
+    override fun onInvisible() {
+        super.onInvisible()
+        binding.winsRankView.stopLoopCall()
+    }
 
 }
