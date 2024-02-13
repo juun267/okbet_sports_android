@@ -895,6 +895,9 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             if (index < 0) return@observe
             oddsAdapter.notifyItemChanged(index)
         }
+        receiver.refreshInForeground.observe(this){
+            getData()
+        }
     }
 
     /**

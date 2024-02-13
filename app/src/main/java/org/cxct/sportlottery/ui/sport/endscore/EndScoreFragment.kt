@@ -14,7 +14,6 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -57,6 +56,10 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
 
     override fun onBetInfoChanged(betInfoList: List<BetInfoListData>) {
         endScoreAdapter.updateOddsSelectedStatus(betInfoList)
+    }
+
+    override fun onReload() {
+        loadData()
     }
 
 

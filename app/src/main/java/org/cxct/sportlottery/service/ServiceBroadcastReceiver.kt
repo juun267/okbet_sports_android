@@ -29,6 +29,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.SocketUpdateUtil.replaceNameMap
 import timber.log.Timber
 import java.math.BigDecimal
+import java.sql.Timestamp
 
 object ServiceBroadcastReceiver {
 
@@ -84,6 +85,10 @@ object ServiceBroadcastReceiver {
     val closePlayCate: LiveData<Event<FrontWsEvent.ClosePlayCateEvent?>>
         get() = _closePlayCate
 
+    //在后台超过一段时间后，返回前台刷新赛事列表
+    val refreshInForeground: LiveData<Event<Long>>
+        get() = _refreshInForeground
+
     private val _globalStop = MutableLiveData<FrontWsEvent.GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<FrontWsEvent.MatchClockEvent?>()
     private val _notice = MutableLiveData<FrontWsEvent.NoticeEvent?>()
@@ -101,6 +106,7 @@ object ServiceBroadcastReceiver {
     private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
     private val _closePlayCate = MutableLiveData<Event<FrontWsEvent.ClosePlayCateEvent?>>()
+    private val _refreshInForeground = MutableLiveData<Event<Long>>()
 
     val sportMaintenance: LiveData<FrontWsEvent.SportMaintainEvent> = MutableLiveData()
     val jackpotChange: LiveData<String?> = MutableLiveData()
@@ -406,4 +412,9 @@ object ServiceBroadcastReceiver {
     }
 
     class OddsChangeListener(val onOddsChangeListener: (oddsChangeEvent: OddsChangeEvent) -> Unit)
+
+    fun postRefrehInForeground(interval: Long){
+        _refreshInForeground.postValue(Event(interval))
+    }
 }
+

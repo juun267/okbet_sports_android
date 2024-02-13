@@ -64,6 +64,10 @@ class ESportOutrightFragment: BaseSportListFragment<SportListViewModel, Fragment
         super.onGameTypeChanged(item, position)
     }
 
+    override fun onReload() {
+        reload(gameType)
+    }
+
 
     private val sportOutrightAdapter2 by lazy {
 
