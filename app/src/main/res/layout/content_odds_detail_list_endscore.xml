@@ -13,6 +13,7 @@
             android:id="@+id/rv_bet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margin_5"
             android:nestedScrollingEnabled="false"
             android:background="@color/color_FFFFFF"
             android:overScrollMode="never"

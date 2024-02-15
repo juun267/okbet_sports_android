@@ -78,8 +78,8 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         setText(R.id.tvHomeName, matchInfo?.homeName)
         setText(R.id.tvAwayName, matchInfo?.awayName)
         setText(R.id.league_odd_match_time, TimeUtil.timeFormat(matchInfo?.startTime, TimeUtil.DM_HM_FORMAT))
-        getView<ImageView>(R.id.ivHomeLogo).setTeamLogo(matchInfo?.homeIcon)
-        getView<ImageView>(R.id.ivAwayLogo).setTeamLogo(matchInfo?.awayIcon)
+        getView<ImageView>(R.id.ivHomeLogo).setTeamLogo(matchInfo?.homeIcon,R.drawable.ic_team_default_no_stroke)
+        getView<ImageView>(R.id.ivAwayLogo).setTeamLogo(matchInfo?.awayIcon,R.drawable.ic_team_default_no_stroke)
         getView<View>(R.id.lin_match).setOnClickListener {
             onItemClick.invoke(helper.bindingAdapterPosition, it, item)
         }

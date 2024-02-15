@@ -21,6 +21,7 @@ import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -620,27 +621,27 @@ fun isGooglePlayVersion() = BuildConfig.FLAVOR == "google"
 
 fun getMarketSwitch() = KvUtils.decodeBoolean(KvUtils.MARKET_SWITCH)
 
-fun ImageView.setTeamLogo(icon: String?) {
+fun ImageView.setTeamLogo(icon: String?,@DrawableRes defaultResId: Int=R.drawable.ic_team_default) {
     if (icon.isNullOrEmpty()) {
-        setImageResource(R.drawable.ic_team_default)
+        setImageResource(defaultResId)
     } else if (icon.startsWith("<defs><path d=")) { //經測試 <defs> 標籤下 起始 path d 套件無法解析
-        setImageResource(R.drawable.ic_team_default)
+        setImageResource(defaultResId)
     } else if (icon.startsWith("http")) {
-        load(icon, R.drawable.ic_team_default)
+        load(icon, defaultResId)
     } else {
-        setSvgIcon(icon, R.drawable.ic_team_default)
+        setSvgIcon(icon, defaultResId)
     }
 }
 
-fun ImageView.setLeagueLogo(icon: String?) {
+fun ImageView.setLeagueLogo(icon: String?,@DrawableRes defaultResId: Int=R.drawable.ic_team_default) {
     if (icon.isNullOrEmpty()) {
-        setImageResource(R.drawable.ic_team_default)
+        setImageResource(defaultResId)
     } else if (icon.startsWith("<defs><path d=")) { //經測試 <defs> 標籤下 起始 path d 套件無法解析
-        setImageResource(R.drawable.ic_team_default)
+        setImageResource(defaultResId)
     } else if (icon.startsWith("http")) {
-        load(icon, R.drawable.ic_team_default)
+        load(icon, defaultResId)
     } else {
-        setSvgIcon(icon, R.drawable.ic_team_default)
+        setSvgIcon(icon,defaultResId)
     }
 }
 
