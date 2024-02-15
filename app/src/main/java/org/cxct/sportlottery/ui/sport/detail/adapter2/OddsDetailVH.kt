@@ -558,7 +558,7 @@ class OddsDetailVH (
         if (oddsDetail.gameType.isEndScoreType()) {
             //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
             itemView.lin_match.isVisible = false
-            rvBet.setBackgroundResource(R.color.color_F9FAFD)
+            rvBet.setBackgroundResource(R.color.color_FFFFFF)
             val nonAdapter = rvBet.adapter == null
             if (rvBet.itemDecorationCount == 0) {
                 rvBet.addItemDecoration(EndScoreItemDecoration(true))
