@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport.endscore
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -43,6 +44,7 @@ class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
         addFullSpanNodeProvider(EndScoreFirstProvider(this, onItemClick)) // 联赛
         addFullSpanNodeProvider(EndScoreSecondProvider(this, onItemClick)) // 比赛球队
         addNodeProvider(EndScoreThirdProvider(this, onItemClick)) //赔率
+        addNodeProvider(EndScoreViewAllProvider(this, onItemClick)) //赔率
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -54,6 +56,7 @@ class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
         return when (data[position]) {
             is LeagueOdd -> 1
             is MatchOdd -> 2
+            is ViewAllNode -> 4
             else -> 3
         }
     }

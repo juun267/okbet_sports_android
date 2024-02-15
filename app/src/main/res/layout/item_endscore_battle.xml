@@ -229,7 +229,6 @@
         app:tabSelectedTextColor="@color/color_025BE8"
         app:tabTextColor="@color/color_6D7693"
         tools:layout="@layout/home_cate_tab" />
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

@@ -34,6 +34,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.FGLGType
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.adapter.*
+import org.cxct.sportlottery.ui.sport.endscore.EndScoreItemDecoration
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
@@ -560,10 +561,10 @@ class OddsDetailVH (
             rvBet.setBackgroundResource(R.color.color_F9FAFD)
             val nonAdapter = rvBet.adapter == null
             if (rvBet.itemDecorationCount == 0) {
-                rvBet.addItemDecoration(GridSpacingItemDecoration(4, 4.dp,false))
+                rvBet.addItemDecoration(EndScoreItemDecoration(true))
             }
 
-            val adapter = initSingleRCV(rvBet, 4, oddsDetail)
+            val adapter = initEndScoreRCV(rvBet,  oddsDetail)
             rvBet.tag = oddsDetail.gameType
             if (nonAdapter) {
                 oddsAdapter.isFirstRefresh = false
@@ -620,6 +621,23 @@ class OddsDetailVH (
             adapter.onOddClickListener = oddsAdapter.onOddClickListener
             adapter.oddsType = oddsAdapter.oddsType
             (recyclerView.layoutManager as GridLayoutManager).spanCount = spanCount
+        }
+        return adapter
+    }
+
+    private fun initEndScoreRCV(recyclerView: RecyclerView, oddsDetail: OddsDetailListData): TypeEndScoreAdapter {
+        lateinit var adapter: TypeEndScoreAdapter
+        oddsDetail.sortOddForSingle()
+        if (recyclerView.adapter == null) {
+            adapter = TypeEndScoreAdapter(oddsDetail, oddsAdapter.onOddClickListener, oddsAdapter.oddsType)
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = GridLayoutManager(itemView.context, 5)
+        } else {
+            adapter = recyclerView.adapter as TypeEndScoreAdapter
+            adapter.setOddsDetailData(oddsDetail)
+            adapter.onOddClickListener = oddsAdapter.onOddClickListener
+            adapter.oddsType = oddsAdapter.oddsType
+            (recyclerView.layoutManager as GridLayoutManager).spanCount = 5
         }
         return adapter
     }
