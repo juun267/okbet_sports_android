@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/color_FFFFFF">
+
+
+        <include layout="@layout/content_odds_detail_list_item" />
+        <include layout="@layout/content_odds_detail_list_team" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:background="@color/color_FFFFFF"
+            android:overScrollMode="never"
+            android:paddingHorizontal="@dimen/margin_9"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_endscore_button" />
+
+        <include layout="@layout/space_content_odds_detail_list"/>
+
+    </LinearLayout>
+
+

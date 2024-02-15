@@ -207,6 +207,10 @@ class OddsDetailVH (
             forEPS(oddsDetail)
             return
         }
+        if (viewType == oddsAdapter.ENDSCORE) {
+            forEndScore(oddsDetail,payloads)
+            return
+        }
 
         // 以上是通用完玩法样式数据绑定
         if (oddsAdapter.sportCode == GameType.FT) {
@@ -547,45 +551,8 @@ class OddsDetailVH (
     private fun forSingle(oddsDetail: OddsDetailListData, spanCount: Int, payloads: MutableList<Any>?) {
 
         if (rvBet == null) {
-            if (oddsDetail.gameType.isEndScoreType()) {
-                //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
-                itemView.lin_match.isVisible = false
-            }
             return
         }
-
-
-        if (oddsDetail.gameType.isEndScoreType()) {
-            //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
-            itemView.lin_match.isVisible = false
-            rvBet.setBackgroundResource(R.color.color_FFFFFF)
-            val nonAdapter = rvBet.adapter == null
-            if (rvBet.itemDecorationCount == 0) {
-                rvBet.addItemDecoration(EndScoreItemDecoration(true))
-            }
-
-            val adapter = initEndScoreRCV(rvBet,  oddsDetail)
-            rvBet.tag = oddsDetail.gameType
-            if (nonAdapter) {
-                oddsAdapter.isFirstRefresh = false
-            } else {
-                rvBet.tag = oddsDetail.gameType
-                if (payloads.isNullOrEmpty()){
-                    adapter.notifyDataSetChanged()
-                } else {
-                    payloads.forEach { payloadItem ->
-                        oddsDetail.oddArrayList.forEachIndexed { index, odd ->
-                            if (odd?.id == payloadItem) {
-                                runWithCatch { adapter.notifyItemChanged(index) }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return
-        }
-
 
 //      Timber.d("===洗刷刷4 else index:${12} payloads:${payloads?.size}")
         rvBet.setBackgroundResource(R.color.color_FFFFFF)
@@ -802,7 +769,39 @@ class OddsDetailVH (
             }
         }
     }
+    private fun forEndScore(oddsDetail: OddsDetailListData,payloads: MutableList<Any>?) {
+        //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
+        itemView.lin_match.isVisible = false
+        if (rvBet == null)
+            return
 
+            //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
+            itemView.lin_match.isVisible = false
+            rvBet.setBackgroundResource(R.color.color_FFFFFF)
+            val nonAdapter = rvBet.adapter == null
+            if (rvBet.itemDecorationCount == 0) {
+                rvBet.addItemDecoration(EndScoreItemDecoration(true))
+            }
+
+            val adapter = initEndScoreRCV(rvBet,  oddsDetail)
+            rvBet.tag = oddsDetail.gameType
+            if (nonAdapter) {
+                oddsAdapter.isFirstRefresh = false
+            } else {
+                rvBet.tag = oddsDetail.gameType
+                if (payloads.isNullOrEmpty()){
+                    adapter.notifyDataSetChanged()
+                } else {
+                    payloads.forEach { payloadItem ->
+                        oddsDetail.oddArrayList.forEachIndexed { index, odd ->
+                            if (odd?.id == payloadItem) {
+                                runWithCatch { adapter.notifyItemChanged(index) }
+                            }
+                        }
+                    }
+                }
+            }
+    }
     private fun selectSCO(oddsDetail: OddsDetailListData, teamName: String, homeName: String): OddsDetailListData {
         tvHomeName?.isSelected = teamName == homeName
         tvAwayName?.isSelected = teamName != homeName

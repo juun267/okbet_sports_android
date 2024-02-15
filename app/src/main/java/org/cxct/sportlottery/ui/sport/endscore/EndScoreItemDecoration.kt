@@ -5,10 +5,12 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.view.View
+import androidx.core.graphics.alpha
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 
 class EndScoreItemDecoration(val isSportDetail: Boolean = false) : RecyclerView.ItemDecoration() {
 
@@ -16,8 +18,8 @@ class EndScoreItemDecoration(val isSportDetail: Boolean = false) : RecyclerView.
     private val horSpacing = 6.dp
     private val verSpacing = 4.dp
     private val sideSpacing = 12.dp
-    private val mDivider = ColorDrawable(Color.parseColor("#336C7BA8"))
-    private val lineHeight = 0.6f.dp
+    private val mDivider = ColorDrawable(Color.parseColor("#106C7BA8"))
+    private val lineHeight = 1
     private val divideHeight = 24.dp
 
     override fun getItemOffsets(
@@ -36,16 +38,18 @@ class EndScoreItemDecoration(val isSportDetail: Boolean = false) : RecyclerView.
             } else{
                 parent.getChildAdapterPosition(view)
             }
+            var topMargin = if (parent.indexOfParent(view) < spanCount) verSpacing + sideSpacing else verSpacing
             var bottomMargin = if (parent.needSetDivide(view)) verSpacing + divideHeight else verSpacing
+
             when (position % spanCount) {
                 0 -> {
-                    outRect.set(sideSpacing, verSpacing, 0, bottomMargin)
+                    outRect.set(sideSpacing, topMargin, 0, bottomMargin)
                 }
                 spanCount - 1 -> {
-                    outRect.set(horSpacing, verSpacing, sideSpacing, bottomMargin)
+                    outRect.set(horSpacing, topMargin, sideSpacing, bottomMargin)
                 }
                 else -> {
-                    outRect.set(horSpacing, verSpacing, 0, bottomMargin)
+                    outRect.set(horSpacing, topMargin, 0, bottomMargin)
                 }
             }
         }
@@ -71,6 +75,17 @@ class EndScoreItemDecoration(val isSportDetail: Boolean = false) : RecyclerView.
     val position = getChildAdapterPosition(childView)
     val adapter=adapter as BaseQuickAdapter<*, *>
     return adapter.getItemOrNull(position) as? Odd
+    }
+    /**
+     * 当前实际position
+     */
+    private fun RecyclerView.indexOfParent(childView: View): Int{
+        return if (isSportDetail) {
+            getChildAdapterPosition(childView)
+        }else{
+            val odd = getItemOddOrNull(childView)
+             odd?.parentNode?.childNode?.indexOf(odd)?:-1
+        }
     }
     /**
      * 是否需要设置分割线
