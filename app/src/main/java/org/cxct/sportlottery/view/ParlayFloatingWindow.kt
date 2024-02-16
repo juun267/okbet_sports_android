@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import me.jessyan.autosize.utils.ScreenUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.BetBarLayout2Binding
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -117,8 +116,8 @@ class ParlayFloatingWindow @JvmOverloads constructor(
     fun updateCount(count: String){
         val cannotParlay =
             BetInfoRepository.currentBetType == BetListFragment.PARLAY
-            && BetInfoRepository.betInfoList.value?.peekContent()?.any { it.pointMarked }==true
-            && (BetInfoRepository.betIDList.value?.peekContent()?.size?:0>1 || (BetInfoRepository.betIDList.value?.peekContent()?.size ==1 && BetInfoRepository.betInfoList.value?.peekContent()?.firstOrNull()?.matchType== MatchType.OUTRIGHT))
+                    && BetInfoRepository.betInfoList.value?.peekContent()?.any { it.pointMarked }==true
+                    && BetInfoRepository.betIDList.value?.peekContent()?.size?:0>1
         if (cannotParlay){
             binding.tvBetListCount.apply {
                 text = ""
