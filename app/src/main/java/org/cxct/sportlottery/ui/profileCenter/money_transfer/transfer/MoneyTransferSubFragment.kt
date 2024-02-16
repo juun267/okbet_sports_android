@@ -8,7 +8,6 @@ import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import kotlinx.android.synthetic.main.fragment_main_right.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -47,7 +46,7 @@ class MoneyTransferSubFragment : BaseFragment<MoneyTransferViewModel,FragmentMon
 
     private fun initView()=binding.run{
 
-        tvBanlance.setText(R.string.title_current_money)
+        layoutBalance.tvBalance.setText(R.string.title_current_money)
         moveAnim(isPlatReversed)
         viewModel.initCode()
         //region 靠左置中＆移除padding
