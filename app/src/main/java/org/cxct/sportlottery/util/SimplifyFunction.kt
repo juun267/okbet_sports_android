@@ -591,27 +591,11 @@ fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: FrontWsEvent.CloseP
 }
 
 /**
- * 判斷當前是否為多站點平台
- */
-fun isMultipleSitePlat(): Boolean {
-    val appName = MultiLanguagesApplication.stringOf(R.string.app_name)
-    return appName == "ONbet" || appName == "BET88" || appName == "OKbet9"
-}
-
-/**
  * 判斷是否為遊客(試玩帳號)
  */
 fun isGuest(): Boolean {
     return MultiLanguagesApplication.mInstance.userInfo()?.testFlag == TestFlag.GUEST.index
 }
-
-fun isForQA(): Boolean = BuildConfig.FLAVOR == "forqa"
-
-/**
- * 判斷當前是否為OKBET平台
- */
-fun isOKPlat(): Boolean =
-    MultiLanguagesApplication.stringOf(R.string.app_name).equals("OKBET", true)
 
 fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
 

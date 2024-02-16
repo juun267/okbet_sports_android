@@ -14,7 +14,6 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.post
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.*
@@ -34,18 +33,25 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         val tabLayout = vh.getView<TabLayout>(R.id.tabLayout)
         OverScrollDecoratorHelper.setUpOverScroll(tabLayout)
         tabLayout.addOnTabSelectedListener(TabSelectedAdapter { tab, reselected ->
-
-            val pair = tab.tag as Pair<String, MatchOdd>
-            if (!pair.second.isExpanded) {
+            val playCate = tab.tag.toString()
+            val matchOdd = tabLayout.tag as MatchOdd
+            if (!matchOdd.isExpanded) {
                 return@TabSelectedAdapter
             }
-            pair.second.selectPlayCode = pair.first
-            pair.second.oddIdsMap?.get(pair.second.selectPlayCode)?.let {
-                if (it != pair.second.selectPlayOdds) {
-                    pair.second.selectPlayOdds = it
+            matchOdd.selectPlayCode = playCate
+            adapter.findVisiableRangeMatchOdd(matchOdd.matchInfo?.id?:"")?.apply {
+                selectPlayCode = playCate
+                isExpanded = matchOdd.isExpanded
+            }
+            matchOdd.oddIdsMap?.get(matchOdd.selectPlayCode)?.let {
+                if (it != matchOdd.selectPlayOdds) {
+                    matchOdd.selectPlayOdds = it
                     post {
-                        adapter.nodeReplaceChildData(pair.second, it.values)
-                        adapter.nodeAddData(pair.second,ViewAllNode(parentNode = pair.second))
+                        val newChildNodes = mutableListOf<BaseNode>().apply {
+                            addAll(it.values)
+                            add(ViewAllNode(parentNode = matchOdd))
+                        }
+                        adapter.nodeReplaceChildData(matchOdd, newChildNodes)
                     }
                 }
             }
@@ -111,7 +117,6 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
     private fun resetStyle(helper: BaseViewHolder, matchOdd: MatchOdd) {
         val tvExpand = helper.getView<TextView>(R.id.tvExpand)
         val linExpand = helper.getView<View>(R.id.linExpand)
-        val tabLayout = helper.getView<TabLayout>(R.id.tabLayout)
         when{
             matchOdd.oddIdsMap.isNullOrEmpty()->{
                 linExpand.isEnabled = false
@@ -143,27 +148,29 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
 
     private fun rebindTab(tablayout: TabLayout, matchOdd: MatchOdd, update: Boolean = false) = tablayout.run {
         isVisible = matchOdd.isExpanded
+        tablayout.tag = matchOdd
         if (tabCount > 0){
-            if (update && tabCount == matchOdd.oddIdsMap.size) {
+            if(tabCount == matchOdd.oddIdsMap.size){
                 repeat(tabCount) {
                     val tab = getTabAt(it)!!
-                    val pair = tab.tag as Pair<String, MatchOdd>
-                    if (pair.first == matchOdd.selectPlayCode) {
+                    if (tab.tag == matchOdd.selectPlayCode) {
                         tab.select()
                         return@run
                     }
                 }
+            }else{
+                removeAllTabs()
             }
-
-            removeAllTabs()
         }
 
-        matchOdd.oddIdsMap?.keys.forEach {
-            addTab(newTab().setTag(Pair(it, matchOdd)).setText(it.getEndScoreNameByTab(context)))
-        }
-        if (tabCount == 0) {
-            matchOdd.selectPlayCode = PlayCate.FS_LD_CS.value
-            matchOdd.selectPlayOdds = null
+        if (tabCount == 0 ) {
+            matchOdd.oddIdsMap?.keys.forEach {
+                val tab = newTab().setTag(it).setText(it.getEndScoreNameByTab(context))
+                addTab(tab)
+                if (it == matchOdd.selectPlayCode) {
+                    tab.select()
+                }
+            }
         }
     }
 }

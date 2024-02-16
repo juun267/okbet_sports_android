@@ -99,7 +99,7 @@ class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
             return false
         }
         notifyItemChanged(position, SportMatchEvent.OddsChanged)
-        LogUtil.d(matchOdd.matchInfo?.id+","+matchOdd.oddIdsMap.keys)
+//        LogUtil.d(matchOdd.matchInfo?.id+","+matchOdd.oddIdsMap.keys)
         return true
     }
 
