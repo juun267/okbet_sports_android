@@ -190,8 +190,11 @@ class MoneyTransferSubFragment : BaseFragment<MoneyTransferViewModel,FragmentMon
                     val dialog = CustomAlertDialog().apply {
                         setTitle(context.getString(R.string.prompt))
                         setMessage(if (it.success) context.getString(R.string.transfer_money_succeed) else it.msg)
+                        setPositiveButtonText(context.getString(R.string.btn_sure))
                         setPositiveClickListener { view ->
                             dismiss()
+                        }
+                        onDismissListener={
                             if (it.success) {
                                 this@MoneyTransferSubFragment.view?.findNavController()
                                     ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
