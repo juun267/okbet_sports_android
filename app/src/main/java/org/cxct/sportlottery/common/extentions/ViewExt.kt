@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListenerAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import org.cxct.sportlottery.ui.chat.hideSoftInput
 import org.cxct.sportlottery.util.BreatheInterpolator
@@ -260,7 +261,16 @@ fun EditText.onConfirm(block: (String) -> Unit) {
             block.invoke(text.toString())
             return@setOnEditorActionListener true
         }
-
         return@setOnEditorActionListener false
     }
+}
+var bindingTagKey = View.generateViewId()
+inline fun <reified VB : ViewBinding> View.toBinding(): VB {
+    var viewBinding = getTag(bindingTagKey)
+    if (viewBinding==null){
+        val method = VB::class.java.getMethod("bind", View::class.java)
+        viewBinding=(method.invoke(null,this) as VB)
+        setTag(bindingTagKey,viewBinding)
+    }
+    return viewBinding as VB
 }
