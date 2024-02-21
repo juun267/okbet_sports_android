@@ -264,7 +264,7 @@ fun EditText.onConfirm(block: (String) -> Unit) {
         return@setOnEditorActionListener false
     }
 }
-var bindingTagKey = View.generateViewId()
+var bindingTagKey = -0x9998
 inline fun <reified VB : ViewBinding> View.toBinding(): VB {
     var viewBinding = getTag(bindingTagKey)
     if (viewBinding==null){
