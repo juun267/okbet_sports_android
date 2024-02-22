@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linOdd"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <org.cxct.sportlottery.ui.sport.oddsbtn.EndingOddsButton
+        android:id="@+id/endingBtn"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"/>
+</LinearLayout>

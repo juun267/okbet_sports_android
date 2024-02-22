@@ -2,18 +2,18 @@ package org.cxct.sportlottery.ui.sport.oddsbtn
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd_ending.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.databinding.ButtonOddEndingBinding
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.*
+import splitties.systemservices.layoutInflater
 
 
 class EndingOddsButton @JvmOverloads constructor(
@@ -42,16 +42,17 @@ class EndingOddsButton @JvmOverloads constructor(
 
     private var mOddsType: OddsType = OddsType.EU
 
+    private val binding by lazy { ButtonOddEndingBinding.inflate(layoutInflater,this) }
+
     init {
         foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
-        setBackgroundResource(R.drawable.selector_button_radius_6_odds)
-        inflate(context, R.layout.button_odd_ending, this)
+        binding.root.setBackgroundResource(R.drawable.selector_button_radius_6_odds_trans)
     }
 
     fun setupOdd(odd: Odd?, oddsType: OddsType) {
         mOdd = odd
         mOddsType = oddsType
-        tv_odds?.text = odd?.name
+        binding.tvOdds?.text = odd?.name
 
         val select = odd?.id?.let { QuickListManager.containOdd(it) } ?: false
         isSelected = select
@@ -59,7 +60,7 @@ class EndingOddsButton @JvmOverloads constructor(
         //[Martin]馬來盤＆印尼盤會有負數的賠率
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
-
+        binding.tvSpread.text = TextUtil.formatForOdd(odd?.odds?:0)
     }
 
     //常駐顯示按鈕 依狀態隱藏鎖頭
@@ -83,16 +84,17 @@ class EndingOddsButton @JvmOverloads constructor(
 
     private fun bindStatu(enable: Boolean, isActivated: Boolean, isLocked: Boolean, isDeactivated: Boolean) {
         isEnabled = enable
-        tv_odds.isVisible = isActivated
-        img_odd_lock.isVisible = isLocked
-        img_odd_unknown.isVisible = isDeactivated
+        binding.tvOdds.isVisible = isActivated
+        binding.tvSpread.isVisible = isActivated
+        binding.imgOddLock.isVisible = isLocked
+        binding.imgOddUnknown.isVisible = isDeactivated
     }
 
     private fun setupOddState(oddState: Int) {
         if (!isEnabled) return
         when (oddState) {
             OddState.LARGER.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColor(
                         context,
                         R.color.color_1EB65B
@@ -101,7 +103,7 @@ class EndingOddsButton @JvmOverloads constructor(
                 isActivated = false
             }
             OddState.SMALLER.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColor(
                         context,
                         R.color.color_E23434
@@ -118,7 +120,7 @@ class EndingOddsButton @JvmOverloads constructor(
     }
 
     private fun resetOddsValueState() {
-        tv_odds.setTextColor(
+        binding.tvOdds.setTextColor(
             ContextCompat.getColorStateList(
                 context,
                 if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark

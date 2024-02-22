@@ -14,7 +14,6 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.post
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.*
@@ -34,16 +33,26 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         val tabLayout = vh.getView<TabLayout>(R.id.tabLayout)
         OverScrollDecoratorHelper.setUpOverScroll(tabLayout)
         tabLayout.addOnTabSelectedListener(TabSelectedAdapter { tab, reselected ->
-
-            val pair = tab.tag as Pair<String, MatchOdd>
-            if (!pair.second.isExpanded) {
+            val playCate = tab.tag.toString()
+            val matchOdd = tabLayout.tag as MatchOdd
+            if (!matchOdd.isExpanded) {
                 return@TabSelectedAdapter
             }
-            pair.second.selectPlayCode = pair.first
-            pair.second.oddIdsMap?.get(pair.second.selectPlayCode)?.let {
-                if (it != pair.second.selectPlayOdds) {
-                    pair.second.selectPlayOdds = it
-                    post { adapter.nodeReplaceChildData(pair.second, it.values) }
+            matchOdd.selectPlayCode = playCate
+            adapter.findVisiableRangeMatchOdd(matchOdd.matchInfo?.id?:"")?.apply {
+                selectPlayCode = playCate
+                isExpanded = matchOdd.isExpanded
+            }
+            matchOdd.oddIdsMap?.get(matchOdd.selectPlayCode)?.let {
+                if (it != matchOdd.selectPlayOdds) {
+                    matchOdd.selectPlayOdds = it
+                    post {
+                        val newChildNodes = mutableListOf<BaseNode>().apply {
+                            addAll(it.values)
+                            add(ViewAllNode(parentNode = matchOdd))
+                        }
+                        adapter.nodeReplaceChildData(matchOdd, newChildNodes)
+                    }
                 }
             }
         })
@@ -62,10 +71,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             if (it is SportMatchEvent.FavoriteChanged) {
                 getView<View>(R.id.league_odd_match_favorite).isSelected = matchInfo?.isFavorite ?: false
             } else if (it is SportMatchEvent.OddsChanged) {
-                val tvExpand = getView<TextView>(R.id.tvExpand)
-                val linExpand = getView<View>(R.id.linExpand)
-                val tabLayout = getView<TabLayout>(R.id.tabLayout)
-                resetStyle(linExpand, tvExpand, tabLayout, item)
+                resetStyle(helper, item)
                 rebindTab(getView(R.id.tabLayout), matchOdd, true)
             }
         }
@@ -78,8 +84,8 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         setText(R.id.tvHomeName, matchInfo?.homeName)
         setText(R.id.tvAwayName, matchInfo?.awayName)
         setText(R.id.league_odd_match_time, TimeUtil.timeFormat(matchInfo?.startTime, TimeUtil.DM_HM_FORMAT))
-        getView<ImageView>(R.id.ivHomeLogo).setTeamLogo(matchInfo?.homeIcon)
-        getView<ImageView>(R.id.ivAwayLogo).setTeamLogo(matchInfo?.awayIcon)
+        getView<ImageView>(R.id.ivHomeLogo).setTeamLogo(matchInfo?.homeIcon,R.drawable.ic_team_default_no_stroke)
+        getView<ImageView>(R.id.ivAwayLogo).setTeamLogo(matchInfo?.awayIcon,R.drawable.ic_team_default_no_stroke)
         getView<View>(R.id.lin_match).setOnClickListener {
             onItemClick.invoke(helper.bindingAdapterPosition, it, item)
         }
@@ -88,17 +94,13 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             isSelected = matchInfo?.isFavorite ?: false
             setOnClickListener { onItemClick.invoke(helper.bindingAdapterPosition, this, item) }
         }
-        val tvExpand = getView<TextView>(R.id.tvExpand)
-        val linExpand = getView<View>(R.id.linExpand)
-        val tabLayout = getView<TabLayout>(R.id.tabLayout)
-        resetStyle(linExpand, tvExpand, tabLayout, item)
-        rebindTab(tabLayout, matchOdd)
-        linExpand.setOnClickListener {
+        resetStyle(helper, item)
+        rebindTab(getView(R.id.tabLayout), matchOdd)
+        getView<View>(R.id.linExpand).setOnClickListener {
             adapter.expandOrCollapse(item, parentPayload = item)
-            resetStyle(linExpand, tvExpand, tabLayout, item)
-            rebindTab(tabLayout, matchOdd, true)
+            resetStyle(helper, item)
+            rebindTab(getView(R.id.tabLayout), matchOdd, true)
         }
-
     }
 
     private val expandedDrawable by lazy {
@@ -112,31 +114,33 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_cccccc)
     }
 
-    private fun resetStyle(linExpand: View, tvExpand: TextView,tabLayout: TabLayout, matchOdd: MatchOdd) = tvExpand.run {
+    private fun resetStyle(helper: BaseViewHolder, matchOdd: MatchOdd) {
+        val tvExpand = helper.getView<TextView>(R.id.tvExpand)
+        val linExpand = helper.getView<View>(R.id.linExpand)
         when{
             matchOdd.oddIdsMap.isNullOrEmpty()->{
                 linExpand.isEnabled = false
-                setText(R.string.N698)
-                setTextColor(ContextCompat.getColor(context, R.color.color_FFFFFF))
+                tvExpand.setText(R.string.N698)
+                tvExpand.setTextColor(ContextCompat.getColor(context, R.color.color_FFFFFF))
                 linExpand.background = disableDrawable
                 (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 10.dp
-                setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+                tvExpand.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }
             matchOdd.isExpanded->{
                 linExpand.isEnabled = true
-                setText(R.string.D039)
-                setTextColor(ContextCompat.getColor(context, R.color.color_025BE8))
+                tvExpand.setText(R.string.D039)
+                tvExpand.setTextColor(ContextCompat.getColor(context, R.color.color_025BE8))
                 linExpand.background = collapseDrawable
                 (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 10.dp
-                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_up_blue, 0)
+                tvExpand.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_up_blue, 0)
             }
             else->{
                 linExpand.isEnabled = true
-                setText(R.string.N698)
-                setTextColor(Color.WHITE)
+                tvExpand.setText(R.string.N698)
+                tvExpand.setTextColor(Color.WHITE)
                 linExpand.background = expandedDrawable
                 (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 20.dp
-                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_down_white, 0)
+                tvExpand.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_down_white, 0)
             }
         }
 
@@ -144,27 +148,29 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
 
     private fun rebindTab(tablayout: TabLayout, matchOdd: MatchOdd, update: Boolean = false) = tablayout.run {
         isVisible = matchOdd.isExpanded
+        tablayout.tag = matchOdd
         if (tabCount > 0){
-            if (update && tabCount == matchOdd.oddIdsMap.size) {
+            if(tabCount == matchOdd.oddIdsMap.size){
                 repeat(tabCount) {
                     val tab = getTabAt(it)!!
-                    val pair = tab.tag as Pair<String, MatchOdd>
-                    if (pair.first == matchOdd.selectPlayCode) {
+                    if (tab.tag == matchOdd.selectPlayCode) {
                         tab.select()
                         return@run
                     }
                 }
+            }else{
+                removeAllTabs()
             }
-
-            removeAllTabs()
         }
 
-        matchOdd.oddIdsMap?.keys.forEach {
-            addTab(newTab().setTag(Pair(it, matchOdd)).setText(it.getEndScoreNameByTab(context)))
-        }
-        if (tabCount == 0) {
-            matchOdd.selectPlayCode = PlayCate.FS_LD_CS.value
-            matchOdd.selectPlayOdds = null
+        if (tabCount == 0 ) {
+            matchOdd.oddIdsMap?.keys.forEach {
+                val tab = newTab().setTag(it).setText(it.getEndScoreNameByTab(context))
+                addTab(tab)
+                if (it == matchOdd.selectPlayCode) {
+                    tab.select()
+                }
+            }
         }
     }
 }

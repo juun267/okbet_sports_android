@@ -796,6 +796,10 @@ enum class PlayCate(val value: String) {
                 OU_2_WAY_1ST_C.value -> OU_2_WAY_1ST_C
                 OU_2_WAY_1ST_H.value -> OU_2_WAY_1ST_H
                 FS_LD_CS.value -> FS_LD_CS
+                FS_LD_CS_SEG1.value -> FS_LD_CS_SEG1
+                FS_LD_CS_SEG2.value -> FS_LD_CS_SEG2
+                FS_LD_CS_SEG3.value -> FS_LD_CS_SEG3
+                FS_LD_CS_SEG4.value -> FS_LD_CS_SEG4
                 PK_1ST_C.value -> PK_1ST_C
                 PK_1ST_H.value -> PK_1ST_H
                 PK_2ND_C.value -> PK_2ND_C

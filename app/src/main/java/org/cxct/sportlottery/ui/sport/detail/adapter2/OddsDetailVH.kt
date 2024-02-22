@@ -34,6 +34,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.FGLGType
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.adapter.*
+import org.cxct.sportlottery.ui.sport.endscore.EndScoreItemDecoration
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
@@ -204,6 +205,10 @@ class OddsDetailVH (
 
         if (viewType == oddsAdapter.EPS) {
             forEPS(oddsDetail)
+            return
+        }
+        if (viewType == oddsAdapter.ENDSCORE) {
+            forEndScore(oddsDetail,payloads)
             return
         }
 
@@ -546,45 +551,8 @@ class OddsDetailVH (
     private fun forSingle(oddsDetail: OddsDetailListData, spanCount: Int, payloads: MutableList<Any>?) {
 
         if (rvBet == null) {
-            if (oddsDetail.gameType.isEndScoreType()) {
-                //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
-                itemView.lin_match.isVisible = false
-            }
             return
         }
-
-
-        if (oddsDetail.gameType.isEndScoreType()) {
-            //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
-            itemView.lin_match.isVisible = false
-            rvBet.setBackgroundResource(R.color.color_F9FAFD)
-            val nonAdapter = rvBet.adapter == null
-            if (rvBet.itemDecorationCount == 0) {
-                rvBet.addItemDecoration(GridSpacingItemDecoration(4, 4.dp,false))
-            }
-
-            val adapter = initSingleRCV(rvBet, 4, oddsDetail)
-            rvBet.tag = oddsDetail.gameType
-            if (nonAdapter) {
-                oddsAdapter.isFirstRefresh = false
-            } else {
-                rvBet.tag = oddsDetail.gameType
-                if (payloads.isNullOrEmpty()){
-                    adapter.notifyDataSetChanged()
-                } else {
-                    payloads.forEach { payloadItem ->
-                        oddsDetail.oddArrayList.forEachIndexed { index, odd ->
-                            if (odd?.id == payloadItem) {
-                                runWithCatch { adapter.notifyItemChanged(index) }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return
-        }
-
 
 //      Timber.d("===洗刷刷4 else index:${12} payloads:${payloads?.size}")
         rvBet.setBackgroundResource(R.color.color_FFFFFF)
@@ -620,6 +588,23 @@ class OddsDetailVH (
             adapter.onOddClickListener = oddsAdapter.onOddClickListener
             adapter.oddsType = oddsAdapter.oddsType
             (recyclerView.layoutManager as GridLayoutManager).spanCount = spanCount
+        }
+        return adapter
+    }
+
+    private fun initEndScoreRCV(recyclerView: RecyclerView, oddsDetail: OddsDetailListData): TypeEndScoreAdapter {
+        lateinit var adapter: TypeEndScoreAdapter
+        oddsDetail.sortOddForSingle()
+        if (recyclerView.adapter == null) {
+            adapter = TypeEndScoreAdapter(oddsDetail, oddsAdapter.onOddClickListener, oddsAdapter.oddsType)
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = GridLayoutManager(itemView.context, 5)
+        } else {
+            adapter = recyclerView.adapter as TypeEndScoreAdapter
+            adapter.setOddsDetailData(oddsDetail)
+            adapter.onOddClickListener = oddsAdapter.onOddClickListener
+            adapter.oddsType = oddsAdapter.oddsType
+            (recyclerView.layoutManager as GridLayoutManager).spanCount = 5
         }
         return adapter
     }
@@ -784,7 +769,36 @@ class OddsDetailVH (
             }
         }
     }
+    private fun forEndScore(oddsDetail: OddsDetailListData,payloads: MutableList<Any>?) {
+        //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
+        itemView.lin_match.isVisible = false
+        if (rvBet == null)
+            return
+            rvBet.setBackgroundResource(R.color.color_FFFFFF)
+            val nonAdapter = rvBet.adapter == null
+            if (rvBet.itemDecorationCount == 0) {
+                rvBet.addItemDecoration(EndScoreItemDecoration(true))
+            }
 
+            val adapter = initEndScoreRCV(rvBet,  oddsDetail)
+            rvBet.tag = oddsDetail.gameType
+            if (nonAdapter) {
+                oddsAdapter.isFirstRefresh = false
+            } else {
+                rvBet.tag = oddsDetail.gameType
+                if (payloads.isNullOrEmpty()){
+                    adapter.notifyDataSetChanged()
+                } else {
+                    payloads.forEach { payloadItem ->
+                        oddsDetail.oddArrayList.forEachIndexed { index, odd ->
+                            if (odd?.id == payloadItem) {
+                                runWithCatch { adapter.notifyItemChanged(index) }
+                            }
+                        }
+                    }
+                }
+            }
+    }
     private fun selectSCO(oddsDetail: OddsDetailListData, teamName: String, homeName: String): OddsDetailListData {
         tvHomeName?.isSelected = teamName == homeName
         tvAwayName?.isSelected = teamName != homeName

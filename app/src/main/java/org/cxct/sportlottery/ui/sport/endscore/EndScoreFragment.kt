@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
@@ -12,7 +13,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
-import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
@@ -21,7 +24,6 @@ import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
-import java.util.ArrayList
 
 /**
  * @app_destination 末位比分
@@ -31,7 +33,11 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
     override var matchType = MatchType.END_SCORE
     override fun getCurGameType() = GameType.BK
     override fun getGameListAdapter() = endScoreAdapter
-    override fun getGameLayoutManger() = SocketGridManager(context(), 4)
+    override fun getGameLayoutManger() = SocketGridManager(context(), 5).apply { spanSizeLookup = object: GridLayoutManager.SpanSizeLookup(){
+        override fun getSpanSize(position: Int): Int {
+            return if (endScoreAdapter.getItem(position) is ViewAllNode) 5 else 1
+        }
+    } }
     override fun observerMenuData() { }
 
     override val oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
@@ -96,7 +102,8 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
         super.onInitView(view)
         binding.sportTypeList.gone()
         binding.tvSportName.setText(R.string.basketball)
-        binding.gameList.setBackgroundColor(ContextCompat.getColor(context(), R.color.color_FAFDFF))
+        binding.gameList.setBackgroundColor(ContextCompat.getColor(context(), R.color.color_F9FAFD))
+        binding.gameList.addItemDecoration(EndScoreItemDecoration())
     }
 
     override fun onBindViewStatus(view: View) {
@@ -149,7 +156,9 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
             //api拿到到数据，第一个默认展开
             list?.forEachIndexed { index, baseNode ->
                 (baseNode as BaseExpandNode).isExpanded = (index == 0)
-                baseNode.childNode?.forEach { (it as BaseExpandNode).isExpanded = false }
+                baseNode.childNode?.forEachIndexed { childIndex, baseNode ->
+                    (baseNode as BaseExpandNode).isExpanded = (index==0 && childIndex==0)
+                }
             }
             setSportDataList(list)
             dismissLoading()

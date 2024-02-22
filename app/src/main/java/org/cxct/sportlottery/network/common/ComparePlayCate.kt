@@ -76,7 +76,7 @@ enum class ComparePlayCate(val compareCode: String, val mainPlayCate: PlayCate) 
             val compareStringList = comparePlayCate.compareCode.split("@X")
             return compareStringList.map { compareString ->
                 playCateCode.contains(compareString)
-            }.all { true }
+            }.all { it }
         }
 
         /**
