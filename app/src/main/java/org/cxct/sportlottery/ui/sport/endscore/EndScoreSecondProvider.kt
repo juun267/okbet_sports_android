@@ -22,41 +22,42 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
+import timber.log.Timber
 
 class EndScoreSecondProvider(val adapter: EndScoreAdapter,
                              val onItemClick:(Int, View, BaseNode) -> Unit,
                              override val itemViewType: Int = 2,
                              override val layoutId: Int = R.layout.item_endscore_battle): BaseNodeProvider() {
 
+    private val tabSelectedAdapter = TabSelectedAdapter { tab, reselected ->
+        val playCate = tab.tag.toString()
+        val matchOdd = tab.parent?.tag as MatchOdd
+        if (!matchOdd.isExpanded) {
+            return@TabSelectedAdapter
+        }
+        matchOdd.selectPlayCode = playCate
+        adapter.findVisiableRangeMatchOdd(matchOdd.matchInfo?.id?:"")?.apply {
+            selectPlayCode = playCate
+            isExpanded = matchOdd.isExpanded
+        }
+        matchOdd.oddIdsMap?.get(matchOdd.selectPlayCode)?.let {
+            if (it != matchOdd.selectPlayOdds) {
+                matchOdd.selectPlayOdds = it
+                post {
+                    val newChildNodes = mutableListOf<BaseNode>().apply {
+                        addAll(it.values)
+                        add(ViewAllNode(parentNode = matchOdd))
+                    }
+                    adapter.nodeReplaceChildData(matchOdd, newChildNodes)
+                }
+            }
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val vh = super.onCreateViewHolder(parent, viewType)
         val tabLayout = vh.getView<TabLayout>(R.id.tabLayout)
         OverScrollDecoratorHelper.setUpOverScroll(tabLayout)
-        tabLayout.addOnTabSelectedListener(TabSelectedAdapter { tab, reselected ->
-            val playCate = tab.tag.toString()
-            val matchOdd = tabLayout.tag as MatchOdd
-            if (!matchOdd.isExpanded) {
-                return@TabSelectedAdapter
-            }
-            matchOdd.selectPlayCode = playCate
-            adapter.findVisiableRangeMatchOdd(matchOdd.matchInfo?.id?:"")?.apply {
-                selectPlayCode = playCate
-                isExpanded = matchOdd.isExpanded
-            }
-            matchOdd.oddIdsMap?.get(matchOdd.selectPlayCode)?.let {
-                if (it != matchOdd.selectPlayOdds) {
-                    matchOdd.selectPlayOdds = it
-                    post {
-                        val newChildNodes = mutableListOf<BaseNode>().apply {
-                            addAll(it.values)
-                            add(ViewAllNode(parentNode = matchOdd))
-                        }
-                        adapter.nodeReplaceChildData(matchOdd, newChildNodes)
-                    }
-                }
-            }
-        })
-
         return vh
     }
 
@@ -72,7 +73,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
                 getView<View>(R.id.league_odd_match_favorite).isSelected = matchInfo?.isFavorite ?: false
             } else if (it is SportMatchEvent.OddsChanged) {
                 resetStyle(helper, item)
-                rebindTab(getView(R.id.tabLayout), matchOdd, true)
+                rebindTab(getView(R.id.tabLayout), matchOdd)
             }
         }
     }
@@ -99,7 +100,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         getView<View>(R.id.linExpand).setOnClickListener {
             adapter.expandOrCollapse(item, parentPayload = item)
             resetStyle(helper, item)
-            rebindTab(getView(R.id.tabLayout), matchOdd, true)
+            rebindTab(getView(R.id.tabLayout), matchOdd)
         }
     }
 
@@ -146,31 +147,32 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
 
     }
 
-    private fun rebindTab(tablayout: TabLayout, matchOdd: MatchOdd, update: Boolean = false) = tablayout.run {
-        isVisible = matchOdd.isExpanded
+    private fun rebindTab(tablayout: TabLayout, matchOdd: MatchOdd) {
+        tablayout.isVisible = matchOdd.isExpanded
         tablayout.tag = matchOdd
-        if (tabCount > 0){
-            if(tabCount == matchOdd.oddIdsMap.size){
-                repeat(tabCount) {
-                    val tab = getTabAt(it)!!
+        if (tablayout.tabCount > 0){
+            if(tablayout.tabCount == matchOdd.oddIdsMap.size){
+                repeat(tablayout.tabCount) {
+                    val tab = tablayout.getTabAt(it)!!
                     if (tab.tag == matchOdd.selectPlayCode) {
                         tab.select()
-                        return@run
+                        return
                     }
                 }
             }else{
-                removeAllTabs()
+                tablayout.removeAllTabs()
             }
         }
 
-        if (tabCount == 0 ) {
+        if (tablayout.tabCount == 0 ) {
+            tablayout.removeOnTabSelectedListener(tabSelectedAdapter)
             matchOdd.oddIdsMap?.keys.forEach {
-                val tab = newTab().setTag(it).setText(it.getEndScoreNameByTab(context))
-                addTab(tab)
-                if (it == matchOdd.selectPlayCode) {
-                    tab.select()
-                }
+                val tab = tablayout.newTab().setTag(it).setText(it.getEndScoreNameByTab(context))
+                tablayout.addTab(tab)
             }
+            tablayout.addOnTabSelectedListener(tabSelectedAdapter)
+            val index = matchOdd.oddIdsMap?.keys.indexOf(matchOdd.selectPlayCode)
+            tablayout.selectTab(tablayout.getTabAt(index),true)
         }
     }
 }
