@@ -16,8 +16,8 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 
 class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetReceiptCallback()) {
 
-    lateinit var refreshBetStatusFunction: (Long) -> Unit
-    lateinit var refreshBetStatusFinishFunction: () -> Unit
+    var refreshBetStatusFunction: ((Long) -> Unit)? = null
+    var refreshBetStatusFinishFunction: (() -> Unit)? = null
 
     var interfaceStatusChangeListener: InterfaceStatusChangeListener? = null
 
@@ -99,14 +99,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         startTime: Long, position: Int, tvTime: TextView
     ) {
         if (startTime.minus(System.currentTimeMillis()).div(1000L) < 1) {
-            if (this::refreshBetStatusFinishFunction.isInitialized) {
-                refreshBetStatusFinishFunction()
-            }
+            refreshBetStatusFinishFunction?.invoke()
         } else {
-            val time = startTime.minus(System.currentTimeMillis()).div(1000L)
-            if (this::refreshBetStatusFunction.isInitialized) {
-                refreshBetStatusFunction(time)
-            }
+            refreshBetStatusFunction?.invoke(startTime.minus(System.currentTimeMillis()).div(1000L))
         }
     }
 
