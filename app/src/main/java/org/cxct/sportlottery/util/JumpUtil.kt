@@ -48,7 +48,8 @@ object JumpUtil {
               path.contains("sweepstakes") ->{
                   toLottery(context, Constants.getLotteryH5Url(context, LoginRepository.token))
               }
-              path == "mobile/personal/activity_v2/christmas-promo"->{
+              path == "mobile/personal/activity_v2/christmas-promo"
+                      || path == "promo/christmas"->{
                 context.startActivity(
                     Intent(context, LuckyWheelActivity::class.java).apply {
                         putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
@@ -59,21 +60,25 @@ object JumpUtil {
                     }
                 )
             }
-            path == "mobile/personal/activity_v2"->{
+            path == "mobile/personal/activity_v2"
+                    || path == "promo"->{
                 (context as AppCompatActivity).startActivity(PromotionListActivity::class.java)
             }
-            path == "mobile/games/okgame"->{
+            path == "mobile/games/okgame"
+                    || path == "okgame"->{
                 (context as? MainTabActivity)?.let {
                     it.jumpToOKGames()
                 }
             }
-            path== "mobile/games/oklive"->{
+            path== "mobile/games/oklive"
+                    || path == "oklive"->{
                 (context as? MainTabActivity)?.let {
                     it.jumpToOkLive()
                 }
             }
-            path.startsWith("mobile/sports/") ->{
-                val sportParams = path.substringAfter("mobile/sports/").split("/")
+            path.startsWith("mobile/sports/")
+                    || path.startsWith("oksports/")->{
+                val sportParams = (if (path.startsWith("oksports/")) path.substringAfter("oksports/") else path.substringAfter("mobile/sports/")).split("/")
                 LogUtil.toJson(sportParams)
                 val matchType = sportParams.getOrNull(0)
                 val gameType = sportParams.getOrNull(1)
