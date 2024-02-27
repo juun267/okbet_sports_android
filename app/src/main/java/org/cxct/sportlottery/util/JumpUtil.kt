@@ -23,7 +23,7 @@ import timber.log.Timber
 
 object JumpUtil {
 
-
+    val sportStartPrefix = listOf("mobile/sports/","oksports/","okesports/")
     fun toInternalWeb(
         context: Context,
         href: String,
@@ -76,20 +76,22 @@ object JumpUtil {
                     it.jumpToOkLive()
                 }
             }
-            path.startsWith("mobile/sports/")
-                    || path.startsWith("oksports/")->{
-                val sportParams = (if (path.startsWith("oksports/")) path.substringAfter("oksports/") else path.substringAfter("mobile/sports/")).split("/")
-                LogUtil.toJson(sportParams)
-                val matchType = sportParams.getOrNull(0)
-                val gameType = sportParams.getOrNull(1)
-                val categoryType = sportParams.getOrNull(2)
-                (context as? MainTabActivity)?.let {
-                    if (gameType==GameType.ES.key){
-                       it.jumpToESport(matchType = MatchType.getMatchType(matchType),categoryType)
-                    }else{
-                        it.jumpToTheSport(matchType = MatchType.getMatchType(matchType),gameType = GameType.getGameType(gameType))
+            sportStartPrefix.any { path.startsWith(it)}->{
+                sportStartPrefix.firstOrNull { path.startsWith(it) }
+                    ?.let { startPrefix->
+                        val sportParams=path.substringAfter(startPrefix).split("/")
+                        LogUtil.toJson(sportParams)
+                        val matchType = sportParams.getOrNull(0)
+                        val gameType = sportParams.getOrNull(1)
+                        val categoryType = sportParams.getOrNull(2)
+                        (context as? MainTabActivity)?.let {
+                            if (gameType==GameType.ES.key|| startPrefix == sportStartPrefix[2]){
+                                it.jumpToESport(matchType = MatchType.getMatchType(matchType),categoryType)
+                            }else{
+                                it.jumpToTheSport(matchType = MatchType.getMatchType(matchType),gameType = GameType.getGameType(gameType))
+                            }
+                        }
                     }
-                }
             }
             else->{
                 context.startActivity(
