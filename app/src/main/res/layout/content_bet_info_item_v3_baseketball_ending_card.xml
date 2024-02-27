@@ -1,208 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_item_background"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_item_background"
+    <LinearLayout
+        android:id="@+id/odds_content_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/odds_change_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/tvBasketBallEndingScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="@string/N903"
+            android:textColor="@color/color_FFFFFF_414655"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/odds_change_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/odds_content_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/odds_content_container">
+
+
+        <TextView
+            android:id="@+id/tvOdds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_025BE8_025BE8"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            tools:text="\@ 0.89" />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tvLeagueName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/color_6D7693"
+        android:textSize="@dimen/textSize12sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/odds_content_container"
+        app:layout_constraintTop_toBottomOf="@+id/odds_content_container"
+        app:layout_goneMarginTop="27dp"
+        tools:text="Manchester United FC (Mad) vs. SS cdLazio(Dasko)" />
+
+
+    <TextView
+        android:id="@+id/tvMatchHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:maxWidth="160dp"
+        android:maxLines="1"
+        android:textColor="@color/color_6D7693"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintStart_toStartOf="@+id/tvLeagueName"
+        app:layout_constraintTop_toBottomOf="@+id/tvLeagueName"
+        app:layout_goneMarginEnd="15dp"
+        tools:text="Manchester United) United United United United United" />
+
+    <TextView
+        android:id="@+id/tvVs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="VS"
+        android:textColor="@color/color_6D7693"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMatchHome"
+        app:layout_constraintStart_toEndOf="@+id/tvMatchHome"
+        app:layout_constraintTop_toTopOf="@+id/tvMatchHome" />
+
+    <TextView
+        android:id="@+id/tvMatchAway"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/color_6D7693"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintStart_toEndOf="@+id/tvVs"
+        app:layout_constraintTop_toTopOf="@+id/tvVs"
+        app:layout_constraintWidth_max="160dp"
+        tools:text="Manchester United United UnitedFC (Mad) vs. SS cdLazio(Dasko)" />
+
+    <FrameLayout
+        android:id="@+id/flRv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/odds_content_container"
-            android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintHeight_max="112dp"
+        app:layout_constraintStart_toStartOf="@+id/odds_content_container"
+        app:layout_constraintTop_toBottomOf="@+id/tvMatchHome">
+        <org.cxct.sportlottery.view.ChildRecyclerView
+            android:id="@+id/rcvBasketballScore"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toStartOf="@+id/odds_change_container"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <TextView
-                android:id="@+id/tvBasketBallEndingScore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:text="@string/N903"
-                android:textColor="@color/color_FFFFFF_414655"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/odds_change_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/odds_content_container"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/odds_content_container">
-
-
-            <TextView
-                android:id="@+id/tvOdds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_025BE8_025BE8"
-                android:textSize="@dimen/textSize16sp"
-                android:textStyle="bold"
-                tools:text="\@ 0.89" />
-
-        </LinearLayout>
-        <TextView
-            android:id="@+id/tvLeagueName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="12dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/color_6D7693"
-            android:textSize="@dimen/textSize12sp"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:scrollbars="vertical"
             android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/odds_content_container"
-            app:layout_constraintTop_toBottomOf="@+id/odds_content_container"
-            app:layout_goneMarginTop="27dp"
-            tools:text="Manchester United FC (Mad) vs. SS cdLazio(Dasko)" />
-
-
-        <TextView
-            android:id="@+id/tvMatchHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:ellipsize="end"
-            android:maxWidth="160dp"
-            android:maxLines="1"
-            android:textColor="@color/color_6D7693"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintStart_toStartOf="@+id/tvLeagueName"
-            app:layout_constraintTop_toBottomOf="@+id/tvLeagueName"
-            app:layout_goneMarginEnd="15dp"
-            tools:text="Manchester United) United United United United United" />
-
-        <TextView
-            android:id="@+id/tvVs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:text="VS"
-            android:textColor="@color/color_6D7693"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvMatchHome"
-            app:layout_constraintStart_toEndOf="@+id/tvMatchHome"
-            app:layout_constraintTop_toTopOf="@+id/tvMatchHome" />
-
-        <TextView
-            android:id="@+id/tvMatchAway"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/color_6D7693"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintStart_toEndOf="@+id/tvVs"
-            app:layout_constraintTop_toTopOf="@+id/tvVs"
-            app:layout_constraintWidth_max="160dp"
-            tools:text="Manchester United United UnitedFC (Mad) vs. SS cdLazio(Dasko)" />
-
-        <FrameLayout
-            android:id="@+id/flRv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            app:layout_constraintHeight_max="112dp"
-            app:layout_constraintStart_toStartOf="@+id/odds_content_container"
-            app:layout_constraintTop_toBottomOf="@+id/tvMatchHome">
-            <org.cxct.sportlottery.view.ChildRecyclerView
-                android:id="@+id/rcvBasketballScore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
-                android:layout_marginBottom="@dimen/margin_8"
-                android:scrollbars="vertical"
-                android:visibility="visible"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="5"
-                tools:itemCount="20"
-                tools:listitem="@layout/item_bet_basketball_ending_cart"
-                tools:text="让球(1-1) container " />
-            <View
-                android:id="@+id/topShadow"
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:layout_gravity="top"
-                android:background="@drawable/bg_gradient_bk_top_shadow" />
-        </FrameLayout>
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/llKeyboardContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/color_F9FAFD"
-            android:orientation="vertical"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/flRv"
-            tools:visibility="visible">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_0.5"
-                android:background="@color/color_E0E3EE"/>
-            <include
-                android:id="@+id/includeControl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_12"
-                layout="@layout/item_bet_list_batch_control_connect_v3"/>
-
-            <View
-                android:id="@+id/viewDivider2"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_0.5"
-                android:background="@color/color_E0E3EE" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/llContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llKeyboardContainer">
-
-            <org.cxct.sportlottery.util.KeyboardView
-                android:id="@+id/layoutKeyBoard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="5"
+            tools:itemCount="20"
+            tools:listitem="@layout/item_bet_basketball_ending_cart"
+            tools:text="让球(1-1) container " />
         <View
-            android:id="@+id/bottomPaddingView"
+            android:id="@+id/topShadow"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_gravity="top"
+            android:background="@drawable/bg_gradient_bk_top_shadow" />
+    </FrameLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llKeyboardContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/color_F9FAFD"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flRv"
+        tools:visibility="visible">
+        <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_0.5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:background="@color/color_E0E3EE"/>
+        <include
+            android:id="@+id/includeControl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_12"
+            layout="@layout/item_bet_list_batch_control_connect_v3"/>
+
+        <View
+            android:id="@+id/viewDivider2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_0.5"
+            android:background="@color/color_E0E3EE" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llKeyboardContainer">
+
+        <org.cxct.sportlottery.util.KeyboardView
+            android:id="@+id/layoutKeyBoard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <View
+        android:id="@+id/bottomPaddingView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

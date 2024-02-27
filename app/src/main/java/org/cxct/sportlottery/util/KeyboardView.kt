@@ -5,13 +5,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
-import android.widget.FrameLayout
+import android.widget.LinearLayout
 import com.google.android.material.snackbar.Snackbar
 import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.databinding.ItemNumberKeyboardLayout2Binding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil.dRoundDown2
 import org.cxct.sportlottery.util.TextUtil.strRoundDown2
 import splitties.systemservices.layoutInflater
@@ -19,20 +20,20 @@ import java.lang.reflect.Method
 
 class KeyboardView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(
+) : LinearLayout(
     context, attrs, defStyleAttr
 ) {
 
     private val binding by lazy {
-        ItemNumberKeyboardLayout2Binding.inflate(layoutInflater,null,false)
+        ItemNumberKeyboardLayout2Binding.inflate(layoutInflater,this)
     }
 
     /**键盘点击事件*/
     private var numCLick: ((number: String) -> Unit)? = null
 
     init {
-        removeAllViews()
-        addView(binding.root, 0)
+        orientation = VERTICAL
+        12.dp.let { setPadding(it, 3.dp, it,8.dp) }
         initView()
     }
 
