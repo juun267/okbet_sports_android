@@ -65,7 +65,7 @@ object JumpUtil {
                 (context as AppCompatActivity).startActivity(PromotionListActivity::class.java)
             }
             path == "mobile/games/okgame"
-                    || path == "okgame"->{
+                    || path == "okgames"->{
                 (context as? MainTabActivity)?.let {
                     it.jumpToOKGames()
                 }
@@ -81,15 +81,16 @@ object JumpUtil {
                     ?.let { startPrefix->
                         val sportParams=path.substringAfter(startPrefix).split("/")
                         LogUtil.toJson(sportParams)
-                        val matchType = sportParams.getOrNull(0)
-                        val gameType = sportParams.getOrNull(1)
-                        val categoryType = sportParams.getOrNull(2)
-                        (context as? MainTabActivity)?.let {
-                            if (gameType==GameType.ES.key|| startPrefix == sportStartPrefix[2]){
-                                it.jumpToESport(matchType = MatchType.getMatchType(matchType),categoryType)
-                            }else{
-                                it.jumpToTheSport(matchType = MatchType.getMatchType(matchType),gameType = GameType.getGameType(gameType))
-                            }
+                        if (startPrefix == sportStartPrefix[0]){
+                            val matchType = sportParams.getOrNull(0)
+                            val gameType = sportParams.getOrNull(1)
+                            val categoryType = sportParams.getOrNull(2)
+                            toSport(matchType,gameType,categoryType)
+                        }else{
+                            val matchType = sportParams.getOrNull(0)
+                            val gameType = if(startPrefix == sportStartPrefix[1]) sportParams.getOrNull(1) else GameType.ES.key
+                            val categoryType = if(startPrefix == sportStartPrefix[1]) sportParams.getOrNull(2) else sportParams.getOrNull(1)
+                            toSport(matchType,gameType,categoryType)
                         }
                     }
             }
@@ -191,5 +192,14 @@ object JumpUtil {
                 putExtra(WebActivity.KEY_BACK_EVENT, true)
             }
         )
+    }
+    fun toSport(matchType: String?, gameType: String?,categoryType: String?){
+        (AppManager.currentActivity() as? MainTabActivity)?.let {
+            if (gameType==GameType.ES.key){
+                it.jumpToESport(matchType = MatchType.getMatchType(matchType),categoryType)
+            }else{
+                it.jumpToTheSport(matchType = MatchType.getMatchType(matchType),gameType = GameType.getGameType(gameType))
+            }
+        }
     }
 }
