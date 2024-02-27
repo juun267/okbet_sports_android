@@ -1,12 +1,9 @@
-package org.cxct.sportlottery.util
+package org.cxct.sportlottery.common.appevent
 
 import android.os.Bundle
 import com.appsflyer.AFInAppEventParameterName
 import com.appsflyer.AFInAppEventType
 import com.appsflyer.AppsFlyerLib
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import splitties.bundle.put
 

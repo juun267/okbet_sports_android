@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import org.cxct.sportlottery.databinding.ViewBetEmptyBinding
 
 class BetEmptyView(context: Context): LinearLayout(context) {
-    val binding: ViewBetEmptyBinding
+    private val binding: ViewBetEmptyBinding
 
     init {
         binding =ViewBetEmptyBinding.inflate(LayoutInflater.from(context), this,true)

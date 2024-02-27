@@ -11,6 +11,7 @@ import com.google.gson.JsonObject
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.network.Constants
@@ -27,7 +28,6 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.QueryUtil.toUrlParamsFormat
