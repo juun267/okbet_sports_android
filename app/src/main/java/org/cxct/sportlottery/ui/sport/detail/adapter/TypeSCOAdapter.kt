@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddSpreadForSCOCompare
 import org.cxct.sportlottery.common.enums.OddsType
@@ -124,8 +123,8 @@ class TypeSCOAdapter(
                 clickDelay {
                     fOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_first)) }
                 }
-                tv_name.text = context.getString(R.string.odds_button_name_first)
-                tv_spread.text = ""
+                binding.tvName.text = context.getString(R.string.odds_button_name_first)
+                binding.tvSpread.text = ""
             }
 
             btnOddsAnt?.apply {
@@ -134,8 +133,8 @@ class TypeSCOAdapter(
                 clickDelay {
                     aOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_any)) }
                 }
-                tv_name.text = context.getString(R.string.odds_button_name_ant)
-                tv_spread.text = ""
+                binding.tvName.text = context.getString(R.string.odds_button_name_ant)
+                binding.tvSpread.text = ""
             }
 
             btnOddsLast?.apply {
@@ -144,8 +143,8 @@ class TypeSCOAdapter(
                 clickDelay {
                     lOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_last)) }
                 }
-                tv_name.text = context.getString(R.string.odds_button_name_last)
-                tv_spread.text = ""
+                binding.tvName.text = context.getString(R.string.odds_button_name_last)
+                binding.tvSpread.text = ""
             }
         }
 
@@ -175,8 +174,8 @@ class TypeSCOAdapter(
                 clickDelay {
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
-                tv_name.visibility = View.GONE
-                tv_spread.visibility = View.GONE
+                binding.tvName.visibility = View.GONE
+                binding.tvSpread.visibility = View.GONE
             }
         }
 

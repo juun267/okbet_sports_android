@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentBetDetailsBinding
+import org.cxct.sportlottery.databinding.ItemviewGameNoRecordBinding
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
@@ -25,7 +26,9 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class BetDetailsFragment : BaseFragment<BetListViewModel,FragmentBetDetailsBinding>() {
     //复制的注单列表的适配器
-    private val detailAdapter by lazy { TransactionRecordDetailAdapter() }
+    private val detailAdapter by lazy { TransactionRecordDetailAdapter().apply {
+        setEmptyView(ItemviewGameNoRecordBinding.inflate(layoutInflater).root)
+    } }
 
     override fun onInitView(view: View) {
         val row = arguments?.get("data") as Row?

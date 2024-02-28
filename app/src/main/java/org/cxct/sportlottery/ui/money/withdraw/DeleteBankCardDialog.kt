@@ -22,20 +22,13 @@ import org.cxct.sportlottery.view.isVisible
 class DeleteBankCardDialog(private val phoneNo: String,
                            private val onResult: (String, String) -> Unit): BaseDialog<WithdrawViewModel,DialogDeleteBankcardBinding>() {
 
-    override fun setDefaulStyle() {  }
-
     private var countDownGoing = false
 
     override fun onInitView() {
-        initWindowAttr()
         initPassWordInputStyle()
         initEditTextObserver()
         initObserver()
         setUpBtn()
-    }
-
-    private fun initWindowAttr() {
-        dialog!!.window!!.setBackgroundDrawable(null)
     }
 
 
@@ -74,7 +67,7 @@ class DeleteBankCardDialog(private val phoneNo: String,
                 fieldBoxes.setEndIcon(R.drawable.ic_eye_open)
                 editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
             }
-            fieldBoxes.hasFocus = true
+            fieldBoxes.setHasFocus(true)
             editText.setSelection(editText.text.toString().length)
         }
     }

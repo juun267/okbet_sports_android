@@ -102,7 +102,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel,CryptoPayFragmentBindi
                 )
             }
         }
-        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,binding.linMaintenance.root) }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,binding.linMaintenance) }
 
         //年月日的时间选择器
         llRechargeTime.setOnClickListener {
@@ -534,7 +534,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel,CryptoPayFragmentBindi
 
             //更新充值金額&手續費金額
             refreshMoneyDetail(etRechargeAmount.getText())
-            mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,binding.linMaintenance.root) }
+            mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,binding.linMaintenance) }
         } catch (e: Exception) {
             e.printStackTrace()
         }

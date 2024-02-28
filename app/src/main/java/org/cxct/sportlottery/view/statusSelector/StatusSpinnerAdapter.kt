@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import kotlinx.android.synthetic.main.item_play_spinner.view.*
+import org.cxct.sportlottery.common.extentions.toBinding
 import org.cxct.sportlottery.databinding.ItemPlaySpinnerBinding
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 
@@ -33,9 +33,10 @@ class StatusSpinnerAdapter(dataItems: MutableList<StatusSheetData> = mutableList
             view.tag = viewHolder
         } else {
             view = convertView
+            binding = view.toBinding()
             viewHolder = view.tag as PlayItemViewHolder
         }
-        view.tvPlay.setTextColor(color)
+        binding.tvPlay.setTextColor(color)
         viewHolder.bind(itemList[position], position)
 
         return view

@@ -1,32 +1,18 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
-import android.view.Gravity
-import android.view.View
 import android.widget.LinearLayout
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.core.view.isVisible
-import androidx.core.view.marginRight
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.include_home_news.*
-import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.getColor
 import org.cxct.sportlottery.databinding.TabHomeNewsBinding
 import org.cxct.sportlottery.databinding.ViewHomeNewsBinding
-import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.RCVDecoration
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 import splitties.systemservices.layoutInflater
 

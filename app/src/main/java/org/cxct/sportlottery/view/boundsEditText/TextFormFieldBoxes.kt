@@ -1,702 +1,652 @@
-package org.cxct.sportlottery.view.boundsEditText;
+package org.cxct.sportlottery.view.boundsEditText
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
-import android.widget.Space;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.TextViewCompat;
-
-import org.cxct.sportlottery.R;
-import org.cxct.sportlottery.util.MetricsUtil;
-
+import android.content.Context
+import android.content.res.TypedArray
+import android.graphics.Color
+import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.AttributeSet
+import android.util.TypedValue
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
+import android.widget.RelativeLayout
+import android.widget.Space
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.widget.TextViewCompat
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.TextFormFieldBoxesLayoutBinding
+import org.cxct.sportlottery.util.MetricsUtil.convertDpToPixel
+import splitties.systemservices.layoutInflater
 
 /**
  * Text Field Boxes
  * Created by CarbonylGroup on 2017/08/25
  */
-@SuppressWarnings("unused")
-public class TextFormFieldBoxes extends FrameLayout {
-
+class TextFormFieldBoxes : FrameLayout {
     /**
      * all the default colors to be used on light or dark themes.
      */
-    public int DEFAULT_ERROR_COLOR;
-    public int DEFAULT_PRIMARY_COLOR;
-    public int DEFAULT_TEXT_COLOR;
-    public int DEFAULT_DISABLED_TEXT_COLOR;
-    public int DEFAULT_BG_COLOR;
-    public int DEFAULT_FG_COLOR;
+    var DEFAULT_ERROR_COLOR = 0
+    var DEFAULT_PRIMARY_COLOR = 0
+    var DEFAULT_TEXT_COLOR = 0
+    var DEFAULT_DISABLED_TEXT_COLOR = 0
+    var DEFAULT_BG_COLOR = 0
+    var DEFAULT_FG_COLOR = 0
 
     /**
      * whether the text field is enabled. True by default.
      */
-    protected boolean enabled;
+    private var enabled: Boolean = false
 
     /**
      * labelText text at the top.
      */
-    protected String labelText;
+    private var labelText: String? = null
 
     /**
      * labelText text style
      */
-    protected int labelTextStyle;
+    private var labelTextStyle = 0
 
     /**
      * subLabelText text at the top.
      */
-    protected String subLabelText;
+    private var subLabelText: String? = null
 
     /**
      * hintText text at the top.
      */
-    protected String hintText;
+    private var hintText: String? = null
 
     /**
      * singleText text at the top.
      */
-    protected String singleText;
+    private var singleText: String? = null
 
     /**
      * singleText text style
      */
-    protected int singleTextStyle;
+    private var singleTextStyle = 0
 
     /**
      * singleText text color
      */
-    protected int singleTextColor;
+    private var singleTextColor = 0
 
     /**
      * singleText text start padding
      */
-    protected int singleTextStartPadding;
+    private var singleTextStartPadding = 0
 
     /**
      * helper Label text at the bottom.
      */
-    protected String helperText;
+    private var helperText: String? = null
 
     /**
      * max characters count limit. 0 means no limit. 0 by default.
      */
-    protected int maxCharacters;
+    private var maxCharacters = 0
 
     /**
      * min characters count limit. 0 means no limit. 0 by default.
      */
-    protected int minCharacters;
+    private var minCharacters = 0
 
     /**
      * the text color for the helperLabel text. DEFAULT_TEXT_COLOR by default.
      */
-    protected int helperTextColor;
+    private var helperTextColor = 0
 
     /**
      * the text color for the counterLabel text. DEFAULT_TEXT_COLOR by default.
      */
-    protected int mCounterTextColor;
+    private var mCounterTextColor = 0
 
     /**
      * the text color for when something is wrong (e.g. exceeding max characters, setError()).
      * DEFAULT_ERROR_COLOR by default.
      */
-    protected int errorColor;
+    var errorColor = 0
 
     /**
      * the color for the underline, the floating label text and the icon signifier tint when HAVING focus.
      * Current theme primary color by default.
      */
-    protected int primaryColor;
+    private var primaryColor = 0
 
     /**
      * the color for the underline, the floating label text and the icon signifier tints when NOT HAVING focus.
      * DEFAULT_TEXT_COLOR by default.
      */
-    protected int secondaryColor;
-
+    private var secondaryColor = 0
+    //        this.panel.getBackground()
+//                .setColorFilter(new PorterDuffColorFilter(colorRes, PorterDuff.Mode.SRC_IN));
     /**
      * the color for panel at the back. DEFAULT_BG_COLOR by default.
      */
-    protected int panelBackgroundColor;
+    var panelBackgroundColor = 0
 
     /**
      * the resource ID of the icon signifier. 0 by default.
      */
-    protected int iconSignifierResourceId;
+    var iconSignifierResourceId = 0
+        private set
 
     /**
      * the resource ID of the icon at the end. 0 by default.
      */
-    protected int endIconResourceId;
+    var endIconResourceId = 0
+        private set
 
     /**
      * whether the icon signifier will change its color when gaining or losing focus
      * as the label and the bottomLine do. True by default.
      */
-    protected boolean isResponsiveIconColor;
+    private var isResponsiveIconColor = false
 
     /**
      * whether to show the clear button at the end of the EditText. False by default.
      */
-    protected boolean hasClearButton;
+    private var hasClearButton = false
 
     /**
      * whether the EditText is having the focus. False by default.
      */
-    protected boolean hasFocus;
+    private var hasFocus = false
 
     /**
      * Whether the label is fixed at top when there's a hint. False by default.
      */
-    protected boolean alwaysShowHint;
+    var alwaysShowHint = false
 
     /**
      * whether the field uses a dense spacing between its elements.
      * Usually useful in a multi-field form. False by default.
      */
-    protected boolean useDenseSpacing;
+    var useDenseSpacing = false
 
     /**
      * 被點擊後要不要顯示Title
      */
-    protected boolean hideSelectedTitle = false;
+    private var hideSelectedTitle = false
+
     /**
      * 要不要显示副标题后的横线
      */
-    protected boolean hideSubView = false;
+    private var hideSubView = false
+
     /**
      * whether the field uses a rtl direction for 'Persian (Farsi)' and 'Arabic' languages
      * False by default.
      */
-    protected boolean rtl;
+    private var rtl = false
+    private var labelColor = -1
+    private var labelTopMargin = -1
+    private var ANIMATION_DURATION = 100
+    var isOnError = false
+        private set
 
-    protected int labelColor = -1;
-    protected int labelTopMargin = -1;
-    protected int ANIMATION_DURATION = 100;
-    protected boolean onError = false;
-    protected boolean activated = false;
+    private var activatedState = false
+
     /**
-     * See {@link #setManualValidateError(boolean)}
+     * See [.setManualValidateError]
      */
-    protected boolean isManualValidateError = false;
+    private var isManualValidateError = false
+    /* View Getters */  var panel: View? = null
+        private set
+    private var bottomLine: View? = null
+    private var labelSpace: Space? = null
+    private var labelSpaceBelow: Space? = null
+    private var editTextLayout: ViewGroup? = null
+    private var editText: ExtendedEditText? = null
+    private var rightShell: RelativeLayout? = null
+    private var upperPanel: RelativeLayout? = null
+    private var bottomPart: RelativeLayout? = null
+    private var inputLayout: RelativeLayout? = null
+    private var mainLayout: RelativeLayout? = null
+    var helperLabel: AppCompatTextView? = null
+        private set
+    var counterLabel: AppCompatTextView? = null
+        private set
+    var floatingLabel: AppCompatTextView? = null
+        private set
+    private var floatingSubLabel: AppCompatTextView? = null
+    private var floatingHintLabel: AppCompatTextView? = null
+    private var floatingSingle: AppCompatTextView? = null
+    private var clearButton: AppCompatImageButton? = null
+    var iconImageButton: AppCompatImageButton? = null
+        private set
+    lateinit var endIconImageButton: AppCompatImageButton
+        private set
+    private var inputMethodManager: InputMethodManager? = null
+    private var viewSub: View? = null
+    private var textChangeListener: SimpleTextChangedWatcher? = null
+    private var mPasswordToggleDummyDrawable: ColorDrawable? = null
+    private var mOriginalEditTextEndDrawable: Drawable? = null
 
-    protected View panel;
-    protected View bottomLine;
-    protected Space labelSpace;
-    protected Space labelSpaceBelow;
-    protected ViewGroup editTextLayout;
-    protected ExtendedEditText editText;
-    protected RelativeLayout rightShell;
-    protected RelativeLayout upperPanel;
-    protected RelativeLayout bottomPart;
-    protected RelativeLayout inputLayout;
-    protected RelativeLayout mainLayout;
-    protected AppCompatTextView helperLabel;
-    protected AppCompatTextView counterLabel;
-    protected AppCompatTextView floatingLabel;
-    protected AppCompatTextView floatingSubLabel;
-    protected AppCompatTextView floatingHintLabel;
-    protected AppCompatTextView floatingSingle;
-    protected AppCompatImageButton clearButton;
-    protected AppCompatImageButton iconImageButton;
-    protected AppCompatImageButton endIconImageButton;
-    protected InputMethodManager inputMethodManager;
-    protected View viewSub;
-    protected SimpleTextChangedWatcher textChangeListener;
-    private ColorDrawable mPasswordToggleDummyDrawable;
-    private Drawable mOriginalEditTextEndDrawable;
+    val binding by lazy { TextFormFieldBoxesLayoutBinding.inflate(layoutInflater,this,false) }
 
-    public TextFormFieldBoxes(Context context) {
-
-        super(context);
-        init();
+    constructor(context: Context?) : super(context!!) {
+        init()
     }
 
-    public TextFormFieldBoxes(Context context, AttributeSet attrs) {
-
-        super(context, attrs);
-        init();
-        handleAttributes(context, attrs);
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init()
+        handleAttributes(context, attrs)
     }
 
-    public TextFormFieldBoxes(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-        handleAttributes(context, attrs);
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context,
+        attrs,
+        defStyleAttr) {
+        init()
+        handleAttributes(context, attrs)
     }
 
-    protected void init() {
-        initDefaultColor();
-        inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+    private fun init() {
+        initDefaultColor()
+        inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
-    protected void initDefaultColor() {
+    private fun initDefaultColor() {
+        val theme = context.theme
+        var themeArray: TypedArray
 
-        Resources.Theme theme = getContext().getTheme();
-        TypedArray themeArray;
+        /* Get Default Error Color From Theme */DEFAULT_ERROR_COLOR =
+            ContextCompat.getColor(context, R.color.color_F75452_E23434)
 
-        /* Get Default Error Color From Theme */
-        DEFAULT_ERROR_COLOR = ContextCompat.getColor(getContext(), R.color.color_F75452_E23434);
+        /* Get Default Background Color From Theme */themeArray =
+            theme.obtainStyledAttributes(intArrayOf(android.R.attr.colorForeground))
+        DEFAULT_BG_COLOR = adjustAlpha(themeArray.getColor(0, 0), 0.06f)
 
-        /* Get Default Background Color From Theme */
-        themeArray = theme.obtainStyledAttributes(new int[]{android.R.attr.colorForeground});
-        DEFAULT_BG_COLOR = adjustAlpha(themeArray.getColor(0, 0), 0.06f);
+        /* Get Default Foreground Color From Theme */themeArray =
+            theme.obtainStyledAttributes(intArrayOf(android.R.attr.colorBackground))
+        DEFAULT_FG_COLOR = themeArray.getColor(0, 0)
 
-        /* Get Default Foreground Color From Theme */
-        themeArray = theme.obtainStyledAttributes(new int[]{android.R.attr.colorBackground});
-        DEFAULT_FG_COLOR = themeArray.getColor(0, 0);
+        /* Get Default Primary Color From Theme */themeArray =
+            theme.obtainStyledAttributes(intArrayOf(
+                R.attr.colorPrimary))
+        DEFAULT_PRIMARY_COLOR =
+            if (isLight(DEFAULT_BG_COLOR)) lighter(
+                themeArray.getColor(0, 0),
+                0.2f) else themeArray.getColor(0, 0)
 
-        /* Get Default Primary Color From Theme */
-        themeArray = theme.obtainStyledAttributes(new int[]{R.attr.colorPrimary});
-        if (isLight(DEFAULT_BG_COLOR))
-            DEFAULT_PRIMARY_COLOR = lighter(themeArray.getColor(0, 0), 0.2f);
-        else DEFAULT_PRIMARY_COLOR = themeArray.getColor(0, 0);
+        /* Get Default Text Color From Theme */themeArray =
+            theme.obtainStyledAttributes(intArrayOf(android.R.attr.textColorTertiary))
+        DEFAULT_TEXT_COLOR = themeArray.getColor(0, 0)
 
-        /* Get Default Text Color From Theme */
-        themeArray = theme.obtainStyledAttributes(new int[]{android.R.attr.textColorTertiary});
-        DEFAULT_TEXT_COLOR = themeArray.getColor(0, 0);
-
-        /* Get Default Disabled Text Color From Theme */
-        themeArray = theme.obtainStyledAttributes(new int[]{android.R.attr.disabledAlpha});
-        float disabledAlpha = themeArray.getFloat(0, 0);
-        themeArray = theme.obtainStyledAttributes(new int[]{android.R.attr.textColorTertiary});
-        DEFAULT_DISABLED_TEXT_COLOR = adjustAlpha(themeArray.getColor(0, 0), disabledAlpha);
-
-        themeArray.recycle();
+        /* Get Default Disabled Text Color From Theme */themeArray =
+            theme.obtainStyledAttributes(intArrayOf(android.R.attr.disabledAlpha))
+        val disabledAlpha = themeArray.getFloat(0, 0f)
+        themeArray = theme.obtainStyledAttributes(intArrayOf(android.R.attr.textColorTertiary))
+        DEFAULT_DISABLED_TEXT_COLOR = adjustAlpha(themeArray.getColor(0, 0), disabledAlpha)
+        themeArray.recycle()
     }
 
-    protected ExtendedEditText findEditTextChild() {
-
-        if (getChildCount() > 0 && getChildAt(0) instanceof ExtendedEditText)
-            return (ExtendedEditText) getChildAt(0);
-        return null;
+    private fun findEditTextChild(): ExtendedEditText? {
+        return if (childCount > 0 && getChildAt(0) is ExtendedEditText) getChildAt(0) as ExtendedEditText else null
     }
 
-    @Override
-    protected void onFinishInflate() {
-
-        super.onFinishInflate();
-        initViews();
-        triggerSetters();
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        initViews()
+        triggerSetters()
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
         if (widthMode == MeasureSpec.EXACTLY) {
 
             /* match_parent or specific value */
-            this.mainLayout.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-            this.inputLayout.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-            this.upperPanel.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-            this.editTextLayout.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-
+            mainLayout!!.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+            inputLayout!!.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+            upperPanel!!.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+            editTextLayout!!.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
         } else if (widthMode == MeasureSpec.AT_MOST) {
 
             /* wrap_content */
-            this.mainLayout.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            this.inputLayout.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            this.upperPanel.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            this.editTextLayout.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            mainLayout!!.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+            inputLayout!!.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+            upperPanel!!.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+            editTextLayout!!.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
         }
-
         if (heightMode == MeasureSpec.EXACTLY) {
 
             /* match_parent or specific value */
-            this.mainLayout.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-            this.panel.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-            this.rightShell.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-            this.upperPanel.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-
-            ((RelativeLayout.LayoutParams) this.bottomPart.getLayoutParams())
-                    .addRule(RelativeLayout.BELOW, 0);
-            ((RelativeLayout.LayoutParams) this.bottomPart.getLayoutParams())
-                    .addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            ((RelativeLayout.LayoutParams) this.panel.getLayoutParams())
-                    .addRule(RelativeLayout.ABOVE, R.id.text_field_boxes_bottom);
-
+            mainLayout!!.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+            panel!!.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+            rightShell!!.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+            upperPanel!!.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+            (bottomPart!!.layoutParams as RelativeLayout.LayoutParams)
+                .addRule(RelativeLayout.BELOW, 0)
+            (bottomPart!!.layoutParams as RelativeLayout.LayoutParams)
+                .addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+            (panel!!.layoutParams as RelativeLayout.LayoutParams)
+                .addRule(RelativeLayout.ABOVE, R.id.text_field_boxes_bottom)
         } else if (heightMode == MeasureSpec.AT_MOST) {
 
             /* wrap_content */
-            this.mainLayout.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            this.panel.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            this.rightShell.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            this.upperPanel.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-
-            ((RelativeLayout.LayoutParams) this.bottomPart.getLayoutParams())
-                    .addRule(RelativeLayout.BELOW, R.id.text_field_boxes_panel);
-            ((RelativeLayout.LayoutParams) this.bottomPart.getLayoutParams())
-                    .addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-            ((RelativeLayout.LayoutParams) this.panel.getLayoutParams())
-                    .addRule(RelativeLayout.ABOVE, 0);
+            mainLayout!!.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            panel!!.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            rightShell!!.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            upperPanel!!.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            (bottomPart!!.layoutParams as RelativeLayout.LayoutParams)
+                .addRule(RelativeLayout.BELOW, R.id.text_field_boxes_panel)
+            (bottomPart!!.layoutParams as RelativeLayout.LayoutParams)
+                .addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0)
+            (panel!!.layoutParams as RelativeLayout.LayoutParams)
+                .addRule(RelativeLayout.ABOVE, 0)
         }
-
-        updateClearAndEndIconLayout();
-
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        updateClearAndEndIconLayout()
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
-    private void updateClearAndEndIconLayout() {
-
-        if ((endIconImageButton != null && endIconImageButton.getDrawable() != null) || hasClearButton) {
-
-            int clearButtonW = hasClearButton ? clearButton.getMeasuredWidth() : 0;
-            int endIconW = (endIconImageButton != null && endIconImageButton.getDrawable() != null) ?
-                    endIconImageButton.getMeasuredWidth() : 0;
-            if (mPasswordToggleDummyDrawable == null)
-                mPasswordToggleDummyDrawable = new ColorDrawable();
-
-            upperPanel.setPadding(getResources().getDimensionPixelOffset(R.dimen.upper_panel_paddingStart), 0, getResources().getDimensionPixelOffset(R.dimen.upper_panel_paddingEnd_small), 0);
+    private fun updateClearAndEndIconLayout() {
+        if (endIconImageButton != null && endIconImageButton!!.drawable != null || hasClearButton) {
+            val clearButtonW = if (hasClearButton) clearButton!!.measuredWidth else 0
+            val endIconW =
+                if (endIconImageButton != null && endIconImageButton!!.drawable != null) endIconImageButton!!.measuredWidth else 0
+            if (mPasswordToggleDummyDrawable == null) mPasswordToggleDummyDrawable = ColorDrawable()
+            upperPanel!!.setPadding(resources.getDimensionPixelOffset(R.dimen.upper_panel_paddingStart),
+                0,
+                resources.getDimensionPixelOffset(
+                    R.dimen.upper_panel_paddingEnd_small),
+                0)
 
             // We add a fake drawableRight to EditText so it will have padding on the right side and text will not go
             // under the icons.
-            if (!rtl)
-                mPasswordToggleDummyDrawable.setBounds(0, 0, endIconW + clearButtonW, 0);
-
-            final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
+            if (!rtl) mPasswordToggleDummyDrawable!!.setBounds(0, 0, endIconW + clearButtonW, 0)
+            val compounds = TextViewCompat.getCompoundDrawablesRelative(
+                editText!!)
             // Store the user defined end compound drawable so that we can restore it later
-            if (compounds[2] != mPasswordToggleDummyDrawable) {
-                mOriginalEditTextEndDrawable = compounds[2];
+            if (compounds[2] !== mPasswordToggleDummyDrawable) {
+                mOriginalEditTextEndDrawable = compounds[2]
             }
-            TextViewCompat.setCompoundDrawablesRelative(editText, compounds[0], compounds[1],
-                    mPasswordToggleDummyDrawable, compounds[3]);
-
+            TextViewCompat.setCompoundDrawablesRelative(editText!!, compounds[0], compounds[1],
+                mPasswordToggleDummyDrawable, compounds[3])
         } else {
-
-            upperPanel.setPadding(getResources().getDimensionPixelOffset(R.dimen.upper_panel_paddingStart), 0, getResources().getDimensionPixelOffset(R.dimen.upper_panel_paddingEnd), 0);
-
+            upperPanel!!.setPadding(resources.getDimensionPixelOffset(R.dimen.upper_panel_paddingStart),
+                0,
+                resources.getDimensionPixelOffset(
+                    R.dimen.upper_panel_paddingEnd),
+                0)
             if (mPasswordToggleDummyDrawable != null) {
                 // Make sure that we remove the dummy end compound drawable if it exists, and then
                 // clear it
-                final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
-                if (compounds[2] == mPasswordToggleDummyDrawable) {
-                    TextViewCompat.setCompoundDrawablesRelative(editText, compounds[0],
-                            compounds[1], mOriginalEditTextEndDrawable, compounds[3]);
-                    mPasswordToggleDummyDrawable = null;
+                val compounds = TextViewCompat.getCompoundDrawablesRelative(
+                    editText!!)
+                if (compounds[2] === mPasswordToggleDummyDrawable) {
+                    TextViewCompat.setCompoundDrawablesRelative(editText!!, compounds[0],
+                        compounds[1], mOriginalEditTextEndDrawable, compounds[3])
+                    mPasswordToggleDummyDrawable = null
                 }
             }
         }
-        if (this.hideSubView){
-            this.editTextLayout.setPadding(16,0,0,0);
-            this.floatingHintLabel.setPadding(16,0,0,0);
+        if (hideSubView) {
+            editTextLayout!!.setPadding(16, 0, 0, 0)
+            floatingHintLabel!!.setPadding(16, 0, 0, 0)
         }
     }
-
-    private void initViews() {
-
-        this.editText = findEditTextChild();
-        if (editText == null) return;
-        this.addView(LayoutInflater.from(getContext()).inflate(R.layout.text_form_field_boxes_layout,this, false));
-        removeView(this.editText);
-
-        this.editText.setBackgroundColor(Color.TRANSPARENT);
-        this.editText.setDropDownBackgroundDrawable(new ColorDrawable(DEFAULT_FG_COLOR));
-        this.editText.setMinimumWidth(10);
-        this.inputLayout = this.findViewById(R.id.text_field_boxes_input_layout);
-        this.mainLayout = findViewById(R.id.rl_main);
-        this.floatingLabel = findViewById(R.id.text_field_boxes_label);
-        this.floatingSubLabel = findViewById(R.id.text_field_boxes_sub_label);
-        this.floatingHintLabel = findViewById(R.id.text_field_boxes_hint_label);
-        this.floatingSingle = findViewById(R.id.text_field_boxes_single_label);
-        this.panel = findViewById(R.id.text_field_boxes_panel);
-        this.labelSpace = findViewById(R.id.text_field_boxes_label_space);
-        this.labelSpaceBelow = findViewById(R.id.text_field_boxes_label_space_below);
-        this.rightShell = findViewById(R.id.text_field_boxes_right_shell);
-        this.upperPanel = findViewById(R.id.text_field_boxes_upper_panel);
-        this.bottomPart = findViewById(R.id.text_field_boxes_bottom);
-        this.bottomLine = findViewById(R.id.bottom_line);
-
-        this.clearButton = findViewById(R.id.text_field_boxes_clear_button);
-        this.endIconImageButton = findViewById(R.id.text_field_boxes_end_icon_button);
-        this.helperLabel = findViewById(R.id.text_field_boxes_helper);
-        this.counterLabel = findViewById(R.id.text_field_boxes_counter);
-        this.iconImageButton = findViewById(R.id.text_field_boxes_imageView);
-        this.editTextLayout = findViewById(R.id.text_field_boxes_editTextLayout);
-        this.viewSub = findViewById(R.id.view_sub);
-        this.inputLayout.addView(this.editText);
-//        this.editTextLayout.setAlpha(0f);
-        this.floatingLabel.setPivotX(0f);
-        this.floatingLabel.setPivotY(0f);
-        this.floatingSubLabel.setPivotX(0f);
-        this.floatingSubLabel.setPivotY(0f);
-        this.floatingHintLabel.setPivotX(0f);
-        this.floatingHintLabel.setPivotY(0f);
-        this.floatingSingle.setPivotX(0f);
-        this.floatingSingle.setPivotX(0f);
-        this.labelColor = this.floatingLabel.getCurrentTextColor();
-        this.clearButton.setColorFilter(DEFAULT_TEXT_COLOR);
-        this.clearButton.setAlpha(0.35f);
+    private fun initViews() {
+        editText = findEditTextChild()
+        if (editText == null) return
+        addView(binding.root)
+        removeView(editText)
+        editText!!.setBackgroundColor(Color.TRANSPARENT)
+        editText!!.setDropDownBackgroundDrawable(ColorDrawable(DEFAULT_FG_COLOR))
+        editText!!.minimumWidth = 10
+        inputLayout = findViewById(R.id.text_field_boxes_input_layout)
+        mainLayout = findViewById(R.id.rl_main)
+        floatingLabel = findViewById(R.id.text_field_boxes_label)
+        floatingSubLabel = findViewById(R.id.text_field_boxes_sub_label)
+        floatingHintLabel = findViewById(R.id.text_field_boxes_hint_label)
+        floatingSingle = findViewById(R.id.text_field_boxes_single_label)
+        panel = findViewById(R.id.text_field_boxes_panel)
+        labelSpace = findViewById(R.id.text_field_boxes_label_space)
+        labelSpaceBelow = findViewById(R.id.text_field_boxes_label_space_below)
+        rightShell = findViewById(R.id.text_field_boxes_right_shell)
+        upperPanel = findViewById(R.id.text_field_boxes_upper_panel)
+        bottomPart = findViewById(R.id.text_field_boxes_bottom)
+        bottomLine = findViewById(R.id.bottom_line)
+        clearButton = findViewById(R.id.text_field_boxes_clear_button)
+        endIconImageButton = findViewById(R.id.text_field_boxes_end_icon_button)
+        helperLabel = findViewById(R.id.text_field_boxes_helper)
+        counterLabel = findViewById(R.id.text_field_boxes_counter)
+        iconImageButton = findViewById(R.id.text_field_boxes_imageView)
+        editTextLayout = findViewById(R.id.text_field_boxes_editTextLayout)
+        viewSub = findViewById(R.id.view_sub)
+        inputLayout?.addView(editText)
+        //        this.editTextLayout.setAlpha(0f);
+        floatingLabel?.setPivotX(0f)
+        floatingLabel?.setPivotY(0f)
+        floatingSubLabel?.setPivotX(0f)
+        floatingSubLabel?.setPivotY(0f)
+        floatingHintLabel?.setPivotX(0f)
+        floatingHintLabel?.setPivotY(0f)
+        floatingSingle?.setPivotX(0f)
+        floatingSingle?.setPivotX(0f)
+        labelColor = floatingLabel!!.getCurrentTextColor()
+        clearButton?.setColorFilter(DEFAULT_TEXT_COLOR)
+        clearButton?.setAlpha(0.35f)
         //this.endIconImageButton.setColorFilter(DEFAULT_TEXT_COLOR);
         //this.endIconImageButton.setAlpha(0.54f);
-        this.labelTopMargin = RelativeLayout.LayoutParams.class
-                .cast(this.floatingLabel.getLayoutParams()).topMargin;
-
-        initOnClick();
+        labelTopMargin = RelativeLayout.LayoutParams::class.java
+            .cast(floatingLabel?.getLayoutParams()).topMargin
+        initOnClick()
 
         // Have to update useDenseSpacing then the dimensions before the first activation
-        setUseDenseSpacing(this.useDenseSpacing);
-        updateDimens(this.useDenseSpacing);
-        if (!this.editText.getText().toString().isEmpty() || this.hasFocus)
-            activate(false);
-
-
+        useDenseSpacing = useDenseSpacing
+        updateDimens(useDenseSpacing)
+        if (!editText!!.text.toString().isEmpty() || hasFocus) activate(false)
     }
 
-    private void initOnClick() {
-
-        final FrameLayout mainBody = this;
-
-        this.panel.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isActivated()) activate(true);
-                setHasFocus(true);
-                inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-                mainBody.performClick();
-            }
-        });
-
-        this.iconImageButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isActivated()) activate(true);
-                setHasFocus(true);
-                inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-                mainBody.performClick();
-            }
-        });
-
-        this.editText.setDefaultOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) setHasFocus(true);
-                else setHasFocus(false);
-            }
-        });
-
-        this.editText.addTextChangedListener(new TextWatcher() {
-
-            private String lastValue = "";
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    private fun initOnClick() {
+        val mainBody: FrameLayout = this
+        panel!!.setOnClickListener {
+            if (!isActivated) activate(true)
+            setHasFocus(true)
+            inputMethodManager!!.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+            mainBody.performClick()
+        }
+        iconImageButton!!.setOnClickListener {
+            if (!isActivated) activate(true)
+            setHasFocus(true)
+            inputMethodManager!!.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+            mainBody.performClick()
+        }
+        editText!!.setDefaultOnFocusChangeListener { view, b ->
+            if (b) setHasFocus(true) else setHasFocus(false)
+        }
+        editText!!.addTextChangedListener(object : TextWatcher {
+            private var lastValue = ""
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 //do nothing
             }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 //do nothing
             }
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!activated && !editable.toString().isEmpty()) activate(true);
-                if (activated && editable.toString().isEmpty() && !hasFocus) deactivate();
+            override fun afterTextChanged(editable: Editable) {
+                if (!activatedState && !editable.toString().isEmpty()) activate(true)
+                if (activatedState && editable.toString().isEmpty() && !hasFocus) deactivate()
                 if (isManualValidateError) {
-                    updateCounterText(false);
+                    updateCounterText(false)
                 } else {
-                    validate(); //this will call updateCounterText(true);
+                    validate() //this will call updateCounterText(true);
                 }
 
                 // Only trigger simple watcher when the String actually changed
-
-                if (!lastValue.equals(editable.toString())) {
-                    lastValue = editable.toString();
+                if (lastValue != editable.toString()) {
+                    lastValue = editable.toString()
                     if (textChangeListener != null) {
-                        textChangeListener.onTextChanged(editable.toString(), onError);
+                        textChangeListener!!.onTextChanged(editable.toString(), isOnError)
                     }
                 }
-
             }
-        });
-
-        this.clearButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editText.setText("");
-            }
-        });
-
-        this.editText.setDefaultOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    setHasFocus(true);
-                    inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-                    mainBody.performClick();
-                } else setHasFocus(false);
-            }
-        });
-    }
-
-    protected void handleAttributes(Context context, AttributeSet attrs) {
-
-        try {
-
-            TypedArray styledAttrs = context.obtainStyledAttributes(attrs, R.styleable.TextFieldBoxes);
-
-            /* Texts */
-            this.labelText = styledAttrs.getString(R.styleable.TextFieldBoxes_labelText)
-                    == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_labelText);
-            this.labelTextStyle = styledAttrs.getInt(R.styleable.TextFieldBoxes_labelTextStyle, Typeface.BOLD);
-            this.subLabelText = styledAttrs.getString(R.styleable.TextFieldBoxes_subLabelText)
-                    == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_subLabelText);
-            this.hintText = styledAttrs.getString(R.styleable.TextFieldBoxes_hintText)
-                    == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_hintText);
-            this.singleText = styledAttrs.getString(R.styleable.TextFieldBoxes_singleText)
-                    == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_singleText);
-            this.singleTextStyle = styledAttrs.getInt(R.styleable.TextFieldBoxes_singleTextStyle, Typeface.BOLD);
-            this.singleTextColor = styledAttrs.getInt(R.styleable.TextFieldBoxes_singleTextColor, DEFAULT_TEXT_COLOR);
-            this.singleTextStartPadding = styledAttrs.getInt(R.styleable.TextFieldBoxes_singleTextStartPadding, 0);
-            this.helperText = styledAttrs.getString(R.styleable.TextFieldBoxes_helperText)
-                    == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_helperText);
-
-            /* Colors */
-            this.helperTextColor = styledAttrs
-                    .getInt(R.styleable.TextFieldBoxes_helperTextColor, DEFAULT_TEXT_COLOR);
-            this.mCounterTextColor = styledAttrs
-                    .getInt(R.styleable.TextFieldBoxes_mCounterTextColor, DEFAULT_TEXT_COLOR);
-            this.errorColor = styledAttrs
-                    .getInt(R.styleable.TextFieldBoxes_errorColor, DEFAULT_ERROR_COLOR);
-            this.primaryColor = styledAttrs
-                    .getColor(R.styleable.TextFieldBoxes_primaryColor, DEFAULT_PRIMARY_COLOR);
-            this.secondaryColor = styledAttrs
-                    .getColor(R.styleable.TextFieldBoxes_secondaryColor, DEFAULT_TEXT_COLOR);
-//            this.panelBackgroundColor = styledAttrs
-//                    .getColor(R.styleable.TextFieldBoxes_panelBackgroundColor, DEFAULT_BG_COLOR);
-
-            /* Characters counter */
-            this.maxCharacters = styledAttrs.getInt(R.styleable.TextFieldBoxes_maxCharacters, 0);
-            this.minCharacters = styledAttrs.getInt(R.styleable.TextFieldBoxes_minCharacters, 0);
-
-            /* Others */
-            this.isManualValidateError = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_manualValidateError, false);
-            this.hideSubView = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_hideSubView,false);
-            this.enabled = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_enabled, true);
-            this.iconSignifierResourceId = styledAttrs.
-                    getResourceId(R.styleable.TextFieldBoxes_iconSignifier, 0);
-            this.endIconResourceId = styledAttrs.
-                    getResourceId(R.styleable.TextFieldBoxes_endIcon, 0);
-            this.isResponsiveIconColor = styledAttrs
-                    .getBoolean(R.styleable.TextFieldBoxes_isResponsiveIconColor, true);
-            this.hasClearButton = styledAttrs
-                    .getBoolean(R.styleable.TextFieldBoxes_hasClearButton, false);
-            this.hasFocus = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_hasFocus, false);
-            this.alwaysShowHint = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_alwaysShowHint, false);
-            this.useDenseSpacing = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_useDenseSpacing, false);
-            this.rtl = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_rtl, false);
-            this.hideSelectedTitle = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_hideSelectedTitle, false);
-
-            styledAttrs.recycle();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        })
+        clearButton!!.setOnClickListener { editText!!.setText("") }
+        editText!!.setDefaultOnFocusChangeListener { view, b ->
+            if (b) {
+                setHasFocus(true)
+                inputMethodManager!!.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+                mainBody.performClick()
+            } else setHasFocus(false)
         }
     }
 
-    public void setSimpleTextChangeWatcher(SimpleTextChangedWatcher textChangeListener) {
-        this.textChangeListener = textChangeListener;
+    private fun handleAttributes(context: Context, attrs: AttributeSet?) {
+        try {
+            val styledAttrs = context.obtainStyledAttributes(attrs, R.styleable.TextFieldBoxes)
+
+            /* Texts */labelText = if (styledAttrs.getString(R.styleable.TextFieldBoxes_labelText)
+                == null
+            ) "" else styledAttrs.getString(R.styleable.TextFieldBoxes_labelText)
+            labelTextStyle =
+                styledAttrs.getInt(R.styleable.TextFieldBoxes_labelTextStyle, Typeface.BOLD)
+            subLabelText = if (styledAttrs.getString(R.styleable.TextFieldBoxes_subLabelText)
+                == null
+            ) "" else styledAttrs.getString(R.styleable.TextFieldBoxes_subLabelText)
+            hintText = if (styledAttrs.getString(R.styleable.TextFieldBoxes_hintText)
+                == null
+            ) "" else styledAttrs.getString(R.styleable.TextFieldBoxes_hintText)
+            singleText = if (styledAttrs.getString(R.styleable.TextFieldBoxes_singleText)
+                == null
+            ) "" else styledAttrs.getString(R.styleable.TextFieldBoxes_singleText)
+            singleTextStyle =
+                styledAttrs.getInt(R.styleable.TextFieldBoxes_singleTextStyle, Typeface.BOLD)
+            singleTextColor =
+                styledAttrs.getInt(R.styleable.TextFieldBoxes_singleTextColor, DEFAULT_TEXT_COLOR)
+            singleTextStartPadding =
+                styledAttrs.getInt(R.styleable.TextFieldBoxes_singleTextStartPadding, 0)
+            helperText = if (styledAttrs.getString(R.styleable.TextFieldBoxes_helperText)
+                == null
+            ) "" else styledAttrs.getString(R.styleable.TextFieldBoxes_helperText)
+
+            /* Colors */helperTextColor = styledAttrs
+                .getInt(R.styleable.TextFieldBoxes_helperTextColor, DEFAULT_TEXT_COLOR)
+            mCounterTextColor = styledAttrs
+                .getInt(R.styleable.TextFieldBoxes_mCounterTextColor, DEFAULT_TEXT_COLOR)
+            errorColor = styledAttrs
+                .getInt(R.styleable.TextFieldBoxes_errorColor, DEFAULT_ERROR_COLOR)
+            primaryColor = styledAttrs
+                .getColor(R.styleable.TextFieldBoxes_primaryColor, DEFAULT_PRIMARY_COLOR)
+            secondaryColor = styledAttrs
+                .getColor(R.styleable.TextFieldBoxes_secondaryColor, DEFAULT_TEXT_COLOR)
+            //            this.panelBackgroundColor = styledAttrs
+//                    .getColor(R.styleable.TextFieldBoxes_panelBackgroundColor, DEFAULT_BG_COLOR);
+
+            /* Characters counter */maxCharacters =
+                styledAttrs.getInt(R.styleable.TextFieldBoxes_maxCharacters, 0)
+            minCharacters = styledAttrs.getInt(R.styleable.TextFieldBoxes_minCharacters, 0)
+
+            /* Others */isManualValidateError =
+                styledAttrs.getBoolean(R.styleable.TextFieldBoxes_manualValidateError, false)
+            hideSubView = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_hideSubView, false)
+            enabled = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_enabled, true)
+            iconSignifierResourceId =
+                styledAttrs.getResourceId(R.styleable.TextFieldBoxes_iconSignifier, 0)
+            endIconResourceId = styledAttrs.getResourceId(R.styleable.TextFieldBoxes_endIcon, 0)
+            isResponsiveIconColor = styledAttrs
+                .getBoolean(R.styleable.TextFieldBoxes_isResponsiveIconColor, true)
+            hasClearButton = styledAttrs
+                .getBoolean(R.styleable.TextFieldBoxes_hasClearButton, false)
+            hasFocus = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_hasFocus, false)
+            alwaysShowHint =
+                styledAttrs.getBoolean(R.styleable.TextFieldBoxes_alwaysShowHint, false)
+            useDenseSpacing =
+                styledAttrs.getBoolean(R.styleable.TextFieldBoxes_useDenseSpacing, false)
+            rtl = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_rtl, false)
+            hideSelectedTitle =
+                styledAttrs.getBoolean(R.styleable.TextFieldBoxes_hideSelectedTitle, false)
+            styledAttrs.recycle()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun setSimpleTextChangeWatcher(textChangeListener: SimpleTextChangedWatcher?) {
+        this.textChangeListener = textChangeListener
     }
 
     /**
      * lower the labelText labelText Label when there is no text at losing focus
      */
-    protected void deactivate() {
+    private fun deactivate() {
         //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext);
-        this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_E3E8EE));
-        if (this.editText.getText().toString().isEmpty()) {
-
-            if (this.alwaysShowHint && !this.editText.getHint().toString().isEmpty()) {
+        bottomLine!!.setBackgroundColor(ContextCompat.getColor(context, R.color.color_E3E8EE))
+        if (editText!!.text.toString().isEmpty()) {
+            if (alwaysShowHint && !editText!!.hint.toString().isEmpty()) {
 
                 // If alwaysShowHint, and the hint is not empty,
                 // keep the label on the top and EditText visible.
-                this.editTextLayout.setAlpha(1f);
-                this.floatingLabel.setScaleX(0.75f);
-                this.floatingLabel.setScaleY(0.75f);
-
+                editTextLayout!!.alpha = 1f
+                floatingLabel!!.scaleX = 0.75f
+                floatingLabel!!.scaleY = 0.75f
             } else {
                 // If not, animate the label and hide the EditText.
 //                this.editTextLayout.setAlpha(0);
-                ViewCompat.animate(floatingLabel)
-                        .alpha(1)
-                        .scaleX(1)
-                        .scaleY(1)
-                        .setDuration(ANIMATION_DURATION);
-//                ViewCompat.animate(floatingHintLabel)
+                ViewCompat.animate(floatingLabel!!)
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f).duration = ANIMATION_DURATION.toLong()
+                //                ViewCompat.animate(floatingHintLabel)
 //                        .alpha(1)
 //                        .scaleX(1)
 //                        .scaleY(1)
 //                        .translationX(0)
 //                        .translationY(0)
 //                        .setDuration(ANIMATION_DURATION);
-                floatingHintLabel.setVisibility(View.VISIBLE);
-                ViewCompat.animate(floatingSingle)
-                        .alpha(1)
-                        .scaleX(1)
-                        .scaleY(1)
-                        .translationX(0)
-                        .translationY(0)
-                        .setDuration(ANIMATION_DURATION);
+                floatingHintLabel!!.visibility = VISIBLE
+                ViewCompat.animate(floatingSingle!!)
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .translationX(0f)
+                    .translationY(0f).duration = ANIMATION_DURATION.toLong()
             }
-
-            if (this.editText.hasFocus()) {
-                inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                this.editText.clearFocus();
+            if (editText!!.hasFocus()) {
+                inputMethodManager!!.hideSoftInputFromWindow(editText!!.windowToken, 0)
+                editText!!.clearFocus()
             }
-
             if (hideSelectedTitle) {
-                floatingSingle.setVisibility(VISIBLE);
+                floatingSingle!!.visibility = VISIBLE
             }
         }
-        this.activated = false;
+        activatedState = false
     }
 
     /**
      * raise the labelText labelText Label when gaining focus
      */
-    public void activate(boolean animated) {
-
-        this.editText.setAlpha(1);
+    fun activate(animated: Boolean) {
+        editText!!.alpha = 1f
         //this.mainLayout.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.bg2));
-
-        if (this.editText.getText().toString().isEmpty() && !isActivated()) {
+        if (editText!!.text.toString().isEmpty() && !isActivated) {
 
 //            this.editTextLayout.setAlpha(0f);
-            this.floatingLabel.setScaleX(1f);
-            this.floatingLabel.setScaleY(1f);
-            this.floatingLabel.setTranslationY(0);
+            floatingLabel!!.scaleX = 1f
+            floatingLabel!!.scaleY = 1f
+            floatingLabel!!.translationY = 0f
         }
         //final boolean keepHint = this.alwaysShowHint && !this.editText.getHint().toString().isEmpty();
         if (animated) {
             //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_h);
-            this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_317FFF_0760D4));
-            ViewCompat.animate(this.editTextLayout)
-                    .alpha(1f)
-                    .setDuration(ANIMATION_DURATION);
+            bottomLine!!.setBackgroundColor(ContextCompat.getColor(context,
+                R.color.color_317FFF_0760D4))
+            ViewCompat.animate(editTextLayout!!)
+                .alpha(1f).duration = ANIMATION_DURATION.toLong()
 
 //            ViewCompat.animate(this.floatingLabel)
 //                    .scaleX(0.85f)
@@ -710,48 +660,43 @@ public class TextFormFieldBoxes extends FrameLayout {
 //                            getContext().getResources().getDimensionPixelOffset(R.dimen.label_active_margin_top)-floatingLabel.getHeight()+2-
 //                            getContext().getResources().getDimensionPixelOffset(R.dimen.label2_active_margin_top))
 //                    .setDuration(ANIMATION_DURATION);
-            floatingHintLabel.setVisibility(View.GONE);
+            floatingHintLabel!!.visibility = GONE
 
             //驗證碼要特殊處理 by bill
             if (hideSelectedTitle) {
-                floatingSingle.setVisibility(GONE);
-                labelSpace.setVisibility(GONE);
-                labelTopMargin = 0;
+                floatingSingle!!.visibility = GONE
+                labelSpace!!.visibility = GONE
+                labelTopMargin = 0
             }
-
-            ViewCompat.animate(this.floatingSingle)
-                    .scaleX(0.85f)
-                    .scaleY(0.85f)
-                    .translationY(-labelTopMargin -
-                            getContext().getResources().getDimensionPixelOffset(R.dimen.label2_active_margin_top) + 6)
-                    .setDuration(ANIMATION_DURATION);
-
+            ViewCompat.animate(floatingSingle!!)
+                .scaleX(0.85f)
+                .scaleY(0.85f)
+                .translationY((-labelTopMargin -
+                        context.resources.getDimensionPixelOffset(R.dimen.label2_active_margin_top) + 6).toFloat()).duration =
+                ANIMATION_DURATION.toLong()
         } else {
-            this.editTextLayout.setAlpha(1f);
-            this.floatingLabel.setScaleX(0.85f);
-            this.floatingLabel.setScaleY(0.85f);
-//            this.floatingHintLabel.setScaleX(0.92f);
+            editTextLayout!!.alpha = 1f
+            floatingLabel!!.scaleX = 0.85f
+            floatingLabel!!.scaleY = 0.85f
+            //            this.floatingHintLabel.setScaleX(0.92f);
 //            this.floatingHintLabel.setScaleY(0.92f);
 //            this.floatingHintLabel.setTranslationX(floatingLabel.getWidth()+getContext().getResources().getDimensionPixelOffset(R.dimen.label_active_margin_left));
 //            this.floatingHintLabel.setTranslationY(-labelTopMargin +
 //                    getContext().getResources().getDimensionPixelOffset(R.dimen.label_active_margin_top)-floatingLabel.getHeight()+2-
 //                    getContext().getResources().getDimensionPixelOffset(R.dimen.label2_active_margin_top));
-            floatingHintLabel.setVisibility(View.GONE);
-
-            this.floatingSingle.setScaleX(0.85f);
-            this.floatingSingle.setScaleY(0.85f);
-            this.floatingSingle.setTranslationX(-labelTopMargin -
-                    getContext().getResources().getDimensionPixelOffset(R.dimen.label2_active_margin_top));
-
+            floatingHintLabel!!.visibility = GONE
+            floatingSingle!!.scaleX = 0.85f
+            floatingSingle!!.scaleY = 0.85f
+            floatingSingle!!.translationX = (-labelTopMargin -
+                    context.resources.getDimensionPixelOffset(R.dimen.label2_active_margin_top)).toFloat()
         }
-        activated = true;
+        activatedState = true
     }
 
-    protected void makeCursorBlink() {
-
-        CharSequence hintCache = this.editText.getHint();
-        this.editText.setHint(" ");
-        this.editText.setHint(hintCache);
+    private fun makeCursorBlink() {
+        val hintCache = editText!!.hint
+        editText!!.hint = " "
+        editText!!.hint = hintCache
     }
 
     /**
@@ -759,7 +704,7 @@ public class TextFormFieldBoxes extends FrameLayout {
      *
      * @param colorRes color resource
      */
-    protected void setHighlightColor(int colorRes) {
+    private fun setHighlightColor(colorRes: Int) {
 
 //        this.floatingLabel.setTextColor(colorRes);
 //        setCursorDrawableColor(this.editText, colorRes);
@@ -771,149 +716,120 @@ public class TextFormFieldBoxes extends FrameLayout {
 //        }
 //
 //        if (colorRes == DEFAULT_DISABLED_TEXT_COLOR) this.iconImageButton.setAlpha(0.35f);
-
     }
 
     /**
      * By default the field is validated each time a key is pressed and at construction,
      * this means a field with a minimum length requirement will start in Error state.
-     * Set this value to true to validate only when {@link #validate()} is called.
+     * Set this value to true to validate only when [.validate] is called.
      *
      * @param isManualValidateError the new value
      */
-    protected void setManualValidateError(boolean isManualValidateError) {
-        this.isManualValidateError = isManualValidateError;
+    @JvmName("setManualValidateError1")
+    private fun setManualValidateError(isManualValidateError: Boolean) {
+        this.isManualValidateError = isManualValidateError
     }
+
     /**
      * Update the onError state of this component
      *
      * @return true if valid (the inverse value of onError)
      */
-    public boolean validate() { //Reverted: "validateError" has the opposite meaning and is incorrect and does not follow conventions
-        removeError();
-        updateCounterText(true);
-        if (onError) {
-            setError(null, false);
+    fun validate(): Boolean { //Reverted: "validateError" has the opposite meaning and is incorrect and does not follow conventions
+        removeError()
+        updateCounterText(true)
+        if (isOnError) {
+            setError(null, false)
         }
-        return !onError;
+        return !isOnError
     }
 
-    /**
-     * @deprecated Pseudonym for {@link #validate()} to provide legacy support for
-     * a bad PR.
-     * <p>
-     * Note: This does NOT validate that there is an error, it does the opposite
-     */
-    @Deprecated
-    public boolean validateError() {
-        return validate();
+    @Deprecated("""Pseudonym for {@link #validate()} to provide legacy support for
+      a bad PR.
+      <p>
+      Note: This does NOT validate that there is an error, it does the opposite""")
+    fun validateError(): Boolean {
+        return validate()
     }
 
     /**
      * check if the TextFieldBox should use a dense spacing,
      * then change the layout dimens accordingly
      */
-    protected void updateDimens(boolean useDenseSpacing) {
-
-        final Resources res = getContext().getResources();
+    private fun updateDimens(useDenseSpacing: Boolean) {
+        val res = context.resources
 
         /* Floating Label */
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.floatingLabel.getLayoutParams();
+        var lp = floatingLabel!!.layoutParams as RelativeLayout.LayoutParams
         lp.topMargin = res.getDimensionPixelOffset(
-                useDenseSpacing ?
-                        R.dimen.dense_label_idle_margin_top :
-                        R.dimen.label_idle_margin_top
-        );
-        this.floatingLabel.setLayoutParams(lp);
+            if (useDenseSpacing) R.dimen.dense_label_idle_margin_top else R.dimen.label_idle_margin_top
+        )
+        floatingLabel!!.layoutParams = lp
 
-        /* EditText Layout */
-        this.inputLayout.setPadding(
-                0, hideSelectedTitle ? 0 : (res.getDimensionPixelOffset(
-                        useDenseSpacing ?
-                                R.dimen.dense_editTextLayout_padding_top :
-                                R.dimen.editTextLayout_padding_top
-                )),
-                0, hideSelectedTitle ? 0 : (res.getDimensionPixelOffset(R.dimen.editTextLayout_padding_bottom)));
+        /* EditText Layout */inputLayout!!.setPadding(
+            0,
+            if (hideSelectedTitle) 0 else res.getDimensionPixelOffset(
+                if (useDenseSpacing) R.dimen.dense_editTextLayout_padding_top else R.dimen.editTextLayout_padding_top
+            ),
+            0,
+            if (hideSelectedTitle) 0 else res.getDimensionPixelOffset(R.dimen.editTextLayout_padding_bottom))
 
-        /* End Icon */
-        this.endIconImageButton.setMinimumHeight(
-                res.getDimensionPixelOffset(
-                        useDenseSpacing ?
-                                R.dimen.end_icon_min_height :
-                                R.dimen.dense_end_icon_min_height
-                )
-        );
-        this.endIconImageButton.setMinimumWidth(
-                res.getDimensionPixelOffset(
-                        useDenseSpacing ?
-                                R.dimen.end_icon_min_width :
-                                R.dimen.dense_end_icon_min_width
-                )
-        );
+        /* End Icon */endIconImageButton!!.minimumHeight = res.getDimensionPixelOffset(
+            if (useDenseSpacing) R.dimen.end_icon_min_height else R.dimen.dense_end_icon_min_height
+        )
+        endIconImageButton!!.minimumWidth = res.getDimensionPixelOffset(
+            if (useDenseSpacing) R.dimen.end_icon_min_width else R.dimen.dense_end_icon_min_width
+        )
 
-        /* Clear Icon */
-        this.clearButton.setMinimumHeight(
-                res.getDimensionPixelOffset(
-                        useDenseSpacing ?
-                                R.dimen.clear_button_min_height :
-                                R.dimen.dense_clear_button_min_height
-                )
-        );
-        this.clearButton.setMinimumWidth(
-                res.getDimensionPixelOffset(
-                        useDenseSpacing ?
-                                R.dimen.clear_button_min_width :
-                                R.dimen.dense_clear_button_min_width
-                )
-        );
+        /* Clear Icon */clearButton!!.minimumHeight = res.getDimensionPixelOffset(
+            if (useDenseSpacing) R.dimen.clear_button_min_height else R.dimen.dense_clear_button_min_height
+        )
+        clearButton!!.minimumWidth = res.getDimensionPixelOffset(
+            if (useDenseSpacing) R.dimen.clear_button_min_width else R.dimen.dense_clear_button_min_width
+        )
 
-        /* Bottom View */
-        lp = (RelativeLayout.LayoutParams) this.bottomPart.getLayoutParams();
+        /* Bottom View */lp = bottomPart!!.layoutParams as RelativeLayout.LayoutParams
         lp.topMargin = res.getDimensionPixelOffset(
-                useDenseSpacing ?
-                        R.dimen.dense_bottom_marginTop :
-                        R.dimen.bottom_marginTop
-        );
-        this.bottomPart.setLayoutParams(lp);
+            if (useDenseSpacing) R.dimen.dense_bottom_marginTop else R.dimen.bottom_marginTop
+        )
+        bottomPart!!.layoutParams = lp
 
-        /* EditText */
-        this.editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, res.getDimension(
-                useDenseSpacing ?
-                        R.dimen.dense_edittext_text_size :
-                        R.dimen.edittext_text_size
-        ));
-
-        this.labelTopMargin = RelativeLayout.LayoutParams.class
-                .cast(this.floatingLabel.getLayoutParams()).topMargin;
-        this.requestLayout();
+        /* EditText */editText!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, res.getDimension(
+            if (useDenseSpacing) R.dimen.dense_edittext_text_size else R.dimen.edittext_text_size
+        ))
+        labelTopMargin = RelativeLayout.LayoutParams::class.java
+            .cast(floatingLabel!!.layoutParams).topMargin
+        requestLayout()
     }
 
     /**
      * check if the character count meets the upper or lower limits,
-     * <p>
+     *
+     *
      * if performValidation and exceeds limit, setCounterError()
      * otherwise removeCounterError()
-     * <p>
-     * <p>
      *
-     * @param performValidation - true if error state should be applied or removed by this calls See {@link
-     *                          #setManualValidateError(boolean)} </p> <i>NOTE: SPACE AND LINE FEED WILL NOT COUNT</i>
+     *
+     *
+     *
+     *
+     * @param performValidation - true if error state should be applied or removed by this calls See [                          ][.setManualValidateError]  *NOTE: SPACE AND LINE FEED WILL NOT COUNT*
      */
-    protected void updateCounterText(boolean performValidation) {
+    private fun updateCounterText(performValidation: Boolean) {
 
         /* Show clear button if there is anything */
         if (hasClearButton) {
-            if (this.editText.getText().toString().length() == 0) {
-                showClearButton(false);
+            if (editText!!.text.toString().length == 0) {
+                showClearButton(false)
             } else {
-                showClearButton(true);
+                showClearButton(true)
             }
         }
 
         /* Don't Count Space & Line Feed */
-        int length = this.editText.getText().toString().replaceAll(" ", "")
-                .replaceAll("\n", "").length();
-        String lengthStr = Integer.toString(length) + " / ";
+        val length = editText!!.text.toString().replace(" ".toRegex(), "")
+            .replace("\n".toRegex(), "").length
+        val lengthStr = Integer.toString(length) + " / "
         //String counterLabelResourceStr = getResources().getString(R.string.counter_label_text_constructor);
 //        if (this.maxCharacters > 0) {
 //            if (this.minCharacters > 0) {
@@ -962,22 +878,20 @@ public class TextFormFieldBoxes extends FrameLayout {
      * if true, make the bottom view VISIBLE.
      * otherwise, make it GONE.
      */
-    protected void updateBottomViewVisibility() {
-
-        if (this.helperLabel.getText().toString().isEmpty() &&
-                this.counterLabel.getText().toString().isEmpty())
-            //this.bottomPart.setVisibility(View.GONE);
-            this.helperLabel.setVisibility(View.GONE);
-        else this.helperLabel.setVisibility(View.VISIBLE);
+    private fun updateBottomViewVisibility() {
+        if (helperLabel!!.text.toString().isEmpty() &&
+            counterLabel!!.text.toString().isEmpty()
+        ) //this.bottomPart.setVisibility(View.GONE);
+            helperLabel!!.visibility = GONE else helperLabel!!.visibility = VISIBLE
     }
 
     /**
      * set highlight color and counter Label text color to error color
      */
-    protected void setCounterError() {
-        this.onError = true;
-        setHighlightColor(this.errorColor);
-        this.counterLabel.setTextColor(this.errorColor);
+    private fun setCounterError() {
+        isOnError = true
+        setHighlightColor(errorColor)
+        counterLabel!!.setTextColor(errorColor)
     }
 
     /**
@@ -985,11 +899,10 @@ public class TextFormFieldBoxes extends FrameLayout {
      * otherwise set to secondaryColor
      * set counterLabel Label text color to DEFAULT_TEXT_COLOR
      */
-    protected void removeCounterError() {
-        this.onError = false;
-        if (this.hasFocus) setHighlightColor(this.primaryColor);
-        else setHighlightColor(this.secondaryColor);
-        this.counterLabel.setTextColor(this.mCounterTextColor);
+    private fun removeCounterError() {
+        isOnError = false
+        if (hasFocus) setHighlightColor(primaryColor) else setHighlightColor(secondaryColor)
+        counterLabel!!.setTextColor(mCounterTextColor)
     }
 
     /**
@@ -999,342 +912,299 @@ public class TextFormFieldBoxes extends FrameLayout {
      * @param errorText optional error message
      * @param giveFocus whether the field will gain focus when set error on
      */
-    public void setError(@Nullable String errorText, boolean giveFocus) {
-        if (this.enabled && errorText != null && !errorText.isEmpty()) {
+    fun setError(errorText: String?, giveFocus: Boolean) {
+        if (enabled && errorText != null && !errorText.isEmpty()) {
             //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_error);
-            this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_E44438));
-            this.onError = true;
+            bottomLine!!.setBackgroundColor(ContextCompat.getColor(context, R.color.color_E44438))
+            isOnError = true
             //activate(true);
-            setHighlightColor(this.errorColor);
-            this.helperLabel.setTextColor(this.errorColor);
-            if (giveFocus) setHasFocus(true);
-            makeCursorBlink();
+            setHighlightColor(errorColor)
+            helperLabel!!.setTextColor(errorColor)
+            if (giveFocus) setHasFocus(true)
+            makeCursorBlink()
         }
-
-        this.helperLabel.setText(errorText);
-        updateBottomViewVisibility();
-
+        helperLabel!!.text = errorText
+        updateBottomViewVisibility()
         if (errorText == null && hasFocus) {
-            activate(true);
+            activate(true)
         } else if (errorText == null) {
-            deactivate();
+            deactivate()
         }
-
     }
 
     /**
      * set highlight to primaryColor if having focus,
      * otherwise set to secondaryColor
      * set helperLabel Label text color to DEFAULT_TEXT_COLOR
-     * <p>
-     * <i>NOTE: WILL BE CALLED WHEN THE EDITTEXT CHANGES
-     * UNLESS YOU {@link #setManualValidateError(boolean)} TO TRUE</i>
+     *
+     *
+     * *NOTE: WILL BE CALLED WHEN THE EDITTEXT CHANGES
+     * UNLESS YOU [.setManualValidateError] TO TRUE*
      */
-    public void removeError() {
-        this.onError = false;
+    fun removeError() {
+        isOnError = false
         //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_h);
-        this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_317FFF_0760D4));
-        if (this.hasFocus) setHighlightColor(this.primaryColor);
-        else setHighlightColor(this.secondaryColor);
-        this.helperLabel.setTextColor(this.helperTextColor);
-        this.helperLabel.setText(this.helperText);
-        updateBottomViewVisibility();
+        bottomLine!!.setBackgroundColor(ContextCompat.getColor(context,
+            R.color.color_317FFF_0760D4))
+        if (hasFocus) setHighlightColor(primaryColor) else setHighlightColor(secondaryColor)
+        helperLabel!!.setTextColor(helperTextColor)
+        helperLabel!!.text = helperText
+        updateBottomViewVisibility()
     }
 
-    protected void showClearButton(boolean show) {
-
-        if (show) this.clearButton.setVisibility(View.VISIBLE);
-        else this.clearButton.setVisibility(View.GONE);
+    private fun showClearButton(show: Boolean) {
+        if (show) clearButton!!.visibility = VISIBLE else clearButton!!.visibility = GONE
     }
 
-    private void triggerSetters() {
+    private fun triggerSetters() {
 
         /* Texts */
-        setLabelText(this.labelText);
-        setLableTextStyle(this.labelTextStyle);
-        setSubLabelText(this.subLabelText);
-        setHideSubView(this.hideSubView);
-        setHelperText(this.helperText);
-        setHintText(this.hintText);
-        setSingleText(this.singleText);
-        setSingleTextStyle(this.singleTextStyle);
-        setSingleTextColor(this.singleTextColor);
-        setSingleTextStartPadding(this.singleTextStartPadding);
-        /* Colors */
-        setHelperTextColor(this.helperTextColor);
-        setmCounterTextColor(this.mCounterTextColor);
-        setErrorColor(this.errorColor);
-        setPrimaryColor(this.primaryColor);
-        setSecondaryColor(this.secondaryColor);
+        setLabelText(labelText)
+        setLableTextStyle(labelTextStyle)
+        setSubLabelText(subLabelText)
+        setHideSubView(hideSubView)
+        setHelperText(helperText)
+        setHintText(hintText)
+        setSingleText(singleText)
+        setSingleTextStyle(singleTextStyle)
+        setSingleTextColor(singleTextColor)
+        setSingleTextStartPadding(singleTextStartPadding)
+        /* Colors */setHelperTextColor(helperTextColor)
+        setmCounterTextColor(mCounterTextColor)
+        errorColor = errorColor
+        setPrimaryColor(primaryColor)
+        setSecondaryColor(secondaryColor)
         //setPanelBackgroundColor(this.panelBackgroundColor);
 
-        /* Characters counter */
-        setMaxCharacters(this.maxCharacters);
-        setMinCharacters(this.minCharacters);
+        /* Characters counter */setMaxCharacters(maxCharacters)
+        setMinCharacters(minCharacters)
 
-        /* Others */
-        setEnabled(this.enabled);
-        setIconSignifier(this.iconSignifierResourceId);
-        setEndIcon(this.endIconResourceId);
-        setIsResponsiveIconColor(this.isResponsiveIconColor);
-        setHasClearButton(this.hasClearButton);
-        setHasFocus(this.hasFocus);
-        setAlwaysShowHint(this.alwaysShowHint);
-        updateCounterText(!isManualValidateError);
-        updateBottomViewVisibility();
+        /* Others */isEnabled = enabled
+        setIconSignifier(iconSignifierResourceId)
+        setEndIcon(endIconResourceId)
+        setIsResponsiveIconColor(isResponsiveIconColor)
+        setHasClearButton(hasClearButton)
+        setHasFocus(hasFocus)
+        alwaysShowHint = alwaysShowHint
+        updateCounterText(!isManualValidateError)
+        updateBottomViewVisibility()
     }
 
-    private void setHideSubView(boolean hideSubView) {
-        this.hideSubView = hideSubView;
-        if (this.hideSubView){
-            viewSub.setVisibility(View.VISIBLE);
-        }else {
-            viewSub.setVisibility(View.GONE);
+    private fun setHideSubView(hideSubView: Boolean) {
+        this.hideSubView = hideSubView
+        if (this.hideSubView) {
+            viewSub!!.visibility = VISIBLE
+        } else {
+            viewSub!!.visibility = GONE
         }
-
     }
 
     /* Text Setters */
-    public void setLabelText(String labelText) {
-
-        this.labelText = labelText;
-        this.floatingLabel.setText(this.labelText);
-
-        if (labelText.isEmpty()) {
-            this.floatingLabel.setVisibility(View.INVISIBLE);
-
-            this.labelSpace.setVisibility(View.INVISIBLE);
-            this.labelSpaceBelow.setVisibility(View.GONE);
+    fun setLabelText(labelText: String?) {
+        this.labelText = labelText
+        floatingLabel!!.text = this.labelText
+        if (labelText!!.isEmpty()) {
+            floatingLabel!!.visibility = INVISIBLE
+            labelSpace!!.visibility = INVISIBLE
+            labelSpaceBelow!!.visibility = GONE
         } else {
-            this.floatingLabel.setVisibility(View.VISIBLE);
-            this.labelSpace.setVisibility(View.VISIBLE);
-            this.labelSpaceBelow.setVisibility(View.GONE);
+            floatingLabel!!.visibility = VISIBLE
+            labelSpace!!.visibility = VISIBLE
+            labelSpaceBelow!!.visibility = GONE
         }
     }
 
-    public void setLableTextStyle(int textStyle) {
-        this.labelTextStyle = textStyle;
-        this.floatingLabel.setTypeface(this.floatingLabel.getTypeface(), this.labelTextStyle);
+    fun setLableTextStyle(textStyle: Int) {
+        labelTextStyle = textStyle
+        floatingLabel!!.setTypeface(floatingLabel!!.typeface, labelTextStyle)
     }
 
-    public void setSubLabelText(String subLabelText) {
-
-        this.subLabelText = subLabelText;
-        this.floatingSubLabel.setText(this.subLabelText);
-
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) editTextLayout.getLayoutParams();
-        if (subLabelText.isEmpty()) {
-            this.floatingSubLabel.setVisibility(View.GONE);
-            layoutParams.removeRule(RelativeLayout.ALIGN_TOP);
-            layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-            layoutParams.topMargin = 0;
+    fun setSubLabelText(subLabelText: String?) {
+        this.subLabelText = subLabelText
+        floatingSubLabel!!.text = this.subLabelText
+        val layoutParams = editTextLayout!!.layoutParams as RelativeLayout.LayoutParams
+        if (subLabelText!!.isEmpty()) {
+            floatingSubLabel!!.visibility = GONE
+            layoutParams.removeRule(RelativeLayout.ALIGN_TOP)
+            layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE)
+            layoutParams.topMargin = 0
         } else {
-            this.floatingSubLabel.setVisibility(View.VISIBLE);
-            layoutParams.removeRule(RelativeLayout.CENTER_VERTICAL);
-            layoutParams.addRule(RelativeLayout.ALIGN_TOP, R.id.text_field_boxes_sub_label);
-            int topMargin = ((int) MetricsUtil.INSTANCE.convertDpToPixel(2, editTextLayout.getContext()));
-            layoutParams.topMargin = - (topMargin + inputLayout.getPaddingTop());
+            floatingSubLabel!!.visibility = VISIBLE
+            layoutParams.removeRule(RelativeLayout.CENTER_VERTICAL)
+            layoutParams.addRule(RelativeLayout.ALIGN_TOP, R.id.text_field_boxes_sub_label)
+            val topMargin = convertDpToPixel(2f, editTextLayout!!.context).toInt()
+            layoutParams.topMargin = -(topMargin + inputLayout!!.paddingTop)
         }
-        editTextLayout.setLayoutParams(layoutParams);
+        editTextLayout!!.layoutParams = layoutParams
     }
 
-    public void setHintText(String hintText) {
-
-        this.hintText = hintText;
-        this.floatingHintLabel.setText(this.hintText);
-
-        if (hintText.isEmpty()) {
-            this.floatingHintLabel.setVisibility(View.GONE);
+    fun setHintText(hintText: String?) {
+        this.hintText = hintText
+        floatingHintLabel!!.text = this.hintText
+        if (hintText!!.isEmpty()) {
+            floatingHintLabel!!.visibility = GONE
         } else {
-            this.floatingHintLabel.setVisibility(View.VISIBLE);
+            floatingHintLabel!!.visibility = VISIBLE
         }
     }
 
-    public void setSingleText(String singleText) {
-
-        this.singleText = singleText;
-        this.floatingSingle.setText(this.singleText);
-
-        if (singleText.isEmpty()) {
-            this.floatingSingle.setVisibility(View.GONE);
+    fun setSingleText(singleText: String?) {
+        this.singleText = singleText
+        floatingSingle!!.text = this.singleText
+        if (singleText!!.isEmpty()) {
+            floatingSingle!!.visibility = GONE
         } else {
-            this.floatingSingle.setVisibility(View.VISIBLE);
+            floatingSingle!!.visibility = VISIBLE
         }
     }
 
-    public void setSingleTextStyle(int textStyle) {
-        this.singleTextStyle = textStyle;
-        this.floatingSingle.setTypeface(this.floatingSingle.getTypeface(), this.singleTextStyle);
+    fun setSingleTextStyle(textStyle: Int) {
+        singleTextStyle = textStyle
+        floatingSingle!!.setTypeface(floatingSingle!!.typeface, singleTextStyle)
     }
 
-    public void setSingleTextColor(int colorRes){
-        floatingSingle.setTextColor(colorRes);
+    fun setSingleTextColor(colorRes: Int) {
+        floatingSingle!!.setTextColor(colorRes)
     }
 
-    public void setSingleTextStartPadding(int start){
-        int startPadding = ((int) MetricsUtil.INSTANCE.convertDpToPixel(start, floatingSingle.getContext()));
-        floatingSingle.setPadding(startPadding,0,0,0);
+    fun setSingleTextStartPadding(start: Int) {
+        val startPadding = convertDpToPixel(start.toFloat(), floatingSingle!!.context).toInt()
+        floatingSingle!!.setPadding(startPadding, 0, 0, 0)
     }
 
-    public void setHelperText(String helperText) {
-
-        this.helperText = helperText;
-        this.helperLabel.setText(this.helperText);
+    fun setHelperText(helperText: String?) {
+        this.helperText = helperText
+        helperLabel!!.text = this.helperText
     }
 
     /* Color Setters */
-    public void setHelperTextColor(int colorRes) {
-
-        this.helperTextColor = colorRes;
-        this.helperLabel.setTextColor(this.helperTextColor);
+    fun setHelperTextColor(colorRes: Int) {
+        helperTextColor = colorRes
+        helperLabel!!.setTextColor(helperTextColor)
     }
 
-    public void setmCounterTextColor(int colorRes) {
-
-        this.mCounterTextColor = colorRes;
-        this.counterLabel.setTextColor(this.mCounterTextColor);
-    }
-
-    public void setErrorColor(int colorRes) {
-        this.errorColor = colorRes;
+    fun setmCounterTextColor(colorRes: Int) {
+        mCounterTextColor = colorRes
+        counterLabel!!.setTextColor(mCounterTextColor)
     }
 
     /**
-     * <i>NOTE: the color will automatically be made lighter by 20% if it's on the DARK theme</i>
+     * *NOTE: the color will automatically be made lighter by 20% if it's on the DARK theme*
      */
-    public void setPrimaryColor(int colorRes) {
-
-        this.primaryColor = colorRes;
-        if (this.hasFocus) setHighlightColor(this.primaryColor);
+    fun setPrimaryColor(colorRes: Int) {
+        primaryColor = colorRes
+        if (hasFocus) setHighlightColor(primaryColor)
     }
 
-    public void setSecondaryColor(int colorRes) {
-
-        this.secondaryColor = colorRes;
-        if (!this.hasFocus) setHighlightColor(this.secondaryColor);
-    }
-
-    public void setPanelBackgroundColor(int colorRes) {
-
-        this.panelBackgroundColor = colorRes;
-//        this.panel.getBackground()
-//                .setColorFilter(new PorterDuffColorFilter(colorRes, PorterDuff.Mode.SRC_IN));
+    fun setSecondaryColor(colorRes: Int) {
+        secondaryColor = colorRes
+        if (!hasFocus) setHighlightColor(secondaryColor)
     }
 
     /* Characters Counter Setters */
-    public void setMaxCharacters(int maxCharacters) {
-        this.maxCharacters = maxCharacters;
-        updateCounterText(!isManualValidateError);
+    fun setMaxCharacters(maxCharacters: Int) {
+        this.maxCharacters = maxCharacters
+        updateCounterText(!isManualValidateError)
     }
 
     /**
      * remove the max character count limit by setting it to 0
      */
-    public void removeMaxCharacters() {
-        this.maxCharacters = 0;
-        updateCounterText(!isManualValidateError);
+    fun removeMaxCharacters() {
+        maxCharacters = 0
+        updateCounterText(!isManualValidateError)
     }
 
-    public void setMinCharacters(int minCharacters) {
-        this.minCharacters = minCharacters;
-        updateCounterText(!isManualValidateError);
+    fun setMinCharacters(minCharacters: Int) {
+        this.minCharacters = minCharacters
+        updateCounterText(!isManualValidateError)
     }
 
     /**
      * remove the min character count limit by setting it to 0
      */
-    public void removeMinCharacters() {
-        this.minCharacters = 0;
-        updateCounterText(!isManualValidateError);
+    fun removeMinCharacters() {
+        minCharacters = 0
+        updateCounterText(!isManualValidateError)
     }
 
     /* Other Setters */
-    public void setEnabled(boolean enabled) {
-
-        this.enabled = enabled;
+    override fun setEnabled(enabled: Boolean) {
+        this.enabled = enabled
         if (this.enabled) {
-            this.editText.setEnabled(true);
-            this.editText.setFocusableInTouchMode(true);
-            this.editText.setFocusable(true);
-            this.bottomPart.setVisibility(View.VISIBLE);
-            this.helperLabel.setVisibility(View.VISIBLE);
-            this.counterLabel.setVisibility(View.GONE);
-            this.panel.setEnabled(true);
-            this.iconImageButton.setEnabled(true);
-            this.iconImageButton.setClickable(true);
-            setHighlightColor(secondaryColor);
-            updateCounterText(!isManualValidateError);
-
+            editText!!.isEnabled = true
+            editText!!.isFocusableInTouchMode = true
+            editText!!.isFocusable = true
+            bottomPart!!.visibility = VISIBLE
+            helperLabel!!.visibility = VISIBLE
+            counterLabel!!.visibility = GONE
+            panel!!.isEnabled = true
+            iconImageButton!!.isEnabled = true
+            iconImageButton!!.isClickable = true
+            setHighlightColor(secondaryColor)
+            updateCounterText(!isManualValidateError)
         } else {
-            removeError();
-            setHasFocus(false);
-            this.editText.setEnabled(false);
-            this.editText.setFocusableInTouchMode(false);
-            this.editText.setFocusable(false);
-            this.iconImageButton.setClickable(false);
-            this.iconImageButton.setEnabled(false);
-            this.bottomPart.setVisibility(View.INVISIBLE);
-            this.helperLabel.setVisibility(View.INVISIBLE);
-            this.counterLabel.setVisibility(View.GONE);
-            this.panel.setEnabled(false);
-            setHighlightColor(DEFAULT_DISABLED_TEXT_COLOR);
+            removeError()
+            setHasFocus(false)
+            editText!!.isEnabled = false
+            editText!!.isFocusableInTouchMode = false
+            editText!!.isFocusable = false
+            iconImageButton!!.isClickable = false
+            iconImageButton!!.isEnabled = false
+            bottomPart!!.visibility = INVISIBLE
+            helperLabel!!.visibility = INVISIBLE
+            counterLabel!!.visibility = GONE
+            panel!!.isEnabled = false
+            setHighlightColor(DEFAULT_DISABLED_TEXT_COLOR)
         }
     }
 
-    public void setIconSignifier(int resourceID) {
-
-        this.iconSignifierResourceId = resourceID;
-        if (this.iconSignifierResourceId != 0) {
-            this.iconImageButton.setImageResource(this.iconSignifierResourceId);
-            this.iconImageButton.setVisibility(View.VISIBLE);
-        } else removeIconSignifier();
+    fun setIconSignifier(resourceID: Int) {
+        iconSignifierResourceId = resourceID
+        if (iconSignifierResourceId != 0) {
+            iconImageButton!!.setImageResource(iconSignifierResourceId)
+            iconImageButton!!.visibility = VISIBLE
+        } else removeIconSignifier()
     }
 
-    public void setIconSignifier(Drawable drawable) {
-
-        removeIconSignifier();
-        this.iconImageButton.setImageDrawable(drawable);
-        this.iconImageButton.setVisibility(View.VISIBLE);
-
+    fun setIconSignifier(drawable: Drawable?) {
+        removeIconSignifier()
+        iconImageButton!!.setImageDrawable(drawable)
+        iconImageButton!!.visibility = VISIBLE
     }
 
     /**
      * remove the icon by setting the visibility of the image view to View.GONE
      */
-    public void removeIconSignifier() {
-
-        this.iconSignifierResourceId = 0;
-        this.iconImageButton.setVisibility(View.GONE);
+    fun removeIconSignifier() {
+        iconSignifierResourceId = 0
+        iconImageButton!!.visibility = GONE
     }
 
-    public void setEndIcon(int resourceID) {
-
-        this.endIconResourceId = resourceID;
-        if (this.endIconResourceId != 0) {
-            this.endIconImageButton.setImageResource(this.endIconResourceId);
-            this.endIconImageButton.setVisibility(View.VISIBLE);
-        } else removeEndIcon();
-
-        updateClearAndEndIconLayout();
+    fun setEndIcon(resourceID: Int) {
+        endIconResourceId = resourceID
+        if (endIconResourceId != 0) {
+            endIconImageButton!!.setImageResource(endIconResourceId)
+            endIconImageButton!!.visibility = VISIBLE
+        } else removeEndIcon()
+        updateClearAndEndIconLayout()
     }
 
-    public void setEndIcon(Drawable drawable) {
-
-        removeEndIcon();
-        this.endIconImageButton.setImageDrawable(drawable);
-        this.endIconImageButton.setVisibility(View.VISIBLE);
-
-        updateClearAndEndIconLayout();
+    fun setEndIcon(drawable: Drawable?) {
+        removeEndIcon()
+        endIconImageButton!!.setImageDrawable(drawable)
+        endIconImageButton!!.visibility = VISIBLE
+        updateClearAndEndIconLayout()
     }
 
     /**
      * remove the end icon by setting the visibility of the end image view to View.GONE
      */
-    public void removeEndIcon() {
-        this.endIconResourceId = 0;
-        this.endIconImageButton.setImageDrawable(null);
-        this.endIconImageButton.setVisibility(View.GONE);
-        updateClearAndEndIconLayout();
+    fun removeEndIcon() {
+        endIconResourceId = 0
+        endIconImageButton!!.setImageDrawable(null)
+        endIconImageButton!!.visibility = GONE
+        updateClearAndEndIconLayout()
     }
 
     /**
@@ -1342,29 +1212,28 @@ public class TextFormFieldBoxes extends FrameLayout {
      * as the label and the bottomLine do.
      *
      * @param isResponsiveIconColor if true, the icon's color will always be HighlightColor (the same as the bottomLine)
-     *                              if false, the icon will always be in primaryColor
+     * if false, the icon will always be in primaryColor
      */
-    public void setIsResponsiveIconColor(boolean isResponsiveIconColor) {
-
-        this.isResponsiveIconColor = isResponsiveIconColor;
+    fun setIsResponsiveIconColor(isResponsiveIconColor: Boolean) {
+        this.isResponsiveIconColor = isResponsiveIconColor
         if (this.isResponsiveIconColor) {
-            if (this.hasFocus) {
-                this.iconImageButton.setColorFilter(primaryColor);
-                this.iconImageButton.setAlpha(1f);
+            if (hasFocus) {
+                iconImageButton!!.setColorFilter(primaryColor)
+                iconImageButton!!.alpha = 1f
             } else {
-                this.iconImageButton.setColorFilter(secondaryColor);
-                this.iconImageButton.setAlpha(0.54f);
+                iconImageButton!!.setColorFilter(secondaryColor)
+                iconImageButton!!.alpha = 0.54f
             }
         } else {
-            this.iconImageButton.setColorFilter(primaryColor);
-            this.iconImageButton.setAlpha(1f);
+            iconImageButton!!.setColorFilter(primaryColor)
+            iconImageButton!!.alpha = 1f
         }
     }
 
-    public void setHasClearButton(boolean hasClearButton) {
-        this.hasClearButton = hasClearButton;
-        showClearButton(hasClearButton);
-        updateClearAndEndIconLayout();
+    fun setHasClearButton(hasClearButton: Boolean) {
+        this.hasClearButton = hasClearButton
+        showClearButton(hasClearButton)
+        updateClearAndEndIconLayout()
     }
 
     /**
@@ -1372,22 +1241,20 @@ public class TextFormFieldBoxes extends FrameLayout {
      *
      * @param hasFocus gain focus if true, lose if false
      */
-    public void setHasFocus(boolean hasFocus) {
-
-        this.hasFocus = hasFocus;
+    fun setHasFocus(hasFocus: Boolean) {
+        this.hasFocus = hasFocus
         if (this.hasFocus) {
-            activate(true);
-            this.editText.requestFocus();
-            makeCursorBlink();
+            activate(true)
+            editText!!.requestFocus()
+            makeCursorBlink()
 
-            /* if there's an error, keep the error color */
-            if (!this.onError && this.enabled) setHighlightColor(this.primaryColor);
-
+            /* if there's an error, keep the error color */if (!isOnError && enabled) setHighlightColor(
+                primaryColor)
         } else {
-            deactivate();
+            deactivate()
 
-            /* if there's an error, keep the error color */
-            if (!this.onError && this.enabled) setHighlightColor(this.secondaryColor);
+            /* if there's an error, keep the error color */if (!isOnError && enabled) setHighlightColor(
+                secondaryColor)
         }
     }
 
@@ -1396,205 +1263,138 @@ public class TextFormFieldBoxes extends FrameLayout {
      * @param hasFocus gain focus if true, lose if false
      * @param focusEditText only focus TextFieldBoxes if false, both TextFieldBoxes and EditText if true
      */
-    public void setHasFocus(boolean hasFocus, boolean focusEditText) {
-
-        this.hasFocus = hasFocus;
+    fun setHasFocus(hasFocus: Boolean, focusEditText: Boolean) {
+        this.hasFocus = hasFocus
         if (this.hasFocus) {
-            activate(true);
+            activate(true)
             if (focusEditText) {
-                this.editText.requestFocus();
+                editText!!.requestFocus()
             }
-            makeCursorBlink();
+            makeCursorBlink()
 
-            /* if there's an error, keep the error color */
-            if (!this.onError && this.enabled) setHighlightColor(this.primaryColor);
-
+            /* if there's an error, keep the error color */if (!isOnError && enabled) setHighlightColor(
+                primaryColor)
         } else {
-            deactivate();
+            deactivate()
 
-            /* if there's an error, keep the error color */
-            if (!this.onError && this.enabled) setHighlightColor(this.secondaryColor);
+            /* if there's an error, keep the error color */if (!isOnError && enabled) setHighlightColor(
+                secondaryColor)
         }
     }
 
-    public void setAlwaysShowHint(boolean alwaysShowHint) {
-        this.alwaysShowHint = alwaysShowHint;
-    }
-
-    public void setUseDenseSpacing(boolean useDenseSpacing) {
-        this.useDenseSpacing = useDenseSpacing;
-    }
-
     /* Text Getters */
-    public String getLabelText() {
-        return this.labelText;
+    fun getLabelText(): String? {
+        return labelText
     }
 
-    public String getHelperText() {
-        return this.helperText;
+    fun getHelperText(): String? {
+        return helperText
     }
 
-    public String getCounterText() {
-        return this.counterLabel.getText().toString();
-    }
+    val counterText: String
+        get() = counterLabel!!.text.toString()
 
     /* Color Getters */
-    public int getHelperTextColor() {
-        return this.helperTextColor;
+    fun getHelperTextColor(): Int {
+        return helperTextColor
     }
 
-    public int getmCounterTextColor() {
-        return this.mCounterTextColor;
+    fun getmCounterTextColor(): Int {
+        return mCounterTextColor
     }
 
-    public int getErrorColor() {
-        return this.errorColor;
+    fun getPrimaryColor(): Int {
+        return primaryColor
     }
 
-    public int getPrimaryColor() {
-        return this.primaryColor;
-    }
-
-    public int getSecondaryColor() {
-        return this.secondaryColor;
-    }
-
-    public int getPanelBackgroundColor() {
-        return this.panelBackgroundColor;
+    fun getSecondaryColor(): Int {
+        return secondaryColor
     }
 
     /* Characters Counter Getters */
-    public int getMaxCharacters() {
-        return this.maxCharacters;
+    fun getMaxCharacters(): Int {
+        return maxCharacters
     }
 
-    public int getMinCharacters() {
-        return this.minCharacters;
-    }
-
-    /* View Getters */
-    public View getPanel() {
-        return this.panel;
-    }
-
-
-    public AppCompatTextView getHelperLabel() {
-        return this.helperLabel;
-    }
-
-    public AppCompatTextView getCounterLabel() {
-        return this.counterLabel;
-    }
-
-    public AppCompatTextView getFloatingLabel() {
-        return this.floatingLabel;
-    }
-
-    public AppCompatImageButton getIconImageButton() {
-        return this.iconImageButton;
-    }
-
-    public AppCompatImageButton getEndIconImageButton() {
-        return this.endIconImageButton;
+    fun getMinCharacters(): Int {
+        return minCharacters
     }
 
     /* Other Getters */
-    public boolean isActivated() {
-        return this.activated;
+    override fun isActivated(): Boolean {
+        return activatedState
     }
 
-    public boolean isEnabled() {
-        return this.enabled;
+    override fun isEnabled(): Boolean {
+        return enabled
     }
 
-    public boolean isOnError() {
-        return this.onError;
+    fun getIsResponsiveIconColor(): Boolean {
+        return isResponsiveIconColor
     }
 
-    public int getIconSignifierResourceId() {
-        return this.iconSignifierResourceId;
+    fun getHasClearButton(): Boolean {
+        return hasClearButton
     }
 
-    public int getEndIconResourceId() {
-        return this.endIconResourceId;
+    fun getHasFocus(): Boolean {
+        return hasFocus
     }
 
-    public boolean getIsResponsiveIconColor() {
-        return this.isResponsiveIconColor;
-    }
+    companion object {
+        /**
+         * set EditText cursor color
+         */
+        //    private static void setCursorDrawableColor(EditText _editText, int _colorRes) {
+        //
+        //        try {
+        //            Field fCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+        //            fCursorDrawableRes.setAccessible(true);
+        //            int mCursorDrawableRes = fCursorDrawableRes.getInt(_editText);
+        //            Field fEditor = TextView.class.getDeclaredField("mEditor");
+        //            fEditor.setAccessible(true);
+        //            Object editor = fEditor.get(_editText);
+        //            Class<?> clazz = editor.getClass();
+        //            Field fCursorDrawable = clazz.getDeclaredField("mCursorDrawable");
+        //            fCursorDrawable.setAccessible(true);
+        //            Drawable[] drawables = new Drawable[2];
+        //            drawables[0] = ContextCompat.getDrawable(_editText.getContext(), mCursorDrawableRes);
+        //            drawables[1] = ContextCompat.getDrawable(_editText.getContext(), mCursorDrawableRes);
+        //            drawables[0].setColorFilter(_colorRes, PorterDuff.Mode.SRC_IN);
+        //            drawables[1].setColorFilter(_colorRes, PorterDuff.Mode.SRC_IN);
+        //            fCursorDrawable.set(editor, drawables);
+        //        } catch (Throwable ignored) {
+        //        }
+        //    }
+        /**
+         * return a lighter color
+         *
+         * @param factor percentage of light applied
+         */
+        private fun lighter(color: Int, factor: Float): Int {
+            val red = ((Color.red(color) * (1 - factor) / 255 + factor) * 255).toInt()
+            val green = ((Color.green(color) * (1 - factor) / 255 + factor) * 255).toInt()
+            val blue = ((Color.blue(color) * (1 - factor) / 255 + factor) * 255).toInt()
+            return Color.argb(Color.alpha(color), red, green, blue)
+        }
 
-    public boolean getHasClearButton() {
-        return this.hasClearButton;
-    }
+        private fun isLight(color: Int): Boolean {
+            return Math.sqrt(
+                Color.red(color) * Color.red(color) * .241 + Color.green(color) * Color.green(color) * .691 + Color.blue(
+                    color) * Color.blue(color) * .068) > 130
+        }
 
-    public boolean getHasFocus() {
-        return this.hasFocus;
-    }
-
-    public boolean getAlwaysShowHint() {
-        return this.alwaysShowHint;
-    }
-
-    public boolean getUseDenseSpacing() {
-        return this.useDenseSpacing;
-    }
-
-    /**
-     * set EditText cursor color
-     */
-//    protected static void setCursorDrawableColor(EditText _editText, int _colorRes) {
-//
-//        try {
-//            Field fCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-//            fCursorDrawableRes.setAccessible(true);
-//            int mCursorDrawableRes = fCursorDrawableRes.getInt(_editText);
-//            Field fEditor = TextView.class.getDeclaredField("mEditor");
-//            fEditor.setAccessible(true);
-//            Object editor = fEditor.get(_editText);
-//            Class<?> clazz = editor.getClass();
-//            Field fCursorDrawable = clazz.getDeclaredField("mCursorDrawable");
-//            fCursorDrawable.setAccessible(true);
-//            Drawable[] drawables = new Drawable[2];
-//            drawables[0] = ContextCompat.getDrawable(_editText.getContext(), mCursorDrawableRes);
-//            drawables[1] = ContextCompat.getDrawable(_editText.getContext(), mCursorDrawableRes);
-//            drawables[0].setColorFilter(_colorRes, PorterDuff.Mode.SRC_IN);
-//            drawables[1].setColorFilter(_colorRes, PorterDuff.Mode.SRC_IN);
-//            fCursorDrawable.set(editor, drawables);
-//        } catch (Throwable ignored) {
-//        }
-//    }
-
-    /**
-     * return a lighter color
-     *
-     * @param factor percentage of light applied
-     */
-    protected static int lighter(int color, float factor) {
-
-        int red = (int) ((Color.red(color) * (1 - factor) / 255 + factor) * 255);
-        int green = (int) ((Color.green(color) * (1 - factor) / 255 + factor) * 255);
-        int blue = (int) ((Color.blue(color) * (1 - factor) / 255 + factor) * 255);
-        return Color.argb(Color.alpha(color), red, green, blue);
-    }
-
-    protected static boolean isLight(int color) {
-        return Math.sqrt(
-                Color.red(color) * Color.red(color) * .241 +
-                        Color.green(color) * Color.green(color) * .691 +
-                        Color.blue(color) * Color.blue(color) * .068) > 130;
-    }
-
-    /**
-     * adjust the alpha value of the color
-     *
-     * @return the color after adjustment
-     */
-    protected static int adjustAlpha(int color, float _toAlpha) {
-
-        int alpha = Math.round(255 * _toAlpha);
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-        return Color.argb(alpha, red, green, blue);
+        /**
+         * adjust the alpha value of the color
+         *
+         * @return the color after adjustment
+         */
+        private fun adjustAlpha(color: Int, _toAlpha: Float): Int {
+            val alpha = Math.round(255 * _toAlpha)
+            val red = Color.red(color)
+            val green = Color.green(color)
+            val blue = Color.blue(color)
+            return Color.argb(alpha, red, green, blue)
+        }
     }
 }

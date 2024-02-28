@@ -34,10 +34,6 @@
         <item name="android:taskCloseExitAnimation">@anim/pop_left_to_right_exit</item>
     </style>
 
-    <style name="MyDialogStyle">
-        <item name="android:windowBackground">@color/transparent_black_50</item>
-        <item name="android:layout_gravity">center_vertical</item>
-    </style>
 
     <!--＊＊設定layout_gravity會導致NestedScrollView內的RecyclerView item移位-->
 

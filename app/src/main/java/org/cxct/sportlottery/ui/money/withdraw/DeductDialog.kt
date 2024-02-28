@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.money.withdraw
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.dialog_commission_info.btn_close
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogDeductBinding
 import org.cxct.sportlottery.network.withdraw.uwcheck.UwCheckData
@@ -12,7 +11,7 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.Spanny
 
-class DeductDialog(val uwCheckData: UwCheckData, val onConfirm: ()->Unit): BaseDialog<BaseViewModel, DialogDeductBinding>() {
+class DeductDialog(private val uwCheckData: UwCheckData, private val onConfirm: ()->Unit): BaseDialog<BaseViewModel, DialogDeductBinding>() {
 
     override fun onInitView() {
         initButton()
@@ -38,7 +37,7 @@ class DeductDialog(val uwCheckData: UwCheckData, val onConfirm: ()->Unit): BaseD
         btnCancel.setOnClickListener {
             dismiss()
         }
-        btn_close.setOnClickListener {
+        btnClose.setOnClickListener {
             dismiss()
         }
     }

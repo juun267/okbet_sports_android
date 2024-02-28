@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.profileCenter.changePassword
 import android.app.Activity
 import android.content.Intent
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.text_form_field_boxes_layout.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivitySettingPasswordBinding
@@ -71,9 +70,9 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel, ActivityS
 
         val bottomLineColorRes = R.color.color_80334266_E3E8EE
         etCurrentPassword.isVisible = hasPassword()
-        etCurrentPassword.bottom_line.setBackgroundResource(bottomLineColorRes)
-        etNewPassword.bottom_line.setBackgroundResource(bottomLineColorRes)
-        etConfirmPassword.bottom_line.setBackgroundResource(bottomLineColorRes)
+        etCurrentPassword.binding.bottomLine.setBackgroundResource(bottomLineColorRes)
+        etNewPassword.binding.bottomLine.setBackgroundResource(bottomLineColorRes)
+        etConfirmPassword.binding.bottomLine.setBackgroundResource(bottomLineColorRes)
         updateButtonStatus(false)
         etCurrentPassword.setTransformationMethodEvent(eetCurrentPassword)
         etNewPassword.setTransformationMethodEvent(eetNewPassword)
@@ -200,17 +199,17 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel, ActivityS
 
     private fun updateCurrentPwdEditTextHint(pwdPage: PwdPage, updatePayPw: Int?) = binding.run {
         if (pwdPage == PwdPage.LOGIN_PWD) {
-            etCurrentPassword.labelText = getString(R.string.current_login_password)
+            etCurrentPassword.setLabelText(getString(R.string.current_login_password))
             etCurrentPassword.setHintText(getString(R.string.hint_current_login_password))
             etNewPassword.setHintText(getString(R.string.hint_register_password))
             return@run
         }
 
         if (updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW) {
-            etCurrentPassword.labelText = getString(R.string.current_login_password)
+            etCurrentPassword.setLabelText(getString(R.string.current_login_password))
             etCurrentPassword.setHintText(getString(R.string.hint_current_login_password))
         } else {
-            etCurrentPassword.labelText = getString(R.string.current_withdrawal_password)
+            etCurrentPassword.setLabelText(getString(R.string.current_withdrawal_password))
             etCurrentPassword.setHintText(getString(R.string.hint_current_withdrawal_password))
         }
         etNewPassword.setHintText(getString(R.string.hint_withdrawal_new_password))

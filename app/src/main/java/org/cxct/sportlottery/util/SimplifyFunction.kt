@@ -41,13 +41,13 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.view_payment_maintenance.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.databinding.ViewPaymentMaintenanceBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -839,15 +839,15 @@ fun Context.dividerView(
 /**
  * 设置充值提款渠道的维护状态
  */
-fun setupMoneyCfgMaintanince(rechfg: RechCfg, submitBtn: Button, linMaintaince: View) {
+fun setupMoneyCfgMaintanince(rechfg: RechCfg, submitBtn: Button, binding: ViewPaymentMaintenanceBinding) {
     if (rechfg.open== MoneyRechCfg.Switch.OPEN.code){
         submitBtn.visible()
-        linMaintaince.gone()
+        binding.root.gone()
     }else if(rechfg.open== MoneyRechCfg.Switch.MAINTAINCE.code){
         submitBtn.gone()
-        linMaintaince.visible()
-        linMaintaince.linMaintenanceTip.isVisible = !rechfg.frontDeskRemark.isNullOrEmpty()
-        linMaintaince.tvTipsContent.text = rechfg.frontDeskRemark
+        binding.root.visible()
+        binding.linMaintenanceTip.isVisible = !rechfg.frontDeskRemark.isNullOrEmpty()
+        binding.tvTipsContent.text = rechfg.frontDeskRemark
     }
 }
 
@@ -874,7 +874,7 @@ fun TextFormFieldBoxes.setTransformationMethodEvent(editText: EditText) {
             editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
         }
 
-        hasFocus = true
+        setHasFocus(true)
         editText.setSelection(editText.text.toString().length)
     }
 }

@@ -3,11 +3,9 @@ package org.cxct.sportlottery.ui.results
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_match_result_title.view.*
 import kotlinx.android.synthetic.main.item_outright_result_outright.view.*
 import kotlinx.android.synthetic.main.item_outright_result_title.view.*
 import kotlinx.android.synthetic.main.item_outright_result_title.view.iv_arrow

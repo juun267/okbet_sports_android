@@ -107,7 +107,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
                 )
             }
         }
-        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance.root) }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
 
         //選取日曆
        /* cv_recharge_time.setOnClickListener {
@@ -532,7 +532,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         //存款時間
         txvTransferTime.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
         txvTransferTime2.text = TimeUtil.dateToStringFormatHMS(Date())
-        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance.root) }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
     }
 
     private fun hideEditText()=binding.run {

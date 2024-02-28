@@ -87,7 +87,7 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel, ActivityAccount
 
 
         viewModel.isFinalPage.observe(this.viewLifecycleOwner) {
-            accountHistoryAdapter.isFinalPage = it
+//            accountHistoryAdapter.isFinalPage = it
         }
 
         viewModel.userSportBillListResult.observe(this.viewLifecycleOwner) {
@@ -97,7 +97,7 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel, ActivityAccount
         }
 
         viewModel.accountHistoryList.observe(this.viewLifecycleOwner) {
-            accountHistoryAdapter.data = it
+            accountHistoryAdapter.setList(it)
             if (!binding.rvlist.canScrollVertically(1) && !it.isNullOrEmpty()) {
                 binding.tvNoDataHistory.visibility = View.VISIBLE
             } else {

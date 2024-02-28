@@ -330,7 +330,6 @@ class ChatFragment : BaseSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
         // 之前的逻辑就是这样如果走不到下面 redEnvelopeListDialog 就会为空
         redEnvelopeListDialog = RedEnvelopeListDialog(
-            cxt,
             getUnPacketList,
             object : RedEnvelopeListDialog.Listener { //開紅包
                 override fun onDialogCallback(selected: UnPacketRow) {
@@ -341,7 +340,7 @@ class ChatFragment : BaseSocketFragment<ChatViewModel, FragmentChatBinding>(),
                     )
                 }
             })
-        binding.chatRedEnpView.setOnClickListener { redEnvelopeListDialog?.show() }
+        binding.chatRedEnpView.setOnClickListener { redEnvelopeListDialog?.show(childFragmentManager) }
     }
 
     private inline fun initChatEventObserver() =
@@ -752,7 +751,6 @@ class ChatFragment : BaseSocketFragment<ChatViewModel, FragmentChatBinding>(),
         dismissDiaolg()
         redPacketDialog = context?.let {
             RedPacketDialog(
-                it,
                 RedPacketDialog.PacketListener(
                     onClickListener = { packetId, watchWord ->
                         viewModel.getLuckyBag(packetId, watchWord)
@@ -777,11 +775,11 @@ class ChatFragment : BaseSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 packetType
             )
         }
-        if (!isAdmin) redPacketDialog?.show() //非管理員才顯示紅包彈窗
+        if (!isAdmin) redPacketDialog?.show(childFragmentManager) //非管理員才顯示紅包彈窗
     }
 
     private fun dismissDiaolg() {
-        if (redEnvelopeListDialog?.isShowing == true) redEnvelopeListDialog?.dismiss()
-        if (redPacketDialog?.isShowing == true) redPacketDialog?.dismiss()
+        redEnvelopeListDialog?.dismissAllowingStateLoss()
+        redPacketDialog?.dismiss()
     }
 }

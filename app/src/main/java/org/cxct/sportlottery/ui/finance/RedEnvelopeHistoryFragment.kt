@@ -116,15 +116,10 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel, ActivityRedenv
 
         viewModel.redEnvelopeListResult.observe(this.viewLifecycleOwner) {
             it?.let {
-                redEnvelopeLogAdapter.data = it
+                redEnvelopeLogAdapter.setList(it)
                 setupNoRecordView(it.isNullOrEmpty())
             }
         }
-
-        viewModel.isFinalPage.observe(this.viewLifecycleOwner) {
-            redEnvelopeLogAdapter.isFinalPage = it
-        }
-
         viewModel.getRedEnvelopeHistoryList(true)
     }
 

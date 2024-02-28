@@ -4,6 +4,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
@@ -29,7 +31,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     enum class RechargeType(val tabPosition: Int) { TRANSFER_PAY(0), ONLINE_PAY(1) }
 
-    private var bankTypeAdapter: MoneyBankTypeAdapter? = null
+    private var bankTypeAdapter = MoneyBankTypeAdapter()
     private var transferPayList = mutableListOf<MoneyPayWayData>()
     private var onlinePayList = mutableListOf<MoneyPayWayData>()
 
@@ -123,7 +125,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                     payWay,
                     (apiResult.result ?: 0).toString(),
                 )
-                moneySubmitDialog.show(supportFragmentManager, "")
+                moneySubmitDialog.show(supportFragmentManager)
             }
         })
         //轉帳支付 - 虛擬幣
@@ -149,7 +151,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                     payWay,
                     (cryptoResult.result ?: 0).toString()
                 )
-                moneySubmitDialog.show(supportFragmentManager, "")
+                moneySubmitDialog.show(supportFragmentManager)
             }
         })
 
@@ -163,7 +165,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                 it.toString()
             )
 
-            moneySubmitDialog.show(supportFragmentManager, "")
+            moneySubmitDialog.show(supportFragmentManager)
             moneySubmitDialog.dialog?.setCanceledOnTouchOutside(true)
         })
 
@@ -177,7 +179,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                 it.toString()
             )
 
-            moneySubmitDialog.show(supportFragmentManager, "")
+            moneySubmitDialog.show(supportFragmentManager)
             moneySubmitDialog.dialog?.setCanceledOnTouchOutside(true)
         })
     }
@@ -199,7 +201,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun onlinePageChange() {
         viewModel.clearnRechargeStatus()
-        bankTypeAdapter?.data = onlinePayList
+        bankTypeAdapter.setList(onlinePayList)
         switchFragment(
             onlinePayList.getOrNull(0)?.let { getPayFragment(it) },
             "OnlinePayFragment"
@@ -208,7 +210,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun transferPageChange() {
         viewModel.clearnRechargeStatus()
-        bankTypeAdapter?.data = transferPayList
+        bankTypeAdapter.setList(transferPayList)
         switchFragment(
             transferPayList.getOrNull(0)?.let { getPayFragment(it) },
             "TransferPayFragment"
@@ -259,11 +261,13 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
     }
 
     private fun initRecyclerView()=binding.rvPayType.run {
-        bankTypeAdapter = MoneyBankTypeAdapter(MoneyBankTypeAdapter.ItemClickListener {
-            switchFragment(getPayFragment(it), it.rechType)
+        bankTypeAdapter.setOnItemClickListener { adapter, view, position ->
+            bankTypeAdapter.setSelectedPosition(position)
+            val itemData = bankTypeAdapter.getItem(position)
+            switchFragment(getPayFragment(itemData), itemData.rechType)
             this@MoneyRechargeActivity.currentFocus?.clearFocus()
             viewModel.clearnRechargeStatus()
-        })
+        }
         layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 4)
         adapter = bankTypeAdapter
         if (itemDecorationCount == 0) {

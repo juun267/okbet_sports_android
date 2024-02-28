@@ -7,8 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_match_receipt.view.*
-import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
@@ -156,7 +154,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     starRunnable(
                         betConfirmTime ?: 0,
                         position,
-                        holder.itemView.tv_bet_status_single,
+                        holder.binding.tvBetStatusSingle,
                     )
                 }else{
                     stopRunnable(position)
@@ -183,7 +181,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     starRunnable(
                         betConfirmTime ?: 0,
                         position,
-                        holder.itemView.tv_bet_status,
+                        holder.binding.tvBetStatus,
                     )
                 }else{
                     stopRunnable(position)

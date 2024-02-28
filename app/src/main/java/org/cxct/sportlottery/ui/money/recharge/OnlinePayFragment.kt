@@ -104,7 +104,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
             it.getContentIfNotHandled()?.let {
                 mSelectRechCfgs?.let {
                     it.open = 2
-                    setupMoneyCfgMaintanince(it, binding.btnSubmit, binding.linMaintenance.root)
+                    setupMoneyCfgMaintanince(it, binding.btnSubmit, binding.linMaintenance)
                 }
                 showErrorPromptDialog(getString(R.string.prompt), it) {}
             }
@@ -144,7 +144,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
             val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
             viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer,activityType)
         }
-        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance.root) }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
 
         llPayGap.setOnClickListener {
             payGapBottomSheet.show()
@@ -192,7 +192,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
 
         //反利、手續費
         setupRebateFee()
-        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance.root) }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
     }
 
     private fun refreshPayBank(rechCfgsList: RechCfg?) {

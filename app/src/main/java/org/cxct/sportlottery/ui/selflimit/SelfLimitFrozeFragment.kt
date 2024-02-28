@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.text.isDigitsOnly
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.PassVerifyEnum
 import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.databinding.FragmentSelfLimitFrozeBinding
@@ -28,11 +27,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimit
     override fun onClick(v: View?) {
         when (v) {
             binding.llImportant -> {
-                val dialog = SelfLimitFrozeImportantDialog()
-                dialog.arguments = Bundle().apply { putBoolean("isBet", false) }
-                dialog.setCanceledOnTouchOutside(true)
-                dialog.isCancelable = true
-                dialog.show(childFragmentManager, null)
+                SelfLimitFrozeImportantDialog().apply { arguments = Bundle().apply { putBoolean("isBet", false) } }.show(childFragmentManager)
             }
             binding.btnConfirm -> {
                 submit()

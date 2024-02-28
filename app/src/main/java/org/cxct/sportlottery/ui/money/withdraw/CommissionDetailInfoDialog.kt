@@ -1,34 +1,22 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialog_commission_detail_info.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogCommissionDetailInfoBinding
+import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.base.BaseViewModel
 
-class CommissionDetailInfoDialog : DialogFragment() {
+class CommissionDetailInfoDialog : BaseDialog<BaseViewModel,DialogCommissionDetailInfoBinding>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View?{
-        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        return inflater.inflate(R.layout.dialog_commission_detail_info, container, false)
+    init {
+        setStyle(R.style.CustomDialogStyle)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
         initButton()
-        dialog?.setCanceledOnTouchOutside(true)
     }
 
     private fun initButton() {
-        btn_close.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             dismiss()
         }
     }

@@ -10,17 +10,16 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.TranslateAnimation
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd_outright.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.ButtonOddOutrightBinding
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
@@ -30,6 +29,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
+import splitties.systemservices.layoutInflater
 
 
 /**
@@ -77,6 +77,8 @@ open class OddsOutrightButton @JvmOverloads constructor(
     private var hideItem = false
 
     private var mBackground: Drawable? = null
+    
+    val binding by lazy { ButtonOddOutrightBinding.inflate(layoutInflater,this,true) }
 
     init {
         init(attrs)
@@ -89,13 +91,6 @@ open class OddsOutrightButton @JvmOverloads constructor(
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
                 ?: context.theme.getDrawable(R.drawable.selector_button_radius_6_odds)
-        try {
-            inflate(context, R.layout.button_odd_outright, this)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            typedArray.recycle()
-        }
     }
 
     fun setupOdd(
@@ -110,16 +105,16 @@ open class OddsOutrightButton @JvmOverloads constructor(
         val extInfoStr = odd?.extInfoMap?.get(languae) ?: odd?.extInfo
 
         if (mOdd?.playCode?.isEndScoreType() == true) {
-            tv_name.text = mOdd?.name
+            binding.tvName.text = mOdd?.name
         } else {
-            tv_name.text = if (extInfoStr.isNullOrEmpty()) {
+            binding.tvName.text = if (extInfoStr.isNullOrEmpty()) {
                 "${(odd?.nameMap?.get(languae) ?: odd?.name)}"
             } else {
                 "$extInfoStr ${(odd?.nameMap?.get(languae) ?: odd?.name)}"
             }
         }
 
-        tv_spread.apply {
+        binding.tvSpread.apply {
             text = odd?.spread
             visibility = if (odd?.spread.isNullOrEmpty() || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value)
                 View.GONE
@@ -128,9 +123,9 @@ open class OddsOutrightButton @JvmOverloads constructor(
         }
 
         if (isOddPercentage == true) //反波膽顯示 %
-            tv_odds?.text = TextUtil.formatForOddPercentage((getOdds(odd, oddsType) - 1))
+            binding.tvOdds.text = TextUtil.formatForOddPercentage((getOdds(odd, oddsType) - 1))
         else
-            tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
+            binding.tvOdds.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 //        updateOddsTextColor()
 
         val select = odd?.id?.let { QuickListManager.containOdd(it) } ?: false
@@ -147,12 +142,12 @@ open class OddsOutrightButton @JvmOverloads constructor(
 
         if (betStatus == BetStatus.LOCKED.code) {
             clearStatus()
-            tv_odds.text = ""
-            iv_arrow.visible()
-            iv_arrow.setImageResource(R.drawable.ic_lock)
+            binding.tvOdds.text = ""
+            binding.ivArrow.visible()
+            binding.ivArrow.setImageResource(R.drawable.ic_lock)
         }
 
-        img_odd_unknown.apply {
+        binding.imgOddUnknown.apply {
             visibility =
                 if (betStatus == BetStatus.DEACTIVATED.code) {
                     View.VISIBLE
@@ -162,7 +157,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
         }
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
-        button_odd_detail.isVisible = betStatus != BetStatus.DEACTIVATED.code
+        binding.buttonOddDetail.isVisible = betStatus != BetStatus.DEACTIVATED.code
     }
 
     private fun setupOddState(oddState: Int) {
@@ -171,13 +166,13 @@ open class OddsOutrightButton @JvmOverloads constructor(
         var animation: Animation? = null
         when (oddState) {
             OddState.LARGER.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColor(
                         context,
                         R.color.color_1CD219
                     )
                 )
-                iv_arrow.apply {
+                binding.ivArrow.apply {
                     setImageResource(R.drawable.icon_odds_up)
                     (layoutParams as LinearLayout.LayoutParams).apply {
                         gravity = Gravity.TOP
@@ -189,13 +184,13 @@ open class OddsOutrightButton @JvmOverloads constructor(
                 isActivated = false
             }
             OddState.SMALLER.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColor(
                         context,
                         R.color.color_FF2E00
                     )
                 )
-                iv_arrow.apply {
+                binding.ivArrow.apply {
                     setImageResource(R.drawable.icon_odds_down)
                     (layoutParams as LinearLayout.LayoutParams).apply {
                         gravity = Gravity.BOTTOM
@@ -212,7 +207,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
             }
         }
 
-        if (iv_arrow.tag == animation) {
+        if (binding.ivArrow.tag == animation) {
             return
         }
 
@@ -234,21 +229,22 @@ open class OddsOutrightButton @JvmOverloads constructor(
                 resetOddsValueState()
             }
         })
-
-        iv_arrow.tag = animation
-        iv_arrow.visible()
-        iv_arrow.startAnimation(animation)
+        binding.ivArrow.apply {
+            tag = animation
+            visible()
+            startAnimation(animation)
+        }
     }
 
     private fun resetOddsValueState() {
         clearStatus()
-        iv_arrow.gone()
+        binding.ivArrow.gone()
     }
 
     private fun clearStatus() {
-        tv_odds.setTextColor(ContextCompat.getColorStateList(context, R.color.selector_button_odd_bottom_text))
-        iv_arrow.clearAnimation()
-        iv_arrow.tag = null
+        binding.tvOdds.setTextColor(ContextCompat.getColorStateList(context, R.color.selector_button_odd_bottom_text))
+        binding.ivArrow.clearAnimation()
+        binding.ivArrow.tag = null
     }
 
 

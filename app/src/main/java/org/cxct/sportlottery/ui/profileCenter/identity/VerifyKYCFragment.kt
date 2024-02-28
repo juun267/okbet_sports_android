@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.bigkoo.pickerview.view.TimePickerView
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
-import kotlinx.android.synthetic.main.fragment_chart.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
@@ -277,7 +276,7 @@ class VerifyKYCFragment : BaseFragment<ProfileCenterViewModel,FragmentVerifyIden
 
     private fun setSpinnerStyle()=binding.run {
         identity1st.selectorType.setOnItemSelectedListener { checkSubmitStatus() }
-        val constraintLayout = identity1st.selectorType.clRoot
+        val constraintLayout = identity1st.selectorType.binding.clRoot
         val constraintSet = ConstraintSet()
         constraintSet.clone(constraintLayout)
         constraintSet.clear(R.id.tv_name, ConstraintSet.END)
@@ -287,7 +286,7 @@ class VerifyKYCFragment : BaseFragment<ProfileCenterViewModel,FragmentVerifyIden
         constraintSet.applyTo(constraintLayout)
 
         identity2nd.selectorType.setOnItemSelectedListener { checkSubmitStatus() }
-        val constraintLayout2 = identity2nd.selectorType.clRoot
+        val constraintLayout2 = identity2nd.selectorType.binding.clRoot
         val constraintSet2 = ConstraintSet()
         constraintSet2.clone(constraintLayout2)
         constraintSet2.clear(R.id.tv_name, ConstraintSet.END)

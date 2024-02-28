@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.login.signIn
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.provider.Settings
 import android.text.InputType
 import android.view.View
@@ -30,7 +29,6 @@ import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.dialog.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
 import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
@@ -461,14 +459,10 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>() {
                 }
             }
         } else {
-            if (loginResult.code == SELF_LIMIT) {
-                showSelfLimitFrozeErrorDialog(loginResult.msg)
-            } else {
-                showErrorPromptDialog(
-                    getString(R.string.prompt),
-                    loginResult.msg
-                ) {}
-            }
+            showErrorPromptDialog(
+                getString(R.string.prompt),
+                loginResult.msg
+            ) {}
         }
     }
 
@@ -481,13 +475,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>() {
         dialog.setCancelable(false)
         dialog.show(supportFragmentManager, null)
     }
-
-    private fun showSelfLimitFrozeErrorDialog(errorMsg: String?) {
-        val dialog = SelfLimitFrozeErrorDialog()
-        dialog.setMessage(errorMsg)
-        dialog.show(supportFragmentManager, null)
-    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         AuthManager.facebookCallback(requestCode, resultCode, data)

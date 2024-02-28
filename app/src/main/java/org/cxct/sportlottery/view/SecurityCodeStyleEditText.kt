@@ -9,8 +9,9 @@ import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.content_security_code_style_edittext.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ContentSecurityCodeStyleEdittextBinding
+import splitties.systemservices.layoutInflater
 
 class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
 
@@ -19,6 +20,7 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
     }
 
     var mClearEdittextListener: OnClickListener ? = null
+    val binding by lazy { ContentSecurityCodeStyleEdittextBinding.inflate(layoutInflater,this,true) }
 
     init {
         initView()
@@ -26,7 +28,7 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
 
     private fun initView() {
         try {
-            inflate(context, R.layout.content_security_code_style_edittext, this).apply {
+            binding.apply {
                 val hintText = typedArray.getText(R.styleable.SecurityCodeStyleEditText_scHintText) ?: ""
                 val errorText = typedArray.getText(R.styleable.SecurityCodeStyleEditText_scErrorText) ?: ""
                 val icon = typedArray.getResourceId(R.styleable.SecurityCodeStyleEditText_scIcon, -1)
@@ -45,11 +47,11 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
     }
 
     private fun setImg(icon: Int) {
-        img_ic.setImageResource(icon)
+        binding.imgIc.setImageResource(icon)
     }
 
     private fun setEdittext() {
-        edt_security_code.addTextChangedListener(object : TextWatcher {
+        binding.edtSecurityCode.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -63,12 +65,12 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
     }
 
     fun showErrorStatus(b: Boolean) {
-        ic_error.isVisible = b
-        txv_error_code.isVisible = b
+        binding.icError.isVisible = b
+        binding.txvErrorCode.isVisible = b
     }
 
     private fun setView(errorText: CharSequence?) {
-        txv_error_code.text = errorText
+        binding.txvErrorCode.text = errorText
     }
 
     private fun setHint( hintText: CharSequence) {
@@ -79,7 +81,7 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
             setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.color_404040_cccccc)), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)  // 修改字體
         }
 
-        edt_security_code.hint =  hintContentBuilder.append(detailSpan)
+        binding.edtSecurityCode.hint =  hintContentBuilder.append(detailSpan)
     }
 
 }

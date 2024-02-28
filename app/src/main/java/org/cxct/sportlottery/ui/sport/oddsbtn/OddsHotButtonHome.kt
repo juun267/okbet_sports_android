@@ -4,10 +4,8 @@ package org.cxct.sportlottery.ui.sport.oddsbtn
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
-import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
@@ -15,7 +13,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd_hot_home.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
@@ -24,6 +21,7 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.flashAnimation
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.ButtonOddHotHomeBinding
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -34,6 +32,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
+import splitties.systemservices.layoutInflater
 
 
 /**
@@ -80,6 +79,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 
     private var mBackground: Drawable? = null
     private var oddOrientation = LinearLayout.HORIZONTAL
+    val binding by lazy { ButtonOddHotHomeBinding.inflate(layoutInflater,this,true) }
 
     init {
         init(attrs)
@@ -99,15 +99,15 @@ class OddsHotButtonHome @JvmOverloads constructor(
         oddOrientation =
             typedArray.getInt(R.styleable.OddsButton_ob_orientation, LinearLayout.HORIZONTAL)
         try {
-            inflate(context, R.layout.button_odd_hot_home, this).apply {
-                button_odd_detail.background = mBackground
-                button_odd_detail.orientation = oddOrientation
+            binding.apply {
+                buttonOddDetail.background = mBackground
+                buttonOddDetail.orientation = oddOrientation
                 if (oddOrientation == LinearLayout.HORIZONTAL) {
-                    button_odd_detail.setPadding(8.dp, 0, 8.dp, 0)
-                    lin_name.gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                    buttonOddDetail.setPadding(8.dp, 0, 8.dp, 0)
+                    linName.gravity = Gravity.START or Gravity.CENTER_VERTICAL
                 } else {
-                    button_odd_detail.setPadding(0, 8.dp, 0, 8.dp)
-                    lin_name.gravity = Gravity.CENTER
+                    buttonOddDetail.setPadding(0, 8.dp, 0, 8.dp)
+                    linName.gravity = Gravity.CENTER
                 }
             }
         } catch (e: Exception) {
@@ -164,7 +164,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
             }
         }
 
-        tv_name.apply {
+        binding.tvName.apply {
 
             if (isDrawBtn == true) {
                 visibility = View.VISIBLE
@@ -242,7 +242,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
             requestLayout()
         }
 
-        tv_spread.apply {
+        binding.tvSpread.apply {
             visibility = when (!odds?.spread.isNullOrEmpty()) {
                 true -> View.VISIBLE
                 false -> {
@@ -256,7 +256,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
             requestLayout()
         }
 //        tv_spread.visibility = View.GONE
-        tv_odds.apply {
+        binding.tvOdds.apply {
             text = TextUtil.formatForOdd(getOdds(odds, oddsType))
         }
 
@@ -267,7 +267,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 
     //主頁精選oddsButton的判斷
     fun setupOddName4Home(name: String?, gameType: String? = null) {
-        tv_name.apply {
+        binding.tvName.apply {
             if (gameType?.contains(PlayCate.SINGLE.value) == true) {
                 isVisible = true
                 text = name
@@ -279,7 +279,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
 //        button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
-        img_odd_lock.apply {
+        binding.imgOddLock.apply {
             visibility =
                 if (betStatus == BetStatus.LOCKED.code) {
                     View.VISIBLE
@@ -288,7 +288,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
                 }
         }
 
-        img_odd_unknown.apply {
+        binding.imgOddUnknown.apply {
             visibility =
                 if (betStatus == BetStatus.DEACTIVATED.code) {
                     View.VISIBLE
@@ -298,7 +298,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
         }
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
-        button_odd_detail.isVisible = isEnabled
+        binding.buttonOddDetail.isVisible = isEnabled
     }
 
     private fun setupOddState(oddState: Int) {
@@ -306,7 +306,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
         var status = false
         when (oddState) {
             OddState.LARGER.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColor(
                         context,
                         R.color.color_1EB65B
@@ -316,14 +316,14 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //                    setImageResource(R.drawable.ic_match_green_up)
 //                    visibility = View.VISIBLE
 //                }
-                iv_mark_top.visible()
-                iv_mark_bottom.gone()
-                button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_win)
+                binding.ivMarkTop.visible()
+                binding.ivMarkBottom.gone()
+                binding.buttonOddDetail.setBackgroundResource(R.drawable.bg_hot_game_win)
                 status = true
                 isActivated = false
             }
             OddState.SMALLER.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColor(
                         context,
                         R.color.color_E23434
@@ -333,19 +333,19 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //                    setImageResource(R.drawable.ic_match_red_down)
 //                    visibility = View.VISIBLE
 //                }
-                iv_mark_bottom.visible()
-                iv_mark_top.gone()
-                button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_lose)
+                binding.ivMarkBottom.visible()
+                binding.ivMarkTop.gone()
+                binding.buttonOddDetail.setBackgroundResource(R.drawable.bg_hot_game_lose)
                 status = true
                 isActivated = false
             }
             OddState.SAME.state -> {
-                resetOddsValueState(tv_odds)
+                resetOddsValueState(binding.tvOdds)
                 isActivated = false
             }
         }
 
-        val animator = lin_odd.tag
+        val animator = binding.linOdd.tag
         if (animator is Animator) {
             animator.cancel()
             if (status) {
@@ -355,10 +355,10 @@ class OddsHotButtonHome @JvmOverloads constructor(
         }
 
         if (status) {
-            lin_odd.tag = lin_odd.flashAnimation(1000,2,0.9f).apply {
+            binding.linOdd.tag = binding.linOdd.flashAnimation(1000,2,0.9f).apply {
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
-                        resetOddsValueState(tv_odds)
+                        resetOddsValueState(binding.tvOdds)
                     }
                 })
             }
@@ -371,9 +371,9 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //            setImageDrawable(null)
 //            visibility = View.GONE
 //        }
-        iv_mark_top.gone()
-        iv_mark_bottom.gone()
-        button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
+        binding.ivMarkTop.gone()
+        binding.ivMarkBottom.gone()
+        binding.buttonOddDetail.setBackgroundResource(R.drawable.bg_gray_border_8)
         textView.setTextColor(
             ContextCompat.getColorStateList(
                 context,

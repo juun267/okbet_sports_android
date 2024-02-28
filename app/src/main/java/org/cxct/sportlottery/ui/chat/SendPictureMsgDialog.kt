@@ -4,15 +4,13 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
-import kotlinx.android.synthetic.main.dialog_send_picture_msg.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.databinding.DialogSendPictureMsgBinding
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseDialogFragment
+import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ScreenUtil
 
@@ -21,10 +19,14 @@ import org.cxct.sportlottery.util.ScreenUtil
  * @create 202/4/13
  * @description 傳送圖片訊息彈窗
  */
-class SendPictureMsgDialog : BaseDialogFragment() {
+class SendPictureMsgDialog : BaseDialog<BaseViewModel,DialogSendPictureMsgBinding>() {
 
     private val IMAGE_PATH = "IMAGE_PATH"
     var sendMsgListener: SendMsgListener? = null
+
+    init {
+        setStyle(R.style.CustomDialogStyle)
+    }
 
     companion object {
 
@@ -42,17 +44,7 @@ class SendPictureMsgDialog : BaseDialogFragment() {
         fun onSend(msg: String, chatType: ChatType)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.dialog_send_picture_msg, container, false)
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
         dialog?.window?.setLayout(
             ScreenUtil.getScreenWidth(requireContext()),
             WindowManager.LayoutParams.WRAP_CONTENT
@@ -62,7 +54,7 @@ class SendPictureMsgDialog : BaseDialogFragment() {
         initView()
     }
 
-    private fun initView() {
+    private fun initView()=binding.run {
         val imagePath = arguments?.getString(IMAGE_PATH).orEmpty()
 
         val resServerHost: String = sConfigData?.resServerHost.orEmpty()

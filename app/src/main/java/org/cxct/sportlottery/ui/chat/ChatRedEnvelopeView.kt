@@ -5,9 +5,10 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
-import kotlinx.android.synthetic.main.view_chat_red_envelope.view.*
-import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ViewChatRedEnvelopeBinding
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
+import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.util.AppManager
 
 
 class ChatRedEnvelopeView @JvmOverloads constructor(
@@ -20,9 +21,9 @@ class ChatRedEnvelopeView @JvmOverloads constructor(
     private var mDialog: RedEnvelopeListDialog? = null
     private var mPacket: MutableList<UnPacketRow> = arrayListOf()
     private var mCanOpen = false
-
+    val binding by lazy { ViewChatRedEnvelopeBinding.inflate(LayoutInflater.from(context), this, false) }
     init {
-        addView(LayoutInflater.from(context).inflate(R.layout.view_chat_red_envelope, this, false))
+        addView(binding.root)
     }
 
     override fun onAttachedToWindow() {
@@ -33,7 +34,7 @@ class ChatRedEnvelopeView @JvmOverloads constructor(
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            rootLayout.id -> {
+            binding.rootLayout.id -> {
                 if (mCanOpen) loadWithPackets()
             }
         }
@@ -47,7 +48,9 @@ class ChatRedEnvelopeView @JvmOverloads constructor(
 
     fun loadWithPackets() {
         mDialog?.setPackets(mPacket)
-        mDialog?.show()
+        (AppManager.currentActivity() as? BaseActivity<*,*>)?.supportFragmentManager?.let {
+            mDialog?.show(it)
+        }
     }
 
     fun setPackets() {

@@ -95,7 +95,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel,OnlineCryptoPayF
             it.getContentIfNotHandled()?.let {
                 mSelectRechCfgs?.let {
                     it.open = 2
-                    setupMoneyCfgMaintanince(it, binding.btnSubmit, binding.linMaintenance.root)
+                    setupMoneyCfgMaintanince(it, binding.btnSubmit, binding.linMaintenance)
                 }
                 showErrorPromptDialog(getString(R.string.prompt), it) {}
             }
@@ -138,7 +138,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel,OnlineCryptoPayF
             val payeeName = txvAccount.text.toString()
             viewModel.rechargeOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, payee, payeeName,null)
         }
-        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,binding.linMaintenance.root) }
+        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,binding.linMaintenance) }
 
         cvCurrency.setOnClickListener {
             currencyBottomSheet.show()
@@ -276,7 +276,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel,OnlineCryptoPayF
 
             //充值個數限制
             updateMoneyRange()
-            mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,binding.linMaintenance.root) }
+            mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,binding.linMaintenance) }
         } catch (e: Exception) {
             e.printStackTrace()
         }

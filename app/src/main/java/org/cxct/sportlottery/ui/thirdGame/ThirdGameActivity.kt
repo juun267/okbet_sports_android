@@ -251,10 +251,10 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
                         customSecurityDialog = CustomSecurityDialog().apply {
                             getSecurityCodeClickListener {
                                 this.showSmeTimer300()
-                                viewModel.sendTwoFactor()
+                                this@ThirdGameActivity.viewModel.sendTwoFactor()
                             }
                             positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
-                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                                this@ThirdGameActivity.viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
                             }
                         }
                         customSecurityDialog?.show(supportFragmentManager, null)

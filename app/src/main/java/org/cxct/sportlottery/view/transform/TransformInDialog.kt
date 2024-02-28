@@ -3,7 +3,6 @@ package org.cxct.sportlottery.view.transform
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
-import kotlinx.android.synthetic.main.dialog_transfer_money.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.DialogTransferMoneyBinding
@@ -30,7 +29,7 @@ class TransformInDialog(val firmType: String,
         setStyle(R.style.CustomDialogStyle)
     }
 
-    override fun onInitView() {
+    override fun onInitView(){
         (binding.root.layoutParams as ViewGroup.MarginLayoutParams?)?.run {
             val m = 30f.dp
             leftMargin = m
@@ -44,7 +43,7 @@ class TransformInDialog(val firmType: String,
 
     private fun getUserBalance() = LoginRepository.userMoney.value ?: 0 as Double
 
-    private fun initView() {
+    private fun initView()=binding.run{
 
         tvBanlanceTitle.text = "${resources.getString(R.string.platform_user_money)}:"
         tvGameBanlanceTitle.text = "${resources.getString(R.string.N485)}:"
@@ -67,7 +66,7 @@ class TransformInDialog(val firmType: String,
         }
     }
 
-    private fun setInputEffective(effective: Boolean) {
+    private fun setInputEffective(effective: Boolean)=binding.run {
         tvEnter.setBtnEnable(effective)
         edtInput.isSelected = !effective
 
@@ -83,7 +82,7 @@ class TransformInDialog(val firmType: String,
         tvError.visible()
     }
 
-    private fun enterGame() {
+    private fun enterGame()=binding.run {
         var num = edtInput.text.toString().toLongS()
         if (num > 0) {
             loading.visible()
@@ -98,8 +97,8 @@ class TransformInDialog(val firmType: String,
     private fun initObserver() {
 
         viewModel.transferResult.observe(this) {
-            loading.gone()
-            tvEnter.isEnabled = true
+            binding.loading.gone()
+            binding.tvEnter.isEnabled = true
             val result = it.getContentIfNotHandled()
             if (true == result?.success) {
                 enter()

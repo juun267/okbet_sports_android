@@ -63,18 +63,25 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             if (value != null) viewBinding.tvSelected.setTextColor(ContextCompat.getColor(context, value))
         }
 
-    private var sheetAdapter: StatusSheetAdapter?= null
+    private var sheetAdapter = StatusSheetAdapter(StatusSheetAdapter.ItemCheckedListener { isChecked, data ->
+        if (isChecked) {
+            selectedText = data.showName
+            selectedTag = data.code
+            itemSelectedListener?.invoke(data)
+            dismiss()
+        }
+    })
 
-    var dataList = sheetAdapter?.dataList
-        get() = sheetAdapter?.dataList
+    var dataList = listOf<StatusSheetData>()
+        get() = sheetAdapter.data
         set(value) {
             field = value
-            sheetAdapter?.dataList = value ?: listOf()
+            sheetAdapter.setList(value)
 
             viewBinding.tvSelected.tag = value?.firstOrNull()?.code
-            sheetAdapter?.defaultCheckedCode = value?.firstOrNull()?.code
+            sheetAdapter.defaultCheckedCode = value?.firstOrNull()?.code
 
-            sheetAdapter?.notifyDataSetChanged()
+            sheetAdapter.notifyDataSetChanged()
         }
 
     var isShowAllCheckBoxView: Boolean? = false
@@ -161,7 +168,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
     }
 
     fun getNowSelectedItemCode(): String? {
-        return sheetAdapter?.checkedItemCode
+        return sheetAdapter.checkedItemCode
     }
 
     fun setCloseBtnClickListener(onClicked: () -> Unit) {
@@ -181,7 +188,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             return
         }
 
-        sheetAdapter!!.dataList.find{ it.code != code }?.let {
+        sheetAdapter!!.data.find{ it.code != code }?.let {
             selectedText = it.showName
             selectedTag = it.code
             itemSelectedListener?.invoke(it)
@@ -197,16 +204,6 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             sheetTvClose.setOnClickListener {
                 bottomSheet.dismiss()
             }
-
-            sheetAdapter = StatusSheetAdapter(StatusSheetAdapter.ItemCheckedListener { isChecked, data ->
-                if (isChecked) {
-                    selectedText = data.showName
-                    selectedTag = data.code
-                    itemSelectedListener?.invoke(data)
-                    dismiss()
-                }
-            })
-
             sheetRvMore.adapter = sheetAdapter
 
             sheetAdapter?.registerAdapterDataObserver(object : AdapterDataObserver() {

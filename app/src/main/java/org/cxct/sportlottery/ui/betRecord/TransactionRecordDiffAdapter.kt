@@ -31,7 +31,6 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScorePlatCateName
 import org.cxct.sportlottery.view.onClick
 
-//TODO 20210719當前api缺少總金額,待後端修正後進行確認
 class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
