@@ -115,23 +115,6 @@ object Constants {
             if (it.endsWith("/")) it else "$it/"
         }
     }
-
-    //优惠活动 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
-    fun getPromotionUrl(): String {
-        val encodeToken = kotlin.runCatching {   URLEncoder.encode(LoginRepository.token?:"", "utf-8") }?.getOrNull()?:""
-        return "${getH5BaseUrl()}activity/mobile/#/useractilistV2?lang=${getSelectLanguage()}&token=${encodeToken}"
-    }
-
-    //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
-    fun getPromotionDetailUrl(
-        token: String?,
-        id: Int?,
-        language: LanguageManager.Language,
-    ): String? {
-        val encodeToken = kotlin.runCatching {   URLEncoder.encode(LoginRepository.token?:"", "utf-8") }?.getOrNull()?:""
-        return "${getH5BaseUrl()}activity/mobile/#/useractivityV2/${id}?lang=${language.key}&token=${encodeToken}"
-    }
-
     /**
      * 在url拼接语言字符
      */
