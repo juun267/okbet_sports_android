@@ -171,23 +171,14 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/llContainer"
-        android:layout_width="match_parent"
+    <org.cxct.sportlottery.util.KeyboardView
+        android:id="@+id/layoutKeyBoard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible"
+        android:paddingTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llKeyboardContainer">
-
-        <org.cxct.sportlottery.util.KeyboardView
-            android:id="@+id/layoutKeyBoard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
+        app:layout_constraintTop_toBottomOf="@+id/llKeyboardContainer"/>
 
     <View
         android:id="@+id/bottomPaddingView"
