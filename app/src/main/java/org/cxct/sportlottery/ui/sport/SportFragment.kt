@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -211,7 +212,7 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
             if(showArrow){
                 todayTabItem = tab
                 todayMenuPop.todayTabItem = todayTabItem
-                (parent as View).setOnTouchListener { _, event ->
+                root.setOnTouchListener { _, event ->
                     if (event.action == MotionEvent.ACTION_DOWN) {
                         if (todayMenuPop.isShowing){
                             todayMenuPop.dismiss()
@@ -422,7 +423,9 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
 
     private fun tabLayoutSelect(matchType: MatchType){
        val todayIndex= matchTypeTodayTab.indexOf(matchType)
+        Log.e("For Test", "==========>>>> tabLayoutSelect 1111 ${matchType.postValue}")
         if (todayIndex>=0){
+            Log.e("For Test", "==========>>>> tabLayoutSelect 2222 ${matchType.postValue}")
             matchTypeTab[todayMatchPosition] = matchTypeTodayTab[todayIndex]
             todayTabItem?.customView?.toBinding<HomeCateTabBinding>()?.apply {
                 when (matchType){
@@ -446,6 +449,7 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
             }
             binding.tabLayout.getTabAt(todayMatchPosition)?.select()
         }else{
+            Log.e("For Test", "==========>>>> tabLayoutSelect 3333 ${matchType.postValue}")
             binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
         }
     }
