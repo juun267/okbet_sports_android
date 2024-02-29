@@ -113,7 +113,7 @@ class LuckyWheelManager {
     fun clickContent() {
         activity?.let {
             JumpUtil.toInternalWeb(it,
-                "/mobile/personal/activity_v2/christmas-promo",
+                "/promo/christmas",
                 it.getString(R.string.P169))
         }
         removeFloatingBtn()
