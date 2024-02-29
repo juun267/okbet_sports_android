@@ -171,9 +171,9 @@ class ResultsSettlementActivity :
             //過濾後冠軍資料
             showOutrightData.observe(this@ResultsSettlementActivity, Observer {
                 if (it.isEmpty()) {
-                    outrightResultDiffAdapter.submitList(listOf(OutrightResultData(OutrightType.NO_DATA)))
+                    outrightResultDiffAdapter.setList(listOf(OutrightResultData(OutrightType.NO_DATA)))
                 } else {
-                    outrightResultDiffAdapter.submitList(it)
+                    outrightResultDiffAdapter.setList(it)
                 }
             })
 

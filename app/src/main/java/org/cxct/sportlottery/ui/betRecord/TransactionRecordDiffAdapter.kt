@@ -6,13 +6,12 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
-import com.chad.library.adapter.base.entity.MultiItemEntity
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingMutilAdapter
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.databinding.ContentMatchRecordBinding
 import org.cxct.sportlottery.databinding.ContentParlayRecordBinding
 import org.cxct.sportlottery.network.Constants
@@ -45,20 +44,38 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
         }
         setList(itemList)
     }
+    override fun initItemType() {
+       addItemType(ViewType.Match.ordinal,object :OnMultiItemAdapterListener<DataItem,ContentMatchRecordBinding>(){
+           override fun onBinding(
+               position: Int,
+               binding: ContentMatchRecordBinding,
+               item: DataItem,
+           ) {
+               binding.bindMatch(item.row)
+           }
+       })
+        addItemType(ViewType.Outright.ordinal,object :OnMultiItemAdapterListener<DataItem,ContentMatchRecordBinding>(){
+            override fun onBinding(
+                position: Int,
+                binding: ContentMatchRecordBinding,
+                item: DataItem,
+            ) {
+                binding.bindOutRight(item.row)
+            }
+        })
+        addItemType(ViewType.Parlay.ordinal,object :OnMultiItemAdapterListener<DataItem,ContentParlayRecordBinding>(){
+            override fun onBinding(
+                position: Int,
+                binding: ContentParlayRecordBinding,
+                item: DataItem,
+            ) {
+                binding.bind(item.row)
+            }
+        })
+    }
 
-    override fun onBinding(position: Int, binding: ViewBinding, item: DataItem) {
-        when (binding) {
-            is ContentMatchRecordBinding -> {
-                if (getItemViewType(position) == ViewType.Match.ordinal) {
-                    binding.bindMatch(item.row)
-                } else {
-                    binding.bindOutRight(item.row)
-                }
-            }
-            is ContentParlayRecordBinding -> {
-                binding?.bind(item.row)
-            }
-        }
+    override fun onItemType(position: Int): Int {
+       return getItem(position).parlayType.toIntS(ViewType.Match.ordinal)
     }
 
     private fun ContentMatchRecordBinding.bindMatch(data: Row) {
@@ -363,12 +380,12 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
             context.copyToClipboard(data.orderNo)
         }
     }
+
 }
 
+@KeepMembers
 data class DataItem(
     val row: Row,
     var parlayType: String? = row.parlayType,
     var orderNo: String? = row.orderNo,
-) : MultiItemEntity {
-    override val itemType: Int = parlayType.toIntS(0)
-}
+)

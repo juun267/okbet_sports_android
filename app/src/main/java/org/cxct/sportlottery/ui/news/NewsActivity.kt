@@ -12,7 +12,6 @@ class NewsActivity : BaseActivity<NewsViewModel, ActivityNewsBinding>() {
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        setContentView(binding.root)
         initViews()
     }
 
