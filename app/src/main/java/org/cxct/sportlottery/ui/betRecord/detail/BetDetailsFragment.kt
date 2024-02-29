@@ -19,7 +19,6 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.betRecord.BetRecordEndScoreAdapter
 import org.cxct.sportlottery.ui.betRecord.ParlayType
-import org.cxct.sportlottery.ui.betRecord.TransactionRecordDiffAdapter
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScorePlatCateName
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -115,8 +114,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel,FragmentBetDetailsBindi
             contentBetAmount.text = TextUtil.format(row.totalAmount)
             contentWinnableAmount.text = TextUtil.format(row.winnable)
             contentOrderNo.text = row.orderNo
-            contentTimeType.text =
-                TransactionRecordDiffAdapter.getTimeFormatFromDouble(row.addTime)
+            contentTimeType.text = TimeUtil.timeFormat(row.addTime, TimeUtil.DM_HM_FORMAT)
             when (row.gameType) {
                 GameType.FT.key, GameType.BK.key -> {
                     if (matchOdds.rtScore?.isNotEmpty() == true) tvScore.text =
@@ -187,12 +185,10 @@ class BetDetailsFragment : BaseFragment<BetListViewModel,FragmentBetDetailsBindi
 
             matchPlayTime.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
             tvBetResult.setBetReceiptStatus(row.status)
-//            tvPrint.visible()
             contentBetAmount.text = TextUtil.format(row.totalAmount ?: 0)
             contentWinnableAmount.text = TextUtil.format(row.winnable ?: 0)
             contentOrderNo.text = row.orderNo
-            contentTimeType.text =
-                TransactionRecordDiffAdapter.getTimeFormatFromDouble(row.addTime ?: 0)
+            contentTimeType.text = TimeUtil.timeFormat(row.addTime, TimeUtil.DM_HM_FORMAT)
             when (row.gameType) {
                 GameType.FT.key, GameType.BK.key -> {
                     if (matchOdds.rtScore?.isNotEmpty() == true) tvScore.text =
