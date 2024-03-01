@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -34,6 +35,7 @@ fun <VB : ViewBinding> Any.createVBinding(layoutInflater: LayoutInflater, index:
     val parameterizedType = this::class.java.genericSuperclass as ParameterizedType
     val actualTypeArguments = parameterizedType.actualTypeArguments
     val clazz = actualTypeArguments[index] as Class<VB>
+    Log.e("For Test", "=======>>> createVBinding  ${clazz.name}")
     val method = clazz.getMethod("inflate", LayoutInflater::class.java)
     return method.invoke(null, layoutInflater) as VB
 }

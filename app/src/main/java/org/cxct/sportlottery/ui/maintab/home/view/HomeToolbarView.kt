@@ -21,7 +21,6 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.TextViewCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
@@ -36,6 +35,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.StreamerTextView
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
 class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : FrameLayout(context, attrs, defStyle) {
@@ -60,7 +60,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private lateinit var tvRegist: TextView
 
     private lateinit var fragment: LifecycleOwner
-    private lateinit var activity: MainTabActivity
+    private lateinit var logoEvent: View.OnClickListener
     private lateinit var viewModel: BaseSocketViewModel
     private var userModelEnable = true
     private var onlyShowSeach = true
@@ -258,7 +258,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             userMoneyView.visible()
             bindMoneyText(LoginRepository.userMoney())
             btnDeposit.setOnClickListener {
-                activity.checkRechargeKYCVerify()
+                ToGcashDialog.showByClick { viewModel.checkRechargeKYCVerify() }
             }
         } else {
             searchView.visible()
@@ -268,14 +268,22 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     fun attach(
-        fragment: Fragment,
-        activity: MainTabActivity,
+        lifecycleOwner: LifecycleOwner,
+        mainTabActivity: MainTabActivity,
+        viewModel: BaseSocketViewModel,
+        moneyViewEnable: Boolean = true,
+        onlyShowSeach: Boolean = false,
+    ) = attach(lifecycleOwner, { mainTabActivity.backMainHome() }, viewModel, moneyViewEnable, onlyShowSeach)
+
+    fun attach(
+        lifecycleOwner: LifecycleOwner,
+        logoEvent: OnClickListener,
         viewModel: BaseSocketViewModel,
         moneyViewEnable: Boolean = true,
         onlyShowSeach: Boolean = false,
     ) {
-        this.fragment = fragment
-        this.activity = activity
+        this.fragment = lifecycleOwner
+        this.logoEvent = logoEvent
         this.viewModel = viewModel
         this.userModelEnable = moneyViewEnable
         this.onlyShowSeach = onlyShowSeach
@@ -288,10 +296,10 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private fun initView() {
         setupLogin()
         userMoneyView.gone()
-        tvLogin.setOnClickListener { activity.startLogin() }
+        tvLogin.setOnClickListener { context.startLogin() }
         tvRegist.setOnClickListener { LoginOKActivity.startRegist(context) }
         ivRefreshMoney.setOnClickListener { onRefreshMoney() }
-        ivLogo.setOnClickListener { activity.backMainHome() }
+        ivLogo.setOnClickListener(logoEvent)
     }
 
     private var refreshTimeTag = 0L

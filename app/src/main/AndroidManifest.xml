@@ -100,6 +100,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
+            android:name=".ui.sport.endcard.EndCardActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
             android:name=".ui.maintenance.MaintenanceActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
