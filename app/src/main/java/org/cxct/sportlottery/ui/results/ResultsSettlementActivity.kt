@@ -346,7 +346,10 @@ class ResultsSettlementActivity :
                     cbAll.isChecked = selectCount == bottomSheetLeagueItemDataList.size
                 }
             })
-            cbAll.performClick() //預設為聯盟全選
+            if (!cbAll.isChecked){
+                cbAll.performClick() //預設為聯盟全選
+            }
+
         }
     }
 
