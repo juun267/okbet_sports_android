@@ -324,15 +324,9 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     /**
      * 检查是否为体育相关的fragment
      */
-    fun checkSportFragment(): Boolean {
+    private fun checkSportFragment(): Boolean {
         val fragment = fragmentHelper.getCurrentFragment()
-        if (fragment is SportFragment) {
-            return true
-        }
-        if (fragment is ESportFragment) {
-            return true
-        }
-        return false
+        return fragment is SportFragment || fragment is ESportFragment
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
