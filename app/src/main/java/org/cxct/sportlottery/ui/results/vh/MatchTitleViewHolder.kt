@@ -1,30 +1,25 @@
 package org.cxct.sportlottery.ui.results.vh
 
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ItemMatchResultTitleBinding as TitleBinding
+import org.cxct.sportlottery.databinding.ItemMatchResultTitleBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.results.MatchItemClickListener
 import org.cxct.sportlottery.ui.results.MatchResultData
-import splitties.systemservices.layoutInflater
 
-class MatchTitleViewHolder(viewGroup: ViewGroup,
-                           private val binding: TitleBinding = TitleBinding.inflate(viewGroup.layoutInflater, viewGroup, false))
-: RecyclerView.ViewHolder(binding.root) {
+class MatchTitleViewHolder(val binding: ItemMatchResultTitleBinding,val position: Int) {
 
     fun bind(
         gameType: String,
         item: MatchResultData,
-        matchItemClickListener: MatchItemClickListener
+        matchItemClickListener: MatchItemClickListener,
     ) {
         setupData(gameType, item)
-        setupEvent(item, matchItemClickListener)
+        setupEvent(item,matchItemClickListener)
     }
 
-    private fun setupData(gameType: String, item: MatchResultData) = binding.run {
+    private fun setupData(gameType: String, item: MatchResultData)=binding.run {
         titleArrowRotate(item.titleExpanded)
 
         val params = llTitleLayout.layoutParams as LinearLayout.LayoutParams
@@ -57,20 +52,20 @@ class MatchTitleViewHolder(viewGroup: ViewGroup,
         llTitleLayout.layoutParams = params
     }
 
-    private fun setupEvent(item: MatchResultData, matchItemClickListener: MatchItemClickListener) {
-        binding.root.setOnClickListener {
-            matchItemClickListener.leagueTitleClick(adapterPosition)
+    private fun setupEvent(item: MatchResultData, matchItemClickListener: MatchItemClickListener)=binding.run {
+        root.setOnClickListener {
+            matchItemClickListener.leagueTitleClick(position)
             titleArrowRotate(item.titleExpanded)
         }
     }
 
-    private fun titleArrowRotate(titleExpanded: Boolean) {
+    private fun titleArrowRotate(titleExpanded: Boolean)=binding.run {
         if (titleExpanded) {
-            binding.llTitleBackground.setBackgroundResource(R.drawable.bg_shape_top_8dp_blue_stroke_no_bottom_stroke)
-            binding.ivArrow.rotation = 0f
+            llTitleBackground.setBackgroundResource(R.drawable.bg_shape_top_8dp_blue_stroke_no_bottom_stroke)
+            ivArrow.rotation = 0f
         } else {
-            binding.llTitleBackground.setBackgroundResource(R.drawable.bg_shape_8dp_blue_stroke)
-            binding.ivArrow.rotation = 180f
+            llTitleBackground.setBackgroundResource(R.drawable.bg_shape_8dp_blue_stroke)
+            ivArrow.rotation = 180f
         }
     }
 }

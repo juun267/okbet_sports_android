@@ -17,6 +17,8 @@ import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.databinding.ActivityResultsSettlementNewBinding
 import org.cxct.sportlottery.databinding.DialogBottomSheetSettlementLeagueTypeBinding
 import org.cxct.sportlottery.databinding.ItemListviewSettlementLeagueBinding
+import org.cxct.sportlottery.databinding.ItemviewEmptyBinding
+import org.cxct.sportlottery.databinding.ItemviewGameNoRecordBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -58,7 +60,7 @@ class ResultsSettlementActivity :
             }, matchClick = {
                 viewModel.clickResultItem(gameType, it)
             })
-        )
+        ).apply { setEmptyView(ItemviewGameNoRecordBinding.inflate(layoutInflater).root)  }
     }
     private val outrightResultDiffAdapter by lazy {
         OutrightResultDiffAdapter(OutrightItemClickListener {
@@ -150,11 +152,7 @@ class ResultsSettlementActivity :
             //過濾後賽果資料
             showMatchResultData.observe(this@ResultsSettlementActivity, Observer {
                 matchResultDiffAdapter.gameType = gameType
-                if (it.isEmpty()) {
-                    matchResultDiffAdapter.submitList(listOf(MatchResultData(ListType.NO_DATA)))
-                } else {
-                    matchResultDiffAdapter.submitList(it)
-                }
+                matchResultDiffAdapter.setList(it)
             })
 
             //更新聯賽列表

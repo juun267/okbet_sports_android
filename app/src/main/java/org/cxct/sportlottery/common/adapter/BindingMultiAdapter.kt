@@ -4,13 +4,15 @@ import android.content.Context
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.util.keyIterator
 import androidx.viewbinding.ViewBinding
+import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.toJson
 import java.lang.reflect.ParameterizedType
 
-abstract class BindingMutilAdapter<T : Any> () :
-    BindingAdapter<T, ViewBinding>() {
+abstract class BindingMutilAdapter<T : Any>  : BindingAdapter<T, ViewBinding>() {
 
-    private val typeViewHolders by lazy { SparseArray<OnMultiItemAdapterListener<T,ViewBinding>>() }
+    private val typeViewHolders = SparseArray<OnMultiItemAdapterListener<T,ViewBinding>>()
 
     init {
         initItemType()
@@ -43,6 +45,13 @@ abstract class BindingMutilAdapter<T : Any> () :
         itemViewType: Int, listener: OnMultiItemAdapterListener<T, VB>
     )  {
         typeViewHolders.put(itemViewType, listener as OnMultiItemAdapterListener<T,ViewBinding>)
+    }
+    fun <VB:ViewBinding> addItemTypes(
+        itemViewTypes: List<Int>, listener: OnMultiItemAdapterListener<T, VB>
+    )  {
+        itemViewTypes.forEach {
+            typeViewHolders.put(it, listener as OnMultiItemAdapterListener<T,ViewBinding>)
+        }
     }
 
 abstract class OnMultiItemAdapterListener<T, VB : ViewBinding> {
