@@ -4,7 +4,6 @@ import android.app.Application
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.betList.BetListViewModel
-import org.cxct.sportlottery.ui.betRecord.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.chat.ChatViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
@@ -70,7 +69,6 @@ object AppViewModel {
         viewModel { MaintenanceViewModel(get()) }
         viewModel { OtherBetRecordViewModel(get()) }
         viewModel { AccountHistoryViewModel(get()) }
-        viewModel { TransactionStatusViewModel(get()) }
         viewModel { NewsViewModel(get()) }
         viewModel { RedEnveLopeModel(get()) }
         viewModel { MainTabViewModel(get()) }

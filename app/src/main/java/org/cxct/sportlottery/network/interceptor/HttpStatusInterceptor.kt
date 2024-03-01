@@ -39,7 +39,7 @@ class HttpStatusInterceptor: Interceptor {
         val jString = buffer.clone().readString(charset!!)
         buffer.close()
         if (!jString.isEmptyStr()) {
-            JsonUtil.fromJson(jString, NetResult::class.java)?.let { BaseViewModel.postErrorResut(it) }
+            JsonUtil.fromJson(jString, NetResult::class.java)?.let { BaseViewModel.postErrorResult(it) }
         }
     }
 }

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.base
 
 import android.app.Application
 import android.content.Context
-import androidx.annotation.Nullable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,7 +25,7 @@ abstract class BaseViewModel(
     companion object {
         private val _errorResultToken = MutableLiveData<Event<BaseResult>>()
 
-        fun postErrorResut(result: BaseResult) {
+        fun postErrorResult(result: BaseResult) {
             _errorResultToken.postValue(Event(result))
         }
     }
@@ -43,10 +42,6 @@ abstract class BaseViewModel(
     private val _errorResultIndex = MutableLiveData<String>()
     private val _networkExceptionUnavailable = MutableLiveData<String>()
 
-    enum class NetWorkResponseType(val code: Int) {
-        REQUEST_TOO_FAST(400)
-    }
-
     fun <T : BaseResult> doRequest(
         apiFun: suspend () -> Response<T>, callback: (T?) -> Unit
     ) {
@@ -59,7 +54,6 @@ abstract class BaseViewModel(
     }
 
     //20210526 新增 exceptionHandle 參數，還判斷要不要在 BaseActivity 顯示，exception 錯誤訊息
-    @Nullable
     suspend fun <T : BaseResult> doNetwork(
         context: Context = androidContext,
         exceptionHandle: Boolean = true,

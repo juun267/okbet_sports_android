@@ -33,10 +33,6 @@ enum class ParlayType(
         fun getParlayStringRes(parlayType: String): Int? {
             return ParlayType.values().find { it.key == parlayType }?.stringRes
         }
-
-        fun getParlayRuleStringRes(parlayType: String): Int? {
-            return ParlayType.values().find { it.key == parlayType }?.ruleStringRes
-        }
     }
 }
 

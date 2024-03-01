@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="org.cxct.sportlottery.ui.betRecord.TransactionRecordDiffAdapter"
     tools:ignore="SpUsage">
 
     <androidx.cardview.widget.CardView
