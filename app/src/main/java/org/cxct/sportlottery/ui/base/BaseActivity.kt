@@ -81,9 +81,9 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>(clazz: KClass<
         LotteryManager.instance.onDestroy(this)
     }
 
-    fun setStatusBarDarkFont(view: View? = null) {
+    fun setStatusBarDarkFont(isDarkFont: Boolean = true, view: View? = null) {
         ImmersionBar.with(this)
-            .statusBarDarkFont(true)
+            .statusBarDarkFont(isDarkFont)
             .transparentStatusBar()
             .statusBarView(view)
             .fitsSystemWindows(false)
