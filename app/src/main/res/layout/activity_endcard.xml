@@ -67,11 +67,13 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/ivBetRecord"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_endcard_tab_betrecord"/>
 
             <TextView
+                android:id="@+id/tvBetRecord"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -90,11 +92,13 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/ivEndCard"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_endcard_tab_main"/>
 
             <TextView
+                android:id="@+id/tvEndCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"

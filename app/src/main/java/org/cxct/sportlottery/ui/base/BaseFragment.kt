@@ -37,7 +37,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(private val cla
 
     protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
 
-    fun context() = binding.root.context
+    protected fun context() = binding.root.context
     private var _first = true
 
     override fun onCreateView(
@@ -46,8 +46,17 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(private val cla
         savedInstanceState: Bundle?
     ): View? {
         _viewModel = createVM(clazz = clazz ?: getKClass(0) as KClass<VM>)
-        return  binding.root
+        return createRootView(inflater, container, savedInstanceState)
     }
+
+    protected open fun createRootView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (_first) {
             _first = false

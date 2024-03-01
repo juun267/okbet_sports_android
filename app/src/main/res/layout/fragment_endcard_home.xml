@@ -2,12 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:orientation="vertical">
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="104dp"
+        android:src="@drawable/img_endcard_top"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvLeague"
+        android:layout_width="match_parent"
+        android:layout_height="102dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvDate"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/color_1A202E"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvGameList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1A202E"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:textColor="#ff0000"
         android:text="End Card"/>
 
