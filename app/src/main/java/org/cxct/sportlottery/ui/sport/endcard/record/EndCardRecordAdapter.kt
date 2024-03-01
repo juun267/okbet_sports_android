@@ -6,16 +6,16 @@ import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.databinding.ItemEndcardRecordBinding
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class EndcardRecordAdapter:BindingAdapter<String,ItemEndcardRecordBinding>() {
+class EndCardRecordAdapter:BindingAdapter<String,ItemEndcardRecordBinding>() {
 
     override fun onBinding(position: Int, binding: ItemEndcardRecordBinding, item: String) {
       binding.rvOdd.apply {
           if (adapter==null){
               layoutManager = GridLayoutManager(context,10)
               addItemDecoration(GridSpacingItemDecoration(10,4.dp,false))
-              adapter = EndcardRecordOddAdapter()
+              adapter = EndCardRecordOddAdapter()
           }
-          (adapter as EndcardRecordOddAdapter).setList(listOf("","","","","","","","","","","","","","","","","","","","","","",""))
+          (adapter as EndCardRecordOddAdapter).setList(listOf("","","","","","","","","","","","","","","","","","","","","","",""))
       }
     }
 }

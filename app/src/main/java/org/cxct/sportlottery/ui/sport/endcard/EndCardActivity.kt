@@ -4,6 +4,7 @@ import android.os.Bundle
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityEndcardBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordFragement
 import org.cxct.sportlottery.util.FragmentHelper2
 import java.lang.ref.WeakReference
 
@@ -29,7 +30,7 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
     }
 
     private fun showBetRecord() {
-        fragmentHelper2.show(EndCardBetRecordFragment::class.java)
+        fragmentHelper2.show(EndCardRecordFragement::class.java)
     }
 
     private fun showEndCardGame() {
