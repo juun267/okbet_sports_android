@@ -2,22 +2,17 @@ package org.cxct.sportlottery.ui.results.vh
 
 import android.annotation.SuppressLint
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ItemMatchResultFtBinding
 import org.cxct.sportlottery.network.matchresult.list.MatchStatus
-import org.cxct.sportlottery.databinding.ItemMatchResultFtBinding as MatchBinding
 import org.cxct.sportlottery.ui.results.MatchItemClickListener
 import org.cxct.sportlottery.ui.results.MatchResultData
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.util.TimeUtil
-import splitties.systemservices.layoutInflater
 
 @SuppressLint("SetTextI18n")
-class FtMatchViewHolder(viewGroup: ViewGroup,
-                        private val binding: MatchBinding = MatchBinding.inflate(viewGroup.layoutInflater, viewGroup, false))
-    : RecyclerView.ViewHolder(binding.root) {
+class FtMatchViewHolder(val binding: ItemMatchResultFtBinding,val position: Int) {
 
     val bottomLine: View = binding.bottomLine
 
@@ -91,7 +86,7 @@ class FtMatchViewHolder(viewGroup: ViewGroup,
 
     private fun setupEvent(matchItemClickListener: MatchItemClickListener) {
         binding.llGameDetail.setOnClickListener {
-            matchItemClickListener.matchClick(bindingAdapterPosition)
+            matchItemClickListener.matchClick(position)
         }
     }
 }

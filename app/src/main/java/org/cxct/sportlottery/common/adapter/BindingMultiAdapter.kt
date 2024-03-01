@@ -3,107 +3,73 @@ package org.cxct.sportlottery.common.adapter
 import android.content.Context
 import android.util.SparseArray
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.core.util.keyIterator
 import androidx.viewbinding.ViewBinding
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import org.cxct.sportlottery.R
-import org.cxct.sportlottery.view.EmptyView
+import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.toJson
+import java.lang.reflect.ParameterizedType
 
-abstract class BindingMutilAdapter<T : MultiItemEntity> (data: MutableList<T>? = null) :
-    BaseQuickAdapter<T, BindingMultiVH<ViewBinding>>(0, data) {
+abstract class BindingMutilAdapter<T : Any>  : BindingAdapter<T, ViewBinding>() {
 
-    private val layouts by lazy(LazyThreadSafetyMode.NONE) { SparseArray<Class<ViewBinding>>() }
-    
-    constructor(mContext: Context): this() {
-        enableDefaultEmptyView(mContext)
+    private val typeViewHolders = SparseArray<OnMultiItemAdapterListener<T,ViewBinding>>()
+
+    init {
+        initItemType()
     }
 
-    var _emptyView: EmptyView? = null
-
-
-    fun enableDefaultEmptyView(context: Context,
-                               imgResId: Int = R.drawable.ic_no_data_img,
-                               text: Int = R.string.finance_list_no_record) {
-        _emptyView = EmptyView(context).apply {
-            if (imgResId > 0) {
-                setEmptyImg(imgResId)
-            }
-            setEmptyText(context.getString(text))
-        }
-
-        setEmptyView(_emptyView!!)
-    }
-
-    fun setEmptyImg(imgResId: Int) = _emptyView?.setEmptyImg(imgResId)
-
-    fun setEmptyText(text: String) = _emptyView?.setEmptyText(text)
-
-    fun positionOf(bean: T): Int {
-        if (data.isNullOrEmpty()) {
-            return -1
-        }
-        return data.indexOf(bean)
-    }
-
-    fun removeItem(bean: T) {
-        val position = positionOf(bean)
-        if (position >= 0) {
-            removeAt(position)
-        }
-    }
-
-    fun dataCount() = getDefItemCount()
-    
     override fun getDefItemViewType(position: Int): Int {
-        return data[position].itemType
+        return onItemType(position)
     }
-    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BindingMultiVH<ViewBinding> {
-        val vbClass = layouts.get(viewType)
+    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BindingVH<ViewBinding> {
+        return typeViewHolders[viewType].onCreate(context,parent,viewType)
+    }
+    override fun convert(helper: BindingVH<ViewBinding>, item: T) {
+        onBinding(positionOf(item), helper.vb, item)
+    }
+    override fun convert(holder: BindingVH<ViewBinding>, item: T, payloads: List<Any>) {
+        onBinding(positionOf(item), holder.vb, item, payloads)
+    }
+    override fun onBinding(position: Int, binding: ViewBinding, item: T) {
+        val viewType = onItemType(position)
+         typeViewHolders[viewType].onBinding(position, binding, item)
+    }
+    override fun onBinding(position: Int, binding: ViewBinding, item: T, payloads: List<Any>) {
+        val viewType = onItemType(position)
+        typeViewHolders[viewType].onBinding(position, binding, item, payloads)
+    }
+    abstract fun initItemType()
+    abstract fun onItemType(position: Int):Int
+
+    fun <VB:ViewBinding> addItemType(
+        itemViewType: Int, listener: OnMultiItemAdapterListener<T, VB>
+    )  {
+        typeViewHolders.put(itemViewType, listener as OnMultiItemAdapterListener<T,ViewBinding>)
+    }
+    fun <VB:ViewBinding> addItemTypes(
+        itemViewTypes: List<Int>, listener: OnMultiItemAdapterListener<T, VB>
+    )  {
+        itemViewTypes.forEach {
+            typeViewHolders.put(it, listener as OnMultiItemAdapterListener<T,ViewBinding>)
+        }
+    }
+
+abstract class OnMultiItemAdapterListener<T, VB : ViewBinding> {
+    fun onCreate(context: Context, parent: ViewGroup, viewType: Int): BindingVH<VB>{
+        val vbClass: Class<VB> = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VB>
         val inflate = vbClass.getDeclaredMethod(
             "inflate",
             LayoutInflater::class.java,
             ViewGroup::class.java,
             Boolean::class.java)
-        return BindingMultiVH.of(inflate.invoke(null, LayoutInflater.from(parent.context), parent, false) as ViewBinding)
+        return BindingVH.of(inflate.invoke(null, LayoutInflater.from(parent.context), parent, false) as VB)
     }
-
-    override fun convert(helper: BindingMultiVH<ViewBinding>, item: T) {
-        onBinding(positionOf(item), helper.vb, item)
-    }
-
-    override fun convert(holder: BindingMultiVH<ViewBinding>, item: T, payloads: List<Any>) {
-        onBinding(positionOf(item), holder.vb, item, payloads)
-    }
-
-    abstract fun onBinding(position: Int, binding: ViewBinding, item: T)
-
-    open fun onBinding(position: Int, binding: ViewBinding, item: T, payloads: List<Any>) { }
-
-    /**
-     * 调用此方法，设置多布局
-     * @param type Int
-     * @param layoutResId Int
-     */
-    protected fun <VB : ViewBinding> addItemType(type: Int,vb: VB) {
-        layouts.put(type, vb.javaClass)
-    }
+     fun onBinding(position: Int, binding: VB, item: T, payloads: List<Any>) { }
+     abstract fun onBinding(position: Int, binding: VB, item: T)
+   }
 }
 
-class BindingMultiVH<VB : ViewBinding>(view: View) : BaseViewHolder(view) {
-    lateinit var vb: VB
-    private set
 
-    companion object {
-        fun <VB : ViewBinding> of(binding: VB): BindingMultiVH<VB> {
-            val vh = BindingMultiVH<VB>(binding.root)
-            vh.vb = binding
-            return vh
-        }
-    }
 
-}
 
 

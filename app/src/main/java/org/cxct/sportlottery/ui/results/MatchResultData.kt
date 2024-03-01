@@ -41,6 +41,5 @@ enum class ListType {
     FIRST_ITEM_GF, //高爾夫球
     FIRST_ITEM_ES, //電競
     FIRST_ITEM_AFT, //美式足球
-    NO_DATA
 }
 
