@@ -8,7 +8,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 class EndCardBetRecordFragment: BaseFragment<EndCardVM, FragmentEndcardBetrecordBinding>() {
 
     override fun onInitView(view: View) {
-        binding.root.setBackgroundColor(Color.GRAY)
+        binding.root.setBackgroundColor(Color.TRANSPARENT)
     }
 
 }
