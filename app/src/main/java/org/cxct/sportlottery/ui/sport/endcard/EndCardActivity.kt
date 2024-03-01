@@ -6,7 +6,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityEndcardBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordFragement
-import org.cxct.sportlottery.util.FragmentHelper2
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.Param
 import java.lang.ref.WeakReference
@@ -19,7 +18,7 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
             R.id.llContent,
             arrayOf(
                 Param(EndCardHomeFragment::class.java),
-                Param(EndCardRecordFragment::class.java, needRemove = true)
+                Param(EndCardRecordFragement::class.java, needRemove = true)
             ))
     }
 
