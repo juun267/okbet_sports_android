@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="32dp"
+    android:background="@color/color_161B28">
+
+    <TextView
+        android:id="@+id/tvQuarter"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="115"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:text="Q1"
+        android:textColor="@color/color_FFFFFF"
+        android:textSize="@dimen/textSize14sp" />
+
+    <View
+        android:layout_width="@dimen/margin_0.5"
+        android:layout_height="match_parent"
+        android:background="@color/color_333333" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="80"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:text="0-1"
+        android:textColor="@color/color_FFFFFF"
+        android:textSize="@dimen/textSize14sp" />
+
+    <View
+        android:layout_width="@dimen/margin_0.5"
+        android:layout_height="match_parent"
+        android:background="@color/color_333333" />
+
+    <TextView
+        android:id="@+id/tvWinAmount"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="170"
+        android:gravity="center"
+        android:fontFamily="@font/inter_bold"
+        android:text="₱ +895.64"
+        android:textColor="@color/color_FFFFFF"
+        android:textSize="@dimen/textSize14sp" />
+</LinearLayout>

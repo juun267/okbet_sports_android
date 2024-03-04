@@ -8,6 +8,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentEndcardRecordBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
+import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
 
 class EndCardRecordFragement: BaseFragment<EndCardVM,FragmentEndcardRecordBinding>() {
 
@@ -28,6 +29,10 @@ class EndCardRecordFragement: BaseFragment<EndCardVM,FragmentEndcardRecordBindin
     private fun initRecordList(){
         binding.rvBetRecord.apply {
             layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
+            recordAdapter.setOnItemClickListener { adapter, view, position ->
+//                (activity as? EndCardActivity)?.showRecordDetail(recordAdapter.getItem(position))
+                EndCardBetDialog().show(childFragmentManager)
+            }
             adapter = recordAdapter
             recordAdapter.setList(listOf("",",",""))
         }
