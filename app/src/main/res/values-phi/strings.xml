@@ -1540,5 +1540,7 @@
     <string name="N810">Babae</string>
     <string name="P286">Mga anunsyo</string>
     <string name="P287">Tingnan ang Lahat ng Market</string>
+    <string name="P289">"Kinukumpirma ko na tama ang mga detalye. "</string>
+    <string name="P288">Hindi mare-refund ang mga nakumpirmang transaksyon. Pakitiyak na tama ang tumatanggap na impormasyon sa bangko/e-wallet.</string>
 </resources>
 

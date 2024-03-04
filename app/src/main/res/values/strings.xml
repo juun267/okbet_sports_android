@@ -1697,4 +1697,6 @@
     <string name="N810">Female</string>
     <string name="P286">Announcements</string>
     <string name="P287">View All Markets</string>
+    <string name="P289">I confirm that the details are correct.</string>
+    <string name="P288">Confirmed transactions will not be refunded. Please make sure the receiving bank/e-wallet information is correct.</string>
 </resources>

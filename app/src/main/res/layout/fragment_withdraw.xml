@@ -356,6 +356,37 @@
                             android:textSize="@dimen/textSize12sp" />
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_20"
+                        android:layout_marginHorizontal="@dimen/margin_20">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_tip_green"/>
+                        <TextView
+                            android:id="@+id/tvTips"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_4"
+                            android:text="@string/P288"
+                            android:textColor="@color/color_5E6D78"
+                            android:textSize="@dimen/textSize12sp" />
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:id="@+id/cbAgree"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:layout_marginHorizontal="@dimen/margin_20"
+                        android:button="@null"
+                        android:drawableLeft="@drawable/selector_checkbox_style"
+                        android:drawablePadding="@dimen/margin_4"
+                        android:text="@string/P289"
+                        android:textColor="@color/color_2D313D"
+                        android:textSize="@dimen/textSize14sp" />
 
                     <TextView
                         android:id="@+id/btn_withdraw"
@@ -363,7 +394,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/margin_20"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="23dp"
                         android:layout_marginEnd="@dimen/margin_20"
                         android:alpha="0.5"
                         android:background="@drawable/ic_submit"
