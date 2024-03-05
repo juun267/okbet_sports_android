@@ -45,6 +45,7 @@
         android:layout_weight="170"
         android:gravity="center"
         android:fontFamily="@font/inter_bold"
+        android:textFontWeight="500"
         android:text="₱ +895.64"
         android:textColor="@color/color_FFFFFF"
         android:textSize="@dimen/textSize14sp" />

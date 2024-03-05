@@ -14,6 +14,15 @@ class EndCardRecordAdapter:BindingAdapter<String,ItemEndcardRecordBinding>() {
     }
 
     override fun onBinding(position: Int, binding: ItemEndcardRecordBinding, item: String) {
+        if(position%2==0){
+            binding.ivStatus.setImageResource( R.drawable.ic_tag_win)
+            binding.tvWinner.setTextColor(context.getColor(R.color.color_00FF81))
+            binding.tvWinnableAmount.setTextColor(context.getColor(R.color.color_00FF81))
+        }else{
+            binding.ivStatus.setImageResource( R.drawable.ic_tag_lost)
+            binding.tvWinner.setTextColor(context.getColor(R.color.color_8B96AD))
+            binding.tvWinnableAmount.setTextColor(context.getColor(R.color.color_FFFFFF))
+        }
       binding.rvOdd.apply {
           if (adapter==null){
               layoutManager = GridLayoutManager(context,10)

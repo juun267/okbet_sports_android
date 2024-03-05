@@ -133,6 +133,7 @@
                     android:textAlignment="viewStart"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/color_FFFFFF"
+                    android:textFontWeight="500"
                     android:textSize="@dimen/textSize14sp"
                     android:textStyle="bold"
                     android:text="50.000" />
@@ -155,12 +156,13 @@
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
-                    android:id="@+id/content_winnable_amount"
+                    android:id="@+id/tvWinnableAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:textAlignment="viewStart"
                     android:fontFamily="@font/inter_bold"
+                    android:textFontWeight="500"
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize14sp"
                     android:textStyle="bold"

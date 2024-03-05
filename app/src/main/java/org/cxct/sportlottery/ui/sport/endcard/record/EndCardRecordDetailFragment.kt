@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.clickDelay
+import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.databinding.FragmentEndcardRecordDetailBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
@@ -20,7 +21,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
     private val rowAdapter by lazy { EndCardRecordRowAdapter() }
     private val oddAdapter by lazy { EndCardRecordOddAdapter() }
     override fun onInitView(view: View) {
-        binding.ivBack.clickDelay {
+        binding.linBack.setOnClickListener {
             (activity as EndCardActivity).removeFragment(this)
         }
         initOddList()
