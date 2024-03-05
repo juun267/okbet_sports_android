@@ -15,10 +15,12 @@ import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.endcard.home.EndCardHomeFragment
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
+import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardGuideDialog
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordDetailFragment
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordFragement
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.util.FragmentHelper
+import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.ObjectHolder
 import org.cxct.sportlottery.util.Param
 import splitties.bundle.put
@@ -47,6 +49,7 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
         binding.toolbar.attach(this, { finish() }, viewModel)
         initTab()
         showHome()
+        checkGuide()
     }
 
     private fun initTab() = binding.run {
@@ -137,5 +140,11 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
 
     fun backMainHome() {
         finish()
+    }
+    fun checkGuide(){
+        if(KvUtils.decodeBoolean(KvUtils.KEY_ENDCARD_GUIDE))
+            return
+        KvUtils.put(KvUtils.KEY_ENDCARD_GUIDE,true)
+        EndCardGuideDialog().show(supportFragmentManager)
     }
 }

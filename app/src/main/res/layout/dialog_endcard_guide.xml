@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent_black_80">
+
+    <include
+        android:id="@+id/includeStep1"
+        layout="@layout/view_endcard_guide_step1"/>
+    <include
+        android:id="@+id/includeStep2"
+        layout="@layout/view_endcard_guide_step2"/>
+    <include
+        android:id="@+id/includeStep3"
+        layout="@layout/view_endcard_guide_step3"/>
+    <include
+        android:id="@+id/includeStep4"
+        layout="@layout/view_endcard_guide_step4"/>
+    <include
+        android:id="@+id/includeStep5"
+        layout="@layout/view_endcard_guide_step5"/>
+
+</FrameLayout>

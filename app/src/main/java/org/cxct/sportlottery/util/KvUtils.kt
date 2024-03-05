@@ -14,6 +14,7 @@ object KvUtils {
 
     //是否处于市场审核中,上架市场，隐藏功能的开关
     const val MARKET_SWITCH = "marketSwitch"
+    const val KEY_ENDCARD_GUIDE = "endcardGuide"
 
     private val mv: MMKV by lazy {
         MMKV.initialize(MultiLanguagesApplication.appContext)

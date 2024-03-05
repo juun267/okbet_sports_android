@@ -23,21 +23,14 @@ class EndCardToolbarView @JvmOverloads constructor(context: Context, attrs: Attr
     val binding by lazy { ViewEndcardToolbarBinding.inflate(layoutInflater,this,true) }
     private lateinit var viewModel: BaseSocketViewModel
     private lateinit var lifecycleOwner: LifecycleOwner
-
     fun attach(
         lifecycleOwner: LifecycleOwner,
-        activity: EndCardActivity,
-        viewModel: BaseSocketViewModel,
-    ) = attach(lifecycleOwner, { activity.backMainHome() }, viewModel)
-
-    fun attach(
-        lifecycleOwner: LifecycleOwner,
-        logoEvent: OnClickListener,
+        clickLogo: ()->Unit,
         viewModel: BaseSocketViewModel,
     ) {
         this.lifecycleOwner = lifecycleOwner
         this.viewModel = viewModel
-        binding.ivLogo.setOnClickListener { logoEvent.onClick(it) }
+        binding.ivLogo.setOnClickListener { clickLogo.invoke() }
         initView()
         initObservable()
         lifecycleOwner.doOnResume(-1) { onRefreshMoney() }
