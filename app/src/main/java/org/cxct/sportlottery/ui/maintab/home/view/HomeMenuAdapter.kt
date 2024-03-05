@@ -43,7 +43,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private val okLiveGameItem = MenuTab(R.drawable.ic_home_menu_live_sel, R.drawable.ic_home_menu_live_nor, R.string.P160, LiveGamesFragment::class.java)
     private val promotionMenuItem = MenuTab(R.drawable.ic_home_menu_promotion_sel, R.drawable.ic_home_menu_promotion_nor, R.string.promo, null)
     private val sericeMenuItem = MenuTab(R.drawable.ic_home_menu_service_sel, R.drawable.ic_home_menu_service_nor, R.string.LT050_1, null)
-    private val endcardMenuItem = MenuTab(R.drawable.ic_home_menu_service_sel, R.drawable.ic_home_menu_service_nor, R.string.home_tab_end_score, null)
+    private val endcardMenuItem = MenuTab(R.drawable.ic_home_menu_endcard_sel, R.drawable.ic_home_menu_endcard_nor, R.string.home_tab_end_score, null)
 
     private var selectItem: MenuTab? = null
     private var selectedPosition = initiallyPosition
@@ -116,7 +116,6 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private fun buildItem(): MutableList<MenuTab?> {
         val itemDatas = mutableListOf<MenuTab?>()
         itemDatas.add(hotMenuItem)
-        itemDatas.add(endcardMenuItem)
 
         if (StaticData.okSportOpened()){
             itemDatas.add(sportMenuItem)
@@ -126,6 +125,9 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         }
         if (StaticData.okLiveOpened()){
             itemDatas.add(okLiveGameItem)
+        }
+        if (StaticData.okSportOpened()){
+            itemDatas.add(endcardMenuItem)
         }
         if (StaticData.okBingoOpened()){
             itemDatas.add(esportMenuItem)
