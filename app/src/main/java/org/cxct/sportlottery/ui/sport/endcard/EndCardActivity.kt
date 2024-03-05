@@ -4,14 +4,15 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityEndcardBinding
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.betList.BetListFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.endcard.home.EndCardHomeFragment
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
@@ -19,6 +20,7 @@ import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardGuideDialog
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordDetailFragment
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordFragement
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
+import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.ObjectHolder
@@ -57,8 +59,15 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
             betDialog.show(supportFragmentManager)
             parlayFloatWindow.gone()
         }
-        llRecord.setOnClickListener { showBetRecord() }
-        llMain.setOnClickListener { showHome() }
+        llRecord.clickDelay { showBetRecord() }
+        llMain.clickDelay { showHome() }
+        llCasino.clickDelay { finish() }
+        llPromtion.clickDelay {
+            finish()
+            postDelayed(500){
+                (AppManager.currentActivity() as MainTabActivity).startActivity(PromotionListActivity::class.java)
+            }
+        }
     }
 
     private fun showHome() {

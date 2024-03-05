@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:ignore="MissingDefaultResource"
+    android:layout_marginTop="@dimen/margin_1"
     android:background="@color/color_0E131F">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -320,6 +321,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:background="@color/color_333333"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="3"
                         tools:listitem="@layout/item_endcard_detail_result_row_content"/>
