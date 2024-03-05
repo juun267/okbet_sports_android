@@ -6,14 +6,13 @@
     android:orientation="vertical"
     android:background="@color/color_0E131F">
 
-    <org.cxct.sportlottery.ui.maintab.home.view.HomeToolbarView
+    <org.cxct.sportlottery.ui.sport.endcard.EndCardToolbarView
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/color_181d28"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <FrameLayout
         android:id="@+id/llContent"

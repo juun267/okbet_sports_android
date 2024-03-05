@@ -42,7 +42,7 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
     }
 
     override fun onInitView() {
-        setStatusBarDarkFont(false)
+        setStatusbar(R.color.color_1B2436,false)
         binding.toolbar.attach(this, { finish() }, viewModel)
         initTab()
         showHome()
@@ -145,5 +145,9 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
             binding.parlayFloatWindow.setBetText(getString(R.string.bet_slip))
         }
         binding.parlayFloatWindow.visible()
+    }
+
+    fun backMainHome() {
+        finish()
     }
 }
