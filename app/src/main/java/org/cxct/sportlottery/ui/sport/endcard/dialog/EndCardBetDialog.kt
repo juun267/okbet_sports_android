@@ -12,10 +12,6 @@ import org.cxct.sportlottery.util.GridItemDecoration
 
 class EndCardBetDialog: BaseDialog<BaseViewModel, DialogEndcardBetBinding>() {
 
-    init {
-        setStyle(R.style.FullScreen)
-    }
-
     private val oddAdapter by lazy { EndCardBetOddAdapter() }
 
     override fun onInitView() {
@@ -23,7 +19,7 @@ class EndCardBetDialog: BaseDialog<BaseViewModel, DialogEndcardBetBinding>() {
         initOddList()
     }
     private fun initClick()=binding.run{
-        setOnClickListeners(root,ivClose){
+        setOnClickListeners(ivClose){
             dismiss()
         }
         btnAddMore.setOnClickListener {
