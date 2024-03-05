@@ -54,9 +54,9 @@ class EndCardOddsAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
         val dp4 = 4.dp
         val rootLp = LinearLayout.LayoutParams(88.dp, 44.dp)
         rootLp.leftMargin = dp4
-        rootLp.topMargin = dp4
+        rootLp.topMargin = dp3
         rootLp.rightMargin = dp4
-        rootLp.bottomMargin = dp4
+        rootLp.bottomMargin = dp3
         root.layoutParams = rootLp
 
         val lp = LinearLayout.LayoutParams(-2, 0, 1f)
@@ -98,7 +98,7 @@ class EndCardOddsAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
         } else if (item.startsWith("4")) {
             holder.itemView.background = selectedBg
         } else if (item.startsWith("5")) {
-
+            holder.itemView.setBackgroundResource(R.drawable.bg_selected_endodd)
         } else {
             holder.itemView.background = defaultBg
         }
