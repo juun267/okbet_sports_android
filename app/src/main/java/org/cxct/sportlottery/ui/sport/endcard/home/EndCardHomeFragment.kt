@@ -86,7 +86,7 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
     }
 
     private fun showOddsList(matchOdd: MatchOdd) {
-        (activity as EndCardActivity).showEndCardGame(matchOdd)
+        matchOdd.matchInfo?.let { (activity as EndCardActivity).showEndCardGame(it) }
     }
 
 }
