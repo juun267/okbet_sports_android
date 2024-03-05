@@ -12,19 +12,22 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvLeague"
         android:layout_width="match_parent"
-        android:layout_height="102dp"/>
+        android:layout_height="102dp"
+        android:paddingLeft="12dp"
+        android:clipToPadding="false"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvDate"
         android:layout_width="match_parent"
         android:layout_height="64dp"
+        android:paddingEnd="12dp"
+        android:clipToPadding="false"
         android:background="@color/color_1A202E"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvGameList"
+        android:id="@+id/rcvMatchList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#1A202E"/>
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="match_parent"
