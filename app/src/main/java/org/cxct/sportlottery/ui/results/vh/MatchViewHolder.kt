@@ -1,21 +1,16 @@
 package org.cxct.sportlottery.ui.results.vh
 
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ItemMatchResultMatchNewBinding as MatchBinding
+import org.cxct.sportlottery.databinding.ItemMatchResultMatchNewBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.results.MatchItemClickListener
 import org.cxct.sportlottery.ui.results.MatchResultData
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.util.TimeUtil
-import splitties.systemservices.layoutInflater
 
-class MatchViewHolder(viewGroup: ViewGroup,
-                           private val binding: MatchBinding = MatchBinding.inflate(viewGroup.layoutInflater, viewGroup, false))
-    : RecyclerView.ViewHolder(binding.root) {
+class MatchViewHolder(val binding: ItemMatchResultMatchNewBinding,val position:Int) {
 
     val bottomLine: View = binding.bottomLine
 
@@ -99,7 +94,7 @@ class MatchViewHolder(viewGroup: ViewGroup,
 
     private fun setupEvent(matchItemClickListener: MatchItemClickListener) {
         binding.llGameDetail.setOnClickListener {
-            matchItemClickListener.matchClick(bindingAdapterPosition)
+            matchItemClickListener.matchClick(position)
         }
     }
 }

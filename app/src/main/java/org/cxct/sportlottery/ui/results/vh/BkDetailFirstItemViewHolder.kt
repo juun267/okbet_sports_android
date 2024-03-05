@@ -1,21 +1,15 @@
 package org.cxct.sportlottery.ui.results.vh
 
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.common.extentions.setViewVisible
-import org.cxct.sportlottery.network.matchresult.list.Match
+import org.cxct.sportlottery.databinding.ContentGameDetailResultBkRvBinding
 import org.cxct.sportlottery.ui.results.ListType
 import org.cxct.sportlottery.ui.results.MatchResultData
 import org.cxct.sportlottery.ui.results.StatusType
-import splitties.systemservices.layoutInflater
-import org.cxct.sportlottery.databinding.ContentGameDetailResultBkRvBinding as BKBinding
 
 // 篮球与美式足球
-class BkDetailFirstItemViewHolder(viewGroup: ViewGroup,
-    private val binding: BKBinding = BKBinding.inflate(viewGroup.layoutInflater, viewGroup, false))
-    : RecyclerView.ViewHolder(binding.root) {
+class BkDetailFirstItemViewHolder(val binding: ContentGameDetailResultBkRvBinding) {
 
     val bottomLine: View = binding.bottomLine
     val llRoot: View = binding.root
