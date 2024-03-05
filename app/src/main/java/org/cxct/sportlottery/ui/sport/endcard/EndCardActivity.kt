@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityEndcardBinding
-import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.betList.BetListFragment
@@ -14,6 +14,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
+import org.cxct.sportlottery.ui.sport.endcard.bet.EndCardGameFragment
 import org.cxct.sportlottery.ui.sport.endcard.home.EndCardHomeFragment
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardGuideDialog
@@ -86,9 +87,9 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
         binding.ivBetRecord.setImageResource(R.drawable.ic_endcard_tab_betrecord_1)
     }
 
-    fun showEndCardGame(matchOdd: MatchOdd) {
+    fun showEndCardGame(matchInfo: MatchInfo) {
         val endCardGameFragment = fragmentHolder.make(EndCardGameFragment::class.java)
-        endCardGameFragment.arguments = Bundle()
+        endCardGameFragment.arguments = Bundle().apply { putParcelable("matchInfo", matchInfo) }
         showFragment(endCardGameFragment)
     }
 
