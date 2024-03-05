@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.sport.endcard
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +13,8 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.endcard.bet.EndCardGameFragment
@@ -53,6 +56,34 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
         initTab()
         showHome()
         checkGuide()
+        initObservable()
+    }
+
+    private fun initObservable() {
+        viewModel.isRechargeShowVerifyDialog.observe(this) {
+            val b = it.getContentIfNotHandled() ?: return@observe
+            if (b) {
+                VerifyIdentityDialog().show(supportFragmentManager, null)
+            } else {
+                loading()
+                viewModel.checkRechargeSystem()
+            }
+        }
+
+        viewModel.rechargeSystemOperation.observe(this) {
+            hideLoading()
+            val b = it.getContentIfNotHandled() ?: return@observe
+            if (b) {
+                startActivity(Intent(this, MoneyRechargeActivity::class.java))
+                return@observe
+            }
+
+            showPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.message_recharge_maintain)
+            ) {}
+
+        }
     }
 
     private fun initTab() = binding.run {
