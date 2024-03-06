@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="104dp"
-        android:src="@drawable/img_endcard_top"/>
+    android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvLeague"
-        android:layout_width="match_parent"
-        android:layout_height="102dp"
-        android:paddingLeft="12dp"
-        android:clipToPadding="false"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvDate"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:paddingEnd="12dp"
-        android:clipToPadding="false"
-        android:background="@color/color_1A202E"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvMatchList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:textColor="#ff0000"
-        android:text="End Card"/>
+        android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            android:src="@drawable/img_endcard_top" />
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvLeague"
+            android:layout_width="match_parent"
+            android:layout_height="102dp"
+            android:clipToPadding="false"
+            android:paddingLeft="12dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvDate"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/color_1A202E"
+            android:clipToPadding="false"
+            android:paddingEnd="12dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvMatchList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

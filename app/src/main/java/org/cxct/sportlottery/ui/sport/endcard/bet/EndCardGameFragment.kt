@@ -88,6 +88,7 @@ class EndCardGameFragment: BaseFragment<EndCardVM, FragmentEndcardgameBinding>()
 
     private fun initOddsList() {
         binding.rcvOddsList.layoutManager = GridLayoutManager(context(), 4)
+//        binding.rcvOddsList.addItemDecoration(OddsItemDecoration())
         oddsAdapter = EndCardOddsAdapter()
         val dataList = mutableListOf<String>()
         repeat(10) { first->
