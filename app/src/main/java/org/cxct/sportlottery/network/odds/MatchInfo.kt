@@ -28,7 +28,7 @@ data class MatchInfo(
     @Json(name = "playCateNum")
     override var playCateNum: Int?,
     @Json(name = "startTime")
-    val startTime: Long?,
+    val startTime: Long,
     @Json(name = "status")
     var status: Int?,//赛事状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
     @Json(name = "leagueId")

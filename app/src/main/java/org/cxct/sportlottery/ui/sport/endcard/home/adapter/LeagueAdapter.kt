@@ -13,11 +13,16 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
+import org.cxct.sportlottery.util.setLeagueLogo
 
-class LeagueAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
+class LeagueAdapter(private val onItemClick: (LeagueOdd) -> Unit)
+    : BaseQuickAdapter<LeagueOdd, BaseViewHolder>(0) {
 
+    private var currentItem: LeagueOdd? = null
     private val iconWH = 52.dp
     private val iconId = View.generateViewId()
     private val nameId = View.generateViewId()
@@ -40,10 +45,16 @@ class LeagueAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
             .setRadius(iconWH.toFloat())
     }
 
+
+    override fun setNewInstance(list: MutableList<LeagueOdd>?) {
+        currentItem = list?.getOrNull(0)
+        super.setNewInstance(list)
+    }
+
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val cxt = parent.context
         val root = LinearLayout(cxt)
-        root.layoutParams = LinearLayout.LayoutParams(-2, -1).apply { rightMargin = 16.dp }
+        root.layoutParams = LinearLayout.LayoutParams(iconWH, -1).apply { rightMargin = 16.dp }
         root.gravity = Gravity.CENTER
         root.orientation = LinearLayout.VERTICAL
 
@@ -55,21 +66,42 @@ class LeagueAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
 
         val name = AppCompatTextView(cxt)
         name.id = nameId
+        name.gravity = Gravity.CENTER
+        name.maxLines = 1
         name.textSize = 14f
         root.addView(name, nameLP)
 
         return BaseViewHolder(root)
     }
 
-    override fun convert(holder: BaseViewHolder, item: String) {
-        val isSelected = "NBA" == item
+    override fun convert(holder: BaseViewHolder, item: LeagueOdd, payloads: List<Any>) {
+        changeStyle(currentItem == item, holder.getView(iconId), holder.getView(nameId))
+    }
+
+    override fun convert(holder: BaseViewHolder, item: LeagueOdd) {
 
         val nameText = holder.getView<TextView>(nameId)
-        nameText.text = item
+        nameText.text = item.league.name
 
         val icon = holder.getView<ImageView>(iconId)
-        icon.setImageResource(R.mipmap.ic_launcher)
+        icon.setLeagueLogo(item.league.categoryIcon)
 
+        changeStyle(currentItem == item, icon, nameText)
+
+        holder.itemView.setOnClickListener {
+            if (currentItem == item) {
+                return@setOnClickListener
+            }
+
+            val lastIndex = getItemPosition(currentItem)
+            currentItem = item
+            notifyItemChanged(lastIndex, lastIndex)
+            notifyItemChanged(holder.bindingAdapterPosition, 0)
+            onItemClick.invoke(item)
+        }
+    }
+
+    private fun changeStyle(isSelected: Boolean, icon: ImageView, nameText: TextView) {
         if (isSelected) {
             nameText.setTextColor(selectedColor)
             nameText.typeface = Typeface.DEFAULT_BOLD
@@ -80,4 +112,6 @@ class LeagueAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
             icon.foreground = iconForeground
         }
     }
+
+
 }

@@ -11,10 +11,19 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
-class DateAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
+class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>) -> Unit)
+    : BaseQuickAdapter<Pair<String, List<MatchOdd>>, BaseViewHolder>(0) {
+
+    var currentLeagueOdd: LeagueOdd? = null
+    private var currentItem: Pair<String, List<MatchOdd>>? = null
 
     private val selectedColor by lazy { context.getColor(R.color.color_6AA4FF) }
     private val unSelectedColor by lazy { context.getColor(R.color.color_6D7693) }
@@ -24,6 +33,28 @@ class DateAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
         ShapeDrawable()
             .setSolidColor(context.getColor(R.color.color_353B4E))
             .setRadius(8.dp.toFloat())
+    }
+
+    fun setNewLeagueData(leagueOdd: LeagueOdd?): List<Pair<String, List<MatchOdd>>> {
+        currentLeagueOdd = leagueOdd
+        if (leagueOdd == null) {
+            currentItem = null
+            return listOf()
+        }
+
+        val weakFormat = SimpleDateFormat("EE")
+        val date1Format = SimpleDateFormat("MMM")
+        val calendar = Calendar.getInstance()
+
+        val dateList = leagueOdd.matchOdds.groupBy {
+            val startDate = Date(it.matchInfo!!.startTime)
+            calendar.time = startDate
+            "${weakFormat.format(startDate)}-${date1Format.format(startDate)} ${calendar.get(Calendar.DAY_OF_MONTH)}"
+        }.toList()
+
+        currentItem = dateList.first()
+        setNewInstance(dateList.toMutableList())
+        return dateList
     }
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -55,19 +86,34 @@ class DateAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
         return BaseViewHolder(frameLayout)
     }
 
-    override fun convert(holder: BaseViewHolder, item: String) {
-        val isSelected = item == "Mon"
+    override fun convert(holder: BaseViewHolder, item: Pair<String, List<MatchOdd>>, payloads: List<Any>) {
+        changeStyle(item == currentItem, holder.itemView, holder.getView(weekId))
+    }
+
+    override fun convert(holder: BaseViewHolder, item: Pair<String, List<MatchOdd>>) {
         val week = holder.getView<TextView>(weekId)
         val date = holder.getView<TextView>(dateId)
-        week.text = item
-        date.text = item
+        val time = item.first.split("-")
+        week.text = time.getOrNull(0)
+        date.text = time.getOrNull(1)
+        changeStyle(item == currentItem, holder.itemView, week)
+
+        holder.itemView.setOnClickListener {
+            val lastPosition = getItemPosition(currentItem)
+            currentItem = item
+            notifyItemChanged(lastPosition, lastPosition)
+            holder.bindingAdapterPosition.let { notifyItemChanged(it, it) }
+            onItemClick.invoke(currentLeagueOdd!!, item.second)
+        }
+    }
+
+    private fun changeStyle(isSelected: Boolean, itemView: View, week: TextView) {
         if (isSelected) {
             week.setTextColor(selectedColor)
-            holder.itemView.background = selectedDrawable
+            itemView.background = selectedDrawable
         } else {
             week.setTextColor(unSelectedColor)
-            holder.itemView.background = null
+            itemView.background = null
         }
-
     }
 }
