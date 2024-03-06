@@ -73,9 +73,6 @@ class EndCardGameFragment: BaseFragment<EndCardVM, FragmentEndcardgameBinding>()
         tvQ2Amount.text = "100$"
         tvQ3Amount.text = "100$"
         tvQ4Amount.text = "100$"
-
-
-
     }
 
     private fun initAmountList() {
@@ -88,7 +85,7 @@ class EndCardGameFragment: BaseFragment<EndCardVM, FragmentEndcardgameBinding>()
 
     private fun initOddsList() {
         binding.rcvOddsList.layoutManager = GridLayoutManager(context(), 4)
-//        binding.rcvOddsList.addItemDecoration(OddsItemDecoration())
+        binding.rcvOddsList.addItemDecoration(OddsItemDecoration())
         oddsAdapter = EndCardOddsAdapter()
         val dataList = mutableListOf<String>()
         repeat(10) { first->

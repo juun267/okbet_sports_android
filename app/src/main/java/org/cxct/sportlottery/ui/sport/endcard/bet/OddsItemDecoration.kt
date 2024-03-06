@@ -6,19 +6,17 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
-import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import timber.log.Timber
 
 class OddsItemDecoration: RecyclerView.ItemDecoration() {
 
     private val spanCount = 4
-    private val horSpacing = 0
-    private val verSpacing = 8.dp
-    private val sideSpacing = 12.dp
-    private val mDivider = ColorDrawable(Color.TRANSPARENT)
-    private val lineHeight = 1
-    private val divideHeight = 24.dp
+    private val horSpacing = 5.dp
+    private val verSpacing = 4.dp
+    private val mDivider = ColorDrawable(Color.parseColor("#1A202E"))
+    private val lineHeight = 2.dp
+    private val divideHeight = 22.dp
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -26,23 +24,21 @@ class OddsItemDecoration: RecyclerView.ItemDecoration() {
         parent: RecyclerView,
         state: RecyclerView.State,
     ) {
-
         val position = parent.getChildAdapterPosition(view)
-        var topMargin = if (position < spanCount) verSpacing + sideSpacing else verSpacing
-        var bottomMargin = if (needSetDivide(position)) verSpacing + divideHeight else verSpacing
+        var topMargin = verSpacing/2
+        var bottomMargin = if (needSetDivide(position)) verSpacing/2 + divideHeight else verSpacing/2
 
         when (position % spanCount) {
             0 -> {
-                outRect.set(sideSpacing, topMargin, 0, bottomMargin)
+                outRect.set(horSpacing/2, topMargin, horSpacing/2, bottomMargin)
             }
             spanCount - 1 -> {
-                outRect.set(horSpacing, topMargin, sideSpacing, bottomMargin)
+                outRect.set(horSpacing/2, topMargin, horSpacing/2, bottomMargin)
             }
             else -> {
-                outRect.set(horSpacing, topMargin, 0, bottomMargin)
+                outRect.set(horSpacing/2, topMargin, horSpacing/2, bottomMargin)
             }
         }
-
     }
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         val childCount = parent.childCount
@@ -50,9 +46,9 @@ class OddsItemDecoration: RecyclerView.ItemDecoration() {
             val child = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(child)
             if (needSetDivide(position)){
-                val left = 20.dp
-                val right = c.width - 20.dp
-                val top = child.bottom +(verSpacing+divideHeight+lineHeight)/2
+                val left = 0.dp
+                val right = c.width - left
+                val top = child.bottom +(verSpacing+divideHeight-lineHeight)/2
                 val bottom = top + lineHeight
                 mDivider.setBounds(left, top, right, bottom)
                 mDivider.draw(c)
@@ -62,21 +58,11 @@ class OddsItemDecoration: RecyclerView.ItemDecoration() {
         }
     }
 
-    private fun RecyclerView.getItemOddOrNull(childView: View): Odd?{
-        val position = getChildAdapterPosition(childView)
-        val adapter=adapter as BaseQuickAdapter<*, *>
-        return adapter.getItemOrNull(position) as? Odd
-    }
-    /**
-     * 当前实际position
-     */
-    private fun RecyclerView.indexOfParent(childView: View): Int{
-        return getChildAdapterPosition(childView)
-    }
     /**
      * 是否需要设置分割线
      */
     private fun needSetDivide(position: Int): Boolean{
-        return position / spanCount % 2 == 1
+        val rowIndex = position / spanCount
+        return rowIndex==4 || rowIndex==14
     }
 }

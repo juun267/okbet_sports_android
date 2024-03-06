@@ -254,9 +254,7 @@
         android:id="@+id/rcvOddsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:paddingHorizontal="7dp"
-        android:paddingBottom="10dp"
-        android:clipToPadding="false"/>
+        android:padding="@dimen/margin_10"
+        android:layout_marginTop="4dp"/>
 
 </LinearLayout>
