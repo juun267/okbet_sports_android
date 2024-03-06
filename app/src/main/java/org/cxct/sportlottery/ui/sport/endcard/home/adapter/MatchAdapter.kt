@@ -14,7 +14,6 @@ import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
 import org.cxct.sportlottery.common.extentions.circleOf
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemEndcardMatchBinding
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
@@ -33,7 +32,7 @@ class MatchAdapter(showOdd: (MatchOdd) -> Unit): BaseNodeAdapter() {
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
         return when (data[position]) {
-            is LeagueOdd -> 1
+            is EndCardLeague -> 1
             else -> 2
         }
     }
@@ -62,7 +61,7 @@ private class EndCardLeagueNameProvider(
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) {
-        (helper.itemView as TextView).text = "\t ${(item as LeagueOdd).league.name}"
+        (helper.itemView as TextView).text = "\t ${(item as EndCardLeague).leagueOdd.league.name}"
     }
 
 }
@@ -121,3 +120,5 @@ private class EndCardMatchProvider(
     }
 
 }
+
+class EndCardLeague(val leagueOdd: LeagueOdd, override val childNode: MutableList<BaseNode>?): BaseNode()

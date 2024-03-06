@@ -5,17 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.entity.node.BaseNode
 import com.luck.picture.lib.utils.ToastUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.databinding.FragmentEndcardHomeBinding
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.DateAdapter
+import org.cxct.sportlottery.ui.sport.endcard.home.adapter.EndCardLeague
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.LeagueAdapter
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.MatchAdapter
 
@@ -51,7 +54,10 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
 
     override fun onBindViewStatus(view: View) {
         initObserver()
-        loadingHolder.withRetry{ viewModel.loadEndCardMatchList() }
+        loadingHolder.withRetry{
+            loadingHolder.showLoading()
+            viewModel.loadEndCardMatchList()
+        }
         loadingHolder.go()
 
     }
@@ -64,20 +70,23 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
                 return@observe
             }
 
-            matchAdapter.setNewInstance(it.toMutableList())
-            dateAdapter.setNewInstance(mutableListOf("Mon", "Tue", "Today", "Thu", "Fri"))
-            leagueAdapter.setNewInstance(mutableListOf("NBA", "CBA", "PSL", "KBL", "NBL", "PBA"))
+            val list = it.toMutableList()
+            leagueAdapter.setNewInstance(list)
+            changeLeague(list.getOrNull(0))
             loadingHolder.showLoadSuccess()
         }
     }
 
     private fun initRecyclerView() = binding.run {
         rcvLeague.setLinearLayoutManager(RecyclerView.HORIZONTAL)
-        leagueAdapter = LeagueAdapter()
+        leagueAdapter = LeagueAdapter { changeDateList(it) }
         rcvLeague.adapter = leagueAdapter
 
+
         rcvDate.setLinearLayoutManager(RecyclerView.HORIZONTAL)
-        dateAdapter = DateAdapter()
+        dateAdapter = DateAdapter { leagueOdd, matchOdds ->
+            changeMatchList(leagueOdd, matchOdds)
+        }
         rcvDate.adapter = dateAdapter
 
         binding.rcvMatchList.setLinearLayoutManager()
@@ -87,6 +96,24 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
 
     private fun showOddsList(matchOdd: MatchOdd) {
         matchOdd.matchInfo?.let { (activity as EndCardActivity).showEndCardGame(it) }
+    }
+
+    private fun changeLeague(leagueOdd: LeagueOdd?) {
+        if (leagueOdd == null) {
+            dateAdapter.setNewInstance(null)
+            matchAdapter.setNewInstance(null)
+            return
+        }
+
+        changeDateList(leagueOdd)
+    }
+
+    private fun changeDateList(leagueOdd: LeagueOdd) {
+        changeMatchList(leagueOdd, dateAdapter.setNewLeagueData(leagueOdd).first().second)
+    }
+
+    private fun changeMatchList(leagueOdd: LeagueOdd, matchList: List<MatchOdd>) {
+        matchAdapter.setNewInstance(listOf(EndCardLeague(leagueOdd, matchList as MutableList<BaseNode>?)).toMutableList())
     }
 
 }
