@@ -52,12 +52,12 @@ class EndCardOddsAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
         val dp3 = 3.dp
         root.setPadding(dp3, dp3, dp3, dp3)
         val dp4 = 4.dp
-        val rootLp = LinearLayout.LayoutParams(88.dp, 44.dp)
-        rootLp.leftMargin = dp4
-        rootLp.topMargin = dp3
-        rootLp.rightMargin = dp4
-        rootLp.bottomMargin = dp3
-        root.layoutParams = rootLp
+//        val rootLp = LinearLayout.LayoutParams(88.dp, 44.dp)
+//        rootLp.leftMargin = dp4
+//        rootLp.topMargin = dp3
+//        rootLp.rightMargin = dp4
+//        rootLp.bottomMargin = dp3
+//        root.layoutParams = rootLp
 
         val lp = LinearLayout.LayoutParams(-2, 0, 1f)
 
@@ -82,7 +82,6 @@ class EndCardOddsAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
     override fun convert(holder: BaseViewHolder, item: String) {
         val oddText = holder.getView<TextView>(oddId)
         val userText = holder.getView<TextView>(userId)
-
         oddText.text = item
 
         if (item.startsWith("3")) {
