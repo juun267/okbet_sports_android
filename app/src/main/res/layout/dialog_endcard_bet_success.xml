@@ -39,14 +39,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_40"
                 android:gravity="center_vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/textSize14sp"
+                    android:lines="1"
+                    android:text="@string/P316"
                     android:textColor="@color/color_BEC7DC"
-                    android:text="Betting content"/>
+                    android:textSize="@dimen/textSize14sp" />
+
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -69,7 +71,7 @@
                     android:paddingHorizontal="@dimen/margin_4"
                     android:background="@drawable/bg_darkblue_radius_6_stroke_blue"
                     android:gravity="center"
-                    android:text="@string/D045"
+                    android:text="@string/J945"
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize12sp"/>
 
@@ -89,7 +91,7 @@
                     android:ellipsize="end"
                     android:textSize="@dimen/textSize14sp"
                     android:textColor="@color/color_BEC7DC"
-                    android:text="Betting on matches"/>
+                    android:text="@string/P317"/>
                 <TextView
                     android:id="@+id/tvMatchesName"
                     android:layout_width="0dp"
@@ -118,7 +120,7 @@
                     android:ellipsize="end"
                     android:textSize="@dimen/textSize14sp"
                     android:textColor="@color/color_BEC7DC"
-                    android:text="Betting Time"/>
+                    android:text="@string/I039"/>
                 <TextView
                     android:id="@+id/tvBettingTime"
                     android:layout_width="0dp"
@@ -147,7 +149,7 @@
                     android:ellipsize="end"
                     android:textSize="@dimen/textSize14sp"
                     android:textColor="@color/color_BEC7DC"
-                    android:text="Bet"/>
+                    android:text="@string/P318"/>
                 <TextView
                     android:id="@+id/tvBet"
                     android:layout_width="0dp"
@@ -176,7 +178,7 @@
                     android:ellipsize="end"
                     android:textSize="@dimen/textSize14sp"
                     android:textColor="@color/color_BEC7DC"
-                    android:text="Betting Amount"/>
+                    android:text="@string/P319"/>
                 <TextView
                     android:id="@+id/tvBetAmount"
                     android:layout_width="0dp"
@@ -205,7 +207,7 @@
                     android:ellipsize="end"
                     android:textSize="@dimen/textSize14sp"
                     android:textColor="@color/color_BEC7DC"
-                    android:text="Bet number"/>
+                    android:text="@string/P320"/>
                 <TextView
                     android:id="@+id/tvOrderNumber"
                     android:layout_width="0dp"

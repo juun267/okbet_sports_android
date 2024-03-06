@@ -90,7 +90,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_12"
-            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="10"
             tools:itemCount="12"
@@ -110,7 +109,7 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
                 android:textColor="@color/color_6D7693"
-                android:text="League name"/>
+                android:text="@string/I041"/>
             <TextView
                 android:id="@+id/tvLeagueName"
                 android:layout_width="0dp"
@@ -139,7 +138,7 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
                 android:textColor="@color/color_6D7693"
-                android:text="Betting on matches"/>
+                android:text="@string/P317"/>
             <TextView
                 android:id="@+id/tvMatchesName"
                 android:layout_width="0dp"
@@ -168,7 +167,7 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
                 android:textColor="@color/color_6D7693"
-                android:text="Betting Time"/>
+                android:text="@string/I039"/>
             <TextView
                 android:id="@+id/tvBettingTime"
                 android:layout_width="0dp"
@@ -197,7 +196,7 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
                 android:textColor="@color/color_6D7693"
-                android:text="Bet"/>
+                android:text="@string/P318"/>
             <TextView
                 android:id="@+id/tvBet"
                 android:layout_width="0dp"
@@ -226,7 +225,7 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
                 android:textColor="@color/color_6D7693"
-                android:text="Betting Amount"/>
+                android:text="@string/P319"/>
             <TextView
                 android:id="@+id/tvBetAmount"
                 android:layout_width="0dp"
@@ -255,7 +254,7 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
                 android:textColor="@color/color_6D7693"
-                android:text="Bet number"/>
+                android:text="@string/P320"/>
             <TextView
                 android:id="@+id/tvOrderNumber"
                 android:layout_width="0dp"
@@ -281,7 +280,7 @@
             android:lineSpacingExtra="3dp"
             android:textSize="@dimen/textSize12sp"
             android:textColor="@color/color_BEC7DC"
-            android:text="This score option will take effect when the first quarter, second quarter, third quarter, and full-time scores are drawn. There are four chances to win. The bonuses can be stacked, and you can get up to ₱ 8500 in rewards!"/>
+            android:text="@string/P322"/>
 
     </LinearLayout>
     <LinearLayout
@@ -299,7 +298,7 @@
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             android:textColor="@color/color_FFFFFF"
-            android:text="Betting content"/>
+            android:text="Betting result"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -379,7 +378,8 @@
         android:ellipsize="end"
         android:textSize="@dimen/textSize12sp"
         android:textColor="@color/color_BEC7DC"
-        android:text="settlement time: 09/02/2024  18:30"/>
+        android:text="@string/N664"
+        tools:text="settlement time: 09/02/2024  18:30"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

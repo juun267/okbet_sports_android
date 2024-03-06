@@ -1720,4 +1720,15 @@
     <string name="P313">Result</string>
     <string name="P314">Winning amount</string>
     <string name="P315">Total refund amount</string>
+    <string name="P316">Bet content</string>
+    <string name="P317">Bet on the match</string>
+    <string name="P318">BET</string>
+    <string name="P319">Bet amount</string>
+    <string name="P320">Bet No.</string>
+    <string name="I041">League Name</string>
+    <string name="N664">Settlement time</string>
+    <string name="P321">Total bets</string>
+    <string name="P322">This score option will take effect when the 1st quarter, 2nd quarter, 3rd quarter, and full-time scores are shown. There are a total of four chances to win, and the bonuses can be stacked, with a maximum reward of %s.</string>
+    <string name="P323">Rules</string>
+    <string name="J945">Details</string>
 </resources>

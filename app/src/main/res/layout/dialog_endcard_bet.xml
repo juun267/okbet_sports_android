@@ -80,7 +80,7 @@
                 android:foreground="@drawable/fg_ripple"
                 android:layout_marginLeft="@dimen/margin_12"
                 android:background="@drawable/bg_darkblue_radius_8"
-                android:textSize="@dimen/textSize18sp"
+                android:textSize="@dimen/textSize16sp"
                 android:textColor="@color/color_FFFFFF"
                 android:text="@string/P310"/>
             <Button

@@ -101,9 +101,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_12"
-            android:orientation="horizontal"
+            app:spanCount="10"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:itemCount="20"
+            tools:itemCount="15"
             tools:listitem="@layout/item_endcard_record_odd" />
         <LinearLayout
             android:layout_width="match_parent"
@@ -120,7 +120,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/bet_amount"
+                    android:text="@string/P319"
                     android:textAlignment="viewStart"
                     android:textColor="@color/color_8B96AD"
                     android:textSize="@dimen/textSize14sp" />

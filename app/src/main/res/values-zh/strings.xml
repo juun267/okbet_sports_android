@@ -1647,4 +1647,15 @@
     <string name="P313">结果</string>
     <string name="P314">中奖金额</string>
     <string name="P315">总返还金额</string>
+    <string name="P316">投注内容</string>
+    <string name="P317">投注比赛</string>
+    <string name="P318">投注</string>
+    <string name="P319">投注金额</string>
+    <string name="P320">投注编号</string>
+    <string name="I041">联赛名称</string>
+    <string name="N664">结算时间</string>
+    <string name="P321">总注单数量</string>
+    <string name="P322">该比分选项会在第一节、第二节、第三节、全场比分开奖时生效，共有 四次 中奖机会，奖金可叠加，最多可获得 %s 奖励。</string>
+    <string name="P323">规则</string>
+    <string name="J945">详情</string>
 </resources>

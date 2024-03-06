@@ -1563,5 +1563,16 @@
     <string name="P313">Resulta</string>
     <string name="P314">Halaga ng panalo</string>
     <string name="P315">Kabuuang halaga ng refund</string>
+    <string name="P316">Content ng taya</string>
+    <string name="P317">Tumaya sa laban</string>
+    <string name="P318">Taya</string>
+    <string name="P319">Halaga ng taya</string>
+    <string name="P320">Numero ng taya</string>
+    <string name="I041">Pangalan ng liga</string>
+    <string name="N664">Oras ng settlement</string>
+    <string name="P321">Kabuuang Taya</string>
+    <string name="P322">Magkakabisa ang pagpipiliang ito ng puntos kapag ipinakita ang mga puntos sa 1st quarter, 2nd quarter, 3rd quarter, at full-time na puntos. Mayroong kabuuang apat na pagkakataong manalo, at ang mga bonus ay maaaring sama-sama, na may pinakamataas na reward na %s.</string>
+    <string name="P323">Panuntunan</string>
+    <string name="J945">Detalye</string>
 </resources>
 

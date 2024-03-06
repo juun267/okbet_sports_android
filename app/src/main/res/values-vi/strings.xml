@@ -1592,4 +1592,16 @@
     <string name="P313">Kết quả</string>
     <string name="P314">Số tiền thắng</string>
     <string name="P315">Tổng tiền hoàn</string>
+    <string name="P316">Nội dung cược</string>
+    <string name="P317">Cược trận đấu</string>
+    <string name="P318">Cược</string>
+    <string name="P319">Tiền cược</string>
+    <string name="P320">Mã số cược</string>
+    <string name="I041">Tên giải đấu</string>
+    <string name="N664">Thời gian kết toán</string>
+    <string name="P321">Tổng số đơn cược</string>
+    <string name="P322">"  "</string>
+    <string name="P322">"  "</string>
+    <string name="P323">Quy tắc</string>
+    <string name="J945">Chi tiết</string>
 </resources>
