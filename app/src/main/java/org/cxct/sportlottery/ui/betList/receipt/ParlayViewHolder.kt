@@ -40,7 +40,7 @@ class ParlayViewHolder private constructor(val binding: ItemParlayReceiptBinding
 
         if (itemData.isFailed()) {
             tvBetResutStatu.setTextColor(context.getColor(R.color.color_E23434))
-            tvBetResutStatu.setText(R.string.bet_info_add_bet_failed)
+            tvBetResutStatu.setText(R.string.F042)
             tvBetResutStatu.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_bet_failed, 0, 0, 0)
             flBetOrder.setBackgroundResource(R.drawable.bg_fail)
         } else {

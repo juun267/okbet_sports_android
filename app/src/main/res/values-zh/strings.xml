@@ -179,7 +179,7 @@
     <string name="first_half_game">上半场</string>
     <string name="second_half_game">下半场</string>
     <string name="full_game">全场</string>
-    <string name="game_result">赛果</string>
+    <string name="B003">赛果</string>
     <string name="game_yellow_card">罚牌</string>
     <string name="game_corner_kick">角球</string>
     <string name="soccer">足球</string>
@@ -442,7 +442,7 @@
     <string name="bet_info_list_win_quota">可赢金额:</string>
     <string name="bet_receipt_win_quota">可赢金额</string>
 
-    <string name="bet_info_add_bet_failed">投注失败</string>
+    <string name="F042">投注失败</string>
     <string name="bet_info_add_bet_success">投注成功</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">余额不足</string>
@@ -709,7 +709,7 @@
     <string name="commission_detail_desc_22">得出尚需达成1500打码后，方能进行提款</string>
     <string name="commissiom_completed">完成</string>
     <string name="commission_example">范例</string>
-    <string name="bet_slip">投注单</string>
+    <string name="F001">投注单</string>
     <string name="bank_list_not_bink">您尚未绑定%1$s</string>
     <string name="bank_list_add">新增%1$s</string>
     <string name="bank_list_bank">银行卡</string>
@@ -1094,7 +1094,7 @@
     <string name="str_if_accept_odds_changes_des3">3.不接受赔率变化—选择该选项时：如果最新的赔率和您选择的赔率不同，我们不会生成注单，并提醒您赔率变化。</string>
     <string name="str_ok_i_got_it">好的,我知道了</string>
     <string name="str_return_last_step">返回上一步</string>
-    <string name="str_bet_other_game">下注其他</string>
+    <string name="P065">下注其他</string>
     <string name="str_press_again_to_exit_the_program">再按一次退出程序</string>
     <string name="str_odds_changed">赔率已变化</string>
     <string name="str_bet_slip_not_confirm_for_a_long_time">注单长时间未确认</string>
@@ -1658,4 +1658,9 @@
     <string name="P322">该比分选项会在第一节、第二节、第三节、全场比分开奖时生效，共有 四次 中奖机会，奖金可叠加，最多可获得 %s 奖励。</string>
     <string name="P323">规则</string>
     <string name="J945">详情</string>
+    <string name="H021">已结算注单</string>
+    <string name="H009">未结算注单</string>
+    <string name="H018">总投注额</string>
+    <string name="H020">总赢/输</string>
+    <string name="J223">活动</string>
 </resources>

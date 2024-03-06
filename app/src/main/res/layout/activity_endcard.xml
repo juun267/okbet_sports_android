@@ -78,7 +78,7 @@
                 android:layout_marginTop="2dp"
                 android:textColor="@color/white"
                 android:textSize="10sp"
-                android:text="@string/N944"/>
+                android:text="@string/F001"/>
 
         </LinearLayout>
 
@@ -103,7 +103,7 @@
                 android:layout_marginTop="2dp"
                 android:textColor="@color/white"
                 android:textSize="10sp"
-                android:text="@string/P293"/>
+                android:text="@string/P304"/>
 
         </LinearLayout>
 
@@ -126,7 +126,7 @@
                 android:layout_marginTop="2dp"
                 android:textColor="@color/white"
                 android:textSize="10sp"
-                android:text="@string/B005"/>
+                android:text="@string/J223"/>
 
         </LinearLayout>
 

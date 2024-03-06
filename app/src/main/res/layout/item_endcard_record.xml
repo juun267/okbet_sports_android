@@ -120,7 +120,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/P319"
+                    android:text="@string/N712"
                     android:textAlignment="viewStart"
                     android:textColor="@color/color_8B96AD"
                     android:textSize="@dimen/textSize14sp" />
@@ -150,7 +150,7 @@
                     android:id="@+id/tvWinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/bet_receipt_win_quota_with_sign"
+                    android:text="@string/win"
                     android:textAlignment="viewStart"
                     android:textColor="@color/color_8B96AD"
                     android:textSize="@dimen/textSize14sp" />

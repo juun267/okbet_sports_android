@@ -275,7 +275,7 @@ class BetReceiptFragment :
     fun updateBetResultStatus(betFailed: Pair<Boolean, String?>)=binding.run {
         linResultStatus.isVisible = true
         //下注其他盘口
-        btnComplete.text = getString(R.string.str_bet_other_game)
+        btnComplete.text = getString(R.string.P065)
         btnComplete.setTextColor(Color.WHITE)
 //        Timber.d("投注成功或失败: ${betFailed.first}")
 

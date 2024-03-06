@@ -178,7 +178,7 @@
     <string name="first_half_game">1st Half</string>
     <string name="second_half_game">2nd Half</string>
     <string name="full_game">Buong game</string>
-    <string name="game_result">Resulta</string>
+    <string name="B003">Resulta</string>
     <string name="game_yellow_card">Penalty card</string>
     <string name="game_corner_kick">Corner kick</string>
     <string name="soccer">Soccer</string>
@@ -446,7 +446,7 @@
     <string name="bet_info_list_win_quota">Mapapanalunan:</string>
     <string name="bet_receipt_win_quota">Halagang Mapanalo</string>
 
-    <string name="bet_info_add_bet_failed">Lost bet</string>
+    <string name="F042">Lost bet</string>
     <string name="bet_info_add_bet_success">Bet Successful</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">Hindi sapat na balanse</string>
@@ -681,7 +681,7 @@
     <string name="commission_detail_desc_22">Ang wastong halaga ay nangangailangan ng 1,500 upang ma-withdraw</string>
     <string name="commissiom_completed">Tapos na</string>
     <string name="commission_example">Halimbawa</string>
-    <string name="bet_slip">Bet slip</string>
+    <string name="F001">Bet slip</string>
     <string name="bank_list_not_bink">Hindi nakatali %1$s</string>
     <string name="bank_list_add">Magdagdag ng %1$s</string>
     <string name="bank_list_bank">Bank card</string>
@@ -1052,7 +1052,7 @@
     <string name="str_if_accept_odds_changes_des3">3. Huwag tumanggap ng mga pagbabago sa odds--kapag pinili mo ang opsyong ito: kung ang pinakabagong odds ay iba sa iyong napiling odds, hindi kami gagawa ng slip ng taya at ipaalala sa iyo ang mga pagbabago sa odds.</string>
     <string name="str_ok_i_got_it">Okay, alam ko na</string>
     <string name="str_return_last_step">Bumalik</string>
-    <string name="str_bet_other_game">Tumaya sa Iba</string>
+    <string name="P065">Taya sa iba</string>
     <string name="str_press_again_to_exit_the_program">Pindutin muli upang lumabas sa programa</string>
     <string name="str_odds_changed">Nagbago ang mga odds</string>
     <string name="str_self_exclusion">Self-exclusion</string>
@@ -1574,5 +1574,10 @@
     <string name="P322">Magkakabisa ang pagpipiliang ito ng puntos kapag ipinakita ang mga puntos sa 1st quarter, 2nd quarter, 3rd quarter, at full-time na puntos. Mayroong kabuuang apat na pagkakataong manalo, at ang mga bonus ay maaaring sama-sama, na may pinakamataas na reward na %s.</string>
     <string name="P323">Panuntunan</string>
     <string name="J945">Detalye</string>
+    <string name="H021">Settled bets</string>
+    <string name="H009">Unsettled bets</string>
+    <string name="H018">Kabuuang taya</string>
+    <string name="H020">Kabuuang panalo/talo</string>
+    <string name="J223">Aktibidad</string>
 </resources>
 

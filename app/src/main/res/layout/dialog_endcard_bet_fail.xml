@@ -18,14 +18,16 @@
             android:layout_height="@dimen/margin_68"
             android:layout_marginTop="54dp"
             android:src="@drawable/ic_fail_red"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16"
-            android:textSize="@dimen/textSize18sp"
+            android:text="@string/F042"
             android:textColor="@color/color_FFFFFF"
-            android:textStyle="bold"
-            android:text="@string/bet_info_add_bet_failed"/>
+            android:textSize="@dimen/textSize18sp"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/btnConfirm"
             android:layout_width="match_parent"
@@ -37,7 +39,7 @@
             android:background="@drawable/selector_button_default"
             android:textSize="@dimen/textSize18sp"
             android:textColor="@color/color_FFFFFF"
-            android:text="@string/str_bet_other_game"/>
+            android:text="@string/P065"/>
     </LinearLayout>
     <ImageView
         android:id="@+id/ivClose"

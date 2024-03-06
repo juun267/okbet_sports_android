@@ -174,7 +174,7 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
             binding.parlayFloatWindow.setBetText(getString(R.string.conspire))
             binding.parlayFloatWindow.updateCount(betListCount.toString())
         } else {
-            binding.parlayFloatWindow.setBetText(getString(R.string.bet_slip))
+            binding.parlayFloatWindow.setBetText(getString(R.string.F001))
         }
         binding.parlayFloatWindow.visible()
     }

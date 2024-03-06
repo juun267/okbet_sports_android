@@ -161,7 +161,7 @@
     <string name="second_half_game">Hiệp 2</string>
     <string name="total_score">Tổng điểm</string>
     <string name="full_game">Toàn trận</string>
-    <string name="game_result">Kết quả</string>
+    <string name="B003">Kết quả</string>
     <string name="game_yellow_card">Thẻ phạt</string>
     <string name="game_corner_kick">Phạt góc</string>
     <string name="soccer">Bóng Đá</string>
@@ -733,7 +733,7 @@
     <string name="commission_detail_desc_22">Số tiền hợp lệ cần 1.500 để rút.</string>
     <string name="commissiom_completed">Hoàn thành</string>
     <string name="commission_example">i.g.</string>
-    <string name="bet_slip">Đơn cược</string>
+    <string name="F001">Đơn cược</string>
     <string name="bank_list_not_bink">Bạn chưa mặc %1$s</string>
     <string name="bank_list_add">Thêm %1$s</string>
     <string name="bank_list_bank">thẻ ngân hàng</string>
@@ -929,7 +929,7 @@
     <string name="error_recharge_amount_format">Lỗi định dạng số tiền nạp</string>
     <string name="error_amount_limit_exceeded">Số tiền vượt hạn mức</string>
     <string name="next_step">Bước tiếp theo</string>
-    <string name="str_bet_other_game">Cược mới</string>
+    <string name="P065">Cược mới</string>
     <string name="kyc_type">Loại giấy tờ</string>
     <string name="kyc_num">Số giấy tờ</string>
     <string name="kyc_type2">Loại giấy tờ 2</string>
@@ -1068,7 +1068,7 @@
     <string name="no_select_file">Chưa chọn tệp</string>
     <string name="current_login_password">Mật khẩu đăng nhập hiện tại</string>
     <string name="new_games">New Games</string>
-    <string name="bet_info_add_bet_failed">Đặt cược thất bại</string>
+    <string name="F042">Đặt cược thất bại</string>
     <string name="str_in_play_bet_confirmed">Đang xác nhận cược trong trận</string>
     <string name="str_odds_description">Mô tả tỷ lệ cược</string>
     <string name="str_bet_parlay">CƯỢC XÂU</string>
@@ -1600,8 +1600,12 @@
     <string name="I041">Tên giải đấu</string>
     <string name="N664">Thời gian kết toán</string>
     <string name="P321">Tổng số đơn cược</string>
-    <string name="P322">"  "</string>
-    <string name="P322">"  "</string>
+    <string name="P322"></string>
     <string name="P323">Quy tắc</string>
     <string name="J945">Chi tiết</string>
+    <string name="H021">đã thanh toán</string>
+    <string name="H009">Chưa thanh toán</string>
+    <string name="H018">Tổng tiền cược</string>
+    <string name="H020">Tổng thắng/ thua</string>
+    <string name="J223">Ưu đãi</string>
 </resources>

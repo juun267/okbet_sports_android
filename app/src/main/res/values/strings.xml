@@ -181,7 +181,7 @@
     <string name="second_half_game">2nd Half</string>
     <string name="total_score">Total score</string>
     <string name="full_game">Full-Time</string>
-    <string name="game_result">Result</string>
+    <string name="B003">Result</string>
     <string name="game_yellow_card">Penalty card</string>
     <string name="game_corner_kick">Corner kick</string>
     <string name="soccer">Football</string>
@@ -704,7 +704,7 @@
     <string name="commissiom_completed">Finish</string>
     <string name="notice">Tips</string>
     <string name="commission_example">i.g.</string>
-    <string name="bet_slip">Bet slip</string>
+    <string name="F001">Bet slip</string>
     <string name="bank_list_not_bink">You do not have a %1$s bound</string>
     <string name="bank_list_add">Add %1$s</string>
     <string name="bank_list_bank">bank card</string>
@@ -1101,7 +1101,7 @@
     <string name="str_if_accept_odds_changes_des3">3. Not accept odds changes - if the latest odds are different from the odds you selected, we will not generate a slip and and remind you of the odds change。</string>
     <string name="str_ok_i_got_it">Ok, I see</string>
     <string name="str_return_last_step">Last step</string>
-    <string name="str_bet_other_game">Bet other</string>
+    <string name="P065">Bet other</string>
     <string name="str_odds_changed">odds changed</string>
     <string name="str_bet_slip_not_confirm_for_a_long_time">Bet slip not confirm for a long time</string>
     <string name="str_exceeding_limit_for_the_event_or_market">Your stake exceed the max limit</string>
@@ -1125,7 +1125,7 @@
     <string name="update_voucher">Upload receipt</string>
     <string name="no_select_file">Unselected files</string>
     <string name="str_press_again_to_exit_the_program">"Please confirm to exit again  "</string>
-    <string name="bet_info_add_bet_failed">Bet Failed</string>
+    <string name="F042">Bet Failed</string>
     <string name="new_games">New Games</string>
     <string name="regular_score">Regular</string>
     <string name="score_with_overtime">score\n (with overtime)</string>
@@ -1731,4 +1731,9 @@
     <string name="P322">This score option will take effect when the 1st quarter, 2nd quarter, 3rd quarter, and full-time scores are shown. There are a total of four chances to win, and the bonuses can be stacked, with a maximum reward of %s.</string>
     <string name="P323">Rules</string>
     <string name="J945">Details</string>
+    <string name="H021">Settled</string>
+    <string name="H009">Unsettled</string>
+    <string name="H018">Total stake</string>
+    <string name="H020">Total lose/ win</string>
+    <string name="J223">Promotions</string>
 </resources>

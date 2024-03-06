@@ -31,7 +31,7 @@
            android:gravity="center"
            android:textSize="@dimen/sp_14"
            android:textColor="@color/color_date_gray_white"
-           android:text="@string/settled"/>
+           android:text="@string/H021"/>
          <RadioButton
              android:id="@+id/rbtnUnSettle"
              android:layout_width="0dp"
@@ -42,7 +42,7 @@
              android:gravity="center"
              android:textSize="@dimen/sp_14"
              android:textColor="@color/color_date_gray_white"
-             android:text="@string/not_settled"/>
+             android:text="@string/H009"/>
      </RadioGroup>
    </FrameLayout>
     <LinearLayout
@@ -121,7 +121,7 @@
             android:ellipsize="end"
             android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize12sp"
-            android:text="@string/N943"/>
+            android:text="@string/H018"/>
          <TextView
              android:id="@+id/tvTotalValue"
              android:layout_width="wrap_content"
@@ -147,7 +147,7 @@
                 android:ellipsize="end"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize12sp"
-                android:text="@string/N942"/>
+                android:text="@string/P321"/>
             <TextView
                 android:id="@+id/tvTotalbet"
                 android:layout_width="wrap_content"
@@ -173,7 +173,7 @@
                 android:ellipsize="end"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize12sp"
-                android:text="@string/H026"/>
+                android:text="@string/H020"/>
             <TextView
                 android:id="@+id/tvReward"
                 android:layout_width="wrap_content"
