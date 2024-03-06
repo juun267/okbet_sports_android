@@ -25,7 +25,7 @@
         android:lineSpacingExtra="2dp"
         android:textSize="@dimen/textSize14sp"
         android:textColor="@color/color_FFFFFF"
-        android:text="View the instructions, click to bet, or choose other scores to bet together"/>
+        android:text="@string/P299"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/P013"/>
+                android:text="@string/P295"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:background="@drawable/bg_btn_preview_gray"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize14sp"
-            android:text="@string/P012"/>
+            android:text="@string/P297"/>
     </LinearLayout>
 
 </LinearLayout>

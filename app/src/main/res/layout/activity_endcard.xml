@@ -53,7 +53,7 @@
                 android:layout_marginTop="2dp"
                 android:textColor="@color/white"
                 android:textSize="10sp"
-                android:text="Casino"/>
+                android:text="@string/P230"/>
 
         </LinearLayout>
 
@@ -78,7 +78,7 @@
                 android:layout_marginTop="2dp"
                 android:textColor="@color/white"
                 android:textSize="10sp"
-                android:text="Bet Record"/>
+                android:text="@string/N944"/>
 
         </LinearLayout>
 
@@ -103,7 +103,7 @@
                 android:layout_marginTop="2dp"
                 android:textColor="@color/white"
                 android:textSize="10sp"
-                android:text="End Card"/>
+                android:text="@string/P293"/>
 
         </LinearLayout>
 
@@ -126,7 +126,7 @@
                 android:layout_marginTop="2dp"
                 android:textColor="@color/white"
                 android:textSize="10sp"
-                android:text="Promotion"/>
+                android:text="@string/B005"/>
 
         </LinearLayout>
 

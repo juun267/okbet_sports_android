@@ -277,7 +277,8 @@
             android:id="@+id/tvTips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
+            android:lineSpacingExtra="3dp"
             android:textSize="@dimen/textSize12sp"
             android:textColor="@color/color_BEC7DC"
             android:text="This score option will take effect when the first quarter, second quarter, third quarter, and full-time scores are drawn. There are four chances to win. The bonuses can be stacked, and you can get up to ₱ 8500 in rewards!"/>
@@ -348,7 +349,7 @@
             android:ellipsize="end"
             android:textSize="@dimen/textSize16sp"
             android:textColor="@color/color_FFFFFF"
-            android:text="@string/total_all_win_amount"/>
+            android:text="@string/P315"/>
         <View
             android:layout_width="@dimen/margin_0.5"
             android:layout_height="@dimen/margin_28"

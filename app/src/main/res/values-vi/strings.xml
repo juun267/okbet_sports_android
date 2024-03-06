@@ -1569,4 +1569,27 @@
     <string name="N810">Nữ</string>
     <string name="P286">Thông báo</string>
     <string name="P287">Xem tất cả thị trường</string>
+    <string name="P293">Ending card game</string>
+    <string name="P294">Chọn giải đấu bạn muốn tìm và thời gian thi đấu</string>
+    <string name="P295">Bước tiếp theo</string>
+    <string name="P296">Chọn game bạn cần và click để xem thẻ</string>
+    <string name="P297">Bước trước đó</string>
+    <string name="P298">Chọn tỷ số bạn muốn mua</string>
+    <string name="P299">Xem mô tả, nhấp để đặt cược hoặc chọn các tỷ số khác để đặt cược cùng lúc</string>
+    <string name="P300">Bấm để đổi bài với mệnh giá khác</string>
+    <string name="P301">Hoàn thành</string>
+    <string name="P302">Trò chơi bài bóng rổ</string>
+    <string name="P303">Xem bài</string>
+    <string name="P304">Trò chơi bài</string>
+    <string name="P305">Chi tiết bài</string>
+    <string name="P306">Bạn sẽ đặt cược %s vào các tùy %s chọn tỷ số trên. Mỗi tùy chọn tỷ số sẽ có hiệu lực khi tỷ số hiệp một, hiệp hai, hiệp ba và toàn trận được rút ra. Có bốn cơ hội để giành chiến thắng, phần thưởng có thể được cộng dồn lên nhau và bạn có thể nhận được phần thưởng lên tới %s.</string>
+    <string name="P307">Tên của bạn:</string>
+    <string name="P308">Mặc định là biệt danh người dùng</string>
+    <string name="P309">* Tôi đồng ý và hiểu rằng sau khi nhấp vào nút \"Xác nhận\", các cược đã đặt trong hệ thống sẽ không được hoàn trả. Tiền thắng cược phải chịu thuế do chính phủ quy định.</string>
+    <string name="P310">Thêm nhiều tỷ số hơn</string>
+    <string name="P311">Kết quả thi đấu</string>
+    <string name="P312">Set</string>
+    <string name="P313">Kết quả</string>
+    <string name="P314">Số tiền thắng</string>
+    <string name="P315">Tổng tiền hoàn</string>
 </resources>

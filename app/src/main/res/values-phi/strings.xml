@@ -1540,5 +1540,28 @@
     <string name="N810">Babae</string>
     <string name="P286">Mga anunsyo</string>
     <string name="P287">Tingnan ang Lahat ng Market</string>
+    <string name="P293">Ending card game</string>
+    <string name="P294">Piliin ang liga na gusto mong hanapin at ang oras ng laro</string>
+    <string name="P295">Susunod</string>
+    <string name="P296">Piliin ang larong kailangan mo at i-click para tingnan ang card</string>
+    <string name="P297">Nakaraan</string>
+    <string name="P298">Piliin ang puntos na gusto mong bilhin</string>
+    <string name="P299">Suriin ang instraksyon, i-click upang maglagay ng taya, o pumili ng iba pang mga puntos upang ilagay ang mga taya nang sama-sama.</string>
+    <string name="P300">I-click upang palitan ang mga kard sa iba pang halaga</string>
+    <string name="P301">Kumpleto</string>
+    <string name="P302">Basketball Kard Game</string>
+    <string name="P303">I-view ang mga kard</string>
+    <string name="P304">Game Card</string>
+    <string name="P305">Mga Detalye ng Kard</string>
+    <string name="P306">Itataya mo ang %s sa mga pagpipilian %s sa puntos sa itaas. Magkakabisa ang bawat pagpipilian sa puntos kapag ang unang quarter, ikalawang quarter, ikatlong quarter, at full-time na mga puntos ay nabunot. Mayroong apat na pagkakataong manalo, at ang bonus ay Maaaring ipagsama, at maaari kang makakuha ng hanggang sa %s na mga reward.</string>
+    <string name="P307">Pangalan:</string>
+    <string name="P308">Default ay nickname ng user</string>
+    <string name="P309">* Ako dito ay sumasang-ayon at nauunawaan na pagkatapos ng pag-click sa \"Kumpirmahin\" na buton, ang mga taya na inilagay sa loob ng system ay hindi na ma-refund. Ang mga panalo ay napapailalim sa mga buwis na ipinag-uutos ng gobyerno.</string>
+    <string name="P310">Magdagdag pa ng puntos</string>
+    <string name="P311">Resulta ng Laro</string>
+    <string name="P312">Quarter</string>
+    <string name="P313">Resulta</string>
+    <string name="P314">Halaga ng panalo</string>
+    <string name="P315">Kabuuang halaga ng refund</string>
 </resources>
 

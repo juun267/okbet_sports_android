@@ -1624,4 +1624,27 @@
     <string name="N810">女</string>
     <string name="P286">公告</string>
     <string name="P287">查看所有盘口</string>
+    <string name="P293">篮球末位比分</string>
+    <string name="P294">选择您想查找的联赛,和比赛时间</string>
+    <string name="P295">下一步</string>
+    <string name="P296">选择您需要的比赛，并点击查看卡片</string>
+    <string name="P297">上一步</string>
+    <string name="P298">选择您想购买的比分</string>
+    <string name="P299">查看说明,点击投注,或选择其他比分一起投注</string>
+    <string name="P300">点击可以更换其他金额卡片</string>
+    <string name="P301">完成</string>
+    <string name="P302">篮球卡牌游戏</string>
+    <string name="P303">查看卡片</string>
+    <string name="P304">卡牌游戏</string>
+    <string name="P305">卡的详细信息</string>
+    <string name="P306">您会将 %s 投注到 %s 的比分选项中，每个比分选项会在第一节、第二节、第三节、全场比分开奖时生效，共有 四次 中奖机会，奖金可叠加，最多可获得 %s 奖励。</string>
+    <string name="P307">您的名字：</string>
+    <string name="P308">默认为用户昵称</string>
+    <string name="P309">* 本人同意并理解，点击“确认”按钮后，在系统内所下的投注将不予退还。 奖金需缴纳政府规定的税款。</string>
+    <string name="P310">添加更多比分</string>
+    <string name="P311">比赛结果</string>
+    <string name="P312">季度</string>
+    <string name="P313">结果</string>
+    <string name="P314">中奖金额</string>
+    <string name="P315">总返还金额</string>
 </resources>

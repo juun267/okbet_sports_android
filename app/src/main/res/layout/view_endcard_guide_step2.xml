@@ -16,7 +16,7 @@
         android:lineSpacingExtra="2dp"
         android:textSize="@dimen/textSize14sp"
         android:textColor="@color/color_FFFFFF"
-        android:text="Select the match you want and click View Cards"/>
+        android:text="@string/P296"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/P013"/>
+                android:text="@string/P295"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
             android:background="@drawable/bg_btn_preview_gray"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize14sp"
-            android:text="@string/P012"/>
+            android:text="@string/P297"/>
     </LinearLayout>
 
 </LinearLayout>

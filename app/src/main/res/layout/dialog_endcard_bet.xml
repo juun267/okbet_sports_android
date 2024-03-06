@@ -23,7 +23,7 @@
                 android:layout_gravity="center"
                 android:textSize="@dimen/textSize18sp"
                 android:textColor="@color/color_BEC7DC"
-                android:text="Card details"/>
+                android:text="@string/P305"/>
             <ImageView
                 android:id="@+id/ivClose"
                 android:layout_width="@dimen/margin_36"
@@ -52,7 +52,7 @@
             android:layout_marginHorizontal="@dimen/margin_12"
             android:textColor="@color/color_BEC7DC"
             android:textSize="@dimen/textSize12sp"
-            android:text="You will bet  ₱ 100 on the score options of 0-1, 0-2, 0-4, 0-6, 0-8 2-9, 3-6, 5-7. The score options will be in the first quarter, second quarter, and third quarter. The prizes will take effect during the three quarters and the whole game. There are four chances to win. The prizes can be stacked, and you can get up to ₱ 8500 in rewards!"/>
+            android:text="@string/P306"/>
         <TextView
             android:id="@+id/tvPrompt"
             android:layout_width="match_parent"
@@ -65,7 +65,7 @@
             android:layout_marginHorizontal="@dimen/margin_12"
             android:textColor="@color/color_BEC7DC"
             android:textSize="@dimen/textSize12sp"
-            android:text="prompt : I hereby agree and understand that after clic"/>
+            android:text="@string/P309"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                 android:background="@drawable/bg_darkblue_radius_8"
                 android:textSize="@dimen/textSize18sp"
                 android:textColor="@color/color_FFFFFF"
-                android:text="Add more scores"/>
+                android:text="@string/P310"/>
             <Button
                 android:id="@+id/btnBetting"
                 android:layout_width="0dp"
@@ -94,7 +94,7 @@
                 android:background="@drawable/selector_button_default"
                 android:textSize="@dimen/textSize16sp"
                 android:textColor="@color/color_FFFFFF"
-                android:text="Betting 1000"/>
+                android:text="@string/betting"/>
         </LinearLayout>
 
     </LinearLayout>
