@@ -713,7 +713,7 @@ class WithdrawViewModel(
         _submitEnable.value = buttonEnableStatus
     }
 
-    private fun checkInputCompleteByWithdraw(){
+    fun checkInputCompleteByWithdraw(){
         _submitEnable.value = withdrawAmountMsg.value?.isEmpty() == true &&
                 withdrawPasswordMsg.value?.isEmpty() == true
     }
