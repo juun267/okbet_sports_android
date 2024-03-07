@@ -7,12 +7,8 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.drake.spannable.addSpan
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
-import kotlinx.android.synthetic.main.fragment_home_hot.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.clickDelay
-import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.databinding.FragmentEndcardRecordDetailBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
@@ -33,9 +29,13 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
         initOddList()
         initResultList()
 
-        binding.tvTips.text = Spanny(binding.tvTips.text).findAndSpan("₱ 8500", Spanny.GetSpan {
-            TextAppearanceSpan(null, Typeface.NORMAL, 14, ColorStateList.valueOf(requireContext().getColor(R.color.color_6AA4FF)), null)
-        })
+        binding.tvTips.text = Spanny(binding.tvTips.text).findAndSpan("₱ 8500") {
+            TextAppearanceSpan(null,
+                Typeface.NORMAL,
+                14,
+                ColorStateList.valueOf(requireContext().getColor(R.color.color_6AA4FF)),
+                null)
+        }
     }
     private fun initOddList(){
         binding.rvOdd.apply {

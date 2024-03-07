@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.sport.endcard.bet.EndCardGameFragment
 import org.cxct.sportlottery.ui.sport.endcard.home.EndCardHomeFragment
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardGuideDialog
+import org.cxct.sportlottery.ui.sport.endcard.home.EndCardRuleFragment
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordDetailFragment
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordFragement
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
@@ -128,6 +129,11 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
          val fragment = fragmentHolder.make(EndCardRecordDetailFragment::class.java)
          fragment.arguments = Bundle().apply { put("orderId",orderId) }
          showFragment(fragment)
+    }
+
+    fun showEndCardRule() {
+        val fragment = fragmentHolder.make(EndCardRuleFragment::class.java)
+        showFragment(fragment)
     }
 
     private fun showFragment(fragment: Fragment) {

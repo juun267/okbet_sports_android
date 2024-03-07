@@ -50,6 +50,9 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
 
     override fun onInitView(view: View) {
         initRecyclerView()
+        binding.toolbarLayout.setOnClickListener {
+            (activity as EndCardActivity).showEndCardRule()
+        }
     }
 
     override fun onBindViewStatus(view: View) {
