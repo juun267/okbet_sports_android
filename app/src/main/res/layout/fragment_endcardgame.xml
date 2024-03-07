@@ -34,7 +34,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             tools:text="Card Game"
-            android:text="Card Game"/>
+            android:text="@string/P304"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvBetAmount"

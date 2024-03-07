@@ -12,17 +12,37 @@ import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.databinding.FragmentEndcardgameBinding
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 
-class EndCardGameFragment: BaseFragment<EndCardVM, FragmentEndcardgameBinding>() {
+class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBinding>() {
 
     private lateinit var loadingHolder: Gloading.Holder
-    private lateinit var oddsAdapter: EndCardOddsAdapter
+    private val oddsAdapter = EndCardOddsAdapter(::onOddClick)
 
+    private val oddsChangeListener by lazy {
+        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+            if (context == null || oddsChangeEvent.odds.isNullOrEmpty()) {
+                return@OddsChangeListener
+            }
+
+            if (oddsAdapter.itemCount == 0) {
+                oddsAdapter.setNewInstance(oddsChangeEvent.odds[PlayCate.FS_LD_CS.value])
+            }
+            if (loadingHolder.isLoading) {
+                loadingHolder.showLoadSuccess()
+            }
+        }
+    }
 
     override fun createRootView(
         inflater: LayoutInflater,
@@ -60,8 +80,6 @@ class EndCardGameFragment: BaseFragment<EndCardVM, FragmentEndcardgameBinding>()
 
         loadingHolder.showLoading()
 
-        root.postDelayed({ loadingHolder.showLoadSuccess() }, 3000)
-
         matchInfo = requireArguments().getParcelable("matchInfo")!!
         tvHomeName.text = matchInfo.homeName
         tvAwayName.text = matchInfo.awayName
@@ -69,35 +87,46 @@ class EndCardGameFragment: BaseFragment<EndCardVM, FragmentEndcardgameBinding>()
         ivHomeLogo.circleOf(matchInfo.homeIcon, R.drawable.ic_team_default_no_stroke)
         ivAwayLogo.circleOf(matchInfo.awayIcon, R.drawable.ic_team_default_no_stroke)
 
-        tvQ1Amount.text = "100$"
-        tvQ2Amount.text = "100$"
-        tvQ3Amount.text = "100$"
-        tvQ4Amount.text = "100$"
+        subscribeChannelHall(GameType.BK.key, matchInfo.id)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ServiceBroadcastReceiver.addOddsChangeListener(this@EndCardGameFragment, oddsChangeListener)
     }
 
     private fun initAmountList() {
         binding.rcvBetAmount.setLinearLayoutManager(RecyclerView.HORIZONTAL)
         val amountList = mutableListOf(100, 200, 300, 400, 500)
-        val adapter = BetAmountAdapter()
+        val adapter = BetAmountAdapter(::onBetAmountChanged)
         adapter.setNewInstance(amountList)
         binding.rcvBetAmount.adapter = adapter
+        onBetAmountChanged(amountList.first())
     }
 
     private fun initOddsList() {
         binding.rcvOddsList.layoutManager = GridLayoutManager(context(), 4)
         binding.rcvOddsList.addItemDecoration(OddsItemDecoration())
-        oddsAdapter = EndCardOddsAdapter()
-        val dataList = mutableListOf<String>()
-        repeat(10) { first->
-            repeat(10) { second->
-                dataList.add("$first-$second")
-            }
-        }
-        oddsAdapter.setNewInstance(dataList)
         binding.rcvOddsList.adapter = oddsAdapter
     }
 
+    private fun onBetAmountChanged(amount: Int) = binding.run {
+        val money = "$amount$showCurrencySign"
+        tvQ1Amount.text = money
+        tvQ2Amount.text = money
+        tvQ3Amount.text = money
+        tvQ4Amount.text = money
+    }
 
-
+    private fun onOddClick(odd: Odd): Boolean {
+        val oddId = odd.id!!
+        val isAdded = EndCardBetManager.containOdd(oddId)
+        if (isAdded) {
+            EndCardBetManager.removeBetOdd(oddId)
+        } else {
+            EndCardBetManager.addBetOdd(oddId)
+        }
+        return !isAdded
+    }
 
 }

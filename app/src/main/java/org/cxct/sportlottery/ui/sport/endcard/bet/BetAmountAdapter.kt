@@ -9,12 +9,14 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 
-class BetAmountAdapter: BaseQuickAdapter<Int, BaseViewHolder>(0) {
+class BetAmountAdapter(private val onItemClick: (Int)-> Unit): BaseQuickAdapter<Int, BaseViewHolder>(0) {
 
+    private var selectedItem: Int = 0
     private val selectedColor = Color.WHITE
     private val defaultTextColor by lazy { context.getColor(R.color.color_BEC7DC) }
     private val selectedBg by lazy {
@@ -44,16 +46,38 @@ class BetAmountAdapter: BaseQuickAdapter<Int, BaseViewHolder>(0) {
         return BaseViewHolder(textView)
     }
 
+    override fun convert(holder: BaseViewHolder, item: Int, payloads: List<Any>) {
+        changeStyle(false, holder.itemView as TextView)
+    }
+
     override fun convert(holder: BaseViewHolder, item: Int) {
         with(holder.itemView as TextView) {
-            text = "Bet $item$"
-            if (item < 200) {
-                background = selectedBg
-                setTextColor(selectedColor)
-            } else {
-                background = defaultBg
-                setTextColor(defaultTextColor)
+            text = "${context.getText(R.string.P318)} $item$showCurrencySign"
+            changeStyle(selectedItem == item, this)
+            setOnClickListener {
+                if (selectedItem != item) {
+                    onItemClick.invoke(item)
+                    val lastPosition = getItemPosition(selectedItem)
+                    selectedItem = item
+                    notifyItemChanged(lastPosition, lastPosition)
+                    changeStyle(true, this)
+                }
             }
         }
+    }
+
+    private fun changeStyle(isSelected: Boolean, textView: TextView) = textView.run {
+        if (isSelected) {
+            background = selectedBg
+            setTextColor(selectedColor)
+        } else {
+            background = defaultBg
+            setTextColor(defaultTextColor)
+        }
+    }
+
+    override fun setNewInstance(list: MutableList<Int>?) {
+        selectedItem = list!!.first()
+        super.setNewInstance(list)
     }
 }

@@ -11,12 +11,16 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 
-class EndCardOddsAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
+class EndCardOddsAdapter(private val itemClick: (Odd) -> Boolean)
+    : BaseQuickAdapter<Odd, BaseViewHolder>(0) {
 
     private val defaultBg by lazy {
         ShapeDrawable()
@@ -79,27 +83,48 @@ class EndCardOddsAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
         return BaseViewHolder(root)
     }
 
-    override fun convert(holder: BaseViewHolder, item: String) {
+    override fun convert(holder: BaseViewHolder, item: Odd) {
+
+
         val oddText = holder.getView<TextView>(oddId)
         val userText = holder.getView<TextView>(userId)
-        oddText.text = item
 
-        if (item.startsWith("3")) {
+        oddText.text = item.name
+
+        val position = holder.bindingAdapterPosition
+        if (position % 3 == 0) {
             userText.gone()
-
         } else {
             userText.text = "army"
             userText.visible()
         }
 
-        if (item.startsWith("2")) {
-            holder.itemView.background = disableBg
-        } else if (item.startsWith("4")) {
+        if (item.id != null && EndCardBetManager.containOdd(item.id)) {
             holder.itemView.background = selectedBg
-        } else if (item.startsWith("5")) {
-            holder.itemView.setBackgroundResource(R.drawable.bg_selected_endodd)
         } else {
             holder.itemView.background = defaultBg
+        }
+
+//        if (position % 5 == 2) {
+//            holder.itemView.background = disableBg
+//        } else if (position % 4 == 0) {
+//            holder.itemView.background = selectedBg
+//        } else if (position % 7 == 0) {
+//            holder.itemView.setBackgroundResource(R.drawable.bg_selected_endodd)
+//        } else {
+//            holder.itemView.background = defaultBg
+//        }
+
+        holder.itemView.setOnClickListener {
+            if (item.id.isEmptyStr()) {
+                return@setOnClickListener
+            }
+
+            if (itemClick.invoke(item)) {
+                holder.itemView.background = selectedBg
+            } else {
+                holder.itemView.background = defaultBg
+            }
         }
     }
 }
