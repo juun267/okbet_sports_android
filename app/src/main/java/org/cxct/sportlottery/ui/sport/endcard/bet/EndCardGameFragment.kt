@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.sport.endcard.bet
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.circleOf
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.databinding.FragmentEndcardgameBinding
@@ -16,13 +18,16 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
+import org.cxct.sportlottery.util.loginedRun
 
 class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBinding>() {
 
@@ -126,7 +131,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         } else {
             EndCardBetManager.addBetOdd(oddId)
         }
-        return !isAdded
+        return true
     }
 
 }

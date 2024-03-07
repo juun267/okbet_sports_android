@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
+import org.cxct.sportlottery.util.loginedRun
 
 class EndCardOddsAdapter(private val itemClick: (Odd) -> Boolean)
     : BaseQuickAdapter<Odd, BaseViewHolder>(0) {
@@ -116,14 +117,16 @@ class EndCardOddsAdapter(private val itemClick: (Odd) -> Boolean)
 //        }
 
         holder.itemView.setOnClickListener {
-            if (item.id.isEmptyStr()) {
-                return@setOnClickListener
-            }
+            val oddId = item.id ?: return@setOnClickListener
 
-            if (itemClick.invoke(item)) {
-                holder.itemView.background = selectedBg
-            } else {
-                holder.itemView.background = defaultBg
+            loginedRun(it.context) {
+                if (itemClick.invoke(item)) {
+                    if (EndCardBetManager.containOdd(oddId)) {
+                        holder.itemView.background = selectedBg
+                    } else {
+                        holder.itemView.background = defaultBg
+                    }
+                }
             }
         }
     }
