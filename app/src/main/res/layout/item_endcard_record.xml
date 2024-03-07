@@ -120,16 +120,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="38dp"
                     android:text="@string/N712"
-                    android:textAlignment="viewStart"
+                    android:textAlignment="center"
                     android:textColor="@color/color_8B96AD"
                     android:textSize="@dimen/textSize14sp" />
+                <View
+                    android:layout_width="@dimen/margin_0.5"
+                    android:layout_height="@dimen/margin_28"
+                    android:layout_marginHorizontal="@dimen/margin_4"
+                    android:background="@color/color_1A202E"/>
 
                 <TextView
                     android:id="@+id/content_bet_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="4dp"
                     android:textAlignment="viewStart"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/color_FFFFFF"
@@ -150,16 +156,21 @@
                     android:id="@+id/tvWinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="38dp"
                     android:text="@string/win"
-                    android:textAlignment="viewStart"
+                    android:textAlignment="center"
                     android:textColor="@color/color_8B96AD"
                     android:textSize="@dimen/textSize14sp" />
-
+                <View
+                    android:layout_width="@dimen/margin_0.5"
+                    android:layout_height="@dimen/margin_28"
+                    android:layout_marginHorizontal="@dimen/margin_4"
+                    android:background="@color/color_1A202E"/>
                 <TextView
                     android:id="@+id/tvWinnableAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="4dp"
                     android:textAlignment="viewStart"
                     android:fontFamily="@font/inter_bold"
                     android:textFontWeight="500"
