@@ -128,8 +128,9 @@ class HomeHotESportView(
             } else{
                 isVisible = !getSportEnterIsClose() //如果体育服务关闭
             }
-
-            unSubscribeChannelHall(fragment)
+            if (fragment.isVisibleToUser()) {
+                unSubscribeChannelHall(fragment)
+            }
             if (isVisible) {
                 adapter?.data = data
                 binding.recyclerHotGame.post { firstVisibleRange() }
