@@ -126,14 +126,14 @@ android {
             manifestPlaceholders = [CHANNEL    : "samgsung",
                                     INVITE_CODE: "samsung8"]
         }
-//        oppo {
-//            manifestPlaceholders = [CHANNEL    : "oppo",
-//                                    INVITE_CODE: "oppo8"]
-//        }
-//        vivo {
-//            manifestPlaceholders = [CHANNEL    : "vivo",
-//                                    INVITE_CODE: "vivo8"]
-//        }
+        oppo {
+            manifestPlaceholders = [CHANNEL    : "oppo",
+                                    INVITE_CODE: "oppo888"]
+        }
+        vivo {
+            manifestPlaceholders = [CHANNEL    : "vivo",
+                                    INVITE_CODE: "vivo888"]
+        }
 //
 //        inmobi {
 //            manifestPlaceholders = [CHANNEL    : "inmobi",
