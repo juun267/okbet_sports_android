@@ -334,7 +334,7 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
 
     private var todayMenuPosition = 0
     fun setJumpSport(matchType: MatchType? = null, gameType: GameType? = null) {
-        viewModel.getSportMenuData(true)
+
         jumpMatchType = matchType
         jumpGameType = gameType
 
@@ -342,6 +342,7 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
         todayMenuPosition = matchTypeTodayTab.indexOf(matchType)
 
         if (isAdded) {
+            viewModel.getSportMenuData(true)
             if (todayMenuPosition >= 0){
                 todayMenuPop.lastSelectPosition = todayMenuPosition
             }
