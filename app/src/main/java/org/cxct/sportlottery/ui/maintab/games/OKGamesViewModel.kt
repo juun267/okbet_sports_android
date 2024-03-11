@@ -10,6 +10,7 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.asyncApi
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.callApiWithNoCancel
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.games.OKGamesRepository
@@ -27,6 +28,25 @@ class OKGamesViewModel(
 ) : MainHomeViewModel(
     androidContext
 ) {
+
+    companion object {
+        var okGamesHall: Pair<OKGamesHall, Long>? = null
+        var okLiveGamesHall: Pair<OKGamesHall, Long>? = null
+
+        fun preLoadOKLiveHall() {
+            callApiWithNoCancel({ OKLiveRepository.okLiveHall() }) {
+                it.getData()?.let { okLiveGamesHall = Pair(it, System.currentTimeMillis()) }
+            }
+        }
+
+        fun preLoadOKGameHall() {
+            callApiWithNoCancel({ OKGamesRepository.okGamesHall() }) {
+                it.getData()?.let { okGamesHall = Pair(it, System.currentTimeMillis()) }
+            }
+        }
+
+
+    }
 
     val providerResult: LiveData<OKGamesHall>
         get() = _providerresult
@@ -96,6 +116,7 @@ class OKGamesViewModel(
                 }
             }
 
+            okGamesHall = Pair(data, System.currentTimeMillis())
             if (data.firmList != null) {
                 _providerresult.postValue(data)
             }
@@ -286,6 +307,7 @@ class OKGamesViewModel(
                 }
             }
 
+            okLiveGamesHall = Pair(data, System.currentTimeMillis())
             if (data.firmList != null) {
                 _providerresult.postValue(data)
             }
