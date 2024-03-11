@@ -2,6 +2,7 @@ package org.cxct.sportlottery.net.sport
 
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
+import org.cxct.sportlottery.common.extentions.callApiWithNoCancel
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.sport.api.SportService
@@ -38,5 +39,44 @@ object SportRepository {
     }
     suspend fun getRecommendLeague():ApiResult<List<RecommendLeague>> {
         return sportApi.getRecommendLeague()
+    }
+
+    fun loadSportMenu() {
+        callApiWithNoCancel({ getSportMenu() }) {
+            if (it.succeeded()) {
+                it.getData()?.sortSport()
+//                it.getData()?.makeEsportCategoryItem()
+                _sportMenuResultEvent.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
+            }
+        }
+    }
+
+    private fun SportMenuData.sortSport(): SportMenuData {
+        this.menu.inPlay.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.menu.today.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.menu.early.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.menu.cs.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.menu.parlay.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.menu.outright.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.atStart.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.menu.eps?.items?.sortedBy { sport ->
+            sport.sortNum
+        }
+
+        return this
     }
 }

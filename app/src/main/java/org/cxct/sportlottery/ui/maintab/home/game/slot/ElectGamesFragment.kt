@@ -17,6 +17,7 @@ import org.cxct.sportlottery.common.extentions.onConfirm
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
+import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.ui.chat.hideSoftInput
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
@@ -139,24 +140,37 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
     }
 
     override fun onInitData() {
-        if(gameAdapter2.itemCount == 0) {
-            showLoadingView()
+        if(gameAdapter2.itemCount > 0) {
+            return
         }
-        viewModel.getOKGamesHall()
+
+        val okGamesHall = OKGamesViewModel.okGamesHall
+        if (okGamesHall == null || !setData(okGamesHall.first)) {
+            showLoadingView()
+            if (okGamesHall != null && okGamesHall.second - System.currentTimeMillis() > 10_000) {
+                viewModel.getOKGamesHall()
+            }
+        }
     }
 
     private fun initObserver() {
         viewModel.gameHall.observe(viewLifecycleOwner) {
-
-            val categoryList = it.categoryList?.toMutableList()?.filter { !it.gameList?.isNullOrEmpty() }?.toMutableList()
-            if (categoryList.isNullOrEmpty()) {
-                hideLoadingView()
-                return@observe
-            }
-
-            gameAdapter2.setupData(categoryList)
-            tabAdapter.setNewInstance(categoryList)
             hideLoadingView()
+            setData(it)
         }
+    }
+
+    private var lastOKGamesHall: OKGamesHall? = null
+    protected fun setData(okGamesHall: OKGamesHall): Boolean {
+        if (lastOKGamesHall == okGamesHall) {
+            return true
+        }
+        val categoryList = okGamesHall.categoryList?.toMutableList()?.filter { !it.gameList?.isNullOrEmpty() }?.toMutableList()
+        if (categoryList.isNullOrEmpty()) {
+            return false
+        }
+        gameAdapter2.setupData(categoryList)
+        tabAdapter.setNewInstance(categoryList)
+        return true
     }
 }
