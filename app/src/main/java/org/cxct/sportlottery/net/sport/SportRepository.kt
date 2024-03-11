@@ -14,7 +14,7 @@ import org.cxct.sportlottery.util.TimeUtil
 object SportRepository {
 
     private val sportApi by lazy { RetrofitHolder.createApiService(SportService::class.java) }
-    val _sportMenuResultEvent = MutableLiveData<ApiResult<SportMenuData>>()
+    val sportMenuResultEvent = MutableLiveData<ApiResult<SportMenuData>>()
     /**
      * isNew 则不返回categoryList参数
      */
@@ -46,7 +46,7 @@ object SportRepository {
             if (it.succeeded()) {
                 it.getData()?.sortSport()
 //                it.getData()?.makeEsportCategoryItem()
-                _sportMenuResultEvent.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
+                sportMenuResultEvent.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
             }
         }
     }

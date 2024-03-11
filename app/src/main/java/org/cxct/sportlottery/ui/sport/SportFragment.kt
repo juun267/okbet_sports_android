@@ -332,8 +332,9 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
         return null
     }
 
-    var todayMenuPosition = 0
+    private var todayMenuPosition = 0
     fun setJumpSport(matchType: MatchType? = null, gameType: GameType? = null) {
+        viewModel.getSportMenuData(false)
         jumpMatchType = matchType
         jumpGameType = gameType
 

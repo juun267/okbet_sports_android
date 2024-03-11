@@ -15,7 +15,7 @@ class SportTabViewModel(
 ) {
 
     val sportMenuResult: LiveData<ApiResult<SportMenuData>>
-        get() = SportRepository._sportMenuResultEvent
+        get() = SportRepository.sportMenuResultEvent
 
     private var lastMenuTag = 0L
     private var menuLoading = false
@@ -30,7 +30,7 @@ class SportTabViewModel(
             if (it.succeeded()) {
                 it.getData()?.sortSport()
 //                it.getData()?.makeEsportCategoryItem()
-                SportRepository._sportMenuResultEvent.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
+                SportRepository.sportMenuResultEvent.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
             }
             menuLoading = false
             lastMenuTag = System.currentTimeMillis()
