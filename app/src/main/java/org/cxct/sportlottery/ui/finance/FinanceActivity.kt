@@ -1,11 +1,13 @@
 package org.cxct.sportlottery.ui.finance
 
+import androidx.activity.OnBackPressedDispatcher
 import androidx.navigation.findNavController
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityFinanceBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity.Companion.RechargeViewLog
+import timber.log.Timber
 
 /**
  * @app_destination 资金明细
@@ -18,12 +20,11 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel, ActivityFinanceBind
     private val financeFragment by lazy {
         supportFragmentManager.findFragmentById(R.id.financeFragment)
     }
-
+    private val viewLog by lazy { intent.getStringExtra(RechargeViewLog) }
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
         setupToolbarBack()
-
         setupToolbarTitle(getString(R.string.fund_detail))
 
         viewModel.recordType.observe(this) {
@@ -58,14 +59,11 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel, ActivityFinanceBind
 
 
     private fun checkQuickJump() {
-        intent.apply {
-            val viewLog = getStringExtra(RechargeViewLog)
-            viewLog?.let {
-                setupToolbarTitle(it)
-                when (it) {
-                    getString(R.string.record_recharge) -> {
-                        navRechargeLogFragment()
-                    }
+        viewLog?.let {
+            setupToolbarTitle(it)
+            when (it) {
+                getString(R.string.record_recharge) -> {
+                    navRechargeLogFragment()
                 }
             }
         }
@@ -77,13 +75,16 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel, ActivityFinanceBind
 
     private fun setupToolbarBack() {
         binding.customToolBar.setOnBackPressListener {
-            financeFragment?.let {
-                if (it.childFragmentManager.backStackEntryCount > 0) {
-                    navController.navigateUp()
-                    if (!it.isHidden) setupToolbarTitle(getString(R.string.fund_detail))
+            onBackPressed()
+        }
+    }
+    override fun onBackPressed() {
+        financeFragment?.let {
+            if (it.childFragmentManager.backStackEntryCount > 0 && viewLog.isNullOrEmpty()) {
+                navController.navigateUp()
+                if (!it.isHidden) setupToolbarTitle(getString(R.string.fund_detail))
 
-                } else finish()
-            }
+            } else finish()
         }
     }
 

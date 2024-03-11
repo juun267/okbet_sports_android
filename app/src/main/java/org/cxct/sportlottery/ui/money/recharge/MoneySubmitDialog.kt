@@ -14,7 +14,14 @@ import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
 
-class MoneySubmitDialog() : BaseDialog<BaseViewModel,DialogMoneySubmitBinding>() {
+class MoneySubmitDialog(payWayStr: String = "", payMoneyStr: String? = "") : BaseDialog<BaseViewModel,DialogMoneySubmitBinding>() {
+
+    init {
+        val bundle = Bundle()
+        bundle.putString("payWay", payWayStr)
+        bundle.putString("payMoney", payMoneyStr)
+        arguments = bundle
+    }
 
     private val payWay by lazy {
         arguments?.getString("payWay")
@@ -22,19 +29,7 @@ class MoneySubmitDialog() : BaseDialog<BaseViewModel,DialogMoneySubmitBinding>()
     private val payMoney by lazy {
         arguments?.getString("payMoney")
     }
-    init {
-        setStyle(R.style.CustomDialogStyle)
-    }
 
-    constructor(
-        payWay: String? = "",
-        payMoney: String? = "",
-    ) : this() {
-        val bundle = Bundle()
-        bundle.putString("payWay", payWay)
-        bundle.putString("payMoney", payMoney)
-        arguments = bundle
-    }
     override fun onInitView() {
         initView()
         initButton()
