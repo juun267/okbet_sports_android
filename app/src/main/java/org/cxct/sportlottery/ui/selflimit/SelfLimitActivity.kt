@@ -35,7 +35,7 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel,ActivitySelfLimi
                 addFragment(SelfLimitBetFragment())
             }
         }
-        binding.customTabLayout.tabLayoutCustom.setupWithViewPager(binding.vpSelfLimit)
+        binding.customTabLayout.binding.tabLayoutCustom.setupWithViewPager(binding.vpSelfLimit)
     }
 
     private fun initLiveData() {

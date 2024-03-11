@@ -5,6 +5,7 @@ import android.webkit.WebView
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityThirdGameBinding
@@ -13,6 +14,7 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -53,7 +55,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         webView.loadUrl(mUrl)
         setupMenu()
         initObserve()
-
+        postRefreshToken() // 避免用户长期在三方游戏中导致token过期
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
             if (it.maintain == 1 && firmCode == it.firmType /*&& gameType == it.gameType*/) {
                 motionMenu.gone()
@@ -94,6 +96,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
 
     override fun onDestroy() {
         super.onDestroy()
+        releaseRefreshToken()
         binding.webView.destroy()
         if (isThirdTransferOpen()) {
             LoginRepository.allTransferOut()
@@ -251,10 +254,10 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
                         customSecurityDialog = CustomSecurityDialog().apply {
                             getSecurityCodeClickListener {
                                 this.showSmeTimer300()
-                                viewModel.sendTwoFactor()
+                                this@ThirdGameActivity.viewModel.sendTwoFactor()
                             }
                             positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
-                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                                this@ThirdGameActivity.viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
                             }
                         }
                         customSecurityDialog?.show(supportFragmentManager, null)
@@ -303,6 +306,22 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
 
     private fun showKYCVerifyDialog() {
         VerifyIdentityDialog().show(supportFragmentManager, null)
+    }
+
+    private val refreshTokenDuring = 5 * 60_000L
+    private val refreshTokenRunnable = Runnable {
+        lifecycleScope.launch { runWithCatch { UserInfoRepository.getUserInfo() } }
+        postRefreshToken()
+    }
+
+    private fun postRefreshToken() {
+        if (LoginRepository.isLogined() && !isDestroyed) {
+            binding.root.postDelayed(refreshTokenRunnable, refreshTokenDuring)
+        }
+    }
+
+    private fun releaseRefreshToken() {
+        binding.root.removeCallbacks(refreshTokenRunnable)
     }
 
 }

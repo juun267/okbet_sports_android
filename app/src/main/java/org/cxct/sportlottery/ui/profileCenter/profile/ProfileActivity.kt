@@ -585,11 +585,11 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
                 customSecurityDialog = CustomSecurityDialog().apply {
                     getSecurityCodeClickListener {
                         this.showSmeTimer300()
-                        viewModel.sendTwoFactor()
+                        this@ProfileActivity.viewModel.sendTwoFactor()
                     }
 
                     positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
-                        viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                        this@ProfileActivity.viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
                     }
                 }
 

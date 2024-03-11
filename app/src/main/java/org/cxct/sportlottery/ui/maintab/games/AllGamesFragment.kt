@@ -225,4 +225,12 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
             view.animDuang(1.3f)
         }
     }
+    override fun onVisibleExceptFirst() {
+        super.onVisibleExceptFirst()
+        binding.winsRankView.startLoopCall()
+    }
+    override fun onInvisible() {
+        super.onInvisible()
+        binding.winsRankView.stopLoopCall()
+    }
 }

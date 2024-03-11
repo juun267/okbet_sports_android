@@ -7,12 +7,17 @@ import org.cxct.sportlottery.network.bet.settledDetailList.BetInfo
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.common.enums.ChannelType
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
+@KeepMembers
 class BetInfoListData(
     var matchOdd: MatchOdd,
     var parlayOdds: ParlayOdd?,
     var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
-) {
+): Cloneable {
+    public override fun clone(): BetInfoListData {
+        return super.clone() as BetInfoListData
+    }
     var matchType: MatchType? = null
     var isInputBet = false //是否輸入本金
     var isInputWin = false //是否輸入可贏

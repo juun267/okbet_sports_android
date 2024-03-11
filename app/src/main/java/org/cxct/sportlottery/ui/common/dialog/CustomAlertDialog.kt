@@ -15,8 +15,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.databinding.DialogCustomAlertBinding
@@ -36,7 +36,7 @@ class CustomAlertDialog : BaseDialogFragment() {
     private var mTitle: String? = null
     private var mMessage: String? = null
     private var mSpannedMessage: Spanned? = null
-    private var mPositiveText: String? = null
+    private var mPositiveText: String? = MultiLanguagesApplication.appContext.getString(R.string.btn_confirm)
     private var mNegativeText: String? = null
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }

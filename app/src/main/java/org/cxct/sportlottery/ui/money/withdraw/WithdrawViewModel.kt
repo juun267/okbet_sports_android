@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
 import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -712,7 +713,7 @@ class WithdrawViewModel(
         _submitEnable.value = buttonEnableStatus
     }
 
-    private fun checkInputCompleteByWithdraw(){
+    fun checkInputCompleteByWithdraw(){
         _submitEnable.value = withdrawAmountMsg.value?.isEmpty() == true &&
                 withdrawPasswordMsg.value?.isEmpty() == true
     }

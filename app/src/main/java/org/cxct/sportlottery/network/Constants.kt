@@ -11,7 +11,6 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
-import org.cxct.sportlottery.util.isMultipleSitePlat
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 import java.util.Calendar
@@ -116,23 +115,6 @@ object Constants {
             if (it.endsWith("/")) it else "$it/"
         }
     }
-
-    //优惠活动 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
-    fun getPromotionUrl(): String {
-        val encodeToken = kotlin.runCatching {   URLEncoder.encode(LoginRepository.token?:"", "utf-8") }?.getOrNull()?:""
-        return "${getH5BaseUrl()}activity/mobile/#/useractilistV2?lang=${getSelectLanguage()}&token=${encodeToken}"
-    }
-
-    //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
-    fun getPromotionDetailUrl(
-        token: String?,
-        id: Int?,
-        language: LanguageManager.Language,
-    ): String? {
-        val encodeToken = kotlin.runCatching {   URLEncoder.encode(LoginRepository.token?:"", "utf-8") }?.getOrNull()?:""
-        return "${getH5BaseUrl()}activity/mobile/#/useractivityV2/${id}?lang=${language.key}&token=${encodeToken}"
-    }
-
     /**
      * 在url拼接语言字符
      */
@@ -229,7 +211,6 @@ object Constants {
 
     //联系我们
     fun getContactUrl(context: Context): String {
-        isMultipleSitePlat()
         return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/contact-us?platform=" + context.getString(
             R.string.app_name
         ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")

@@ -75,6 +75,7 @@ abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewMod
     protected abstract fun onFavorite(favoriteMatchIds: Set<String>)
     protected abstract fun onOddTypeChanged(oddsType: OddsType)
     protected abstract fun onBetInfoChanged(betInfoList: List<BetInfoListData>)
+    protected abstract fun onReload()
 
     fun currentMatchType(): MatchType = matchType
     fun currentGameType(): String = gameType
@@ -121,6 +122,9 @@ abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewMod
                 return@observe
             }
             resubscribeChannel()
+        }
+        receiver.refreshInForeground.observe(viewLifecycleOwner){
+            onReload()
         }
     }
 

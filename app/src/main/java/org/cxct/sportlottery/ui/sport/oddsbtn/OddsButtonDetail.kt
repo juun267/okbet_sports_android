@@ -11,21 +11,21 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.flashAnimation
+import org.cxct.sportlottery.databinding.ButtonOddDetailBinding
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.adapter.TypeOneListAdapter
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import splitties.systemservices.layoutInflater
 
 
 /**
@@ -67,9 +67,9 @@ class OddsButtonDetail @JvmOverloads constructor(
     private var mOdd: Odd? = null
 
     private var mOddsType: OddsType = OddsType.EU
+    val binding by lazy { ButtonOddDetailBinding.inflate(layoutInflater,this) }
 
     init {
-        inflate(context, R.layout.button_odd_detail, this)
         6.dp.let { setPadding(it, it, it, it) }
     }
 
@@ -93,7 +93,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                 || TextUtils.equals(matchInfo?.awayName, odd?.name)
                 || TextUtils.equals(context.getString(R.string.draw), odd?.name))&&adapterName!=TypeOneListAdapter::class.java.name
 
-        tv_name.apply {
+        binding.tvName.apply {
             val extInfoStr =
                 odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
             text =
@@ -106,7 +106,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                 if (odd?.name.isNullOrEmpty() || gameType == "disable" || hideName) View.GONE else View.VISIBLE
         }
 
-        tv_spread.apply {
+        binding.tvSpread.apply {
             text = odd?.spread
             requestLayout()
             visibility =
@@ -114,9 +114,9 @@ class OddsButtonDetail @JvmOverloads constructor(
         }
 
         if(isOddPercentage == true) //反波膽顯示 %
-            tv_odds?.text = TextUtil.formatForOddPercentage((getOdds(odd, oddsType) - 1))
+            binding.tvOdds?.text = TextUtil.formatForOddPercentage((getOdds(odd, oddsType) - 1))
         else
-            tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
+            binding.tvOdds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
 //        updateOddsTextColor()
 
@@ -126,21 +126,21 @@ class OddsButtonDetail @JvmOverloads constructor(
         //[Martin]馬來盤＆印尼盤會有負數的賠率
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
-        lin_name.isVisible = !(hideName && !tv_spread.isVisible)
+        binding.linName.isVisible = !(hideName && !binding.tvSpread.isVisible)
         //篮球末尾比分，只显示最后空格后面的比分
         if (mOdd?.playCode?.isEndScoreType() == true) {
-            tv_odds.text = tv_name.text.toString().split(" ")?.last()
-            lin_name.isVisible = false
+            binding.tvOdds.text = binding.tvName.text.toString().split(" ")?.last()
+            binding.linName.isVisible = false
         }
-        (fl_odd_detail.layoutParams as LinearLayout.LayoutParams).apply {
-            width = if(lin_name.isVisible) -2 else -1
-            fl_odd_detail.layoutParams = this
+        (binding.flOddDetail.layoutParams as LinearLayout.LayoutParams).apply {
+            width = if(binding.linName.isVisible) -2 else -1
+            binding.flOddDetail.layoutParams = this
         }
     }
 
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
-        img_odd_lock.apply {
+        binding.imgOddLock.apply {
             visibility =
                 if (betStatus == BetStatus.LOCKED.code) {
                     View.VISIBLE
@@ -149,7 +149,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                 }
         }
 
-        img_odd_unknown.apply {
+        binding.imgOddUnknown.apply {
             visibility =
                 if (betStatus == BetStatus.DEACTIVATED.code) {
                     View.VISIBLE
@@ -159,7 +159,7 @@ class OddsButtonDetail @JvmOverloads constructor(
         }
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
-        button_odd_detail.isVisible = isEnabled
+        binding.buttonOddDetail.isVisible = isEnabled
     }
 
     private fun setupOddState(oddState: Int) {
@@ -167,13 +167,13 @@ class OddsButtonDetail @JvmOverloads constructor(
         var status = false
         when (oddState) {
             OddState.LARGER.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColor(
                         context,
                         R.color.color_1CD219
                     )
                 )
-                iv_arrow.apply {
+                binding.ivArrow.apply {
                     setImageResource(R.drawable.icon_odds_up)
                     (layoutParams as FrameLayout.LayoutParams).gravity = Gravity.TOP or Gravity.RIGHT
                     visibility = View.VISIBLE
@@ -183,13 +183,13 @@ class OddsButtonDetail @JvmOverloads constructor(
                 isActivated = false
             }
             OddState.SMALLER.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColor(
                         context,
                         R.color.color_FF2E00
                     )
                 )
-                iv_arrow.apply {
+                binding.ivArrow.apply {
                     setImageResource(R.drawable.icon_odds_down)
                     (layoutParams as FrameLayout.LayoutParams).gravity = Gravity.BOTTOM or Gravity.RIGHT
                     visibility = View.VISIBLE
@@ -198,21 +198,21 @@ class OddsButtonDetail @JvmOverloads constructor(
                 isActivated = false
             }
             OddState.SAME.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColorStateList(
                         context,
                         if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
                         else R.color.selector_button_odd_bottom_text
                     )
                 )
-                iv_arrow.apply {
+                binding.ivArrow.apply {
                     setImageDrawable(null)
                     visibility = View.GONE
                 }
                 isActivated = false
             }
         }
-        val animator = fl_odd_detail.tag
+        val animator = binding.flOddDetail.tag
         if (animator is Animator) {
             animator.cancel()
             if (status) {
@@ -222,48 +222,11 @@ class OddsButtonDetail @JvmOverloads constructor(
         }
 
         if (status) {
-            fl_odd_detail.tag = fl_odd_detail.flashAnimation(1000,2,0.3f)
+            binding.flOddDetail.tag = binding.flOddDetail.flashAnimation(1000,2,0.3f)
         }
 //        updateOddsTextColor()
     }
 
-    /**
-     * 玩法判斷
-     * */
-    private fun String.isCSType(): Boolean {
-        return this.contains(PlayCate.CS.value) && !this.isCombination()
-    }
-
-    private fun String.isOUType(): Boolean {
-        return this.contains(PlayCate.OU.value) && !this.isCombination()
-    }
-
-    private fun String.isOEType(): Boolean {
-        return (this.contains(PlayCate.OE.value) || this.contains(PlayCate.Q_OE.value)) && !this.isCombination()
-    }
-
-    private fun String.isBTSType(): Boolean {
-        return this.contains(PlayCate.BTS.value) && !this.isCombination()
-    }
-
-    /**
-     * 後端回傳文字需保留完整文字, 文字顯示縮減由前端自行處理
-     */
-    private fun String.abridgeOddsName(): String {
-        return this.replace("Over", "O").replace("Under", "U")
-    }
-
-    /**
-     * 足球：下個進球玩法會使用到
-     */
-    private fun getOrdinalNumbers(number:String):String {
-        return when (number) {
-            "1" -> "1st"
-            "2" -> "2nd"
-            "3" -> "3rd"
-            else -> "${number}th"
-        }
-    }
     /**
      * 当前欧洲盘，并且欧洲盘赔率=1，显示锁盘
      */

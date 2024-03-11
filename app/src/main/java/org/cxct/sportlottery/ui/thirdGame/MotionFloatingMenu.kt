@@ -8,9 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.setPadding
-import kotlinx.android.synthetic.main.menu_motion_floating.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.clickDelay
+import org.cxct.sportlottery.databinding.MenuMotionFloatingBinding
+import splitties.systemservices.layoutInflater
 
 /**
  * @author Hewie
@@ -25,14 +26,15 @@ class MotionFloatingMenu @JvmOverloads constructor(
 ) : MotionLayout(context, attrs, defStyle) {
 
     private var mOnMenuListener: OnMenuListener? = null
+    private val binding by lazy { MenuMotionFloatingBinding.inflate(layoutInflater,this,true) }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.menu_motion_floating, this, true)
     }
 
-    override fun onAttachedToWindow() {
+    override fun onAttachedToWindow()=binding.run {
         super.onAttachedToWindow()
-        if (this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             //竖屏
         } else {
             //横屏
@@ -45,11 +47,11 @@ class MotionFloatingMenu @JvmOverloads constructor(
             val dp50 = dp2px(50f)
             val dp30 = dp2px(30f)
             val dp20 = dp2px(20f)
-            val lpn = menu_button.layoutParams
+            val lpn = menuButton.layoutParams
             lpn.width = dp50
             lpn.height = dp50
-            menu_button.layoutParams = lpn
-            val cs = motion_layout.getConstraintSet(R.id.open)
+            menuButton.layoutParams = lpn
+            val cs = motionLayout.getConstraintSet(R.id.open)
             fun changeWidgetSize(padding: Float, size: Int, vId: View) {
                 vId.setPadding(dp2px(padding))
                 cs.constrainWidth(vId.id, size)
@@ -59,35 +61,35 @@ class MotionFloatingMenu @JvmOverloads constructor(
             cs.setMargin(R.id.motion_cash_save, 6, dp20)
             cs.setMargin(R.id.motion_cash_save, 3, dp30)
             cs.setMargin(R.id.motion_cash_get, 3, dp30)
-            changeWidgetSize(14f, dp60, motion_back_home)
-            changeWidgetSize(14f, dp60, motion_cash_save)
-            changeWidgetSize(14f, dp60, motion_cash_get)
-            changeWidgetSize(14f, dp60, motion_close)
+            changeWidgetSize(14f, dp60, motionBackHome)
+            changeWidgetSize(14f, dp60, motionCashSave)
+            changeWidgetSize(14f, dp60, motionCashGet)
+            changeWidgetSize(14f, dp60, motionClose)
         }
 
         //使用盤開啟狀態隱藏，充值提現按鈕
-        motion_layout.getConstraintSet(R.id.start)
-            .getConstraint(motion_cash_save.id).propertySet.mVisibilityMode =
+        motionLayout.getConstraintSet(R.id.start)
+            .getConstraint(motionCashSave.id).propertySet.mVisibilityMode =
             1 // 1 - ignore or 0 - normal
-        motion_layout.getConstraintSet(R.id.open)
-            .getConstraint(motion_cash_save.id).propertySet.mVisibilityMode =
+        motionLayout.getConstraintSet(R.id.open)
+            .getConstraint(motionCashSave.id).propertySet.mVisibilityMode =
             1 // 1 - ignore or 0 - normal
-        motion_layout.getConstraintSet(R.id.start)
-            .getConstraint(motion_cash_get.id).propertySet.mVisibilityMode =
+        motionLayout.getConstraintSet(R.id.start)
+            .getConstraint(motionCashGet.id).propertySet.mVisibilityMode =
             1 // 1 - ignore or 0 - normal
-        motion_layout.getConstraintSet(R.id.open)
-            .getConstraint(motion_cash_get.id).propertySet.mVisibilityMode =
+        motionLayout.getConstraintSet(R.id.open)
+            .getConstraint(motionCashGet.id).propertySet.mVisibilityMode =
             1 // 1 - ignore or 0 - normal
 
-        motion_back_home.setOnClickListener {
+        motionBackHome.setOnClickListener {
             mOnMenuListener?.onHome()
         }
 
-        motion_cash_save.setOnClickListener {
+        motionCashSave.setOnClickListener {
             mOnMenuListener?.onCashSave()
         }
 
-        motion_cash_get.clickDelay {
+        motionCashGet.clickDelay {
             mOnMenuListener?.onCashGet()
         }
     }

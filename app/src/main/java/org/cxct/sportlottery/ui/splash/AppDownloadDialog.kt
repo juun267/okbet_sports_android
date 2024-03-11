@@ -12,7 +12,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.xuexiang.xupdate.XUpdate
 import com.xuexiang.xupdate._XUpdate
 import com.xuexiang.xupdate.service.OnFileDownloadListener
-import kotlinx.android.synthetic.main.dialog_app_download.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -85,6 +84,7 @@ class AppDownloadDialog(
     @SuppressLint("CheckResult")
     private fun doInternalDownload()=binding.run {
         //先請求存取權限，再行下載
+        val context = root.context
         mRxPermissions
             .requestWriteStorageWithApi33(grantFun= {
                 blockBottomBar.visibility = View.GONE
@@ -99,12 +99,12 @@ class AppDownloadDialog(
                         }
 
                         override fun onProgress(progress: Float, total: Long) {
-                            pb_download.progress = (progress * 100).toInt()
+                            binding.pbDownload.progress = (progress * 100).toInt()
                         }
 
                         override fun onCompleted(file: File): Boolean {
                             btnDownload.isEnabled = true
-                            btnDownload.text = MultiLanguagesApplication.stringOf(R.string.install)
+                            btnDownload.text = context.getString(R.string.install)
                             blockBottomBar.visibility = View.VISIBLE
                             mFileUrl = file.absolutePath
                             return false
@@ -112,10 +112,10 @@ class AppDownloadDialog(
 
                         override fun onError(throwable: Throwable) {
                             btnDownload.isEnabled = true
-                            btnDownload.text = MultiLanguagesApplication.stringOf(R.string.update)
+                            btnDownload.text = context.getString(R.string.update)
                             blockBottomBar.visibility = View.VISIBLE
                             blockProgressBar.visibility = View.GONE
-                            ToastUtil.showToastInCenter(context, getString(R.string.download_fail))
+                            ToastUtil.showToastInCenter(context, context.getString(R.string.download_fail))
                         }
                     })
             },unGrantFun= {

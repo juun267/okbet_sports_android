@@ -246,11 +246,11 @@ class BetReceiptFragment :
             refreshBetStatusFunction = { time ->
                 binding.linResultStatusProcessing.visible()
                 binding.linResultStatus.gone()
-                binding.tvBetProcessingStatus.text = getString(R.string.str_in_play_bet_confirmed)
+                binding.tvBetProcessingStatus.text = context().getString(R.string.str_in_play_bet_confirmed)
             }
 
             refreshBetStatusFinishFunction = {
-                binding.tvBetProcessingStatus.text = getString(R.string.str_in_play_bet_confirmed)
+                binding.tvBetProcessingStatus.text = context().getString(R.string.str_in_play_bet_confirmed)
                 //倒计时结束后，不处理
 //                lin_result_status_processing?.gone()
 //                lin_result_status?.visible()
@@ -338,4 +338,13 @@ class BetReceiptFragment :
             it.supportFragmentManager.beginTransaction().remove(this@BetReceiptFragment).commitAllowingStateLoss()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        betReceiptDiffAdapter?.let {
+            it.refreshBetStatusFunction = null
+            it.refreshBetStatusFinishFunction = null
+        }
+    }
+
 }

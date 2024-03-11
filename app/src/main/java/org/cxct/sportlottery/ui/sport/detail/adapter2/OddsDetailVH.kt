@@ -23,8 +23,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.luck.picture.lib.decoration.GridSpacingItemDecoration
-import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toIntS
@@ -34,6 +32,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.FGLGType
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.adapter.*
+import org.cxct.sportlottery.ui.sport.endscore.EndScoreItemDecoration
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
@@ -67,6 +66,14 @@ class OddsDetailVH (
     //SCO, CS
     private val tvHomeName: TextView? = itemView.findViewById(R.id.tv_home_name)
     private val tvAwayName: TextView? = itemView.findViewById(R.id.tv_away_name)
+    private val linMatch: LinearLayout? = itemView.findViewById(R.id.lin_match)
+    private val tvDraw: TextView? = itemView.findViewById(R.id.tv_draw)
+
+    private val clTab: ConstraintLayout? = itemView.findViewById(R.id.cl_tab)
+    private val llContent: LinearLayout? = itemView.findViewById(R.id.ll_content)
+
+    private val vpEps = itemView.findViewById<ViewPager2>(R.id.vp_eps)
+    private val idvEps = itemView.findViewById<IndicatorView>(R.id.idv_eps)
 
     private fun bindGameName(oddsDetail: OddsDetailListData) {
         /**
@@ -184,7 +191,7 @@ class OddsDetailVH (
 
         }
         rvBet?.isVisible = oddsDetail.isExpand
-        itemView.lin_match?.isVisible = oddsDetail.isExpand && PlayCate.needShowHomeAndAway(oddsDetail.gameType)
+        linMatch?.isVisible = oddsDetail.isExpand && PlayCate.needShowHomeAndAway(oddsDetail.gameType)
         val gameType = oddsDetail.gameType
 
         if (viewType == oddsAdapter.SINGLE) {
@@ -204,6 +211,10 @@ class OddsDetailVH (
 
         if (viewType == oddsAdapter.EPS) {
             forEPS(oddsDetail)
+            return
+        }
+        if (viewType == oddsAdapter.ENDSCORE) {
+            forEndScore(oddsDetail,payloads)
             return
         }
 
@@ -346,7 +357,6 @@ class OddsDetailVH (
     private val epsAdapter by lazy { TypeEPSAdapter() }
 
     private fun forEPS(oddsDetail: OddsDetailListData) {
-        val vpEps = itemView.findViewById<ViewPager2>(R.id.vp_eps)
         vpEps?.apply {
             adapter = epsAdapter
             epsAdapter.setData(oddsDetail, oddsAdapter.onOddClickListener, oddsAdapter.oddsType)
@@ -355,7 +365,7 @@ class OddsDetailVH (
             setCurrentItem(oddsDetail.oddArrayList.indexOf(oddsAdapter.onOddClickListener.clickOdd), false)
         }
 
-        itemView.findViewById<IndicatorView>(R.id.idv_eps).setupWithViewPager2(vpEps)
+        idvEps?.setupWithViewPager2(vpEps)
     }
 
     private fun oneList(oddsDetail: OddsDetailListData) {
@@ -388,8 +398,8 @@ class OddsDetailVH (
 
     private fun forCS(oddsDetail: OddsDetailListData) {
 
-        itemView.tv_draw?.isVisible = true
-        itemView.findViewById<LinearLayout>(R.id.ll_content).isVisible = oddsDetail.isExpand
+        tvDraw?.isVisible = true
+        llContent?.isVisible = oddsDetail.isExpand
 
         val homeList: MutableList<Odd> = mutableListOf()
         val drawList: MutableList<Odd> = mutableListOf()
@@ -462,13 +472,13 @@ class OddsDetailVH (
 
         if (drawList.size == 0) {
             rvDraw?.visibility = View.GONE
-            itemView.findViewById<TextView>(R.id.tv_draw).visibility = View.GONE
+            tvDraw?.visibility = View.GONE
         }
     }
 
     private fun forLCS(oddsDetail: OddsDetailListData) {
-        itemView.tv_draw.isVisible = true
-        itemView.findViewById<LinearLayout>(R.id.ll_content).isVisible = oddsDetail.isExpand
+        tvDraw?.isVisible = true
+        llContent?.isVisible = oddsDetail.isExpand
 
         val homeList: MutableList<Odd> = mutableListOf()
         val drawList: MutableList<Odd> = mutableListOf()
@@ -539,52 +549,15 @@ class OddsDetailVH (
 
         if (drawList.size == 0) {
             rvDraw?.visibility = View.GONE
-            itemView.findViewById<TextView>(R.id.tv_draw).visibility = View.GONE
+            tvDraw?.visibility = View.GONE
         }
     }
 
     private fun forSingle(oddsDetail: OddsDetailListData, spanCount: Int, payloads: MutableList<Any>?) {
 
         if (rvBet == null) {
-            if (oddsDetail.gameType.isEndScoreType()) {
-                //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
-                itemView.lin_match.isVisible = false
-            }
             return
         }
-
-
-        if (oddsDetail.gameType.isEndScoreType()) {
-            //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
-            itemView.lin_match.isVisible = false
-            rvBet.setBackgroundResource(R.color.color_F9FAFD)
-            val nonAdapter = rvBet.adapter == null
-            if (rvBet.itemDecorationCount == 0) {
-                rvBet.addItemDecoration(GridSpacingItemDecoration(4, 4.dp,false))
-            }
-
-            val adapter = initSingleRCV(rvBet, 4, oddsDetail)
-            rvBet.tag = oddsDetail.gameType
-            if (nonAdapter) {
-                oddsAdapter.isFirstRefresh = false
-            } else {
-                rvBet.tag = oddsDetail.gameType
-                if (payloads.isNullOrEmpty()){
-                    adapter.notifyDataSetChanged()
-                } else {
-                    payloads.forEach { payloadItem ->
-                        oddsDetail.oddArrayList.forEachIndexed { index, odd ->
-                            if (odd?.id == payloadItem) {
-                                runWithCatch { adapter.notifyItemChanged(index) }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return
-        }
-
 
 //      Timber.d("===洗刷刷4 else index:${12} payloads:${payloads?.size}")
         rvBet.setBackgroundResource(R.color.color_FFFFFF)
@@ -598,8 +571,8 @@ class OddsDetailVH (
                 oddsDetail.oddArrayList.add(1, oddsDetail.oddArrayList.removeAt(2))
             }
             TextUtils.equals(oddsDetail.matchInfo?.homeName, oddsDetail.oddArrayList[0]?.name)
-            itemView.tv_draw?.isVisible = true
-            itemView.tv_draw?.text = oddsDetail.oddArrayList.getOrNull(1)?.name
+            tvDraw?.isVisible = true
+            tvDraw?.text = oddsDetail.oddArrayList.getOrNull(1)?.name
         }
 
     }
@@ -624,6 +597,23 @@ class OddsDetailVH (
         return adapter
     }
 
+    private fun initEndScoreRCV(recyclerView: RecyclerView, oddsDetail: OddsDetailListData): TypeEndScoreAdapter {
+        lateinit var adapter: TypeEndScoreAdapter
+        oddsDetail.sortOddForSingle()
+        if (recyclerView.adapter == null) {
+            adapter = TypeEndScoreAdapter(oddsDetail, oddsAdapter.onOddClickListener, oddsAdapter.oddsType)
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = GridLayoutManager(itemView.context, 5)
+        } else {
+            adapter = recyclerView.adapter as TypeEndScoreAdapter
+            adapter.setOddsDetailData(oddsDetail)
+            adapter.onOddClickListener = oddsAdapter.onOddClickListener
+            adapter.oddsType = oddsAdapter.oddsType
+            (recyclerView.layoutManager as GridLayoutManager).spanCount = 5
+        }
+        return adapter
+    }
+
     /**
      * 当出现rowSort呈现11112222的时候，需要整理成 12121212的布局
      */
@@ -642,7 +632,7 @@ class OddsDetailVH (
 
     private fun forSingleCS(oddsDetail: OddsDetailListData) {
         val spanCount = 2
-        itemView.tv_draw?.isVisible = oddsDetail.matchInfo?.gameType == GameType.FT.key
+        tvDraw?.isVisible = oddsDetail.matchInfo?.gameType == GameType.FT.key
         tvHomeName?.isVisible = oddsDetail.isExpand
         tvAwayName?.isVisible = oddsDetail.isExpand
 
@@ -680,7 +670,7 @@ class OddsDetailVH (
     }
 
     private fun forFGLG(oddsDetail: OddsDetailListData) {
-        itemView.findViewById<ConstraintLayout>(R.id.cl_tab).isVisible = oddsDetail.isExpand
+        clTab?.isVisible = oddsDetail.isExpand
         rvBet?.apply {
             val onOddClickListener = oddsAdapter.onOddClickListener
             val oddsType = oddsAdapter.oddsType
@@ -744,7 +734,7 @@ class OddsDetailVH (
         val homeName = teamNameList.firstOrNull() ?: ""
         val awayName = teamNameList.getOrNull(1) ?: ""
 
-        itemView.findViewById<ConstraintLayout>(R.id.cl_tab).isVisible = oddsDetail.isExpand
+        clTab?.isVisible = oddsDetail.isExpand
 
         rvBet?.apply {
             layoutManager = LinearLayoutManager(itemView.context)
@@ -784,7 +774,36 @@ class OddsDetailVH (
             }
         }
     }
+    private fun forEndScore(oddsDetail: OddsDetailListData,payloads: MutableList<Any>?) {
+        //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
+        linMatch?.isVisible = false
+        if (rvBet == null)
+            return
+            rvBet.setBackgroundResource(R.color.color_FFFFFF)
+            val nonAdapter = rvBet.adapter == null
+            if (rvBet.itemDecorationCount == 0) {
+                rvBet.addItemDecoration(EndScoreItemDecoration(true))
+            }
 
+            val adapter = initEndScoreRCV(rvBet,  oddsDetail)
+            rvBet.tag = oddsDetail.gameType
+            if (nonAdapter) {
+                oddsAdapter.isFirstRefresh = false
+            } else {
+                rvBet.tag = oddsDetail.gameType
+                if (payloads.isNullOrEmpty()){
+                    adapter.notifyDataSetChanged()
+                } else {
+                    payloads.forEach { payloadItem ->
+                        oddsDetail.oddArrayList.forEachIndexed { index, odd ->
+                            if (odd?.id == payloadItem) {
+                                runWithCatch { adapter.notifyItemChanged(index) }
+                            }
+                        }
+                    }
+                }
+            }
+    }
     private fun selectSCO(oddsDetail: OddsDetailListData, teamName: String, homeName: String): OddsDetailListData {
         tvHomeName?.isSelected = teamName == homeName
         tvAwayName?.isSelected = teamName != homeName

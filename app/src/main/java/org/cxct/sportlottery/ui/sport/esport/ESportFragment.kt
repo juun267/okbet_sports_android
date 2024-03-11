@@ -3,13 +3,13 @@ package org.cxct.sportlottery.ui.sport.esport
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.post
-import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
@@ -125,13 +125,13 @@ class ESportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Bindin
         addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             private fun setTabStyle(tab: TabLayout.Tab, color: Int) {
                 val color = ContextCompat.getColor(context, color)
-                tab.customView!!.tv_number.apply {
+                tab.customView!!.findViewById<TextView>(R.id.tv_number).apply {
                     if (tab.isSelected)
                         setTextColor(color)
                     else
                         setTextColor(ContextCompat.getColor(context, R.color.color_000000))
                 }
-                tab.customView!!.tv_title.apply {
+                tab.customView!!.findViewById<TextView>(R.id.tv_title).apply {
                     setTextColor(color)
                 }
             }
@@ -205,9 +205,9 @@ class ESportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Bindin
         }
 
         tab.customView?.run {
-            tv_title.text = name
-            tv_number.text = num.toString()
-            ivArrow.isVisible = showArrow
+            findViewById<TextView>(R.id.tv_title).text = name
+            findViewById<TextView>(R.id.tv_number).text = num.toString()
+            findViewById<ImageView>(R.id.ivArrow).isVisible = showArrow
             if(showArrow){
                 todayTabItem = tab
                 todayMenuPop.todayTabItem = todayTabItem
@@ -228,7 +228,7 @@ class ESportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Bindin
     }
     private fun removeTab(name: String) = binding.tabLayout.run {
         for (index in 0 until tabCount){
-            if(getTabAt(index)?.customView?.tv_title?.text == name){
+            if(getTabAt(index)?.customView?.findViewById<TextView>(R.id.tv_title)?.text == name){
                 removeTabAt(index)
             }
         }
@@ -368,7 +368,7 @@ class ESportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Bindin
             return
         }
 
-        favoriteTab.customView?.tv_number?.text = favoriteCount(favoriteItem).toString()
+        favoriteTab.customView?.findViewById<TextView>(R.id.tv_number)?.text = favoriteCount(favoriteItem).toString()
         val currentFragment = fragmentHelper.currentFragment()
         if (currentFragment is ESportFavoriteFragment) {
             currentFragment.setFavoriteData(curFavoriteItem)
@@ -419,22 +419,24 @@ class ESportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Bindin
         if (todayIndex>=0){
             matchTypeTab[todayMatchPosition] = matchTypeTodayTab[todayIndex]
             todayTabItem?.customView?.apply {
+               val tvTitle = findViewById<TextView>(R.id.tv_title)
+                val tvNumber = findViewById<TextView>(R.id.tv_number)
                 when (matchType){
                     MatchType.TODAY-> {
-                        tv_title.text = getString(R.string.home_tab_today)
-                        tv_number.text = sportMenu?.today?.numOfESport().toStringS("0")
+                        tvTitle.text = getString(R.string.home_tab_today)
+                        tvNumber.text = sportMenu?.today?.numOfESport().toStringS("0")
                     }
                     MatchType.AT_START-> {
-                        tv_title.text = getString(R.string.home_tab_at_start)
-                        tv_number.text = sportMenuData?.atStart?.numOfESport().toStringS("0")
+                        tvTitle.text = getString(R.string.home_tab_at_start)
+                        tvNumber.text = sportMenuData?.atStart?.numOfESport().toStringS("0")
                     }
                     MatchType.IN12HR-> {
-                        tv_title.text = getString(R.string.P228)
-                        tv_number.text = sportMenuData?.in12hr?.numOfESport().toStringS("0")
+                        tvTitle.text = getString(R.string.P228)
+                        tvNumber.text = sportMenuData?.in12hr?.numOfESport().toStringS("0")
                     }
                     MatchType.IN24HR-> {
-                        tv_title.text = getString(R.string.P229)
-                        tv_number.text = sportMenuData?.in24hr?.numOfESport().toStringS("0")
+                        tvTitle.text = getString(R.string.P229)
+                        tvNumber.text = sportMenuData?.in24hr?.numOfESport().toStringS("0")
                     }
                 }
             }

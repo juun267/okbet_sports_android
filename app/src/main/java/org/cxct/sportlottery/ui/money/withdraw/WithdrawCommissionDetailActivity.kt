@@ -38,7 +38,7 @@ class WithdrawCommissionDetailActivity :
         }
 
         btnInfo.setOnClickListener {
-            CommissionDetailInfoDialog().show(supportFragmentManager, null)
+            CommissionDetailInfoDialog().show(supportFragmentManager)
         }
 
         tvCurrency.text = sConfigData?.systemCurrencySign

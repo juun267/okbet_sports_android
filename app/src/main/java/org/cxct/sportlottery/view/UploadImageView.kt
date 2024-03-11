@@ -2,10 +2,7 @@ package org.cxct.sportlottery.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.view_upload.view.*
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ViewUploadBinding
 import splitties.systemservices.layoutInflater
 

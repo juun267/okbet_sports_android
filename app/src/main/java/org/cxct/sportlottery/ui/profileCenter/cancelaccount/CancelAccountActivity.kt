@@ -46,7 +46,7 @@ class CancelAccountActivity : BaseActivity<CancelAccountViewModel, ActivityCance
                 etPassword.transformationMethod =
                     HideReturnsTransformationMethod.getInstance()
             }
-            eetPassword.hasFocus = true
+            eetPassword.setHasFocus(true)
             etPassword.setSelection(etPassword.text.toString().length)
         }
         btnCancelAccount.setOnClickListener{

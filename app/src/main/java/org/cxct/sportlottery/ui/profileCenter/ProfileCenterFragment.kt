@@ -435,11 +435,11 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
                     customSecurityDialog = CustomSecurityDialog().apply {
                         getSecurityCodeClickListener {
                             this.showSmeTimer300()
-                            viewModel.sendTwoFactor()
+                            this@ProfileCenterFragment.viewModel.sendTwoFactor()
                         }
                         positiveClickListener =
                             CustomSecurityDialog.PositiveClickListener { number ->
-                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                                this@ProfileCenterFragment.viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
                             }
                     }
                     customSecurityDialog?.show(childFragmentManager, null)

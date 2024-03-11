@@ -197,14 +197,14 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel,ActivityModifyBindI
     private fun changeEdittextInputType(isPhone: Boolean) = binding.run {
         if (isPhone) {
             inputForm.setIconSignifier(R.drawable.ic_mobile_gray)
-            inputForm.labelText = getString(R.string.mobile)
+            inputForm.setLabelText(getString(R.string.mobile))
             eetInputForm.hint = getString(if (isReset()) R.string.new_phone_no else R.string.phone_number)
             eetInputForm.maxEms = 11
             eetInputForm.filters = arrayOf<InputFilter>(LengthFilter(11))
             eetInputForm.inputType = InputType.TYPE_CLASS_NUMBER
         } else {
             inputForm.setIconSignifier(R.drawable.ic_email_gray)
-            inputForm.labelText = getString(R.string.e_mail)
+            inputForm.setLabelText(getString(R.string.e_mail))
             eetInputForm.hint = getString(if (isReset()) R.string.new_email else R.string.email_address)
             eetInputForm.filters = arrayOf<InputFilter>(LengthFilter(50))
             eetInputForm.inputType = InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS

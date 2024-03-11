@@ -1,14 +1,16 @@
 package org.cxct.sportlottery.network.feedback
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.repository.UserInfoRepository
 
 @JsonClass(generateAdapter = true) @KeepMembers
 data class FeedBackRows(
     @Json(name = "id")
     val id: Int?,
     @Json(name = "userId")
-    val userId: Int?,
+    val userId: Long?,
     @Json(name = "userName")
     val userName: String?,
     @Json(name = "platformId")
@@ -26,5 +28,7 @@ data class FeedBackRows(
     @Json(name = "lastFeedbackTime")
     val lastFeedbackTime: Long?,
     @Json(name = "feedbackCode")
-    val feedbackCode: String?
-)
+    val feedbackCode: String?,
+): MultiItemEntity{
+    override val itemType: Int = if(userId==UserInfoRepository.userInfo.value?.userId) 1 else 0
+}

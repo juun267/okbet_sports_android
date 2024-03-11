@@ -11,11 +11,11 @@ import android.os.Message
 import android.view.View
 import android.webkit.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.Lifecycle
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import org.cxct.sportlottery.view.webView.OkWebView
 import org.cxct.sportlottery.view.webView.OkWebViewClient
@@ -151,15 +151,17 @@ class WebActivityImp(val activity: BaseActivity<*,*>,val overrideUrlLoading: (vi
     }
 
     private fun openImageChooserActivity() {
-        activity.registerForActivityResult(ActivityResultContracts.OpenDocument()) {
-            if (mUploadCallbackAboveL != null) {
-                mUploadCallbackAboveL?.onReceiveValue(arrayOf(it!!))
-                mUploadCallbackAboveL = null
-            } else {
-                mUploadMessage?.onReceiveValue(it)
-                mUploadMessage = null
-            }
-        }.launch(arrayOf("image/*"))
+        check(activity.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            activity.registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+                if (mUploadCallbackAboveL != null) {
+                    mUploadCallbackAboveL?.onReceiveValue(arrayOf(it!!))
+                    mUploadCallbackAboveL = null
+                } else {
+                    mUploadMessage?.onReceiveValue(it)
+                    mUploadMessage = null
+                }
+            }.launch(arrayOf("image/*"))
+        }
     }
     fun loadUrl(webView: WebView,url: String) {
         webView.loadUrl(url)

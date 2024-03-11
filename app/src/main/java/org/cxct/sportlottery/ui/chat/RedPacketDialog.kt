@@ -1,20 +1,18 @@
 package org.cxct.sportlottery.ui.chat
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.os.Bundle
-import android.view.*
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.dialog_chat_red_enp.*
-import kotlinx.android.synthetic.main.dialog_chat_red_enp.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.show
+import org.cxct.sportlottery.databinding.DialogChatRedEnpBinding
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.*
 
 /**
@@ -25,13 +23,11 @@ import org.cxct.sportlottery.util.*
  * */
 
 class RedPacketDialog(
-    context: Context,
     var packetClickListener: PacketListener,
     var packetId: String,
     var packetType: Int,
-) : AlertDialog(context) {
+) : BaseDialog<BaseViewModel,DialogChatRedEnpBinding>() {
 
-    private var mView = layoutInflater.inflate(R.layout.dialog_chat_red_enp, null)
 
     enum class PacketType(val code: Int) {
         PW_PACKET(5) //口令紅包
@@ -54,22 +50,11 @@ class RedPacketDialog(
         get() = LoginRepository.isLogin.value == true
 
     init {
-        this.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        this.window?.decorView?.setPadding(0, 0, 0, 0)
-        this.window?.attributes?.width = WindowManager.LayoutParams.MATCH_PARENT
-        this.window?.setDimAmount(0.5f) // 透明度 (0:完全透明 ~ 1:完全不透明)
-        this.window?.setGravity(Gravity.CENTER)
-        this.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        this.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)//處理 一開始先隱藏鍵盤
-        this.setCanceledOnTouchOutside(false)
-        this.window?.setWindowAnimations(R.style.AnimDialogEnter) //開啟動畫設置
-
-        setView(mView)
+        setStyle(R.style.CustomDialogStyle)
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onInitView() {
         initView()
         initButtonAndAnimation()
     }
@@ -79,14 +64,14 @@ class RedPacketDialog(
         flipIn.repeatCount = Animation.INFINITE
         flipIn.interpolator = LinearInterpolator()
 
-        mView.btn_close.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             dismiss()
         }
     }
 
-    private fun initView() {
+    private fun initView()=binding.run {
 
-        mView.btn_red_packet_open.setOnClickListener {
+        btnRedPacketOpen.setOnClickListener {
             if (!isLogin || isGuest()) {
                 packetClickListener.goRegisterPage()
             } else {
@@ -94,8 +79,8 @@ class RedPacketDialog(
                     watchWordInput.text.trim().toString().isEmpty()
                 ) {
                     showPWErrorHint()
-                    mView.watchWordInput.background =
-                        ContextCompat.getDrawable(context, R.drawable.bg_watchword_input)
+                    watchWordInput.background =
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_watchword_input)
                 } else
                     packetClickListener.onClick(
                         packetId.toInt(),
@@ -104,31 +89,31 @@ class RedPacketDialog(
             }
         }
 
-        mView.card_view.setOnClickListener {
+        cardView.setOnClickListener {
             dismiss()
         }
 
         //口令紅包，顯示輸入口令欄位
         if (packetType == PacketType.PW_PACKET.code) {
-            mView.titleLayout.hide()
-            mView.watchWordLayout.show()
+            titleLayout.hide()
+            watchWordLayout.show()
         } else {
-            mView.titleLayout.show()
-            mView.watchWordLayout.hide()
+            titleLayout.show()
+            watchWordLayout.hide()
         }
     }
 
     //紅包成功開啟 dialog
     @SuppressLint("SetTextI18n")
     fun showRedPacketOpenDialog(money: Double) {
-        mView.red_enp_open.visibility = View.VISIBLE
-        mView.red_enp_close.visibility = View.GONE
-        mView.tv_money.text = ArithUtil.toMoneyFormat(money)
+        binding.redEnpOpen.visibility = View.VISIBLE
+        binding.redEnpClose.visibility = View.GONE
+        binding.tvMoney.text = ArithUtil.toMoneyFormat(money)
     }
 
     fun showPWErrorHint() {
 //        if (watchWordInput.text.isNotEmpty()) {
-        watchWordMessage.text = context.getString(R.string.chat_error_input)
+        binding.watchWordMessage.text = requireContext().getString(R.string.chat_error_input)
 //        } else
 //            watchWordMessage.text = context.getString(R.string.chat_enter_password)
     }

@@ -1,49 +1,44 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.TextView
+import android.widget.LinearLayout
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.item_number_keyboard_layout2.view.*
-import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.toDoubleS
-import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.databinding.ItemNumberKeyboardLayout2Binding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil.dRoundDown2
 import org.cxct.sportlottery.util.TextUtil.strRoundDown2
-import timber.log.Timber
+import splitties.systemservices.layoutInflater
 import java.lang.reflect.Method
 
 class KeyboardView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(
+) : LinearLayout(
     context, attrs, defStyleAttr
 ) {
 
-    private val view: View by lazy {
-        LayoutInflater.from(context).inflate(R.layout.item_number_keyboard_layout2, null, false)
+    private val binding by lazy {
+        ItemNumberKeyboardLayout2Binding.inflate(layoutInflater,this)
     }
 
     /**键盘点击事件*/
     private var numCLick: ((number: String) -> Unit)? = null
 
     init {
-        removeAllViews()
-        addView(view, 0)
+        orientation = VERTICAL
+        12.dp.let { setPadding(it, 3.dp, it,8.dp) }
         initView()
     }
 
     @SuppressLint("SetTextI18n")
-    private fun initView() {
+    private fun initView()=binding.run {
         //20220610 預設下注金額, 改為三個按鈕顯示 (順序依照後台設置)
         sConfigData?.presetBetAmount?.let {
             it.forEachIndexed { index, i ->
@@ -219,32 +214,6 @@ class KeyboardView @JvmOverloads constructor(
         //parent?.visibility = View.VISIBLE
         isShow = true
         //keyBoardViewListener.showOrHideKeyBoardBackground(true, position)
-    }
-
-    //提示未登入
-    private fun setSnackBarNotify() {
-        val title = context.getString(R.string.login_notify)
-
-        val layout = R.layout.snackbar_login_notify
-
-        snackBarNotify = Snackbar.make(
-            mEditText, title, Snackbar.LENGTH_LONG
-        ).apply {
-            val snackView: View = (context as Activity).layoutInflater.inflate(
-                layout, (context as Activity).findViewById(android.R.id.content), false
-            )
-            snackView.tvNotify.text = title
-
-            (this.view as Snackbar.SnackbarLayout).apply {
-                findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
-                    visibility = View.INVISIBLE
-                }
-                background.alpha = 0
-                addView(snackView, 0)
-                setPadding(0, 0, 0, 0)
-            }
-        }
-        snackBarNotify?.show()
     }
 
     private fun disableKeyboard() {

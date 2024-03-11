@@ -1622,4 +1622,8 @@
     <string name="J905">性别</string>
     <string name="N809">男</string>
     <string name="N810">女</string>
+    <string name="P286">公告</string>
+    <string name="P287">查看所有盘口</string>
+    <string name="P289">我确认详细是正确的。</string>
+    <string name="P288">已确认的交易将不予退款。 请保证收款银行/电子钱包信息正确。</string>
 </resources>

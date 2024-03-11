@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.ChannelType
@@ -80,7 +79,7 @@ class HomeHotESportView(
         itemAnimator?.changeDuration = 0
         PagerSnapHelper().attachToRecyclerView(this)
         //滚动监听
-        recycler_hot_game.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.recyclerHotGame.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (RecyclerView.SCROLL_STATE_DRAGGING == newState) { // 开始滑动
@@ -129,8 +128,9 @@ class HomeHotESportView(
             } else{
                 isVisible = !getSportEnterIsClose() //如果体育服务关闭
             }
-
-            unSubscribeChannelHall(fragment)
+            if (fragment.isVisibleToUser()) {
+                unSubscribeChannelHall(fragment)
+            }
             if (isVisible) {
                 adapter?.data = data
                 binding.recyclerHotGame.post { firstVisibleRange() }

@@ -15,14 +15,12 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
-import kotlinx.android.synthetic.main.view_home_bottom.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.net.games.data.OKGameBean
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.GameChildAdapter
@@ -58,7 +56,7 @@ class SportFooterGamesView @JvmOverloads constructor(
         initOKGameList()
         initBottomView()
         if (esportTheme){
-            homeBottomView.linAward.setBackgroundResource(R.drawable.bg_white_alpha90_radius_8)
+            homeBottomView.binding.linAward.setBackgroundResource(R.drawable.bg_white_alpha90_radius_8)
         }
     }
 

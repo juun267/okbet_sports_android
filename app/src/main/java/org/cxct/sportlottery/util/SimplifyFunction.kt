@@ -21,6 +21,7 @@ import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -40,13 +41,13 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.view_payment_maintenance.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.databinding.ViewPaymentMaintenanceBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -590,27 +591,11 @@ fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: FrontWsEvent.CloseP
 }
 
 /**
- * 判斷當前是否為多站點平台
- */
-fun isMultipleSitePlat(): Boolean {
-    val appName = MultiLanguagesApplication.stringOf(R.string.app_name)
-    return appName == "ONbet" || appName == "BET88" || appName == "OKbet9"
-}
-
-/**
  * 判斷是否為遊客(試玩帳號)
  */
 fun isGuest(): Boolean {
     return MultiLanguagesApplication.mInstance.userInfo()?.testFlag == TestFlag.GUEST.index
 }
-
-fun isForQA(): Boolean = BuildConfig.FLAVOR == "forqa"
-
-/**
- * 判斷當前是否為OKBET平台
- */
-fun isOKPlat(): Boolean =
-    MultiLanguagesApplication.stringOf(R.string.app_name).equals("OKBET", true)
 
 fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
 
@@ -620,27 +605,27 @@ fun isGooglePlayVersion() = BuildConfig.FLAVOR == "google"
 
 fun getMarketSwitch() = KvUtils.decodeBoolean(KvUtils.MARKET_SWITCH)
 
-fun ImageView.setTeamLogo(icon: String?) {
+fun ImageView.setTeamLogo(icon: String?,@DrawableRes defaultResId: Int=R.drawable.ic_team_default) {
     if (icon.isNullOrEmpty()) {
-        setImageResource(R.drawable.ic_team_default)
+        setImageResource(defaultResId)
     } else if (icon.startsWith("<defs><path d=")) { //經測試 <defs> 標籤下 起始 path d 套件無法解析
-        setImageResource(R.drawable.ic_team_default)
+        setImageResource(defaultResId)
     } else if (icon.startsWith("http")) {
-        load(icon, R.drawable.ic_team_default)
+        load(icon, defaultResId)
     } else {
-        setSvgIcon(icon, R.drawable.ic_team_default)
+        setSvgIcon(icon, defaultResId)
     }
 }
 
-fun ImageView.setLeagueLogo(icon: String?) {
+fun ImageView.setLeagueLogo(icon: String?,@DrawableRes defaultResId: Int=R.drawable.ic_team_default) {
     if (icon.isNullOrEmpty()) {
-        setImageResource(R.drawable.ic_team_default)
+        setImageResource(defaultResId)
     } else if (icon.startsWith("<defs><path d=")) { //經測試 <defs> 標籤下 起始 path d 套件無法解析
-        setImageResource(R.drawable.ic_team_default)
+        setImageResource(defaultResId)
     } else if (icon.startsWith("http")) {
-        load(icon, R.drawable.ic_team_default)
+        load(icon, defaultResId)
     } else {
-        setSvgIcon(icon, R.drawable.ic_team_default)
+        setSvgIcon(icon,defaultResId)
     }
 }
 
@@ -840,7 +825,7 @@ fun Context.dividerView(
 }
  fun setupSummary(tvSummary: TextView) {
     sConfigData?.imageList?.filter {
-                it.imageType == ImageType.LOGIN_SUMMARY.code
+                it.imageType == ImageType.LOGIN_SUMMARY
                 && it.lang == LanguageManager.getSelectLanguage(tvSummary.context).key
                 && !it.imageText1.isNullOrEmpty()
                 && !getMarketSwitch() }?.sortedByDescending { it.imageSort }?.firstOrNull()?.imageText1.let {
@@ -854,15 +839,15 @@ fun Context.dividerView(
 /**
  * 设置充值提款渠道的维护状态
  */
-fun setupMoneyCfgMaintanince(rechfg: RechCfg, submitBtn: Button, linMaintaince: View) {
+fun setupMoneyCfgMaintanince(rechfg: RechCfg, submitBtn: Button, binding: ViewPaymentMaintenanceBinding) {
     if (rechfg.open== MoneyRechCfg.Switch.OPEN.code){
         submitBtn.visible()
-        linMaintaince.gone()
+        binding.root.gone()
     }else if(rechfg.open== MoneyRechCfg.Switch.MAINTAINCE.code){
         submitBtn.gone()
-        linMaintaince.visible()
-        linMaintaince.linMaintenanceTip.isVisible = !rechfg.frontDeskRemark.isNullOrEmpty()
-        linMaintaince.tvTipsContent.text = rechfg.frontDeskRemark
+        binding.root.visible()
+        binding.linMaintenanceTip.isVisible = !rechfg.frontDeskRemark.isNullOrEmpty()
+        binding.tvTipsContent.text = rechfg.frontDeskRemark
     }
 }
 
@@ -889,7 +874,7 @@ fun TextFormFieldBoxes.setTransformationMethodEvent(editText: EditText) {
             editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
         }
 
-        hasFocus = true
+        setHasFocus(true)
         editText.setSelection(editText.text.toString().length)
     }
 }

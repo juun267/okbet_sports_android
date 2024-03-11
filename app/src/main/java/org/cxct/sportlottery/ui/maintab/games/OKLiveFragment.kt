@@ -68,7 +68,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
         showGameAll()
         initObservable()
         viewModel.getOKLiveHall()
-        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKLIVE.code)
+        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKLIVE)
     }
     private var requestTag: Any = Any()
     private var requestBlock: ((Int) -> Unit)? = null
@@ -99,7 +99,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
 
 
     private fun initTopView() = binding.topView.run {
-        setup(this@OKLiveFragment, 18, gameType = "oklive")
+        setup(this@OKLiveFragment, ImageType.BANNER_OKLIVE, gameType = "oklive")
         setProviderSelect {
             backGameAll()
             showGameAll()
@@ -234,7 +234,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
 
     fun search(key: String){
         if (isAdded){
-            binding.topView.edtSearch.setText(key)
+            binding.topView.binding.edtSearchGames.setText(key)
             changePartGamesLabel(GameTab.TAB_SEARCH, key)
             startLoad {
                 viewModel.searchGames(

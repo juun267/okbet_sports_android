@@ -7,9 +7,6 @@ import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebStorage
 import android.webkit.WebView
-import kotlinx.android.synthetic.main.activity_web.*
-
-//import org.cxct.sportlottery.util.language.MultiLanguages
 
 open class OkWebView  : WebView {
 

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.login.foget
 
 import android.app.Activity
 import android.content.Intent
-import kotlinx.android.synthetic.main.activity_forget_ways.*
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.extentions.finishWithOK
 import org.cxct.sportlottery.common.extentions.gone
@@ -16,14 +15,14 @@ class ForgetWaysActivity:  BaseActivity<ForgetViewModel, ActivityForgetWaysBindi
 
     override fun onInitView() {
         setStatusBarDarkFont()
-        bindFinish(btn_back)
+        bindFinish(binding.btnBack)
         setupSummary(binding.includeSubtitle.tvSummary)
         binding.includeSubtitle.tvSubTitle1.gone()
         binding.includeSubtitle.tvSubTitle2.gone()
-        cl_live_chat.setServiceClick(supportFragmentManager)
+        binding.clLiveChat.setServiceClick(supportFragmentManager)
         binding.bottomLiences.tvLicense.text = Constants.copyRightString
-        btnPhoneWays.setOnClickListener { ForgetPasswordActivity.startByPhoneWays(this) }
-        btnEmailWays.setOnClickListener { ForgetPasswordActivity.startByEmailWays(this) }
+        binding.btnPhoneWays.setOnClickListener { ForgetPasswordActivity.startByPhoneWays(this) }
+        binding.btnEmailWays.setOnClickListener { ForgetPasswordActivity.startByEmailWays(this) }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

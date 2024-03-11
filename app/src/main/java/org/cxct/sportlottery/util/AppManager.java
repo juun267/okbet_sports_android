@@ -11,6 +11,7 @@ import android.os.Process;
 import androidx.activity.ComponentActivity;
 
 import org.cxct.sportlottery.application.MultiLanguagesApplication;
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver;
 import org.cxct.sportlottery.view.floatingbtn.RedEnvelopeManager;
 
 import java.lang.ref.WeakReference;
@@ -34,6 +35,8 @@ public class AppManager {
     private static AppManager.ActivityLifecycleImpl activityLifecycle = new AppManager.ActivityLifecycleImpl();
     private final List<AppManager.OnAppStatusChangedListener> mStatusListeners = new ArrayList();
     private static boolean isForeground = false;
+    //记录app进入后台的时间戳
+    private long appBackgroundTime = 0L;
 
     private AppManager(Application context) {
         if (context == null) {
@@ -41,6 +44,21 @@ public class AppManager {
         } else {
             sApplication = context;
             sApplication.registerActivityLifecycleCallbacks(activityLifecycle);
+            addOnAppStatusChangedListener(new AppManager.OnAppStatusChangedListener(){
+                @Override
+                public void onForeground(Activity var1) {
+                    long interval = System.currentTimeMillis()-appBackgroundTime;
+                    if (appBackgroundTime > 0 && interval > 60*1000){
+                        ServiceBroadcastReceiver.INSTANCE.postRefrehInForeground(interval);
+                    }
+                    appBackgroundTime = 0L;
+                }
+
+                @Override
+                public void onBackground(Activity var1) {
+                    appBackgroundTime = System.currentTimeMillis();
+                }
+            });
         }
     }
 

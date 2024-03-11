@@ -175,6 +175,10 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
         }
     }
 
+    override fun onReload() {
+       reload(matchType,gameType)
+    }
+
 
     private fun initSocketObserver() {
 

@@ -8,9 +8,10 @@ import android.widget.PopupWindow
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.extentions.toBinding
+import org.cxct.sportlottery.databinding.HomeCateTabBinding
 import org.cxct.sportlottery.databinding.ItemTodayMenuBinding
 
 class TodayMenuPop(val context: Activity, var lastSelectPosition :Int = 0, val onItemClickListener: (position:Int) -> Unit) : PopupWindow(context) {
@@ -37,9 +38,9 @@ class TodayMenuPop(val context: Activity, var lastSelectPosition :Int = 0, val o
             lastSelectPosition = position
             (adapter as TodayMenuAdapter).selectPos = position
             onItemClickListener.invoke(position)
-            todayTabItem?.customView?.apply {
-                tv_title.text = names[lastSelectPosition]
-                tv_number.text = counts[lastSelectPosition].toString()
+            todayTabItem?.customView?.toBinding<HomeCateTabBinding>()?.apply {
+                tvTitle.text = names[lastSelectPosition]
+                tvNumber.text = counts[lastSelectPosition].toString()
             }
             dismiss()
         }
@@ -72,21 +73,21 @@ class TodayMenuPop(val context: Activity, var lastSelectPosition :Int = 0, val o
         elevation = 0f
         setBackgroundDrawable(null)
         setOnDismissListener {
-            todayTabItem?.customView?.ivArrow?.setImageResource(R.drawable.ic_arrow_gray_down)
+            todayTabItem?.customView?.toBinding<HomeCateTabBinding>()?.ivArrow?.setImageResource(R.drawable.ic_arrow_gray_down)
         }
     }
     open fun updateCount(vararg countOfType:Int){
         counts = countOfType.toMutableList()
         todayMenuAdapter.countArr=counts
-        todayTabItem?.customView?.apply {
-            tv_title.text = names[lastSelectPosition]
-            tv_number.text = counts[lastSelectPosition].toString()
+        todayTabItem?.customView?.toBinding<HomeCateTabBinding>()?.apply {
+            tvTitle.text = names[lastSelectPosition]
+            tvNumber.text = counts[lastSelectPosition].toString()
         }
     }
     override fun showAsDropDown(anchor: View?) {
         super.showAsDropDown(anchor)
         todayMenuAdapter.selectPos = if(todayTabItem?.isSelected==true) lastSelectPosition else -1
-        todayTabItem?.customView?.ivArrow?.setImageResource(R.drawable.ic_arrow_blue_up)
+        todayTabItem?.customView?.toBinding<HomeCateTabBinding>()?.ivArrow?.setImageResource(R.drawable.ic_arrow_blue_up)
     }
 
      class TodayMenuAdapter:BindingAdapter<String,ItemTodayMenuBinding>(){

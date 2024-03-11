@@ -7,7 +7,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import kotlinx.android.synthetic.main.button_odd_outright.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
@@ -35,7 +34,7 @@ class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
     override fun convert(helper: BaseViewHolder, item: BaseNode) = (helper.itemView as OddsOutrightButton).run  {
         setupOdd(item as Odd, adapter.oddsType)
         oddStatus = item.oddState
-        tv_spread.text = ""
+        binding.tvSpread.text = ""
         val parentNode = item.parentNode as CategoryOdds
 
         val position = parentNode.indexOf(item)  //indexOfCurrentGroup(helper.bindingAdapterPosition)

@@ -130,7 +130,7 @@ class BasketballEndingCardViewHolder(
         }
         newList.sortBy { it.matchOdd.playName.split("-")[1].toInt() }
         newList.sortBy { it.matchOdd.playName.split("-")[0].toInt() }
-        newList.add(newList[0])
+        newList.add(newList[0].clone())
         rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
         includeControl.tvParlayType.text = Spanny("${root.context.getString(R.string.P204)}*${betList?.size} ")

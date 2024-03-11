@@ -19,6 +19,7 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.net.news.NewsRepository
+import org.cxct.sportlottery.net.news.data.NewsCategory
 import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.net.user.UserRepository
@@ -30,7 +31,9 @@ import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.NewsType
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.news.News
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
@@ -42,6 +45,7 @@ import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.util.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 open class MainHomeViewModel(
     androidContext: Application
@@ -136,6 +140,12 @@ open class MainHomeViewModel(
     private val _homeAllProvider = MutableLiveData<List<OKGamesFirm>>()
 
     var dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
+
+    val systemNotice = SingleLiveEvent<ArrayList<News>>()
+
+    val newsCategory: LiveData<List<NewsCategory>>
+        get() = _newsCategory
+    private val _newsCategory = MutableLiveData<List<NewsCategory>>()
 
     //region 宣傳頁用
     fun getRecommend(gameType: GameType?=null) {
@@ -640,6 +650,18 @@ open class MainHomeViewModel(
                     dailyConfigEvent.postValue(it)
                 }
             }
+        }
+    }
+
+    fun getSystemNotice() {
+        callApi({ NewsRepository.getMessageList(1, 20, NewsType.PLAT) }) {
+            it.getData()?.let { systemNotice.postValue(it) }
+        }
+    }
+
+    fun getNewsCategory(){
+        callApi({ NewsRepository.getRecommendNews() }) {
+            it.getData()?.let { _newsCategory.postValue(it) }
         }
     }
 }

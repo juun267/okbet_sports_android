@@ -7,8 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_match_receipt.view.*
-import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
@@ -16,8 +14,8 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 
 class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetReceiptCallback()) {
 
-    lateinit var refreshBetStatusFunction: (Long) -> Unit
-    lateinit var refreshBetStatusFinishFunction: () -> Unit
+    var refreshBetStatusFunction: ((Long) -> Unit)? = null
+    var refreshBetStatusFinishFunction: (() -> Unit)? = null
 
     var interfaceStatusChangeListener: InterfaceStatusChangeListener? = null
 
@@ -99,14 +97,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         startTime: Long, position: Int, tvTime: TextView
     ) {
         if (startTime.minus(System.currentTimeMillis()).div(1000L) < 1) {
-            if (this::refreshBetStatusFinishFunction.isInitialized) {
-                refreshBetStatusFinishFunction()
-            }
+            refreshBetStatusFinishFunction?.invoke()
         } else {
-            val time = startTime.minus(System.currentTimeMillis()).div(1000L)
-            if (this::refreshBetStatusFunction.isInitialized) {
-                refreshBetStatusFunction(time)
-            }
+            refreshBetStatusFunction?.invoke(startTime.minus(System.currentTimeMillis()).div(1000L))
         }
     }
 
@@ -161,7 +154,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     starRunnable(
                         betConfirmTime ?: 0,
                         position,
-                        holder.itemView.tv_bet_status_single,
+                        holder.binding.tvBetStatusSingle,
                     )
                 }else{
                     stopRunnable(position)
@@ -188,7 +181,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     starRunnable(
                         betConfirmTime ?: 0,
                         position,
-                        holder.itemView.tv_bet_status,
+                        holder.binding.tvBetStatus,
                     )
                 }else{
                     stopRunnable(position)

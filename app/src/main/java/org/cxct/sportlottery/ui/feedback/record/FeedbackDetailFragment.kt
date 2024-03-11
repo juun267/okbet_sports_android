@@ -13,8 +13,8 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
  */
 class FeedbackDetailFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackDetailBinding>() {
 
-    val feedbackListDetailAdapter by lazy {
-        viewModel.userID?.let { FeedbackListDetailAdapter(it) }
+    private val feedbackListDetailAdapter by lazy {
+        viewModel.userInfo?.value?.userId?.toInt()?.let { FeedbackListDetailAdapter(it) }
     }
     override fun onInitView(view: View) {
         viewModel.showToolbar(false)
@@ -41,12 +41,8 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackD
     private fun initDataLive()=binding.run {
         viewModel.feedbackDetail.observe(viewLifecycleOwner) {
             etContent.text.clear()
-            feedbackListDetailAdapter?.data = it ?: mutableListOf()
+            feedbackListDetailAdapter?.setList(it)
             rvContent.scrollToPosition((feedbackListDetailAdapter?.itemCount ?: 0) - 1)
-        }
-
-        viewModel.userInfo.observe(viewLifecycleOwner) {
-            feedbackListDetailAdapter?.iconUrl = it?.iconUrl
         }
     }
 

@@ -153,8 +153,9 @@ class TakeIDPhotoActivity: BaseActivity<ProfileCenterViewModel, ActivityTakeidPh
                 val rightRotationBitmap: Bitmap = BitmapUtil.setRightRotationBitmap(this@TakeIDPhotoActivity, mSensorRotation, bytes, w, h)
                 val cropBitmap: Bitmap = cropImageForVertical(rightRotationBitmap)
                 /*保存自动裁剪的图片后，直接返回*/
-                photoFile = saveToLocal(cropBitmap)
-                if (photoFile == null) {
+                val imgFile = saveToLocal(cropBitmap)
+                photoFile = imgFile
+                if (imgFile == null) {
                     launch(Dispatchers.Main) {
                         binding.frLoading.gone()
                         toast(getString(R.string.unknown_error))
@@ -162,12 +163,12 @@ class TakeIDPhotoActivity: BaseActivity<ProfileCenterViewModel, ActivityTakeidPh
                     return@launch
                 }
 
-                if (photoFile!!.length() < 1024 * maxSize) {
+                if (imgFile.length() < 1024 * maxSize) {
                     launch(Dispatchers.Main) { enablePhotoPreview(cropBitmap) }
                     return@launch
                 }
 
-                compressFileSize(photoFile!!, cropBitmap)
+                compressFileSize(imgFile, cropBitmap)
             }
         }
     }

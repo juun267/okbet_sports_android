@@ -1,21 +1,19 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.TabHomeNewsBinding
 import org.cxct.sportlottery.databinding.ViewHomeNewsBinding
-import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.RCVDecoration
+import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 import splitties.systemservices.layoutInflater
 
 class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
@@ -37,15 +35,29 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
     }
 
     private fun initView() =binding.run {
-        rgTitle.setOnCheckedChangeListener { group, checkedId ->
-            val categoryId = if (checkedId == R.id.rbtnOkbet) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
-            viewModel.getHomeNews(1, pageSize, listOf(categoryId))
-        }
+        tabNews.addOnTabSelectedListener(TabSelectedAdapter { tab, _ ->
+            getSelectCategoryId()?.let {
+                viewModel.getHomeNews(1, pageSize, listOf(it))
+            }
+        })
         binding.rvNews.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.rvNews.adapter = homeHotNewsAdapter
     }
     fun setup(fragment: HomeHotFragment) {
         viewModel = fragment.viewModel
+        viewModel.newsCategory.observe(fragment) {
+            binding.tabNews.removeAllTabs()
+            binding.root.isVisible = it.isNotEmpty()
+            it.forEach {
+                val itemBinding = TabHomeNewsBinding.inflate(layoutInflater)
+                binding.tabNews.addTab(binding.tabNews.newTab().setTag(it.id).setCustomView(itemBinding.root))
+                itemBinding.tvTitle.text = it.categoryName
+            }
+            binding.tabNews.getTabAt(0)?.select()
+            getSelectCategoryId()?.let {
+                viewModel.getHomeNews(1, pageSize, listOf(it))
+            }
+        }
         viewModel.homeNewsList.observe(fragment) {
             val dataList = if (it.size > pageSize) it.subList(0, pageSize) else it
             homeHotNewsAdapter.setList(dataList)
@@ -53,7 +65,8 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
         binding.tvMore.setOnClickListener {
             (fragment.activity as MainTabActivity).jumpToNews()
         }
-        viewModel.getHomeNews(1, pageSize, listOf(NewsRepository.NEWS_OKBET_ID))
+        viewModel.getNewsCategory()
     }
+    private fun getSelectCategoryId():Int?=binding.tabNews.getTabAt(binding.tabNews.selectedTabPosition)?.tag as? Int
 
 }

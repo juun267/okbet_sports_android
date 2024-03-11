@@ -23,7 +23,7 @@ import timber.log.Timber
 
 object JumpUtil {
 
-
+    val sportStartPrefix = listOf("mobile/sports/","oksports/","okesports/")
     fun toInternalWeb(
         context: Context,
         href: String,
@@ -48,7 +48,8 @@ object JumpUtil {
               path.contains("sweepstakes") ->{
                   toLottery(context, Constants.getLotteryH5Url(context, LoginRepository.token))
               }
-              path == "mobile/personal/activity_v2/christmas-promo"->{
+              path == "mobile/personal/activity_v2/christmas-promo"
+                      || path == "promo/christmas"->{
                 context.startActivity(
                     Intent(context, LuckyWheelActivity::class.java).apply {
                         putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
@@ -59,32 +60,39 @@ object JumpUtil {
                     }
                 )
             }
-            path == "mobile/personal/activity_v2"->{
+            path == "mobile/personal/activity_v2"
+                    || path == "promo"->{
                 (context as AppCompatActivity).startActivity(PromotionListActivity::class.java)
             }
-            path == "mobile/games/okgame"->{
+            path == "mobile/games/okgame"
+                    || path == "okgames"->{
                 (context as? MainTabActivity)?.let {
                     it.jumpToOKGames()
                 }
             }
-            path== "mobile/games/oklive"->{
+            path== "mobile/games/oklive"
+                    || path == "oklive"->{
                 (context as? MainTabActivity)?.let {
                     it.jumpToOkLive()
                 }
             }
-            path.startsWith("mobile/sports/") ->{
-                val sportParams = path.substringAfter("mobile/sports/").split("/")
-                LogUtil.toJson(sportParams)
-                val matchType = sportParams.getOrNull(0)
-                val gameType = sportParams.getOrNull(1)
-                val categoryType = sportParams.getOrNull(2)
-                (context as? MainTabActivity)?.let {
-                    if (gameType==GameType.ES.key){
-                       it.jumpToESport(matchType = MatchType.getMatchType(matchType),categoryType)
-                    }else{
-                        it.jumpToTheSport(matchType = MatchType.getMatchType(matchType),gameType = GameType.getGameType(gameType))
+            sportStartPrefix.any { path.startsWith(it)}->{
+                sportStartPrefix.firstOrNull { path.startsWith(it) }
+                    ?.let { startPrefix->
+                        val sportParams=path.substringAfter(startPrefix).split("/")
+                        LogUtil.toJson(sportParams)
+                        if (startPrefix == sportStartPrefix[0]){
+                            val matchType = sportParams.getOrNull(0)
+                            val gameType = sportParams.getOrNull(1)
+                            val categoryType = sportParams.getOrNull(2)
+                            toSport(matchType,gameType,categoryType)
+                        }else{
+                            val matchType = sportParams.getOrNull(0)
+                            val gameType = if(startPrefix == sportStartPrefix[1]) sportParams.getOrNull(1) else GameType.ES.key
+                            val categoryType = if(startPrefix == sportStartPrefix[1]) sportParams.getOrNull(2) else sportParams.getOrNull(1)
+                            toSport(matchType,gameType,categoryType)
+                        }
                     }
-                }
             }
             else->{
                 context.startActivity(
@@ -184,5 +192,14 @@ object JumpUtil {
                 putExtra(WebActivity.KEY_BACK_EVENT, true)
             }
         )
+    }
+    fun toSport(matchType: String?, gameType: String?,categoryType: String?){
+        (AppManager.currentActivity() as? MainTabActivity)?.let {
+            if (gameType==GameType.ES.key){
+                it.jumpToESport(matchType = MatchType.getMatchType(matchType),categoryType)
+            }else{
+                it.jumpToTheSport(matchType = MatchType.getMatchType(matchType),gameType = GameType.getGameType(gameType))
+            }
+        }
     }
 }

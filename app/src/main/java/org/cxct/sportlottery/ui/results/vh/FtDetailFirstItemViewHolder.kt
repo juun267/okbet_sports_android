@@ -1,19 +1,13 @@
 package org.cxct.sportlottery.ui.results.vh
 
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.databinding.ContentGameDetailResultFtRvBinding
 import org.cxct.sportlottery.network.matchresult.list.Match
 import org.cxct.sportlottery.network.matchresult.list.MatchStatus
 import org.cxct.sportlottery.ui.results.SituationType
 import org.cxct.sportlottery.ui.results.StatusType
-import org.cxct.sportlottery.databinding.ContentGameDetailResultFtRvBinding as FTBinding
-import splitties.systemservices.layoutInflater
 
-class FtDetailFirstItemViewHolder(viewGroup: ViewGroup,
-                                  private val binding: FTBinding = FTBinding.inflate(viewGroup.layoutInflater, viewGroup, false))
-
-: RecyclerView.ViewHolder(binding.root) {
+class FtDetailFirstItemViewHolder(val binding: ContentGameDetailResultFtRvBinding) {
 
     val bottomLine: View = binding.bottomLine
     val llRoot: View = binding.root

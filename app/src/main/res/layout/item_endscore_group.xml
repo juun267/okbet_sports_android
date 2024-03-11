@@ -45,6 +45,22 @@
         android:padding="5dp"
         android:src="@drawable/selector_filter_arrow" />
 
+        <TextView
+            android:id="@+id/tvNum"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:minWidth="@dimen/margin_26"
+            android:gravity="center"
+            android:layout_marginRight="12dp"
+            android:paddingHorizontal="@dimen/margin_4"
+            android:src="@drawable/selector_filter_arrow"
+            android:background="@drawable/bg_blue_radius_10_stroke"
+            android:textSize="@dimen/textSize12sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_025BE8"
+            android:visibility="gone"
+            tools:text="99" />
+
     </LinearLayout>
 
     <View

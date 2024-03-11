@@ -153,6 +153,9 @@ open class SportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, F
         }
     }
 
+    override fun onReload() {
+        reload(matchType,gameType)
+    }
 
     private fun initSocketObserver() {
 
@@ -214,7 +217,6 @@ open class SportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, F
                 sportLeagueAdapter2.closePlayCate(closeEvent)
             }
         }
-
     }
 
     override fun oddClick(

@@ -32,9 +32,8 @@ abstract class BaseDialog<VM : BaseViewModel,VB : ViewBinding>(private val clazz
     init {
         setDefaulStyle()
     }
-
     protected open fun setDefaulStyle() {
-        setStyle(STYLE_NO_TITLE, R.style.MyDialogStyle)
+        setStyle(STYLE_NO_TITLE, R.style.CustomDialogStyle)
     }
 
     protected fun setStyle(style: Int) {

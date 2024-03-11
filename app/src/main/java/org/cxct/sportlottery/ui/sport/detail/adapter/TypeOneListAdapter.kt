@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.clickDelay
@@ -102,7 +101,7 @@ class TypeOneListAdapter(
                 }
                 when {
                     checkKey(PlayCate.HT_FT.value) -> {
-                        tv_name.text = when (odd?.playCode) {
+                        binding.tvName.text = when (odd?.playCode) {
                             PlayCode.HT_FT_H_H.value -> this.context.getString(R.string.odds_button_name_home) + "/" + this.context.getString(
                                 R.string.odds_button_name_home)
                             PlayCode.HT_FT_H_D.value -> this.context.getString(R.string.odds_button_name_home) + "/" + this.context.getString(
@@ -123,10 +122,10 @@ class TypeOneListAdapter(
                                 R.string.odds_button_name_away)
                             else -> ""
                         }
-                        tv_spread.text = ""
+                        binding.tvSpread.text = ""
                     }
                     oddsDetail.gameType.startsWith(PlayCate.DC.value) -> {
-                        tv_name.text = when (odd?.playCode) {
+                        binding.tvName.text = when (odd?.playCode) {
                             PlayCode.DC_H_D.value -> this.context.getString(R.string.odds_button_name_home) + "/" + this.context.getString(
                                 R.string.draw_name)
                             PlayCode.DC_C_D.value -> this.context.getString(R.string.odds_button_name_away) + "/" + this.context.getString(
@@ -135,7 +134,7 @@ class TypeOneListAdapter(
                                 R.string.odds_button_name_away)
                             else -> ""
                         }
-                        tv_spread.text = ""
+                        binding.tvSpread.text = ""
                     }
                 }
             }

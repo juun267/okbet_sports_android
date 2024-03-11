@@ -88,9 +88,9 @@ class BetInfoItemViewHolder(
 
             //不支援串關
             //僅有串關的單注才會出現此提示
+            //补充场景，当串关购物车里面只有一个冠军注单当时候，也要显示不可用
             val cannotParlay =
-                adapterBetType == BetListRefactorAdapter.BetRvType.PARLAY_SINGLE && itemData.pointMarked && betListSize > 1
-
+                adapterBetType == BetListRefactorAdapter.BetRvType.PARLAY_SINGLE && itemData.pointMarked && (betListSize > 1 || (betListSize==1 && itemData.matchType==MatchType.OUTRIGHT))
             if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                 when (adapterBetType) {
                     BetListRefactorAdapter.BetRvType.SINGLE -> {

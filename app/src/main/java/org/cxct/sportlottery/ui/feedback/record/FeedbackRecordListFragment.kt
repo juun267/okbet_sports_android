@@ -2,17 +2,19 @@ package org.cxct.sportlottery.ui.feedback.record
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentFeedbackRecordListBinding
+import org.cxct.sportlottery.databinding.ViewNoRecordBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.view.DividerItemDecorator
 
 /**
@@ -21,7 +23,7 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackRecordListBinding>() {
 
     private val statusList by lazy {
-        listOf(StatusSheetData(viewModel.allStatusTag, context?.getString(R.string.all_status)), StatusSheetData("0", context?.getString(R.string.feedback_not_reply_yet)), StatusSheetData("1", context?.getString(R.string.feedback_replied)))
+        listOf(StatusSheetData(viewModel.allStatusTag, getString(R.string.all_status)), StatusSheetData("0", getString(R.string.feedback_not_reply_yet)), StatusSheetData("1", getString(R.string.feedback_replied)))
     }
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         private fun scrollToTopControl(firstVisibleItemPosition: Int) {
@@ -53,12 +55,14 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel, FragmentFeedb
     }
 
     val feedbackListAdapter by lazy {
-        context?.let {
-            FeedbackListAdapter(it, FeedbackListAdapter.ItemClickListener { data ->
+        FeedbackListAdapter().apply {
+            setEmptyView(ViewNoRecordBinding.inflate(layoutInflater).root)
+            setOnItemClickListener { adapter, view, position ->
                 view?.findNavController()?.navigate(R.id.action_feedbackRecordListFragment_to_feedbackDetailFragment)
-                viewModel.dataID = data.id?.toLong()
-                viewModel.feedbackCode = data.feedbackCode
-            })
+                val itemData = data[position]
+                viewModel.dataID = itemData.id?.toLong()
+                viewModel.feedbackCode = itemData.feedbackCode
+            }
         }
     }
     override fun onInitView(view: View) {
@@ -69,11 +73,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel, FragmentFeedb
         initButton()
         initRecyclerView()
         initObserve()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 
     private fun initView() {
@@ -102,29 +101,13 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel, FragmentFeedb
 
     private fun initObserve() {
         viewModel.feedbackList.observe(viewLifecycleOwner) {
-            val listData = it ?: return@observe
-            feedbackListAdapter?.data = listData
-            if ( !binding.rvPayType.canScrollVertically(1)&&!listData.isNullOrEmpty()){
-                binding.tvNoData.visibility = View.VISIBLE
-            }else{
-                binding.tvNoData.visibility = View.INVISIBLE
-            }
-
-            if (listData.size == 0) {
-                binding.tvNoData.visibility = View.VISIBLE
-                binding.rvPayType.visibility = View.GONE
-            } else {
-                binding.tvNoData.visibility = View.GONE
-                binding.rvPayType.visibility = View.VISIBLE
-            }
+            feedbackListAdapter.setList(it)
         }
 
         viewModel.isFinalPage.observe(viewLifecycleOwner) {
-            feedbackListAdapter?.isFinalPage = true
+            LogUtil.d("isFinalPage="+it)
+            binding.tvNoData.isVisible = it
         }
     }
-
-
-
 
 }

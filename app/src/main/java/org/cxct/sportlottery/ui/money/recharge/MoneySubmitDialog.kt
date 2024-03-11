@@ -4,23 +4,26 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialog_money_submit.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogMoneySubmitBinding
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
-import timber.log.Timber
 
-class MoneySubmitDialog() : DialogFragment() {
+class MoneySubmitDialog() : BaseDialog<BaseViewModel,DialogMoneySubmitBinding>() {
 
     private val payWay by lazy {
         arguments?.getString("payWay")
     }
     private val payMoney by lazy {
         arguments?.getString("payMoney")
+    }
+    init {
+        setStyle(R.style.CustomDialogStyle)
     }
 
     constructor(
@@ -32,27 +35,15 @@ class MoneySubmitDialog() : DialogFragment() {
         bundle.putString("payMoney", payMoney)
         arguments = bundle
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        dialog?.setCanceledOnTouchOutside(true)
-        return inflater.inflate(R.layout.dialog_money_submit, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
         initView()
         initButton()
     }
 
     @SuppressLint("SetTextI18n")
     private fun initView() {
-        txv_pay_way.text = payWay
-        txv_pay_money.text = "${sConfigData?.systemCurrencySign} ${
+        binding.txvPayWay.text = payWay
+        binding.txvPayMoney.text = "${sConfigData?.systemCurrencySign} ${
             TextUtil.formatMoney(
                 ArithUtil.toMoneyFormat(
                     payMoney?.toDouble()
@@ -62,7 +53,7 @@ class MoneySubmitDialog() : DialogFragment() {
     }
 
     fun initButton() {
-        tv_view_log.setOnClickListener {
+        binding.tvViewLog.setOnClickListener {
             activity?.finish()
             startActivity(Intent(activity, FinanceActivity::class.java).apply {
                 putExtra(
@@ -70,12 +61,14 @@ class MoneySubmitDialog() : DialogFragment() {
                 )
             })
         }
-        tv_service.setOnClickListener { view ->
+        binding.tvService.setOnClickListener { view ->
             sConfigData?.customerServiceUrl?.let {
                 JumpUtil.toExternalWeb(view.context, it)
             }
             dismiss()
         }
     }
+
+
 
 }

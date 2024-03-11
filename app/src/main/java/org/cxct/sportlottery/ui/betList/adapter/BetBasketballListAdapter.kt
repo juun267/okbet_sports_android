@@ -1,44 +1,37 @@
 package org.cxct.sportlottery.ui.betList.adapter
 
-import android.widget.TextView
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.databinding.ItemBetBasketballEndingCartBinding
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import timber.log.Timber
 
 class BetBasketballListAdapter(val onItemClickListener: OnItemClickListener) :
-    BaseQuickAdapter<BetInfoListData, BaseViewHolder>(R.layout.item_bet_basketball_ending_cart) {
-
-    override fun convert(holder: BaseViewHolder, item: BetInfoListData) {
-
-        val tvMatchOdds = holder.getView<TextView>(R.id.tvMatchOdds)
+    BindingAdapter<BetInfoListData, ItemBetBasketballEndingCartBinding>() {
+    override fun onBinding(
+        position: Int,
+        binding: ItemBetBasketballEndingCartBinding,
+        item: BetInfoListData,
+    ) =binding.run{
         tvMatchOdds.background = DrawableCreatorUtils.getBasketballBetListButton()
-        holder.setText(R.id.tvMatchOdds, item.matchOdd.playName)
-        val tvHide = holder.getView<TextView>(R.id.tvHide)
+        tvMatchOdds.text = item.matchOdd.playName
         tvHide.background = DrawableCreatorUtils.getBasketballDeleteButton()
-
-        if (item.isClickForBasketball == true) {
-            tvHide.visible()
-        } else {
-            tvHide.gone()
-        }
-
+        tvHide.isVisible = item.isClickForBasketball == true
         //设置+More
-        if (holder.layoutPosition == data.size - 1) {
-            holder.setGone(R.id.tvMatchOdds, true).setVisible(R.id.tvBsMore, true)
-                .setText(R.id.tvBsMore, R.string.N920)
-            val tvBsMore = holder.getView<TextView>(R.id.tvBsMore)
+        if (position == data.size - 1) {
+            tvMatchOdds.isVisible = false
+            tvBsMore.isVisible = true
+            tvBsMore.text = context.getString(R.string.N920)
             tvBsMore.background = DrawableCreatorUtils.getBasketballPlusMore()
             tvBsMore.setOnClickListener {
                 onItemClickListener.addMore()
             }
         } else {
-            holder.setVisible(R.id.tvMatchOdds, true).setGone(R.id.tvBsMore, true)
+            tvMatchOdds.isVisible = true
+            tvBsMore.isVisible = false
         }
 
         //点击赔率
@@ -50,21 +43,21 @@ class BetBasketballListAdapter(val onItemClickListener: OnItemClickListener) :
                 }
                 notifyItemChanged(index)
             }
-            val currentPosition = holder.layoutPosition
             //记录本次点击的区域
-            if (data.size > currentPosition) {
-                data[currentPosition].isClickForBasketball = true
-                notifyItemChanged(currentPosition)
-                Timber.d("currentSelectPo:${currentPosition}")
+            if (data.size > position) {
+                data[position].isClickForBasketball = true
+                notifyItemChanged(position)
+                Timber.d("currentSelectPo:${position}")
             }
         }
 
         //蒙版点击事件
         tvHide.setOnClickListener {
-            data[holder.layoutPosition].isClickForBasketball = false
+            data[position].isClickForBasketball = false
             onItemClickListener.onDeleteClick(
-                data[holder.layoutPosition].matchOdd.oddsId, itemCount
+                data[position].matchOdd.oddsId, itemCount
             )
         }
     }
+
 }

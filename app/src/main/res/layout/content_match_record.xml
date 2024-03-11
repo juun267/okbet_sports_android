@@ -203,7 +203,9 @@
                     android:textSize="@dimen/textSize12sp"
                     tools:text="密尔沃基雄鹿 6.5 \@ 1.860" />
 
-                <include layout="@layout/include_bet_record_endscore" />
+                <include
+                    android:id="@+id/include_bet_record_endscore"
+                    layout="@layout/include_bet_record_endscore" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

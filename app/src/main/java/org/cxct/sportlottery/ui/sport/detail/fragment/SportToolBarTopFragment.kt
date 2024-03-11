@@ -1,16 +1,7 @@
 package org.cxct.sportlottery.ui.sport.detail.fragment
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_basebag
-import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_bb_status
-import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_halfStatus
-import kotlinx.android.synthetic.main.content_baseball_status.txvOut
-import kotlinx.android.synthetic.main.view_detail_head_toolbar1.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ViewDetailHeadToolbar1Binding
@@ -32,15 +23,6 @@ class SportToolBarTopFragment :
     }
 
     private var newMatchInfo: MatchInfo? = null
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        val frameLayout = FrameLayout(inflater.context)
-        frameLayout.layoutParams = ViewGroup.LayoutParams(-1, -1)
-        frameLayout.addView(super.onCreateView(inflater, container, savedInstanceState))
-        isInited = true
-        return frameLayout
-    }
 
     private var timeText: String? = null
     private var timeEnable = true
@@ -60,6 +42,7 @@ class SportToolBarTopFragment :
     }
 
     override fun onInitView(view: View) {
+        isInited = true
         binding.ivDetailBg.setImageResource(
             if (matchInfo?.gameType==GameType.ES.key){
                 ESportType.getESportImg(matchInfo?.categoryCode?:ESportType.ALL.key)
@@ -101,10 +84,10 @@ class SportToolBarTopFragment :
      * 配置賽事資訊(隊伍名稱、是否延期、賽制)
      * fromApi api的状态不携带红黄牌等信息
      */
-    private fun setupMatchInfo(matchInfo: MatchInfo, fromApi: Boolean = false) {
+    private fun setupMatchInfo(matchInfo: MatchInfo, fromApi: Boolean = false)=binding.run {
         //region 隊伍名稱
-        tv_home_name.text = matchInfo.homeName ?: ""
-        tv_away_name.text = matchInfo.awayName ?: ""
+        tvHomeName.text = matchInfo.homeName ?: ""
+        tvAwayName.text = matchInfo.awayName ?: ""
         val activity: SportDetailActivity = activity as SportDetailActivity
         activity.apply {
             tvToolBarHomeName?.text = matchInfo.homeName ?: ""
@@ -112,15 +95,15 @@ class SportToolBarTopFragment :
             ivToolbarHomeLogo.setTeamLogo(matchInfo.homeIcon)
             ivToolbarAwayLogo.setTeamLogo(matchInfo.awayIcon)
         }
-        img_home_logo.setTeamLogo(matchInfo.homeIcon)
-        img_away_logo.setTeamLogo(matchInfo.awayIcon)
+        imgHomeLogo.setTeamLogo(matchInfo.homeIcon)
+        imgAwayLogo.setTeamLogo(matchInfo.awayIcon)
         //endregion
         //region 比賽延期判斷
         if (matchInfo.status == GameStatus.POSTPONED.code && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) {
 //            toolBar.tv_score.text = getString(R.string.game_postponed)
             activity.tvToolbarHomeScore.text = "-"
             activity.tvToolbarAwayScore.text = "-"
-            lin_bottom.isVisible = false
+            linBottom.isVisible = false
         }
 
         //赛事进行中，就显示比分状态，否则就不显示左下角，并且显示开赛时间
@@ -138,24 +121,24 @@ class SportToolBarTopFragment :
             startDate.split(" ").let {
                 if (it.size == 2) {
                     binding.tvMatchTime.text = it[0]
-                    tv_score.text = it[1]
-                    tv_match_status.isVisible = false
-                    tv_score.isVisible = true
+                    tvScore.text = it[1]
+                    tvMatchStatus.isVisible = false
+                    tvScore.isVisible = true
                     binding.tvMatchTime.isVisible = true
                 } else {
-                    tv_match_status.isVisible = false
-                    tv_score.isVisible = false
+                    tvMatchStatus.isVisible = false
+                    tvScore.isVisible = false
                     binding.tvMatchTime.isVisible = false
                 }
             }
-            lin_bottom.isVisible = false
+            linBottom.isVisible = false
 
         }
     }
 
 
     private fun setStatusText(matchInfo: MatchInfo) {
-        tv_match_status.text = when {
+        binding.tvMatchStatus.text = when {
             (TimeUtil.isTimeInPlay(matchInfo.startTime) && matchInfo.status == GameStatus.POSTPONED.code && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
                 getString(R.string.game_postponed) + setSptText(matchInfo)
             }
@@ -191,13 +174,13 @@ class SportToolBarTopFragment :
     private fun setupMatchScore(matchInfo: MatchInfo) {
         when (matchInfo?.gameType) {
             GameType.BB.key -> {
-                lin_tips.isVisible = false
-                content_baseball_status.isVisible = true
+                binding.linTips.isVisible = false
+                binding.contentBaseballStatus.root.isVisible = true
             }
 
             else -> {
-                lin_tips.isVisible = true
-                content_baseball_status.isVisible = false
+                binding.linTips.isVisible = true
+                binding.contentBaseballStatus.root.isVisible = false
             }
         }
         when (matchInfo.gameType) {
@@ -276,11 +259,11 @@ class SportToolBarTopFragment :
     }
 
     private fun setFbKicks(matchInfo: MatchInfo) {
-        league_corner_kicks.setFbKicks(matchInfo)
+        binding.leagueCornerKicks.setFbKicks(matchInfo)
     }
 
     private fun setScoreTextAtFront(matchInfo: MatchInfo) {
-        tv_score.apply {
+        binding.tvScore.apply {
             visibility = when (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
                 true -> View.VISIBLE
                 else -> View.GONE
@@ -294,10 +277,10 @@ class SportToolBarTopFragment :
         }
         //棒球，沙巴数据源才显示总比分
         if (matchInfo.gameType==GameType.BB.key&&matchInfo.source==2){
-            tv_total_score.isVisible=true
-            tv_total_score.text =  "(${matchInfo.homeTotalScore.toStringS("0")}-${matchInfo.awayTotalScore.toStringS("0")})"
+            binding.tvTotalScore.isVisible=true
+            binding.tvTotalScore.text =  "(${matchInfo.homeTotalScore.toStringS("0")}-${matchInfo.awayTotalScore.toStringS("0")})"
         }else{
-            tv_total_score.isVisible=false
+            binding.tvTotalScore.isVisible=false
         }
         setMatchScore(
             matchInfo,
@@ -311,7 +294,7 @@ class SportToolBarTopFragment :
      * 网球和羽毛球  排球，乒乓球 显示局比分
      */
     private fun setAllScoreTextAtBottom(matchInfo: MatchInfo) {
-        tv_peroids_score.setMatchRoundScore(matchInfo)
+        binding.tvPeroidsScore.setMatchRoundScore(matchInfo)
     }
 
     /**
@@ -321,18 +304,18 @@ class SportToolBarTopFragment :
     private fun setPointScore(matchInfo: MatchInfo) {
         when(matchInfo.gameType){
             GameType.VB.key,GameType.TT.key,GameType.BM.key->{
-                tv_point_score.isVisible = TimeUtil.isTimeInPlay(matchInfo.startTime)
+                binding.tvPointScore.isVisible = TimeUtil.isTimeInPlay(matchInfo.startTime)
                 if(matchInfo.matchStatusList.isNullOrEmpty()){
-                    tv_point_score.text=""
+                    binding.tvPointScore.text=""
                 }else{
                     val homePoints= matchInfo.matchStatusList?.sumOf { it.homeScore?:0 }
                     val awayPoints= matchInfo.matchStatusList?.sumOf { it.awayScore?:0 }
-                    tv_point_score.text = "(${homePoints}-${awayPoints})"
+                    binding.tvPointScore.text = "(${homePoints}-${awayPoints})"
                 }
             }
             GameType.TN.key->{
-                tv_point_score.isVisible = TimeUtil.isTimeInPlay(matchInfo.startTime)
-                tv_point_score.text = "(${matchInfo.homePoints.toStringS("0")}-${matchInfo.awayPoints.toStringS("0")})"
+                binding.tvPointScore.isVisible = TimeUtil.isTimeInPlay(matchInfo.startTime)
+                binding.tvPointScore.text = "(${matchInfo.homePoints.toStringS("0")}-${matchInfo.awayPoints.toStringS("0")})"
             }
         }
     }
@@ -341,13 +324,13 @@ class SportToolBarTopFragment :
     /**
      * 棒球的特殊布局处理
      */
-    private fun setBBStatus(matchInfo: MatchInfo) {
-        lin_tips.isVisible = false
-        content_baseball_status.isVisible = true
-        league_odd_match_bb_status.isVisible = false
-        league_odd_match_halfStatus.isVisible = false
+    private fun setBBStatus(matchInfo: MatchInfo)=binding.run {
+        linTips.isVisible = false
+        contentBaseballStatus.root.isVisible = true
+        contentBaseballStatus.leagueOddMatchBbStatus.isVisible = false
+        contentBaseballStatus.leagueOddMatchHalfStatus.isVisible = false
 
-        txvOut.apply {
+        contentBaseballStatus.txvOut.apply {
             text = getString(
                 R.string.game_out, matchInfo.outNumber ?: ""
             )
@@ -361,7 +344,7 @@ class SportToolBarTopFragment :
             isVisible = true
         }
 
-        league_odd_match_basebag.apply {
+        contentBaseballStatus.leagueOddMatchBasebag.apply {
             setImageResource(
                 when {
                     matchInfo.firstBaseBag == 0 && matchInfo.secBaseBag == 0 && matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
@@ -410,7 +393,7 @@ class SportToolBarTopFragment :
      * 设置足球半场比分
      */
     private fun setFtHalfScore(matchInfo: MatchInfo) {
-        tv_ft_half.apply {
+        binding.tvFtHalf.apply {
             visibility = when {
                 (!matchInfo.homeHalfScore.isNullOrEmpty()) || (!matchInfo.awayHalfScore.isNullOrEmpty()) -> View.VISIBLE
                 else -> View.GONE
@@ -425,7 +408,7 @@ class SportToolBarTopFragment :
      * 设置足球黄牌，红牌数量
      */
     private fun setCardText(matchInfo: MatchInfo) {
-        tv_red_card.apply {
+        binding.tvRedCard.apply {
             visibility = when {
                 (matchInfo.homeCards ?: 0 > 0) || (matchInfo.awayCards ?: 0 > 0) -> View.VISIBLE
                 else -> View.GONE
@@ -434,7 +417,7 @@ class SportToolBarTopFragment :
                 (matchInfo.homeCards ?: 0).toString() + "-" + (matchInfo.awayCards ?: 0).toString()
         }
 
-        tv_yellow_card.apply {
+        binding.tvYellowCard.apply {
             visibility = when {
                 (matchInfo.homeYellowCards ?: 0 > 0) || (matchInfo.awayYellowCards ?: 0 > 0) -> View.VISIBLE
                 else -> View.GONE
@@ -450,7 +433,7 @@ class SportToolBarTopFragment :
      *  目前支持 棒球，网球，排球，乒乓球，羽毛球
      *  其中网球标识是另外一个位置
      */
-    private fun setAttack(matchInfo: MatchInfo) {
-        setMatchAttack(matchInfo, ic_attack_h, ic_attack_c, ic_attack_h, ic_attack_c)
+    private fun setAttack(matchInfo: MatchInfo)=binding.run {
+        setMatchAttack(matchInfo, icAttackH, icAttackC, icAttackH, icAttackC)
     }
 }

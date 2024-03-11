@@ -3,24 +3,22 @@ package org.cxct.sportlottery.ui.sport.oddsbtn
 
 import android.animation.Animator
 import android.content.Context
-import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd_detail_sco.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.flashAnimation
+import org.cxct.sportlottery.databinding.ButtonOddDetailScoBinding
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -29,6 +27,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.LocalUtils.getString
+import splitties.systemservices.layoutInflater
 
 
 /**
@@ -74,6 +73,8 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
     private var hideItem = false
 
     private var mBackground: Drawable? = null
+    
+    val binding by lazy { ButtonOddDetailScoBinding.inflate(layoutInflater,this, true) }
 
     init {
         init(attrs)
@@ -90,12 +91,8 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
                 ?: context.theme.getDrawable(R.drawable.selector_button_radius_6_odds)
-        try {
-            inflate(context, R.layout.button_odd_detail_sco, this).apply {
-                button_odd_detail.background = mBackground
-            }
-        } catch (e: Exception) {
-            typedArray.recycle()
+        binding.apply {
+            buttonOddDetail.background = mBackground
         }
     }
 
@@ -114,7 +111,7 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
                 || TextUtils.equals(matchInfo?.awayName, odd?.name)
                 || TextUtils.equals(getString(R.string.draw), odd?.name))&&adapterName!=TypeOneListAdapter::class.java.name
 
-        tv_name.apply {
+        binding.tvName.apply {
 //            val extInfoStr =
 //                odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
             text =
@@ -128,7 +125,7 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
                 if (odd?.name.isNullOrEmpty() || gameType == "disable" || hideName) View.GONE else View.VISIBLE
         }
 
-        tv_spread.apply {
+        binding.tvSpread.apply {
             text = odd?.spread
             requestLayout()
             visibility =
@@ -136,9 +133,9 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
         }
 
         if(isOddPercentage == true) //反波膽顯示 %
-            tv_odds?.text = TextUtil.formatForOddPercentage((getOdds(odd, oddsType) - 1))
+            binding.tvOdds?.text = TextUtil.formatForOddPercentage((getOdds(odd, oddsType) - 1))
         else
-            tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
+            binding.tvOdds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
 //        updateOddsTextColor()
 
@@ -149,17 +146,17 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
 
-        lin_name.isVisible = !(hideName && !tv_spread.isVisible)
+        binding.linName.isVisible = !(hideName && !binding.tvSpread.isVisible)
         //篮球末尾比分，只显示最后空格后面的比分
         if (mOdd?.playCode?.isEndScoreType() == true) {
-            tv_odds.text = tv_name.text.toString().split(" ")?.last()
-            lin_name.isVisible = false
+            binding.tvOdds.text = binding.tvName.text.toString().split(" ")?.last()
+            binding.linName.isVisible = false
         }
     }
 
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
-        img_odd_lock.apply {
+        binding.imgOddLock.apply {
             visibility =
                 if (betStatus == BetStatus.LOCKED.code) {
                     View.VISIBLE
@@ -168,7 +165,7 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
                 }
         }
 
-        img_odd_unknown.apply {
+        binding.imgOddUnknown.apply {
             visibility =
                 if (betStatus == BetStatus.DEACTIVATED.code) {
                     View.VISIBLE
@@ -178,7 +175,7 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
         }
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
-        button_odd_detail.isVisible = isEnabled
+        binding.buttonOddDetail.isVisible = isEnabled
     }
 
     private fun setupOddState(oddState: Int) {
@@ -186,13 +183,13 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
         var status = false
         when (oddState) {
             OddState.LARGER.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColor(
                         context,
                         R.color.color_1CD219
                     )
                 )
-                iv_arrow.apply {
+                binding.ivArrow.apply {
                     setImageResource(R.drawable.icon_odds_up)
                     (layoutParams as FrameLayout.LayoutParams).gravity = Gravity.TOP or Gravity.RIGHT
                     visibility = View.VISIBLE
@@ -202,13 +199,13 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
                 isActivated = false
             }
             OddState.SMALLER.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColor(
                         context,
                         R.color.color_FF2E00
                     )
                 )
-                iv_arrow.apply {
+                binding.ivArrow.apply {
                     setImageResource(R.drawable.icon_odds_down)
                     (layoutParams as FrameLayout.LayoutParams).gravity = Gravity.BOTTOM or Gravity.RIGHT
                     visibility = View.VISIBLE
@@ -217,21 +214,21 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
                 isActivated = false
             }
             OddState.SAME.state -> {
-                tv_odds.setTextColor(
+                binding.tvOdds.setTextColor(
                     ContextCompat.getColorStateList(
                         context,
                         if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
                         else R.color.selector_button_odd_bottom_text
                     )
                 )
-                iv_arrow.apply {
+                binding.ivArrow.apply {
                     setImageDrawable(null)
                     visibility = View.GONE
                 }
                 isActivated = false
             }
         }
-        val animator = ll_odd_detail.tag
+        val animator = binding.llOddDetail.tag
         if (animator is Animator) {
             animator.cancel()
             if (status) {
@@ -241,7 +238,7 @@ class OddsButtonDetailSCO @JvmOverloads constructor(
         }
 
         if (status) {
-            ll_odd_detail.tag = ll_odd_detail.flashAnimation(1000,2,0.3f)
+            binding.llOddDetail.tag = binding.llOddDetail.flashAnimation(1000,2,0.3f)
         }
 //        updateOddsTextColor()
     }

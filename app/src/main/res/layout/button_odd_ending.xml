@@ -2,17 +2,32 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tv_odds"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:includeFontPadding="false"
-        android:textColor="@color/selector_button_odd_top_text"
-        android:textSize="14sp"
-        android:textFontWeight="700"
-        android:gravity="center"
-        tools:text="1.067" />
-
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tv_odds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:textColor="@color/selector_button_odd_top_text"
+            android:textSize="14sp"
+            android:textFontWeight="700"
+            android:gravity="center"
+            tools:text="1.067" />
+        <TextView
+            android:id="@+id/tv_spread"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4"
+            android:includeFontPadding="false"
+            android:textColor="@color/color_5C5E66"
+            android:textSize="11sp"
+            android:gravity="center"
+            tools:text="85.00" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/img_odd_lock"

@@ -139,7 +139,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel,FragmentBankCardBinding>
                 binding.eetWithdrawalPassword.transformationMethod =
                     HideReturnsTransformationMethod.getInstance()
             }
-            binding.etWithdrawalPassword.hasFocus = true
+            binding.etWithdrawalPassword.setHasFocus(true)
             binding.eetWithdrawalPassword.setSelection(binding.eetWithdrawalPassword.text.toString().length)
         }
 

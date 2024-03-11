@@ -78,7 +78,7 @@ class NewsFragment : BaseFragment<NewsViewModel,FragmentNewsBinding>() {
         }))
     }
 
-    private var newsType: NewsType = NewsType.GAME
+    private var newsType: Int = NewsType.GAME
 
     override fun onInitView(view: View) {
         initViews()
@@ -113,7 +113,7 @@ class NewsFragment : BaseFragment<NewsViewModel,FragmentNewsBinding>() {
             when (newsType) {
                 NewsType.GAME -> getTabAt(0)
                 NewsType.SYSTEM -> getTabAt(1)
-                NewsType.PLAT -> getTabAt(2)
+                else -> getTabAt(2)
             }?.let { selectedTab ->
                 selectedTab.select()
                 with((selectedTab.customView as TextView)) {

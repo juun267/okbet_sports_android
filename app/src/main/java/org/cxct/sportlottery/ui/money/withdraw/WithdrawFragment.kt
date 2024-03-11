@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.money.withdraw
 import android.content.Intent
 import android.text.TextUtils
 import android.view.View
+import android.widget.CompoundButton
+import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -103,6 +105,9 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel,FragmentWithdrawBinding>
 
         tvAddBank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_bank))
         tvService.setServiceClick(childFragmentManager)
+        cbAgree.setOnCheckedChangeListener { buttonView, isChecked ->
+             viewModel.checkInputCompleteByWithdraw()
+        }
     }
 
     private fun checkNotificationVisiable(
@@ -259,6 +264,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel,FragmentWithdrawBinding>
     private fun clearEvent() {
         binding.etWithdrawalAmount.setText("")
         binding.etWithdrawalPassword.setText("")
+        binding.cbAgree.isChecked = false
         if (::bankCardAdapter.isInitialized) {
             bankCardAdapter.initSelectStatus()
         }
@@ -274,7 +280,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel,FragmentWithdrawBinding>
         viewModel.submitEnable.observe(this){
             //当前有选中的卡片，并且卡片不维护
             val availabCard = withdrawBankCardData!=null&&withdrawBankCardData?.maintainStatus==0
-            updateButtonStatus(it && availabCard )
+            updateButtonStatus(it && availabCard && binding.cbAgree.isChecked )
         }
         viewModel.addMoneyCardSwitch.observe(this) {
             transferTypeAddSwitch = it

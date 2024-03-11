@@ -1,65 +1,55 @@
 package org.cxct.sportlottery.ui.chat
 
-import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.dialog_red_envelope_list.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.extentions.setOnClickListeners
+import org.cxct.sportlottery.databinding.DialogRedEnvelopeListBinding
+import org.cxct.sportlottery.databinding.ItemChatRedEnvelopeBinding
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
+import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.MetricsUtil
 
 /**
  * 聊天室搶紅包列表彈窗
  */
-//TODO Bill 之後重構
+
 class RedEnvelopeListDialog(
-    context: Context,
     private val mData: MutableList<UnPacketRow>,
     var mListener: Listener?,
-) : AlertDialog(context), View.OnClickListener {
+) : BaseDialog<BaseViewModel, DialogRedEnvelopeListBinding>() {
 
+    init {
+        setStyle(R.style.CustomDialogStyle)
+    }
     private val mRVAdapter = RVAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_red_envelope_list)
-        this.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
+    override fun onInitView() {
         initView()
     }
 
-    override fun show() {
-        super.show()
-        rvList.scrollToPosition(0)
+    override fun show(manager: FragmentManager, tag: String?) {
+        super.show(manager, tag)
+        binding.rvList.scrollToPosition(0)
     }
 
-    override fun onClick(view: View?) {
-        when (view?.id) {
-            ivClose.id -> {
-                dismiss()
-            }
-            btnConfirm.id -> {
-                dismiss()
-            }
-        }
+    override fun show(manager: FragmentManager) {
+        super.show(manager)
+        binding.rvList.scrollToPosition(0)
     }
 
     private fun initView() {
         initRecyclerView()
-        ivClose.setOnClickListener(this)
-        btnConfirm.setOnClickListener(this)
+        setOnClickListeners(binding.ivClose,binding.btnConfirm){
+            dismiss()
+        }
     }
 
     private fun initRecyclerView() {
-        rvList.apply {
+        binding.rvList.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(
                 RecycleViewDivider(
@@ -70,12 +60,10 @@ class RedEnvelopeListDialog(
                 )
             )
             adapter = mRVAdapter
-            mRVAdapter.setDatas { mData }
-            mRVAdapter.setItemCallback(object : RVAdapter.ItemCallback {
-                override fun onSelect(selected: UnPacketRow) {
-                    mListener?.onDialogCallback(selected)
-                }
-            })
+            mRVAdapter.setList(mData)
+            mRVAdapter.setOnItemChildClickListener { adapter, view, position ->
+                mListener?.onDialogCallback(mRVAdapter.getItem(position))
+            }
         }
     }
 
@@ -83,26 +71,20 @@ class RedEnvelopeListDialog(
         mListener = listener
     }
 
-//    fun loadList(groupId: String) {
-//        val config = ChatManager.getChatConfigOutput()
-//        getGroupUnPacketIds(config.token, groupId)
-//    }
 
     fun setPackets(data: MutableList<UnPacketRow>) {
         mData.clear()
         mData.addAll(data)
-        mRVAdapter.setDatas { mData }
-        mRVAdapter.setItemCallback(object : RVAdapter.ItemCallback {
-            override fun onSelect(selected: UnPacketRow) {
-                mListener?.onDialogCallback(selected)
-            }
-        })
+        mRVAdapter.setList(mData)
+        mRVAdapter.setOnItemChildClickListener { adapter, view, position ->
+            mListener?.onDialogCallback(mRVAdapter.getItem(position))
+        }
     }
 
     fun reload(data: MutableList<UnPacketRow>) {
         mData.clear()
         mData.addAll(data)
-        mRVAdapter.setDatas { mData }
+        mRVAdapter.setList(mData)
     }
 
     fun setPrivateGroupstate() {
@@ -133,73 +115,22 @@ class RedEnvelopeListDialog(
 //        mRedPacketDialog?.show()
     }
 
-    class RVAdapter(private val mData: ArrayList<UnPacketRow> = ArrayList()) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    class RVAdapter:BindingAdapter<UnPacketRow,ItemChatRedEnvelopeBinding>() {
 
-        private var itemCallback: ItemCallback? = null
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return ChatRedEnvelopeViewHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_chat_red_envelope, parent, false)
-            )
+        override fun onBinding(
+            position: Int,
+            binding: ItemChatRedEnvelopeBinding,
+            item: UnPacketRow,
+        ) {
+            binding.tvNumber.text = (position + 1).toString()
+            addChildClickViewIds(binding.btnOpen.id)
         }
 
-        override fun getItemCount(): Int = mData.size
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            when (holder) {
-                is ChatRedEnvelopeViewHolder -> {
-                    holder.tvNumber.text = (position + 1).toString()
-                }
-            }
-        }
-
-        interface ItemCallback {
-            fun onSelect(selected: UnPacketRow)
-        }
-
-        inner class ChatRedEnvelopeViewHolder(view: View) : RecyclerView.ViewHolder(view),
-            View.OnClickListener {
-            var tvNumber: TextView = itemView.findViewById<TextView>(R.id.tvNumber)
-            var btnOpen: Button = itemView.findViewById<Button>(R.id.btnOpen)
-
-            init {
-                btnOpen.setOnClickListener(this)
-            }
-
-            override fun onClick(view: View?) {
-                when (view?.id) {
-                    btnOpen.id -> {
-                        itemCallback?.onSelect(mData[adapterPosition])
-                    }
-                }
-            }
-        }
-
-        fun setItemCallback(callback: ItemCallback?) {
-            itemCallback = callback
-        }
-
-        fun setDatas(datablock: () -> MutableList<UnPacketRow>) {
-            mData.clear()
-            mData.addAll(datablock())
-            notifyDataSetChanged()
-        }
-
-        fun addDatas(datablock: () -> MutableList<UnPacketRow>) {
-            val newDatas = datablock()
-            mData.addAll(newDatas)
-            notifyItemRangeChanged((mData.size - newDatas.size - 1), mData.size - 1)
-        }
-
-        fun addData(item: UnPacketRow) {
-            mData.add(item)
-            notifyItemChanged(mData.size - 1)
-        }
     }
 
     interface Listener {
         fun onDialogCallback(selected: UnPacketRow)
     }
+
+
 }

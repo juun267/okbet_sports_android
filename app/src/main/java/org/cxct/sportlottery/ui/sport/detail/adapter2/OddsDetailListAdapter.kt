@@ -28,6 +28,7 @@ class OddsDetailListAdapter(val onOddClickListener: OnOddClickListener)
     val GROUP_4 = R.layout.content_odds_detail_list_group_4_item
     val SCO = R.layout.content_odds_detail_list_sco
     val EPS = R.layout.content_odds_detail_list_eps
+    val ENDSCORE = R.layout.content_odds_detail_list_endscore
 
     var isFirstRefresh = false
 
@@ -40,7 +41,8 @@ class OddsDetailListAdapter(val onOddClickListener: OnOddClickListener)
                     val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
                     if (odd?.isSelected != oddSelected) {
                         odd?.isSelected = oddSelected
-                        notifyItemChanged(index, odd?.id)
+                        val realIndex = itemList.indexOf(data)
+                        notifyItemChanged(realIndex, odd?.id)
                     }
                 }
             }
@@ -184,12 +186,12 @@ class OddsDetailListAdapter(val onOddClickListener: OnOddClickListener)
                     PlayCate.P_REBOUND_OU.ordinal, PlayCate.P_ASSIST_OU.ordinal, PlayCate.P_THREE_OU.ordinal, PlayCate.P_BLOCK_OU.ordinal, PlayCate.P_STEAL_OU.ordinal, PlayCate.TG_OU_H_1ST.ordinal,
                     PlayCate.TG_OU_H_INCL_OT.ordinal, PlayCate.TG_OU_H_2ST_INCL_OT.ordinal, PlayCate.TG_OU_H_SEG1.ordinal, PlayCate.TG_OU_H_SEG2.ordinal, PlayCate.TG_OU_H_SEG3.ordinal, PlayCate.TG_OU_H_SEG4.ordinal,
                     PlayCate.TG_OU_C_INCL_OT.ordinal, PlayCate.TG_OU_C_1ST.ordinal, PlayCate.TG_OU_C_2ST_INCL_OT.ordinal, PlayCate.TG_OU_C_SEG1.ordinal, PlayCate.TG_OU_C_SEG2.ordinal, PlayCate.TG_OU_C_SEG3.ordinal, PlayCate.TG_OU_C_SEG4.ordinal,
-                    PlayCate.OE_SEG4.ordinal, PlayCate.FS_LD_CS.ordinal,
+                    PlayCate.OE_SEG4.ordinal
                     -> SINGLE_2_ITEM
-
                     PlayCate.EPS.ordinal,
                     -> EPS
-
+                    PlayCate.FS_LD_CS.ordinal,PlayCate.FS_LD_CS_SEG1.ordinal,PlayCate.FS_LD_CS_SEG2.ordinal,PlayCate.FS_LD_CS_SEG3.ordinal,PlayCate.FS_LD_CS_SEG4.ordinal,
+                    -> ENDSCORE
                     else -> ONE_LIST
                 }
             }

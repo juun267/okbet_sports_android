@@ -1,17 +1,15 @@
 package org.cxct.sportlottery.ui.common.dialog
 
-import android.content.Context
 import android.graphics.Color
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.*
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.content_security_code_style_edittext.view.*
-import kotlinx.android.synthetic.main.dialog_security_code_submit.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogSecurityCodeSubmitBinding
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import java.util.*
 
 /**
@@ -22,7 +20,7 @@ import java.util.*
  * this.setCanceledOnTouchOutside(false) //disable 點擊外部關閉 dialog
  * this.setCancelable(false) //disable 按實體鍵 BACK 關閉 dialog
  */
-class CustomSecurityDialog : DialogFragment() {
+class CustomSecurityDialog : BaseDialog<BaseViewModel,DialogSecurityCodeSubmitBinding>() {
 
     private var mSmsTimer: Timer? = null
     private var mGetSecurityCodeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
@@ -34,36 +32,22 @@ class CustomSecurityDialog : DialogFragment() {
     var positiveClickListener: PositiveClickListener? = null
     var isPstBtnClickable = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setCustomDialogStyle()
-        return inflater.inflate(R.layout.dialog_security_code_submit, container, false)
+    init {
+        setStyle(R.style.CustomDialogStyle)
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitView() {
+        isCancelable = false
         initView()
     }
 
-    protected fun setCustomDialogStyle() {
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        dialog?.window?.setGravity(Gravity.CENTER)
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        dialog?.setCanceledOnTouchOutside(false)
-    }
+    private fun initView()=binding.run {
+        securityCodeStyleEditText.binding.btnGetSecurity.setOnClickListener(mGetSecurityCodeClickListener)
 
-    private fun initView() {
-        securityCodeStyleEditText.btn_get_security.setOnClickListener(mGetSecurityCodeClickListener)
-
-        btn_positive.setOnClickListener {
+        btnPositive.setOnClickListener {
             if (isPstBtnClickable)
-                positiveClickListener?.onClick(securityCodeStyleEditText.edt_security_code.text.toString().trim())
+                positiveClickListener?.onClick(securityCodeStyleEditText.binding.edtSecurityCode.text.toString().trim())
         }
-        btn_negative.setOnClickListener(mNegativeClickListener)
+        btnNegative.setOnClickListener(mNegativeClickListener)
 
         securityCodeStyleEditText.mClearEdittextListener = View.OnClickListener { setPositiveBtnClickable(sConfigData?.hasGetTwoFactorResult == true) }
     }
@@ -83,12 +67,12 @@ class CustomSecurityDialog : DialogFragment() {
 
     //還要判斷輸入恇有沒有東西
     fun setPositiveBtnClickable(isClickable:Boolean){
-        val hasInput = securityCodeStyleEditText.edt_security_code.text.toString().isNotEmpty()
+        val hasInput = binding.securityCodeStyleEditText.binding.edtSecurityCode.text.toString().isNotEmpty()
         isPstBtnClickable = isClickable && hasInput
         if(isPstBtnClickable)
-            btn_positive.setTextColor(ContextCompat.getColor(btn_positive.context, R.color.color_317FFF_0760D4))
+            binding.btnPositive.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_317FFF_0760D4))
         else
-            btn_positive.setTextColor(ContextCompat.getColor(btn_positive.context, R.color.color_cccccc_e2e2e2))
+            binding.btnPositive.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_cccccc_e2e2e2))
     }
 
     fun showErrorStatus(b:Boolean){
@@ -103,15 +87,15 @@ class CustomSecurityDialog : DialogFragment() {
     fun showSmeTimer300() {
         try {
             stopSmeTimer()
-            securityCodeStyleEditText.let {
+            binding.securityCodeStyleEditText.binding.btnGetSecurity.apply {
                 var sec = 60
                 mSmsTimer = Timer()
                 mSmsTimer?.schedule(object : TimerTask() {
                     override fun run() {
                         Handler(Looper.getMainLooper()).post {
                             if (sec-- > 0) {
-                                it.btn_get_security.isEnabled = false
-                                it.btn_get_security.text = "${sec}s"
+                                isEnabled = false
+                                text = "${sec}s"
 //                            btn_get_security.setTextColor(
 //                                ContextCompat.getColor(
 //                                    context,
@@ -120,9 +104,9 @@ class CustomSecurityDialog : DialogFragment() {
 //                            )
                             } else {
                                 stopSmeTimer()
-                                it.btn_get_security.isEnabled = true
-                                it.btn_get_security.text = getString(R.string.get_verification_code)
-                                it.btn_get_security.setTextColor(Color.WHITE)
+                                isEnabled = true
+                                text = getString(R.string.get_verification_code)
+                                setTextColor(Color.WHITE)
                             }
                         }
                     }
@@ -132,8 +116,10 @@ class CustomSecurityDialog : DialogFragment() {
             e.printStackTrace()
 
             stopSmeTimer()
-            securityCodeStyleEditText.btn_get_security.isEnabled = true
-            securityCodeStyleEditText.btn_get_security.text = getString(R.string.get_verification_code)
+            binding.securityCodeStyleEditText.binding.btnGetSecurity.apply {
+                isEnabled = true
+                text = getString(R.string.get_verification_code)
+            }
         }
     }
 
@@ -149,4 +135,5 @@ class CustomSecurityDialog : DialogFragment() {
         stopSmeTimer()
         sConfigData?.hasGetTwoFactorResult = false
     }
+
 }

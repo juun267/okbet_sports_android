@@ -44,7 +44,7 @@ import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
 import timber.log.Timber
 
-class MainLeftFragment : BaseFragment<MainViewModel, FragmentMainLeftBinding>() {
+class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding>() {
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
 
@@ -64,7 +64,7 @@ class MainLeftFragment : BaseFragment<MainViewModel, FragmentMainLeftBinding>() 
     private fun initView() = binding.run {
         linHead.setPadding(linHead.paddingLeft,
             ImmersionBar.getStatusBarHeight(requireActivity()),linHead.paddingRight,linHead.paddingBottom)
-        promotionView.setup(this@MainLeftFragment as BaseFragment<MainHomeViewModel,*>)
+        promotionView.setup(this@MainLeftFragment)
         ivClose.setOnClickListener { close() }
         ivHome.setOnClickListener {
             getMainTabActivity().backMainHome()

@@ -5,9 +5,8 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.HandicapType.NULL
-import org.cxct.sportlottery.repository.ImageType.PROMOTION
+import org.cxct.sportlottery.repository.ImageType.DIALOG_PROMOTION
 import org.cxct.sportlottery.util.KvUtils
-import org.cxct.sportlottery.util.LogUtil
 
 const val FLAG_OPEN = "1"
 const val FLAG_CLOSE = "0"
@@ -23,19 +22,23 @@ enum class TestFlag(val index: Long) { NORMAL(0), GUEST(1), TEST(2) } //是否�
 /**
  * config圖片清單類型
  *
- * @property PROMOTION app端優惠活動彈窗
+ * @property DIALOG_PROMOTION app端優惠活動彈窗
  * @see org.cxct.sportlottery.network.index.config.ConfigData.imageList
  * @see org.cxct.sportlottery.network.index.config.ImageData.imageType
  */
-enum class ImageType(val code: Int) {
-    PROMOTION_LIST(4),
-    PROMOTION(5),
-    DIALOG_HOME(7),
-    DIALOG_SPORT(14),
-    DIALOG_OKGAME(16),
-    DIALOG_OKLIVE(25),
-    DIALOG_OKGAMES_HOME(23),//OKGames包，默认进入棋牌页时候的活动弹窗
-    LOGIN_SUMMARY(20)
+object ImageType {
+    val BANNER_HOME = 2//首页banner
+    val BANNER_OKGAMES = 12//棋牌banner
+    val BANNER_OKLIVE = 18//真人banner
+    val BANNER_NEWS = 27//新闻banner
+    val PROMOTION_LIST = 4
+    val DIALOG_PROMOTION = 5
+    val DIALOG_HOME = 7
+    val DIALOG_SPORT = 14
+    val DIALOG_OKGAME = 16
+    val DIALOG_OKLIVE = 25
+    val DIALOG_OKGAMES_HOME = 23//OKGames包，默认进入棋牌页时候的活动弹窗
+    val LOGIN_SUMMARY = 20
 }
 
 /**
@@ -52,9 +55,7 @@ const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
 const val APP_NAME = "okbet" //okgame的包需要加一些特定的参数
 
-enum class Home() {
-    EU, HK, MY, ID, NULL
-}
+
 enum class HomeGames(val value: String){
     OkSport("pageOKSports"),
     OkGame("pageOKGames"),

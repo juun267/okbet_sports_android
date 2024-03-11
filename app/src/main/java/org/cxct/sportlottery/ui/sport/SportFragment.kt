@@ -6,11 +6,12 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.toBinding
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
+import org.cxct.sportlottery.databinding.HomeCateTabBinding
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -91,7 +92,7 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
     override fun onInitView(view: View) {
         initToolBar()
         initTabLayout()
-        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_SPORT.code)
+        PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_SPORT)
     }
 
     override fun onBindViewStatus(view: View) {
@@ -118,13 +119,14 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
         addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             private fun setTabStyle(tab: TabLayout.Tab, color: Int) {
                 val color = ContextCompat.getColor(context, color)
-                tab.customView!!.tv_number.apply {
+                val binding = tab.customView!!.toBinding<HomeCateTabBinding>()
+                binding.tvNumber.apply {
                     if (tab.isSelected)
                         setTextColor(color)
                     else
                         setTextColor(ContextCompat.getColor(context, R.color.color_000000))
                 }
-                tab.customView!!.tv_title.apply {
+                binding.tvTitle.apply {
                     setTextColor(color)
                 }
             }
@@ -202,14 +204,14 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
             }
         }
 
-        tab.customView?.run {
-            tv_title.text = name
-            tv_number.text = num.toString()
+        tab.customView!!.toBinding<HomeCateTabBinding>().run {
+            tvTitle.text = name
+            tvNumber.text = num.toString()
             ivArrow.isVisible = showArrow
             if(showArrow){
                 todayTabItem = tab
                 todayMenuPop.todayTabItem = todayTabItem
-                (parent as View).setOnTouchListener { _, event ->
+                root.setOnTouchListener { _, event ->
                     if (event.action == MotionEvent.ACTION_DOWN) {
                         if (todayMenuPop.isShowing){
                             todayMenuPop.dismiss()
@@ -223,13 +225,6 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
         }
 
         return@run tab.customView!!
-    }
-    private fun removeTab(name: String) = binding.tabLayout.run {
-        for (index in 0 until tabCount){
-            if(getTabAt(index)?.customView?.tv_title?.text == name){
-                removeTabAt(index)
-            }
-        }
     }
 
     private var currentMatchType: MatchType? = null
@@ -387,7 +382,7 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
             return
         }
 
-        favoriteTab.customView?.tv_number?.text = favoriteCount(favoriteLeagues).toString()
+        favoriteTab.customView!!.toBinding<HomeCateTabBinding>().tvNumber.text = favoriteCount(favoriteLeagues).toString()
         val currentFragment = fragmentHelper.currentFragment()
         if (currentFragment is FavoriteFragment2) {
             currentFragment.setFavoriteData(favoriteLeagues)
@@ -429,23 +424,23 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
        val todayIndex= matchTypeTodayTab.indexOf(matchType)
         if (todayIndex>=0){
             matchTypeTab[todayMatchPosition] = matchTypeTodayTab[todayIndex]
-            todayTabItem?.customView?.apply {
+            todayTabItem?.customView?.toBinding<HomeCateTabBinding>()?.apply {
                 when (matchType){
                     MatchType.TODAY-> {
-                        tv_title.text = getString(R.string.home_tab_today)
-                        tv_number.text = sportMenu?.today?.num.toString()
+                        tvTitle.text = getString(R.string.home_tab_today)
+                        tvNumber.text = sportMenu?.today?.num.toString()
                     }
                     MatchType.AT_START-> {
-                        tv_title.text = getString(R.string.home_tab_at_start)
-                        tv_number.text = sportMenuData?.atStart?.num.toString()
+                        tvTitle.text = getString(R.string.home_tab_at_start)
+                        tvNumber.text = sportMenuData?.atStart?.num.toString()
                     }
                     MatchType.IN12HR-> {
-                        tv_title.text = getString(R.string.P228)
-                        tv_number.text = sportMenuData?.in12hr?.num.toString()
+                        tvTitle.text = getString(R.string.P228)
+                        tvNumber.text = sportMenuData?.in12hr?.num.toString()
                     }
                     MatchType.IN24HR-> {
-                        tv_title.text = getString(R.string.P229)
-                        tv_number.text = sportMenuData?.in24hr?.num.toString()
+                        tvTitle.text = getString(R.string.P229)
+                        tvNumber.text = sportMenuData?.in24hr?.num.toString()
                     }
                 }
             }
