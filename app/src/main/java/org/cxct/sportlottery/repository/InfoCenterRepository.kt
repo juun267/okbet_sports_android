@@ -39,7 +39,6 @@ object InfoCenterRepository {
     val totalReadMsgCount: LiveData<Int>
         get() = _totalReadMsgCount
     private var _totalReadMsgCount = MutableLiveData<Int>()
-    var isLoadMore = false
 
     init {
         ServiceBroadcastReceiver.userNotice.observeForever  {
@@ -67,18 +66,17 @@ object InfoCenterRepository {
                             moreUnreadList.addAll(newUnreadNoticeList)
                         }
 
-                        isLoadMore = infoCenterRequest.page ?: 0 > 1
                         _unreadNoticeList.value = moreUnreadList
-
+                        it.page = infoCenterRequest.page
                         _totalUnreadMsgCount.postValue(it.total ?: 0)
                     }
                 }
                 MsgType.NOTICE_READED.code -> {
                     response.body().let {
-                        isLoadMore = infoCenterRequest.page ?: 0 > 1
                         _readedList.postValue(it?.infoCenterData?.filter { infoCenterData ->
                             infoCenterData.isRead.toString() == MsgType.NOTICE_READED.code.toString()
                         })
+                        it?.page = infoCenterRequest.page
                         _totalReadMsgCount.postValue(it?.total?:0)
                     }
                 }
@@ -145,6 +143,7 @@ object InfoCenterRepository {
 
         if (noticeList.isNullOrEmpty()) {
             _unreadNoticeList.postValue(unreadUserNoticeList)
+            _totalUnreadMsgCount.postValue(unreadUserNoticeList.size)
             return
         }
 
@@ -155,10 +154,12 @@ object InfoCenterRepository {
         }
 
         _unreadNoticeList.postValue(noticeList!!)
+        _totalUnreadMsgCount.postValue(noticeList.size)
     }
 
     fun clear() {
         _unreadNoticeList.postValue(listOf())
+        _totalUnreadMsgCount.postValue(0)
     }
 
     fun clearList() {

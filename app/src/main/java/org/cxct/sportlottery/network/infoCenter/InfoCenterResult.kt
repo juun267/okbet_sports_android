@@ -16,4 +16,6 @@ data class InfoCenterResult(
     val infoCenterData: MutableList<InfoCenterData>?,
     @Json(name = "total")
     val total: Int?
-) : BaseResult()
+) : BaseResult(){
+    var page: Int? = 0
+}
