@@ -342,7 +342,6 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
         todayMenuPosition = matchTypeTodayTab.indexOf(matchType)
 
         if (isAdded) {
-            viewModel.getSportMenuData(true)
             if (todayMenuPosition >= 0){
                 todayMenuPop.lastSelectPosition = todayMenuPosition
             }
