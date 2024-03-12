@@ -450,7 +450,7 @@ abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewMod
      * 通过父fragment来加载sport/menu 接口数据
      */
     protected fun getMenuDataByParent(isESportType: Boolean=false ){
-        SportRepository._sportMenuResultEvent.value?.let { viewModel.loadSportMenu(it, matchType, isESportType = isESportType) }
+        SportRepository.sportMenuResultEvent.value?.let { viewModel.loadSportMenu(it, matchType, isESportType = isESportType) }
     }
 
 
