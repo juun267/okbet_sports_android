@@ -72,10 +72,9 @@ object UpdateConfig {
             appMinVersionState.version,
             appMinVersionState.checkAppVersionResult)
             .apply {
-                arguments = Bundle().apply { put("apkPath",apkFilePath)
-                    onDismissListener = {
-                        appDownloadDialog = null
-                    }
+                arguments = Bundle().apply { put("apkPath",apkFilePath) }
+                onDismissListener  = {
+                    appDownloadDialog = null
                 }
             }
     }
