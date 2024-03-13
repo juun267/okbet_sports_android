@@ -146,7 +146,7 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
 
         val okGamesHall = OKGamesViewModel.okGamesHall
         if (okGamesHall == null || !setData(okGamesHall.first)) {
-            showLoadingView()
+//            showLoadingView()
             if (okGamesHall != null && okGamesHall.second - System.currentTimeMillis() > 10_000) {
                 viewModel.getOKGamesHall()
             }
@@ -155,7 +155,7 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
 
     private fun initObserver() {
         viewModel.gameHall.observe(viewLifecycleOwner) {
-            hideLoadingView()
+//            hideLoadingView()
             setData(it)
         }
     }
