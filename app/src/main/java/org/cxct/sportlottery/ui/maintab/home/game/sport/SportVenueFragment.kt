@@ -39,7 +39,7 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
         if(matchTabAdapter.itemCount == 0) {
             val apiReult = viewModel.sportMenuResult.value?.getData()
             if (apiReult == null) {
-                showLoadingView()
+//                showLoadingView()
             } else {
                 onMenuResult(apiReult)
             }
