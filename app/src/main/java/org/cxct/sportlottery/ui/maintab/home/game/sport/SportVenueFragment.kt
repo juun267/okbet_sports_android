@@ -49,7 +49,7 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
 
     private fun initObserver() {
         viewModel.sportMenuResult.observe(viewLifecycleOwner) {
-            hideLoadingView()
+//            hideLoadingView()
             it.getData()?.let { onMenuResult(it) }
         }
     }

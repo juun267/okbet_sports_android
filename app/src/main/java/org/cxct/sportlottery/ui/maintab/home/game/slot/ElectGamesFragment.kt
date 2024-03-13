@@ -155,7 +155,7 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
 
     private fun initObserver() {
         viewModel.gameHall.observe(viewLifecycleOwner) {
-            hideLoadingView()
+//            hideLoadingView()
             setData(it)
         }
     }
