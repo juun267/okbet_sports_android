@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
@@ -67,12 +68,12 @@ object UpdateConfig {
             })
     }
     fun initAppDownloadDialog(appMinVersionState: AppMinVersionState,apkFilePath: String){
-        appDownloadDialog = AppDownloadDialog(
+        appDownloadDialog = AppDownloadDialog.newInstance(
             appMinVersionState.isForceUpdate,
             appMinVersionState.version,
-            appMinVersionState.checkAppVersionResult)
+            appMinVersionState.checkAppVersionResult,
+            apkFilePath)
             .apply {
-                arguments = Bundle().apply { put("apkPath",apkFilePath) }
                 onDismissListener  = {
                     appDownloadDialog = null
                 }
@@ -83,14 +84,11 @@ object UpdateConfig {
         val activity = AppManager.currentActivity() as FragmentActivity
         appDownloadDialog?.show(activity.supportFragmentManager)
     }
-    fun runShowUpdateDialog(runnable: ()->Unit){
+    fun runShowUpdateDialog(activity: Class<out Activity>,runnable: ()->Unit){
         if (appDownloadDialog==null){
             runnable.invoke()
-            return
-        }
-        appDownloadDialog?.dismissRun = runnable
-        if (appDownloadDialog?.isAdded==false){
-            showAppDownloadDialog()
+        }else{
+            appDownloadDialog?.arguments?.putSerializable("activity",activity)
         }
     }
     class CustomDownloaderParser: DefaultUpdateDownloader(){

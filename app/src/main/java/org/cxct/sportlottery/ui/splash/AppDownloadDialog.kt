@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.ui.splash
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -20,15 +22,26 @@ import org.cxct.sportlottery.util.*
 import java.io.File
 
 
-class AppDownloadDialog(
-    private val mIsForce: Boolean,
-    private val mLastVersion: String,
-    private val checkAppVersionResult: CheckAppVersionResult?,
-) : BaseDialog<BaseViewModel,DialogAppDownloadBinding>() {
+class AppDownloadDialog: BaseDialog<BaseViewModel,DialogAppDownloadBinding>() {
 
-    var dismissRun: (()->Unit)? =null
-
+    companion object{
+        fun newInstance(mIsForce: Boolean,mLastVersion: String,checkAppVersionResult: CheckAppVersionResult?,apkFilePath: String)= AppDownloadDialog().apply{
+            arguments = Bundle().apply {
+                putBoolean("mIsForce",mIsForce)
+                putString("mLastVersion",mLastVersion)
+                putParcelable("checkAppVersionResult",checkAppVersionResult)
+                putString("apkPath",apkFilePath)
+            }
+        }
+    }
+    private val mIsForce by lazy { requireArguments().getBoolean("mIsForce") }
+    private val mLastVersion by lazy { requireArguments().getString("mLastVersion")!! }
+    private val checkAppVersionResult by lazy { requireArguments().getParcelable<CheckAppVersionResult>("checkAppVersionResult") }
     private val apkPath by lazy { arguments?.getString("apkPath") }
+
+    interface OnJumpToNextListener{
+        fun onJump(clazz: Class<out Activity>)
+    }
 
     override fun onInitView()=binding.run {
         isCancelable = false
@@ -37,7 +50,10 @@ class AppDownloadDialog(
         btnCancel.visibility = if (mIsForce) View.GONE else View.VISIBLE
         btnCancel.setOnClickListener {
             dismiss()
-            dismissRun?.invoke()
+            val clazz = requireArguments().getSerializable("activity") as? Class<out Activity>
+            clazz?.let {
+                (requireActivity() as? OnJumpToNextListener)?.onJump(clazz)
+            }
         }
             if (apkPath.isNullOrEmpty())
                 btnDownload.text = MultiLanguagesApplication.stringOf(R.string.update)
@@ -106,10 +122,4 @@ class AppDownloadDialog(
             }
         }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        var isShowing = false
-    }
-
 }

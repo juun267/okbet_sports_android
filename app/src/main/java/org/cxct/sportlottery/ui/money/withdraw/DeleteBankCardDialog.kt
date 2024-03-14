@@ -11,6 +11,7 @@ import org.cxct.sportlottery.databinding.DialogDeleteBankcardBinding
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.CountDownUtil
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.util.showCaptchaDialog
@@ -29,6 +30,9 @@ class DeleteBankCardDialog: BaseDialog<WithdrawViewModel,DialogDeleteBankcardBin
                 put("phoneNo",phoneNo)
             }
         }
+    }
+    init {
+        marginHorizontal=20.dp
     }
     private val phoneNo by lazy { requireArguments().getString("phoneNo")!! }
     private var countDownGoing = false

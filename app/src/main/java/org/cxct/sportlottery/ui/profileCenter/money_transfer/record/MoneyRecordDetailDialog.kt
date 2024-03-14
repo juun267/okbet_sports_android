@@ -20,7 +20,6 @@ class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel,DialogMoneyTra
         }
     }
     init {
-        setStyle(R.style.CustomDialogStyle)
         marginHorizontal = 40.dp
     }
     private val data by  lazy { requireArguments().getParcelable<Row>("data")!! }
