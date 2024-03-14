@@ -8,7 +8,6 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivitySplashBinding
-import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -20,6 +19,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.UpdateConfig.runShowUpdateDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.system.exitProcess
@@ -63,22 +63,28 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
 
 
     private fun goHomePage() {
-        startActivity(Intent(this@SplashActivity, MainTabActivity::class.java))
-        finish()
-    }
-
-
-    private fun goMaintenancePage() {
-        postDelayed(getSplashTime()){
-            startActivity(Intent(this@SplashActivity, MaintenanceActivity::class.java))
+        runShowUpdateDialog{
+            startActivity(Intent(this@SplashActivity, MainTabActivity::class.java))
             finish()
         }
     }
 
+
+    private fun goMaintenancePage() {
+        runShowUpdateDialog {
+            postDelayed(getSplashTime()) {
+                startActivity(Intent(this@SplashActivity, MaintenanceActivity::class.java))
+                finish()
+            }
+        }
+    }
+
     private  fun sendToLaunch(flag:Boolean,imageUrls:ArrayList<String>){
-        postDelayed(getSplashTime()){
-            LaunchActivity.start(this, flag, imageUrls =imageUrls)
-            finish()
+        runShowUpdateDialog {
+            postDelayed(getSplashTime()) {
+                LaunchActivity.start(this, flag, imageUrls = imageUrls)
+                finish()
+            }
         }
     }
 
@@ -161,10 +167,10 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
         }
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
-            if (it.isForceUpdate || it.isShowUpdateDialog)
-                showAppDownloadDialog(it.isForceUpdate, it.version, it.checkAppVersionResult)
-            else
-                viewModel.goNextPage()
+            if (it.isForceUpdate || it.isShowUpdateDialog) {
+                UpdateConfig.download(this,it)
+            }
+            viewModel.goNextPage()
         }
 
         viewModel.skipHomePage.observe(this) {
@@ -195,31 +201,6 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
         }
     }
 
-    //提示APP更新對話框
-    private fun showAppDownloadDialog(
-        isForceUpdate: Boolean,
-        lastVersion: String,
-        checkAppVersionResult: CheckAppVersionResult?,
-    ) {
-        AppDownloadDialog(
-            isForceUpdate,
-            lastVersion,
-            checkAppVersionResult,
-            object : AppDownloadDialog.OnDownloadCallBack {
-                override fun onDownloadError() {
-                    startActivity(Intent(this@SplashActivity, SplashActivity::class.java))
-                    finish()
-                }
-
-                override fun goHomeActivity() {
-                    mVersionUpdateViewModel.lastShowUpdateTime =
-                        System.currentTimeMillis() //點擊取消 => 記錄此次提醒時間
-                    viewModel.goNextPage()
-                }
-
-            }).show(supportFragmentManager)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         hideLoading()
@@ -244,8 +225,8 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
     }
 
     private var isSkiped = false
-    override fun startActivity(intent: Intent) {
-        if (!isSkiped && intent.component?.packageName == packageName) {
+    override fun startActivity(intent: Intent?) {
+        if (!isSkiped && intent?.component?.packageName == packageName) {
             isSkiped = true
         }
         if(!isStoped) {
