@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.promotion
 
+import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -10,12 +11,21 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.RefreshHelper
 import org.cxct.sportlottery.view.BetEmptyView
+import splitties.bundle.put
 
-class RewardHistoryDialog(val activityId: String): BaseDialog<MainHomeViewModel,DialogRewardHistoryBinding>() {
+class RewardHistoryDialog: BaseDialog<MainHomeViewModel,DialogRewardHistoryBinding>() {
 
+    companion object{
+        fun newInstance(activityId: String)=RewardHistoryDialog().apply {
+            arguments = Bundle().apply {
+              put("activityId",activityId)
+            }
+        }
+    }
     init {
         setStyle(R.style.FullScreen)
     }
+    private val activityId by lazy { requireArguments().getString("activityId")!! }
     private val adapter by lazy { RewardHistoryAdapter(activityId) }
     private val refreshHelper by lazy { RefreshHelper.of(binding.rvRecord, this, false) }
     private var currentPage: Int = 1
@@ -52,18 +62,14 @@ class RewardHistoryDialog(val activityId: String): BaseDialog<MainHomeViewModel,
             totalCount = it.totalCount
             val datas = it.data
             if(datas.isNullOrEmpty()){
-                refreshHelper.finishLoadMoreWithNoMoreData()
+                refreshHelper.finishLoadMore()
             }else{
                 if (currentPage==1){
                     adapter.setList(datas)
                 }else{
                     adapter.addData(datas)
                 }
-                if (adapter.itemCount<totalCount) {
-                    refreshHelper.finishLoadMore()
-                }else{
-                    refreshHelper.finishLoadMoreWithNoMoreData()
-                }
+                refreshHelper.setLoadMoreEnable(adapter.itemCount<totalCount)
             }
         }
     }

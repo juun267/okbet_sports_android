@@ -37,7 +37,7 @@
 
     <!--＊＊設定layout_gravity會導致NestedScrollView內的RecyclerView item移位-->
 
-    <style name="CustomDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="CustomDialogStyle" parent="Theme.AppCompat.Dialog">
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:gravity">center</item>

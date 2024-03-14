@@ -11,7 +11,7 @@ import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
 import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
 
-class AgeVerifyDialog(val onConfirm: ()->Unit,val onExit: ()->Unit) : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
+class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
 
     init {
         setStyle(R.style.FullScreen)
@@ -23,6 +23,7 @@ class AgeVerifyDialog(val onConfirm: ()->Unit,val onExit: ()->Unit) : BaseDialog
                 field = value
                 KvUtils.put("isAgeVerifyNeedShow",value)
              }
+        fun newInstance() = AgeVerifyDialog()
 
         fun buildAgeVerifyDialog(priority: Int, fm: () -> FragmentManager): PriorityDialog? {
             if (!isAgeVerifyNeedShow) {
@@ -33,7 +34,7 @@ class AgeVerifyDialog(val onConfirm: ()->Unit,val onExit: ()->Unit) : BaseDialog
             return object : BasePriorityDialog<AgeVerifyDialog>() {
                 override fun getFragmentManager() = fm.invoke()
                 override fun priority() = priority
-                override fun createDialog() = AgeVerifyDialog(onConfirm = {}, onExit = {})
+                override fun createDialog() = AgeVerifyDialog.newInstance()
             }
         }
     }
@@ -41,11 +42,9 @@ class AgeVerifyDialog(val onConfirm: ()->Unit,val onExit: ()->Unit) : BaseDialog
     override fun onInitView() {
         binding.btnConfirm.setOnClickListener {
             dismiss()
-            onConfirm.invoke()
         }
         binding.btnExit.setOnClickListener {
             dismiss()
-            onExit.invoke()
         }
     }
 

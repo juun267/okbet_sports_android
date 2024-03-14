@@ -25,8 +25,7 @@ import org.cxct.sportlottery.util.ScreenUtil
 import java.lang.ref.WeakReference
 import java.util.*
 
-class RedEnvelopeReceiveDialog(
-) : BaseDialog<RedEnveLopeModel,FragmentRedEnvelopeReceiveBinding>() {
+class RedEnvelopeReceiveDialog: BaseDialog<RedEnveLopeModel,FragmentRedEnvelopeReceiveBinding>() {
 
     init {
         setStyle(R.style.FullScreen)

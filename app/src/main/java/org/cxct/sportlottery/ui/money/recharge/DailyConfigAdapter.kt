@@ -20,7 +20,7 @@ class DailyConfigAdapter(val onSelectedItem: (DailyConfig)->Unit): BindingAdapte
         }
         tvRewardTC.setOnClickListener {
             (context as? AppCompatActivity)?.let { it1 ->
-                FirstDepositNoticeDialog(item.content).show(it1.supportFragmentManager)
+                FirstDepositNoticeDialog.newInstance(item.content).show(it1.supportFragmentManager)
             }
         }
         linChooseReward.isSelected = selectPos ==position
