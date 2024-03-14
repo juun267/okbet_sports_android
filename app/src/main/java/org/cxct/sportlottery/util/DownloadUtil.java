@@ -110,7 +110,7 @@ public class DownloadUtil {
      * 从下载连接中解析出文件名
      */
     @NonNull
-    private String getNameFromUrl(String url) {
+    public static String getNameFromUrl(String url) {
         return url.substring(url.lastIndexOf("/") + 1);
     }
     private String getNameFromTimestamp(String url) {
