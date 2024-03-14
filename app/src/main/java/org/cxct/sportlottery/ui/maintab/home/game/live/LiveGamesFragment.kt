@@ -32,7 +32,7 @@ class LiveGamesFragment: ElectGamesFragment<OKGamesViewModel, FragmentGamevenueB
         }
         val okLiveGamesHall = OKGamesViewModel.okLiveGamesHall
         if (okLiveGamesHall == null || !setData(okLiveGamesHall.first)) {
-            showLoadingView()
+//            showLoadingView()
             if (okLiveGamesHall != null && okLiveGamesHall.second - System.currentTimeMillis() > 10_000) {
                 viewModel.getOKLiveHall()
             }

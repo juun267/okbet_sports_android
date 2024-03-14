@@ -23,19 +23,19 @@ abstract class GameVenueFragment<VM : BaseViewModel, VB>: BaseFragment<VM, Fragm
     }
 
     fun getMainTabActivity() = activity as MainTabActivity?
-    protected val loadingHolder by lazy { Gloading.wrapView(binding.root) }
+//    protected val loadingHolder by lazy { Gloading.wrapView(binding.root) }
 
-    protected fun showLoadingView() = loadingHolder.showLoading()
-    protected fun hideLoadingView() = loadingHolder.showLoadSuccess()
+//    protected fun showLoadingView() = loadingHolder.showLoading()
+//    protected fun hideLoadingView() = loadingHolder.showLoadSuccess()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        return loadingHolder.wrapper
-    }
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        super.onCreateView(inflater, container, savedInstanceState)
+//        return loadingHolder.wrapper
+//    }
 
     override fun onInitView(view: View) {
         binding.rvcGameType.setLinearLayoutManager()

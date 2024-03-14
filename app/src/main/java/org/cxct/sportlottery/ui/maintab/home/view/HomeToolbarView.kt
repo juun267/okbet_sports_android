@@ -218,8 +218,8 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
                 it?.let { bindMoneyText(it) }
             }
 
-            InfoCenterRepository.unreadNoticeList.observe(fragment) {
-                mailsNum = it.size
+            InfoCenterRepository.totalUnreadMsgCount.observe(fragment) {
+                mailsNum = it
                 updateMailsIcon()
             }
         }

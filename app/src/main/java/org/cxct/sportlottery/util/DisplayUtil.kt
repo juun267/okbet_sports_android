@@ -17,4 +17,9 @@ object DisplayUtil {
         get() = (this / MultiLanguagesApplication.appContext.resources.displayMetrics.density)
     val Float.dp: Int
         get() = (this * MultiLanguagesApplication.appContext.resources.displayMetrics.density).toInt()
+
+    val screenWith: Int
+        get() =  MultiLanguagesApplication.appContext.resources.displayMetrics.widthPixels
+    val screenHeight: Int
+        get() =  MultiLanguagesApplication.appContext.resources.displayMetrics.heightPixels
 }
