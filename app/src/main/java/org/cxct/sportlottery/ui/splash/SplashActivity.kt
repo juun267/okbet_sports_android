@@ -178,6 +178,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>(),
     override fun onDestroy() {
         super.onDestroy()
         hideLoading()
+
     }
     override fun onBackPressed() {
         super.onBackPressed()

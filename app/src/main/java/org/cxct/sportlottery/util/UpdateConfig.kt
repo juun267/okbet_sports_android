@@ -72,8 +72,7 @@ object UpdateConfig {
             appMinVersionState.isForceUpdate,
             appMinVersionState.version,
             appMinVersionState.checkAppVersionResult,
-            apkFilePath)
-            .apply {
+            apkFilePath)?.apply {
                 onDismissListener  = {
                     appDownloadDialog = null
                 }

@@ -25,14 +25,20 @@ import java.io.File
 class AppDownloadDialog: BaseDialog<BaseViewModel,DialogAppDownloadBinding>() {
 
     companion object{
-        fun newInstance(mIsForce: Boolean,mLastVersion: String,checkAppVersionResult: CheckAppVersionResult?,apkFilePath: String)= AppDownloadDialog().apply{
-            arguments = Bundle().apply {
-                putBoolean("mIsForce",mIsForce)
-                putString("mLastVersion",mLastVersion)
-                putParcelable("checkAppVersionResult",checkAppVersionResult)
-                putString("apkPath",apkFilePath)
-            }
+        /**
+         * 控制只显示一次，避免系统恢复页面时，出现两个弹窗
+         */
+        private var firstShow = true
+        fun newInstance(mIsForce: Boolean,mLastVersion: String,checkAppVersionResult: CheckAppVersionResult?,apkFilePath: String)=
+            if (firstShow) AppDownloadDialog().apply{
+                arguments = Bundle().apply {
+                    putBoolean("mIsForce",mIsForce)
+                    putString("mLastVersion",mLastVersion)
+                    putParcelable("checkAppVersionResult",checkAppVersionResult)
+                    putString("apkPath",apkFilePath)
+                }
         }
+        else null
     }
     private val mIsForce by lazy { requireArguments().getBoolean("mIsForce") }
     private val mLastVersion by lazy { requireArguments().getString("mLastVersion")!! }
@@ -44,6 +50,7 @@ class AppDownloadDialog: BaseDialog<BaseViewModel,DialogAppDownloadBinding>() {
     }
 
     override fun onInitView()=binding.run {
+        firstShow = false
         isCancelable = false
         tvTitle.text = MultiLanguagesApplication.stringOf(R.string.find_new_version)
         btnCancel.text = MultiLanguagesApplication.stringOf(R.string.btn_pass)
