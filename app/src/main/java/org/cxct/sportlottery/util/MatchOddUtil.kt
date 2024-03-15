@@ -6,6 +6,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
+import timber.log.Timber
 import java.math.RoundingMode
 
 object MatchOddUtil {
@@ -18,6 +19,7 @@ object MatchOddUtil {
         matchInfo: MatchInfo,
         odd: Odd,
     ): MatchOdd? {
+        Timber.d(odd.nextScore+","+odd.replaceScore)
         matchInfo.id.let { matchId ->
             odd.id?.let { oddsId ->
                 odd.odds?.let { odds ->
@@ -60,6 +62,8 @@ object MatchOddUtil {
                             homeCornerKicks = matchInfo.homeCornerKicks
                             awayCornerKicks = matchInfo.awayCornerKicks
                             categoryCode = matchInfo.categoryCode
+                            nextScore = odd.nextScore
+                            replaceScore = odd.replaceScore
                         }
 
                     }

@@ -235,7 +235,7 @@ class OddButtonPagerAdapter2(val context: Context,
      * 冒號後面的分數整理 需要取代翻譯的 {S}
      * FT: NOGAL(下個進球) 玩法需特殊處理
      * */
-    private fun Map<String, List<Odd?>?>.sortScores(): Map<String, List<Odd?>?> {
+     fun Map<String, List<Odd?>?>.sortScores(): Map<String, List<Odd?>?> {
 
         val rgzMap = this.filter { (key, _) -> key.contains(":") }
         if (rgzMap.isEmpty()) {
