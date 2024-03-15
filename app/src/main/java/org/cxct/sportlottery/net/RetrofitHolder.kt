@@ -48,7 +48,7 @@ object RetrofitHolder {
             .build()
     }
 
-    private val chatRrofit by lazy {
+    private val chatRetrofit by lazy {
         val httpClient = getHttpClient { builder ->
             builder.addInterceptor(RequestInterceptor(getContext()) { ChatRepository.chatToken })
             chatUrlManager.with(builder)
@@ -104,7 +104,7 @@ object RetrofitHolder {
     }
 
     fun <T> createChatApiService(service: Class<T>): T {
-        return chatRrofit.create(service)
+        return chatRetrofit.create(service)
     }
 
     fun <T> createSignApiService(service: Class<T>): T {

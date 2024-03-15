@@ -50,11 +50,8 @@ class VersionUpdateViewModel(
 
 
     //獲取 版本更新 API url，當 call API 失敗時，就使用下一順位的 serverUrl，重新 request，直到遍歷 ServerUrlList，或成功獲取 checkAppUpdate() 即停止
-    private var mServerUrlIndex = 0
-
     fun checkAppMinVersion() {
         viewModelScope.launch(Dispatchers.IO) {
-            mServerUrlIndex = 0
             check {
                 compareMinVersion(it)
             }
@@ -76,7 +73,8 @@ class VersionUpdateViewModel(
                         return@launch
                     }
 
-                    val response = OneBoSportApi.appUpdateService.checkAppVersion(url)
+                    // #url_ignore  告诉RetrofitUrlManager不要自动替换host
+                    val response = OneBoSportApi.appUpdateService.checkAppVersion("$url#url_ignore")
                     val result = response.body()
 
                     serverUrlStatusMap[serverUrl] = true //標記該伺服器已檢查過
