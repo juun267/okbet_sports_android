@@ -97,7 +97,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimit
                 binding.tvError.visibility = View.GONE
             }
 
-            binding.btnConfirm.isEnabled = !showError
+            binding.btnConfirm.isEnabled = !showError && binding.etFrozeDay.text.isNotEmpty()
         }
 
         viewModel.frozeResult.observe(viewLifecycleOwner) {
