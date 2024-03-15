@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.record
 
 
-import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,9 +34,7 @@ class MoneyTransferRecordFragment : BaseFragment<MoneyTransferViewModel,Fragment
 
     private val rvAdapter by lazy {
         MoneyTransferRecordAdapter(ItemClickListener {
-            val detailDialog = MoneyRecordDetailDialog()
-            detailDialog.arguments = Bundle().apply { putParcelable("data", it) }
-            detailDialog.show(parentFragmentManager, null)
+            MoneyRecordDetailDialog.newInstance(it).show(parentFragmentManager)
         })
     }
 

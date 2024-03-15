@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.chat
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -8,11 +9,13 @@ import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hide
+import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.DialogChatRedEnpBinding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.chat.bean.PacketListener
 import org.cxct.sportlottery.util.*
 
 /**
@@ -22,35 +25,30 @@ import org.cxct.sportlottery.util.*
  * 聊天室紅包彈窗
  * */
 
-class RedPacketDialog(
-    var packetClickListener: PacketListener,
-    var packetId: String,
-    var packetType: Int,
-) : BaseDialog<BaseViewModel,DialogChatRedEnpBinding>() {
+class RedPacketDialog : BaseDialog<BaseViewModel,DialogChatRedEnpBinding>() {
 
-
+    companion object{
+        fun newInstance(packetClickListener: PacketListener, packetId: String, packetType: Int)= RedPacketDialog().apply {
+            arguments = Bundle().apply {
+                putParcelable("packetClickListener",packetClickListener)
+                putString("packetId",packetId)
+                putInt("packetType",packetType)
+            }
+        }
+    }
     enum class PacketType(val code: Int) {
         PW_PACKET(5) //口令紅包
-    }
-
-    class PacketListener(
-        private val onClickListener: (packetId: Int, watchWord: String) -> Unit,
-        private val onCancelListener: () -> Unit,
-        private val onCompleteListener: (packetId: String) -> Unit,
-        private val goRegisterPageListener: () -> Unit,
-    ) {
-        fun onClick(packetId: Int, watchWord: String) = onClickListener(packetId, watchWord)
-        fun onCancel() = onCancelListener()
-        fun onComplete(packetId: String) = onCompleteListener(packetId)
-        fun goRegisterPage() = goRegisterPageListener()
     }
 
     //是否登入
     private val isLogin: Boolean
         get() = LoginRepository.isLogin.value == true
 
+    private val packetId by lazy { requireArguments().getString("packetId")!! }
+    private val packetType by lazy { requireArguments().getInt("packetType") }
+    private val packetClickListener by lazy { requireArguments().getParcelable<PacketListener>("packetClickListener")!! }
     init {
-        setStyle(R.style.CustomDialogStyle)
+        setStyle(R.style.FullScreen)
     }
 
 
@@ -64,7 +62,7 @@ class RedPacketDialog(
         flipIn.repeatCount = Animation.INFINITE
         flipIn.interpolator = LinearInterpolator()
 
-        binding.btnClose.setOnClickListener {
+        setOnClickListeners(binding.root,binding.btnClose) {
             dismiss()
         }
     }

@@ -189,41 +189,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        WinsDialog(adapter.getItem(position) as RecordNewEvent) { betRecode ->
-            if (!betRecode.isSportBet()) {
-                val okGameBean = OKGameBean(
-                    id = 0,
-                    firmId = 0,
-                    firmCode = betRecode.gameCode,
-                    firmType = betRecode.firmType,
-                    firmName = betRecode.games,
-                    gameName = betRecode.games,
-                    gameCode = betRecode.gameCode,
-                    gameType = betRecode.firmType,
-                    gameEntryTagName = null,
-                    imgGame = betRecode.h5ImgGame ,
-                    thirdGameCategory = null,
-                    markCollect = false,
-                    maintain = 0,
-                    jackpotAmount = 0.0,
-                    jackpotOpen = 0,
-                    gameEntryType = betRecode.gameEntryType,
-                )
-                RecentDataManager.addRecent(RecentRecord(1, gameBean = okGameBean))
-                enterGame(betRecode)
-                return@WinsDialog
-            }
-            val activity = fragment.activity
-            if (activity is MainTabActivity) {
-                if ("ES".equals(betRecode.firmType, true)) {
-                    activity.jumpToESport()
-                } else {
-                    GameType.getGameType(betRecode.firmType)?.let { activity.jumpToSport(it) }
-                }
-
-            }
-
-        }.show((context as AppCompatActivity).supportFragmentManager)
+        WinsDialog.newInstance(adapter.getItem(position) as RecordNewEvent).show((context as AppCompatActivity).supportFragmentManager)
     }
 
     private fun enterGame(recordNewEvent: RecordNewEvent) {

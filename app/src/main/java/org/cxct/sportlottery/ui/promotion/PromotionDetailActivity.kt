@@ -125,7 +125,7 @@ class PromotionDetailActivity :
             }
             linHistory.show()
             linHistory.setOnClickListener {
-               RewardHistoryDialog(activityDetail.activityId).show(supportFragmentManager,null)
+               RewardHistoryDialog.newInstance(activityDetail.activityId).show(supportFragmentManager,null)
             }
             if (activityDetail.reward == 0.0) {
                 linApply.isEnabled = false

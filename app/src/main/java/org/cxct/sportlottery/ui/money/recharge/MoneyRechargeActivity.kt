@@ -117,11 +117,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                 }
             } else {
                 //顯示成功彈窗
-                val moneySubmitDialog = MoneySubmitDialog(
+                MoneySubmitDialog.newInstance(
                     payWay,
                     (apiResult.result ?: 0).toString(),
-                )
-                moneySubmitDialog.show(supportFragmentManager)
+                ).show(supportFragmentManager)
             }
         })
         //轉帳支付 - 虛擬幣
@@ -143,11 +142,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                 }
             } else {
                 //顯示成功彈窗
-                val moneySubmitDialog = MoneySubmitDialog(
+                MoneySubmitDialog.newInstance(
                     payWay,
                     (cryptoResult.result ?: 0).toString()
-                )
-                moneySubmitDialog.show(supportFragmentManager)
+                ).show(supportFragmentManager)
             }
         })
 
@@ -156,13 +154,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
             val payWay = this.getString(R.string.recharge_channel_online)
 
             //顯示成功彈窗
-            val moneySubmitDialog = MoneySubmitDialog(
+            MoneySubmitDialog.newInstance(
                 payWay,
                 it.toString()
-            )
-
-            moneySubmitDialog.show(supportFragmentManager)
-            moneySubmitDialog.dialog?.setCanceledOnTouchOutside(true)
+            ).show(supportFragmentManager)
         })
 
         //在線支付 - 虛擬幣
@@ -170,13 +165,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
             val payWay = this.getString(R.string.recharge_channel_online)
 
             //顯示成功彈窗
-            val moneySubmitDialog = MoneySubmitDialog(
+            MoneySubmitDialog.newInstance(
                 payWay,
                 it.toString()
-            )
-
-            moneySubmitDialog.show(supportFragmentManager)
-            moneySubmitDialog.dialog?.setCanceledOnTouchOutside(true)
+            ).show(supportFragmentManager)
         })
     }
 

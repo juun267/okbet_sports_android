@@ -5,6 +5,7 @@ import org.cxct.sportlottery.databinding.DialogLogRechargeDetailBinding
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.finance.df.Status
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import kotlin.math.abs
 
@@ -13,7 +14,7 @@ import kotlin.math.abs
  */
 class RechargeLogDetailDialog : BaseDialog<FinanceViewModel,DialogLogRechargeDetailBinding>() {
     init {
-        setStyle(R.style.CustomDialogStyle)
+        marginHorizontal = 40.dp
     }
 
     override fun onInitView()=binding.run {

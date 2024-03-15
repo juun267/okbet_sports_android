@@ -61,7 +61,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimitBe
     override fun onClick(v: View?) {
         when (v) {
             binding.llImportant -> {
-              SelfLimitFrozeImportantDialog().apply { arguments = Bundle().apply { putBoolean("isBet", true) } }.show(childFragmentManager)
+              SelfLimitFrozeImportantDialog.newInstance(true).show(childFragmentManager)
             }
             binding.btnConfirm -> {
                 submit()

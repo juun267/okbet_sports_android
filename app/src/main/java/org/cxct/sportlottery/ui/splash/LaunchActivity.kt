@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.splash
 
-import android.content.Context
 import android.content.Intent
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -18,12 +17,16 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.databinding.ActivityLaunchBinding
+import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.util.KvUtils
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.getMarketSwitch
 
 
 /**
@@ -31,25 +34,25 @@ import org.cxct.sportlottery.util.KvUtils
  */
 class LaunchActivity : BaseActivity<SplashViewModel, ActivityLaunchBinding>() {
 
-    private val skipHomePage by lazy { intent.getBooleanExtra("skipHomePage", true) }
-    private val imageUrls by lazy { intent.getSerializableExtra("imageUrls") as ArrayList<String> }
     private val isFirstOpen by lazy { KvUtils.decodeBooleanTure("isFirstOpen", true) }
     private val delayTime by lazy { (sConfigData?.carouselInterval?.toIntS(3) ?: 3) * 1000L }
     private var isClickSkip = false
-
-    companion object {
-        fun start(context: Context, skipHomePage: Boolean, imageUrls: ArrayList<String>) {
-            context.startActivity(Intent(context, LaunchActivity::class.java).apply {
-                putExtra("skipHomePage", skipHomePage)
-                putExtra("imageUrls", imageUrls)
-            })
-        }
+    private val imageUrls by lazy { sConfigData?.imageList?.filter {
+        it.imageType == ImageType.BANNER_LAUNCH
+                && it.lang == LanguageManager.getSelectLanguage(this).key
+                && !it.imageName1.isNullOrEmpty()
+                && it.startType == (if (KvUtils.decodeBooleanTure("isFirstOpen", true)
+            && !(getMarketSwitch() && it.isHidden)
+        ) 0 else 1)
     }
+        ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+        ?.map {
+            it.imageName1!!
+        }?: listOf() }
 
     override fun onInitView(){
         ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
             .fitsSystemWindows(false).init()
-
         setupBanner()
         binding.tvSkip.apply {
             isVisible = !isFirstOpen
@@ -59,9 +62,13 @@ class LaunchActivity : BaseActivity<SplashViewModel, ActivityLaunchBinding>() {
             }
         }
         KvUtils.put("isFirstOpen", false)
+        if (imageUrls.isNullOrEmpty()){
+            startNow()
+        }
     }
 
     private fun setupBanner() {
+
         val requestOptions =
             RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).dontTransform()
         (binding.banner as Banner<String, BannerImageAdapter<String>>).setAdapter(object :

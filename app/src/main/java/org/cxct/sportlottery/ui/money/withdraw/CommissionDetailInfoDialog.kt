@@ -1,16 +1,15 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogCommissionDetailInfoBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class CommissionDetailInfoDialog : BaseDialog<BaseViewModel,DialogCommissionDetailInfoBinding>() {
 
     init {
-        setStyle(R.style.CustomDialogStyle)
+        marginHorizontal = 20.dp
     }
-
     override fun onInitView() {
         initButton()
     }

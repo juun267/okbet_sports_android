@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.chat
 
+import android.os.Bundle
+import android.os.Parcelable
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,20 +13,28 @@ import org.cxct.sportlottery.databinding.ItemChatRedEnvelopeBinding
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.MetricsUtil
 
 /**
  * 聊天室搶紅包列表彈窗
  */
 
-class RedEnvelopeListDialog(
-    private val mData: MutableList<UnPacketRow>,
-    var mListener: Listener?,
-) : BaseDialog<BaseViewModel, DialogRedEnvelopeListBinding>() {
+class RedEnvelopeListDialog : BaseDialog<BaseViewModel, DialogRedEnvelopeListBinding>() {
 
-    init {
-        setStyle(R.style.CustomDialogStyle)
+    companion object{
+        fun newInstance(chatEvent: ChatEvent.GetUnPacket,mData: MutableList<UnPacketRow>)= RedEnvelopeListDialog().apply {
+            arguments = Bundle().apply {
+                putParcelable("chatEvent",chatEvent)
+                putParcelableArrayList("mData", arrayListOf<UnPacketRow>().apply {addAll(mData)})
+            }
+        }
     }
+    init {
+        setStyle(R.style.FullScreen)
+    }
+    private val chatEvent by lazy { requireArguments().getParcelable<ChatEvent.GetUnPacket>("chatEvent")!! }
+    private val mData by lazy { requireArguments().getParcelableArrayList<UnPacketRow>("mData")!! }
     private val mRVAdapter = RVAdapter()
 
     override fun onInitView() {
@@ -33,17 +43,19 @@ class RedEnvelopeListDialog(
 
     override fun show(manager: FragmentManager, tag: String?) {
         super.show(manager, tag)
+        if (isAdded)
         binding.rvList.scrollToPosition(0)
     }
 
     override fun show(manager: FragmentManager) {
         super.show(manager)
+        if (isAdded)
         binding.rvList.scrollToPosition(0)
     }
 
     private fun initView() {
         initRecyclerView()
-        setOnClickListeners(binding.ivClose,binding.btnConfirm){
+        setOnClickListeners(binding.root,binding.ivClose,binding.btnConfirm){
             dismiss()
         }
     }
@@ -62,13 +74,9 @@ class RedEnvelopeListDialog(
             adapter = mRVAdapter
             mRVAdapter.setList(mData)
             mRVAdapter.setOnItemChildClickListener { adapter, view, position ->
-                mListener?.onDialogCallback(mRVAdapter.getItem(position))
+                (requireParentFragment() as? ChatFragment)?.onDialogCallback(chatEvent,mRVAdapter.getItem(position))
             }
         }
-    }
-
-    fun setListener(listener: Listener) {
-        mListener = listener
     }
 
 
@@ -77,7 +85,7 @@ class RedEnvelopeListDialog(
         mData.addAll(data)
         mRVAdapter.setList(mData)
         mRVAdapter.setOnItemChildClickListener { adapter, view, position ->
-            mListener?.onDialogCallback(mRVAdapter.getItem(position))
+            (requireParentFragment() as? ChatFragment)?.onDialogCallback(chatEvent,mRVAdapter.getItem(position))
         }
     }
 
@@ -117,13 +125,15 @@ class RedEnvelopeListDialog(
 
     class RVAdapter:BindingAdapter<UnPacketRow,ItemChatRedEnvelopeBinding>() {
 
+        init {
+            addChildClickViewIds(R.id.btnOpen)
+        }
         override fun onBinding(
             position: Int,
             binding: ItemChatRedEnvelopeBinding,
             item: UnPacketRow,
         ) {
             binding.tvNumber.text = (position + 1).toString()
-            addChildClickViewIds(binding.btnOpen.id)
         }
 
     }

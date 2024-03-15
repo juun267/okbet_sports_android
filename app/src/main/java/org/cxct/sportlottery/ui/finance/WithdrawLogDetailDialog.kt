@@ -1,10 +1,5 @@
 package org.cxct.sportlottery.ui.finance
 
-import android.annotation.SuppressLint
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,10 +18,11 @@ import kotlin.math.abs
  * @app_destination 提款详情弹窗
  */
 class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel,DialogWithdrawLogDetailBinding>() {
-    init {
-        setStyle(R.style.CustomDialogStyle)
-    }
 
+
+    init {
+        marginHorizontal=40.dp
+    }
     override fun onInitView()=binding.run {
         binding.logDetailConfirm.setOnClickListener {
             dismiss()
