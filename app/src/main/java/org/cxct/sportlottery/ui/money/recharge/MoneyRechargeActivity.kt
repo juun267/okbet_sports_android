@@ -107,14 +107,11 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
             if (!apiResult.success) {
                 //顯示彈窗
-                val customAlertDialog = CustomAlertDialog()
-                with(customAlertDialog) {
-                    setTitle(getString(R.string.prompt))
+                CustomAlertDialog().apply {
+                    setTitle(this@MoneyRechargeActivity.getString(R.string.prompt))
                     setMessage(apiResult.msg)
                     setNegativeButtonText(null)
-                }.let {
-                    customAlertDialog.show(supportFragmentManager, null)
-                }
+                }.show(supportFragmentManager,null)
             } else {
                 //顯示成功彈窗
                 MoneySubmitDialog.newInstance(
@@ -131,15 +128,12 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
             if (!cryptoResult.success) {
                 //顯示彈窗
-                val customAlertDialog = CustomAlertDialog()
-                with(customAlertDialog) {
-                    setTitle(getString(R.string.prompt))
+                CustomAlertDialog().apply {
+                    setTitle(this@MoneyRechargeActivity.getString(R.string.prompt))
                     setMessage(cryptoResult.msg)
                     setNegativeButtonText(null)
                     setTextColor(R.color.color_E44438_e44438)
-                }.let {
-                    customAlertDialog.show(supportFragmentManager, null)
-                }
+                }.show(supportFragmentManager,null)
             } else {
                 //顯示成功彈窗
                 MoneySubmitDialog.newInstance(

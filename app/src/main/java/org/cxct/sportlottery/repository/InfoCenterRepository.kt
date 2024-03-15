@@ -7,6 +7,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
 import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
+import org.cxct.sportlottery.network.infoCenter.SetReadResult
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import retrofit2.Response
 
@@ -85,14 +86,14 @@ object InfoCenterRepository {
         return response
     }
 
-    suspend fun setMsgRead(msgId: String): Response<InfoCenterResult> {
+    suspend fun setMsgRead(msgId: String): Response<SetReadResult> {
         val response = OneBoSportApi.infoCenterService.setMsgReaded(msgId)
 
         if (response.isSuccessful) {
             val noticeList = _unreadNoticeList.value?.toMutableList()
             noticeList?.find { it.id.toString() == msgId }?.let { noticeList.remove(it) }
             _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())
-//            response.body()?.total?.let { _totalUnreadMsgCount.postValue(it) }
+            response.body()?.t?.unReadCounts?.let { _totalUnreadMsgCount.postValue(it) }
         }
 
         return response
