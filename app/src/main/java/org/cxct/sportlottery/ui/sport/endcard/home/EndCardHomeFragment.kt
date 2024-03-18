@@ -58,7 +58,6 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
     override fun onBindViewStatus(view: View) {
         initObserver()
         loadingHolder.withRetry{
-            loadingHolder.showLoading()
             viewModel.loadEndCardMatchList()
         }
         loadingHolder.go()

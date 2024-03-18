@@ -13,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.util.AppFont
@@ -20,8 +21,10 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.loginedRun
 
-class EndCardOddsAdapter(private val itemClick: (Odd) -> Boolean)
-    : BaseQuickAdapter<Odd, BaseViewHolder>(0) {
+class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
+    : BaseQuickAdapter<String, BaseViewHolder>(0) {
+
+    private lateinit var endCardBet: EndCardBet
 
     private val defaultBg by lazy {
         ShapeDrawable()
@@ -56,14 +59,7 @@ class EndCardOddsAdapter(private val itemClick: (Odd) -> Boolean)
         root.orientation = LinearLayout.VERTICAL
         val dp3 = 3.dp
         root.setPadding(dp3, dp3, dp3, dp3)
-        val dp4 = 4.dp
-        val rootLp = LinearLayout.LayoutParams(-1, 44.dp)
-//        rootLp.leftMargin = dp4
-//        rootLp.topMargin = dp3
-//        rootLp.rightMargin = dp4
-//        rootLp.bottomMargin = dp3
-        root.layoutParams = rootLp
-
+        root.layoutParams = LinearLayout.LayoutParams(-1, 44.dp)
         val lp = LinearLayout.LayoutParams(-2, 0, 1f)
 
         val odd = AppCompatTextView(cxt)
@@ -84,44 +80,38 @@ class EndCardOddsAdapter(private val itemClick: (Odd) -> Boolean)
         return BaseViewHolder(root)
     }
 
-    override fun convert(holder: BaseViewHolder, item: Odd) {
-
+    override fun convert(holder: BaseViewHolder, item: String) {
 
         val oddText = holder.getView<TextView>(oddId)
         val userText = holder.getView<TextView>(userId)
 
-        oddText.text = item.name
+        oddText.text = item
 
-        val position = holder.bindingAdapterPosition
-        if (position % 3 == 0) {
+        val userName = endCardBet.lastBetName?.get(item)
+        val noUserBet = userName.isEmptyStr()
+        if (noUserBet) {
             userText.gone()
         } else {
-            userText.text = "army"
+            userText.text = userName
             userText.visible()
         }
 
-        if (item.id != null && EndCardBetManager.containOdd(item.id)) {
-            holder.itemView.background = selectedBg
+        val itemView = holder.itemView
+        val betted = endCardBet.betMyself?.contains(item) == true
+        if (betted) {
+            itemView.setBackgroundResource(R.drawable.bg_selected_endodd)
+        } else if (noUserBet) {
+            itemView.background = disableBg
         } else {
-            holder.itemView.background = defaultBg
+            itemView.background = defaultBg
         }
 
-//        if (position % 5 == 2) {
-//            holder.itemView.background = disableBg
-//        } else if (position % 4 == 0) {
-//            holder.itemView.background = selectedBg
-//        } else if (position % 7 == 0) {
-//            holder.itemView.setBackgroundResource(R.drawable.bg_selected_endodd)
-//        } else {
-//            holder.itemView.background = defaultBg
-//        }
-
-        holder.itemView.setOnClickListener {
-            val oddId = item.id ?: return@setOnClickListener
+        itemView.isEnabled = !betted && noUserBet
+        itemView.setOnClickListener {
 
             loginedRun(it.context) {
                 if (itemClick.invoke(item)) {
-                    if (EndCardBetManager.containOdd(oddId)) {
+                    if (EndCardBetManager.containOdd(item)) {
                         holder.itemView.background = selectedBg
                     } else {
                         holder.itemView.background = defaultBg
@@ -129,5 +119,26 @@ class EndCardOddsAdapter(private val itemClick: (Odd) -> Boolean)
                 }
             }
         }
+    }
+
+    fun setUpData(bet: EndCardBet) {
+        if (::endCardBet.isInitialized && endCardBet == bet) {
+            return
+        }
+
+        this.endCardBet = bet
+        if (itemCount > 0) {
+            notifyDataSetChanged()
+            return
+        }
+
+        val list = mutableListOf<String>()
+        repeat(10) { home->
+            repeat(10) { away->
+                list.add("$home-$away")
+            }
+        }
+
+        setNewInstance(list)
     }
 }

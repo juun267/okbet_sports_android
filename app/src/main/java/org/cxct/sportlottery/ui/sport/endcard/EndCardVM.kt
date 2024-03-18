@@ -6,11 +6,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.net.sport.SportRepository
+import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
@@ -20,9 +20,10 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
 
     val endcardMatchList = MutableLiveData<List<LeagueOdd>?>()
     val addBetResult = SingleLiveEvent<String>()
+    val lgpcoflDetail = SingleLiveEvent<Array<EndCardBet>?>()
 
     fun loadEndCardMatchList() {
-        val matchType = MatchType.END_SCORE.postValue
+        val matchType = "LGPCOFL"
         val gameType = GameType.BK.key
 
         doRequest({ OneBoSportApi.oddsService.getOddsList(
@@ -103,6 +104,12 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
                 it?.page = page
                 settledResult.postValue(it)
             }
+        }
+    }
+
+    fun getLGPCOFLDetail(matchId: String) {
+        callApi({ SportRepository.getLGPCOFLDetail(matchId) }) {
+            lgpcoflDetail.value = it.getData()
         }
     }
 
