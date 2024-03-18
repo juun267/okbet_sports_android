@@ -37,14 +37,19 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
 
     override fun onInitData() {
         if(matchTabAdapter.itemCount == 0) {
-            showLoadingView()
+            val apiReult = viewModel.sportMenuResult.value?.getData()
+            if (apiReult == null) {
+//                showLoadingView()
+            } else {
+                onMenuResult(apiReult)
+            }
         }
         viewModel.getSportMenuData()
     }
 
     private fun initObserver() {
         viewModel.sportMenuResult.observe(viewLifecycleOwner) {
-            hideLoadingView()
+//            hideLoadingView()
             it.getData()?.let { onMenuResult(it) }
         }
     }
@@ -82,7 +87,12 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
         })
     }
 
+    protected var lastMenuData: SportMenuData? = null
     protected open fun onMenuResult(menuResult: SportMenuData) {
+        if (lastMenuData == menuResult) {
+            return
+        }
+        lastMenuData = menuResult
         val menu = menuResult.menu ?: return
         val datas = mutableListOf<Pair<Int, Sport>>()
         assembleData(R.string.home_tab_in_play, menu.inPlay, datas)

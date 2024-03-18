@@ -27,10 +27,17 @@ class LiveGamesFragment: ElectGamesFragment<OKGamesViewModel, FragmentGamevenueB
 
 
     override fun onInitData() {
-        if(gameAdapter2.itemCount == 0) {
-            showLoadingView()
+        if(gameAdapter2.itemCount > 0) {
+            return
         }
-        viewModel.getOKLiveHall()
+        val okLiveGamesHall = OKGamesViewModel.okLiveGamesHall
+        if (okLiveGamesHall == null || !setData(okLiveGamesHall.first)) {
+//            showLoadingView()
+            if (okLiveGamesHall != null && okLiveGamesHall.second - System.currentTimeMillis() > 10_000) {
+                viewModel.getOKLiveHall()
+            }
+        }
+
     }
 
 }

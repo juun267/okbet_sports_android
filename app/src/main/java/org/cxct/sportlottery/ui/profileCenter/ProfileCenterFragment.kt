@@ -533,8 +533,8 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
                 startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
             }
         }
-        InfoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner) {
-            updateNoticeCount(it.size)
+        InfoCenterRepository.totalUnreadMsgCount.observe(viewLifecycleOwner) {
+            updateNoticeCount(it)
         }
 
         viewModel.userInfo.observe(viewLifecycleOwner) {

@@ -1569,6 +1569,8 @@
     <string name="N810">Nữ</string>
     <string name="P286">Thông báo</string>
     <string name="P287">Xem tất cả thị trường</string>
+    <string name="P289">Tôi xác nhận thông tin chi tiết là chính xác.</string>
+    <string name="P288">Giao dịch đã xác nhận không thể hoàn trả. Hãy chắc chắn thông tin tài khoản nhận/ địa chỉ ví là chính xác.</string>
     <string name="P293">Ending card game</string>
     <string name="P294">Chọn giải đấu bạn muốn tìm và thời gian thi đấu</string>
     <string name="P295">Bước tiếp theo</string>

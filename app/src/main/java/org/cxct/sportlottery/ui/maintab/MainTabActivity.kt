@@ -41,6 +41,7 @@ import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
+import org.cxct.sportlottery.ui.maintab.home.PreLoader
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
@@ -130,6 +131,8 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
         viewModel.getSportMenuFilter()
+
+        PreLoader.startPreload()
     }
 
     private fun onTabClick(tabName: Int): Boolean {

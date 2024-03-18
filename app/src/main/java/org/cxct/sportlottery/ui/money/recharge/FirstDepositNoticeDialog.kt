@@ -12,9 +12,6 @@ import timber.log.Timber
 
 class FirstDepositNoticeDialog(val content: String): BaseDialog<BindInfoViewModel,DialogFirstDepositNoticeBinding>() {
 
-    init {
-        setStyle(R.style.FullScreen)
-    }
 
     override fun onInitView() {
         initView()

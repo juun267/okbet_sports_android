@@ -4,8 +4,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
@@ -16,8 +14,6 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
  * @app_destination 存款
@@ -113,7 +109,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                 //顯示彈窗
                 val customAlertDialog = CustomAlertDialog()
                 with(customAlertDialog) {
-                    setTitle(LocalUtils.getString(R.string.prompt))
+                    setTitle(getString(R.string.prompt))
                     setMessage(apiResult.msg)
                     setNegativeButtonText(null)
                 }.let {
@@ -138,7 +134,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                 //顯示彈窗
                 val customAlertDialog = CustomAlertDialog()
                 with(customAlertDialog) {
-                    setTitle(LocalUtils.getString(R.string.prompt))
+                    setTitle(getString(R.string.prompt))
                     setMessage(cryptoResult.msg)
                     setNegativeButtonText(null)
                     setTextColor(R.color.color_E44438_e44438)

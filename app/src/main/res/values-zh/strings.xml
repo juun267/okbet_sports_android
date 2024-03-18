@@ -1624,6 +1624,8 @@
     <string name="N810">女</string>
     <string name="P286">公告</string>
     <string name="P287">查看所有盘口</string>
+    <string name="P289">我确认详细是正确的。</string>
+    <string name="P288">已确认的交易将不予退款。 请保证收款银行/电子钱包信息正确。</string>
     <string name="P293">篮球末位比分</string>
     <string name="P294">选择您想查找的联赛,和比赛时间</string>
     <string name="P295">下一步</string>

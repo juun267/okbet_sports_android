@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.setPadding
@@ -27,10 +26,6 @@ class MotionFloatingMenu @JvmOverloads constructor(
 
     private var mOnMenuListener: OnMenuListener? = null
     private val binding by lazy { MenuMotionFloatingBinding.inflate(layoutInflater,this,true) }
-
-    init {
-        LayoutInflater.from(context).inflate(R.layout.menu_motion_floating, this, true)
-    }
 
     override fun onAttachedToWindow()=binding.run {
         super.onAttachedToWindow()

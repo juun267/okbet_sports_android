@@ -157,7 +157,9 @@ class HotMatchView(
                     //如果体育服务关闭
                     this.goneWithSportSwitch()
 
+                if (fragment.isVisibleToUser()) {
                     unSubscribeChannelHall(fragment)
+                }
                 if (isVisible) {
                     adapter?.data = data
                     binding.recyclerHotGame.post { firstVisibleRange() }

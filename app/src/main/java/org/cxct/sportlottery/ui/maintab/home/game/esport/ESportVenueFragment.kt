@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.home.game.esport
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -52,6 +51,9 @@ class ESportVenueFragment: SportVenueFragment<SportTabViewModel, FragmentGameven
     }
 
     override fun onMenuResult(menuResult: SportMenuData) {
+        if (lastMenuData == menuResult) {
+            return
+        }
         val menu = menuResult.menu ?: return
         val datas = mutableListOf<Pair<Int, Sport>>()
         val categoryDatas = mutableListOf<Pair<Int, Item>>()

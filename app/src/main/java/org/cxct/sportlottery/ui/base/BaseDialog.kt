@@ -9,9 +9,11 @@ import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.createVBinding
 import org.cxct.sportlottery.common.extentions.getKClass
+import org.cxct.sportlottery.util.DisplayUtil
 import org.cxct.sportlottery.util.showAllowingStateLoss
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import splitties.bundle.put
 import kotlin.reflect.KClass
 
 abstract class BaseDialog<VM : BaseViewModel,VB : ViewBinding>(private val clazz: KClass<VM>? = null) : BaseDialogFragment() {
@@ -29,10 +31,15 @@ abstract class BaseDialog<VM : BaseViewModel,VB : ViewBinding>(private val clazz
     }
     protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
     private var _first = true
+    private val H_MARGIN = "h_margin"
+    /**
+     * 注意！，设置这个参数时，layout上面rootview不需要在设置 marginHorizontal
+     */
+    protected var marginHorizontal:Int?=null
     init {
         setDefaulStyle()
     }
-    protected open fun setDefaulStyle() {
+    private fun setDefaulStyle() {
         setStyle(STYLE_NO_TITLE, R.style.CustomDialogStyle)
     }
 
@@ -43,8 +50,11 @@ abstract class BaseDialog<VM : BaseViewModel,VB : ViewBinding>(private val clazz
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
+        if (savedInstanceState != null) {
+            marginHorizontal = savedInstanceState?.getInt(H_MARGIN)
+        }
         return binding.root
     }
 
@@ -55,6 +65,24 @@ abstract class BaseDialog<VM : BaseViewModel,VB : ViewBinding>(private val clazz
             onInitView()
         }
         onBindViewStatus(view)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        marginHorizontal?.let {
+            dialog?.window?.apply {
+                attributes.apply {
+                    horizontalMargin = 0f
+                    width = DisplayUtil.screenWith - 2 * it
+                }
+                this.attributes = attributes
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.put(H_MARGIN,marginHorizontal)
     }
 
     open fun show(manager: FragmentManager){
