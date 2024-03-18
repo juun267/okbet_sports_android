@@ -294,6 +294,7 @@ object Constants {
     const val MATCH_BET_REMARK_BET = "/api/front/match/bet/reMarkBet"
     const val MATCH_BET_ADD = "/api/front/match/bet/add"
     const val MATCH_BET_LIST = "/api/front/match/bet/list"
+    const val MATCH_BET_ADD_LGPCOFL = "/api/front/match/bet/addLGPCOFL"
 
     //index
     const val INDEX_SEND_LOGIN_DEVICE_SMS = "/api/front/index/sendLoginDeviceSms"

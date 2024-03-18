@@ -30,6 +30,7 @@ interface SportService {
     @POST(Constants.SPORT_RECOMMEND_LEAGUE)
     suspend fun getRecommendLeague(): ApiResult<List<RecommendLeague>>
 
-
+    @POST(Constants.MATCH_BET_ADD_LGPCOFL)
+    suspend fun addLGPCOFL(@Body params: JsonObject): ApiResult<String>
 
 }

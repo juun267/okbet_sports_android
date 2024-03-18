@@ -7,16 +7,19 @@ import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.databinding.DialogEndcardBetBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
+import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GridItemDecoration
 
-class EndCardBetDialog: BaseDialog<BaseViewModel, DialogEndcardBetBinding>() {
+class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
 
     private val oddAdapter by lazy { EndCardBetOddAdapter() }
 
     override fun onInitView() {
         initClick()
         initOddList()
+        EndCardBetManager.getBetOdds()
     }
     private fun initClick()=binding.run{
         setOnClickListeners(ivClose){
