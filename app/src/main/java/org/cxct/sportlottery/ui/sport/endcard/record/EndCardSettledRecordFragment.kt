@@ -12,7 +12,6 @@ import org.cxct.sportlottery.util.RefreshHelper
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.rumWithSlowRequest
-import timber.log.Timber
 
 class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettledRecordBinding>() {
 
@@ -92,6 +91,9 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
                     }
                     refreshHelper.setLoadMoreEnable(recordAdapter.itemCount < it.total?:0)
                 }
+                binding.tvTotalbet.text = (it.other?.totalAmount?:0.0).toString()
+                binding.tvReward.text = (it.other?.win?:0.0).toString()
+                binding.tvTotalValue.text = (it.other?.valueBetAmount?:0.0).toString()
             } else {
                 ToastUtil.showToast(requireContext(), it.msg)
             }

@@ -128,7 +128,7 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
 
      fun showRecordDetail(data: Row) {
          val fragment = fragmentHolder.make(EndCardRecordDetailFragment::class.java)
-         fragment.arguments = Bundle().apply { putParcelable("orderId",data) }
+         fragment.arguments = Bundle().apply { putParcelable("data",data) }
          showFragment(fragment)
     }
 

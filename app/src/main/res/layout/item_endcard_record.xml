@@ -14,11 +14,13 @@
        android:gravity="center_vertical"
        android:paddingHorizontal="@dimen/margin_12">
        <ImageView
+           android:id="@+id/ivLeagueLogo"
            android:layout_width="wrap_content"
            android:layout_height="@dimen/margin_28"
            android:adjustViewBounds="true"
            android:src="@drawable/ic_team_default_no_stroke"/>
        <TextView
+           android:id="@+id/tvLeagueName"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_weight="1"
@@ -29,6 +31,7 @@
            android:textSize="@dimen/textSize16sp"
            android:text="NBA"/>
        <TextView
+           android:id="@+id/tvTime"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginLeft="@dimen/margin_8"
@@ -132,7 +135,7 @@
                     android:background="@color/color_1A202E"/>
 
                 <TextView
-                    android:id="@+id/content_bet_amount"
+                    android:id="@+id/tvBetAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"

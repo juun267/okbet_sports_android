@@ -92,7 +92,7 @@
              android:layout_marginTop="@dimen/margin_4"
              android:textColor="@color/color_BEC7DC"
              android:textSize="@dimen/textSize14sp"
-             android:text="1,000,000.00"/>
+             tools:text="1,000,000.00"/>
 
      </LinearLayout>
         <LinearLayout
@@ -118,7 +118,7 @@
                 android:layout_marginTop="@dimen/margin_4"
                 android:textColor="@color/color_BEC7DC"
                 android:textSize="@dimen/textSize14sp"
-                android:text="27"/>
+                tools:text="27"/>
 
         </LinearLayout>
         <LinearLayout
@@ -144,7 +144,7 @@
                 android:layout_marginTop="@dimen/margin_4"
                 android:textColor="@color/color_BEC7DC"
                 android:textSize="@dimen/textSize14sp"
-                android:text="1,000,000.00"/>
+                tools:text="1,000,000.00"/>
 
         </LinearLayout>
     </LinearLayout>
