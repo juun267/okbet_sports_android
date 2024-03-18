@@ -101,4 +101,6 @@ object SportRepository {
     params.addProperty("channelType", ChannelType.HALL.ordinal)
     return sportApi.addLGPCOFL(params)
     }
+
+    suspend fun getLGPCOFLDetail(matchId: String) = sportApi.getLGPCOFLDetail(matchId)
 }

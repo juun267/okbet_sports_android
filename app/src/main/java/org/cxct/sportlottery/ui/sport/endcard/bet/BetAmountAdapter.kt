@@ -9,14 +9,15 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 
-class BetAmountAdapter(private val onItemClick: (Int)-> Unit): BaseQuickAdapter<Int, BaseViewHolder>(0) {
+class BetAmountAdapter(private val onItemClick: (EndCardBet)-> Unit): BaseQuickAdapter<EndCardBet, BaseViewHolder>(0) {
 
-    private var selectedItem: Int = 0
+    private var selectedItem: EndCardBet? = null
     private val selectedColor = Color.WHITE
     private val defaultTextColor by lazy { context.getColor(R.color.color_BEC7DC) }
     private val selectedBg by lazy {
@@ -46,13 +47,13 @@ class BetAmountAdapter(private val onItemClick: (Int)-> Unit): BaseQuickAdapter<
         return BaseViewHolder(textView)
     }
 
-    override fun convert(holder: BaseViewHolder, item: Int, payloads: List<Any>) {
+    override fun convert(holder: BaseViewHolder, item: EndCardBet, payloads: List<Any>) {
         changeStyle(false, holder.itemView as TextView)
     }
 
-    override fun convert(holder: BaseViewHolder, item: Int) {
+    override fun convert(holder: BaseViewHolder, item: EndCardBet) {
         with(holder.itemView as TextView) {
-            text = "${context.getText(R.string.P318)} $item$showCurrencySign"
+            text = "${context.getText(R.string.P318)} ${item.betMoney}$showCurrencySign"
             changeStyle(selectedItem == item, this)
             setOnClickListener {
                 if (selectedItem != item) {
@@ -76,8 +77,8 @@ class BetAmountAdapter(private val onItemClick: (Int)-> Unit): BaseQuickAdapter<
         }
     }
 
-    override fun setNewInstance(list: MutableList<Int>?) {
-        selectedItem = list!!.first()
+    override fun setNewInstance(list: MutableList<EndCardBet>?) {
+        selectedItem = list?.firstOrNull()
         super.setNewInstance(list)
     }
 }

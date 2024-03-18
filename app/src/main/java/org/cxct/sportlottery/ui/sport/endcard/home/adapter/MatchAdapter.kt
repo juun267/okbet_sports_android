@@ -18,6 +18,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemEndcardMatchBinding
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
@@ -107,14 +108,14 @@ private class EndCardMatchProvider(
             tvTime.text = TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DM_HM_FORMAT)
             ivHomeLogo.circleOf(matchInfo.homeIcon, R.drawable.ic_team_default_no_stroke)
             ivAwayLogo.circleOf(matchInfo.awayIcon, R.drawable.ic_team_default_no_stroke)
-            val position = helper.bindingAdapterPosition
-            tvNum.text = position.toString()
-            if (position % 2 == 0) {
-                tvView.background = viewcardBg
-                tvNum.gone()
-            } else {
+            val betNum = matchOdd.bkEndCarkOFLCount
+            if (betNum > 0 && LoginRepository.isLogined()) {
+                tvNum.text = betNum.toString()
                 tvView.setBackgroundResource(R.drawable.ic_viewcard_1)
                 tvNum.visible()
+            } else {
+                tvView.background = viewcardBg
+                tvNum.gone()
             }
         }
     }
