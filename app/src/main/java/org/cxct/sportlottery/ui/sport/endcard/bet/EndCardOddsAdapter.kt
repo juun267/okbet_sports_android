@@ -100,7 +100,7 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
         val betted = endCardBet.betMyself?.contains(item) == true
         if (betted) {
             itemView.setBackgroundResource(R.drawable.bg_selected_endodd)
-        } else if (noUserBet) {
+        } else if (!noUserBet) {
             itemView.background = disableBg
         } else {
             itemView.background = defaultBg
