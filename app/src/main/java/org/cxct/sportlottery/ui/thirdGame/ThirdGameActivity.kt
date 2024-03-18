@@ -49,7 +49,10 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
     private val webActivityImp by lazy { WebActivityImp(this,this::overrideUrlLoading) }
 
     override fun onInitView()=binding.run {
-        disableSystemUI()
+        ivBack.setOnClickListener { finish() }
+        setStatusbar(R.color.white)
+//        ivBack.fitsSystemStatus()
+//        disableSystemUI()
         webActivityImp.setCookie(mUrl)
         webActivityImp.setupWebView(webView)
         webView.loadUrl(mUrl)
@@ -58,7 +61,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         postRefreshToken() // 避免用户长期在三方游戏中导致token过期
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
             if (it.maintain == 1 && firmCode == it.firmType /*&& gameType == it.gameType*/) {
-                motionMenu.gone()
+//                motionMenu.gone()
                 showErrorPromptDialog(getString(R.string.error), getString(R.string.hint_game_maintenance)) {
                     finish()
                 }
@@ -104,25 +107,30 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
     }
 
     private fun setupMenu() {
-        binding.motionMenu.setOnMenuListener(object : MotionFloatingMenu.OnMenuListener {
-            override fun onHome() {
-                finish()
+        binding.ivDeposit.setOnClickListener {
+            if (checkLogin()) {
+                ToGcashDialog.showByClick { viewModel.checkRechargeKYCVerify() }
             }
-
-            override fun onCashSave() {
-                if (checkLogin()) {
-                    ToGcashDialog.showByClick {
-                        viewModel.checkRechargeKYCVerify()
-                    }
-                }
-            }
-
-            override fun onCashGet() {
-                if (checkLogin()) {
-                    viewModel.checkWithdrawKYCVerify()
-                }
-            }
-        })
+        }
+//        binding.motionMenu.setOnMenuListener(object : MotionFloatingMenu.OnMenuListener {
+//            override fun onHome() {
+//                finish()
+//            }
+//
+//            override fun onCashSave() {
+//                if (checkLogin()) {
+//                    ToGcashDialog.showByClick {
+//                        viewModel.checkRechargeKYCVerify()
+//                    }
+//                }
+//            }
+//
+//            override fun onCashGet() {
+//                if (checkLogin()) {
+//                    viewModel.checkWithdrawKYCVerify()
+//                }
+//            }
+//        })
     }
 
 
