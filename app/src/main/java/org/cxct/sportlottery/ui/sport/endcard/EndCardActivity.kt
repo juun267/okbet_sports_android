@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityEndcardBinding
+import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -125,9 +126,9 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
         showFragment(endCardGameFragment)
     }
 
-     fun showRecordDetail(orderId: String) {
+     fun showRecordDetail(data: Row) {
          val fragment = fragmentHolder.make(EndCardRecordDetailFragment::class.java)
-         fragment.arguments = Bundle().apply { put("orderId",orderId) }
+         fragment.arguments = Bundle().apply { putParcelable("orderId",data) }
          showFragment(fragment)
     }
 

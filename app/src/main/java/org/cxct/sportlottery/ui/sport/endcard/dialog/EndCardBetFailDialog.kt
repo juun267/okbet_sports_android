@@ -4,9 +4,13 @@ import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.databinding.DialogEndcardBetFailBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class EndCardBetFailDialog: BaseDialog<BaseViewModel, DialogEndcardBetFailBinding>() {
 
+    init {
+        marginHorizontal = 12.dp
+    }
     override fun onInitView() {
         initClick()
     }

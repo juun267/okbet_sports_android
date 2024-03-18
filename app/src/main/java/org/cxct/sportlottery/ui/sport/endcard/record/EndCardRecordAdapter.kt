@@ -5,15 +5,16 @@ import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.databinding.ItemEndcardRecordBinding
+import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class EndCardRecordAdapter:BindingAdapter<String,ItemEndcardRecordBinding>() {
+class EndCardRecordAdapter:BindingAdapter<Row,ItemEndcardRecordBinding>() {
 
     init {
         addChildClickViewIds(R.id.ivStatus)
     }
 
-    override fun onBinding(position: Int, binding: ItemEndcardRecordBinding, item: String) {
+    override fun onBinding(position: Int, binding: ItemEndcardRecordBinding, item: Row) {
         if(position%2==0){
             binding.ivStatus.setImageResource( R.drawable.ic_tag_win)
             binding.tvWinner.setTextColor(context.getColor(R.color.color_00FF81))

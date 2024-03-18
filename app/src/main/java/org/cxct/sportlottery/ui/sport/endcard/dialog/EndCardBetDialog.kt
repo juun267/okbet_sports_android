@@ -14,6 +14,9 @@ import org.cxct.sportlottery.util.GridItemDecoration
 
 class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
 
+    init {
+        marginHorizontal = 12.dp
+    }
     private val oddAdapter by lazy { EndCardBetOddAdapter() }
 
     override fun onInitView() {
@@ -30,6 +33,7 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             dismiss()
         }
         btnBetting.setOnClickListener {
+//            viewModel.addBetLGPCOFL()
             EndCardBetSuccessDialog().show(parentFragmentManager)
             dismiss()
         }

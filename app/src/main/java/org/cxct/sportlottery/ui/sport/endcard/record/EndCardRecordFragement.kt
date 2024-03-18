@@ -1,43 +1,39 @@
 package org.cxct.sportlottery.ui.sport.endcard.record
 
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.canDelayClick
 import org.cxct.sportlottery.databinding.FragmentEndcardRecordBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
-import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
+import org.cxct.sportlottery.util.FragmentHelper
+import org.cxct.sportlottery.util.Param
 
 class EndCardRecordFragement: BaseFragment<EndCardVM,FragmentEndcardRecordBinding>() {
 
-    private val recordAdapter by lazy { EndCardRecordAdapter() }
+    private val fragmentHelper: FragmentHelper by lazy {
+        FragmentHelper(
+            childFragmentManager, binding.flContent.id, arrayOf(
+                Param(EndCardSettledRecordFragment::class.java, needRemove = true),
+                Param(EndCardUnsettledRecordFragment::class.java,needRemove = true),
+            )
+        )
+    }
+
     override fun onInitView(view: View) {
         binding.rgTab.setOnCheckedChangeListener { group, checkedId ->
-            if (checkedId==binding.rbtnSettled.id){
-                binding.linSettledMenu.visible()
-            }else{
-                binding.linSettledMenu.gone()
-            }
+             when(checkedId){
+                 binding.rbtnSettled.id -> {
+                     if (binding.rbtnSettled.canDelayClick()){
+                         fragmentHelper.showFragment(0)
+                     }
+                 }
+                 binding.rbtnUnSettle.id -> {
+                     if (binding.rbtnSettled.canDelayClick()){
+                         fragmentHelper.showFragment(1)
+                     }
+                 }
+             }
         }
-        binding.rgDate.setOnCheckedChangeListener { group, checkedId ->
-
-        }
-        initRecordList()
-    }
-    private fun initRecordList(){
-        binding.rvBetRecord.apply {
-            layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
-            recordAdapter.setOnItemClickListener { adapter, view, position ->
-                (activity as? EndCardActivity)?.showRecordDetail(recordAdapter.getItem(position))
-            }
-            recordAdapter.setOnItemChildClickListener { adapter, view, position ->
-                EndCardBetDialog().show(childFragmentManager)
-            }
-            adapter = recordAdapter
-            recordAdapter.setList(listOf("",",",""))
-        }
+        binding.rgTab.check(binding.rbtnSettled.id)
     }
 }
