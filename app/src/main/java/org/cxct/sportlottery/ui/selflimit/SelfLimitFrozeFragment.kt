@@ -27,7 +27,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimit
     override fun onClick(v: View?) {
         when (v) {
             binding.llImportant -> {
-                SelfLimitFrozeImportantDialog().apply { arguments = Bundle().apply { putBoolean("isBet", false) } }.show(childFragmentManager)
+                SelfLimitFrozeImportantDialog.newInstance(false).show(childFragmentManager)
             }
             binding.btnConfirm -> {
                 submit()
@@ -97,7 +97,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimit
                 binding.tvError.visibility = View.GONE
             }
 
-            binding.btnConfirm.isEnabled = !showError
+            binding.btnConfirm.isEnabled = !showError && binding.etFrozeDay.text.isNotEmpty()
         }
 
         viewModel.frozeResult.observe(viewLifecycleOwner) {

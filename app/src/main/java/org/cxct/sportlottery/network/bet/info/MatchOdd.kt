@@ -63,6 +63,8 @@ data class MatchOdd(
     var homeCornerKicks: Int? = null
     var awayCornerKicks: Int? = null
     var categoryCode: String? = null
+    var nextScore: String? = "" //FT 玩法下個進球會使用到
+    var replaceScore: String? = "" //翻譯裡面要顯示{S}的分數會放在Key值的冒號後面
 
     /**
      * 折扣率更新

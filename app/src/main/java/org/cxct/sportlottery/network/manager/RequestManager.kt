@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
@@ -50,9 +51,9 @@ class RequestManager private constructor(private val context: Context) {
         }
     }
 
-    var retrofit: Retrofit
+    val retrofit: Retrofit
 
-    private val mOkHttpClientBuilder: OkHttpClient.Builder = getUnsafeOkHttpClient()
+    private fun getOkHttpClientBuilder(): OkHttpClient.Builder = getUnsafeOkHttpClient()
         .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
         .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -79,21 +80,17 @@ class RequestManager private constructor(private val context: Context) {
         .build()
 
     init {
-        retrofit = createRetrofit(Constants.getBaseUrl())
+        retrofit = Retrofit.Builder()
+            .baseUrl(Constants.getBaseUrl())
+            .client(getOkHttpClientBuilder().apply { RetrofitUrlManager.getInstance().with(this) }.build())
+            .addConverterFactory(MoshiConverterFactory.create(mMoshi))
+            .build()
     }
 
     fun createRetrofit(baseUrl: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(mOkHttpClientBuilder.build())
-            .addConverterFactory(MoshiConverterFactory.create(mMoshi))
-            .build()
-    }
-
-    fun createDefaultRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(Constants.getBaseUrl())
-            .client(mOkHttpClientBuilder.build())
+            .client(getOkHttpClientBuilder().build())
             .addConverterFactory(MoshiConverterFactory.create(mMoshi))
             .build()
     }

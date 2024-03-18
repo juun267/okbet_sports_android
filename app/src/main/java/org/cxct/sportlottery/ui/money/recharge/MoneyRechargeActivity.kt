@@ -107,21 +107,17 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
             if (!apiResult.success) {
                 //顯示彈窗
-                val customAlertDialog = CustomAlertDialog()
-                with(customAlertDialog) {
-                    setTitle(getString(R.string.prompt))
+                CustomAlertDialog().apply {
+                    setTitle(this@MoneyRechargeActivity.getString(R.string.prompt))
                     setMessage(apiResult.msg)
                     setNegativeButtonText(null)
-                }.let {
-                    customAlertDialog.show(supportFragmentManager, null)
-                }
+                }.show(supportFragmentManager,null)
             } else {
                 //顯示成功彈窗
-                val moneySubmitDialog = MoneySubmitDialog(
+                MoneySubmitDialog.newInstance(
                     payWay,
                     (apiResult.result ?: 0).toString(),
-                )
-                moneySubmitDialog.show(supportFragmentManager)
+                ).show(supportFragmentManager)
             }
         })
         //轉帳支付 - 虛擬幣
@@ -132,22 +128,18 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
             if (!cryptoResult.success) {
                 //顯示彈窗
-                val customAlertDialog = CustomAlertDialog()
-                with(customAlertDialog) {
-                    setTitle(getString(R.string.prompt))
+                CustomAlertDialog().apply {
+                    setTitle(this@MoneyRechargeActivity.getString(R.string.prompt))
                     setMessage(cryptoResult.msg)
                     setNegativeButtonText(null)
                     setTextColor(R.color.color_E44438_e44438)
-                }.let {
-                    customAlertDialog.show(supportFragmentManager, null)
-                }
+                }.show(supportFragmentManager,null)
             } else {
                 //顯示成功彈窗
-                val moneySubmitDialog = MoneySubmitDialog(
+                MoneySubmitDialog.newInstance(
                     payWay,
                     (cryptoResult.result ?: 0).toString()
-                )
-                moneySubmitDialog.show(supportFragmentManager)
+                ).show(supportFragmentManager)
             }
         })
 
@@ -156,13 +148,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
             val payWay = this.getString(R.string.recharge_channel_online)
 
             //顯示成功彈窗
-            val moneySubmitDialog = MoneySubmitDialog(
+            MoneySubmitDialog.newInstance(
                 payWay,
                 it.toString()
-            )
-
-            moneySubmitDialog.show(supportFragmentManager)
-            moneySubmitDialog.dialog?.setCanceledOnTouchOutside(true)
+            ).show(supportFragmentManager)
         })
 
         //在線支付 - 虛擬幣
@@ -170,13 +159,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
             val payWay = this.getString(R.string.recharge_channel_online)
 
             //顯示成功彈窗
-            val moneySubmitDialog = MoneySubmitDialog(
+            MoneySubmitDialog.newInstance(
                 payWay,
                 it.toString()
-            )
-
-            moneySubmitDialog.show(supportFragmentManager)
-            moneySubmitDialog.dialog?.setCanceledOnTouchOutside(true)
+            ).show(supportFragmentManager)
         })
     }
 

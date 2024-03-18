@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.view.transform
 
+import android.os.Bundle
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +12,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -18,12 +20,28 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.commonCheckDialog
 import org.cxct.sportlottery.util.setBtnEnable
+import splitties.bundle.put
 
-class TransformInDialog(val firmType: String,
-                        val thirdGameResult: EnterThirdGameResult,
-                        val gameBalance: Double,
-                        val callback:(EnterThirdGameResult) -> Unit):
-    BaseDialog<MoneyTransferViewModel,DialogTransferMoneyBinding>() {
+class TransformInDialog: BaseDialog<MoneyTransferViewModel,DialogTransferMoneyBinding>() {
+
+    companion object{
+        fun newInstance(firmType: String,
+                         thirdGameResult: EnterThirdGameResult,
+                         gameBalance: Double): TransformInDialog{
+            val args = Bundle()
+            args.apply {
+                put("firmType",firmType)
+                put("thirdGameResult",thirdGameResult)
+                put("gameBalance",gameBalance)
+            }
+            val fragment = TransformInDialog()
+            fragment.arguments = args
+            return fragment
+        }
+    }
+    private val firmType by lazy { requireArguments().getString("firmType")!! }
+    private val thirdGameResult by lazy { requireArguments().getParcelable<EnterThirdGameResult>("thirdGameResult")!!}
+    private val gameBalance by lazy { requireArguments().getDouble("gameBalance") }
 
     init {
         setStyle(R.style.CustomDialogStyle)
@@ -133,7 +151,7 @@ class TransformInDialog(val firmType: String,
     private fun enter() {
         if (dialog?.isShowing == true) {
             dismiss()
-            callback.invoke(thirdGameResult)
+            (requireActivity() as? MainTabActivity)?.enterThirdGame(thirdGameResult,firmType)
         }
     }
 }

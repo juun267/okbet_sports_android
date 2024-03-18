@@ -45,9 +45,7 @@ class InfoCenterActivity : BaseActivity<InfoCenterViewModel, ActivityInfoCenterB
             setEmptyView(ViewNoRecordBinding.inflate(layoutInflater).root)
             setOnItemClickListener { adapter, view, position ->
                 val data = adapter.getItem(position) as InfoCenterData
-                val detailDialog = InfoCenterDetailDialog()
-                detailDialog.arguments = Bundle().apply { putParcelable("data", data) }
-                detailDialog.show(supportFragmentManager, "")
+                InfoCenterDetailDialog.newInstance(data).show(supportFragmentManager)
                 if (currentTab == YET_READ) {
                     markMessageReaded(data)
                 }

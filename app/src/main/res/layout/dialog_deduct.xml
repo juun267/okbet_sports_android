@@ -1,71 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_radius_8_commission_info_dialog"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/btn_close"
+        android:layout_width="@dimen/margin_40"
+        android:layout_height="@dimen/margin_40"
+        android:layout_gravity="right"
+        android:layout_marginEnd="12dp"
+        android:padding="@dimen/margin_6"
+        android:src="@drawable/ic_close_deduct" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_12"
+        android:gravity="center"
+        android:text="@string/P069"
+        android:textColor="@color/color_CCCCCC_000000"
+        android:textSize="@dimen/textSize16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_12"
+        android:layout_marginTop="@dimen/margin_12"
+        android:text="@string/P070"
+        android:textColor="@color/color_6D7693"
+        android:textSize="@dimen/textSize14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_40"
-        android:orientation="vertical"
-        android:background="@drawable/bg_radius_8_commission_info_dialog">
-        <ImageView
-            android:id="@+id/btn_close"
-            android:layout_width="@dimen/margin_40"
-            android:layout_height="@dimen/margin_40"
-            android:padding="@dimen/margin_6"
-            android:layout_gravity="right"
-            android:layout_marginEnd="12dp"
-            android:src="@drawable/ic_close_deduct" />
+        android:layout_marginHorizontal="@dimen/margin_12"
+        android:layout_marginVertical="@dimen/margin_20">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginHorizontal="@dimen/margin_12"
-            android:text="@string/P069"
-            android:textColor="@color/color_CCCCCC_000000"
-            android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_12"
-            android:layout_marginTop="@dimen/margin_12"
-            android:text="@string/P070"
-            android:textColor="@color/color_6D7693"
+        <Button
+            android:id="@+id/btnConfirm"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_36"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_radius_8_blue_stroke"
+            android:text="@string/btn_confirm"
+            android:textColor="@color/color_025BE8"
             android:textSize="@dimen/textSize14sp" />
 
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginHorizontal="@dimen/margin_12"
-           android:layout_marginVertical="@dimen/margin_20">
-           <Button
-               android:id="@+id/btnConfirm"
-               style="@style/Widget.AppCompat.Button.Borderless"
-               android:layout_width="0dp"
-               android:layout_height="@dimen/margin_36"
-               android:layout_weight="1"
-               android:background="@drawable/bg_white_radius_8_blue_stroke"
-               android:textSize="@dimen/textSize14sp"
-               android:textColor="@color/color_025BE8"
-               android:text="@string/btn_confirm"/>
-           <Button
-               android:id="@+id/btnCancel"
-               style="@style/Widget.AppCompat.Button.Borderless"
-               android:layout_width="0dp"
-               android:layout_height="@dimen/margin_36"
-               android:layout_weight="1"
-               android:layout_marginLeft="@dimen/margin_10"
-               android:background="@drawable/bg_blue_radius_8"
-               android:textSize="@dimen/textSize14sp"
-               android:textColor="@color/color_FFFFFF"
-               android:text="@string/btn_cancel"/>
-       </LinearLayout>
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_36"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_weight="1"
+            android:background="@drawable/bg_blue_radius_8"
+            android:text="@string/btn_cancel"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/textSize14sp" />
     </LinearLayout>
-
 </LinearLayout>
+

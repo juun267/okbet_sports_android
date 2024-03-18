@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
+import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +11,7 @@ import org.cxct.sportlottery.databinding.DialogDeleteBankcardBinding
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.CountDownUtil
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.util.showCaptchaDialog
@@ -17,11 +19,22 @@ import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationM
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.view.checkSMSCode
 import org.cxct.sportlottery.view.isVisible
+import splitties.bundle.put
 
 
-class DeleteBankCardDialog(private val phoneNo: String,
-                           private val onResult: (String, String) -> Unit): BaseDialog<WithdrawViewModel,DialogDeleteBankcardBinding>() {
+class DeleteBankCardDialog: BaseDialog<WithdrawViewModel,DialogDeleteBankcardBinding>() {
 
+    companion object{
+        fun newInstance(phoneNo: String)=DeleteBankCardDialog().apply {
+            arguments = Bundle().apply {
+                put("phoneNo",phoneNo)
+            }
+        }
+    }
+    init {
+        marginHorizontal=20.dp
+    }
+    private val phoneNo by lazy { requireArguments().getString("phoneNo")!! }
     private var countDownGoing = false
 
     override fun onInitView() {
@@ -131,16 +144,10 @@ class DeleteBankCardDialog(private val phoneNo: String,
             }
 
             dismiss()
-            onResult(pwd, code)
+            (requireParentFragment() as? BankListFragment)?.apply {
+                loading()
+                viewModel.deleteBankCard(it.id.toString(), pwd, code)
+            }
         }
     }
-
-
-
-
-
-
-
-
-
 }

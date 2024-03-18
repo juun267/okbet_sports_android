@@ -287,9 +287,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
         gamesViewModel.gameBalanceResult.observe(this) {
             it.getContentIfNotHandled()?.let { event ->
-                TransformInDialog(event.first, event.second, event.third) {
-                    enterThirdGame(it, event.first)
-                }.show(supportFragmentManager)
+                TransformInDialog.newInstance(event.first, event.second, event.third).show(supportFragmentManager)
             }
         }
 
@@ -674,7 +672,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         }
     }
 
-    private fun enterThirdGame(result: EnterThirdGameResult, firmType: String) {
+    fun enterThirdGame(result: EnterThirdGameResult, firmType: String) {
 
         hideLoading()
         when (result.resultType) {

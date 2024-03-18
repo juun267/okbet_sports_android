@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.chat
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatRoomMsg
@@ -26,8 +28,9 @@ sealed class ChatEvent {
     data class InsertMessage(val isMe: Boolean) : ChatEvent()
     data class InsertPic(val isMe: Boolean) : ChatEvent()
     data class UpdateUserEnterList(val chatUser: ChatUserResult) : ChatEvent()
+    @Parcelize
     data class GetUnPacket(val getUnPacketResult: ApiResult<List<UnPacketRow>>, val isAdmin: Boolean) :
-        ChatEvent()
+        ChatEvent(),Parcelable
 
     data class RedEnvelope(val packetId: String, val packetType: Int, val isAdmin: Boolean) :
         ChatEvent()

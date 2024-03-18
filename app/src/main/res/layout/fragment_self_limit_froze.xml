@@ -161,7 +161,7 @@
         android:layout_marginTop="@dimen/margin_10"
         android:layout_marginHorizontal="@dimen/margin_20"
         android:layout_marginBottom="@dimen/margin_6"
-        android:background="@drawable/ic_submit"
+        android:background="@drawable/selector_button_default"
         android:enabled="false"
         android:gravity="center"
         android:text="@string/btn_confirm"

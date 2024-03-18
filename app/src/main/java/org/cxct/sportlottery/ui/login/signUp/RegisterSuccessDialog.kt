@@ -1,9 +1,5 @@
 package org.cxct.sportlottery.ui.login.signUp
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setOnClickListeners

@@ -1,8 +1,11 @@
 package org.cxct.sportlottery.network.withdraw.uwcheck
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
+@Parcelize
 @KeepMembers
 class CheckList(
     @Json(name = "addTime")
@@ -23,4 +26,4 @@ class CheckList(
     val deductMoney: Long?,
     @Json(name = "isPass")
     val isPass: Int?
-)
+):Parcelable

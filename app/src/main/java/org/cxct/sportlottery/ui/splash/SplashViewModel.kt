@@ -14,7 +14,6 @@ import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.ConfigResource
 import org.cxct.sportlottery.util.SingleLiveEvent
@@ -28,7 +27,6 @@ class SplashViewModel(
 ) : BaseViewModel(androidContext) {
 
     //當獲取 host 失敗時，就使用下一順位的 serverUrl，重新 request，直到遍歷 ServerUrlList，或成功獲取 host 即停止
-    private var mServerUrlIndex = 0
     private var mCheckHostUrlCount = 0 //已經完成 check host 的數量
     private var mIsGetFastHostDown = false //get host 流程結束
     private var mAppUrlList: List<String> = listOf()
@@ -80,9 +78,9 @@ class SplashViewModel(
                 } ?: return@launch
 
                 if (result.success) {
+                    setBaseUrl(hostUrl)
                     setConfig(result)
                     gotConfigData = true
-                    setBaseUrl(hostUrl, retrofit)
                     result.configData?.let { setRandomSocketUrl(it.wsHost) }
                     isCheckNewHost = true
                     getHost()
@@ -108,9 +106,9 @@ class SplashViewModel(
             } ?: return@launch
 
             if (result.success) {
+                setBaseUrl(hostUrl)
                 setConfig(result)
                 gotConfigData = true
-                setBaseUrl(hostUrl, retrofit)
                 result.configData?.let { setRandomSocketUrl(it.wsHost) }
                 return@launch
             } else {
@@ -118,18 +116,33 @@ class SplashViewModel(
         }
     }
 
-    private fun getHostListUrl(index: Int): String {
-        return if (index in Constants.SERVER_URL_LIST.indices) {
-            val serverUrl = Constants.SERVER_URL_LIST[index]
-            Constants.getHostListUrl(serverUrl)
-        } else ""
-    }
-
-    fun getHost() {
+    fun getHost() = viewModelScope.launch {
         Timber.i("==> getHost")
-        viewModelScope.launch {
-            mServerUrlIndex = 0
-            sendGetHostRequest(mServerUrlIndex)
+        Constants.SERVER_URL_LIST.forEach {
+            try {
+                val url = Constants.getHostListUrl(it)
+                Timber.i("==> sendGetHostRequest: $url")
+                val response = OneBoSportApi.hostService.getHost(url)
+                val result = response.body()
+                if (response.isSuccessful && result?.success == true && result.rows.isNotEmpty()) {
+                    mAppUrlList = result.rows
+                    mCheckHostUrlCount = 0
+                    mIsGetFastHostDown = false
+
+                    mAppUrlList.forEach { hostUrl ->
+                        checkHostByGettingConfig(hostUrl)
+                    }
+                    return@launch
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
+
+        if (!isCheckNewHost) {
+            configResult.postValue(null)
         }
     }
 
@@ -140,33 +153,6 @@ class SplashViewModel(
              _skipHomePage.postValue(true)
         }
 
-    private suspend fun sendGetHostRequest(index: Int) {
-        try {
-            val url = getHostListUrl(index)
-            Timber.i("==> sendGetHostRequest: $url")
-            val response = OneBoSportApi.hostService.getHost(url)
-            val result = response.body()
-            when {
-                response.isSuccessful && result?.success == true && result.rows.isNotEmpty() -> {
-                    mAppUrlList = result.rows
-                    mCheckHostUrlCount = 0
-                    mIsGetFastHostDown = false
-
-                    mAppUrlList.forEach { hostUrl ->
-                        checkHostByGettingConfig(hostUrl)
-                    }
-                }
-                else -> throw Exception(response.errorBody().toString())
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            if (++mServerUrlIndex in Constants.SERVER_URL_LIST.indices)
-                sendGetHostRequest(mServerUrlIndex)
-            else{
-                if (!isCheckNewHost) configResult.postValue(null)
-            }
-        }
-    }
 
     //20210209 記錄問題：每次都要 create 新的 retrofit，才能init正確的 baseUrl，於最後確定要使用的 baseUrl 去替換相對應的 retrofit 實體
     private fun checkHostByGettingConfig(baseUrl: String) {
@@ -199,9 +185,9 @@ class SplashViewModel(
                 mIsGetFastHostDown = true
                 setStoreBaseUrl(baseUrl)
                 if (!isCheckNewHost) {
+                    setBaseUrl(baseUrl)
                     setConfig(result)
                     gotConfigData = true
-                    setBaseUrl(baseUrl, retrofit)
                     result.configData?.let { setRandomSocketUrl(it.wsHost) }
                 }
             } else {
@@ -218,18 +204,18 @@ class SplashViewModel(
     }
 
     private fun setConfig(result: ConfigResult?) {
-        HostRepository.platformId = result?.configData?.platformId ?: -1
-        sConfigData = result?.configData
-        result?.configData?.let { ConfigResource.preloadResource(it) }
+        val configData = result?.configData
+        HostRepository.platformId = configData?.platformId ?: -1
+        sConfigData = configData
+        configData?.let { ConfigResource.preloadResource(it) }
         setupDefaultHandicapType()
         configResult.postValue(result)
         ConfigRepository.config.postValue(result)
     }
 
-    private fun setBaseUrl(baseUrl: String, retrofit: Retrofit) {
+    private fun setBaseUrl(baseUrl: String) {
         Timber.i("Final choice host: $baseUrl")
         Constants.setBaseUrl(baseUrl)
-        RequestManager.instance.retrofit = retrofit
         RetrofitHolder.changeHost(baseUrl)
     }
 
