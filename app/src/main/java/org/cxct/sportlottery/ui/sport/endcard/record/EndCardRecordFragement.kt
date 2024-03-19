@@ -28,7 +28,7 @@ class EndCardRecordFragement: BaseFragment<EndCardVM,FragmentEndcardRecordBindin
                      }
                  }
                  binding.rbtnUnSettle.id -> {
-                     if (binding.rbtnSettled.canDelayClick()){
+                     if (binding.rbtnUnSettle.canDelayClick()){
                          fragmentHelper.showFragment(1)
                      }
                  }

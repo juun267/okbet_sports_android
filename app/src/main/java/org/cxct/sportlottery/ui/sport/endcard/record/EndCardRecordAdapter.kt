@@ -65,7 +65,7 @@ class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
               addItemDecoration(GridSpacingItemDecoration(10,4.dp,false))
               adapter = EndCardRecordOddAdapter()
           }
-          (adapter as EndCardRecordOddAdapter).setList(listOf("","","","","","","","","","","","","","","","","","","","","","",""))
+          (adapter as EndCardRecordOddAdapter).setList(item.matchOdds.firstOrNull()?.multiCode?.map { it.playName })
       }
     }
 }
