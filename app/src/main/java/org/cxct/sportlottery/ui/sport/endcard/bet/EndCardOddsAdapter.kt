@@ -14,7 +14,6 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.net.sport.data.EndCardBet
-import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
