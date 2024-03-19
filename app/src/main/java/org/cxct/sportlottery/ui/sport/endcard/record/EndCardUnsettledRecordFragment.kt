@@ -10,12 +10,15 @@ import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
 import org.cxct.sportlottery.util.RefreshHelper
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.rumWithSlowRequest
 
 class EndCardUnsettledRecordFragment: BaseFragment<EndCardVM,FragmentEndcardUnsettledRecordBinding>() {
 
     private val refreshHelper by lazy { RefreshHelper.of(binding.rvBetRecord, this, true,true) }
-    private val recordAdapter by lazy { EndCardRecordAdapter() }
+    private val recordAdapter by lazy { EndCardRecordAdapter().apply {
+         setEmptyView(BetEmptyView(requireContext()).apply { center() })
+    } }
     private var currentPage = 1
     override fun onInitView(view: View) {
         initRecordList()
@@ -23,6 +26,7 @@ class EndCardUnsettledRecordFragment: BaseFragment<EndCardVM,FragmentEndcardUnse
     override fun onBindViewStatus(view: View) {
         super.onBindViewStatus(view)
         initObservable()
+        loading()
         getUnsettledData(0)
     }
     private fun initRecordList(){
@@ -47,6 +51,7 @@ class EndCardUnsettledRecordFragment: BaseFragment<EndCardVM,FragmentEndcardUnse
     }
     private fun initObservable() {
         viewModel.unSettledResult.observe(this){
+            hideLoading()
             refreshHelper.finishRefresh()
             refreshHelper.finishLoadMore()
             if (it.success) {

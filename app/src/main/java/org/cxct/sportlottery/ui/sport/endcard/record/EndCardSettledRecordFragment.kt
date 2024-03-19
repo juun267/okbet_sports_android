@@ -11,13 +11,16 @@ import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
 import org.cxct.sportlottery.util.RefreshHelper
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.rumWithSlowRequest
 
 class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettledRecordBinding>() {
 
     private val oneDay = 60 * 60 * 24 * 1000
     private val refreshHelper by lazy { RefreshHelper.of(binding.rvBetRecord, this, true,true) }
-    private val recordAdapter by lazy { EndCardRecordAdapter() }
+    private val recordAdapter by lazy { EndCardRecordAdapter().apply {
+        setEmptyView(BetEmptyView(requireContext()).apply { center() })
+    } }
     private var currentPage = 1
     private var startTime:Long?=null
     private var endTime:Long?=null
@@ -29,6 +32,7 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
     override fun onBindViewStatus(view: View) {
         super.onBindViewStatus(view)
         initObservable()
+        loading()
         getSettledData(0)
     }
 
@@ -53,6 +57,8 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
                     endTime = TimeUtil.getTodayEndTimeStamp()
                 }
             }
+            resetListData()
+            loading()
             getSettledData(0)
         }
         binding.rgDate.check(binding.rbtnToday.id)
@@ -79,6 +85,7 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
     }
     private fun initObservable() {
         viewModel.settledResult.observe(this){
+            hideLoading()
             refreshHelper.finishRefresh()
             refreshHelper.finishLoadMore()
             if (it.success) {
@@ -104,5 +111,10 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
         rumWithSlowRequest(viewModel){
             viewModel.getSettledList(pageIndex,startTime,endTime)
         }
+    }
+    private fun resetListData(){
+        binding.tvTotalbet.text = "0.0"
+        binding.tvReward.text = "0.0"
+        binding.tvTotalValue.text = "0.0"
     }
 }

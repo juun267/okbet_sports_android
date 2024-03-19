@@ -85,7 +85,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
             layoutManager = GridLayoutManager(context,10)
             addItemDecoration(GridSpacingItemDecoration(10,4.dp,false))
             adapter = oddAdapter
-            oddAdapter.setList(listOf("","","","","","","","","","","","","","","","","","","","","","",""))
+            oddAdapter.setList(row.matchOdds?.firstOrNull()?.multiCode?.map { it.playName })
         }
     }
     private fun initResultList(){

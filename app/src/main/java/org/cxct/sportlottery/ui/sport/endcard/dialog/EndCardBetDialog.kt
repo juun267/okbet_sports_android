@@ -6,6 +6,7 @@ import android.text.style.ForegroundColorSpan
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.common.extentions.toast
@@ -50,12 +51,13 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             gameFragment.showFloatBet()
             dismiss()
         }
-        btnAddMore.setOnClickListener {
+        btnAddMore.clickDelay {
             gameFragment.showFloatBet()
             dismiss()
         }
-        btnBetting.setOnClickListener {
-            viewModel.addBetLGPCOFL(matchId,EndCardBetManager.getBetOdds(),viewModel.userInfo.value?.nickName.toStringS(""),stake)
+        btnBetting.clickDelay() {
+            gameFragment.loading()
+            viewModel.addBetLGPCOFL(matchId,EndCardBetManager.getBetOdds(),viewModel.userInfo.value?.nickName?:"",stake)
         }
     }
     private fun initOddList(){
@@ -78,12 +80,14 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
     }
     private fun initObservable(){
         viewModel.addBetResult.observe(this){
+            gameFragment.hideLoading()
             gameFragment.clearAllEndCardBet()
             gameFragment.showFloatBet()
             EndCardBetSuccessDialog.newInstance(it).show(parentFragmentManager)
             dismiss()
         }
         viewModel.addFaildResult.observe(this){
+            gameFragment.hideLoading()
             EndCardBetFailDialog.newInstance(it).show(parentFragmentManager)
             dismiss()
         }
