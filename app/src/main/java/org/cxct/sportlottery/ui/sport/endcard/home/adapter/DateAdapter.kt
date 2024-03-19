@@ -22,7 +22,7 @@ import java.util.Date
 class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>) -> Unit)
     : BaseQuickAdapter<Pair<String, List<MatchOdd>>, BaseViewHolder>(0) {
 
-    var currentLeagueOdd: LeagueOdd? = null
+    private var currentLeagueOdd: LeagueOdd? = null
     private var currentItem: Pair<String, List<MatchOdd>>? = null
 
     private val selectedColor by lazy { context.getColor(R.color.color_6AA4FF) }

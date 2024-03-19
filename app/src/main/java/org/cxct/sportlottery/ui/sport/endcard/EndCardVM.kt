@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.sport.endcard
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.net.sport.SportRepository
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.util.SingleLiveEvent
 
 class EndCardVM(androidContext: Application): SportListViewModel(androidContext) {
 
+    val betNum by lazy { MutableSharedFlow<Pair<String, Int>>(extraBufferCapacity = 10) }
     val endcardMatchList = MutableLiveData<List<LeagueOdd>?>()
     val addBetResult = SingleLiveEvent<String>()
     val lgpcoflDetail = SingleLiveEvent<Array<EndCardBet>?>()
@@ -45,6 +47,9 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
     fun addBetLGPCOFL(matchId: String,scoreList: List<String>,nickName: String,stake: Int){
        callApi({SportRepository.addBetLGPCOFL(matchId, scoreList,nickName,stake)}){
            addBetResult.postValue(it.getData())
+           if (it.succeeded()) {
+               viewModelScope.launch { betNum.emit(Pair(matchId, scoreList.size)) }
+           }
        }
     }
     private var betListRequesting = false
