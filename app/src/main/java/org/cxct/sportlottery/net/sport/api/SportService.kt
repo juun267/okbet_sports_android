@@ -6,6 +6,8 @@ import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.net.sport.data.RecommendLeague
 import org.cxct.sportlottery.net.sport.data.SportCouponItem
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteAllMatchItem
 import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.SportMenuData
@@ -33,7 +35,7 @@ interface SportService {
     suspend fun getRecommendLeague(): ApiResult<List<RecommendLeague>>
 
     @POST(Constants.MATCH_BET_ADD_LGPCOFL)
-    suspend fun addLGPCOFL(@Body params: JsonObject): ApiResult<String>
+    suspend fun addLGPCOFL(@Body params: JsonObject): ApiResult<Receipt>
 
     @POST(Constants.MATCH_LGPCOFL_DETAIL + "/{matchId}")
     suspend fun getLGPCOFLDetail(@Path("matchId") matchId: String): ApiResult<Array<EndCardBet>>

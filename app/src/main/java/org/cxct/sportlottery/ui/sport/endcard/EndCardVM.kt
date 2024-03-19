@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.sport.SportRepository
 import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.common.GameType
@@ -19,7 +21,8 @@ import org.cxct.sportlottery.util.SingleLiveEvent
 class EndCardVM(androidContext: Application): SportListViewModel(androidContext) {
 
     val endcardMatchList = MutableLiveData<List<LeagueOdd>?>()
-    val addBetResult = SingleLiveEvent<String>()
+    val addBetResult = SingleLiveEvent<Receipt>()
+    val addFaildResult = SingleLiveEvent<String>()
     val lgpcoflDetail = SingleLiveEvent<Array<EndCardBet>?>()
 
     fun loadEndCardMatchList() {
@@ -39,12 +42,16 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
             }
         }
 
-
     }
 
     fun addBetLGPCOFL(matchId: String,scoreList: List<String>,nickName: String,stake: Int){
        callApi({SportRepository.addBetLGPCOFL(matchId, scoreList,nickName,stake)}){
-           addBetResult.postValue(it.getData())
+           if (it.succeeded()){
+               addBetResult.postValue(it.getData())
+               getMoneyAndTransferOut(true)
+           }else{
+               addFaildResult.postValue(it.msg)
+           }
        }
     }
     private var betListRequesting = false

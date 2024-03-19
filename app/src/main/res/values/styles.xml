@@ -40,7 +40,6 @@
     <style name="CustomDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:gravity">center</item>
         <item name="android:windowSoftInputMode">stateHidden</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowMinWidthMajor">90%</item>

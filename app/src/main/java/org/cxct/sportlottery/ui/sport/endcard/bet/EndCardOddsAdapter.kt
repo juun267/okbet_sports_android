@@ -122,7 +122,7 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
     }
 
     fun setUpData(bet: EndCardBet) {
-        if (::endCardBet.isInitialized && endCardBet == bet) {
+        if (::endCardBet.isInitialized && endCardBet === bet) {
             return
         }
 

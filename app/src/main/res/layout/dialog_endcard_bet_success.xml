@@ -91,18 +91,44 @@
                     android:textSize="@dimen/textSize14sp"
                     android:textColor="@color/color_BEC7DC"
                     android:text="@string/P317"/>
-                <TextView
-                    android:id="@+id/tvMatchesName"
+                <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:layout_marginLeft="@dimen/margin_12"
-                    android:lines="1"
-                    android:ellipsize="end"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textColor="@color/color_FFFFFF"
-                    android:text="red tame  VS  Bule Tame"/>
+                    android:layout_weight="1"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tvHomeName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxWidth="80dp"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_FFFFFF"
+                        android:text="red tame"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_8"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_F5FFC700"
+                        android:text="VS"/>
+                    <TextView
+                        android:id="@+id/tvAwayName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxWidth="80dp"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_FFFFFF"
+                        android:text="Bule Tame"/>
+                </LinearLayout>
+
             </LinearLayout>
             <View
                 android:layout_width="match_parent"

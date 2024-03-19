@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.circleOf
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.databinding.FragmentEndcardgameBinding
@@ -16,16 +18,20 @@ import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
+import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
+import timber.log.Timber
 
 class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBinding>() {
 
     private lateinit var loadingHolder: Gloading.Holder
     private val oddsAdapter = EndCardOddsAdapter(::onOddClick)
     private val betAmountAdapter = BetAmountAdapter(::onBetAmountChanged)
+    private var selectedEndCardBet: EndCardBet?=null
 
     override fun createRootView(
         inflater: LayoutInflater,
@@ -45,6 +51,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         binding.ivBack.setOnClickListener { requireActivity().onBackPressed() }
         initAmountList()
         initOddsList()
+        initFloatMenu()
     }
 
     private fun initMatchInfo() = binding.run {
@@ -87,14 +94,23 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     }
 
     private fun onBetAmountChanged(endCardBet: EndCardBet) = binding.run {
+        selectedEndCardBet = endCardBet
         val sign = showCurrencySign
         tvQ1Amount.text = "${endCardBet.lastDigit1}$sign"
         tvQ2Amount.text = "${endCardBet.lastDigit2}$sign"
         tvQ3Amount.text = "${endCardBet.lastDigit3}$sign"
         tvQ4Amount.text = "${endCardBet.lastDigit4}$sign"
         oddsAdapter.setUpData(endCardBet)
+        clearAllEndCardBet()
     }
-
+    private fun initFloatMenu(){
+        binding.parlayFloatWindow.onViewClick = {
+            selectedEndCardBet?.let {
+                EndCardBetDialog.newInstance(it.matchId,it.betMoney).show(childFragmentManager)
+                binding.parlayFloatWindow.gone()
+            }
+        }
+    }
     private fun onOddClick(oddId: String): Boolean {
         val isAdded = EndCardBetManager.containOdd(oddId)
         if (isAdded) {
@@ -102,20 +118,45 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         } else {
             EndCardBetManager.addBetOdd(oddId)
         }
+        if (EndCardBetManager.getBetOdds().size==1&&!isAdded){
+            binding.parlayFloatWindow.gone()
+            selectedEndCardBet?.let {
+                EndCardBetDialog.newInstance(it.matchId,it.betMoney).show(childFragmentManager)
+            }
+        }else{
+            showFloatBet()
+        }
         return true
     }
 
+    fun showFloatBet(){
+        val size = EndCardBetManager.getBetOdds().size
+        if (size==0){
+            binding.parlayFloatWindow.gone()
+        }else{
+            binding.parlayFloatWindow.visible()
+            binding.parlayFloatWindow.updateCount(size.toString())
+        }
+    }
     private fun initObserver() {
         viewModel.lgpcoflDetail.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 loadingHolder.showLoadFailed()
                 return@observe
             }
-
             betAmountAdapter.setNewInstance(it.toMutableList())
             onBetAmountChanged(it.first())
             loadingHolder.showLoadSuccess()
         }
+    }
+
+    override fun onDestroy() {
+        EndCardBetManager.removeAll()
+        super.onDestroy()
+    }
+    fun clearAllEndCardBet(){
+        EndCardBetManager.removeAll()
+        oddsAdapter.notifyDataSetChanged()
     }
 
 }

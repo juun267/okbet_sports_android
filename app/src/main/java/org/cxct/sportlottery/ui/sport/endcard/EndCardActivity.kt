@@ -37,11 +37,6 @@ import splitties.fragments.addToBackStack
 class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
 
     private val fragmentHolder = ObjectHolder()
-    private val betDialog by lazy { EndCardBetDialog().apply {
-        onDismissListener={
-             binding.parlayFloatWindow.visible()
-        }
-    } }
 
     private val fragmentHelper by lazy {
         FragmentHelper(supportFragmentManager,
@@ -89,10 +84,6 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
     }
 
     private fun initTab() = binding.run {
-        parlayFloatWindow.onViewClick = {
-            betDialog.show(supportFragmentManager)
-            parlayFloatWindow.gone()
-        }
         llRecord.clickDelay { showBetRecord() }
         llMain.clickDelay { showHome() }
         llCasino.clickDelay { finish() }
@@ -112,8 +103,11 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
         binding.ivBetRecord.setImageResource(R.drawable.ic_endcard_tab_betrecord)
     }
 
-    private fun showBetRecord() {
+    fun showBetRecord(recordPosition: Int?=null) {
         fragmentHelper.showFragment(1)
+        recordPosition?.let {
+            (fragmentHelper.getCurrentFragment() as EndCardRecordFragement).showPage(it)
+        }
         binding.tvEndCard.setTextColor(Color.WHITE)
         binding.tvBetRecord.setTextColor(getColor(R.color.color_2B7DFF))
         binding.ivEndCard.setImageResource(R.drawable.ic_endcard_tab_main)
@@ -149,41 +143,6 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
             .remove(fragment)
             .addToBackStack()
             .commit()
-    }
-
-    open fun getBetListPageVisible(): Boolean {
-        return betDialog.isVisible
-    }
-
-    private var betListCount = 0
-
-    fun updateBetListCount(num: Int) {
-        betListCount = num
-        setupBetBarVisiblity()
-        binding.parlayFloatWindow.updateCount(betListCount.toString())
-        if (num > 0) viewModel.getMoneyAndTransferOut()
-    }
-
-    private fun setupBetBarVisiblity() {
-        val needShowBetBar = fragmentHelper.getCurrentPosition() >= 0
-                && (fragmentHelper.getCurrentFragment() is HomeFragment
-                || fragmentHelper.getCurrentFragment() is SportFragment
-                || fragmentHelper.getCurrentFragment() is ESportFragment)
-
-        if (betListCount == 0
-            || !needShowBetBar
-            || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
-            binding.parlayFloatWindow.gone()
-            return
-        }
-
-        if (BetInfoRepository.currentBetType == BetListFragment.PARLAY) {
-            binding.parlayFloatWindow.setBetText(getString(R.string.conspire))
-            binding.parlayFloatWindow.updateCount(betListCount.toString())
-        } else {
-            binding.parlayFloatWindow.setBetText(getString(R.string.F001))
-        }
-        binding.parlayFloatWindow.visible()
     }
 
     fun backMainHome() {

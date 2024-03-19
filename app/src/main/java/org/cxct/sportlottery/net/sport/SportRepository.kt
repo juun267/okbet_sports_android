@@ -9,6 +9,7 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.sport.api.SportService
 import org.cxct.sportlottery.net.sport.data.RecommendLeague
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.repository.LOGIN_SRC
@@ -91,7 +92,7 @@ object SportRepository {
     "loginSrc": 0,设备号
     "channelType": 0 渠道
      */
-    suspend fun addBetLGPCOFL(matchId: String,scoreList: List<String>,nickName: String,stake: Int):ApiResult<String>{
+    suspend fun addBetLGPCOFL(matchId: String,scoreList: List<String>,nickName: String,stake: Int):ApiResult<Receipt>{
     val params = JsonObject()
     params.addProperty("matchId",  matchId)
     params.add("scoreList", Gson().toJsonTree(scoreList))

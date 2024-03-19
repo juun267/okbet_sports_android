@@ -27,5 +27,8 @@ object EndCardBetManager {
     fun removeBetOdd(oddId: String) {
         selectedOddsId.remove(oddId)
     }
+    fun removeAll() {
+        selectedOddsId.clear()
+    }
 
 }

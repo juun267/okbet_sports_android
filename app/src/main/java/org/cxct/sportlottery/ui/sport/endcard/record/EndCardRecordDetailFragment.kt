@@ -41,7 +41,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
             tvHomeName.text = it.homeName
             tvAwayName.text = it.awayName
         }
-        tvBettingTime.text = TimeUtil.timeFormat(row.addTime, TimeUtil.NEWS_TIME_FORMAT, locale = Locale.ENGLISH)
+        tvBettingTime.text = TimeUtil.timeFormat(row.addTime, TimeUtil.YMD_HM_FORMAT_2)
         tvBet.text = "$showCurrencySign ${TextUtil.formatMoney(row.stake,2)}"
         tvBetAmount.text = "$showCurrencySign ${TextUtil.formatMoney(row.stake,2)}"
         tvTotalWin.text = "$showCurrencySign ${TextUtil.formatMoney(row.winnable,2)}"

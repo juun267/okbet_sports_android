@@ -29,7 +29,7 @@ class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
             tvHomeName.text = it.homeName
             tvAwayName.text = it.awayName
         }
-        tvTime.text = TimeUtil.timeFormat(item.addTime, TimeUtil.NEWS_TIME_FORMAT, locale = Locale.ENGLISH)
+        tvTime.text = TimeUtil.timeFormat(item.addTime, TimeUtil.YMD_HM_FORMAT_2)
         tvBetAmount.text = " $showCurrencySign ${TextUtil.formatMoney(item.totalAmount,2)}"
         tvWinnableAmount.text = " $showCurrencySign ${TextUtil.formatMoney(item.winnable,2)}"
         //可赢金额

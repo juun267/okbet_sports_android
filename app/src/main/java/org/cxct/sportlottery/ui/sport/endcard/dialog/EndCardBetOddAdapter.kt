@@ -6,6 +6,6 @@ import org.cxct.sportlottery.databinding.ItemEndcardBetOddBinding
 class EndCardBetOddAdapter:BindingAdapter<String, ItemEndcardBetOddBinding>() {
 
     override fun onBinding(position: Int, binding: ItemEndcardBetOddBinding, item: String) {
-
+         binding.tvOddName.text = item
     }
 }

@@ -36,4 +36,7 @@ class EndCardRecordFragement: BaseFragment<EndCardVM,FragmentEndcardRecordBindin
         }
         binding.rgTab.check(binding.rbtnSettled.id)
     }
+    fun showPage(position: Int){
+        fragmentHelper.showFragment(position)
+    }
 }
