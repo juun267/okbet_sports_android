@@ -14,5 +14,5 @@ data class EndCardBet(
     val lastDigit4: Int,
     val extra: Int,
     val scoreHf: Int,
-    val betMyself: Map<String, String>?,
+    val betMyself: List<String>?,
     val lastBetName: Map<String, String>?)
