@@ -97,12 +97,12 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
 
         val itemView = holder.itemView
         val betted = endCardBet.betMyself?.contains(item) == true
-        if (betted) {
-            itemView.setBackgroundResource(R.drawable.bg_selected_endodd)
-        } else if (!noUserBet) {
-            itemView.background = disableBg
-        } else {
-            itemView.background = defaultBg
+
+        when {
+            betted -> itemView.setBackgroundResource(R.drawable.bg_selected_endodd)
+            !noUserBet -> itemView.background = disableBg
+            EndCardBetManager.containOdd(item) -> itemView.background = selectedBg
+            else -> itemView.background = defaultBg
         }
 
         itemView.isEnabled = !betted && noUserBet
@@ -111,9 +111,9 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
             loginedRun(it.context) {
                 if (itemClick.invoke(item)) {
                     if (EndCardBetManager.containOdd(item)) {
-                        holder.itemView.background = selectedBg
+                        itemView.background = selectedBg
                     } else {
-                        holder.itemView.background = defaultBg
+                        itemView.background = defaultBg
                     }
                 }
             }
