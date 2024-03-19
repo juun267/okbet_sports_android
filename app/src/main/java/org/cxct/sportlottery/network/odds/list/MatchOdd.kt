@@ -38,7 +38,7 @@ data class MatchOdd(
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null,
     @Json(name = "oddsSort")
     override var oddsSort: String? = null,
-    val bkEndCarkOFLCount: Int = 0, //2024-03-18新增，用户在该场比赛上的投注数量
+    var bkEndCarkOFLCount: Int = 0, //2024-03-18新增，用户在该场比赛上的投注数量
 ) : MatchOdd, BaseExpandNode(), Parcelable {
 
     override val childNode: MutableList<BaseNode> = mutableListOf()

@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.luck.picture.lib.utils.ToastUtils
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
@@ -76,6 +78,10 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
             leagueAdapter.setNewInstance(list)
             changeLeague(list.getOrNull(0))
             loadingHolder.showLoadSuccess()
+        }
+
+        viewModel.betNum.collectWith(lifecycleScope) {
+            matchAdapter.updateBetsNum(it.first, it.second)
         }
     }
 

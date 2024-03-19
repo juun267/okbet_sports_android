@@ -37,6 +37,21 @@ class MatchAdapter(showOdd: (MatchOdd) -> Unit): BaseNodeAdapter() {
             else -> 2
         }
     }
+
+    fun updateBetsNum(matchId: String, betsNum: Int) {
+        if (data.isEmpty()) {
+            return
+        }
+
+        data.forEachIndexed { index, baseNode ->
+            if (baseNode is MatchOdd && matchId == baseNode.matchInfo?.id) {
+                baseNode.bkEndCarkOFLCount = betsNum + baseNode.bkEndCarkOFLCount
+                notifyItemChanged(index, baseNode)
+                return
+            }
+        }
+    }
+
 }
 
 private class EndCardLeagueNameProvider(
@@ -94,6 +109,16 @@ private class EndCardMatchProvider(
         val holder = BindingVH.of(ItemEndcardMatchBinding.inflate(parent.layoutInflater, parent, false))
         holder.vb.tvNum.background = numBg
         return holder
+    }
+
+    override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
+        val matchOdd = item as MatchOdd
+        val betNum = matchOdd.bkEndCarkOFLCount
+        with((helper as BindingVH<ItemEndcardMatchBinding>).vb) {
+            tvNum.text = betNum.toString()
+            tvView.setBackgroundResource(R.drawable.ic_viewcard_1)
+            tvNum.visible()
+        }
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) {

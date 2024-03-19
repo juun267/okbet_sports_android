@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.sport.endcard
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toast
@@ -20,6 +21,7 @@ import org.cxct.sportlottery.util.SingleLiveEvent
 
 class EndCardVM(androidContext: Application): SportListViewModel(androidContext) {
 
+    val betNum by lazy { MutableSharedFlow<Pair<String, Int>>(extraBufferCapacity = 10) }
     val endcardMatchList = MutableLiveData<List<LeagueOdd>?>()
     val addBetResult = SingleLiveEvent<Receipt>()
     val addFaildResult = SingleLiveEvent<String>()
@@ -49,6 +51,7 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
            if (it.succeeded()){
                addBetResult.postValue(it.getData())
                getMoneyAndTransferOut(true)
+               viewModelScope.launch { betNum.emit(Pair(matchId, scoreList.size)) }
            }else{
                addFaildResult.postValue(it.msg)
            }
