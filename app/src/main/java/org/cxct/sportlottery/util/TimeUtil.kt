@@ -15,6 +15,7 @@ object TimeUtil {
     const val YMD_HMS_FORMAT_CHANGE_LINE = "yyyy/MM/dd\nHH:mm:ss"
     const val YMD_HMS_FORMAT_CHANGE_LINE_2 = "yyyy/MM/dd HH:mm:ss"
     const val YMD_HM_FORMAT_2 = "yyyy/MM/dd HH:mm"
+    const val DMY_HM_FORMAT = "dd/MM/yyyy HH:mm"
     const val YMD_FORMAT = "yyyy-MM-dd"
     const val YMD_FORMAT_2 = "yyyy/MM/dd"
     const val MD_FORMAT = "MM-dd"

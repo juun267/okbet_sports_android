@@ -11,6 +11,7 @@ import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.databinding.DialogEndcardBetBinding
+import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
@@ -23,10 +24,9 @@ import org.cxct.sportlottery.util.Spanny
 class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
 
     companion object{
-        fun newInstance(matchId: String,stake: Int)= EndCardBetDialog().apply {
+        fun newInstance(endCardBet: EndCardBet)= EndCardBetDialog().apply {
             arguments = Bundle().apply {
-                putString("matchId",matchId)
-                putInt("stake",stake)
+                putParcelable("endCardBet",endCardBet)
             }
         }
     }
@@ -34,8 +34,7 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
         marginHorizontal = 12.dp
     }
     private val oddAdapter by lazy { EndCardBetOddAdapter() }
-    private val matchId by lazy { arguments?.getString("matchId")!! }
-    private val stake by lazy { arguments?.getInt("stake")!! }
+    private val endCardBet by lazy { arguments?.getParcelable<EndCardBet>("endCardBet")!! }
     private val gameFragment by lazy { requireParentFragment() as EndCardGameFragment}
 
     override fun onInitView() {
@@ -57,7 +56,7 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
         }
         btnBetting.clickDelay() {
             gameFragment.loading()
-            viewModel.addBetLGPCOFL(matchId,EndCardBetManager.getBetOdds(),viewModel.userInfo.value?.nickName?:"",stake)
+            viewModel.addBetLGPCOFL(endCardBet.matchId,EndCardBetManager.getBetOdds(),viewModel.userInfo.value?.nickName?:"",endCardBet.betMoney)
         }
     }
     private fun initOddList(){
@@ -69,9 +68,10 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
         }
     }
     private fun setTips(){
-        val betMoney =  "$showCurrencySign $stake"
+        val betMoney =  "$showCurrencySign ${endCardBet.betMoney}"
         val oddNames =  "${EndCardBetManager.getBetOdds().joinToString("," )}"
-        val totalWin = "$showCurrencySign ${stake*EndCardBetManager.getBetOdds().size}"
+        val totalLastDigit = endCardBet.lastDigit1+endCardBet.lastDigit2+endCardBet.lastDigit3+endCardBet.lastDigit4
+        val totalWin = "$showCurrencySign $totalLastDigit"
         val notice = String.format(getString(R.string.P306),betMoney,oddNames,totalWin)
         binding.tvTips.text = Spanny(notice)
             .findAndSpan(betMoney) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_6AA4FF)) }

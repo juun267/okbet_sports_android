@@ -1,7 +1,10 @@
 package org.cxct.sportlottery.net.sport.data
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
+@Parcelize
 @KeepMembers
 data class EndCardBet(
     val id: Int,
@@ -15,4 +18,4 @@ data class EndCardBet(
     val extra: Int,
     val scoreHf: Int,
     val betMyself: List<String>?,
-    val lastBetName: Map<String, String>?)
+    val lastBetName: Map<String, String>?):Parcelable

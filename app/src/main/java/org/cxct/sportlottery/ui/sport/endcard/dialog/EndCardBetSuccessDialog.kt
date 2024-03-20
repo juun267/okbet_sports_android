@@ -44,7 +44,7 @@ class EndCardBetSuccessDialog: BaseDialog<BaseViewModel,DialogEndcardBetSuccessB
             initOddList()
             binding.tvHomeName.text = it.homeName
             binding.tvAwayName.text = it.awayName
-            binding.tvBettingTime.text = TimeUtil.timeFormat(it.startTime, TimeUtil.YMD_HM_FORMAT_2)
+            binding.tvBettingTime.text = TimeUtil.timeFormat(it.startTime, TimeUtil.DMY_HM_FORMAT)
             binding.tvBet.text = "$showCurrencySign ${TextUtil.formatMoney(receipt.userPlayAmount?:0,2)}"
             binding.tvBetAmount.text = "$showCurrencySign ${TextUtil.formatMoney(receipt.totalStake?:0,2)}"
             binding.tvOrderNumber.text = receipt.singleBets?.firstOrNull()?.orderNo

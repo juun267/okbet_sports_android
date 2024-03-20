@@ -106,7 +106,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     private fun initFloatMenu(){
         binding.parlayFloatWindow.onViewClick = {
             selectedEndCardBet?.let {
-                EndCardBetDialog.newInstance(it.matchId,it.betMoney).show(childFragmentManager)
+                EndCardBetDialog.newInstance(it).show(childFragmentManager)
                 binding.parlayFloatWindow.gone()
             }
         }
@@ -121,7 +121,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         if (EndCardBetManager.getBetOdds().size==1&&!isAdded){
             binding.parlayFloatWindow.gone()
             selectedEndCardBet?.let {
-                EndCardBetDialog.newInstance(it.matchId,it.betMoney).show(childFragmentManager)
+                EndCardBetDialog.newInstance(it).show(childFragmentManager)
             }
         }else{
             showFloatBet()
