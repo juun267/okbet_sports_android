@@ -53,7 +53,11 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        if (ORIENTATION_PORTRAIT == newConfig.orientation) {
+        setStatuEnable(ORIENTATION_PORTRAIT == newConfig.orientation)
+    }
+
+    private fun setStatuEnable(enable: Boolean) {
+        if (enable) {
             ImmersionBar.with(this)
                 .hideBar(BarHide.FLAG_SHOW_BAR)
                 .statusBarColor(R.color.white)
@@ -69,10 +73,8 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
     }
 
     override fun onInitView()=binding.run {
+        setStatuEnable(ORIENTATION_PORTRAIT ==resources.configuration.orientation)
         ivBack.setOnClickListener { finish() }
-        setStatusbar(R.color.white)
-//        ivBack.fitsSystemStatus()
-//        disableSystemUI()
         webActivityImp.setCookie(mUrl)
         webActivityImp.setupWebView(webView)
         webView.loadUrl(mUrl)
