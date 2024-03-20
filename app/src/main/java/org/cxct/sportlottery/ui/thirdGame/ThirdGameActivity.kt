@@ -1,6 +1,9 @@
 package org.cxct.sportlottery.ui.thirdGame
 
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.graphics.Color
 import android.webkit.WebView
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.BarHide
@@ -48,6 +51,23 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
 
     private val webActivityImp by lazy { WebActivityImp(this,this::overrideUrlLoading) }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (ORIENTATION_PORTRAIT == newConfig.orientation) {
+            ImmersionBar.with(this)
+                .hideBar(BarHide.FLAG_SHOW_BAR)
+                .statusBarColor(R.color.white)
+                .statusBarDarkFont(true)
+                .fitsSystemWindows(true)
+                .init()
+        } else {
+            ImmersionBar.with(this)
+                .hideBar(BarHide.FLAG_HIDE_BAR)
+                .fitsSystemWindows(false)
+                .init()
+        }
+    }
+
     override fun onInitView()=binding.run {
         ivBack.setOnClickListener { finish() }
         setStatusbar(R.color.white)
@@ -82,10 +102,6 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         }
          view.loadUrl(url)
         return false
-    }
-
-    private fun disableSystemUI() {
-        ImmersionBar.with(this).hideBar(BarHide.FLAG_HIDE_BAR).init()
     }
 
     override fun onBackPressed() {
