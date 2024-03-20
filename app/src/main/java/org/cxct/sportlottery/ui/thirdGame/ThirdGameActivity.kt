@@ -3,13 +3,14 @@ package org.cxct.sportlottery.ui.thirdGame
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.graphics.Color
+import android.view.View
 import android.webkit.WebView
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.ScreenAdapter
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityThirdGameBinding
 import org.cxct.sportlottery.network.Constants
@@ -40,6 +41,10 @@ import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
 open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBinding>() {
 
+    private val Int.dp: Int
+        get() = (this * density).toInt()
+    private var density: Float = 0f
+
     private var mUserInfo: UserInfo? = null
 
     //簡訊驗證彈窗
@@ -53,7 +58,20 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        if (ORIENTATION_PORTRAIT == newConfig.orientation) {
+        setStatuEnable(ORIENTATION_PORTRAIT == newConfig.orientation)
+    }
+
+    private fun setStatuEnable(enable: Boolean) {
+
+        if (enable) {
+
+            10.dp.let { binding.toolBar.setPadding(it, 0, it, 0) }
+            val dp28 = 28.dp
+            changeViewWH(binding.toolBar, -1, 40.dp)
+            changeViewWH(binding.ivBack, dp28, dp28)
+            changeViewWH(binding.ivDeposit, dp28, dp28)
+            changeViewWH(binding.ivLogo, 68.dp, dp28)
+
             ImmersionBar.with(this)
                 .hideBar(BarHide.FLAG_SHOW_BAR)
                 .statusBarColor(R.color.white)
@@ -61,6 +79,14 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
                 .fitsSystemWindows(true)
                 .init()
         } else {
+
+            33.dp.let { binding.toolBar.setPadding(it, 0, it, 0) }
+            val dp20 = 20.dp
+            changeViewWH(binding.toolBar, -1, 28.dp)
+            changeViewWH(binding.ivBack, dp20, dp20)
+            changeViewWH(binding.ivDeposit, dp20, dp20)
+            changeViewWH(binding.ivLogo, 48.dp, dp20)
+
             ImmersionBar.with(this)
                 .hideBar(BarHide.FLAG_HIDE_BAR)
                 .fitsSystemWindows(false)
@@ -68,11 +94,17 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         }
     }
 
+    private fun changeViewWH(view: View, width: Int, height: Int) {
+        val lp = view.layoutParams
+        lp.width = width
+        lp.height = height
+        view.layoutParams = lp
+    }
+
     override fun onInitView()=binding.run {
+        density = resources.displayMetrics.density
+        setStatuEnable(ORIENTATION_PORTRAIT ==resources.configuration.orientation)
         ivBack.setOnClickListener { finish() }
-        setStatusbar(R.color.white)
-//        ivBack.fitsSystemStatus()
-//        disableSystemUI()
         webActivityImp.setCookie(mUrl)
         webActivityImp.setupWebView(webView)
         webView.loadUrl(mUrl)
