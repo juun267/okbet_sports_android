@@ -32,8 +32,7 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
     override fun onBindViewStatus(view: View) {
         super.onBindViewStatus(view)
         initObservable()
-        loading()
-        getSettledData(0)
+        reload()
     }
 
     private fun initTimeTab(){
@@ -116,5 +115,11 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
         binding.tvTotalbet.text = "0.0"
         binding.tvReward.text = "0.0"
         binding.tvTotalValue.text = "0.0"
+    }
+    fun reload(){
+        if (isAdded) {
+            loading()
+            getSettledData(0)
+        }
     }
 }

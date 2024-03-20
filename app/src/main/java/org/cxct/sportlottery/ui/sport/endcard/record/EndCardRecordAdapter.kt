@@ -31,8 +31,8 @@ class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
             tvAwayName.text = it.awayName
         }
         tvTime.text = TimeUtil.timeFormat(item.addTime, TimeUtil.DMY_HM_FORMAT)
-        tvBetAmount.text = " $showCurrencySign ${TextUtil.formatMoney(item.totalAmount,2)}"
-//        tvWinnableAmount.text = " $showCurrencySign ${TextUtil.formatMoney(item.winnable,2)}"
+        tvBetAmount.text = " $showCurrencySign ${TextUtil.formatMoney(item.stake,2)}"
+        tvWinnableAmount.text = " $showCurrencySign ${TextUtil.formatMoney(item.win?:0,2)}"
         //可赢金额
         when(item.status){
             //未结单  可赢：xxx
@@ -40,34 +40,24 @@ class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
                 ivStatus.setImageResource(R.color.transparent)
                 tvWinner.setTextColor(context.getColor(R.color.color_8B96AD))
                 tvWinnableAmount.setTextColor(context.getColor(R.color.color_FFFFFF))
-                tvWinnableAmount.text = " $showCurrencySign ${TextUtil.formatMoney(item.winnable,2)}"
-                tvWinner.text=context.getString(R.string.bet_info_list_win_quota)
             }
             //已中奖   赢：xxx
             2,3->{
                 ivStatus.setImageResource( R.drawable.ic_tag_win)
                 tvWinner.setTextColor(context.getColor(R.color.color_00FF81))
                 tvWinnableAmount.setTextColor(context.getColor(R.color.color_00FF81))
-                tvWinnableAmount.text = " $showCurrencySign ${TextUtil.formatMoney(item.win?:0,2)}"
-                tvWinner.text="${context.getString(R.string.win)}："
             }
             //未中奖  输：xxx
             4,5->{
-                val tempRebate:Double=item.rebateAmount?:0.0
-                val totalMoney=(item.win?:0).toString().replace("-","").toDouble()+tempRebate
                 ivStatus.setImageResource( R.drawable.ic_tag_lost)
-                tvWinner.setTextColor(context.getColor(R.color.color_ff0000))
-                tvWinnableAmount.setTextColor(context.getColor(R.color.color_ff0000))
-                tvWinnableAmount.text = " $showCurrencySign ${TextUtil.formatMoney(totalMoney,2)}"
-                tvWinner.text="${context.getString(R.string.lose)}："
+                tvWinner.setTextColor(context.getColor(R.color.color_8B96AD))
+                tvWinnableAmount.setTextColor(context.getColor(R.color.color_FFFFFF))
             }
             //其他  ₱ --
             else->{
                 ivStatus.setImageResource(R.color.transparent)
                 tvWinner.setTextColor(context.getColor(R.color.color_8B96AD))
                 tvWinnableAmount.setTextColor(context.getColor(R.color.color_FFFFFF))
-                tvWinnableAmount.text = " $showCurrencySign --"
-                tvWinner.text=""
             }
         }
       rvOdd.apply {

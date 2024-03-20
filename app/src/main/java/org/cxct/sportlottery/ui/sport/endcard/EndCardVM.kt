@@ -70,7 +70,7 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
             championOnly = 0,
             statusList = listOf(0,1), //全部注單，(0:待成立, 1:未結算)
             page = page,
-            gameType = null,
+            gameType = GameType.BK.key,
             pageSize = pageSize,
             queryTimeType = null,
             startTime = startTime?.toString(),
@@ -100,7 +100,7 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
             championOnly = 0,
             statusList = listOf(2,3,4,5,6,7), //234567 结算注单
             page = page,
-            gameType = "",
+            gameType = GameType.BK.key,
             pageSize = pageSize,
             queryTimeType="settleTime",
             startTime = startTime.toString(),

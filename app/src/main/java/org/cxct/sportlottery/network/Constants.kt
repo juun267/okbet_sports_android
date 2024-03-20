@@ -248,6 +248,9 @@ object Constants {
         val base = getH5BaseUrl()
         return base + "sports-rule/#/${language}sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
     }
+    //篮球末位比分规则页面
+    fun getEndCardRuleUrl() = "${getH5BaseUrl()}newBkEnd/rules"
+
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
     /**

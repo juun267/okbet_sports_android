@@ -70,8 +70,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         matchInfo = requireArguments().getParcelable("matchInfo")!!
         bindMatchInfo(matchInfo)
         initObserver()
-        loadingHolder.withRetry{ viewModel.getLGPCOFLDetail(matchInfo.id) }
-        loadingHolder.go()
+        reload()
     }
     
     private fun bindMatchInfo(matchInfo: MatchInfo) = binding.run {
@@ -152,11 +151,16 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
 
     override fun onDestroy() {
         EndCardBetManager.removeAll()
+        showFloatBet()
         super.onDestroy()
     }
     fun clearAllEndCardBet(){
         EndCardBetManager.removeAll()
         oddsAdapter.notifyDataSetChanged()
+    }
+    fun reload(){
+        loadingHolder.withRetry{ viewModel.getLGPCOFLDetail(matchInfo.id) }
+        loadingHolder.go()
     }
 
 }

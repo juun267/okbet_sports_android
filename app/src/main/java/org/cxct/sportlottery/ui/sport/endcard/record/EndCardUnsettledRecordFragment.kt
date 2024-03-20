@@ -26,8 +26,7 @@ class EndCardUnsettledRecordFragment: BaseFragment<EndCardVM,FragmentEndcardUnse
     override fun onBindViewStatus(view: View) {
         super.onBindViewStatus(view)
         initObservable()
-        loading()
-        getUnsettledData(0)
+        reload()
     }
     private fun initRecordList(){
         refreshHelper.setRefreshListener {
@@ -73,6 +72,12 @@ class EndCardUnsettledRecordFragment: BaseFragment<EndCardVM,FragmentEndcardUnse
         //获取结算数据
         rumWithSlowRequest(viewModel){
             viewModel.getUnsettledList(pageIndex,null,null)
+        }
+    }
+    fun reload(){
+        if (isAdded) {
+            loading()
+            getUnsettledData(0)
         }
     }
 }

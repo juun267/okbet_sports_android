@@ -14,6 +14,7 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordOddAdapter
+import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -55,7 +56,9 @@ class EndCardBetSuccessDialog: BaseDialog<BaseViewModel,DialogEndcardBetSuccessB
             dismiss()
         }
         tvOddDetail.setOnClickListener {
-            (requireActivity() as EndCardActivity).showBetRecord(1)
+            dismiss()
+            requireActivity().onBackPressed()
+            (AppManager.currentActivity() as EndCardActivity).showBetRecord(1)
         }
     }
     private fun initOddList(){

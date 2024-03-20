@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.luck.picture.lib.utils.ToastUtils
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.loading.Gloading
@@ -52,7 +53,7 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
 
     override fun onInitView(view: View) {
         initRecyclerView()
-        binding.toolbarLayout.setOnClickListener {
+        binding.tvRule.clickDelay {
             (activity as EndCardActivity).showEndCardRule()
         }
     }

@@ -6,9 +6,11 @@ import org.cxct.sportlottery.databinding.FragmentEndcardRecordBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.util.FragmentHelper
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.Param
+import timber.log.Timber
 
-class EndCardRecordFragement: BaseFragment<EndCardVM,FragmentEndcardRecordBinding>() {
+class EndCardRecordFragment: BaseFragment<EndCardVM,FragmentEndcardRecordBinding>() {
 
     private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
@@ -23,20 +25,39 @@ class EndCardRecordFragement: BaseFragment<EndCardVM,FragmentEndcardRecordBindin
         binding.rgTab.setOnCheckedChangeListener { group, checkedId ->
              when(checkedId){
                  binding.rbtnSettled.id -> {
-                     if (binding.rbtnSettled.canDelayClick()){
-                         fragmentHelper.showFragment(0)
-                     }
+                     fragmentHelper.showFragment(0)
                  }
                  binding.rbtnUnSettle.id -> {
-                     if (binding.rbtnUnSettle.canDelayClick()){
-                         fragmentHelper.showFragment(1)
-                     }
+                     fragmentHelper.showFragment(1)
                  }
              }
         }
         binding.rgTab.check(binding.rbtnSettled.id)
     }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden){
+            when(val fragment=fragmentHelper.getCurrentFragment()){
+                is EndCardSettledRecordFragment-> fragment.reload()
+                is EndCardUnsettledRecordFragment-> fragment.reload()
+            }
+        }
+    }
     fun showPage(position: Int){
-        fragmentHelper.showFragment(position)
+        if (position==0){
+            if(binding.rbtnSettled.isChecked){
+                fragmentHelper.showFragment(position)
+            }else{
+                binding.rbtnSettled.isChecked = true
+            }
+        }else{
+            if(binding.rbtnUnSettle.isChecked){
+                fragmentHelper.showFragment(position)
+            }else{
+                binding.rbtnUnSettle.isChecked = true
+            }
+        }
+
     }
 }

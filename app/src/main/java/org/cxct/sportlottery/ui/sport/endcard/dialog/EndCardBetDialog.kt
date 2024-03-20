@@ -83,6 +83,7 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             gameFragment.hideLoading()
             gameFragment.clearAllEndCardBet()
             gameFragment.showFloatBet()
+            gameFragment.reload()
             EndCardBetSuccessDialog.newInstance(it).show(parentFragmentManager)
             dismiss()
         }

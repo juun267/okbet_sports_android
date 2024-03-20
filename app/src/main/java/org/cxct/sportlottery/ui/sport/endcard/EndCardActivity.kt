@@ -9,29 +9,22 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityEndcardBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
-import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.endcard.bet.EndCardGameFragment
 import org.cxct.sportlottery.ui.sport.endcard.home.EndCardHomeFragment
-import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardGuideDialog
 import org.cxct.sportlottery.ui.sport.endcard.home.EndCardRuleFragment
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordDetailFragment
-import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordFragement
-import org.cxct.sportlottery.ui.sport.esport.ESportFragment
+import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordFragment
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.ObjectHolder
 import org.cxct.sportlottery.util.Param
-import splitties.bundle.put
 import splitties.fragments.addToBackStack
 
 class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
@@ -43,7 +36,7 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
             R.id.llContent,
             arrayOf(
                 Param(EndCardHomeFragment::class.java),
-                Param(EndCardRecordFragement::class.java, needRemove = true)
+                Param(EndCardRecordFragment::class.java)
             ))
     }
 
@@ -106,7 +99,7 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
     fun showBetRecord(recordPosition: Int?=null) {
         fragmentHelper.showFragment(1)
         recordPosition?.let {
-            (fragmentHelper.getCurrentFragment() as EndCardRecordFragement).showPage(it)
+            (fragmentHelper.getCurrentFragment() as EndCardRecordFragment).showPage(it)
         }
         binding.tvEndCard.setTextColor(Color.WHITE)
         binding.tvBetRecord.setTextColor(getColor(R.color.color_2B7DFF))
@@ -145,9 +138,6 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
             .commit()
     }
 
-    fun backMainHome() {
-        finish()
-    }
     fun checkGuide(){
         if(KvUtils.decodeBoolean(KvUtils.KEY_ENDCARD_GUIDE))
             return
