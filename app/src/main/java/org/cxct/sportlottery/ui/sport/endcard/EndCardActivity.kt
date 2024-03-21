@@ -20,11 +20,7 @@ import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardGuideDialog
 import org.cxct.sportlottery.ui.sport.endcard.home.EndCardRuleFragment
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordDetailFragment
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordFragment
-import org.cxct.sportlottery.util.AppManager
-import org.cxct.sportlottery.util.FragmentHelper
-import org.cxct.sportlottery.util.KvUtils
-import org.cxct.sportlottery.util.ObjectHolder
-import org.cxct.sportlottery.util.Param
+import org.cxct.sportlottery.util.*
 import splitties.fragments.addToBackStack
 
 class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
@@ -77,7 +73,9 @@ class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
     }
 
     private fun initTab() = binding.run {
-        llRecord.clickDelay { showBetRecord() }
+        llRecord.clickDelay { loginedRun(this@EndCardActivity){
+            showBetRecord()
+        } }
         llMain.clickDelay { showHome() }
         llCasino.clickDelay { finish() }
         llPromtion.clickDelay {
