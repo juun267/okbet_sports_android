@@ -11,13 +11,6 @@ open class BaseDialogFragment: DialogFragment() {
     var onDismissListener: (() -> Unit)? = null
     var onShowListener: (() -> Unit)? = null
 
-//    // 保留实例对象，在activity重建时直接使用保存的实例对象。避免DialogFragment没有无参构造函数时由系统重建引起的崩溃问题
-//    protected open val isRetainInstance = true
-//
-//    init {
-//        retainInstance = isRetainInstance
-//    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         view?.let { v ->  (v.parent as ViewGroup?)?.let {it.removeView(v)} }

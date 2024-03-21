@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginHorizontal="30dp"
+        android:orientation="vertical"
         android:background="@drawable/bg_white_radius_8">
 
         <TextView
@@ -31,7 +28,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
+            android:layout_marginHorizontal="@dimen/margin_20"
             android:layout_marginTop="14dp"
             android:orientation="horizontal">
 
@@ -46,7 +43,7 @@
                 android:id="@+id/txv_pay_way"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
+                android:gravity="start"
                 android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="在线支付" />
@@ -56,7 +53,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
+            android:layout_marginHorizontal="@dimen/margin_20"
             android:layout_marginTop="8dp"
             android:orientation="horizontal">
 
@@ -71,7 +68,7 @@
                 android:id="@+id/txv_pay_money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
+                android:gravity="start"
                 android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="100 RMB" />
@@ -82,9 +79,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:layout_marginStart="26dp"
+            android:layout_marginHorizontal="@dimen/margin_20"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="5dp"
             android:text="@string/hint_pay1"
             android:textColor="@color/color_909090_666666"
             android:textSize="@dimen/textSize12sp" />
@@ -93,9 +89,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:layout_marginStart="26dp"
+            android:layout_marginHorizontal="@dimen/margin_20"
             android:layout_marginTop="3dp"
-            android:layout_marginEnd="5dp"
             android:text="@string/hint_pay2"
             android:textColor="@color/color_909090_666666"
             android:textSize="@dimen/textSize12sp" />
@@ -143,5 +138,3 @@
         </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>

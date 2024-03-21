@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.ui.splash
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -20,24 +22,45 @@ import org.cxct.sportlottery.util.*
 import java.io.File
 
 
-class AppDownloadDialog(
-    private val mIsForce: Boolean,
-    private val mLastVersion: String,
-    private val checkAppVersionResult: CheckAppVersionResult?,
-) : BaseDialog<BaseViewModel,DialogAppDownloadBinding>() {
+class AppDownloadDialog: BaseDialog<BaseViewModel,DialogAppDownloadBinding>() {
 
-    var dismissRun: (()->Unit)? =null
-
+    companion object{
+        /**
+         * 控制只显示一次，避免系统恢复页面时，出现两个弹窗
+         */
+        private var firstShow = true
+        fun newInstance(mIsForce: Boolean,mLastVersion: String,checkAppVersionResult: CheckAppVersionResult?,apkFilePath: String)=
+            if (firstShow) AppDownloadDialog().apply{
+                arguments = Bundle().apply {
+                    putBoolean("mIsForce",mIsForce)
+                    putString("mLastVersion",mLastVersion)
+                    putParcelable("checkAppVersionResult",checkAppVersionResult)
+                    putString("apkPath",apkFilePath)
+                }
+        }
+        else null
+    }
+    private val mIsForce by lazy { requireArguments().getBoolean("mIsForce") }
+    private val mLastVersion by lazy { requireArguments().getString("mLastVersion")!! }
+    private val checkAppVersionResult by lazy { requireArguments().getParcelable<CheckAppVersionResult>("checkAppVersionResult") }
     private val apkPath by lazy { arguments?.getString("apkPath") }
 
+    interface OnJumpToNextListener{
+        fun onJump(clazz: Class<out Activity>)
+    }
+
     override fun onInitView()=binding.run {
+        firstShow = false
         isCancelable = false
         tvTitle.text = MultiLanguagesApplication.stringOf(R.string.find_new_version)
         btnCancel.text = MultiLanguagesApplication.stringOf(R.string.btn_pass)
         btnCancel.visibility = if (mIsForce) View.GONE else View.VISIBLE
         btnCancel.setOnClickListener {
             dismiss()
-            dismissRun?.invoke()
+            val clazz = requireArguments().getSerializable("activity") as? Class<out Activity>
+            clazz?.let {
+                (requireActivity() as? OnJumpToNextListener)?.onJump(clazz)
+            }
         }
             if (apkPath.isNullOrEmpty())
                 btnDownload.text = MultiLanguagesApplication.stringOf(R.string.update)
@@ -106,10 +129,4 @@ class AppDownloadDialog(
             }
         }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        var isShowing = false
-    }
-
 }

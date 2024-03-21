@@ -18,6 +18,8 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.CustomPasswordVerifyDialog
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.view.afterTextChanged
+import org.cxct.sportlottery.view.checkRegisterListener
 
 /**
  * @app_destination 自我禁制-每次投注上限
@@ -32,36 +34,11 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimitBe
     val perBetMaxAmount =
         if (sConfigData?.perBetMaxAmount.isNullOrEmpty()) 0 else sConfigData?.perBetMaxAmount?.toIntS()
             ?: 0
-    private var textWatch: TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-            s.toString().let {
-                try {
-
-                    when {
-                        it.isEmpty() -> viewModel.setBetEditTextError(true)
-                        !it.isDigitsOnly() || it.toInt() in (perBetMinAmount)..(perBetMaxAmount) -> viewModel.setBetEditTextError(
-                            false)
-                        it.toInt() > perBetMaxAmount -> binding.etMount.setText(perBetMaxAmount.toString()
-                            .toCharArray(), 0, perBetMaxAmount.toString().length)
-                        else -> viewModel.setBetEditTextError(true)
-                    }
-                }catch (e:Exception){
-                 e.printStackTrace()
-                }
-            }
-        }
-    }
 
     override fun onClick(v: View?) {
         when (v) {
             binding.llImportant -> {
-              SelfLimitFrozeImportantDialog().apply { arguments = Bundle().apply { putBoolean("isBet", true) } }.show(childFragmentManager)
+              SelfLimitFrozeImportantDialog.newInstance(true).show(childFragmentManager)
             }
             binding.btnConfirm -> {
                 submit()
@@ -77,7 +54,6 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimitBe
         resetView()
     }
     private fun resetView() {
-        binding.etMount.removeTextChangedListener(textWatch)
         binding.etMount.setText("")
         binding.llSelfLimit.isSelected = false
         binding.tvError.visibility = View.GONE
@@ -86,8 +62,21 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimitBe
     }
 
     private fun initEditText() {
-        binding.etMount.apply {
-            addTextChangedListener(textWatch)
+        binding.etMount.apply{
+            afterTextChanged {
+                when {
+                    it.isNullOrEmpty() -> {
+                        viewModel.setBetEditTextError(false)
+                    }
+                    !it.isDigitsOnly() || it.toLong() > perBetMaxAmount -> {
+                        viewModel.setFrozeEditTextError(true)
+                    }
+                    it.toLong() < perBetMinAmount -> {
+                        viewModel.setFrozeEditTextError(true)
+                    }
+                    else -> viewModel.setBetEditTextError(false)
+                }
+        }
             onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
                 binding.llSelfLimit.isSelected = hasFocus
             }
@@ -137,8 +126,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel,FragmentSelfLimitBe
                 binding.llSelfLimit.isActivated = false
                 binding.tvError.visibility = View.GONE
             }
-
-            binding.btnConfirm.isEnabled = !showError
+            binding.btnConfirm.isEnabled = !showError && binding.etMount.text.isNotEmpty()
         }
 
         viewModel.perBetLimitResult.observe(this.viewLifecycleOwner) {

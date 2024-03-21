@@ -5,11 +5,8 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.text.style.StyleSpan
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.View.OVER_SCROLL_ALWAYS
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -74,13 +71,14 @@ class AnnouncementsDialog: BaseDialogFragment() {
         ivCloseParams.gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
         titleLayout.addView(ivClose, ivCloseParams)
 
-        val recyclerView = RecyclerView(ctx)
+        val recyclerView = RecyclerView(ContextThemeWrapper(ctx,R.style.scrollbar_style))
         recyclerView.setLinearLayoutManager()
         recyclerView.setPadding(0, 0, 0, 8.dp)
         recyclerView.clipToPadding = false
         recyclerView.adapter = adapter
-        recyclerView.isScrollbarFadingEnabled = false
         recyclerView.isVerticalScrollBarEnabled = true
+
+        recyclerView.isScrollbarFadingEnabled = false
         recyclerView.overScrollMode = OVER_SCROLL_ALWAYS
         recyclerView.setWillNotDraw(false)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -89,7 +87,6 @@ class AnnouncementsDialog: BaseDialogFragment() {
                 .setWidth(4.dp)
                 .setSolidColor(Color.parseColor("#C1CEE1"))
         }
-
         rootView.addView(recyclerView, LinearLayout.LayoutParams(-1, 384.dp))
 
         return rootView

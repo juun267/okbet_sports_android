@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.splash
 
+import android.app.Activity
 import android.content.Intent
 import android.view.View
 import com.gyf.immersionbar.BarHide
@@ -11,6 +12,7 @@ import org.cxct.sportlottery.databinding.ActivitySplashBinding
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.WebActivity
@@ -28,7 +30,8 @@ import kotlin.system.exitProcess
 /**
  * @app_destination 啟動頁
  */
-class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
+class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>(),
+    AppDownloadDialog.OnJumpToNextListener {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
     private var enterTime=0L
@@ -57,35 +60,6 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
     private fun checkLocalHost() {
         enterTime=System.currentTimeMillis()
         viewModel.checkLocalHost()
-    }
-
-
-
-
-    private fun goHomePage() {
-        runShowUpdateDialog{
-            startActivity(Intent(this@SplashActivity, MainTabActivity::class.java))
-            finish()
-        }
-    }
-
-
-    private fun goMaintenancePage() {
-        runShowUpdateDialog {
-            postDelayed(getSplashTime()) {
-                startActivity(Intent(this@SplashActivity, MaintenanceActivity::class.java))
-                finish()
-            }
-        }
-    }
-
-    private  fun sendToLaunch(flag:Boolean,imageUrls:ArrayList<String>){
-        runShowUpdateDialog {
-            postDelayed(getSplashTime()) {
-                LaunchActivity.start(this, flag, imageUrls = imageUrls)
-                finish()
-            }
-        }
     }
 
     private fun getSplashTime():Long{
@@ -175,12 +149,12 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
 
         viewModel.skipHomePage.observe(this) {
             if (sConfigData?.maintainStatus == FLAG_OPEN) {
-                goMaintenancePage()
+                onJump(MaintenanceActivity::class.java)
                 return@observe
             }
             //有banenr图片并且开关打开
             val imageUrls = sConfigData?.imageList?.filter {
-                it.imageType == 9
+                it.imageType == ImageType.BANNER_LAUNCH
                         && it.lang == LanguageManager.getSelectLanguage(this).key
                         && !it.imageName1.isNullOrEmpty()
                         && it.startType == (if (KvUtils.decodeBooleanTure("isFirstOpen", true)
@@ -193,10 +167,10 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
                 }
 
             if (imageUrls?.isEmpty() == false && sConfigData?.androidCarouselStatus?.toIntS(0) == 1) {
-                sendToLaunch(it,ArrayList(imageUrls))
+                onJump(LaunchActivity::class.java)
             } else {
                 KvUtils.put("isFirstOpen", false)
-                goHomePage()
+                onJump(MainTabActivity::class.java)
             }
         }
     }
@@ -204,6 +178,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
     override fun onDestroy() {
         super.onDestroy()
         hideLoading()
+
     }
     override fun onBackPressed() {
         super.onBackPressed()
@@ -237,7 +212,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
     private fun sendToMain(config: ConfigResult?){
         when {
             config?.configData?.maintainStatus == FLAG_OPEN -> {
-                goMaintenancePage()
+                onJump(MaintenanceActivity::class.java)
             }
             config?.success == true -> checkAppMinVersion()
             else -> showErrorRetryDialog(
@@ -265,5 +240,15 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
                 KvUtils.put(splashKeyStr,url)
             }
     }
+
+    override fun onJump(clazz: Class<out Activity>) {
+        runShowUpdateDialog(clazz){
+            postDelayed(getSplashTime()) {
+                startActivity(MainTabActivity::class.java)
+                finish()
+            }
+        }
+    }
+
 
 }

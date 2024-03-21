@@ -920,15 +920,9 @@ fun toSendEmail(context: Context, emailAddress: String) {
 }
 fun showCaptchaDialog(manager: FragmentManager,callback: (ticket: String, randstr: String)-> Unit){
     if (sConfigData?.captchaType == 1){
-        CaptchaDialog().let {
-            it.callback = callback
-            it.show(manager)
-        }
+        CaptchaDialog.newInstance(CaptchaDialog.CallBack(callback)).show(manager)
     }else{
-        VerifyCodeDialog().let {
-            it.callBack = callback
-            it.show(manager)
-        }
+        VerifyCodeDialog.newInstance(VerifyCodeDialog.CallBack(callback)).show(manager)
     }
 }
 fun Context.getIconSelector(selected: Int, unSelected: Int): Drawable {

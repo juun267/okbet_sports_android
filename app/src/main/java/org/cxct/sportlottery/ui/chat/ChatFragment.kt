@@ -26,6 +26,7 @@ import org.cxct.sportlottery.repository.ChatRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.chat.adapter.ChatMessageListAdapter3
+import org.cxct.sportlottery.ui.chat.bean.PacketListener
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.selectpicture.PictureSelectorUtils
@@ -329,17 +330,10 @@ class ChatFragment : BaseSocketFragment<ChatViewModel, FragmentChatBinding>(),
         val getUnPacketList = ChatRepository.unPacketList?.toMutableList() ?: return
 
         // 之前的逻辑就是这样如果走不到下面 redEnvelopeListDialog 就会为空
-        redEnvelopeListDialog = RedEnvelopeListDialog(
+        redEnvelopeListDialog = RedEnvelopeListDialog.newInstance(
+            chatEvent,
             getUnPacketList,
-            object : RedEnvelopeListDialog.Listener { //開紅包
-                override fun onDialogCallback(selected: UnPacketRow) {
-                    createRedPacketDialog(
-                        selected.id.toString(),
-                        selected.packetType,
-                        chatEvent.isAdmin
-                    )
-                }
-            })
+           )
         binding.chatRedEnpView.setOnClickListener { redEnvelopeListDialog?.show(childFragmentManager) }
     }
 
@@ -750,8 +744,8 @@ class ChatFragment : BaseSocketFragment<ChatViewModel, FragmentChatBinding>(),
     fun createRedPacketDialog(packetId: String, packetType: Int, isAdmin: Boolean) {
         dismissDiaolg()
         redPacketDialog = context?.let {
-            RedPacketDialog(
-                RedPacketDialog.PacketListener(
+            RedPacketDialog.newInstance(
+                PacketListener(
                     onClickListener = { packetId, watchWord ->
                         viewModel.getLuckyBag(packetId, watchWord)
                         requireActivity().hideSoftKeyboard()
@@ -781,5 +775,13 @@ class ChatFragment : BaseSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private fun dismissDiaolg() {
         redEnvelopeListDialog?.dismissAllowingStateLoss()
         redPacketDialog?.dismiss()
+    }
+
+    fun onDialogCallback(chatEvent: ChatEvent.GetUnPacket,selected: UnPacketRow) {
+        createRedPacketDialog(
+            selected.id.toString(),
+            selected.packetType,
+            chatEvent.isAdmin
+        )
     }
 }

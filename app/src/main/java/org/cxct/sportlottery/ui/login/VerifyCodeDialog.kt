@@ -1,7 +1,10 @@
 package org.cxct.sportlottery.ui.login
 
+import android.os.Bundle
+import android.os.Parcelable
 import android.view.ViewGroup.MarginLayoutParams
 import com.bumptech.glide.Glide
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.DialogVerifyCodeBinding
@@ -13,16 +16,31 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.view.checkSMSCode
+import splitties.bundle.put
 
 /**
  * 顯示棋牌彈窗
  */
 class VerifyCodeDialog: BaseDialog<LoginViewModel,DialogVerifyCodeBinding>() {
 
+    companion object{
+        fun newInstance(callBack: CallBack)= VerifyCodeDialog().apply {
+            arguments = Bundle().apply {
+                putParcelable("callBack",callBack)
+            }
+        }
+    }
     init {
         setStyle(R.style.CustomDialogStyle)
     }
-    var callBack: ((identity: String, validCode: String) -> Unit)? = null
+
+   @Parcelize
+   class CallBack(val callBack: ((identity: String, validCode: String) -> Unit)) :Parcelable{
+       fun onCall(identity: String,validCode: String){
+           callBack.invoke(identity,validCode)
+       }
+   }
+    private val callBack by lazy { requireArguments().getParcelable<CallBack>("callBack")!! }
 
     override fun onInitView() {
         binding.apply {
@@ -43,7 +61,7 @@ class VerifyCodeDialog: BaseDialog<LoginViewModel,DialogVerifyCodeBinding>() {
     private fun initClick() =binding.run{
         btnSure.setOnClickListener {
             viewModel.validCodeResult.value?.validCodeData?.identity?.let { it1 ->
-                callBack?.invoke(it1, eetVerificationCode.text.toString())
+                callBack.onCall(it1, eetVerificationCode.text.toString())
             }
             dismiss()
         }

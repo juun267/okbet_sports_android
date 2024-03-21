@@ -75,7 +75,7 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBindi
         PopImageDialog.showDialog(childFragmentManager,ImageType.DIALOG_OKGAME)
         if (AgeVerifyDialog.isAgeVerifyNeedShow){
             AgeVerifyDialog.isAgeVerifyNeedShow =false
-            AgeVerifyDialog(onConfirm = {}, onExit = {}).show(childFragmentManager)
+            AgeVerifyDialog.newInstance().show(childFragmentManager)
         }
     }
 

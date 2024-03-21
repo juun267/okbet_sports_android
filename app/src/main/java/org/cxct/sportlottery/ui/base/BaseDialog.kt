@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,14 +36,10 @@ abstract class BaseDialog<VM : BaseViewModel,VB : ViewBinding>(private val clazz
     /**
      * 注意！，设置这个参数时，layout上面rootview不需要在设置 marginHorizontal
      */
-    protected var marginHorizontal:Int?=null
+    protected var marginHorizontal:Int = 0
     init {
-        setDefaulStyle()
+        setStyle(R.style.CustomDialogStyle)
     }
-    private fun setDefaulStyle() {
-        setStyle(STYLE_NO_TITLE, R.style.CustomDialogStyle)
-    }
-
     protected fun setStyle(style: Int) {
         setStyle(STYLE_NO_TITLE, style)
     }
@@ -52,8 +49,8 @@ abstract class BaseDialog<VM : BaseViewModel,VB : ViewBinding>(private val clazz
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        if (savedInstanceState != null) {
-            marginHorizontal = savedInstanceState?.getInt(H_MARGIN)
+        savedInstanceState?.let {
+            marginHorizontal = it.getInt(H_MARGIN)
         }
         return binding.root
     }
@@ -69,11 +66,11 @@ abstract class BaseDialog<VM : BaseViewModel,VB : ViewBinding>(private val clazz
 
     override fun onStart() {
         super.onStart()
-        marginHorizontal?.let {
+        if (marginHorizontal > 0){
             dialog?.window?.apply {
                 attributes.apply {
                     horizontalMargin = 0f
-                    width = DisplayUtil.screenWith - 2 * it
+                    width = DisplayUtil.screenWith - 2 * marginHorizontal
                 }
                 this.attributes = attributes
             }

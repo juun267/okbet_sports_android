@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
+import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.core.content.ContextCompat
@@ -9,9 +10,22 @@ import org.cxct.sportlottery.network.withdraw.uwcheck.UwCheckData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.Spanny
 
-class DeductDialog(private val uwCheckData: UwCheckData, private val onConfirm: ()->Unit): BaseDialog<BaseViewModel, DialogDeductBinding>() {
+class DeductDialog: BaseDialog<BaseViewModel, DialogDeductBinding>() {
+
+    companion object{
+        fun newInstance(uwCheckData: UwCheckData)=DeductDialog().apply {
+            arguments = Bundle().apply {
+                putParcelable("uwCheckData",uwCheckData)
+            }
+        }
+    }
+    init {
+        marginHorizontal = 40.dp
+    }
+    private val uwCheckData by lazy { requireArguments().getParcelable<UwCheckData>("uwCheckData")!! }
 
     override fun onInitView() {
         initButton()
@@ -32,7 +46,10 @@ class DeductDialog(private val uwCheckData: UwCheckData, private val onConfirm: 
     private fun initButton()=binding.run {
         btnConfirm.setOnClickListener {
             dismiss()
-            onConfirm.invoke()
+            when(val parentFragment=requireParentFragment()){
+                is WithdrawFragment-> parentFragment.addWithdraw()
+                is BetStationFragment-> parentFragment.addWithdraw()
+            }
         }
         btnCancel.setOnClickListener {
             dismiss()

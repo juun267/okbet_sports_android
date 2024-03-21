@@ -31,7 +31,7 @@ import kotlin.math.min
 /**
  * @app_destination 提款-tab
  */
-class WithdrawFragment : BaseFragment<WithdrawViewModel,FragmentWithdrawBinding>() {
+class WithdrawFragment : BaseFragment<WithdrawViewModel,FragmentWithdrawBinding>(){
 
     private lateinit var bankCardAdapter: WithdrawBankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
@@ -169,17 +169,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel,FragmentWithdrawBinding>
                 return@setOnClickListener
             }
             viewModel.showCheckDeductMoneyDialog {
-                withdrawBankCardData?.let {
-                    viewModel.addWithdraw(
-                        withdrawBankCardData,
-                        viewModel.getChannelMode(),
-                        etWithdrawalAmount.getText(),
-                        etWithdrawalPassword.getText(),
-                        null,
-                        null,
-                        null,
-                    )
-                }
+                   addWithdraw()
             }?.show(childFragmentManager)
         }
 
@@ -462,7 +452,19 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel,FragmentWithdrawBinding>
             }
         }
     }
-
+    fun addWithdraw(){
+        withdrawBankCardData?.let {
+            viewModel.addWithdraw(
+                withdrawBankCardData,
+                viewModel.getChannelMode(),
+                binding.etWithdrawalAmount.getText(),
+                binding.etWithdrawalPassword.getText(),
+                null,
+                null,
+                null,
+            )
+        }
+    }
     /**
      * 跳轉至資金卡新增頁面
      * @param assignType 是否指定跳轉新增型態(銀行卡, 虛擬幣)
@@ -558,7 +560,6 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel,FragmentWithdrawBinding>
     fun onBankCardChange(event: BankCardChangeEvent){
         setupData()
     }
-
 
 }
 

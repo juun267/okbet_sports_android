@@ -33,6 +33,7 @@ object ImageType {
     val BANNER_NEWS = 27//新闻banner
     val PROMOTION_LIST = 4
     val DIALOG_PROMOTION = 5
+    val BANNER_LAUNCH = 9
     val DIALOG_HOME = 7
     val DIALOG_SPORT = 14
     val DIALOG_OKGAME = 16

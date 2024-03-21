@@ -1,26 +1,37 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
+import android.os.Bundle
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.databinding.DialogWinsBetdetailsBinding
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.util.RecentDataManager
+import org.cxct.sportlottery.util.RecentRecord
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.NEWS_TIME_FORMAT2
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 
-class WinsDialog(private val betRecode: RecordNewEvent,
-                 private val onEnterGame: (RecordNewEvent) -> Unit) :
-    BaseDialog<BaseViewModel, DialogWinsBetdetailsBinding>() {
+class WinsDialog : BaseDialog<BaseViewModel, DialogWinsBetdetailsBinding>() {
 
+    companion object{
+        fun newInstance(betRecode: RecordNewEvent)=WinsDialog().apply {
+            arguments = Bundle().apply {
+                putParcelable("betRecode",betRecode)
+            }
+        }
+    }
     init {
         setStyle(R.style.FullScreen)
     }
+    private val betRecode by lazy { requireArguments().getParcelable<RecordNewEvent>("betRecode")!! }
 
     override fun onInitView() {
         initView()
@@ -37,7 +48,7 @@ class WinsDialog(private val betRecode: RecordNewEvent,
         btnPlay.background = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_025BE8)
         btnPlay.setOnClickListener{
             dismiss()
-            onEnterGame.invoke(betRecode)
+            onClickPlay()
         }
         if (betRecode.isSportBet()) {
             var gameIcon = GameType.getSportGameImg(betRecode.firmType)
@@ -63,5 +74,46 @@ class WinsDialog(private val betRecode: RecordNewEvent,
             }
         }
     }
+    private fun onClickPlay(){
+        if (!betRecode.isSportBet()) {
+            val okGameBean = OKGameBean(
+                id = 0,
+                firmId = 0,
+                firmCode = betRecode.gameCode,
+                firmType = betRecode.firmType,
+                firmName = betRecode.games,
+                gameName = betRecode.games,
+                gameCode = betRecode.gameCode,
+                gameType = betRecode.firmType,
+                gameEntryTagName = null,
+                imgGame = betRecode.h5ImgGame ,
+                thirdGameCategory = null,
+                markCollect = false,
+                maintain = 0,
+                jackpotAmount = 0.0,
+                jackpotOpen = 0,
+                gameEntryType = betRecode.gameEntryType,
+            )
+            RecentDataManager.addRecent(RecentRecord(1, gameBean = okGameBean))
+            enterGame(betRecode)
+            return
+        }
+        (activity as? MainTabActivity)?.let {  mainTabActivity->
+            if ("ES".equals(betRecode.firmType, true)) {
+                mainTabActivity.jumpToESport()
+            } else {
+                GameType.getGameType(betRecode.firmType)?.let { mainTabActivity.jumpToSport(it) }
+            }
+        }
+    }
+    private fun enterGame(recordNewEvent: RecordNewEvent) {
+        (activity as? MainTabActivity)?.let {
+            val firmType = "${recordNewEvent.firmType}"
+            val gameCode = "${recordNewEvent.gameCode}"
+            val gameEntryTagName = "${recordNewEvent.gameEntryType}"
+            it.requestEnterThirdGame(firmType, gameCode, firmType, gameEntryTagName)
+        }
+    }
+
 
 }

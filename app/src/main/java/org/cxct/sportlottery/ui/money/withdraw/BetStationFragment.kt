@@ -257,21 +257,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel,FragmentBetStationBind
                 return@setOnClickListener
             }
             viewModel.showCheckDeductMoneyDialog {
-                viewModel.addWithdraw(
-                    null,
-                    viewModel.getChannelMode(),
-                    etAmount.getText(),
-                    etPassword.getText(),
-                    if (selectBettingStation == null) null else selectBettingStation!!.id,
-                    TimeUtil.dateToDateFormat(
-                        mCalendar.time,
-                        TimeUtil.YMD_FORMAT
-                    ) ?: "",
-                    TimeUtil.dateToDateFormat(
-                        mCalendar.time,
-                        TimeUtil.HM_FORMAT_SS
-                    ) ?: "",
-                )
+                addWithdraw()
             }?.show(childFragmentManager)
         }
     }
@@ -385,6 +371,23 @@ class BetStationFragment : BaseFragment<WithdrawViewModel,FragmentBetStationBind
         viewModel.getUwCheck()
     }
 
+    fun addWithdraw(){
+        viewModel.addWithdraw(
+            null,
+            viewModel.getChannelMode(),
+            binding.etAmount.getText(),
+            binding.etPassword.getText(),
+            if (selectBettingStation == null) null else selectBettingStation!!.id,
+            TimeUtil.dateToDateFormat(
+                mCalendar.time,
+                TimeUtil.YMD_FORMAT
+            ) ?: "",
+            TimeUtil.dateToDateFormat(
+                mCalendar.time,
+                TimeUtil.HM_FORMAT_SS
+            ) ?: "",
+        )
+    }
     private fun clearEvent() {
         binding.etAmount.setText("")
         binding.etPassword.setText("")
