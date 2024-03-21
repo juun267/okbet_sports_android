@@ -25,8 +25,8 @@ class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
         item.matchOdds.firstOrNull()?.let {
             ivLeagueLogo.setLeagueLogo(it.categoryIcon)
             tvLeagueName.text = it.leagueName
-            ivHomeLogo.setTeamLogo(it.categoryIcon)
-            ivAwayLogo.setTeamLogo(it.categoryIcon)
+            ivHomeLogo.setTeamLogo(it.homeIcon)
+            ivAwayLogo.setTeamLogo(it.awayIcon)
             tvHomeName.text = it.homeName
             tvAwayName.text = it.awayName
         }

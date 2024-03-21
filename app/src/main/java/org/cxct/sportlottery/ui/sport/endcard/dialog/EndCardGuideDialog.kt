@@ -26,13 +26,31 @@ class EndCardGuideDialog: BaseDialog<BaseViewModel, DialogEndcardGuideBinding>()
         showPage(currentPage)
     }
     private fun initClick()=binding.run{
-        setOnClickListeners(includeStep2.tvPrevious,includeStep3.tvPrevious,includeStep4.tvPrevious,includeStep5.tvPrevious){
+        setOnClickListeners(
+            includeStep2.tvPrevious,
+            includeStep3.tvPrevious,
+            includeStep4.tvPrevious,
+            includeStep5.tvPrevious
+        ){
             showPage(currentPage-1)
         }
-        setOnClickListeners(includeStep1.linNextStep,includeStep2.linNextStep,includeStep3.linNextStep,includeStep4.linNextStep){
+        setOnClickListeners(
+            includeStep1.linNextStep,
+            includeStep2.linNextStep,
+            includeStep3.linNextStep,
+            includeStep4.linNextStep
+        ){
             showPage(currentPage+1)
         }
-        includeStep5.linNextStep.setOnClickListener { dismiss() }
+        setOnClickListeners(
+            includeStep1.tvSkip,
+            includeStep2.tvSkip,
+            includeStep3.tvSkip,
+            includeStep4.tvSkip,
+            includeStep5.linNextStep
+        ){
+            dismiss()
+        }
     }
 
     private fun showPage(position:Int){

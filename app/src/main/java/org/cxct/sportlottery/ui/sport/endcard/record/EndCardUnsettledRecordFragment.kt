@@ -15,7 +15,7 @@ import org.cxct.sportlottery.view.rumWithSlowRequest
 
 class EndCardUnsettledRecordFragment: BaseFragment<EndCardVM,FragmentEndcardUnsettledRecordBinding>() {
 
-    private val refreshHelper by lazy { RefreshHelper.of(binding.rvBetRecord, this, false,true) }
+    private val refreshHelper by lazy { RefreshHelper.of(binding.rvBetRecord, this, true,true) }
     private val recordAdapter by lazy { EndCardRecordAdapter().apply {
          setEmptyView(BetEmptyView(requireContext()).apply { center() })
     } }
@@ -29,6 +29,9 @@ class EndCardUnsettledRecordFragment: BaseFragment<EndCardVM,FragmentEndcardUnse
         reload()
     }
     private fun initRecordList(){
+        refreshHelper.setRefreshListener {
+            getUnsettledData(1)
+        }
         refreshHelper.setLoadMoreListener(object : RefreshHelper.LoadMore {
             override fun onLoadMore(pageIndex: Int, pageSize: Int) {
                 getUnsettledData(currentPage+1)
@@ -48,6 +51,7 @@ class EndCardUnsettledRecordFragment: BaseFragment<EndCardVM,FragmentEndcardUnse
     private fun initObservable() {
         viewModel.unSettledResult.observe(this){
             hideLoading()
+            refreshHelper.finishRefresh()
             refreshHelper.finishLoadMore()
             if (it.success) {
                 currentPage = it.page

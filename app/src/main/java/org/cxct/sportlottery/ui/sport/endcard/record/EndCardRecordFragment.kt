@@ -6,9 +6,7 @@ import org.cxct.sportlottery.databinding.FragmentEndcardRecordBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.util.FragmentHelper
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.Param
-import timber.log.Timber
 
 class EndCardRecordFragment: BaseFragment<EndCardVM,FragmentEndcardRecordBinding>() {
 

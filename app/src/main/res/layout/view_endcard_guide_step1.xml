@@ -24,19 +24,23 @@
         android:textColor="@color/color_FFFFFF"
         android:text="@string/P294"/>
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_30">
+    <LinearLayout
         android:id="@+id/linNextStep"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
-        android:layout_marginTop="@dimen/margin_30"
         android:gravity="center"
         android:background="@drawable/bg_radius_8_white"
         android:paddingHorizontal="@dimen/margin_20">
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textColor="@color/color_FFFFFF"
-          android:textSize="@dimen/textSize14sp"
-          android:text="@string/P295"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/textSize14sp"
+            android:text="@string/P295"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,5 +48,18 @@
             android:textColor="@color/color_F5FFC700"
             android:textSize="@dimen/textSize14sp"
             android:text="( 1/5 )"/>
+    </LinearLayout>
+        <TextView
+            android:id="@+id/tvSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:minWidth="84dp"
+            android:paddingHorizontal="@dimen/margin_8"
+            android:layout_marginLeft="@dimen/margin_8"
+            android:gravity="center"
+            android:background="@drawable/bg_gray_stoke_radius_8_trans"
+            android:textColor="@color/color_929292"
+            android:textSize="@dimen/textSize14sp"
+            android:text="@string/btn_pass"/>
     </LinearLayout>
 </LinearLayout>

@@ -36,7 +36,6 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
 
     }
     private fun initView()=binding.run{
-        Timber.d("${row}")
         binding.linBack.setOnClickListener {
             (activity as EndCardActivity).removeFragment(this@EndCardRecordDetailFragment)
         }
@@ -44,9 +43,14 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
             tvLeagueName.text = it.leagueName
             tvHomeName.text = it.homeName
             tvAwayName.text = it.awayName
+            tvBet.text = "$showCurrencySign ${TextUtil.formatMoney(it.cardMoney,2)}"
+            val winMoney= "$showCurrencySign ${TextUtil.formatMoney(it.cardMoney,2)}"
+            val notice = String.format(getString(R.string.P322),winMoney)
+            tvTips.text = Spanny(notice).findAndSpan(winMoney) {
+                TextAppearanceSpan(null, Typeface.NORMAL, 14.dp, ColorStateList.valueOf(requireContext().getColor(R.color.color_6AA4FF)), null)
+            }
         }
         tvBettingTime.text = TimeUtil.timeFormat(row.addTime, TimeUtil.DMY_HM_FORMAT)
-        tvBet.text = "$showCurrencySign ${TextUtil.formatMoney(row.userPlayAmount?:0,2)}"
         tvBetAmount.text = "$showCurrencySign ${TextUtil.formatMoney(row.stake,2)}"
         tvTotalWin.apply {
             if((row?.win?:0.0)>0){
@@ -58,11 +62,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
             }
         }
         tvOrderNumber.text = row.orderNo
-        val winMoney= "$showCurrencySign ${TextUtil.formatMoney(row.winnable,2)}"
-        val notice = String.format(getString(R.string.P322),winMoney)
-        tvTips.text = Spanny(notice).findAndSpan(winMoney) {
-            TextAppearanceSpan(null, Typeface.NORMAL, 14.dp, ColorStateList.valueOf(requireContext().getColor(R.color.color_6AA4FF)), null)
-        }
+
         tvSettleTime.apply {
             text = "${getString(R.string.N664)} ${TimeUtil.timeFormat(row.settleTime,TimeUtil.DMY_HM_FORMAT)}"
             isVisible = row.settleTime!=null
@@ -101,7 +101,14 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
             layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
             addItemDecoration(SpaceItemDecoration(requireContext(), R.dimen.margin_0_5))
             adapter = rowAdapter
-            rowAdapter.setList(listOf("100","","2000","","",))
+            row.matchOdds.firstOrNull()?.endingCardOFLWinnable?.apply{
+                rowAdapter.setList(listOf(
+                    Item("Q1",lastDigit1Score,if(lastDigit1Result==true) lastDigit1Winnable else 0),
+                    Item("Q2",lastDigit2Score,if(lastDigit2Result==true) lastDigit2Winnable else 0),
+                    Item("Q3",lastDigit3Score,if(lastDigit3Result==true) lastDigit3Winnable else 0),
+                    Item("T",lastDigit4Score,if(lastDigit4Result==true) lastDigit4Winnable else 0)
+                ))
+            }
         }
     }
 }
