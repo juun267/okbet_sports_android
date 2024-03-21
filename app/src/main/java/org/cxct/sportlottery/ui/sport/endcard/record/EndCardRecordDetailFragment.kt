@@ -23,22 +23,42 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.setColors
 import timber.log.Timber
 import java.util.*
+import kotlin.math.absoluteValue
 
 class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecordDetailBinding>() {
 
-    private val row by lazy { arguments?.getParcelable<Row>("data")!! }
     private val rowAdapter by lazy { EndCardRecordRowAdapter() }
     private val oddAdapter by lazy { EndCardRecordOddAdapter() }
+
     override fun onInitView(view: View) {
-        initView()
+        binding.linBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
         initOddList()
         initResultList()
-
     }
-    private fun initView()=binding.run{
-        binding.linBack.setOnClickListener {
-            (activity as EndCardActivity).removeFragment(this@EndCardRecordDetailFragment)
+    override fun onInitData() {
+        super.onInitData()
+        arguments?.getParcelable<Row>("data")?.let {
+            setData(it)
         }
+    }
+
+    private fun initOddList(){
+        binding.rvOdd.apply {
+            layoutManager = GridLayoutManager(context,10)
+            addItemDecoration(GridSpacingItemDecoration(10,4.dp,false))
+            adapter = oddAdapter
+        }
+    }
+    private fun initResultList(){
+        binding.rvResult.apply {
+            layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
+            addItemDecoration(SpaceItemDecoration(requireContext(), R.dimen.margin_0_5))
+            adapter = rowAdapter
+        }
+    }
+    private fun setData(row: Row)=binding.run{
         row.matchOdds.firstOrNull()?.let {
             tvLeagueName.text = it.leagueName
             tvHomeName.text = it.homeName
@@ -52,13 +72,13 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
         }
         tvBettingTime.text = TimeUtil.timeFormat(row.addTime, TimeUtil.DMY_HM_FORMAT)
         tvBetAmount.text = "$showCurrencySign ${TextUtil.formatMoney(row.stake,2)}"
+        val winMoney = if (row.status==2||row.status==3) row.win?.absoluteValue?:0.0 else 0.0
         tvTotalWin.apply {
-            if((row?.win?:0.0)>0){
+            text = "$showCurrencySign ${TextUtil.formatMoney(winMoney,2)}"
+            if(winMoney > 0){
                 setColors(R.color.color_00FF81)
-                text = "$showCurrencySign +${TextUtil.formatMoney(row.win?:0,2)}"
             }else{
                 setColors(R.color.color_FFFFFF)
-                text = "-"
             }
         }
         tvOrderNumber.text = row.orderNo
@@ -87,28 +107,14 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
                 ivStatus.setImageResource(R.color.transparent)
             }
         }
-    }
-    private fun initOddList(){
-        binding.rvOdd.apply {
-            layoutManager = GridLayoutManager(context,10)
-            addItemDecoration(GridSpacingItemDecoration(10,4.dp,false))
-            adapter = oddAdapter
-            oddAdapter.setList(row.matchOdds?.firstOrNull()?.multiCode?.map { it.playName })
-        }
-    }
-    private fun initResultList(){
-        binding.rvResult.apply {
-            layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
-            addItemDecoration(SpaceItemDecoration(requireContext(), R.dimen.margin_0_5))
-            adapter = rowAdapter
-            row.matchOdds.firstOrNull()?.endingCardOFLWinnable?.apply{
-                rowAdapter.setList(listOf(
-                    Item("Q1",lastDigit1Score,if(lastDigit1Result==true) lastDigit1Winnable else 0),
-                    Item("Q2",lastDigit2Score,if(lastDigit2Result==true) lastDigit2Winnable else 0),
-                    Item("Q3",lastDigit3Score,if(lastDigit3Result==true) lastDigit3Winnable else 0),
-                    Item("T",lastDigit4Score,if(lastDigit4Result==true) lastDigit4Winnable else 0)
-                ))
-            }
+        oddAdapter.setList(row.matchOdds?.firstOrNull()?.multiCode?.map { it.playName })
+        row.matchOdds.firstOrNull()?.endingCardOFLWinnable?.apply{
+            rowAdapter.setList(listOf(
+                Item("Q1",lastDigit1Score,if(lastDigit1Result==true) lastDigit1Winnable else 0),
+                Item("Q2",lastDigit2Score,if(lastDigit2Result==true) lastDigit2Winnable else 0),
+                Item("Q3",lastDigit3Score,if(lastDigit3Result==true) lastDigit3Winnable else 0),
+                Item("T",lastDigit4Score,if(lastDigit4Result==true) lastDigit4Winnable else 0)
+            ))
         }
     }
 }

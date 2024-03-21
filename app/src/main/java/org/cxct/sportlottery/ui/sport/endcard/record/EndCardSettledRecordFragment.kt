@@ -76,9 +76,6 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
             recordAdapter.setOnItemClickListener { adapter, view, position ->
                 (activity as? EndCardActivity)?.showRecordDetail(recordAdapter.getItem(position))
             }
-            recordAdapter.setOnItemChildClickListener { adapter, view, position ->
-                EndCardBetDialog().show(childFragmentManager)
-            }
             adapter = recordAdapter
         }
     }

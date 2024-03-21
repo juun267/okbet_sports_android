@@ -5,21 +5,25 @@ import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.android.synthetic.main.dialog_transfer_money.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.clickDelay
-import org.cxct.sportlottery.common.extentions.setOnClickListeners
-import org.cxct.sportlottery.common.extentions.toStringS
-import org.cxct.sportlottery.common.extentions.toast
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.DialogEndcardBetBinding
 import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.betList.holder.MAX_BET_VALUE
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.bet.EndCardGameFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GridItemDecoration
+import org.cxct.sportlottery.util.NetworkUtil
 import org.cxct.sportlottery.util.Spanny
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.view.dialog.BetBalanceDialog
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import timber.log.Timber
 
 class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
 
@@ -54,9 +58,8 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             gameFragment.showFloatBet()
             dismiss()
         }
-        btnBetting.clickDelay() {
-            gameFragment.loading()
-            viewModel.addBetLGPCOFL(endCardBet.matchId,EndCardBetManager.getBetOdds(),viewModel.userInfo.value?.nickName?:"",endCardBet.betMoney)
+        btnBetting.clickDelay {
+            addBet()
         }
     }
     private fun initOddList(){
@@ -91,6 +94,40 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             gameFragment.hideLoading()
             EndCardBetFailDialog.newInstance(it).show(parentFragmentManager)
             dismiss()
+        }
+    }
+    private fun addBet(){
+        if (!NetworkUtil.isAvailable(requireContext())) {
+            requireActivity().showPromptDialog(
+                getString(R.string.prompt), getString(R.string.message_network_no_connect)
+            ) {}
+            return
+        }
+        var maxBetMoney = MAX_BET_VALUE.toString()
+        var minBetMoney = "0"
+        val totalBetAmount = EndCardBetManager.getBetOdds().size* endCardBet.betMoney
+        if (totalBetAmount < 0) {
+            Timber.w("totalBetAmount isEmpty")
+            return
+        }
+        Timber.d("maxBetMoney:$maxBetMoney minBetMoney:$minBetMoney totalBetAmount:$totalBetAmount")
+        if (totalBetAmount > (viewModel.userMoney.value ?: 0.0)) {
+            //换成弹框提示 去充值
+            val dialog= BetBalanceDialog(requireContext())
+            dialog.showDialog{
+                //跳转充值
+                ToGcashDialog.showByClick{
+                    gameFragment.loading()
+                    viewModel.checkRechargeKYCVerify()
+                }
+            }
+        } else if (totalBetAmount > maxBetMoney.toDouble()) {
+            ToastUtil.showToast(requireContext(), R.string.N989)
+        } else if (totalBetAmount < minBetMoney.toDouble()) {
+            ToastUtil.showToast(requireContext(), R.string.N990)
+        } else {
+            gameFragment.loading()
+            viewModel.addBetLGPCOFL(endCardBet.matchId,EndCardBetManager.getBetOdds(),viewModel.userInfo.value?.nickName?:"",endCardBet.betMoney)
         }
     }
 }

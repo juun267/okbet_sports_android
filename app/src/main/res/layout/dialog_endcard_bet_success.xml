@@ -174,7 +174,7 @@
                     android:ellipsize="end"
                     android:textSize="@dimen/textSize14sp"
                     android:textColor="@color/color_BEC7DC"
-                    android:text="@string/P318"/>
+                    android:text="Bet"/>
                 <TextView
                     android:id="@+id/tvBet"
                     android:layout_width="0dp"

@@ -30,7 +30,7 @@ class EndCardRecordFragment: BaseFragment<EndCardVM,FragmentEndcardRecordBinding
                  }
              }
         }
-        binding.rgTab.check(binding.rbtnSettled.id)
+        binding.rgTab.check(binding.rbtnUnSettle.id)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -43,19 +43,20 @@ class EndCardRecordFragment: BaseFragment<EndCardVM,FragmentEndcardRecordBinding
         }
     }
     fun showPage(position: Int){
-        if (position==0){
-            if(binding.rbtnSettled.isChecked){
-                fragmentHelper.showFragment(position)
-            }else{
-                binding.rbtnSettled.isChecked = true
-            }
-        }else{
-            if(binding.rbtnUnSettle.isChecked){
-                fragmentHelper.showFragment(position)
-            }else{
-                binding.rbtnUnSettle.isChecked = true
+        if (isAdded) {
+            if (position == 0) {
+                if (binding.rbtnSettled.isChecked) {
+                    fragmentHelper.showFragment(position)
+                } else {
+                    binding.rbtnSettled.isChecked = true
+                }
+            } else {
+                if (binding.rbtnUnSettle.isChecked) {
+                    fragmentHelper.showFragment(position)
+                } else {
+                    binding.rbtnUnSettle.isChecked = true
+                }
             }
         }
-
     }
 }

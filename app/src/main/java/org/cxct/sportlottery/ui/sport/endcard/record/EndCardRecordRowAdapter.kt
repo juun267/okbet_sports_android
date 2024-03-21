@@ -16,7 +16,7 @@ class EndCardRecordRowAdapter:BindingAdapter<Item,ItemEndcardDetailResultRowCont
         binding.tvWinAmount.apply {
             if (item.winnable?:0>0){
                 setColors(R.color.color_00FF81)
-                text = "$showCurrencySign +${TextUtil.formatMoney(item.winnable?:0,2)}"
+                text = "$showCurrencySign ${TextUtil.formatMoney(item.winnable?:0,2)}"
             }else{
                 setColors(R.color.color_FFFFFF)
                 text = "-"

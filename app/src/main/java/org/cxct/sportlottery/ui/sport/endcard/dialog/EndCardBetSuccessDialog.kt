@@ -68,7 +68,11 @@ class EndCardBetSuccessDialog: BaseDialog<BaseViewModel,DialogEndcardBetSuccessB
             layoutManager = LinearLayoutManager(context,RecyclerView.HORIZONTAL,false)
             addItemDecoration(SpaceItemDecoration(context,R.dimen.margin_4))
             adapter = oddAdapter
-            oddAdapter.setList(multiCode.map { it.playName })
+            val items = when{
+                multiCode.size > 5 ->multiCode.subList(0,4)
+                else -> multiCode
+            }
+            oddAdapter.setList(items.map { it.playName })
         }
     }
 }

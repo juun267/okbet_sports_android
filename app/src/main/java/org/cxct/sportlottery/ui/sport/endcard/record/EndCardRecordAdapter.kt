@@ -14,12 +14,9 @@ import org.cxct.sportlottery.util.setLeagueLogo
 import org.cxct.sportlottery.util.setTeamLogo
 import org.cxct.sportlottery.view.setColors
 import java.util.*
+import kotlin.math.absoluteValue
 
 class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
-
-    init {
-        addChildClickViewIds(R.id.ivStatus)
-    }
 
     override fun onBinding(position: Int, binding: ItemEndcardRecordBinding, item: Row): Unit=binding.run {
         item.matchOdds.firstOrNull()?.let {
@@ -32,7 +29,8 @@ class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
         }
         tvTime.text = TimeUtil.timeFormat(item.addTime, TimeUtil.DMY_HM_FORMAT)
         tvBetAmount.text = " $showCurrencySign ${TextUtil.formatMoney(item.stake,2)}"
-        tvWinnableAmount.text = " $showCurrencySign ${TextUtil.formatMoney(item.win?:0,2)}"
+        val winMoney = if (item.status==2||item.status==3) item.win?.absoluteValue?:0 else 0
+        tvWinnableAmount.text = "$showCurrencySign ${TextUtil.formatMoney(winMoney,2)}"
         //可赢金额
         when(item.status){
             //未结单  可赢：xxx
