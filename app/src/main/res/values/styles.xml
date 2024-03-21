@@ -154,5 +154,8 @@
         <item name="android:windowEnterAnimation">@anim/pickerview_slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/pickerview_slide_out_bottom</item>
     </style>
-
+    <!--当动态创建带滚动的view时，需要指定scrollbars，否则部分低端手机会奔溃-->
+    <style name="scrollbar_style">
+        <item name="android:scrollbars">vertical</item>
+    </style>
 </resources>
