@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.view
 
 import android.content.Context
+import android.os.Looper
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.animation.Interpolator
@@ -11,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.MetricsUtil.convertDpToPixel
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -82,7 +84,15 @@ class AutoScrollRecyclerView @JvmOverloads constructor(context: Context, attrs: 
         mTimer = Timer()
         mTimer?.schedule(object : TimerTask() {
             override fun run() {
-                smoothScrollBy(distance, distance, interpolator)
+                //firebase fixbug:Fatal Exception: java.lang.IllegalStateException: Not in applications main thread
+                if (Looper.myLooper() != Looper.getMainLooper()) {
+                    post {
+                        smoothScrollBy(distance, distance, interpolator)
+                    }
+                }else{
+                    smoothScrollBy(distance, distance, interpolator)
+                }
+
             }
         }, delay.toLong(), period.toLong()) //在 0 秒後，每隔 250L 毫秒執行一次
     }
