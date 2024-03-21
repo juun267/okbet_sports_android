@@ -93,6 +93,7 @@ class MultiLanguagesApplication : Application() {
         super.onConfigurationChanged(newConfig)
         //用户在系统设置页面切换语言时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
         LanguageManager.saveSystemCurrentLanguage(newConfig)
+        LanguageManager.onConfigurationChanged(this)
     }
 
     override fun onCreate() {
@@ -140,16 +141,6 @@ class MultiLanguagesApplication : Application() {
         initJpush()
         UpdateConfig.init()
         initNetWorkListener()
-    }
-
-    private val localeResources by lazy {
-        ResourceWrapper(
-            this@MultiLanguagesApplication, super.getResources()
-        )
-    }
-
-    override fun getResources(): Resources {
-        return localeResources
     }
 
     private fun initAppsFlyerSDK() {

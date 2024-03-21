@@ -213,16 +213,6 @@ class HighlightTextView @JvmOverloads constructor(
             position to length
         }.sortedBy { it.second }
 
-    override fun onDraw(canvas: Canvas?) {
-//        if (isHighlighting) {
-//            mRectF.forEach {
-//                canvas?.drawRoundRect(it, highlightRadius, highlightRadius, mPaint)
-//            }
-//        }
-
-        super.onDraw(canvas)
-    }
-
     fun setCustomText(text: CharSequence?) {
         this.text = text
     }

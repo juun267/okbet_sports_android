@@ -176,7 +176,7 @@ object LanguageManager {
 //        MultiLanguages.setAppLanguage(context, selectedLocale)
         SPUtil.saveLanguage(select.key)
         KvUtils.removeKey("splashAd")
-        setApplicationLanguage(context)
+        onConfigurationChanged(context)
         if (lastLanguage != select) {
             languageChangeListeners.forEach { it.invoke(lastLanguage, select) }
         }
@@ -198,19 +198,30 @@ object LanguageManager {
         }
     }
 
+    fun onConfigurationChanged(context: Context) {
+        updateLanguage(context)
+        setApplicationLanguage(context)
+    }
+
+    fun updateLanguage(context: Context): Context {
+        val locale: Locale = getSetLanguageLocale()
+        Locale.setDefault(locale)
+        val res = context.resources
+        val config = Configuration(res.configuration)
+        config.setLocale(locale)
+        return context.createConfigurationContext(config)
+    }
+
     private fun setApplicationLanguage(context: Context) {
         val resources = context.applicationContext.resources
         val dm = resources.displayMetrics
         val config = resources.configuration
         val locale: Locale = getSetLanguageLocale()
-        config.locale = locale
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val localeList = LocaleList(locale)
-            LocaleList.setDefault(localeList)
-            config.setLocales(localeList)
-            context.applicationContext.createConfigurationContext(config)
-            Locale.setDefault(locale)
-        }
+        val localeList = LocaleList(locale)
+        LocaleList.setDefault(localeList)
+        config.setLocales(localeList)
+        context.applicationContext.createConfigurationContext(config)
+        Locale.setDefault(locale)
         resources.updateConfiguration(config, dm)
     }
 
