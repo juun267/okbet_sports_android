@@ -17,7 +17,7 @@ import org.cxct.sportlottery.view.rumWithSlowRequest
 class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettledRecordBinding>() {
 
     private val oneDay = 60 * 60 * 24 * 1000
-    private val refreshHelper by lazy { RefreshHelper.of(binding.rvBetRecord, this, true,true) }
+    private val refreshHelper by lazy { RefreshHelper.of(binding.rvBetRecord, this, false,true) }
     private val recordAdapter by lazy { EndCardRecordAdapter().apply {
         setEmptyView(BetEmptyView(requireContext()).apply { center() })
     } }
@@ -58,14 +58,11 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
             }
             resetListData()
             loading()
-            getSettledData(0)
+            getSettledData(1)
         }
         binding.rgDate.check(binding.rbtnToday.id)
     }
     private fun initRecordList(){
-        refreshHelper.setRefreshListener {
-            getSettledData(0)
-        }
         refreshHelper.setLoadMoreListener(object : RefreshHelper.LoadMore {
             override fun onLoadMore(pageIndex: Int, pageSize: Int) {
                 getSettledData(currentPage+1)
@@ -85,7 +82,6 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
     private fun initObservable() {
         viewModel.settledResult.observe(this){
             hideLoading()
-            refreshHelper.finishRefresh()
             refreshHelper.finishLoadMore()
             if (it.success) {
                 currentPage = it.page
@@ -119,7 +115,7 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
     fun reload(){
         if (isAdded) {
             loading()
-            getSettledData(0)
+            getSettledData(1)
         }
     }
 }

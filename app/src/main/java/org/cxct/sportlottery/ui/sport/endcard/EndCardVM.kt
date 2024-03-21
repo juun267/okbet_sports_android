@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
@@ -74,7 +75,8 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
             pageSize = pageSize,
             queryTimeType = null,
             startTime = startTime?.toString(),
-            endTime = endTime?.toString()
+            endTime = endTime?.toString(),
+            playCateCode = PlayCate.FS_LD_CS_OFL.value
         )
 
         viewModelScope.launch {
@@ -104,7 +106,8 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
             pageSize = pageSize,
             queryTimeType="settleTime",
             startTime = startTime.toString(),
-            endTime = endTime.toString()
+            endTime = endTime.toString(),
+            playCateCode = PlayCate.FS_LD_CS_OFL.value
         )
         viewModelScope.launch {
             doNetwork(androidContext) {

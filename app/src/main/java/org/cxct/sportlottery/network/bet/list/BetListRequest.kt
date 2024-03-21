@@ -14,6 +14,7 @@ data class BetListRequest(
     val uniqNo:String? = null,
     val remark:String? = null,
     val queryTimeType:String? = "addTime",
+    var playCateCode: String? = null,
     override val userId: Int? = null,
     override val platformId: Int? = null,
     override val startTime: String? = null,

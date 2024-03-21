@@ -417,6 +417,7 @@ enum class PlayCate(val value: String) {
     FBT_OU_MAP_1("FBT-O/U-MAP-1"),
     FBT_OU_MAP_2("FBT-O/U-MAP-2"),
     FBT_OU_MAP_3("FBT-O/U-MAP-3"),
+    FS_LD_CS_OFL("FS-LD-CS-OFL"),
     NO_DATA("NO_DATA");
 
     companion object {
