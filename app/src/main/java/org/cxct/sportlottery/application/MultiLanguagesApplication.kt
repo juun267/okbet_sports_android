@@ -107,7 +107,7 @@ class MultiLanguagesApplication : Application() {
         asyncInit()
         AppViewModel.startKoin(this@MultiLanguagesApplication)
         AppManager.init(mInstance)
-        AutoSizeConfig.getInstance().isExcludeFontScale = true  // 字体大小不随系统字体大小变化
+        ScreenAdapter.init(this)
         runWithCatch { AutoSize.initCompatMultiProcess(this) }
         setNightMode()
         LanguageManager.init(this)
