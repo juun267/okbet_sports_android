@@ -2,42 +2,18 @@ package org.cxct.sportlottery.util
 
 import android.content.Context
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import java.util.*
 
 @Deprecated("请使用KVUtils替代")
 object SPUtil {
     private const val SP_NAME = "language_setting"
-    private const val TAG_LANGUAGE = "language_select"
+
 
     //上架市场，隐藏功能的开关
     private const val MARKET_SWITCH = "market_switch"
     private val mSharedPreferences by lazy { MultiLanguagesApplication.mInstance.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE) }
-    var systemCurrentLocal: Locale = Locale.ENGLISH
-
-    fun saveLanguage(select: String?) {
-        mSharedPreferences.edit()
-            .putString(TAG_LANGUAGE, select)
-            .apply()
-    }
-
-    fun getSelectLanguage(): String? {
-        return mSharedPreferences.getString(TAG_LANGUAGE, null)
-    }
-
-    fun saveString(key: String, value: String?) {
-        mSharedPreferences.edit()
-            .putString(key, value)
-            .apply()
-    }
 
     fun getString(key: String, defaultValue: String? = null): String? {
         return mSharedPreferences.getString(key, defaultValue)
-    }
-
-    fun saveMarketSwitch(value: Boolean) {
-        mSharedPreferences.edit()
-            .putBoolean(MARKET_SWITCH, value)
-            .apply()
     }
 
     fun getMarketSwitch(): Boolean {

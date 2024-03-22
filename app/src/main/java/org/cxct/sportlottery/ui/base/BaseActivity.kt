@@ -31,7 +31,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>(clazz: KClass<
     protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(LanguageManager.updateLanguage(newBase))
+        super.attachBaseContext(LanguageManager.setLocal(newBase))
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

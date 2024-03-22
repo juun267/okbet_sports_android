@@ -84,8 +84,9 @@ class MultiLanguagesApplication : Application() {
 
     override fun attachBaseContext(base: Context) {
         //第一次进入app时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
+        appContext = base
         LanguageManager.saveSystemCurrentLanguage()
-        super.attachBaseContext(base)
+        super.attachBaseContext(LanguageManager.setLocal(base))
 //        super.attachBaseContext(MultiLanguages.attach(base))
     }
 
@@ -122,6 +123,17 @@ class MultiLanguagesApplication : Application() {
         }
 
     }
+
+    private val localeResources by lazy {
+        ResourceWrapper(
+            this@MultiLanguagesApplication, super.getResources()
+        )
+    }
+
+    override fun getResources(): Resources {
+        return localeResources
+    }
+
 
     private fun getAppProcessName(): String {
         if (Build.VERSION.SDK_INT >= 28) return getProcessName()
