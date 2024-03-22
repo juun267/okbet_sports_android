@@ -74,6 +74,7 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
         user.textSize = 12f
         user.setTextColor(cxt.getColor(R.color.color_BEC7DC))
         user.gravity = Gravity.CENTER
+        user.maxLines = 1
         root.addView(user, lp)
 
         return BaseViewHolder(root)
