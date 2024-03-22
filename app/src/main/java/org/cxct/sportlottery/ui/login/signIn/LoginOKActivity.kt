@@ -29,6 +29,7 @@ import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
 import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
@@ -45,9 +46,11 @@ import splitties.activities.start
 /**
  * @app_destination 登入
  */
-class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>() {
+class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), VerifyCallback {
 
     private val loginScope = CoroutineScope(Dispatchers.Main)
+    private val TAG_SEND_MSG = "TAG_SEND_MSG"
+    private val TAG_LOGIN = "TAG_LOGIN"
 
     companion object {
         private const val SELF_LIMIT = 1130
@@ -169,11 +172,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>() {
     }
 
     private fun setupValidCode() {
-        binding.btnSendSms.setOnClickListener {
-            showCaptchaDialog(supportFragmentManager){ identity, validCode ->
-                    updateValidCode(identity, validCode)
-                }
-            }
+        binding.btnSendSms.setOnClickListener { showCaptchaDialog(TAG_SEND_MSG) }
     }
 
     private fun setupLoginButton() {
@@ -203,13 +202,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>() {
             viewModel.loginOrReg(account, smsCode, inviteCode)
             return
         }
-        showCaptchaDialog(supportFragmentManager){ ticket, randstr ->
-            val account = binding.eetUsername.text.toString()
-            val password = binding.eetPassword.text.toString()
-            viewModel.login(account, password, "$ticket", randstr) {
-                LoginVerifyActivity.startLoginVerify(this@LoginOKActivity, it)
-            }
-        }
+
+        showCaptchaDialog(TAG_LOGIN)
     }
 
     /**
@@ -538,6 +532,18 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>() {
     private fun setupRecommendCodeVisible() {
         binding.etRecommendCode.isVisible =
             viewModel.loginType == LOGIN_TYPE_CODE && viewModel.checkUserExist.value == false
+    }
+
+    override fun onVerifySucceed(identity: String, validCode: String, tag: String?) {
+        if (tag == TAG_SEND_MSG) {
+            updateValidCode(identity, validCode)
+        } else if (tag == TAG_LOGIN) {
+            val account = binding.eetUsername.text.toString()
+            val password = binding.eetPassword.text.toString()
+            viewModel.login(account, password, "$identity", validCode) {
+                LoginVerifyActivity.startLoginVerify(this@LoginOKActivity, it)
+            }
+        }
     }
 
 }

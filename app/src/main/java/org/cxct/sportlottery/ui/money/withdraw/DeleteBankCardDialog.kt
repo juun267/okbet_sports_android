@@ -10,6 +10,7 @@ import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.databinding.DialogDeleteBankcardBinding
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.util.CountDownUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ToastUtil
@@ -22,7 +23,7 @@ import org.cxct.sportlottery.view.isVisible
 import splitties.bundle.put
 
 
-class DeleteBankCardDialog: BaseDialog<WithdrawViewModel,DialogDeleteBankcardBinding>() {
+class DeleteBankCardDialog: BaseDialog<WithdrawViewModel,DialogDeleteBankcardBinding>(), VerifyCallback {
 
     companion object{
         fun newInstance(phoneNo: String)=DeleteBankCardDialog().apply {
@@ -111,12 +112,7 @@ class DeleteBankCardDialog: BaseDialog<WithdrawViewModel,DialogDeleteBankcardBin
 
     private fun setUpBtn() = binding.run {
         tvCancel.setOnClickListener { dismiss() }
-        btnSend.setOnClickListener {
-            showCaptchaDialog(childFragmentManager) { identity, validCode ->
-                requireActivity().loading(null)
-                viewModel.senEmsCode(phoneNo, "$identity", validCode)
-            }
-        }
+        btnSend.setOnClickListener { showCaptchaDialog() }
 
         tvConfirm.setOnClickListener {
             val pwd = eetWithdrawalPassword.text.toString()
@@ -149,5 +145,10 @@ class DeleteBankCardDialog: BaseDialog<WithdrawViewModel,DialogDeleteBankcardBin
                 viewModel.deleteBankCard(it.id.toString(), pwd, code)
             }
         }
+    }
+
+    override fun onVerifySucceed(identity: String, validCode: String, tag: String?) {
+        requireActivity().loading(null)
+        viewModel.senEmsCode(phoneNo, "$identity", validCode)
     }
 }

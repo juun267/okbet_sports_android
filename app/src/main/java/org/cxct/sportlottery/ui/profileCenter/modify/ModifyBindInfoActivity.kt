@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
@@ -18,6 +17,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityModifyBindInfoBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.view.checkEmail
 import org.cxct.sportlottery.view.checkPhoneNum
 import org.cxct.sportlottery.view.checkSMSCode
@@ -28,7 +28,7 @@ import org.cxct.sportlottery.util.drawable.DrawableCreator
 
 
 // 验证绑定的手机号或者邮箱
-class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel,ActivityModifyBindInfoBinding>() {
+class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel,ActivityModifyBindInfoBinding>(), VerifyCallback {
 
     companion object {
         fun start(context: Activity, @ModifyType modifyType:  Int, requestCode: Int, phone: String?, email: String?, oldInfo: String? = null) {
@@ -234,11 +234,7 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel,ActivityModifyBindI
         }
         btnSendSms.setOnClickListener {
             hideSoftKeyboard()
-            showCaptchaDialog(supportFragmentManager)
-                { identity, validCode ->
-                    sendCode(identity, validCode)
-                    eetSmsCode.requestFocus()
-                }
+            showCaptchaDialog()
         }
         if (dontNeedVerify()) { // 不需要验证直接设置
             setBindInfoLayout()
@@ -363,6 +359,11 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel,ActivityModifyBindI
             setProgressSuccess()
         }
 
+    }
+
+    override fun onVerifySucceed(identity: String, validCode: String, tag: String?) {
+        sendCode(identity, validCode)
+        binding.eetSmsCode.requestFocus()
     }
 
 }

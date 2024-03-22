@@ -18,7 +18,7 @@ import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
 import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
 
-class BindPhoneDialog: BaseDialog<BindInfoViewModel,DialogBindphoneBinding>() {
+class BindPhoneDialog: BaseDialog<BindInfoViewModel,DialogBindphoneBinding>(), VerifyCallback {
 
     companion object{
         private var instance: BindPhoneDialog?=null
@@ -82,10 +82,7 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel,DialogBindphoneBinding>() {
             }
             if (errorMsg.isNullOrEmpty()){
                 hideSoftKeyboard(requireActivity())
-                showCaptchaDialog(this@BindPhoneDialog.childFragmentManager){ identity, validCode ->
-                        sendCode(identity, validCode)
-                        etVerificationCode.requestFocus()
-                }
+                showCaptchaDialog()
             }else{
                 ToastUtil.showToast(requireContext(),errorMsg)
             }
@@ -180,6 +177,11 @@ class BindPhoneDialog: BaseDialog<BindInfoViewModel,DialogBindphoneBinding>() {
     override fun onDestroyView() {
         super.onDestroyView()
         instance = null
+    }
+
+    override fun onVerifySucceed(ticket: String, randstr: String, tag: String?) {
+        sendCode(ticket, randstr)
+        binding.etVerificationCode.requestFocus()
     }
 
 }
