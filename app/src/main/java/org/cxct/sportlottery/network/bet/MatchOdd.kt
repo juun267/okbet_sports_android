@@ -64,6 +64,8 @@ data class MatchOdd(
     val homeIcon: String?,
     @Json(name = "awayIcon")
     val awayIcon: String?,
+    @Json(name = "maximumWinnable")
+    val maximumWinnable: Double?,
     @Json(name = "endingCardOFLWinnable")
     val endingCardOFLWinnable: EndingCardOFLWinnable?,
 ): Parcelable

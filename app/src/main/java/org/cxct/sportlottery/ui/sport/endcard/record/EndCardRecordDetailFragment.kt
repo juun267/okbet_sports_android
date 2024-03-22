@@ -64,7 +64,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
             tvHomeName.text = it.homeName
             tvAwayName.text = it.awayName
             tvBet.text = "$showCurrencySign ${TextUtil.formatMoney(it.cardMoney,2)}"
-            val winMoney= "$showCurrencySign ${TextUtil.formatMoney(it.cardMoney,2)}"
+            val winMoney= "$showCurrencySign ${TextUtil.formatMoney(it.maximumWinnable?:0,2)}"
             val notice = String.format(getString(R.string.P322),winMoney)
             tvTips.text = Spanny(notice).findAndSpan(winMoney) {
                 TextAppearanceSpan(null, Typeface.NORMAL, 14.dp, ColorStateList.valueOf(requireContext().getColor(R.color.color_6AA4FF)), null)

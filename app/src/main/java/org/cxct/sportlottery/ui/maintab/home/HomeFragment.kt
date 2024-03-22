@@ -54,7 +54,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
                 startActivity(PromotionListActivity::class.java)
             } else if (item.name == R.string.LT050_1) {
                 serviceEvent(context(), childFragmentManager)
-            } else if (item.name == R.string.P293) {
+            } else if (item.name == R.string.P333) {
                 startActivity(EndCardActivity::class.java)
             }
 
