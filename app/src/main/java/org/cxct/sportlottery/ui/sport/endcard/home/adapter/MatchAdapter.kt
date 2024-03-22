@@ -130,7 +130,7 @@ private class EndCardMatchProvider(
             tvView.setOnClickListener { showOdd(matchOdd) }
             tvHomeName.text = matchInfo.homeName
             tvAwayName.text = matchInfo.awayName
-            tvTime.text = TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DM_HM_FORMAT)
+            tvTime.text = TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DMY_HM_FORMAT)
             ivHomeLogo.circleOf(matchInfo.homeIcon, R.drawable.ic_team_default_no_stroke)
             ivAwayLogo.circleOf(matchInfo.awayIcon, R.drawable.ic_team_default_no_stroke)
             val betNum = matchOdd.bkEndCarkOFLCount

@@ -10,6 +10,7 @@ import org.cxct.sportlottery.databinding.ActivityEndcardBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
@@ -23,7 +24,7 @@ import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordFragment
 import org.cxct.sportlottery.util.*
 import splitties.fragments.addToBackStack
 
-class EndCardActivity: BaseActivity<EndCardVM, ActivityEndcardBinding>() {
+class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(EndCardVM::class) {
 
     private val fragmentHolder = ObjectHolder()
 

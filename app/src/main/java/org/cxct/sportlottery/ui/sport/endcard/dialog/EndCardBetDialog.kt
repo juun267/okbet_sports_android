@@ -65,8 +65,9 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
     private fun initOddList(){
         binding.rvOdd.apply {
             layoutManager = GridLayoutManager(context,5)
-            if(itemDecorationCount==0)
-            addItemDecoration(GridItemDecoration(6.dp,8.dp, Color.TRANSPARENT,false))
+            if(itemDecorationCount==0){
+                addItemDecoration(GridItemDecoration(6.dp,8.dp, Color.TRANSPARENT,false))
+            }
             adapter = oddAdapter
             oddAdapter.setList(EndCardBetManager.getBetOdds())
             layoutParams.height = if (oddAdapter.itemCount>20) 160.dp else -2
@@ -83,6 +84,9 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             .findAndSpan(betMoney) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_6AA4FF)) }
             .findAndSpan(oddNames) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_6AA4FF)) }
             .findAndSpan(totalWin) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_6AA4FF)) }
+        val tips = "${getString(R.string.KYC055)}: "
+        binding.tvPrompt.text = Spanny(tips+getString(R.string.P309))
+            .findAndSpan(tips) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_FFD600)) }
     }
     private fun initObservable(){
         viewModel.addBetResult.observe(this){
