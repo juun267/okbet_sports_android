@@ -1738,4 +1738,7 @@
     <string name="H018">Total stake</string>
     <string name="H020">Total lose/ win</string>
     <string name="J223">Promotions</string>
+    <string name="P324">Keep betting</string>
+    <string name="P333">End Card</string>
+    <string name="LT042">Stake</string>
 </resources>

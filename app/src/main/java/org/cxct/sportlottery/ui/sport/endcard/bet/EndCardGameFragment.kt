@@ -95,10 +95,10 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     private fun onBetAmountChanged(endCardBet: EndCardBet) = binding.run {
         selectedEndCardBet = endCardBet
         val sign = showCurrencySign
-        tvQ1Amount.text = "${endCardBet.lastDigit1}$sign"
-        tvQ2Amount.text = "${endCardBet.lastDigit2}$sign"
-        tvQ3Amount.text = "${endCardBet.lastDigit3}$sign"
-        tvQ4Amount.text = "${endCardBet.lastDigit4}$sign"
+        tvQ1Amount.text = "$sign${endCardBet.lastDigit1}"
+        tvQ2Amount.text = "$sign${endCardBet.lastDigit2}"
+        tvQ3Amount.text = "$sign${endCardBet.lastDigit3}"
+        tvQ4Amount.text = "$sign${endCardBet.lastDigit4}"
         oddsAdapter.setUpData(endCardBet)
         clearAllEndCardBet()
     }
@@ -134,7 +134,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
             binding.parlayFloatWindow.gone()
         }else{
             binding.parlayFloatWindow.visible()
-            binding.parlayFloatWindow.updateCount(size.toString())
+            binding.parlayFloatWindow.showRedCount(size.toString())
         }
     }
     private fun initObserver() {

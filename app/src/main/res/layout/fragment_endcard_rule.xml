@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             app:layout_constraintRight_toRightOf="parent"
-            android:src="@drawable/ic_betrecord_image"
+            android:src="@drawable/ic_betrecord_rule"
             android:layout_marginRight="@dimen/margin_24"/>
         <ImageView
             android:id="@+id/ivBack"

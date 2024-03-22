@@ -131,5 +131,10 @@ class ParlayFloatingWindow @JvmOverloads constructor(
             }
         }
     }
-
+   fun showRedCount(count: String){
+       binding.tvBetListCount.apply {
+           text = count
+           background = ContextCompat.getDrawable(context,R.drawable.bg_circle_red)
+       }
+   }
 }

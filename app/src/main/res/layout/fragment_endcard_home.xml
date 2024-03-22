@@ -33,7 +33,7 @@
                     android:textStyle="bold"
                     android:textSize="@dimen/textSize18sp"
                     android:textColor="@color/color_FFFFFF"
-                    android:text="@string/N903"/>
+                    android:text="@string/P293"/>
                 <TextView
                     android:id="@+id/tvRule"
                     android:layout_width="wrap_content"

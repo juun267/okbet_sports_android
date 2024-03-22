@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:layout_weight="80"
         android:gravity="center"
-        android:text="@string/P313"
+        android:text="@string/B003"
         android:textColor="@color/color_BEC7DC"
         android:textSize="@dimen/textSize14sp" />
 

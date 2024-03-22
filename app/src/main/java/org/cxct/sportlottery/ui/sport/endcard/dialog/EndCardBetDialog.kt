@@ -65,9 +65,11 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
     private fun initOddList(){
         binding.rvOdd.apply {
             layoutManager = GridLayoutManager(context,5)
+            if(itemDecorationCount==0)
             addItemDecoration(GridItemDecoration(6.dp,8.dp, Color.TRANSPARENT,false))
             adapter = oddAdapter
             oddAdapter.setList(EndCardBetManager.getBetOdds())
+            layoutParams.height = if (oddAdapter.itemCount>20) 160.dp else -2
         }
     }
     private fun setTips(){

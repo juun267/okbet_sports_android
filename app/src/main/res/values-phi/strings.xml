@@ -447,7 +447,7 @@
     <string name="bet_receipt_win_quota">Halagang Mapanalo</string>
 
     <string name="F042">Lost bet</string>
-    <string name="bet_info_add_bet_success">Bet Successful</string>
+    <string name="bet_info_add_bet_success">Tagumpay na pagtaya</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">Hindi sapat na balanse</string>
     <string name="bet_info_check_maximum_limit">I-check ang pinakamalaking taya</string>
@@ -1581,5 +1581,8 @@
     <string name="H018">Kabuuang taya</string>
     <string name="H020">Kabuuang panalo/talo</string>
     <string name="J223">Aktibidad</string>
+    <string name="P324">Ituloy ang pagtaya</string>
+    <string name="P333">End Kard</string>
+    <string name="LT042">Halaga ng taya</string>
 </resources>
 

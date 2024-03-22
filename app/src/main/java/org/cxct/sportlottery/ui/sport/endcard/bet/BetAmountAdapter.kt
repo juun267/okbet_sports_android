@@ -53,7 +53,7 @@ class BetAmountAdapter(private val onItemClick: (EndCardBet)-> Unit): BaseQuickA
 
     override fun convert(holder: BaseViewHolder, item: EndCardBet) {
         with(holder.itemView as TextView) {
-            text = "${context.getText(R.string.P318)} ${item.betMoney}$showCurrencySign"
+            text = "${context.getText(R.string.P318)} $showCurrencySign${item.betMoney}"
             changeStyle(selectedItem == item, this)
             setOnClickListener {
                 if (selectedItem != item) {

@@ -1602,7 +1602,7 @@
     <string name="I041">Tên giải đấu</string>
     <string name="N664">Thời gian kết toán</string>
     <string name="P321">Tổng số đơn cược</string>
-    <string name="P322"></string>
+    <string name="P322">Tỷ số được chọn sẽ có hiệu lực khi có tỷ số kết thúc hiệp 1, hiệp 2, hiệp 3 hay toàn trận. Có bốn cơ hội để giành chiến thắng và tiền thưởng có thể được cộng dồn, với phần thưởng tối đa là %s.</string>
     <string name="P323">Quy tắc</string>
     <string name="J945">Chi tiết</string>
     <string name="H021">đã thanh toán</string>
@@ -1610,4 +1610,7 @@
     <string name="H018">Tổng tiền cược</string>
     <string name="H020">Tổng thắng/ thua</string>
     <string name="J223">Ưu đãi</string>
+    <string name="P324">Tiếp tục cược</string>
+    <string name="P333">End Card</string>
+    <string name="LT042">Tiền cược</string>
 </resources>

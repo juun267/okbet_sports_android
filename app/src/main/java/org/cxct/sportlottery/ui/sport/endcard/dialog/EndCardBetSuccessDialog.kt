@@ -41,11 +41,11 @@ class EndCardBetSuccessDialog: BaseDialog<BaseViewModel,DialogEndcardBetSuccessB
     override fun onInitView() {
         initClick()
         matchOdd = receipt.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()
+        binding.tvBettingTime.text = TimeUtil.timeFormat(receipt.betConfirmTime, TimeUtil.DMY_HM_FORMAT)
         matchOdd?.let {
             initOddList()
             binding.tvHomeName.text = it.homeName
             binding.tvAwayName.text = it.awayName
-            binding.tvBettingTime.text = TimeUtil.timeFormat(it.startTime, TimeUtil.DMY_HM_FORMAT)
             binding.tvBet.text = "$showCurrencySign ${TextUtil.formatMoney(receipt.userPlayAmount?:0,2)}"
             binding.tvBetAmount.text = "$showCurrencySign ${TextUtil.formatMoney(receipt.totalStake?:0,2)}"
             binding.tvOrderNumber.text = receipt.singleBets?.firstOrNull()?.orderNo
