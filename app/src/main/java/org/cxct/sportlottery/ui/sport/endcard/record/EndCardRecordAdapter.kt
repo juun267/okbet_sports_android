@@ -1,18 +1,18 @@
 package org.cxct.sportlottery.ui.sport.endcard.record
 
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.databinding.ItemEndcardRecordBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.setLeagueLogo
-import org.cxct.sportlottery.util.setTeamLogo
-import org.cxct.sportlottery.view.setColors
 import java.util.*
 import kotlin.math.absoluteValue
 
@@ -63,7 +63,9 @@ class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
               layoutManager = GridLayoutManager(context,10)
               addItemDecoration(GridSpacingItemDecoration(10,4.dp,false))
               adapter = EndCardRecordOddAdapter()
+              setOnTouchListener { v, event -> binding.root.onTouchEvent(event) }
           }
+
           (adapter as EndCardRecordOddAdapter).setList(item.matchOdds.firstOrNull()?.multiCode?.map { it.playName })
       }
     }

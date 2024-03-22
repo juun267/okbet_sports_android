@@ -31,6 +31,7 @@
         android:id="@+id/linNextStep"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
+        android:minWidth="156dp"
         android:gravity="center"
         android:background="@drawable/bg_radius_8_white"
         android:paddingHorizontal="@dimen/margin_20">

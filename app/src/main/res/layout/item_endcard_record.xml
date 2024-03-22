@@ -110,29 +110,24 @@
             tools:listitem="@layout/item_endcard_record_odd" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_50"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_12"
             android:paddingHorizontal="@dimen/sp_14"
+            android:orientation="vertical"
             android:background="@drawable/bg_darkblue_radius_8_stroke">
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:layout_weight="1">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/margin_10"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="38dp"
+                    android:layout_weight="1"
                     android:text="@string/N712"
-                    android:textAlignment="center"
                     android:textColor="@color/color_8B96AD"
                     android:textSize="@dimen/textSize14sp" />
-                <View
-                    android:layout_width="@dimen/margin_0.5"
-                    android:layout_height="@dimen/margin_28"
-                    android:layout_marginHorizontal="@dimen/margin_4"
-                    android:background="@color/color_1A202E"/>
 
                 <TextView
                     android:id="@+id/tvBetAmount"
@@ -146,31 +141,26 @@
                     android:textColor="@color/color_FFFFFF"
                     android:textFontWeight="500"
                     android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold"
                     android:text="50.000" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_0.5"
+                android:background="@color/color_1A202E"/>
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/margin_12"
-                android:gravity="center_vertical"
-                android:layout_weight="1">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/margin_10"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/tvWinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="38dp"
+                    android:layout_weight="1"
                     android:text="@string/win"
-                    android:textAlignment="center"
                     android:textColor="@color/color_8B96AD"
                     android:textSize="@dimen/textSize14sp" />
-                <View
-                    android:layout_width="@dimen/margin_0.5"
-                    android:layout_height="@dimen/margin_28"
-                    android:layout_marginHorizontal="@dimen/margin_4"
-                    android:background="@color/color_1A202E"/>
                 <TextView
                     android:id="@+id/tvWinnableAmount"
                     android:layout_width="wrap_content"
@@ -183,7 +173,6 @@
                     android:textFontWeight="500"
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold"
                     android:text="9,999,999.000" />
             </LinearLayout>
         </LinearLayout>
