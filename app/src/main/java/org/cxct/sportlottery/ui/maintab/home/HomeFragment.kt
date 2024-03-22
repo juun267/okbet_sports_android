@@ -134,7 +134,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
-        attach(this@HomeFragment, getMainTabActivity(), viewModel)
+        attach(this@HomeFragment, getMainTabActivity())
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true,Gravity.RIGHT))
             getMainTabActivity().showMainRightMenu()
