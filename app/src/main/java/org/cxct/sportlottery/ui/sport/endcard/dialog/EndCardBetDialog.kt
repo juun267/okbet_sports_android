@@ -71,6 +71,7 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
         }
     }
     private fun setTips(){
+        if (EndCardBetManager.getBetOdds().isEmpty()) return
         val betMoney =  "$showCurrencySign ${endCardBet.betMoney}"
         val oddNames =  "${EndCardBetManager.getBetOdds().joinToString("," )}"
         val totalLastDigit = endCardBet.lastDigit1+endCardBet.lastDigit2+endCardBet.lastDigit3+endCardBet.lastDigit4
@@ -85,7 +86,6 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
         viewModel.addBetResult.observe(this){
             gameFragment.hideLoading()
             gameFragment.clearAllEndCardBet()
-            gameFragment.showFloatBet()
             gameFragment.reload()
             EndCardBetSuccessDialog.newInstance(it).show(parentFragmentManager)
             dismiss()

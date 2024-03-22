@@ -156,6 +156,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     }
     fun clearAllEndCardBet(){
         EndCardBetManager.removeAll()
+        showFloatBet()
         oddsAdapter.notifyDataSetChanged()
     }
     fun reload(){
