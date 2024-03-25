@@ -50,7 +50,6 @@
     <style name="FullScreen" parent="Theme.AppCompat.Dialog">
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:gravity">center</item>
         <item name="android:windowIsFloating">false</item>
     </style>
 
