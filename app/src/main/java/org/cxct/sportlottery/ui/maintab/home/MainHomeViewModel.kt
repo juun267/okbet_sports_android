@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
@@ -439,13 +441,17 @@ open class MainHomeViewModel(
             }
 
             val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory, gameEntryTagName)
-            if (autoTransfer(firmType)) { //第三方自動轉換
+            if (isThirdTransferOpen()){
                 _enterThirdGameResult.postValue(Pair(firmType, thirdGameResult))
-                baseActivity.hideLoading()
-                return@launch
+            }else{
+                getGameBalance(firmType,thirdGameResult)
             }
-
-            getGameBalance(firmType, thirdGameResult, baseActivity)
+            baseActivity.hideLoading()
+        }
+    }
+    fun transfer(firmType: String,result: EnterThirdGameResult){
+        viewModelScope.launch {
+            autoTransfer(firmType)
         }
     }
 
@@ -466,17 +472,12 @@ open class MainHomeViewModel(
     }
 
 
-    private suspend fun autoTransfer(firmType: String): Boolean {
-        if (isThirdTransferOpen()) {
-            //若自動轉換功能開啟，要先把錢都轉過去再進入遊戲
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.autoTransfer(firmType)
-            }
-            if (result?.success == true) getMoneyAndTransferOut(false) //金額有變動，通知刷新
-            return true
+    private suspend fun autoTransfer(firmType: String) {
+        //若自動轉換功能開啟，要先把錢都轉過去再進入遊戲
+        val result = doNetwork(androidContext) {
+            OneBoSportApi.thirdGameService.autoTransfer(firmType)
         }
-
-        return false
+        if (result?.success == true) getMoneyAndTransferOut(false) //金額有變動，通知刷新
     }
 
     private fun Recommend.sortOddsByMenu() {
@@ -537,10 +538,8 @@ open class MainHomeViewModel(
     private fun getGameBalance(
         firmType: String,
         thirdGameResult: EnterThirdGameResult,
-        baseActivity: BaseActivity<*,*>,
     ) {
         doRequest({ OneBoSportApi.thirdGameService.getAllBalance() }) { result ->
-            baseActivity.hideLoading()
             var balance: Double = result?.resultMap?.get(firmType)?.money ?: (0).toDouble()
             _gameBalanceResult.postValue(Event(Triple(firmType, thirdGameResult, balance)))
         }
