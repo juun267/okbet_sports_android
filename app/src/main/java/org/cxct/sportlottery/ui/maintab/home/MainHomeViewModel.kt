@@ -449,7 +449,7 @@ open class MainHomeViewModel(
             baseActivity.hideLoading()
         }
     }
-    fun transfer(firmType: String,result: EnterThirdGameResult){
+    fun transfer(firmType: String){
         viewModelScope.launch {
             autoTransfer(firmType)
         }
