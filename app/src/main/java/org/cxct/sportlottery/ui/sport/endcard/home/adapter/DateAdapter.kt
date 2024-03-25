@@ -99,12 +99,13 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
         val week = holder.getView<TextView>(weekId)
         val date = holder.getView<TextView>(dateId)
         val time = item.first.split("-")
-        week.text = time.getOrNull(0)
         if (item.first.endsWith(today)) {
-            date.setText(R.string.C016_small)
+            week.setText(R.string.C016_small)
         } else {
-            date.text = time.getOrNull(1)
+            week.text = time.getOrNull(0)
         }
+
+        date.text = time.getOrNull(1)
         changeStyle(item == currentItem, holder.itemView, week)
         holder.itemView.setOnClickListener {
             val lastPosition = getItemPosition(currentItem)
