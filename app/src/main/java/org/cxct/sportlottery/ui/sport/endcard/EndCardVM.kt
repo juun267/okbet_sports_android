@@ -28,6 +28,11 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
     val addFaildResult = SingleLiveEvent<String>()
     val lgpcoflDetail = SingleLiveEvent<Array<EndCardBet>?>()
 
+    private var betListRequesting = false
+    val unSettledResult = SingleLiveEvent<BetListResult?>()
+    val settledResult = SingleLiveEvent<BetListResult?>()
+    private val pageSize=20
+
     fun loadEndCardMatchList() {
         val matchType = "LGPCOFL"
         val gameType = GameType.BK.key
@@ -58,10 +63,7 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
            }
        }
     }
-    private var betListRequesting = false
 
-    val unSettledResult = SingleLiveEvent<BetListResult>()
-    private val pageSize=20
     fun getUnsettledList(page: Int,startTime: Long?=null,endTime: Long?=null) {
         if (betListRequesting){
             return
@@ -90,8 +92,6 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
         }
     }
 
-
-    val settledResult = SingleLiveEvent<BetListResult>()
 
     fun getSettledList(page: Int,startTime: Long?=null,endTime: Long?=null) {
         if (betListRequesting){
