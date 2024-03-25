@@ -24,6 +24,7 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
 
     private var currentLeagueOdd: LeagueOdd? = null
     private var currentItem: Pair<String, List<MatchOdd>>? = null
+    private lateinit var today: String
 
     private val selectedColor by lazy { context.getColor(R.color.color_6AA4FF) }
     private val unSelectedColor by lazy { context.getColor(R.color.color_6D7693) }
@@ -45,6 +46,10 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
         val weakFormat = SimpleDateFormat("EE")
         val date1Format = SimpleDateFormat("MMM")
         val calendar = Calendar.getInstance()
+
+        val date = Date(System.currentTimeMillis())
+        calendar.time = date
+        today = "${date1Format.format(date)} ${calendar.get(Calendar.DAY_OF_MONTH)}"
 
         val dateList = leagueOdd.matchOdds.groupBy {
             val startDate = Date(it.matchInfo!!.startTime)
@@ -95,9 +100,12 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
         val date = holder.getView<TextView>(dateId)
         val time = item.first.split("-")
         week.text = time.getOrNull(0)
-        date.text = time.getOrNull(1)
+        if (item.first.endsWith(today)) {
+            date.setText(R.string.C016_small)
+        } else {
+            date.text = time.getOrNull(1)
+        }
         changeStyle(item == currentItem, holder.itemView, week)
-
         holder.itemView.setOnClickListener {
             val lastPosition = getItemPosition(currentItem)
             currentItem = item

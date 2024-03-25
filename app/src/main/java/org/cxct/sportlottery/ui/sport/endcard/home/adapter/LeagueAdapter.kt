@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport.endcard.home.adapter
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -65,6 +66,7 @@ class LeagueAdapter(private val onItemClick: (LeagueOdd) -> Unit)
         root.addView(icon, iconLP)
 
         val name = AppCompatTextView(cxt)
+        name.ellipsize = TextUtils.TruncateAt.END
         name.id = nameId
         name.gravity = Gravity.CENTER
         name.maxLines = 1

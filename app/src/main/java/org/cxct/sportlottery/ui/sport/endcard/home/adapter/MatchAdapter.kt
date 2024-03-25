@@ -127,6 +127,7 @@ private class EndCardMatchProvider(
         val matchInfo = matchOdd.matchInfo!!
 
         with(binding) {
+            matchInfo.categoryIcon = (item.parentNode as LeagueOdd).league.categoryIcon
             tvView.setOnClickListener { showOdd(matchOdd) }
             tvHomeName.text = matchInfo.homeName
             tvAwayName.text = matchInfo.awayName

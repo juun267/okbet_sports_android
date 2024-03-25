@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
+import org.cxct.sportlottery.util.setLeagueLogo
 import timber.log.Timber
 
 class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBinding>() {
@@ -79,6 +80,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         tvTime.text = "${getString(R.string.date)}: ${TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DMY_HM_FORMAT)}"
         ivHomeLogo.circleOf(matchInfo.homeIcon, R.drawable.ic_team_default_no_stroke)
         ivAwayLogo.circleOf(matchInfo.awayIcon, R.drawable.ic_team_default_no_stroke)
+        ivLeague.setLeagueLogo(matchInfo.categoryIcon)
     }
 
     private fun initAmountList() {

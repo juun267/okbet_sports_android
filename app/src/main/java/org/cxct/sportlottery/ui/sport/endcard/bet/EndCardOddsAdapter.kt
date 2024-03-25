@@ -10,10 +10,9 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.net.sport.data.EndCardBet
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -89,18 +88,16 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
 
         val userName = endCardBet.lastBetName?.get(item)
         val noUserBet = userName.isEmptyStr()
-        if (noUserBet) {
-            userText.gone()
-        } else {
-            userText.text = userName
-            userText.visible()
-        }
+        userText.text = userName
 
         val itemView = holder.itemView
         val betted = endCardBet.betMyself?.contains(item) == true
 
         when {
-            betted -> itemView.setBackgroundResource(R.drawable.bg_selected_endodd)
+            betted -> {
+                userText.text = UserInfoRepository.nickName()
+                itemView.setBackgroundResource(R.drawable.bg_selected_endodd)
+            }
             !noUserBet -> itemView.background = disableBg
             EndCardBetManager.containOdd(item) -> itemView.background = selectedBg
             else -> itemView.background = defaultBg
