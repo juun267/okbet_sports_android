@@ -80,7 +80,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         tvTime.text = "${getString(R.string.date)}: ${TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DMY_HM_FORMAT)}"
         ivHomeLogo.circleOf(matchInfo.homeIcon, R.drawable.ic_team_default_no_stroke)
         ivAwayLogo.circleOf(matchInfo.awayIcon, R.drawable.ic_team_default_no_stroke)
-        ivLeague.setLeagueLogo(matchInfo.categoryIcon)
+        ivLeague.setLeagueLogo(matchInfo.categoryIcon, R.drawable.ic_team_default_1)
     }
 
     private fun initAmountList() {

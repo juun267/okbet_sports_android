@@ -1,12 +1,14 @@
 package org.cxct.sportlottery.ui.sport.endcard.bet
 
 import android.graphics.Color
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
@@ -18,6 +20,7 @@ import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.loginedRun
+import org.cxct.sportlottery.view.isVisible
 
 class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
     : BaseQuickAdapter<String, BaseViewHolder>(0) {
@@ -74,6 +77,7 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
         user.setTextColor(cxt.getColor(R.color.color_BEC7DC))
         user.gravity = Gravity.CENTER
         user.maxLines = 1
+        user.ellipsize = TextUtils.TruncateAt.END
         root.addView(user, lp)
 
         return BaseViewHolder(root)
@@ -103,6 +107,7 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
             else -> itemView.background = defaultBg
         }
 
+        userText.isVisible = !userText.text.isEmpty()
         itemView.isEnabled = !betted && noUserBet
         itemView.setOnClickListener {
 

@@ -50,6 +50,7 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
     }
 
     private fun initClick()=binding.run{
+        btnBetting.text = "${root.context.getString(R.string.betting)} ${endCardBet.betMoney}"
         setOnClickListeners(ivClose){
             gameFragment.showFloatBet()
             dismiss()
