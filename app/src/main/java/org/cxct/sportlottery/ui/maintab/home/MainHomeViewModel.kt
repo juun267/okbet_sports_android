@@ -443,10 +443,11 @@ open class MainHomeViewModel(
             val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory, gameEntryTagName)
             if (isThirdTransferOpen()){
                 _enterThirdGameResult.postValue(Pair(firmType, thirdGameResult))
+                baseActivity.hideLoading()
             }else{
-                getGameBalance(firmType,thirdGameResult)
+                getGameBalance(firmType,thirdGameResult,baseActivity)
             }
-            baseActivity.hideLoading()
+
         }
     }
     fun transfer(firmType: String){
@@ -538,8 +539,10 @@ open class MainHomeViewModel(
     private fun getGameBalance(
         firmType: String,
         thirdGameResult: EnterThirdGameResult,
+        baseActivity: BaseActivity<*,*>
     ) {
         doRequest({ OneBoSportApi.thirdGameService.getAllBalance() }) { result ->
+            baseActivity.hideLoading()
             var balance: Double = result?.resultMap?.get(firmType)?.money ?: (0).toDouble()
             _gameBalanceResult.postValue(Event(Triple(firmType, thirdGameResult, balance)))
         }
