@@ -83,6 +83,7 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
             hideLoading()
             refreshHelper.finishRefresh()
             refreshHelper.finishLoadMore()
+            if (it==null) return@observe
             if (it.success) {
                 currentPage = it.page
                 it.rows?.let { newData->
