@@ -102,7 +102,7 @@ class ESportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Bindin
             binding.tabLayout.removeAllTabs()
         }
         footView.setUp(this, mianViewModel)
-        binding.homeToolbar.attach(this@ESportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
+        binding.homeToolbar.attach(this@ESportFragment, getMainTabActivity(), moneyViewEnable = false, onlyShowSeach = true)
         getMenuData(true)
         favoriteDelayRunable.doOnDelay(0)
 
@@ -111,7 +111,6 @@ class ESportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Bindin
 
     fun initToolBar() = binding.homeToolbar.run {
         background = null
-        attach(this@ESportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         searchIcon.setOnClickListener { start<SportSearchtActivity> { putExtra("gameType",GameType.ES.key)  } }
         betlistIcon.setOnClickListener {
             loginedRun(it.context) {

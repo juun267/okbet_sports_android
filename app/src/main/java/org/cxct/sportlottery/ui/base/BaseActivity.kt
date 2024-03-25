@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -13,7 +14,7 @@ import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.createVBinding
 import org.cxct.sportlottery.common.extentions.getKClass
-import org.cxct.sportlottery.util.ResourceWrapper
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.view.floatingbtn.LotteryManager
 import org.cxct.sportlottery.view.floatingbtn.LuckyWheelManager
 import org.cxct.sportlottery.view.floatingbtn.PromotionManager
@@ -28,6 +29,16 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>(clazz: KClass<
 
     val viewModel: VM by viewModel(clazz = clazz ?: getKClass(0) as KClass<VM>)
     protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LanguageManager.setLocal(newBase))
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        firstCrate = true
+        super.onConfigurationChanged(newConfig)
+        LanguageManager.onConfigurationChanged(this)
+    }
 
     override fun onStart() {
         super.onStart()
@@ -50,18 +61,11 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>(clazz: KClass<
 
     protected open fun onInitData() { }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        firstCrate = true
-        super.onConfigurationChanged(newConfig)
-    }
-
-    private val localeResources by lazy { ResourceWrapper(this@BaseActivity, super.getResources()) }
-
     /**
      * 修正 auto size 偶發失效問題
      * */
     override fun getResources(): Resources {
-        val res = localeResources
+        val res = super.getResources()
         if (firstCrate && Looper.myLooper() == Looper.getMainLooper()) {
             firstCrate = false
             AutoSizeCompat.autoConvertDensityOfGlobal(res)

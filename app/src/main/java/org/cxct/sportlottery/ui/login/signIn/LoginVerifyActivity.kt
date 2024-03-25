@@ -13,6 +13,7 @@ import org.cxct.sportlottery.databinding.ActivityLoginVerifyBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
 import org.cxct.sportlottery.util.CountDownUtil
 import org.cxct.sportlottery.util.EventBusUtil
@@ -21,7 +22,7 @@ import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.util.showCaptchaDialog
 import org.cxct.sportlottery.view.checkRegisterListener
 
-class LoginVerifyActivity: BaseActivity<LoginViewModel, ActivityLoginVerifyBinding>() {
+class LoginVerifyActivity: BaseActivity<LoginViewModel, ActivityLoginVerifyBinding>(), VerifyCallback {
 
     companion object {
 
@@ -55,14 +56,7 @@ class LoginVerifyActivity: BaseActivity<LoginViewModel, ActivityLoginVerifyBindi
         edtCode.checkRegisterListener(::onInputCode)
         btnBack.setOnClickListener { finish() }
         btnLogin.setOnClickListener { viewModel.loginOrReg(phone, edtCode.text.toString(), "") }
-        btnSend.setOnClickListener {
-            showCaptchaDialog(supportFragmentManager)
-                { identity, validCode ->
-                    loading()
-                    viewModel.loginOrRegSendValidCode(LoginCodeRequest(phone!!).apply { buildParams(identity, validCode) })
-                }
-        }
-
+        btnSend.setOnClickListener { showCaptchaDialog() }
     }
 
     private fun initObserver() = viewModel.run {
@@ -116,5 +110,10 @@ class LoginVerifyActivity: BaseActivity<LoginViewModel, ActivityLoginVerifyBindi
             binding.btnSend.setBtnEnable(true)
             binding.btnSend.setText(R.string.send)
         })
+    }
+
+    override fun onVerifySucceed(identity: String, validCode: String, tag: String?) {
+        loading()
+        viewModel.loginOrRegSendValidCode(LoginCodeRequest(phone!!).apply { buildParams(identity, validCode) })
     }
 }

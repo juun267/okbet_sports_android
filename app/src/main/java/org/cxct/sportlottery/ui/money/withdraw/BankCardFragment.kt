@@ -20,6 +20,7 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.afterTextChanged
@@ -31,7 +32,7 @@ import org.cxct.sportlottery.view.isVisible
 /**
  * @app_destination 新增银行卡
  */
-class BankCardFragment : BaseFragment<WithdrawViewModel,FragmentBankCardBinding>() {
+class BankCardFragment : BaseFragment<WithdrawViewModel,FragmentBankCardBinding>(), VerifyCallback {
     private var transferType: TransferType = TransferType.BANK
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
@@ -149,10 +150,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel,FragmentBankCardBinding>
                 ToastUtil.showToast(context, R.string.set_phone_no)
                 return@setOnClickListener
             }
-            showCaptchaDialog(childFragmentManager){ identity, validCode ->
-                loading()
-                viewModel.senEmsCode(phoneNo!!, "$identity", validCode)
-            }
+            showCaptchaDialog(phoneNo)
         }
 
 
@@ -622,6 +620,11 @@ class BankCardFragment : BaseFragment<WithdrawViewModel,FragmentBankCardBinding>
 
     private fun updateButtonStatus(isEnable: Boolean) {
         binding.btnSubmit.setBtnEnable(isEnable)
+    }
+
+    override fun onVerifySucceed(identity: String, validCode: String, phoneNo: String?) {
+        loading()
+        viewModel.senEmsCode(phoneNo!!, "$identity", validCode)
     }
 
 }

@@ -11,12 +11,13 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityVerifyPhonenoBinding
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.checkSMSCode
 import org.cxct.sportlottery.view.checkWithdrawPassword
 
-class ResetWithdrawActivity: BaseActivity<LoginViewModel, ActivityVerifyPhonenoBinding>() {
+class ResetWithdrawActivity: BaseActivity<LoginViewModel, ActivityVerifyPhonenoBinding>(), VerifyCallback {
 
     private val phoneNo by lazy { intent.getStringExtra("phone")!! }
 
@@ -49,12 +50,7 @@ class ResetWithdrawActivity: BaseActivity<LoginViewModel, ActivityVerifyPhonenoB
         }
         btnSendSms.setOnClickListener {
             hideSoftKeyboard()
-            showCaptchaDialog(supportFragmentManager)
-                { identity, validCode ->
-                    loading()
-                    eetSmsCode.requestFocus()
-                    viewModel.loginOrRegSendValidCode(LoginCodeRequest(phoneNo).apply { buildParams(identity, validCode) })
-                }
+            showCaptchaDialog()
         }
 
         btnConfirm.setOnClickListener {
@@ -119,5 +115,11 @@ class ResetWithdrawActivity: BaseActivity<LoginViewModel, ActivityVerifyPhonenoB
         } else {
             showErrorPromptDialog(msg ?: getString(R.string.unknown_error)) {}
         }
+    }
+
+    override fun onVerifySucceed(identity: String, validCode: String, tag: String?) {
+        loading()
+        binding.eetSmsCode.requestFocus()
+        viewModel.loginOrRegSendValidCode(LoginCodeRequest(phoneNo).apply { buildParams(identity, validCode) })
     }
 }

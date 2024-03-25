@@ -127,10 +127,10 @@ class HIndicator @JvmOverloads constructor(
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         //绘制背景
-        canvas?.drawRoundRect(mBgRect, mRadius, mRadius, mBgPaint)
+        canvas.drawRoundRect(mBgRect, mRadius, mRadius, mBgPaint)
 
         //计算指示器的长度和位置
         val leftOffset = viewWidth * (1f - ratio) * progress
@@ -139,7 +139,7 @@ class HIndicator @JvmOverloads constructor(
         mRect.set(left, mBgRect.top, right, mBgRect.bottom)
 
         //绘制指示器
-        canvas?.drawRoundRect(mRect, mRadius, mRadius, mPaint)
+        canvas.drawRoundRect(mRect, mRadius, mRadius, mPaint)
     }
 
 }

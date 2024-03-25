@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.login.foget
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
-import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
@@ -14,6 +13,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordData
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.ui.login.foget.reset.ResetPasswordActivity
 import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
 import org.cxct.sportlottery.util.*
@@ -27,7 +27,8 @@ import splitties.activities.start
 /**
  * @app_destination 通过手机号或者邮箱重置登录密码
  */
-class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPassword2Binding>(ForgetViewModel::class) {
+class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPassword2Binding>(ForgetViewModel::class)
+ ,VerifyCallback {
 
     companion object {
 
@@ -64,11 +65,7 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPasswor
 
         btnSendSms.setOnClickListener {
             hideSoftKeyboard()
-            showCaptchaDialog(supportFragmentManager) {
-                    identity, validCode ->
-                    sendCode(identity, validCode)
-                    eetSmsCode.requestFocus()
-            }
+            showCaptchaDialog()
         }
 
         eetSmsCode.checkSMSCode(etSmsValidCode) {
@@ -230,6 +227,13 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPasswor
             it.first { it.vipType==(if(event.isVip) 1 else 0)}.let {
                 dealWithSmsResultata(it)
             }
+        }
+    }
+
+    override fun onVerifySucceed(identity: String, validCode: String, tag: String?) {
+        with(binding) {
+            sendCode(identity, validCode)
+            eetSmsCode.requestFocus()
         }
     }
 

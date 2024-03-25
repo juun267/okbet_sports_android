@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -60,15 +61,13 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
-import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
 import org.cxct.sportlottery.ui.login.CaptchaDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
+import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
-import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.util.drawable.DrawableCreator
@@ -918,13 +917,30 @@ fun toSendEmail(context: Context, emailAddress: String) {
     }
 
 }
-fun showCaptchaDialog(manager: FragmentManager,callback: (ticket: String, randstr: String)-> Unit){
+
+fun FragmentActivity.showCaptchaDialog(tag: String? = null) {
+    if (this !is VerifyCallback) {
+        throw RuntimeException(" ${this.javaClass.name} 为实现接口: VerifyCallback")
+    }
+    showCaptchaDialog(supportFragmentManager, tag)
+}
+
+fun Fragment.showCaptchaDialog(tag: String? = null) {
+    if (this !is VerifyCallback) {
+        throw RuntimeException(" ${this.javaClass.name} 为实现接口: VerifyCallback")
+    }
+    showCaptchaDialog(childFragmentManager, tag)
+}
+
+private fun showCaptchaDialog(fragmentManager: FragmentManager, tag: String? = null) {
     if (sConfigData?.captchaType == 1){
-        CaptchaDialog.newInstance(CaptchaDialog.CallBack(callback)).show(manager)
+        CaptchaDialog().show(fragmentManager, tag)
     }else{
-        VerifyCodeDialog.newInstance(VerifyCodeDialog.CallBack(callback)).show(manager)
+        VerifyCodeDialog().show(fragmentManager, tag)
     }
 }
+
+
 fun Context.getIconSelector(selected: Int, unSelected: Int): Drawable {
     val selectDrawable = ContextCompat.getDrawable(this,selected)
     val unSelecteDrawable = ContextCompat.getDrawable(this,unSelected)
