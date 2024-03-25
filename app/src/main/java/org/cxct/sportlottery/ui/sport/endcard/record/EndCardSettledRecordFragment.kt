@@ -22,8 +22,8 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
         setEmptyView(BetEmptyView(requireContext()).apply { center() })
     } }
     private var currentPage = 1
-    private var startTime:Long?=null
-    private var endTime:Long?=null
+    private var startTime:Long = TimeUtil.getTodayStartTimeStamp()
+    private var endTime:Long = TimeUtil.getTodayEndTimeStamp()
     override fun onInitView(view: View) {
         initTimeTab()
         initRecordList()
@@ -57,8 +57,7 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
                 }
             }
             resetListData()
-            loading()
-            getSettledData(1)
+            reload()
         }
         binding.rgDate.check(binding.rbtnToday.id)
     }
