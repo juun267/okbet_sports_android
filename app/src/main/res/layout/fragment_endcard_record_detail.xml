@@ -251,7 +251,7 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
                 android:textColor="@color/color_6D7693"
-                android:text="@string/P319"/>
+                android:text="@string/LT042"/>
             <TextView
                 android:id="@+id/tvBetAmount"
                 android:layout_width="0dp"
@@ -280,7 +280,7 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
                 android:textColor="@color/color_6D7693"
-                android:text="@string/P320"/>
+                android:text="@string/N142"/>
             <TextView
                 android:id="@+id/tvOrderNumber"
                 android:layout_width="0dp"
