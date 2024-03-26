@@ -47,6 +47,8 @@ class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(End
     }
 
     private fun initObservable() {
+        bindSportMaintenance()
+
         viewModel.isRechargeShowVerifyDialog.observe(this) {
             val b = it.getContentIfNotHandled() ?: return@observe
             if (b) {

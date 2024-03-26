@@ -75,7 +75,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
             val itemData = item.getOrNull(index) ?: return@run
             val itemView = binding.root.getChildAt(index)
             val itemBinding = (itemView.tag as ItemHomeMenuBinding?) ?: ItemHomeMenuBinding.bind(itemView)
-            setMaintanence(itemBinding.linMaintenance, itemData.content)
+            setMaintanence(itemBinding.linMaintenance, itemData.name)
             setSelectedStyle(itemData == selectItem, itemData, itemView, itemBinding.ivIcon)
         }
     }
@@ -94,7 +94,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
                 itemView.isEnabled = true
                 val itemBinding = (itemView.tag as ItemHomeMenuBinding?) ?: ItemHomeMenuBinding.bind(itemView)
                 itemBinding.tvName.text = context.getString(itemData.name)
-                setMaintanence(itemBinding.linMaintenance, itemData.content)
+                setMaintanence(itemBinding.linMaintenance, itemData.name)
                 setSelectedStyle(itemData == selectItem, itemData, itemView, itemBinding.ivIcon)
                 itemView.setOnClickListener { changeSelected(itemData, position, itemIndex) }
             }
@@ -103,8 +103,8 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
 
     override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab?>) { }
 
-    private fun setMaintanence(linMaintenance: View, fragmentClass: Class<out BaseFragment<*,*>>?){
-        if ((fragmentClass == SportVenueFragment::class.java || fragmentClass == ESportVenueFragment::class.java)
+    private fun setMaintanence(linMaintenance: View, @StringRes name: Int){
+        if ((name == R.string.main_tab_sport || name == R.string.esports || name == R.string.P333)
             && getSportEnterIsClose()) {
             linMaintenance.visible()
             return

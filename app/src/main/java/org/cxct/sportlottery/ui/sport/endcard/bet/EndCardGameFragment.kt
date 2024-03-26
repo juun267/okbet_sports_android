@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.circleOf
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
+import org.cxct.sportlottery.common.extentions.showPromptDialogNoCancel
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
@@ -23,6 +24,7 @@ import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.util.setLeagueLogo
 import timber.log.Timber
@@ -78,8 +80,8 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         tvHomeName.text = matchInfo.homeName
         tvAwayName.text = matchInfo.awayName
         tvTime.text = "${getString(R.string.date)}: ${TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DMY_HM_FORMAT)}"
-        ivHomeLogo.circleOf(matchInfo.homeIcon, R.drawable.ic_team_default_no_stroke)
-        ivAwayLogo.circleOf(matchInfo.awayIcon, R.drawable.ic_team_default_no_stroke)
+        ivHomeLogo.circleOf(matchInfo.homeIcon, R.drawable.ic_team_default_1)
+        ivAwayLogo.circleOf(matchInfo.awayIcon, R.drawable.ic_team_default_1)
         ivLeague.setLeagueLogo(matchInfo.categoryIcon, R.drawable.ic_team_default_1)
     }
 
@@ -113,6 +115,11 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         }
     }
     private fun onOddClick(oddId: String): Boolean {
+        if (matchInfo.startTime < System.currentTimeMillis()) {
+            ToastUtil.showToast(context(), getString(R.string.F042))
+            return false
+        }
+
         val isAdded = EndCardBetManager.containOdd(oddId)
         if (isAdded) {
             EndCardBetManager.removeBetOdd(oddId)
