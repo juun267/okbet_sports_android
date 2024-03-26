@@ -66,7 +66,7 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
         val odd = AppCompatTextView(cxt)
         odd.id = oddId
         odd.textSize = 16f
-        odd.typeface = AppFont.inter_bold
+        odd.typeface = AppFont.helvetica
         odd.setTextColor(Color.WHITE)
         odd.gravity = Gravity.CENTER
         root.addView(odd, lp)

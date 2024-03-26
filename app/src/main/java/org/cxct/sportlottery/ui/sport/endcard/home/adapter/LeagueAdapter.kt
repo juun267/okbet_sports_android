@@ -15,7 +15,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.setLeagueLogo
@@ -33,7 +32,7 @@ class LeagueAdapter(private val onItemClick: (LeagueOdd) -> Unit)
     private val nameLP = LinearLayout.LayoutParams(-2, -2).apply { topMargin = 4.dp }
     private val iconBg by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_30425F))
+            .setSolidColor(context.getColor(R.color.color_314260))
             .setWidth(iconWH)
             .setHeight(iconWH)
             .setRadius(iconWH.toFloat())

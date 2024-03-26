@@ -67,7 +67,7 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
         val lp = LinearLayout.LayoutParams(60.dp, 44.dp)
         lp.gravity = Gravity.CENTER_VERTICAL
         lp.leftMargin = 12.dp
-        lp.topMargin = 10.dp
+        lp.topMargin = 12.dp
         frameLayout.layoutParams = lp
 
         val week = AppCompatTextView(context)
