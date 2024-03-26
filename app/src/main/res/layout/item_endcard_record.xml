@@ -37,6 +37,7 @@
            android:layout_marginLeft="@dimen/margin_8"
            android:lines="1"
            android:ellipsize="end"
+           android:fontFamily="@font/inter_regular"
            android:textColor="@color/color_6D7693"
            android:textSize="@dimen/textSize12sp"
            android:text="09/02/2024 08:42"/>
@@ -137,7 +138,8 @@
                     android:textAlignment="viewStart"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:fontFamily="@font/inter_bold"
+                    android:fontFamily="@font/inter_regular"
+                    android:textFontWeight="500"
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize14sp"
                     android:text="50.000" />
@@ -168,7 +170,8 @@
                     android:textAlignment="viewStart"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:fontFamily="@font/inter_bold"
+                    android:fontFamily="@font/inter_regular"
+                    android:textFontWeight="500"
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize14sp"
                     android:text="9,999,999.000" />
