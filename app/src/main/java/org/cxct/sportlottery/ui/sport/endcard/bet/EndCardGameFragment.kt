@@ -116,7 +116,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     }
     private fun onOddClick(oddId: String): Boolean {
         if (matchInfo.startTime < System.currentTimeMillis()) {
-            ToastUtil.showToast(context(), getString(R.string.F042))
+            ToastUtil.showToast(context(), getString(R.string.P337))
             return false
         }
 
