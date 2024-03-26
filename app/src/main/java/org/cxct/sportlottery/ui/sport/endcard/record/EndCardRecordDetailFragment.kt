@@ -59,6 +59,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
         }
     }
     private fun setData(row: Row)=binding.run{
+        LogUtil.toJson(row)
         row.matchOdds.firstOrNull()?.let {
             tvLeagueName.text = it.leagueName
             tvHomeName.text = it.homeName
@@ -72,7 +73,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
         }
         tvBettingTime.text = TimeUtil.timeFormat(row.addTime, TimeUtil.DMY_HM_FORMAT)
         tvBetAmount.text = "$showCurrencySign ${TextUtil.formatMoney(row.stake,2)}"
-        val winMoney = if (row.status==2||row.status==3) row.win?.absoluteValue?:0.0 else 0.0
+        val winMoney = if (row.status==2||row.status==3) row.grossWin?:0.0 else 0.0
         tvTotalWin.apply {
             text = "$showCurrencySign ${TextUtil.formatMoney(winMoney,2)}"
             if(winMoney > 0){
@@ -112,7 +113,6 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
         }
         oddAdapter.setList(row.matchOdds?.firstOrNull()?.multiCode?.map { it.playName })
         row.matchOdds.firstOrNull()?.endingCardOFLWinnable?.apply{
-            LogUtil.toJson(this)
             rowAdapter.setList(listOf(
                 Item("Q1",lastDigit1Score,if(lastDigit1Result==true) lastDigit1Winnable else 0),
                 Item("Q2",lastDigit2Score,if(lastDigit2Result==true) lastDigit2Winnable else 0),

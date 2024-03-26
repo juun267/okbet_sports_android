@@ -24,7 +24,7 @@ class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
         }
         tvTime.text = TimeUtil.timeFormat(item.addTime, TimeUtil.DMY_HM_FORMAT)
         tvBetAmount.text = "$showCurrencySign ${TextUtil.formatMoney(item.stake,2)}"
-        val winMoney = if (item.status==2||item.status==3) item.win?.absoluteValue?:0 else 0
+        val winMoney = if (item.status==2||item.status==3) item.grossWin?:0 else 0
         tvWinnableAmount.text = "$showCurrencySign ${TextUtil.formatMoney(winMoney,2)}"
         //可赢金额
         when(item.status){
