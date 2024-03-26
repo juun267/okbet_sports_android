@@ -102,6 +102,9 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
             4,5->{
                 ivStatus.setImageResource( R.drawable.ic_tag_lost)
             }
+            7->{
+                ivStatus.setImageResource( R.drawable.ic_tag_cancel)
+            }
             //其他  ₱ --
             else->{
                 ivStatus.setImageResource(R.color.transparent)
@@ -109,6 +112,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
         }
         oddAdapter.setList(row.matchOdds?.firstOrNull()?.multiCode?.map { it.playName })
         row.matchOdds.firstOrNull()?.endingCardOFLWinnable?.apply{
+            LogUtil.toJson(this)
             rowAdapter.setList(listOf(
                 Item("Q1",lastDigit1Score,if(lastDigit1Result==true) lastDigit1Winnable else 0),
                 Item("Q2",lastDigit2Score,if(lastDigit2Result==true) lastDigit2Winnable else 0),

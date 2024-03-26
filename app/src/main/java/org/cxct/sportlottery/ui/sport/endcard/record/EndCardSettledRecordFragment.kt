@@ -94,9 +94,9 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
                     }
                     refreshHelper.setLoadMoreEnable(recordAdapter.itemCount < it.total?:0)
                 }
-                binding.tvTotalbet.text = (it.other?.totalAmount?:0.0).toString()
+                binding.tvTotalbet.text = (it.other?.userPlayAmount?:0.0).toString()
                 binding.tvReward.text = (it.other?.win?:0.0).toString()
-                binding.tvTotalValue.text = (it.other?.valueBetAmount?:0.0).toString()
+                binding.tvTotalValue.text = (it.other?.totalAmount?:0.0).toString()
             } else {
                 ToastUtil.showToast(requireContext(), it.msg)
             }

@@ -1,10 +1,6 @@
 package org.cxct.sportlottery.ui.sport.endcard.record
 
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
@@ -13,7 +9,6 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import java.util.*
 import kotlin.math.absoluteValue
 
 class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
@@ -48,6 +43,11 @@ class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
             //未中奖  输：xxx
             4,5->{
                 ivStatus.setImageResource( R.drawable.ic_tag_lost)
+                tvWinner.setTextColor(context.getColor(R.color.color_8B96AD))
+                tvWinnableAmount.setTextColor(context.getColor(R.color.color_FFFFFF))
+            }
+            7->{
+                ivStatus.setImageResource( R.drawable.ic_tag_cancel)
                 tvWinner.setTextColor(context.getColor(R.color.color_8B96AD))
                 tvWinnableAmount.setTextColor(context.getColor(R.color.color_FFFFFF))
             }
