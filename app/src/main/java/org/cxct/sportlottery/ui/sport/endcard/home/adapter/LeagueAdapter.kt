@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
@@ -82,7 +83,7 @@ class LeagueAdapter(private val onItemClick: (LeagueOdd) -> Unit)
     override fun convert(holder: BaseViewHolder, item: LeagueOdd) {
 
         val nameText = holder.getView<TextView>(nameId)
-        nameText.text = item.league.name
+        nameText.text = if (item.league.shortName.isEmptyStr()) item.league.name else item.league.shortName
 
         val icon = holder.getView<ImageView>(iconId)
         icon.setLeagueLogo(item.league.categoryIcon)
