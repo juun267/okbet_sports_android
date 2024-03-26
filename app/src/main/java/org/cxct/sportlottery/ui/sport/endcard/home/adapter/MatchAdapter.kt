@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport.endcard.home.adapter
 
 import android.graphics.Color
-import android.graphics.Typeface
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -19,6 +18,7 @@ import org.cxct.sportlottery.databinding.ItemEndcardMatchBinding
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
@@ -65,7 +65,7 @@ private class EndCardLeagueNameProvider(
         textView.gravity = Gravity.CENTER_VERTICAL
         textView.setTextColor(Color.WHITE)
         textView.textSize = 14f
-        textView.typeface = Typeface.DEFAULT_BOLD
+        textView.typeface = AppFont.inter_bold
         textView.includeFontPadding = false
         textView.setBackgroundColor(parent.context.getColor(R.color.color_1A202E))
         textView.setPadding(4.dp, 0, 0, 0)

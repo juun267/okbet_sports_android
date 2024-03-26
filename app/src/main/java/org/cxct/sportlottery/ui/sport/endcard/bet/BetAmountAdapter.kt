@@ -24,14 +24,14 @@ class BetAmountAdapter(private val onItemClick: (EndCardBet)-> Unit): BaseQuickA
         ShapeDrawable()
             .setSolidColor(context.getColor(R.color.color_1F75FF), context.getColor(R.color.color_0D31AF))
             .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
-            .setRadius(8.dp.toFloat())
+            .setRadius(5.dp.toFloat())
             .setWidth(80.dp)
             .setHeight(36.dp)
     }
     private val defaultBg by lazy {
         ShapeDrawable()
             .setSolidColor(context.getColor(R.color.color_26354D))
-            .setRadius(8.dp.toFloat())
+            .setRadius(5.dp.toFloat())
             .setWidth(80.dp)
             .setHeight(36.dp)
     }

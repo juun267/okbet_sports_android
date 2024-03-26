@@ -10,12 +10,13 @@
     android:background="@color/color_1A202E">
     
     <View
-        android:layout_width="2dp"
+        android:layout_width="1dp"
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="243dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/color_6D7693"
         android:alpha="0.5"/>
 
@@ -101,7 +102,7 @@
         android:layout_marginTop="6dp"
         android:layout_marginEnd="19dp"
         android:gravity="center"
-        android:textSize="12sp"
+        android:textSize="11sp"
         android:textColor="@color/white"
         android:text="@string/P303"/>
 

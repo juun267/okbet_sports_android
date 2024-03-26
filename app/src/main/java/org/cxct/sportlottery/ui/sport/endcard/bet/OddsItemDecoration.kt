@@ -14,7 +14,7 @@ class OddsItemDecoration: RecyclerView.ItemDecoration() {
     private val spanCount = 4
     private val horSpacing = 5.dp
     private val verSpacing = 4.dp
-    private val mDivider = ColorDrawable(Color.parseColor("#1A202E"))
+    private val mDivider = ColorDrawable(Color.BLACK)
     private val lineHeight = 2.dp
     private val divideHeight = 22.dp
 
