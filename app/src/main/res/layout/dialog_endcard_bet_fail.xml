@@ -23,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginHorizontal="@dimen/margin_12"
             android:text="@string/F042"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize18sp"

@@ -62,16 +62,16 @@
                 android:id="@+id/ivHomeLogo"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
-                android:padding="9dp"
-                android:src="@drawable/ic_team_default_no_stroke"
+                android:padding="8dp"
+                android:src="@drawable/ic_team_default_1"
                 android:background="@drawable/bg_circle_stroke_team_log_dark"/>
             <ImageView
                 android:id="@+id/ivAwayLogo"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
-                android:padding="9dp"
+                android:padding="8dp"
                 android:layout_marginLeft="-4dp"
-                android:src="@drawable/ic_team_default_no_stroke"
+                android:src="@drawable/ic_team_default_1"
                 android:background="@drawable/bg_circle_stroke_team_log_dark"/>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -139,14 +139,13 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/color_FFFFFF"
-                    android:textFontWeight="500"
                     android:textSize="@dimen/textSize14sp"
                     android:text="50.000" />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_0.5"
-                android:background="@color/color_1A202E"/>
+                android:background="@color/color_0C121E"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -170,7 +169,6 @@
                     android:lines="1"
                     android:ellipsize="end"
                     android:fontFamily="@font/inter_bold"
-                    android:textFontWeight="500"
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize14sp"
                     android:text="9,999,999.000" />

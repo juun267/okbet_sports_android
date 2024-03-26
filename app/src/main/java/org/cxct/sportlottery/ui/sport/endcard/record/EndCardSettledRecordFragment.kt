@@ -9,6 +9,7 @@ import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
 import org.cxct.sportlottery.util.RefreshHelper
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.BetEmptyView
@@ -94,9 +95,9 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
                     }
                     refreshHelper.setLoadMoreEnable(recordAdapter.itemCount < it.total?:0)
                 }
-                binding.tvTotalbet.text = (it.other?.userPlayAmount?:0.0).toString()
-                binding.tvReward.text = (it.other?.win?:0.0).toString()
-                binding.tvTotalValue.text = (it.other?.totalAmount?:0.0).toString()
+                binding.tvTotalValue.text = "${TextUtil.formatMoney(it.other?.totalAmount?:0.0,2)}"
+                binding.tvTotalbet.text = (it.other?.userPlayAmount?.toInt()?:0).toString()
+                binding.tvReward.text = "${TextUtil.formatMoney(it.other?.win?:0.0,2)}"
             } else {
                 ToastUtil.showToast(requireContext(), it.msg)
             }
@@ -109,9 +110,9 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
         }
     }
     private fun resetListData(){
-        binding.tvTotalbet.text = "0.0"
-        binding.tvReward.text = "0.0"
-        binding.tvTotalValue.text = "0.0"
+        binding.tvTotalValue.text = "0.00"
+        binding.tvTotalbet.text = "0"
+        binding.tvReward.text = "0.00"
     }
     fun reload(){
         if (isAdded) {

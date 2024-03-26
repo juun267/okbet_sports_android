@@ -15,7 +15,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/color_202839">
+            android:background="@color/color_21283A">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_12"
+            android:lineHeight="@dimen/margin_18"
             android:textColor="@color/color_BEC7DC"
             android:textSize="@dimen/textSize12sp"
             android:text="@string/P306"/>

@@ -9,21 +9,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
-import kotlinx.android.synthetic.main.view_global_loading.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.databinding.FragmentEndcardRecordDetailBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.setColors
-import timber.log.Timber
-import java.util.*
-import kotlin.math.absoluteValue
 
 class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecordDetailBinding>() {
 
@@ -85,7 +79,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
         tvOrderNumber.text = row.orderNo
 
         tvSettleTime.apply {
-            text = "${getString(R.string.N664)} ${TimeUtil.timeFormat(row.settleTime,TimeUtil.DMY_HM_FORMAT)}"
+            text = "${getString(R.string.N664)}: ${TimeUtil.timeFormat(row.settleTime,TimeUtil.DMY_HM_FORMAT)}"
             isVisible = row.settleTime!=null
         }
 
@@ -117,7 +111,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
                 Item("Q1",lastDigit1Score,if(lastDigit1Result==true) lastDigit1Winnable else 0),
                 Item("Q2",lastDigit2Score,if(lastDigit2Result==true) lastDigit2Winnable else 0),
                 Item("Q3",lastDigit3Score,if(lastDigit3Result==true) lastDigit3Winnable else 0),
-                Item("T",lastDigit4Score,if(lastDigit4Result==true) lastDigit4Winnable else 0)
+                Item("Q4",lastDigit4Score,if(lastDigit4Result==true) lastDigit4Winnable else 0)
             ))
         }
     }

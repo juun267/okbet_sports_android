@@ -46,7 +46,7 @@
                     android:lines="1"
                     android:text="@string/P316"
                     android:textColor="@color/color_BEC7DC"
-                    android:textSize="@dimen/textSize14sp" />
+                    android:textSize="@dimen/textSize12sp" />
 
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_BEC7DC"
                     android:text="@string/P317"/>
                 <androidx.legacy.widget.Space
@@ -143,7 +143,7 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_BEC7DC"
                     android:text="@string/I039"/>
                 <TextView
@@ -172,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_BEC7DC"
                     android:text="Bet"/>
                 <TextView
@@ -201,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_BEC7DC"
                     android:text="@string/LT042"/>
                 <TextView
@@ -230,7 +230,7 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_BEC7DC"
                     android:text="@string/N142"/>
                 <TextView
