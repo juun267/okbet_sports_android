@@ -136,7 +136,7 @@ private class EndCardMatchProvider(
             ivAwayLogo.circleOf(matchInfo.awayIcon, R.drawable.ic_team_default_1)
             val betNum = matchOdd.bkEndCarkOFLCount
             if (betNum > 0 && LoginRepository.isLogined()) {
-                tvNum.text = betNum.toString()
+                tvNum.text = if (betNum > 99) "99+" else betNum.toString()
                 tvView.setBackgroundResource(R.drawable.ic_viewcard_1)
                 tvNum.visible()
             } else {
