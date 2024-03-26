@@ -55,6 +55,7 @@ class CustomAlertDialog : BaseDialogFragment() {
     ): View? {
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         binding = DialogCustomAlertBinding.inflate(layoutInflater, container, false)
+        addDialogTag(activity, getMessageTag())
         return binding.root
     }
 
@@ -170,9 +171,7 @@ class CustomAlertDialog : BaseDialogFragment() {
         if (manager.isDestroyed) {
             return@runWithCatch
         }
-
         super.show(manager, tag)
-        addDialogTag(activity, getMessageTag())
     }
 
 
