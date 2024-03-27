@@ -115,7 +115,7 @@ private class EndCardMatchProvider(
         val matchOdd = item as MatchOdd
         val betNum = matchOdd.bkEndCarkOFLCount
         with((helper as BindingVH<ItemEndcardMatchBinding>).vb) {
-            tvNum.text = betNum.toString()
+            tvNum.text = if (betNum > 99) "99+" else betNum.toString()
             tvView.setBackgroundResource(R.drawable.ic_viewcard_1)
             tvNum.visible()
         }
