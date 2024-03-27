@@ -128,20 +128,6 @@ object Constants {
         }
     }
 
-    /**
-     * 英文为空
-     */
-    fun getLanguageTag1(context: Context): String {
-        return when (getSelectLanguage(context)) {
-            LanguageManager.Language.ZH -> "zh/"
-            LanguageManager.Language.VI -> "vi/"
-            LanguageManager.Language.TH -> "th/"
-            LanguageManager.Language.PHI -> "ph/"
-            else -> ""
-        }
-    }
-
-
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String {
 
@@ -249,7 +235,7 @@ object Constants {
         return base + "sports-rule/#/${language}sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
     }
     //篮球末位比分规则页面
-    fun getEndCardRuleUrl() = "${getH5BaseUrl()}newBkEnd/rules?from=android"
+    fun getEndCardRuleUrl() = "${getH5BaseUrl()}newBkEnd/rules"
 
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
