@@ -67,10 +67,9 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
         }
         tvBettingTime.text = TimeUtil.timeFormat(row.addTime, TimeUtil.DMY_HM_FORMAT)
         tvBetAmount.text = "$showCurrencySign ${TextUtil.formatMoney(row.stake,2)}"
-        val winMoney = if (row.status==2||row.status==3) row.grossWin?:0.0 else 0.0
         tvTotalWin.apply {
-            text = "$showCurrencySign ${TextUtil.formatMoney(winMoney,2)}"
-            if(winMoney > 0){
+            text = if (row.status==0||row.status==1) "-" else "$showCurrencySign ${TextUtil.formatMoney(row.grossWin?:0.0,2)}"
+            if((row.grossWin?:0.0) > 0){
                 setColors(R.color.color_00FF81)
             }else{
                 setColors(R.color.color_FFFFFF)
