@@ -55,9 +55,14 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
     fun addBetLGPCOFL(matchId: String,scoreList: List<String>,nickName: String,stake: Int){
        callApi({SportRepository.addBetLGPCOFL(matchId, scoreList,nickName,stake)}){
            if (it.succeeded()){
-               addBetResult.postValue(it.getData())
-               getMoneyAndTransferOut(true)
-               viewModelScope.launch { betNum.emit(Pair(matchId, scoreList.size)) }
+               val betResult= it.getData()?.singleBets?.firstOrNull()
+               if (betResult?.status==7){
+                   addFaildResult.postValue(betResult?.reason?:"")
+               }else{
+                   addBetResult.postValue(it.getData())
+                   getMoneyAndTransferOut(true)
+                   viewModelScope.launch { betNum.emit(Pair(matchId, scoreList.size)) }
+               }
            }else{
                addFaildResult.postValue(it.msg)
            }
@@ -125,6 +130,5 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
             lgpcoflDetail.value = it.getData()
         }
     }
-
 
 }

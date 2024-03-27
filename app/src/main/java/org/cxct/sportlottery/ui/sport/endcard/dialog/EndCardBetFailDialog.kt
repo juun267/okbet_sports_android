@@ -6,6 +6,7 @@ import org.cxct.sportlottery.databinding.DialogEndcardBetFailBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.TextUtil
 
 class EndCardBetFailDialog: BaseDialog<BaseViewModel, DialogEndcardBetFailBinding>() {
 
@@ -23,7 +24,9 @@ class EndCardBetFailDialog: BaseDialog<BaseViewModel, DialogEndcardBetFailBindin
 
     override fun onInitView() {
         initClick()
-        binding.tvMsg.text = msg
+        if(!msg.isNullOrEmpty()){
+            binding.tvMsg.text = msg
+        }
     }
     private fun initClick()=binding.run{
         setOnClickListeners(ivClose,btnConfirm){
