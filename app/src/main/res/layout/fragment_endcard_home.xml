@@ -1,61 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        app:elevation="0dp">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            android:minHeight="0dp"
-            app:contentScrim="@color/transparent"
-            app:layout_scrollFlags="scroll|snap">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/img_endcard_top">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_28"
-                    android:layout_marginTop="22dp"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/textSize18sp"
-                    android:textColor="@color/color_FFFFFF"
-                    android:text="@string/P293"/>
-                <TextView
-                    android:id="@+id/tvRule"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/margin_28"
-                    android:minWidth="74dp"
-                    android:paddingHorizontal="@dimen/margin_10"
-                    android:gravity="center"
-                    android:foreground="@drawable/fg_ripple"
-                    android:background="@drawable/bg_darkblue_radius_14"
-                    android:layout_marginLeft="@dimen/margin_28"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textColor="@color/color_FFFFFF"
-                    android:text="@string/P323"/>
-            </LinearLayout>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/img_endcard_top">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_28"
+                android:layout_marginTop="22dp"
+                android:textStyle="bold"
+                android:textSize="@dimen/textSize18sp"
+                android:textColor="@color/color_FFFFFF"
+                android:text="@string/P293"/>
+            <TextView
+                android:id="@+id/tvRule"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_28"
+                android:minWidth="74dp"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:gravity="center"
+                android:foreground="@drawable/fg_ripple"
+                android:background="@drawable/bg_darkblue_radius_14"
+                android:layout_marginLeft="@dimen/margin_28"
+                android:layout_marginTop="@dimen/margin_8"
+                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/color_FFFFFF"
+                android:text="@string/P323"/>
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvLeague"
@@ -71,15 +53,13 @@
             android:background="@color/color_1A202E"
             android:clipToPadding="false"
             android:paddingEnd="12dp" />
-        </LinearLayout>
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvMatchList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvMatchList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="org.cxct.sportlottery.util.FixScrollingFooterBehavior"/>
+    </LinearLayout>
 
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.core.widget.NestedScrollView>
