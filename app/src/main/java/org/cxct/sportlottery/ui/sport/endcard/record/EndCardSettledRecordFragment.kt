@@ -96,7 +96,7 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
                     refreshHelper.setLoadMoreEnable(recordAdapter.itemCount < it.total?:0)
                 }
                 binding.tvTotalValue.text = "${TextUtil.formatMoney(it.other?.totalAmount?:0.0,2)}"
-                binding.tvTotalbet.text = (it.other?.userPlayAmount?.toInt()?:0).toString()
+                binding.tvTotalbet.text = (it.total?:0).toString()
                 binding.tvReward.text = "${TextUtil.formatMoney(it.other?.win?:0.0,2)}"
             } else {
                 ToastUtil.showToast(requireContext(), it.msg)
