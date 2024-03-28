@@ -23,6 +23,8 @@ data class League(
     val categoryCode: String,
     @Json(name = "categoryIcon")
     val categoryIcon: String,
+    @Json(name = "icon")
+    val icon: String?,
 ):Parcelable{
     var firstCap: String?=null
     var isSelected: Boolean=true
