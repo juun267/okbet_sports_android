@@ -13,5 +13,9 @@ data class Other (
     @Json(name = "valueBetAmount")
     val valueBetAmount:Double?,
     @Json(name = "userPlayAmount")
-    val userPlayAmount:Double?
+    val userPlayAmount:Double?,
+    @Json(name = "newBkEndTotalAmount")
+    val newBkEndTotalAmount:Double?,
+    @Json(name = "newBKEndNetWin")
+    val newBKEndNetWin:Double?
 )
