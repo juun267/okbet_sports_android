@@ -71,6 +71,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     private lateinit var matchInfo: MatchInfo
     override fun onBindViewStatus(view: View) = binding.run {
         matchInfo = requireArguments().getParcelable("matchInfo")!!
+        selectedEndCardBet = null
         bindMatchInfo(matchInfo)
         initObserver()
         reload()
@@ -152,8 +153,17 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
                 loadingHolder.showLoadFailed()
                 return@observe
             }
-            betAmountAdapter.setNewInstance(it.toMutableList())
-            onBetAmountChanged(it.first())
+
+            var selectItem: EndCardBet? = null
+            if (selectedEndCardBet != null) {
+                val lastId = selectedEndCardBet!!.id
+                selectItem = it.find { it.id == lastId }
+            }
+            if (selectItem == null) {
+                selectItem = it.first()
+            }
+            betAmountAdapter.setUpData(it.toMutableList(), selectItem)
+            onBetAmountChanged(selectItem)
             loadingHolder.showLoadSuccess()
         }
     }

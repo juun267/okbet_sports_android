@@ -77,8 +77,8 @@ class BetAmountAdapter(private val onItemClick: (EndCardBet)-> Unit): BaseQuickA
         }
     }
 
-    override fun setNewInstance(list: MutableList<EndCardBet>?) {
-        selectedItem = list?.firstOrNull()
-        super.setNewInstance(list)
+    fun setUpData(list: MutableList<EndCardBet>?, selectItem: EndCardBet) {
+        selectedItem = selectItem
+        setNewInstance(list)
     }
 }

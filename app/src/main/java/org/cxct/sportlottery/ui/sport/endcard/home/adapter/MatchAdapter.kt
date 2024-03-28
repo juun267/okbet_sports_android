@@ -13,6 +13,7 @@ import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
 import org.cxct.sportlottery.common.extentions.circleOf
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemEndcardMatchBinding
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
@@ -127,7 +128,8 @@ private class EndCardMatchProvider(
         val matchInfo = matchOdd.matchInfo!!
 
         with(binding) {
-            matchInfo.categoryIcon = (item.parentNode as LeagueOdd).league.categoryIcon
+            val league = (item.parentNode as LeagueOdd).league
+            matchInfo.categoryIcon = if (league.icon.isEmptyStr()) league.categoryIcon else league.icon
             tvView.setOnClickListener { showOdd(matchOdd) }
             tvHomeName.text = matchInfo.homeName
             tvAwayName.text = matchInfo.awayName
