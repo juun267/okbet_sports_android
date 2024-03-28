@@ -8,7 +8,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LogUtil
 
 /**
  * 顯示棋牌彈窗
@@ -36,24 +35,23 @@ class CaptchaDialog : BaseDialog<LoginViewModel,DialogCaptchaBinding>() {
     inner class JsBridge {
         @JavascriptInterface
         fun notify(ret: Int,ticket: String,randstr: String) {
-            LogUtil.d("ret=${ret},ticket=${ticket},randstr=${randstr}")
-            dismiss()
             if (ret !=0) {
                 return
             }
-
             post {
                 val fragment = parentFragment
                 if (fragment is VerifyCallback) {
                     fragment.onVerifySucceed(ticket,randstr, tag)
+                    dismiss()
                     return@post
                 }
-
                 val act = activity
                 if (act is VerifyCallback) {
                     act.onVerifySucceed(ticket,randstr, tag)
+                    dismiss()
                     return@post
                 }
+
             }
         }
     }
