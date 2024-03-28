@@ -684,6 +684,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> {
                 JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.thirdGameCategoryCode ?: "")
+                if (isThirdTransferOpen()) gamesViewModel.transfer(firmType)
             }
 
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
