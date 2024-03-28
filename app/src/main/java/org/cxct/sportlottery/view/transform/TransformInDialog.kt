@@ -59,7 +59,7 @@ class TransformInDialog: BaseDialog<MoneyTransferViewModel,DialogTransferMoneyBi
     }
 
 
-    private fun getUserBalance() = LoginRepository.userMoney.value ?: 0 as Double
+    private fun getUserBalance() = LoginRepository.userMoney.value ?: 0.0
 
     private fun initView()=binding.run{
 
