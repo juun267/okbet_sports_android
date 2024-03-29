@@ -42,8 +42,8 @@
 
             <ImageView
                 android:id="@+id/ivLeague"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/ivBack" />
@@ -65,7 +65,8 @@
             android:layout_width="match_parent"
             android:layout_height="124dp"
             android:layout_marginTop="8dp"
-            android:padding="12dp"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="12dp"
             tools:background="@drawable/bg_viewcard_top">
 
             <TextView
@@ -76,6 +77,7 @@
                 android:paddingVertical="3dp"
                 android:textColor="@color/white"
                 android:textSize="12sp"
+                android:fontFamily="@font/helvetica_light"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Date: 09/02/2024 08:42" />
@@ -99,8 +101,9 @@
                 android:layout_marginEnd="15dp"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:textColor="@color/white"
+                android:textColor="@color/color_BEC7DC"
                 android:textSize="14sp"
+                android:fontFamily="@font/helvetica_light"
                 app:layout_constraintEnd_toStartOf="@+id/sections"
                 app:layout_constraintStart_toEndOf="@+id/ivHomeLogo"
                 app:layout_constraintTop_toTopOf="@+id/ivHomeLogo"
@@ -124,8 +127,9 @@
                 android:layout_marginEnd="15dp"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:textColor="@color/white"
+                android:textColor="@color/color_BEC7DC"
                 android:textSize="14sp"
+                android:fontFamily="@font/helvetica_light"
                 app:layout_constraintEnd_toStartOf="@+id/sections"
                 app:layout_constraintStart_toEndOf="@+id/ivAwayLogo"
                 app:layout_constraintTop_toTopOf="@+id/ivAwayLogo"
@@ -262,13 +266,18 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/black"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvOddsList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:paddingVertical="12dp"
-            android:paddingHorizontal="8dp"/>
+            android:paddingHorizontal="8dp"
+            android:clipToPadding="false"/>
 
     </LinearLayout>
 
