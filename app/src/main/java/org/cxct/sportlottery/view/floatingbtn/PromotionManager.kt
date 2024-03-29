@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.promotion.PromotionDetailActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
+import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LogUtil
@@ -56,7 +57,8 @@ class PromotionManager {
         ThirdGameActivity::class,
         LuckyWheelActivity::class,
         PromotionListActivity::class,
-        PromotionDetailActivity::class -> false
+        PromotionDetailActivity::class,
+        EndCardActivity::class-> false
         WebActivity::class -> {
             WebActivity.currentTag.isNullOrBlank()
         }
