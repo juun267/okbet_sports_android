@@ -17,6 +17,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.setLeagueLogo
@@ -112,11 +113,11 @@ class LeagueAdapter(private val onItemClick: (LeagueOdd) -> Unit)
     private fun changeStyle(isSelected: Boolean, icon: ImageView, nameText: TextView) {
         if (isSelected) {
             nameText.setTextColor(selectedColor)
-            nameText.typeface = Typeface.DEFAULT_BOLD
+            nameText.typeface = AppFont.regular
             icon.foreground = null
         } else {
             nameText.setTextColor(unSelectedColor)
-            nameText.typeface = Typeface.DEFAULT
+            nameText.typeface = AppFont.helvetica
             icon.foreground = iconForeground
         }
     }

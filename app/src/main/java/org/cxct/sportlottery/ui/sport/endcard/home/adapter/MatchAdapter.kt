@@ -66,7 +66,7 @@ private class EndCardLeagueNameProvider(
         textView.gravity = Gravity.CENTER_VERTICAL
         textView.setTextColor(Color.WHITE)
         textView.textSize = 14f
-        textView.typeface = AppFont.inter_bold
+        textView.typeface = AppFont.helvetica
         textView.includeFontPadding = false
         textView.setBackgroundColor(parent.context.getColor(R.color.color_1A202E))
         textView.setPadding(4.dp, 0, 0, 0)
