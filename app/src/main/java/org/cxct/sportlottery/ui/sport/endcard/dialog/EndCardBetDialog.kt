@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.sport.endcard.dialog
 import android.graphics.Color
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
+import android.text.style.TypefaceSpan
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.dialog_transfer_money.*
@@ -85,9 +86,11 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             .findAndSpan(betMoney) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_6AA4FF)) }
             .findAndSpan(oddNames) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_6AA4FF)) }
             .findAndSpan(totalWin) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_6AA4FF)) }
-        val tips = "${getString(R.string.KYC055)}: "
+        val tips = "${getString(R.string.KYC055)} : "
         binding.tvPrompt.text = Spanny(tips+getString(R.string.P309))
-            .findAndSpan(tips) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_FFD600)) }
+            .findAndSpan(tips) {
+                ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_FFD600))
+            }
     }
     private fun initObservable(){
         viewModel.addBetResult.observe(this){

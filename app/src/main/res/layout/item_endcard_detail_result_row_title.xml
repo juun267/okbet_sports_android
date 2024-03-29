@@ -17,7 +17,7 @@
     <View
         android:layout_width="@dimen/margin_0.5"
         android:layout_height="match_parent"
-        android:background="@color/color_333333" />
+        android:background="@color/color_1A2334" />
 
     <TextView
         android:id="@+id/tvResult"
@@ -32,7 +32,7 @@
     <View
         android:layout_width="@dimen/margin_0.5"
         android:layout_height="match_parent"
-        android:background="@color/color_333333" />
+        android:background="@color/color_1A2334" />
 
     <TextView
         android:id="@+id/tvWinAmount"
