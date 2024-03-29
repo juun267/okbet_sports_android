@@ -6,6 +6,7 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.FragmentEndcardSettledRecordBinding
+import org.cxct.sportlottery.databinding.ViewBetEmptyDarkBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
@@ -19,7 +20,7 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
     private val oneDay = 60 * 60 * 24 * 1000
     private val refreshHelper by lazy { RefreshHelper.of(binding.rvBetRecord, this, true,true) }
     private val recordAdapter by lazy { EndCardRecordAdapter().apply {
-        setEmptyView(BetEmptyView(requireContext()).apply { center() })
+        setEmptyView(ViewBetEmptyDarkBinding.inflate(layoutInflater).root)
     } }
     private var currentPage = 1
     private var startTime:Long = TimeUtil.getTodayStartTimeStamp()

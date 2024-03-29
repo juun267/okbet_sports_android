@@ -4,6 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.FragmentEndcardUnsettledRecordBinding
+import org.cxct.sportlottery.databinding.ViewBetEmptyDarkBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
@@ -17,7 +18,7 @@ class EndCardUnsettledRecordFragment: BaseFragment<EndCardVM,FragmentEndcardUnse
 
     private val refreshHelper by lazy { RefreshHelper.of(binding.rvBetRecord, this, true,true) }
     private val recordAdapter by lazy { EndCardRecordAdapter().apply {
-         setEmptyView(BetEmptyView(requireContext()).apply { center() })
+         setEmptyView(ViewBetEmptyDarkBinding.inflate(layoutInflater).root)
     } }
     private var currentPage = 1
     override fun onInitView(view: View) {
