@@ -4,6 +4,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.ItemEndcardRecordBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.showCurrencySign
@@ -15,7 +17,11 @@ class EndCardRecordAdapter:BindingAdapter<Row, ItemEndcardRecordBinding>() {
 
     override fun onBinding(position: Int, binding: ItemEndcardRecordBinding, item: Row): Unit=binding.run {
         item.matchOdds.firstOrNull()?.let {
-            ivLeagueLogo.setLeagueLogo(it.categoryIcon)
+            if (it.leagueIcon.isEmptyStr()) {
+                ivLeagueLogo.setLeagueLogo(it.categoryIcon)
+            } else {
+                ivLeagueLogo.load(it.leagueIcon, R.drawable.ic_team_default)
+            }
             tvLeagueName.text = it.leagueName
             ivHomeLogo.setTeamLogo(it.homeIcon,R.drawable.ic_team_default_1)
             ivAwayLogo.setTeamLogo(it.awayIcon,R.drawable.ic_team_default_1)

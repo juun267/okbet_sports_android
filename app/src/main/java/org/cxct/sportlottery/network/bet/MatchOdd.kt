@@ -56,6 +56,8 @@ data class MatchOdd(
     val rtScore: String?,
     @Json(name = "categoryIcon")
     val categoryIcon: String?,
+    @Json(name = "leagueIconleagueIcon")
+    val leagueIcon: String?,
     @Json(name = "multiCode")
     val multiCode: List<EndScoreInfo>?,
     @Json(name = "cardMoney")
