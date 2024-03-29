@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import java.text.SimpleDateFormat
@@ -67,7 +68,7 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
         val lp = LinearLayout.LayoutParams(60.dp, 44.dp)
         lp.gravity = Gravity.CENTER_VERTICAL
         lp.leftMargin = 12.dp
-        lp.topMargin = 12.dp
+        lp.topMargin = 10.dp
         frameLayout.layoutParams = lp
 
         val week = AppCompatTextView(context)
@@ -92,7 +93,7 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
     }
 
     override fun convert(holder: BaseViewHolder, item: Pair<String, List<MatchOdd>>, payloads: List<Any>) {
-        changeStyle(item == currentItem, holder.itemView, holder.getView(weekId))
+        changeStyle(item == currentItem, holder.itemView, holder.getView(weekId), holder.getView(weekId))
     }
 
     override fun convert(holder: BaseViewHolder, item: Pair<String, List<MatchOdd>>) {
@@ -106,7 +107,7 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
         }
 
         date.text = time.getOrNull(1)
-        changeStyle(item == currentItem, holder.itemView, week)
+        changeStyle(item == currentItem, holder.itemView, week, date)
         holder.itemView.setOnClickListener {
             val lastPosition = getItemPosition(currentItem)
             currentItem = item
@@ -116,13 +117,19 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
         }
     }
 
-    private fun changeStyle(isSelected: Boolean, itemView: View, week: TextView) {
+    private fun changeStyle(isSelected: Boolean, itemView: View, week: TextView, date: TextView) {
         if (isSelected) {
             week.setTextColor(selectedColor)
+            week.typeface = AppFont.regular
             itemView.background = selectedDrawable
+            date.typeface = AppFont.regular
+            date.setTextColor(Color.WHITE)
         } else {
             week.setTextColor(unSelectedColor)
+            week.typeface = AppFont.helvetica
             itemView.background = null
+            date.typeface = AppFont.helvetica
+            date.setTextColor(date.resources.getColor(R.color.color_BEC7DC))
         }
     }
 }
