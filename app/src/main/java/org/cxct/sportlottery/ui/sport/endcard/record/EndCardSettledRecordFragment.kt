@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.sport.endcard.record
 
 import android.view.View
+import android.widget.RadioButton
+import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.FragmentEndcardSettledRecordBinding
@@ -8,10 +10,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
-import org.cxct.sportlottery.util.RefreshHelper
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.rumWithSlowRequest
 
@@ -57,6 +56,7 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
                     endTime = TimeUtil.getTodayEndTimeStamp()
                 }
             }
+            group.setSelectorTypeFace(AppFont.helvetica_light,AppFont.helvetica)
             resetListData()
             reload()
         }

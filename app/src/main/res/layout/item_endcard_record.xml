@@ -76,24 +76,30 @@
                 android:background="@drawable/bg_circle_stroke_team_log_dark"/>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/margin_8"
                     android:orientation="vertical">
                     <TextView
                         android:id="@+id/tvHomeName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:lines="1"
                         android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:fontFamily="@font/helvetica_light"
                         android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/color_BEC7DC"
                         android:text="New York Knicks"/>
                     <TextView
                         android:id="@+id/tvAwayName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:lines="1"
                         android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:fontFamily="@font/helvetica_light"
                         android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/color_BEC7DC"
                         android:text="Minnesota Timberwolves"/>
@@ -104,7 +110,7 @@
             android:id="@+id/rvOdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_8"
             app:spanCount="10"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:itemCount="15"
@@ -112,7 +118,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_8"
             android:paddingHorizontal="@dimen/sp_14"
             android:orientation="vertical"
             android:background="@drawable/bg_darkblue_radius_8_stroke">

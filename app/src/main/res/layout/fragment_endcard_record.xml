@@ -28,9 +28,9 @@
            android:button="@null"
            android:background="@drawable/selector_radio_blue_dark"
            android:gravity="center"
+           android:fontFamily="@font/helvetica_light"
            android:textSize="@dimen/sp_14"
            android:textColor="@color/color_date_gray_white"
-           android:textFontWeight="300"
            android:text="@string/H021"/>
          <RadioButton
              android:id="@+id/rbtnUnSettle"
@@ -40,7 +40,7 @@
              android:button="@null"
              android:background="@drawable/selector_radio_blue_dark"
              android:gravity="center"
-             android:textFontWeight="300"
+             android:fontFamily="@font/helvetica_light"
              android:textSize="@dimen/sp_14"
              android:textColor="@color/color_date_gray_white"
              android:text="@string/H009"/>

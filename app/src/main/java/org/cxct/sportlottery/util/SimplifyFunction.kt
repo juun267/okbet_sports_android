@@ -27,6 +27,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
@@ -972,5 +973,12 @@ fun AppCompatActivity.showFavoriteNotify(result: MyFavoriteNotify) {
             showFavoriteSnackbar(getString(R.string.Unpin))
         }
         return
+    }
+}
+ fun RadioGroup.setSelectorTypeFace(normal: Typeface, checked: Typeface){
+    children.forEach {
+        (it as? RadioButton)?.apply {
+            typeface = if(isChecked) checked else normal
+        }
     }
 }

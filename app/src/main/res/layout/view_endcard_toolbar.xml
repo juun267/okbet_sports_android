@@ -25,6 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/helvetica_light"
             android:textSize="@dimen/textSize12sp"
             android:textColor="@color/color_6D7693"
             android:text="PHP"/>
@@ -38,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/margin_6"
                 android:fontFamily="@font/inter_bold"
-                android:textSize="@dimen/textSize12sp"
+                android:textSize="@dimen/textSize14sp"
                 android:textColor="@color/color_FFFFFF"
                 android:text="6,983,187.15"/>
             <ImageView

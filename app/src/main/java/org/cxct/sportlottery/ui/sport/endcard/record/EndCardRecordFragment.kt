@@ -5,8 +5,10 @@ import org.cxct.sportlottery.common.extentions.canDelayClick
 import org.cxct.sportlottery.databinding.FragmentEndcardRecordBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
+import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.Param
+import org.cxct.sportlottery.util.setSelectorTypeFace
 
 class EndCardRecordFragment: BaseFragment<EndCardVM,FragmentEndcardRecordBinding>() {
 
@@ -29,6 +31,7 @@ class EndCardRecordFragment: BaseFragment<EndCardVM,FragmentEndcardRecordBinding
                      fragmentHelper.showFragment(1)
                  }
              }
+            group.setSelectorTypeFace(AppFont.helvetica_light, AppFont.helvetica)
         }
         binding.rgTab.check(binding.rbtnUnSettle.id)
     }

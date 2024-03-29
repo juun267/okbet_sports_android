@@ -92,7 +92,9 @@ class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(End
     private fun showHome() {
         fragmentHelper.showFragment(0)
         binding.tvEndCard.setTextColor(getColor(R.color.color_2B7DFF))
+        binding.tvEndCard.typeface = AppFont.helvetica_bold
         binding.tvBetRecord.setTextColor(Color.WHITE)
+        binding.tvBetRecord.typeface = AppFont.helvetica
         binding.ivEndCard.setImageResource(R.drawable.ic_endcard_tab_main_1)
         binding.ivBetRecord.setImageResource(R.drawable.ic_endcard_tab_betrecord)
     }
@@ -103,7 +105,9 @@ class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(End
             (fragmentHelper.getCurrentFragment() as EndCardRecordFragment).showPage(it)
         }
         binding.tvEndCard.setTextColor(Color.WHITE)
+        binding.tvEndCard.typeface = AppFont.helvetica
         binding.tvBetRecord.setTextColor(getColor(R.color.color_2B7DFF))
+        binding.tvBetRecord.typeface = AppFont.helvetica_bold
         binding.ivEndCard.setImageResource(R.drawable.ic_endcard_tab_main)
         binding.ivBetRecord.setImageResource(R.drawable.ic_endcard_tab_betrecord_1)
     }

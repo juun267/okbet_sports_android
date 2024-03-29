@@ -21,17 +21,20 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical|right">
+
         <RadioButton
             android:id="@+id/rbtnToday"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:checked="true"
             android:button="@null"
+            android:checked="true"
             android:gravity="center"
-            android:textSize="@dimen/sp_14"
+            android:fontFamily="@font/helvetica_normal"
             android:paddingHorizontal="@dimen/margin_12"
+            android:text="@string/home_tab_today"
             android:textColor="@color/color_6d7693_ffffff"
-            android:text="@string/home_tab_today"/>
+            android:textSize="@dimen/sp_14" />
+
         <View
             android:layout_width="1dp"
             android:layout_height="20dp"
@@ -44,6 +47,7 @@
             android:button="@null"
             android:gravity="center"
             android:textSize="@dimen/sp_14"
+            android:fontFamily="@font/helvetica_light"
             android:paddingHorizontal="@dimen/margin_12"
             android:textColor="@color/color_6d7693_ffffff"
             android:text="@string/I023"/>
@@ -59,6 +63,7 @@
             android:button="@null"
             android:gravity="center"
             android:textSize="@dimen/sp_14"
+            android:fontFamily="@font/helvetica_light"
             android:paddingHorizontal="@dimen/margin_12"
             android:textColor="@color/color_6d7693_ffffff"
             android:text="@string/P128"/>
@@ -80,6 +85,7 @@
             android:layout_height="wrap_content"
             android:lines="1"
             android:ellipsize="end"
+            android:fontFamily="@font/helvetica_light"
             android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize12sp"
             android:text="@string/H018"/>
@@ -106,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:ellipsize="end"
+                android:fontFamily="@font/helvetica_light"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize12sp"
                 android:text="@string/P321"/>
@@ -132,6 +139,7 @@
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:ellipsize="end"
+                android:fontFamily="@font/helvetica_light"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize12sp"
                 android:text="@string/H020"/>
@@ -154,7 +162,7 @@
         android:id="@+id/rvBetRecord"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_4"
+        android:paddingTop="@dimen/margin_4"
         android:orientation="vertical"
         tools:listitem="@layout/item_endcard_record"
         tools:itemCount="3"/>
