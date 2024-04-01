@@ -63,7 +63,7 @@
         android:layout_height="28dp"
         android:padding="2dp"
         app:layout_constraintStart_toEndOf="@+id/tvVS"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivHomeLogo"
         android:layout_marginStart="32dp"
         android:background="@drawable/bg_circle_stroke_team_log_dark"/>
 
@@ -106,7 +106,6 @@
         android:gravity="center"
         android:textSize="14sp"
         android:textColor="@color/white"
-        android:textStyle="bold"
         android:text="@string/P303"/>
 
     <TextView

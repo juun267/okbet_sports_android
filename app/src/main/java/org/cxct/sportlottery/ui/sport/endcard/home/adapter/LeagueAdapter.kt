@@ -68,6 +68,7 @@ class LeagueAdapter(private val onItemClick: (LeagueOdd) -> Unit)
         root.addView(icon, iconLP)
 
         val name = AppCompatTextView(cxt)
+        name.typeface = AppFont.helvetica
         name.ellipsize = TextUtils.TruncateAt.END
         name.id = nameId
         name.gravity = Gravity.CENTER
@@ -113,11 +114,9 @@ class LeagueAdapter(private val onItemClick: (LeagueOdd) -> Unit)
     private fun changeStyle(isSelected: Boolean, icon: ImageView, nameText: TextView) {
         if (isSelected) {
             nameText.setTextColor(selectedColor)
-            nameText.typeface = AppFont.regular
             icon.foreground = null
         } else {
             nameText.setTextColor(unSelectedColor)
-            nameText.typeface = AppFont.helvetica
             icon.foreground = iconForeground
         }
     }
