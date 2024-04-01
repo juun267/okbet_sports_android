@@ -42,7 +42,7 @@ class LeagueAdapter(private val onItemClick: (LeagueOdd) -> Unit)
     }
     private val iconForeground by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_4D333333))
+            .setSolidColor(context.getColor(R.color.transparent_black_40))
             .setWidth(iconWH)
             .setHeight(iconWH)
             .setRadius(iconWH.toFloat())
