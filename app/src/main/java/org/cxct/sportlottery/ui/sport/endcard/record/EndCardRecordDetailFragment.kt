@@ -42,7 +42,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
     private fun initOddList(){
         binding.rvOdd.apply {
             layoutManager = GridLayoutManager(context,10)
-            addItemDecoration(GridItemDecoration(0,4.dp, Color.TRANSPARENT,false))
+            addItemDecoration(GridItemDecoration(4.dp,4.dp, Color.TRANSPARENT,false))
             adapter = oddAdapter
         }
     }
