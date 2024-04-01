@@ -126,7 +126,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         if (StaticData.okLiveOpened()){
             itemDatas.add(okLiveGameItem)
         }
-        if (StaticData.okSportOpened()){
+        if (StaticData.bkEndCardOpened()){
             itemDatas.add(endcardMenuItem)
         }
         if (StaticData.okBingoOpened()){

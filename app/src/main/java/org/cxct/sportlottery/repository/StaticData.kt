@@ -149,6 +149,10 @@ class StaticData {
             }
             return true
         }
+        //获取EndCard是否开启
+        fun bkEndCardOpened():Boolean {
+            return sConfigData?.bkFinalScoreNewGameplaySwitch==1
+        }
 
         fun isNeedOTPBank() = 1 == sConfigData?.isNeedOTPBank
 
