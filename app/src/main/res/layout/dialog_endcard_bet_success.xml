@@ -45,7 +45,6 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:fontFamily="@font/helvetica_light"
                     android:text="@string/P316"
                     android:textColor="@color/color_BEC7DC"
                     android:textSize="@dimen/textSize12sp" />
@@ -90,7 +89,6 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:fontFamily="@font/helvetica_light"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_BEC7DC"
                     android:text="@string/P317"/>
@@ -175,7 +173,6 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:fontFamily="@font/helvetica_light"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_BEC7DC"
                     android:text="Bet"/>
@@ -205,7 +202,6 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:fontFamily="@font/helvetica_light"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_BEC7DC"
                     android:text="@string/LT042"/>
@@ -235,7 +231,6 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:fontFamily="@font/helvetica_light"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_BEC7DC"
                     android:text="@string/N142"/>

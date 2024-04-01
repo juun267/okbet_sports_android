@@ -87,7 +87,6 @@
                         android:lines="1"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
-                        android:fontFamily="@font/helvetica_light"
                         android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/color_BEC7DC"
                         android:text="New York Knicks"/>
@@ -99,7 +98,6 @@
                         android:lines="1"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
-                        android:fontFamily="@font/helvetica_light"
                         android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/color_BEC7DC"
                         android:text="Minnesota Timberwolves"/>

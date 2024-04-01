@@ -12,7 +12,5 @@ object AppFont {
 
     val regular by lazy { ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.inter_regular)!! }
 
-    val helvetica_light by lazy { ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.helvetica_light)!! }
-
     val helvetica_bold by lazy { ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.helvetica_bold)!! }
 }

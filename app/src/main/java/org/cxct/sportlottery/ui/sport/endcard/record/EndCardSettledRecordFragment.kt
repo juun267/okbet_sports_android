@@ -57,7 +57,6 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
                     endTime = TimeUtil.getTodayEndTimeStamp()
                 }
             }
-            group.setSelectorTypeFace(AppFont.helvetica_light,AppFont.helvetica)
             resetListData()
             reload()
         }

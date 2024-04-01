@@ -31,7 +31,6 @@ class EndCardRecordFragment: BaseFragment<EndCardVM,FragmentEndcardRecordBinding
                      fragmentHelper.showFragment(1)
                  }
              }
-            group.setSelectorTypeFace(AppFont.helvetica_light, AppFont.helvetica)
         }
         binding.rgTab.check(binding.rbtnUnSettle.id)
     }

@@ -47,7 +47,6 @@
             android:button="@null"
             android:gravity="center"
             android:textSize="@dimen/sp_14"
-            android:fontFamily="@font/helvetica_light"
             android:paddingHorizontal="@dimen/margin_12"
             android:textColor="@color/color_6d7693_ffffff"
             android:text="@string/I023"/>
@@ -63,7 +62,6 @@
             android:button="@null"
             android:gravity="center"
             android:textSize="@dimen/sp_14"
-            android:fontFamily="@font/helvetica_light"
             android:paddingHorizontal="@dimen/margin_12"
             android:textColor="@color/color_6d7693_ffffff"
             android:text="@string/P128"/>
@@ -85,7 +83,6 @@
             android:layout_height="wrap_content"
             android:lines="1"
             android:ellipsize="end"
-            android:fontFamily="@font/helvetica_light"
             android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize12sp"
             android:text="@string/H018"/>
@@ -112,7 +109,6 @@
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:ellipsize="end"
-                android:fontFamily="@font/helvetica_light"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize12sp"
                 android:text="@string/P321"/>
@@ -139,7 +135,6 @@
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:ellipsize="end"
-                android:fontFamily="@font/helvetica_light"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize12sp"
                 android:text="@string/H020"/>
