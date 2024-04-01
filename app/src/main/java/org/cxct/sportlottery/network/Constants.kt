@@ -430,7 +430,7 @@ object Constants {
     const val WHEEL_ACTIVITY_INFO = "/api/front/wheelActivity/info"
 
     //upload image
-    const val UPLOAD_IMG = "/api/upload/image" //上传图片
+    const val UPLOAD_IMG = "/api/upload/image#url_ignore" //上传图片,url_ignore避免域名被动态替换
     const val UPLOAD_VERIFY_PHOTO = "/api/front/user/uploadVerifyPhoto" //上傳實名制文件
 
     //簡訊碼驗證
