@@ -14,7 +14,7 @@
         android:foreground="@drawable/fg_ripple"
         android:gravity="center_vertical"
         android:layout_marginTop="@dimen/margin_1"
-        android:background="@color/color_1A202E">
+        android:background="@color/color_1B2436">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

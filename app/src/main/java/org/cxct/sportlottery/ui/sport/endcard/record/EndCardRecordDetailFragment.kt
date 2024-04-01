@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport.endcard.record
 
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Typeface
 import android.text.style.TextAppearanceSpan
 import android.view.View
@@ -41,7 +42,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
     private fun initOddList(){
         binding.rvOdd.apply {
             layoutManager = GridLayoutManager(context,10)
-            addItemDecoration(GridSpacingItemDecoration(10,4.dp,false))
+            addItemDecoration(GridItemDecoration(0,4.dp, Color.TRANSPARENT,false))
             adapter = oddAdapter
         }
     }
