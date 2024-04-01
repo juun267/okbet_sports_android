@@ -18,7 +18,6 @@ import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.ui.sport.oddsbtn.PlayCateView
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LogUtil
 
 class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : RecyclerView.ViewHolder(oddBtnList) {
 
@@ -67,10 +66,6 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : RecyclerView.Vie
             playCateName = "-"
         }
 
-
-        LogUtil.d("getPlayCateName="+betPlayCateNameMap!![odds.first]?.getPlayCateName(language))
-        LogUtil.d("replaceScore="+odds!!.second?.firstOrNull()?.replaceScore)
-        LogUtil.d("nextScore="+odds!!.second?.firstOrNull()?.nextScore)
         val betPlayCateName = betPlayCateNameMap!![odds.first]
             ?.getPlayCateName(language)
             ?.replace(": ", " ")
@@ -87,7 +82,6 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : RecyclerView.Vie
             playCateCode = playCateCode.split("_")[0]
         }
 //        Timber.e("playCateCode: $playCateCode")
-        LogUtil.d("betPlayCateName="+betPlayCateName+",replaceScore="+replaceScore)
         bindPlayCateName(oddBtnList, "${matchInfo?.gameType}", playCateName, playCateCode, odds.second!!)
         val isDeactivated = (odds.second == null || odds.second!!.all { it == null })
         if (matchType == MatchType.CS && odds?.second?.size == 1) {

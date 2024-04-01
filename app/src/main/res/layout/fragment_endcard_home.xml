@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/img_endcard_top">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_28"
+                android:layout_marginTop="22dp"
+                android:textStyle="bold"
+                android:textSize="@dimen/textSize18sp"
+                android:textColor="@color/color_FFFFFF"
+                android:text="@string/P293"/>
+            <TextView
+                android:id="@+id/tvRule"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_28"
+                android:minWidth="74dp"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:gravity="center"
+                android:foreground="@drawable/fg_ripple"
+                android:background="@drawable/bg_darkblue_radius_14"
+                android:layout_marginLeft="@dimen/margin_28"
+                android:layout_marginTop="@dimen/margin_8"
+                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/color_FFFFFF"
+                android:text="@string/P323"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvLeague"
+            android:layout_width="match_parent"
+            android:layout_height="102dp"
+            android:clipToPadding="false"
+            android:paddingLeft="12dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvDate"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/color_1A202E"
+            android:clipToPadding="false"
+            android:paddingEnd="12dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvMatchList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

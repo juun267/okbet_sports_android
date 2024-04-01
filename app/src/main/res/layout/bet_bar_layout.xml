@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:text="@string/bet_slip"
+        android:text="@string/F001"
         android:textColor="@color/color_FFFFFF_414655"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"

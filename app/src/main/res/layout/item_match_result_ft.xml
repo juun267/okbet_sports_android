@@ -150,7 +150,7 @@
                             android:layout_width="63dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="@string/game_result"
+                            android:text="@string/B003"
                             android:textColor="@color/color_6C7BA8_6C7BA8"
                             android:textSize="@dimen/textSize12sp" />
 

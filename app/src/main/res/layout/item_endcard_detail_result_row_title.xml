@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="38dp"
+    android:background="@color/color_202839">
+
+    <TextView
+        android:id="@+id/tvQuarter"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="115"
+        android:gravity="center"
+        android:text="@string/P312"
+        android:textColor="@color/color_BEC7DC"
+        android:textSize="@dimen/textSize14sp" />
+
+    <View
+        android:layout_width="@dimen/margin_0.5"
+        android:layout_height="match_parent"
+        android:background="@color/color_1A2334" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="80"
+        android:gravity="center"
+        android:text="@string/B003"
+        android:textColor="@color/color_BEC7DC"
+        android:textSize="@dimen/textSize14sp" />
+
+    <View
+        android:layout_width="@dimen/margin_0.5"
+        android:layout_height="match_parent"
+        android:background="@color/color_1A2334" />
+
+    <TextView
+        android:id="@+id/tvWinAmount"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="170"
+        android:gravity="center"
+        android:text="@string/P314"
+        android:textColor="@color/color_BEC7DC"
+        android:textSize="@dimen/textSize14sp" />
+</LinearLayout>

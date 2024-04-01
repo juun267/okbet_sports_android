@@ -4,7 +4,6 @@ import android.app.Application
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.betList.BetListViewModel
-import org.cxct.sportlottery.ui.betRecord.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.chat.ChatViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
@@ -40,6 +39,7 @@ import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.SportViewModel
+import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectViewModel
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.koin.android.ext.koin.androidContext
@@ -69,7 +69,6 @@ object AppViewModel {
         viewModel { MaintenanceViewModel(get()) }
         viewModel { OtherBetRecordViewModel(get()) }
         viewModel { AccountHistoryViewModel(get()) }
-        viewModel { TransactionStatusViewModel(get()) }
         viewModel { NewsViewModel(get()) }
         viewModel { RedEnveLopeModel(get()) }
         viewModel { MainTabViewModel(get()) }
@@ -89,6 +88,7 @@ object AppViewModel {
         viewModel { ChatViewModel(get()) }
         viewModel { SportLeftMenuViewModel(get()) }
         viewModel { RedeemViewModel(get()) }
+        viewModel { EndCardVM(get()) }
     }
 
     private val repoModule = module {

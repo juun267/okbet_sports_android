@@ -1,13 +1,16 @@
 package org.cxct.sportlottery.network.bet.add.betReceipt
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
 //不可與org.cxct.sportlottery.network.bet.add.Row共用，因matchOdds底下hkOdds有可能為null
+@Parcelize
 @JsonClass(generateAdapter = true)
 @KeepMembers
 data class BetResult(
@@ -33,7 +36,7 @@ data class BetResult(
     val reason: String? = "",
     @Json(name = "code")
     val code :String? = ""
-    ) {
+    ):Parcelable {
     var matchType: MatchType? = null
     var oddsType: OddsType? = null
 

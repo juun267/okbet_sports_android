@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.annotation.MainThread
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -19,7 +19,6 @@ import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.LayoutLoadingBinding
 import org.cxct.sportlottery.util.ToastUtil
-import timber.log.Timber
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
 

@@ -15,12 +15,16 @@ data class League(
     val id: String,
     @Json(name = "name")
     val name: String,
+    @Json(name = "shortName")
+    val shortName: String,
     @Json(name = "category")
     val category: String,
     @Json(name = "categoryCode")
     val categoryCode: String,
     @Json(name = "categoryIcon")
     val categoryIcon: String,
+    @Json(name = "icon")
+    val icon: String?,
 ):Parcelable{
     var firstCap: String?=null
     var isSelected: Boolean=true

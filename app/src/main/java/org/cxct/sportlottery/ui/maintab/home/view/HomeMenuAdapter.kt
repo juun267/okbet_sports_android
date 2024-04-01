@@ -43,6 +43,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private val okLiveGameItem = MenuTab(R.drawable.ic_home_menu_live_sel, R.drawable.ic_home_menu_live_nor, R.string.P160, LiveGamesFragment::class.java)
     private val promotionMenuItem = MenuTab(R.drawable.ic_home_menu_promotion_sel, R.drawable.ic_home_menu_promotion_nor, R.string.promo, null)
     private val sericeMenuItem = MenuTab(R.drawable.ic_home_menu_service_sel, R.drawable.ic_home_menu_service_nor, R.string.LT050_1, null)
+    private val endcardMenuItem = MenuTab(R.drawable.ic_home_menu_endcard_sel, R.drawable.ic_home_menu_endcard_nor, R.string.P333, null)
 
     private var selectItem: MenuTab? = null
     private var selectedPosition = initiallyPosition
@@ -74,7 +75,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
             val itemData = item.getOrNull(index) ?: return@run
             val itemView = binding.root.getChildAt(index)
             val itemBinding = (itemView.tag as ItemHomeMenuBinding?) ?: ItemHomeMenuBinding.bind(itemView)
-            setMaintanence(itemBinding.linMaintenance, itemData.content)
+            setMaintanence(itemBinding.linMaintenance, itemData.name)
             setSelectedStyle(itemData == selectItem, itemData, itemView, itemBinding.ivIcon)
         }
     }
@@ -93,7 +94,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
                 itemView.isEnabled = true
                 val itemBinding = (itemView.tag as ItemHomeMenuBinding?) ?: ItemHomeMenuBinding.bind(itemView)
                 itemBinding.tvName.text = context.getString(itemData.name)
-                setMaintanence(itemBinding.linMaintenance, itemData.content)
+                setMaintanence(itemBinding.linMaintenance, itemData.name)
                 setSelectedStyle(itemData == selectItem, itemData, itemView, itemBinding.ivIcon)
                 itemView.setOnClickListener { changeSelected(itemData, position, itemIndex) }
             }
@@ -102,8 +103,8 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
 
     override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab?>) { }
 
-    private fun setMaintanence(linMaintenance: View, fragmentClass: Class<out BaseFragment<*,*>>?){
-        if ((fragmentClass == SportVenueFragment::class.java || fragmentClass == ESportVenueFragment::class.java)
+    private fun setMaintanence(linMaintenance: View, @StringRes name: Int){
+        if ((name == R.string.main_tab_sport || name == R.string.esports || name == R.string.P333)
             && getSportEnterIsClose()) {
             linMaintenance.visible()
             return
@@ -115,6 +116,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private fun buildItem(): MutableList<MenuTab?> {
         val itemDatas = mutableListOf<MenuTab?>()
         itemDatas.add(hotMenuItem)
+
         if (StaticData.okSportOpened()){
             itemDatas.add(sportMenuItem)
         }
@@ -123,6 +125,9 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         }
         if (StaticData.okLiveOpened()){
             itemDatas.add(okLiveGameItem)
+        }
+        if (StaticData.bkEndCardOpened()){
+            itemDatas.add(endcardMenuItem)
         }
         if (StaticData.okBingoOpened()){
             itemDatas.add(esportMenuItem)

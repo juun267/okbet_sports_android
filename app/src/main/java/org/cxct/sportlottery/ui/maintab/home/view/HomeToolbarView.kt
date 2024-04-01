@@ -270,11 +270,12 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     fun attach(
         lifecycleOwner: LifecycleOwner,
         mainTabActivity: MainTabActivity,
+        viewModel: BaseSocketViewModel,
         moneyViewEnable: Boolean = true,
         onlyShowSeach: Boolean = false,
-    ) = attach(lifecycleOwner, { mainTabActivity.backMainHome() }, mainTabActivity.viewModel, moneyViewEnable, onlyShowSeach)
+    ) = attach(lifecycleOwner, { mainTabActivity.backMainHome() }, viewModel, moneyViewEnable, onlyShowSeach)
 
-    private fun attach(
+    fun attach(
         lifecycleOwner: LifecycleOwner,
         logoEvent: OnClickListener,
         viewModel: BaseSocketViewModel,

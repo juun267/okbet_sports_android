@@ -129,7 +129,7 @@ open class SportListViewModel(
         }
     }
 
-    private fun dealLeagueList(playCateMenuCode: String, matchType: String, leagueList: List<LeagueOdd>,filterMatchIdList: List<String>) {
+    fun dealLeagueList(playCateMenuCode: String, matchType: String, leagueList: List<LeagueOdd>,filterMatchIdList: List<String>) {
         leagueList.updateMatchType()
         leagueList.forEach { leagueOdd ->
             var iterator = leagueOdd.matchOdds.iterator()

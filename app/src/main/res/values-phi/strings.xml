@@ -178,7 +178,7 @@
     <string name="first_half_game">1st Half</string>
     <string name="second_half_game">2nd Half</string>
     <string name="full_game">Buong game</string>
-    <string name="game_result">Resulta</string>
+    <string name="B003">Resulta</string>
     <string name="game_yellow_card">Penalty card</string>
     <string name="game_corner_kick">Corner kick</string>
     <string name="soccer">Soccer</string>
@@ -446,8 +446,8 @@
     <string name="bet_info_list_win_quota">Mapapanalunan:</string>
     <string name="bet_receipt_win_quota">Halagang Mapanalo</string>
 
-    <string name="bet_info_add_bet_failed">Lost bet</string>
-    <string name="bet_info_add_bet_success">Bet Successful</string>
+    <string name="F042">Lost bet</string>
+    <string name="bet_info_add_bet_success">Tagumpay na pagtaya</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">Hindi sapat na balanse</string>
     <string name="bet_info_check_maximum_limit">I-check ang pinakamalaking taya</string>
@@ -681,7 +681,7 @@
     <string name="commission_detail_desc_22">Ang wastong halaga ay nangangailangan ng 1,500 upang ma-withdraw</string>
     <string name="commissiom_completed">Tapos na</string>
     <string name="commission_example">Halimbawa</string>
-    <string name="bet_slip">Bet slip</string>
+    <string name="F001">Bet slip</string>
     <string name="bank_list_not_bink">Hindi nakatali %1$s</string>
     <string name="bank_list_add">Magdagdag ng %1$s</string>
     <string name="bank_list_bank">Bank card</string>
@@ -1052,7 +1052,7 @@
     <string name="str_if_accept_odds_changes_des3">3. Huwag tumanggap ng mga pagbabago sa odds--kapag pinili mo ang opsyong ito: kung ang pinakabagong odds ay iba sa iyong napiling odds, hindi kami gagawa ng slip ng taya at ipaalala sa iyo ang mga pagbabago sa odds.</string>
     <string name="str_ok_i_got_it">Okay, alam ko na</string>
     <string name="str_return_last_step">Bumalik</string>
-    <string name="str_bet_other_game">Tumaya sa Iba</string>
+    <string name="P065">Taya sa iba</string>
     <string name="str_press_again_to_exit_the_program">Pindutin muli upang lumabas sa programa</string>
     <string name="str_odds_changed">Nagbago ang mga odds</string>
     <string name="str_self_exclusion">Self-exclusion</string>
@@ -1542,5 +1542,49 @@
     <string name="P287">Tingnan ang Lahat ng Market</string>
     <string name="P289">"Kinukumpirma ko na tama ang mga detalye. "</string>
     <string name="P288">Hindi mare-refund ang mga nakumpirmang transaksyon. Pakitiyak na tama ang tumatanggap na impormasyon sa bangko/e-wallet.</string>
+    <string name="P293">Ending card game</string>
+    <string name="P294">Piliin ang liga na gusto mong hanapin at ang oras ng laro</string>
+    <string name="P295">Susunod</string>
+    <string name="P296">Piliin ang larong kailangan mo at i-click para tingnan ang card</string>
+    <string name="P297">Nakaraan</string>
+    <string name="P298">Piliin ang puntos na gusto mong bilhin</string>
+    <string name="P299">Suriin ang instraksyon, i-click upang maglagay ng taya, o pumili ng iba pang mga puntos upang ilagay ang mga taya nang sama-sama.</string>
+    <string name="P300">I-click upang palitan ang mga kard sa iba pang halaga</string>
+    <string name="P301">Kumpleto</string>
+    <string name="P302">Basketball Kard Game</string>
+    <string name="P303">I-view ang mga kard</string>
+    <string name="P304">Game Card</string>
+    <string name="P305">Mga Detalye ng Kard</string>
+    <string name="P306">Itataya mo ang %s sa mga pagpipilian %s sa puntos sa itaas. Magkakabisa ang bawat pagpipilian sa puntos kapag ang unang quarter, ikalawang quarter, ikatlong quarter, at full-time na mga puntos ay nabunot. Mayroong apat na pagkakataong manalo, at ang bonus ay Maaaring ipagsama, at maaari kang makakuha ng hanggang sa %s na mga reward.</string>
+    <string name="P307">Pangalan:</string>
+    <string name="P308">Default ay nickname ng user</string>
+    <string name="P309">* Ako dito ay sumasang-ayon at nauunawaan na pagkatapos ng pag-click sa \"Kumpirmahin\" na buton, ang mga taya na inilagay sa loob ng system ay hindi na ma-refund. Ang mga panalo ay napapailalim sa mga buwis na ipinag-uutos ng gobyerno.</string>
+    <string name="P310">Add more scores</string>
+    <string name="P311">Resulta ng Laro</string>
+    <string name="P312">Quarter</string>
+    <string name="P313">Resulta</string>
+    <string name="P314">Halaga ng panalo</string>
+    <string name="P315">Kabuuang halaga ng refund</string>
+    <string name="P316">Content ng taya</string>
+    <string name="P317">Tumaya sa laban</string>
+    <string name="P318">Taya</string>
+    <string name="P319">Halaga ng taya</string>
+    <string name="P320">Numero ng taya</string>
+    <string name="I041">Pangalan ng liga</string>
+    <string name="N664">Oras ng settlement</string>
+    <string name="P321">Kabuuang Taya</string>
+    <string name="P322">Magkakabisa ang pagpipiliang ito ng puntos kapag ipinakita ang mga puntos sa 1st quarter, 2nd quarter, 3rd quarter, at full-time na puntos. Mayroong kabuuang apat na pagkakataong manalo, at ang mga bonus ay maaaring sama-sama, na may pinakamataas na reward na %s.</string>
+    <string name="P323">Panuntunan</string>
+    <string name="J945">Detalye</string>
+    <string name="H021">Settled bets</string>
+    <string name="H009">Unsettled bets</string>
+    <string name="H018">Kabuuang taya</string>
+    <string name="H020">Kabuuang panalo/talo</string>
+    <string name="J223">Aktibidad</string>
+    <string name="P324">Ituloy ang pagtaya</string>
+    <string name="P333">End Kard</string>
+    <string name="LT042">Halaga ng taya</string>
+    <string name="KYC055">Pahiwatig</string>
+    <string name="P337">Nagsimula na ang laro, walang pwedeng tumaya</string>
 </resources>
 

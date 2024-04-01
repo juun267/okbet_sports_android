@@ -19,5 +19,7 @@ data class BetListResult(
     val total: Int?,
     @Json(name = "other")
     val other: Other?
-) : BaseResult()
+) : BaseResult(){
+    var page = 0
+}
 

@@ -17,4 +17,13 @@ class ObjectHolder {
     fun put(obj: Any) {
         objectMap[obj.javaClass] = WeakReference(obj)
     }
+
+    fun <T> make(clazz: Class<T>): T {
+        var obj = objectMap[clazz]?.get()
+        if (obj == null) {
+            obj = clazz.newInstance()
+            objectMap[clazz] = WeakReference(obj)
+        }
+        return obj as T
+    }
 }

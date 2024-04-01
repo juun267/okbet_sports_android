@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.Gravity
 import android.widget.Toast
 import androidx.annotation.StringRes
+import com.luck.picture.lib.utils.ToastUtils
 import java.lang.ref.WeakReference
 
 /**
@@ -48,6 +49,10 @@ object ToastUtil {
     fun showToastInCenter(context: Context?, @StringRes resId: Int, duration: Int = Toast.LENGTH_LONG) {
         val text = context?.resources?.getString(resId)
         showToastInCenter(context, text, duration)
+    }
+
+    fun showToast(context: Context, @StringRes resId: Int) {
+        ToastUtils.showToast(context, context.getString(resId))
     }
 
 }

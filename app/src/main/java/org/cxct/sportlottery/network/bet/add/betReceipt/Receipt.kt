@@ -1,9 +1,13 @@
 package org.cxct.sportlottery.network.bet.add.betReceipt
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 @KeepMembers
 data class Receipt(
@@ -21,4 +25,4 @@ data class Receipt(
     val userPlayAmount: Double?,
     @Json(name = "betConfirmTime")
     val betConfirmTime: Long? = null
-)
+):Parcelable

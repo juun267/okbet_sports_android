@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.webkit.*
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
@@ -325,7 +324,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
     }
 
      fun initBottomNavigation() {
-        binding.parlayFloatWindow.setBetText(getString(R.string.bet_slip))
+        binding.parlayFloatWindow.setBetText(getString(R.string.F001))
         binding.parlayFloatWindow.onViewClick = {
             showBetListPage()
         }

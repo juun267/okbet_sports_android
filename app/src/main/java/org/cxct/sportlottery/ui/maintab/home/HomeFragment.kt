@@ -35,6 +35,7 @@ import org.cxct.sportlottery.ui.maintab.home.view.HomeMenuAdapter
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
+import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
 import timber.log.Timber
@@ -53,6 +54,8 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
                 startActivity(PromotionListActivity::class.java)
             } else if (item.name == R.string.LT050_1) {
                 serviceEvent(context(), childFragmentManager)
+            } else if (item.name == R.string.P333) {
+                startActivity(EndCardActivity::class.java)
             }
 
             return@HomeMenuAdapter false
@@ -98,7 +101,6 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
     }
 
     override fun onBindViewStatus(view: View) {
-        super.onBindViewStatus(view)
         initObservable()
         viewModel.getConfigData()
         viewModel.getAnnouncement()

@@ -105,7 +105,7 @@ class LeftOthersFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLeftO
         }
         menuResult.setItem(
             requireContext().getIconSelector(R.drawable.ic_left_menu_result_nor, R.drawable.ic_left_menu_result_nor),
-            R.string.game_result
+            R.string.B003
         ){
             close()
             startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))

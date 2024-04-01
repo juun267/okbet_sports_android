@@ -1,71 +1,71 @@
 package org.cxct.sportlottery.ui.base
 
 import androidx.viewbinding.ViewBinding
+import org.cxct.sportlottery.service.BackService
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 
 abstract class BaseSocketFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM, VB>() {
 
 
-    val receiver by lazy {
-        (activity as BaseSocketActivity<*,*>).receiver
-    }
+    val receiver = ServiceBroadcastReceiver
 
     protected fun subscribeSportChannelHall() {
-        (activity as BaseSocketActivity<*,*>).subscribeSportChannelHall()
+        BackService.subscribeSportChannelHall()
     }
 
     protected fun subscribeChannelHall(gameType: String?, eventId: String?) {
-        (activity as BaseSocketActivity<*,*>).subscribeChannelHall(gameType, eventId)
+        BackService.subscribeHallChannel(gameType, eventId)
     }
 
     fun subscribeChannel2HotMatch(gameType: String?, eventId: String?) {
-        (activity as BaseSocketActivity<*,*>).subscribeChannelHall(gameType, eventId)
+        BackService.subscribeHallChannel(gameType, eventId)
     }
 
     protected fun subscribeChannelEvent(eventId: String?) {
-        (activity as BaseSocketActivity<*,*>).subscribeChannelEvent(eventId)
+        BackService.subscribeEventChannel(eventId, null)
     }
 
     protected fun unSubscribeChannelHall(
         gameType: String?,
         eventId: String?
     ) {
-        (activity as BaseSocketActivity<*,*>).unSubscribeChannelHall(gameType, eventId)
+        BackService.unsubscribeHallChannel(gameType, eventId)
     }
 
     protected fun unSubscribeChannelEvent(eventId: String?) {
-        (activity as BaseSocketActivity<*,*>).unSubscribeChannelEvent(eventId)
+        BackService.unsubscribeEventChannel(eventId)
     }
 
     protected fun unsubscribeHallChannel(eventId: String?) {
-        (activity as BaseSocketActivity<*,*>).unsubscribeHallChannel(eventId)
+        BackService.unsubscribeHallChannel(eventId)
     }
 
     protected fun unSubscribeChannelHall(eventId: String?) {
-        (activity as BaseSocketActivity<*,*>).unSubscribeChannelHall(eventId)
+        BackService.unsubscribeHallChannel(eventId)
     }
 
     protected fun unSubscribeChannelHallAll() {
-        (activity as BaseSocketActivity<*,*>).unSubscribeChannelHallAll()
+        BackService.unsubscribeAllHallChannel()
     }
 
     fun unSubscribeChannel2HotMatch(){
-        (activity as BaseSocketActivity<*,*>).unSubscribeChannelHallAll()
+        BackService.unsubscribeAllHallChannel()
     }
 
     protected fun unSubscribeChannelHallSport() {
-        (activity as BaseSocketActivity<*,*>).unSubscribeChannelHallSport()
+        BackService.unsubscribeSportHallChannel()
     }
 
     protected fun unSubscribeChannelEventAll() {
-        (activity as BaseSocketActivity<*,*>).unSubscribeChannelEventAll()
+        BackService.unsubscribeAllEventChannel()
     }
 
     protected fun betListPageSubscribeEvent() {
-        (activity as BaseSocketActivity<*,*>).betListPageSubscribeEvent()
+        BackService.betListPageSubscribeEvent()
     }
 
     protected fun betListPageUnSubScribeEvent() {
-        (activity as BaseSocketActivity<*,*>).betListPageUnSubScribeEvent()
+        BackService.betListPageUnSubScribeEvent()
     }
 
 
