@@ -14,7 +14,7 @@
         android:foreground="@drawable/fg_ripple"
         android:gravity="center_vertical"
         android:layout_marginTop="@dimen/margin_1"
-        android:background="@color/color_1A202E">
+        android:background="@color/color_1B2436">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -57,19 +57,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/margin_12"
-        android:paddingVertical="@dimen/margin_12"
+        android:paddingBottom="@dimen/margin_12"
         android:orientation="vertical"
         android:layout_marginTop="@dimen/margin_8"
         android:background="@color/color_1A202E">
      <androidx.constraintlayout.widget.ConstraintLayout
          android:layout_width="match_parent"
-         android:layout_height="@dimen/margin_36">
+         android:layout_height="wrap_content">
          <TextView
              android:layout_width="0dp"
-             android:layout_height="wrap_content"
+             android:layout_height="@dimen/margin_24"
              app:layout_constraintLeft_toLeftOf="parent"
              app:layout_constraintTop_toTopOf="parent"
              app:layout_constraintBottom_toBottomOf="parent"
+             android:layout_marginTop="@dimen/margin_16"
+             android:layout_marginBottom="@dimen/margin_8"
+             android:gravity="center_vertical"
              android:lines="1"
              android:ellipsize="end"
              android:textSize="@dimen/textSize14sp"
@@ -79,16 +82,18 @@
          <ImageView
              android:id="@+id/ivStatus"
              android:layout_width="wrap_content"
-             android:layout_height="match_parent"
+             android:layout_height="0dp"
+             android:layout_marginTop="@dimen/margin_6"
              android:adjustViewBounds="true"
+             app:layout_constraintTop_toTopOf="parent"
              app:layout_constraintRight_toRightOf="parent"
+             app:layout_constraintBottom_toBottomOf="parent"
              android:src="@drawable/ic_tag_win"/>
      </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvOdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_12"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="10"
