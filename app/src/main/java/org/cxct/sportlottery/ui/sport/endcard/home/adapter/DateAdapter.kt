@@ -72,6 +72,7 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
         frameLayout.layoutParams = lp
 
         val week = AppCompatTextView(context)
+        week.typeface = AppFont.regular
         week.gravity = Gravity.CENTER_HORIZONTAL
         week.id = weekId
         week.textSize = 12f
@@ -80,6 +81,7 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
         frameLayout.addView(week, weekLP)
 
         val date = AppCompatTextView(context)
+        date.typeface = AppFont.regular
         date.gravity = Gravity.CENTER_HORIZONTAL
         date.id = dateId
         date.textSize = 14f
@@ -120,15 +122,15 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
     private fun changeStyle(isSelected: Boolean, itemView: View, week: TextView, date: TextView) {
         if (isSelected) {
             week.setTextColor(selectedColor)
-            week.typeface = AppFont.regular
+//            week.typeface = AppFont.regular
             itemView.background = selectedDrawable
-            date.typeface = AppFont.regular
+//            date.typeface = AppFont.regular
             date.setTextColor(Color.WHITE)
         } else {
             week.setTextColor(unSelectedColor)
-            week.typeface = AppFont.helvetica
+//            week.typeface = AppFont.helvetica
             itemView.background = null
-            date.typeface = AppFont.helvetica
+//            date.typeface = AppFont.helvetica
             date.setTextColor(date.resources.getColor(R.color.color_BEC7DC))
         }
     }
