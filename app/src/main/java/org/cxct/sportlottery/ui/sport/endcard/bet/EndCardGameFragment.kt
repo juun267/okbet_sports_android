@@ -10,7 +10,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.circleOf
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
-import org.cxct.sportlottery.common.extentions.showPromptDialogNoCancel
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
@@ -19,7 +18,6 @@ import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
@@ -27,7 +25,6 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.util.setLeagueLogo
-import timber.log.Timber
 
 class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBinding>() {
 
