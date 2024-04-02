@@ -30,6 +30,7 @@ class ParlayFloatingWindow @JvmOverloads constructor(
     private fun initView() {
         binding = BetBarLayout2Binding.inflate(LayoutInflater.from(context), this, true)
         setOnTouchListener(SuckEdgeTouch())
+        setOnClickListener { onViewClick.invoke() }
     }
 
     lateinit var onViewClick: () -> Unit
