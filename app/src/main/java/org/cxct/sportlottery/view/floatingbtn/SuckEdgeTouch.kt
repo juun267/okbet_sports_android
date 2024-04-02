@@ -7,7 +7,8 @@ import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 
-class SuckEdgeTouch(private val onSide: ((Boolean) -> Unit)? = null ,
+class SuckEdgeTouch(val autoSide: Boolean = true,
+                    private val onSide: ((Boolean) -> Unit)? = null ,
                     private val onMove: ((Float) -> Unit)? = null): OnTouchListener {
 
     private val CLICK_DRAG_TOLERANCE = 10f // Often, there will be a slight, unintentional, drag when the user taps the FAB, so we need to account for this.
@@ -47,21 +48,23 @@ class SuckEdgeTouch(private val onSide: ((Boolean) -> Unit)? = null ,
             val parentWidth = (view.parent as ViewGroup).width.toFloat()
             val upDX = upRawX - downRawX
             val upDY = upRawY - downRawY
-            val decelerateInterpolator = DecelerateInterpolator()
-            if (upRawX >= parentWidth / 2) {
-                //靠右吸附
-                view.animate().setInterpolator(decelerateInterpolator)
-                    .setDuration(500)
-                    .xBy(parentWidth - view.width - view.x)
-                    .start()
-                onSide?.invoke(false)
-            } else {
-                //靠左吸附
-                val oa = ObjectAnimator.ofFloat(view, "x", view.getX(), 0f)
-                oa.interpolator = decelerateInterpolator
-                oa.duration = 500
-                oa.start()
-                onSide?.invoke(true)
+            if (autoSide) {
+                val decelerateInterpolator = DecelerateInterpolator()
+                if (upRawX >= parentWidth / 2) {
+                    //靠右吸附
+                    view.animate().setInterpolator(decelerateInterpolator)
+                        .setDuration(500)
+                        .xBy(parentWidth - view.width - view.x)
+                        .start()
+                    onSide?.invoke(false)
+                } else {
+                    //靠左吸附
+                    val oa = ObjectAnimator.ofFloat(view, "x", view.getX(), 0f)
+                    oa.interpolator = decelerateInterpolator
+                    oa.duration = 500
+                    oa.start()
+                    onSide?.invoke(true)
+                }
             }
             if (Math.abs(upDX) < CLICK_DRAG_TOLERANCE && Math.abs(upDY) < CLICK_DRAG_TOLERANCE) { // A click
                 view.performClick()

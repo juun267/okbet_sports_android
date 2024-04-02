@@ -50,7 +50,7 @@ object ServiceFloatingButton {
                 }
             }
 
-            serviceBtn.setOnTouchListener(SuckEdgeTouch({ keepLeft = it },{ yPoint = it}))
+            serviceBtn.setOnTouchListener(SuckEdgeTouch(onSide = { keepLeft = it },onMove = { yPoint = it}))
             serviceBtn.setServiceClick(activity.supportFragmentManager)
 
             activity.doOnResume(interval = 0) {
