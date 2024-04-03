@@ -520,46 +520,9 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
                 if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
             setIdentifyStatus(binding.llVerified.isVisible&&it?.verified==VerifiedType.PASSED.value)
             viewModel.userDetail.value?.let { setIdentityDetail(it) }
-            when (it?.verified) {
-                VerifiedType.PASSED.value -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.kyc_passed)
-                }
-
-                VerifiedType.NOT_YET.value, VerifiedType.VERIFIED_FAILED.value -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.kyc_unverified)
-
-                }
-
-                VerifiedType.REVERIFIED_NEED.value -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.P211)
-
-                }
-
-                VerifiedType.VERIFYING.value, VerifiedType.VERIFIED_WAIT.value -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.kyc_unverifing)
-
-                }
-                VerifiedType.REVERIFYING.value -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.P196)
-
-                }
-
-                else -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.kyc_unverified)
-
-                }
+            VerifiedType.getVerifiedType(it?.verified).let {
+                binding.tvVerified.text = getString(it.nameResId)
+                binding.tvVerified.setTextColor(ContextCompat.getColor(this,it.colorResId))
             }
 
             if (it?.setted == FLAG_NICKNAME_IS_SET) {

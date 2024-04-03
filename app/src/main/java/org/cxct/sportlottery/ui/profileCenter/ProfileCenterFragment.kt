@@ -631,35 +631,15 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
     private fun bindVerifyStatus(userInfo: UserInfo?) {
         binding.tvKycStatus.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
-
-        when (userInfo?.verified) {
-            VerifiedType.PASSED.value -> {
-                setVerify(R.string.kyc_passed, R.color.color_1EB65B)
-            }
-            VerifiedType.NOT_YET.value,VerifiedType.VERIFIED_FAILED.value -> {
-                setVerify(R.string.kyc_unverified, R.color.color_C4CDE3)
-            }
-            VerifiedType.VERIFYING.value,VerifiedType.VERIFIED_WAIT.value -> {
-                setVerify(R.string.kyc_unverifing, R.color.color_FF8A00)
-
-            }
-            VerifiedType.REVERIFIED_NEED.value -> {
-                setVerify(R.string.P211, R.color.color_FF8A00)
-
-            }
-            VerifiedType.REVERIFYING.value -> {
-                setVerify(R.string.P196, R.color.color_FF8A00)
-            }
-            else -> {
-                setVerify(R.string.kyc_unverified, R.color.color_C4CDE3)
-            }
+        VerifiedType.getVerifiedType(userInfo?.verified).let{
+            setVerify(text = it.nameResId, color = ContextCompat.getColor(requireContext(),it.colorResId))
         }
     }
 
-    private fun setVerify(text: Int, colorResId: Int) {
+    private fun setVerify(text: Int, color: Int) {
         binding.tvKycStatus.setText(text)
         val bgDrawable = DrawableCreator.Builder()
-            .setSolidColor(ContextCompat.getColor(requireContext(), colorResId))
+            .setSolidColor(color)
             .setSizeHeight(18.dp.toFloat())
             .setCornersRadius(9.dp.toFloat())
             .build()

@@ -273,44 +273,10 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
         menuVerify.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
 
-        when (userInfo?.verified) {
-            VerifiedType.PASSED.value -> {
-                setVerify(enable = true, clickAble = true,
-                    text = R.string.kyc_passed,
-                    statusColor = ContextCompat.getColor(requireContext(),R.color.color_1CD219))
-
-            }
-            VerifiedType.NOT_YET.value,VerifiedType.VERIFIED_FAILED.value -> {
-                setVerify(enable = true, clickAble = true,
-                    text = R.string.kyc_unverified,
-                    statusColor = ContextCompat.getColor(requireContext(),R.color.color_FF2E00))
-            }
-            VerifiedType.VERIFYING.value,VerifiedType.VERIFIED_WAIT.value -> {
-                setVerify(enable = true,
-                    clickAble = true,
-                    text = R.string.kyc_unverifing,
-                    statusColor = resources.getColor(R.color.color_6D7693))
-
-            }
-            VerifiedType.REVERIFIED_NEED.value -> {
-                setVerify(enable = true,
-                    clickAble = true,
-                    text = R.string.P211,
-                    statusColor = resources.getColor(R.color.color_6D7693))
-
-            }
-            VerifiedType.REVERIFYING.value -> {
-                setVerify(enable = true,
-                    clickAble = true,
-                    text = R.string.P196,
-                    statusColor = resources.getColor(R.color.color_6D7693))
-            }
-            else -> {
-                setVerify(enable = true,
-                    clickAble = true,
-                    text = R.string.kyc_unverified,
-                    statusColor = resources.getColor(R.color.color_FF2E00))
-            }
+        VerifiedType.getVerifiedType(userInfo?.verified).let{
+            setVerify(enable = true, clickAble = true,
+                text = it.nameResId,
+                statusColor = ContextCompat.getColor(requireContext(),it.colorResId))
         }
     }
 
