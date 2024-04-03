@@ -145,7 +145,7 @@ class MainTabInflate(lifecycleOwner: LifecycleOwner,
     }
 
     private fun disableChatRoom() {
-        changeItem(parent.getChildAt(INDEX_CHAT) as LinearLayout, R.string.promotion, R.drawable.ic_tab_promo)
+        changeItem(parent.getChildAt(INDEX_CHAT) as LinearLayout, R.string.J748, R.drawable.ic_tab_promo)
     }
 
     private fun enableChatRoom() {

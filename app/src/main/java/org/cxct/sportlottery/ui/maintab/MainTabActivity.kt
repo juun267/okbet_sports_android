@@ -176,7 +176,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
                 false
             }
 
-            R.string.promotion -> { // 优惠活动
+            R.string.J748 -> { // 优惠活动
                 start<PromotionListActivity>()
                 false
             }
