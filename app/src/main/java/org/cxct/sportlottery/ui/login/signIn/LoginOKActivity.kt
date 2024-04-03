@@ -126,6 +126,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
     }
 
     private fun setupAccount() {
+        binding.eetAccount.excludeInputChar("#")
         binding.eetAccount.checkRegisterListener {
             viewModel.checkAccount(it).let { result ->
                 if (result.isNullOrBlank() && !binding.eetAccount.isFocused) {
@@ -139,6 +140,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
             binding.eetAccount.maxEms = 11
         }
         binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
+        binding.eetUsername.excludeInputChar("#")
         binding.eetUsername.checkRegisterListener { viewModel.checkUserName(it) }
         binding.eetVerificationCode.checkRegisterListener { viewModel.checkMsgCode(it) }
         binding.etAccount.endIconImageButton.setOnClickListener {

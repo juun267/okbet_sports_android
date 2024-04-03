@@ -252,6 +252,22 @@ fun EditText.filterSpecialCharacters() {
     filters = arrayOf(spaceFilter, specialFilter)
 }
 
+/**
+ * 输入框不支持某些特殊字符
+ */
+fun EditText.excludeInputChar(exclude: String) {
+    val filters = mutableListOf<InputFilter>()
+    filters.addAll(this.filters)
+    val charFilter = InputFilter { source, _, _, _, _, _ ->
+        if (source.contains(exclude)) {
+            ""
+        } else {
+            null
+        }
+    }
+    filters.add(charFilter)
+    setFilters(filters.toTypedArray())
+}
 
 fun EditText.onConfirm(block: (String) -> Unit) {
     imeOptions = EditorInfo.IME_ACTION_DONE or EditorInfo.IME_ACTION_GO
