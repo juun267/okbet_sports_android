@@ -7,15 +7,19 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.view.isGone
+import androidx.lifecycle.LifecycleOwner
 import com.opensource.svgaplayer.SVGAImageView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.SvgUtil.setAssetSvgIcon
 import org.cxct.sportlottery.util.getMarketSwitch
+import org.cxct.sportlottery.util.isOpenChatRoom
 
-class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boolean) {
+class MainTabInflate(lifecycleOwner: LifecycleOwner,
+                     private val parent: LinearLayout, val onClick: (Int) -> Boolean) {
 
     private var currentItem: LinearLayout? = null
     private val iconId = View.generateViewId()
@@ -24,8 +28,12 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
     private val unSelColor = parent.context.getColor(R.color.color_6C7BA8)
     private val INDEX_SPORT = 1
     private val INDEX_GAMES = 2
+    private val INDEX_CHAT = 3
+    private var chatRoomEnable = true
 
     init {
+
+        chatRoomEnable = isOpenChatRoom()
         val lp = LinearLayout.LayoutParams(0, -1, 1f)
         val lpIcon = 32.dp.let { LinearLayout.LayoutParams(it, it) }
         addItem(lp, lpIcon, "svga/home_tab_menu.svga", R.drawable.ic_tab_menu_nor, R.string.menu)
@@ -33,6 +41,21 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
         addItem(lp, lpIcon, "svga/home_tab_game.svga", R.drawable.ic_tab_game_nor, R.string.news_tab_game).isGone = getMarketSwitch()
         addItem(lp, lpIcon, "svga/home_tab_chat.svga", R.drawable.ic_tab_chat_nor, R.string.N984)
         addItem(lp, lpIcon,"svga/home_tab_mine.svga", R.drawable.ic_tab_user_nor, R.string.main_tab_mine)
+
+        if (!chatRoomEnable) {
+            disableChatRoom()
+        }
+        ConfigRepository.onNewConfig(lifecycleOwner) {
+            if (chatRoomEnable == isOpenChatRoom()) {
+                return@onNewConfig
+            }
+
+            if (chatRoomEnable) {
+                enableChatRoom()
+            } else {
+                disableChatRoom()
+            }
+        }
     }
 
     private fun addItem(lpItem: LinearLayout.LayoutParams,
@@ -42,6 +65,7 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
                         @StringRes name: Int): LinearLayout {
 
         val item = LinearLayout(parent.context)
+
         item.orientation= LinearLayout.VERTICAL
         item.gravity = Gravity.CENTER
 
@@ -120,6 +144,22 @@ class MainTabInflate(private val parent: LinearLayout, val onClick: (Int) -> Boo
         changeSelected(parent.childCount - 1)
     }
 
+    private fun disableChatRoom() {
+        changeItem(parent.getChildAt(INDEX_CHAT) as LinearLayout, R.string.promotion, R.drawable.ic_tab_promo)
+    }
 
+    private fun enableChatRoom() {
+        changeItem(parent.getChildAt(INDEX_CHAT) as LinearLayout, R.string.N984, R.drawable.ic_tab_chat_nor)
+    }
+
+    private fun changeItem(item: LinearLayout, @StringRes name: Int, @DrawableRes icon: Int) {
+        item.findViewById<SVGAImageView>(iconId).setImageResource(icon)
+        item.findViewById<TextView>(nameId).setText(name)
+        item.setOnClickListener {
+            if (currentItem != item && onClick.invoke(name)) {
+                setSelected(item)
+            }
+        }
+    }
 
 }
