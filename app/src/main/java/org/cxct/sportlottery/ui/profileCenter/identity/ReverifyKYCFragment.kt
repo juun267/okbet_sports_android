@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.loading.Gloading
@@ -14,7 +15,6 @@ import org.cxct.sportlottery.databinding.FragmentReverifyRdentityKycBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.io.File
@@ -85,7 +85,7 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
         uploadReview.observe(viewLifecycleOwner) {
             hideLoading()
             if (it.succeeded()) {
-                viewModel.userInfo?.value?.verified = ProfileActivity.VerifiedType.REVERIFYING.value
+                viewModel.userInfo?.value?.verified = VerifiedType.REVERIFYING.value
                 findNavController().navigate(R.id.action_reverifyKYCFragment_to_verifyStatusFragment)
             } else {
                 ToastUtil.showToast(context, it.msg)

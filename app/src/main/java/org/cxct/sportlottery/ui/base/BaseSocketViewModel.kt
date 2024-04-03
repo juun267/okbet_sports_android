@@ -32,7 +32,6 @@ import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.ui.betList.BetInfoListData
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
@@ -939,11 +938,11 @@ abstract class BaseSocketViewModel(
     }
 
     fun checkWithdrawKYCVerify(){
-        _isWithdrawShowVerifyDialog.postValue(Event(UserInfoRepository.userInfo.value?.verified != ProfileActivity.VerifiedType.PASSED.value && isKYCVerifyWithdrawOpen()))
+        _isWithdrawShowVerifyDialog.postValue(Event(UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value && isKYCVerifyWithdrawOpen()))
     }
 
     fun checkRechargeKYCVerify(){
-        _isRechargeShowVerifyDialog.postValue(Event(UserInfoRepository.userInfo.value?.verified != ProfileActivity.VerifiedType.PASSED.value && isKYCVerifyRechargeOpen()))
+        _isRechargeShowVerifyDialog.postValue(Event(UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value && isKYCVerifyRechargeOpen()))
     }
 
     /**

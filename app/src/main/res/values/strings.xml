@@ -1743,4 +1743,6 @@
     <string name="LT042">Stake</string>
     <string name="KYC055">Tips</string>
     <string name="P337">The game has started, no bets can be made</string>
+    <string name="P331">We regret to inform you that your KYC submission has been rejected. Please resubmit valid documents to complete the process. Thank you.</string>
+    <string name="P332">Reason</string>
 </resources>

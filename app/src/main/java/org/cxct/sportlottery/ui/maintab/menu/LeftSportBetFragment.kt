@@ -8,10 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.SelectMatchEvent
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentLeftSportBetBinding
@@ -28,7 +27,6 @@ import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerInPlayAdapter
 import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerLeftMatchesAdapter
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -170,32 +168,32 @@ class LeftSportBetFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLef
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
 
         when (userInfo?.verified) {
-            ProfileActivity.VerifiedType.PASSED.value -> {
+            VerifiedType.PASSED.value -> {
                 setVerify(enable = true, clickAble = true,
                     text = R.string.kyc_passed,
                     statusColor = ContextCompat.getColor(requireContext(),R.color.color_1CD219))
 
             }
-            ProfileActivity.VerifiedType.NOT_YET.value, ProfileActivity.VerifiedType.VERIFIED_FAILED.value -> {
+            VerifiedType.NOT_YET.value, VerifiedType.VERIFIED_FAILED.value -> {
                 setVerify(enable = true, clickAble = true,
                     text = R.string.kyc_unverified,
                     statusColor = ContextCompat.getColor(requireContext(),R.color.color_FF2E00))
             }
-            ProfileActivity.VerifiedType.VERIFYING.value, ProfileActivity.VerifiedType.VERIFIED_WAIT.value -> {
+            VerifiedType.VERIFYING.value, VerifiedType.VERIFIED_WAIT.value -> {
                 setVerify(enable = true,
                     clickAble = true,
                     text = R.string.kyc_unverifing,
                     statusColor = resources.getColor(R.color.color_6D7693))
 
             }
-            ProfileActivity.VerifiedType.REVERIFIED_NEED.value -> {
+            VerifiedType.REVERIFIED_NEED.value -> {
                 setVerify(enable = true,
                     clickAble = true,
                     text = R.string.P211,
                     statusColor = resources.getColor(R.color.color_6D7693))
 
             }
-            ProfileActivity.VerifiedType.REVERIFYING.value -> {
+            VerifiedType.REVERIFYING.value -> {
                 setVerify(enable = true,
                     clickAble = true,
                     text = R.string.P196,
