@@ -59,7 +59,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
             tvLeagueName.text = it.leagueName
             tvHomeName.text = it.homeName
             tvAwayName.text = it.awayName
-            tvBet.text = "$showCurrencySign ${TextUtil.formatMoney(it.cardMoney,2)}"
+            tvBet.text = "$showCurrencySign ${TextUtil.formatMoney(it.cardMoney?:0,2)}"
             val winMoney= "$showCurrencySign ${TextUtil.formatMoney(it.maximumWinnable?:0,2)}"
             val notice = String.format(getString(R.string.P322),winMoney)
             tvTips.text = Spanny(notice).findAndSpan(winMoney) {

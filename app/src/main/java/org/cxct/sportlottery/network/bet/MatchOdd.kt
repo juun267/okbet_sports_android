@@ -61,7 +61,7 @@ data class MatchOdd(
     @Json(name = "multiCode")
     val multiCode: List<EndScoreInfo>?,
     @Json(name = "cardMoney")
-    val cardMoney: Int,
+    val cardMoney: Int?,
     @Json(name = "homeIcon")
     val homeIcon: String?,
     @Json(name = "awayIcon")
