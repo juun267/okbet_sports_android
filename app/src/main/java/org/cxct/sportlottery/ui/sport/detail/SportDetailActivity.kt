@@ -889,10 +889,16 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             val oddsDataList = oddsAdapter.oddsDetailDataList
             val closeEvent = event?.getContentIfNotHandled() ?: return@observe
             if (matchInfo?.gameType != closeEvent.gameType) return@observe
-            val index = oddsDataList.indexOf(oddsDataList.find { it.gameType == closeEvent.playCateCode }
+            //java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+            if (oddsDataList.size==0){
+                return@observe
+            }
+            runWithCatch {
+                val index = oddsDataList.indexOf(oddsDataList.find { it.gameType == closeEvent.playCateCode }
                     ?.apply { oddArrayList.forEach { it?.status = BetStatus.DEACTIVATED.code } })
-            if (index < 0) return@observe
-            oddsAdapter.notifyItemChanged(index)
+                if (index < 0) return@observe
+                oddsAdapter.notifyItemChanged(index)
+            }
         }
         receiver.refreshInForeground.observe(this){
             getData()

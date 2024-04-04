@@ -366,20 +366,22 @@ abstract class BaseNodeAdapter(nodeList: MutableList<out BaseNode>? = null)
             }
 
             val parentIndex = this.data.indexOf(parentNode)
-            val removeCount = removeChildAt(parentIndex)
+            if (parentIndex in  0 until  this.data.size){
+                val removeCount = removeChildAt(parentIndex)
 
-            it.clear()
-            it.addAll(newData)
+                it.clear()
+                it.addAll(newData)
 
-            val newFlatData = flatData(newData)
-            this.data.addAll(parentIndex + 1, newFlatData)
+                val newFlatData = flatData(newData)
+                this.data.addAll(parentIndex + 1, newFlatData)
 
-            val positionStart = parentIndex + 1 + headerLayoutCount
-            if (removeCount == newFlatData.size) {
-                notifyItemRangeChanged(positionStart, removeCount)
-            } else {
-                notifyItemRangeRemoved(positionStart, removeCount)
-                notifyItemRangeInserted(positionStart, newFlatData.size)
+                val positionStart = parentIndex + 1 + headerLayoutCount
+                if (removeCount == newFlatData.size) {
+                    notifyItemRangeChanged(positionStart, removeCount)
+                } else {
+                    notifyItemRangeRemoved(positionStart, removeCount)
+                    notifyItemRangeInserted(positionStart, newFlatData.size)
+                }
             }
 //            notifyItemRangeChanged(parentIndex + 1 + getHeaderLayoutCount(), max(removeCount, newFlatData.size))
         }

@@ -35,7 +35,9 @@ class ScrollCenterLayoutManager(context: Context?, @RecyclerView.Orientation ori
             e.printStackTrace()
         }
     }
-
+    override fun supportsPredictiveItemAnimations(): Boolean {
+        return false
+    }
     private class CenterSmoothScroller(context: Context?) : LinearSmoothScroller(context) {
         override fun calculateDtToFit(
             viewStart: Int,
