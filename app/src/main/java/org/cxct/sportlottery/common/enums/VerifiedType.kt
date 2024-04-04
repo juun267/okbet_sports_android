@@ -4,6 +4,9 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
 
+/**
+ * 0:未认证 1:已认证 2:待审核 3:验证失败 4:验证等待中 5:待提交复审资料 6:复审中 7:拒绝
+ */
 enum class VerifiedType(val value: Int,@StringRes val nameResId: Int,@ColorRes val colorResId:Int) {
     NOT_YET(0,R.string.kyc_unverified,R.color.color_A5B2D0),
     PASSED(1,R.string.kyc_passed,R.color.color_1CD219),
