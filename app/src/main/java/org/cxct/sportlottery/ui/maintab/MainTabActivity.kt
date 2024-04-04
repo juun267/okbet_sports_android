@@ -49,6 +49,7 @@ import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
@@ -123,7 +124,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             .fitsSystemWindows(false).init()
         initDrawerLayout()
         initMenu()
-        tabHelper = MainTabInflate(binding.linTab, ::onTabClick)
+        tabHelper = MainTabInflate(this, binding.linTab, ::onTabClick)
         navToPosition(INDEX_HOME)
         initBottomNavigation()
         initObserve()
@@ -172,6 +173,11 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
             R.string.N984 -> { // 聊天室
                 start<ChatActivity>()
+                false
+            }
+
+            R.string.J748 -> { // 优惠活动
+                start<PromotionListActivity>()
                 false
             }
 
