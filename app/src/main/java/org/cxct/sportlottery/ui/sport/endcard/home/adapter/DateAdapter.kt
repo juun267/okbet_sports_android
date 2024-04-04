@@ -95,7 +95,7 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
     }
 
     override fun convert(holder: BaseViewHolder, item: Pair<String, List<MatchOdd>>, payloads: List<Any>) {
-        changeStyle(item == currentItem, holder.itemView, holder.getView(weekId), holder.getView(weekId))
+        changeStyle(item == currentItem, holder.itemView, holder.getView(weekId), holder.getView(dateId))
     }
 
     override fun convert(holder: BaseViewHolder, item: Pair<String, List<MatchOdd>>) {
