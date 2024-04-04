@@ -16,7 +16,7 @@ data class League(
     @Json(name = "name")
     val name: String,
     @Json(name = "shortName")
-    val shortName: String,
+    val shortName: String?,
     @Json(name = "category")
     val category: String,
     @Json(name = "categoryCode")

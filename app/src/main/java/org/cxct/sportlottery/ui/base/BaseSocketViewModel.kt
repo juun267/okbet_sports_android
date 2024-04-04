@@ -598,9 +598,8 @@ abstract class BaseSocketViewModel(
                     RecentDataManager.addRecent(RecentRecord(0,gameType = gameType,categoryCode = it))
                 }
             }else{
-                RecentDataManager.addRecent(RecentRecord(0,gameType = normalBetList.first().matchOdd.gameType))
+                RecentDataManager.addRecent(RecentRecord(0,gameType = gameType))
             }
-
             if (!haveSingleItemFailed && !haveParlayItemFailed) {
                 BetInfoRepository.clear()
                 _betFailed.postValue(Pair(false, ""))
@@ -627,14 +626,8 @@ abstract class BaseSocketViewModel(
                     failedReason = it.code
                 }
             }
-            withContext(Dispatchers.Main) {
-                SingleToast.showSingleToastNoImage(
-                    androidContext,
-                    BetsFailedReasonUtil.getFailedReasonByCode(failedReason)
-                )
-            }
-
             result.success = false
+            result.msg = BetsFailedReasonUtil.getFailedReasonByCode(failedReason)
             _betAddResult.postValue(Event(result))
             //处理赔率更新
             _betFailed.postValue(Pair(true, failedReason))

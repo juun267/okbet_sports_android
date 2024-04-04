@@ -846,7 +846,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
                         binding.btnBet.postDelayed({
                             setBetLoadingVisibility(false)
                         }, 800)
-                        ToastUtil.showToast(requireContext(), result.msg)
+                        SingleToast.showSingleToastNoImage(
+                            requireContext(),
+                            result.msg
+                        )
                     }
                 }
             }
