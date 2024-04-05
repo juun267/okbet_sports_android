@@ -7,6 +7,8 @@ import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebStorage
 import android.webkit.WebView
+import android.widget.Toast
+import org.cxct.sportlottery.util.ToastUtil
 
 open class OkWebView  : WebView {
 
@@ -52,6 +54,19 @@ open class OkWebView  : WebView {
             cookieManager.removeSessionCookies(null);
             cookieManager.removeAllCookie();
             CookieSyncManager.getInstance().sync();
+        }
+    }
+
+    /**
+     * 捕获可能的的奔溃异常
+     * org.cxct.sportlottery.view.webView.OkWebView.<init>
+     * java.lang.reflect.InvocationTargetException
+     */
+    override fun setOverScrollMode(mode: Int) {
+        try {
+            super.setOverScrollMode(mode)
+        } catch (e: Throwable) {
+             e.printStackTrace()
         }
     }
 }
