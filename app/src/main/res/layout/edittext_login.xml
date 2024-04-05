@@ -43,8 +43,8 @@
             android:textColor="@color/color_535D76"
             android:textSize="@dimen/textSize14sp"
             android:typeface="monospace"
-            app:autoSizeMaxTextSize="13dp"
-            app:autoSizeMinTextSize="6dp"
+            app:autoSizeMaxTextSize="@dimen/textSize13sp"
+            app:autoSizeMinTextSize="@dimen/textSize6sp"
             app:autoSizeTextType="uniform"
             tools:text="@string/login_account" />
 

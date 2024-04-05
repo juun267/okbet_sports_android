@@ -129,8 +129,8 @@
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold"
                         android:typeface="monospace"
-                        app:autoSizeMaxTextSize="13dp"
-                        app:autoSizeMinTextSize="6dp"
+                        app:autoSizeMaxTextSize="@dimen/textSize13sp"
+                        app:autoSizeMinTextSize="@dimen/textSize6sp"
                         app:autoSizeTextType="uniform" />
 
                     <TextView
@@ -204,8 +204,8 @@
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold"
                         android:typeface="monospace"
-                        app:autoSizeMaxTextSize="13dp"
-                        app:autoSizeMinTextSize="6dp"
+                        app:autoSizeMaxTextSize="@dimen/textSize13sp"
+                        app:autoSizeMinTextSize="@dimen/textSize6sp"
                         app:autoSizeTextType="uniform" />
 
                     <org.cxct.sportlottery.view.statusSelector.StatusSpinnerView
@@ -239,8 +239,8 @@
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold"
                         android:typeface="monospace"
-                        app:autoSizeMaxTextSize="13dp"
-                        app:autoSizeMinTextSize="6dp"
+                        app:autoSizeMaxTextSize="@dimen/textSize13sp"
+                        app:autoSizeMinTextSize="@dimen/textSize6sp"
                         app:autoSizeTextType="uniform" />
 
 

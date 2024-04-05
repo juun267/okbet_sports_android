@@ -252,8 +252,8 @@
                         android:layout_marginStart="@dimen/margin_5"
                         android:textColor="@color/color_ECCD86"
                         android:textSize="@dimen/textSize20sp"
-                        app:autoSizeMaxTextSize="20dp"
-                        app:autoSizeMinTextSize="2dp"
+                        app:autoSizeMaxTextSize="@dimen/textSize20sp"
+                        app:autoSizeMinTextSize="@dimen/textSize12sp"
                         app:layout_constraintEnd_toStartOf="@+id/btn_refresh_money"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="87,547,000.00" />

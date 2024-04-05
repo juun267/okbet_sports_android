@@ -4,8 +4,9 @@
     <dimen name="bet_list_top_padding_height">88dp</dimen>
     <dimen name="bet_list_bar_height">40dp</dimen>
     <dimen name="bottom_nav_bar_height">55dp</dimen>
-
-    <dimen name="textSize8sp">8sp</dimen>
+<!-- 三星手机 设置autoSizeMaxTextSize必须为dp，否则会跟系统字体冲突报错-->
+    <dimen name="textSize6sp">6dp</dimen>
+    <dimen name="textSize8sp">8dp</dimen>
     <dimen name="textSize10sp">10dp</dimen>
     <dimen name="textSize11sp">11dp</dimen>
     <dimen name="textSize12sp">12dp</dimen>
