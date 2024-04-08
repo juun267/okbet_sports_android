@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference
 class FragmentHelper(
     var fragmentManager: FragmentManager,
     private val viewId: Int,
-    private val fragmentClasses: Array<Param>
+    private val fragmentClasses: Array<Param>,
 ) {
 
     private var curPos = -1
@@ -46,9 +46,10 @@ class FragmentHelper(
     private fun switchContent(from: Fragment?, to: Fragment, index: Int) {
         val transaction = fragmentManager.beginTransaction()
         val hashCode = to.hashCode()
+        val tag = to.javaClass.name;
         if (from == null) {
             addedFragment.add(hashCode)
-            transaction.replace(viewId, to).commitAllowingStateLoss()
+            transaction.replace(viewId, to, tag).commitAllowingStateLoss()
             return
         }
 
@@ -60,11 +61,11 @@ class FragmentHelper(
             } else {
                 transaction.hide(from)
             }
-            if (to.isAdded || addedFragment.contains(hashCode)) {
+            // fixed java.lang.IllegalStateException: Fragment already added:
+            if (to.isAdded || addedFragment.contains(hashCode)|| fragmentManager.findFragmentByTag(tag)!=null) {
                 transaction.show(to).commitAllowingStateLoss()
             } else {
-
-                transaction.add(viewId, to).commitAllowingStateLoss()
+                transaction.add(viewId, to,tag).commitAllowingStateLoss()
             }
             addedFragment.add(hashCode)
         }
@@ -83,7 +84,8 @@ class FragmentHelper(
     }
 }
 
-data class Param(val clazz: Class<out Fragment>,
-                         val bundle: Bundle? = null,     // fragment创建时的bundle
-                         val needRemove: Boolean = false // 当为true时切换到不可见时remove掉
+data class Param(
+    val clazz: Class<out Fragment>,
+    val bundle: Bundle? = null,     // fragment创建时的bundle
+    val needRemove: Boolean = false, // 当为true时切换到不可见时remove掉
 )

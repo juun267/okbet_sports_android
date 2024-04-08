@@ -55,13 +55,13 @@ abstract class BindingMutilAdapter<T : Any>  : BindingAdapter<T, ViewBinding>() 
         }
     }
     private fun getViewHolderByViewType(viewType: Int):OnMultiItemAdapterListener<T,ViewBinding>{
-        if (typeViewHolders.containsKey(viewType)){
-            return typeViewHolders[viewType]
+        return if (typeViewHolders.containsKey(viewType)){
+            typeViewHolders[viewType]
         }else{
             if (defaultViewHolder==null){
                 throw Exception("don't have defaultViewHolder")
             }
-            return defaultViewHolder
+            defaultViewHolder
         }
     }
 
