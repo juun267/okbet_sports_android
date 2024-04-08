@@ -135,7 +135,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
 
             }
         })
-        addItemType(ListType.DETAIL.ordinal, object :OnMultiItemAdapterListener<MatchResultData, ContentGameDetailResultRvBinding>(){
+        addItemTypes(listOf(ListType.FIRST_ITEM_ES.ordinal,ListType.DETAIL.ordinal) , object :OnMultiItemAdapterListener<MatchResultData, ContentGameDetailResultRvBinding>(){
                 override fun onBinding(
                     position: Int,
                     binding: ContentGameDetailResultRvBinding,

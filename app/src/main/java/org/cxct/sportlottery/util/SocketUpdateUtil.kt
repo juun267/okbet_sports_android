@@ -842,6 +842,7 @@ object SocketUpdateUtil {
 
             matchOdd.oddsEps?.eps?.forEach { odd ->
                 odd?.status = BetStatus.LOCKED.code
+                isNeedRefresh = true
             }
         }
 

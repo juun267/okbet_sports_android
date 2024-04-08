@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.util.getOrDefault
+import androidx.core.util.getOrElse
 import androidx.core.util.keyIterator
 import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.util.LogUtil
@@ -13,7 +15,6 @@ import java.lang.reflect.ParameterizedType
 abstract class BindingMutilAdapter<T : Any>  : BindingAdapter<T, ViewBinding>() {
 
     private val typeViewHolders = SparseArray<OnMultiItemAdapterListener<T,ViewBinding>>()
-
     init {
         initItemType()
     }
@@ -22,7 +23,7 @@ abstract class BindingMutilAdapter<T : Any>  : BindingAdapter<T, ViewBinding>() 
         return onItemType(position)
     }
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BindingVH<ViewBinding> {
-        return typeViewHolders[viewType].onCreate(context,parent,viewType)
+        return typeViewHolders[viewType].onCreate(parent)
     }
     override fun convert(helper: BindingVH<ViewBinding>, item: T) {
         onBinding(positionOf(item), helper.vb, item)
@@ -55,7 +56,7 @@ abstract class BindingMutilAdapter<T : Any>  : BindingAdapter<T, ViewBinding>() 
     }
 
 abstract class OnMultiItemAdapterListener<T, VB : ViewBinding> {
-    fun onCreate(context: Context, parent: ViewGroup, viewType: Int): BindingVH<VB>{
+    fun onCreate(parent: ViewGroup): BindingVH<VB>{
         val vbClass: Class<VB> = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VB>
         val inflate = vbClass.getDeclaredMethod(
             "inflate",
