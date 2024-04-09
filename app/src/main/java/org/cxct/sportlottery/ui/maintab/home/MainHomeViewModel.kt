@@ -23,6 +23,7 @@ import org.cxct.sportlottery.net.news.data.NewsCategory
 import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.ActivityCategory
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.net.user.data.RewardRecord
 import org.cxct.sportlottery.network.NetResult
@@ -122,6 +123,8 @@ open class MainHomeViewModel(
     val activityImageList: LiveData<List<ActivityImageList>>
         get() = _activityImageList
     private val _activityImageList = MutableLiveData<List<ActivityImageList>>()
+    val activityCategroyList = SingleLiveEvent<Pair<String?, List<ActivityCategory>?>>()
+    val activityList = SingleLiveEvent<Pair<String?, List<ActivityImageList>?>>()
 
     val activityDetail: LiveData<ActivityImageList>
         get() = _activityDetail
@@ -615,13 +618,23 @@ open class MainHomeViewModel(
             toast(it.msg)
         }
     }
-    fun getActivityImageListH5() = callApi({UserRepository.activityImageListH5()}){
+
+    fun getActivityCategoryList() = callApi({ UserRepository.activityCategoryList() }) {
+        activityCategroyList.value = Pair(it.msg, if (it.succeeded()) it.getData() else null)
+    }
+
+    fun getActivityList(activityCategoryId: Int? = null) = callApi({UserRepository.activityImageListH5(activityCategoryId)}) {
+        activityList.value = Pair(it.msg, it.getData())
+    }
+
+    fun getActivityImageListH5() = callApi({UserRepository.activityImageListH5(null)}){
         if (it.succeeded()){
             _activityImageList.postValue(it.getData()?.sortedByDescending { it.imageSort })
         }else{
             toast(it.msg)
         }
     }
+
     fun activityDetailH5(activityId:String) = callApi({UserRepository.activityDetailH5(activityId)}){
         if (it.succeeded()){
             _activityDetail.postValue(it.getData())
@@ -629,6 +642,7 @@ open class MainHomeViewModel(
             toast(it.msg)
         }
     }
+
     fun activityApply(activityId: String) = callApi({UserRepository.activityApply(activityId)}){
         if (it.succeeded()){
             _activityApply.postValue(it.getData())
@@ -636,6 +650,7 @@ open class MainHomeViewModel(
             toast(it.msg)
         }
     }
+
     fun activityRecord(activityId: String, page: Int, pageSize: Int=20) = callApi({UserRepository.activityRecord(activityId,page,pageSize)}){
         if (it.succeeded()){
             _rewardRecord.postValue(it.getData())
@@ -643,6 +658,7 @@ open class MainHomeViewModel(
             toast(it.msg)
         }
     }
+
     fun getDailyConfig(){
         callApi({org.cxct.sportlottery.net.money.MoneyRepository.rechDailyConfig()}){
             if (it.succeeded()){

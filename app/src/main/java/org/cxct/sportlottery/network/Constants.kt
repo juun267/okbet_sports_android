@@ -313,6 +313,7 @@ object Constants {
 
     const val INDEX_VERIFYORRESET = "/api/front/index/verifyOrResetInfo" // 验证或重置手机号或者邮箱
 
+    const val ACTIVITY_CATEGORY_LIST = "/api/front/index/activityCategoryList"
     const val ACTIVITY_IMAGELIST_H5 = "/api/front/index/activityImageListH5"
 
     const val ACTIVITY_DETAIL_H5 = "/api/front/agentActivity/detailH5/{activityId}"

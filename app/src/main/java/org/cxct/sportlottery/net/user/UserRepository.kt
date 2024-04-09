@@ -68,8 +68,12 @@ object UserRepository {
         return userApi.verifyOrResetInfo(params)
     }
 
-    suspend fun activityImageListH5(): ApiResult<List<ActivityImageList>> {
-        return userApi.activityImageListH5()
+    suspend fun activityCategoryList() = userApi.activityCategoryList()
+
+    suspend fun activityImageListH5(activityCategoryId: Int?): ApiResult<List<ActivityImageList>> {
+        val categoryId = mutableMapOf<String, String>()
+        activityCategoryId?.let { categoryId.put("activityCategoryId", it.toString()) }
+        return userApi.activityImageListH5(categoryId)
     }
     suspend fun activityDetailH5(activityId: String): ApiResult<ActivityImageList> {
         return userApi.activityDetailH5(activityId)
