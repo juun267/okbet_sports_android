@@ -81,7 +81,7 @@
                     android:background="@drawable/bg_blue_radius_8"
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize16sp"
-                    android:text="@string/D016"/>
+                    android:text="@string/P330"/>
             </LinearLayout>
 
         </LinearLayout>

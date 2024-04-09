@@ -1672,4 +1672,5 @@
     <string name="P337">已开赛，无法投注</string>
     <string name="P331">我们很遗憾地通知您，您的KYC提交已被拒绝。请重新提交有效的文件以完成流程。谢谢。</string>
     <string name="P332">原因</string>
+    <string name="P330">"重新提交 "</string>
 </resources>
