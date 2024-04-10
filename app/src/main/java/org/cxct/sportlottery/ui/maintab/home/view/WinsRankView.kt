@@ -130,8 +130,8 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     private fun initViews() {
-        //处理 ：java.lang.IllegalArgumentException:Tmp detached view should be removed from RecyclerView before it can be recycled:ViewHolderViewHolde
-        rvOkgameRecord.itemAnimator = null
+//        rvOkgameRecord.itemAnimator = null
+        rvOkgameRecord.setHasFixedSize(false)
         rvOkgameRecord.adapter = gameRecordAdapter
         rvOkgameRecord.addItemDecoration(RCVDecoration()
             .setDividerHeight(2f)
