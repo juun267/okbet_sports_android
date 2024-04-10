@@ -624,12 +624,12 @@ open class MainHomeViewModel(
     }
 
     fun getActivityList(activityCategoryId: Int? = null) = callApi({UserRepository.activityImageListH5(activityCategoryId)}) {
-        activityList.value = Pair(it.msg, it.getData())
+        activityList.value = Pair(it.msg, it.getData()?.sortedBy { -it.imageSort })
     }
 
     fun getActivityImageListH5() = callApi({UserRepository.activityImageListH5(null)}){
         if (it.succeeded()){
-            _activityImageList.postValue(it.getData()?.sortedByDescending { it.imageSort })
+            _activityImageList.postValue(it.getData()?.sortedBy { -it.imageSort })
         }else{
             toast(it.msg)
         }

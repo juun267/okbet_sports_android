@@ -27,6 +27,8 @@
         android:paddingHorizontal="12dp"
         android:background="@color/white"
         android:clipToPadding="false"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabBackground="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
         app:tabIndicator="@null"
