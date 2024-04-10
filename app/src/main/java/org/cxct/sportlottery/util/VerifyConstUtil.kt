@@ -63,7 +63,6 @@ object VerifyConstUtil {
         return content.length in min..max
     }
 
-
     fun verifyPwdFormat(pwd: CharSequence): Boolean {
         return !(Pattern.matches("[$NUMBER]*", pwd) || Pattern.matches("[$ENGLISH_WORD]*", pwd))
     }
@@ -144,9 +143,14 @@ object VerifyConstUtil {
 
     }
 
-    //暱稱 //中英文組合長度2–50字
+    /**
+     * 昵称
+     * 这个正则匹配两套模式
+     * 字符串以一个汉字开头，后跟零到十九个汉字、字母或数字字符。
+     * 字符串以一个字母或数字字符开头，后跟零到十九个除换行符之外的任意字符，且最后一个字符为一个单词字符（字母、数字或下划线）。
+     */
     fun verifyNickname(nickname: CharSequence): Boolean {
-        return Pattern.matches("[$CHINESE_WORD$ENGLISH_WORD]{2,6}", nickname)
+        return Pattern.matches("^(?:[\\u4E00-\\u9FFF]{1}[\\u4E00-\\u9FFFA-Za-z0-9]{0,19}|[A-Za-z0-9][\\w\\W ]{0,19}(?<=\\w))\$", nickname)
     }
 
     //qq //判断qq字數小於五

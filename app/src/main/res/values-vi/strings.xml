@@ -1616,4 +1616,5 @@
     <string name="KYC055">Mẹo</string>
     <string name="P337">Đã bắt đầu trận, không thể đặt cược</string>
     <string name="J748">Ưu đãi</string>
+    <string name="nickname_match_error">Các ký tự bạn nhập không khớp (có thể chứa khoảng cách hoặc các ký tự đặc biệt)</string>
 </resources>

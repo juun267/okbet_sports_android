@@ -1671,4 +1671,5 @@
     <string name="KYC055">提示</string>
     <string name="P337">已开赛，无法投注</string>
     <string name="J748">优惠活动</string>
+    <string name="nickname_match_error">您输入的字元不符(可能含有全形或特殊字元或空格)</string>
 </resources>

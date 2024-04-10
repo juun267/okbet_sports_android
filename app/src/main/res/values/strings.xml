@@ -1744,4 +1744,5 @@
     <string name="KYC055">Tips</string>
     <string name="P337">The game has started, no bets can be made</string>
     <string name="J748">Promo</string>
+    <string name="nickname_match_error">The characters you entered are inconsistent (may contain full-width or special characters or spaces)</string>
 </resources>
