@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.money.withdraw
 
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.databinding.ContentRvBankCardListBinding
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.MoneyRechCfg
@@ -42,19 +43,19 @@ class BankCardListAdapter(private val onCryptoEdit: (BankCardList) -> Unit,
             TransferType.PAYMAYA.type -> context.getString(R.string.ewallet)
             else -> context.getString(R.string.bank_card)
         }
-
+        //
         if (data.transferType == TransferType.CRYPTO) {
             if (sConfigData?.enableModifyBank == "1" && cryptoOpen) {
-                rlItemContent.setOnClickListener { onCryptoEdit(data) }
-                ivDelete.setOnClickListener { onDelete(data) }
+                rlItemContent.clickDelay { onCryptoEdit(data) }
+                ivDelete.clickDelay { onDelete(data) }
             } else {
                 rlItemContent.setOnClickListener(null)
                 ivDelete.setOnClickListener(null)
             }
         } else {
             if (sConfigData?.enableModifyBank == "1" && bankOpen) {
-                rlItemContent.setOnClickListener { onBankEdit(data) }
-                ivDelete.setOnClickListener { onDelete(data) }
+                rlItemContent.clickDelay { onBankEdit(data) }
+                ivDelete.clickDelay { onDelete(data) }
             } else {
                 rlItemContent.setOnClickListener(null)
                 ivDelete.setOnClickListener(null)

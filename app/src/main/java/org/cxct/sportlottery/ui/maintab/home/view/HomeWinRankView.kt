@@ -134,7 +134,7 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     private fun initViews() = binding.run{
         // 暂时保持原样
-//        rvOkgameRecord.itemAnimator = null
+        rvOkgameRecord.itemAnimator = null
         rvOkgameRecord.adapter = gameRecordAdapter
 //        rvOkgameRecord.addItemDecoration(RCVDecoration()
 //            .setDividerHeight(2f)
