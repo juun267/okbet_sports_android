@@ -111,7 +111,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
                 Item("Q1",lastDigit1Score,if(lastDigit1Result==true) lastDigit1Winnable else 0),
                 Item("Q2",lastDigit2Score,if(lastDigit2Result==true) lastDigit2Winnable else 0),
                 Item("Q3",lastDigit3Score,if(lastDigit3Result==true) lastDigit3Winnable else 0),
-                Item("Q4",lastDigit4Score,if(lastDigit4Result==true) lastDigit4Winnable else 0)
+                Item("FT",lastDigit4Score,if(lastDigit4Result==true) lastDigit4Winnable else 0)
             ))
         }
     }

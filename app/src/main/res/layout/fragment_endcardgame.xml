@@ -184,7 +184,7 @@
                             android:layout_width="50dp"
                             android:layout_height="25dp"
                             android:gravity="center"
-                            android:text="Q4"
+                            android:text="FT"
                             android:textColor="@color/color_FFD600"
                             android:textSize="12sp"
                             android:textStyle="bold"
