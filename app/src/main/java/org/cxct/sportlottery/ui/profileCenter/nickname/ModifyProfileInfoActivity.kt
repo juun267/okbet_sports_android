@@ -13,7 +13,6 @@ import org.cxct.sportlottery.databinding.ActivityModifyProfileInfoBinding
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
@@ -161,17 +160,11 @@ class ModifyProfileInfoActivity : BaseActivity<ModifyProfileInfoViewModel,Activi
         eetNickname.filterSpecialCharacters()
         setEditTextFocusChangeMethod(eetNickname)
         eetNickname.maxLines = 1
-        val nickNameMinLength = 2
-        val nickNameMaxLength = 6
         eetNickname.checkRegisterListener {
             val msg = when {
-                it.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
-                !VerifyConstUtil.verifyLengthRange(it, nickNameMinLength, nickNameMaxLength) -> {
-                    LocalUtils.getLocalizedContext().getString(
-                        R.string.error_member_nickname,
-                        nickNameMinLength,
-                        nickNameMaxLength
-                    )
+                it.isBlank() -> getString(R.string.error_input_empty)
+                !VerifyConstUtil.verifyNickname(it) -> {
+                    getString(R.string.nickname_match_error)
                 }
 
                 else -> null

@@ -13,6 +13,7 @@ class OkWebViewDefaultSettings {
     @SuppressLint("SetJavaScriptEnabled")
     fun setSettings(webView: WebView) {
         if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
+        webView.setInitialScale(1)
         webView.setWebViewCommonBackgroundColor()
         WebView.enableSlowWholeDocumentDraw()
         mWebSettings = webView.settings

@@ -1587,5 +1587,6 @@
     <string name="KYC055">Pahiwatig</string>
     <string name="P337">Nagsimula na ang laro, walang pwedeng tumaya</string>
     <string name="J748">Promotion</string>
+    <string name="nickname_match_error">Character na iyong ipinasok ay hindi tugma (maaaring maglaman ng buong lapad o mga espesyal na character o espasyo)</string>
 </resources>
 

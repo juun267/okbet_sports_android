@@ -14,9 +14,7 @@ class SocketLinearManager(context: Context?, @RecyclerView.Orientation orientati
         // 这里进行异常捕获了，真正引起问题的地方就无法暴露出来了
         try {
             super.onLayoutChildren(recycler, state)
-        } catch (e: IndexOutOfBoundsException) {
-            e.printStackTrace()
-        } catch (e: IllegalArgumentException) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
