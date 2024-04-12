@@ -73,11 +73,10 @@ class PromotionListActivity : BaseActivity<MainHomeViewModel, ActivityPromotionL
             }
 
             if (list.isEmpty()) {
-                loadingHolder.showEmpty()
+                setupData(listOf())
                 return@observe
             }
 
-            loadingHolder.showLoadSuccess()
             setupData(it.second!!)
         }
 
