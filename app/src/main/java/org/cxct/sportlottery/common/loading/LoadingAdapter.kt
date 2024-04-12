@@ -31,12 +31,11 @@ class LoadingAdapter(@StringRes val emptyString: Int = R.string.D024,
                 setErrorText(context.getString(errorString))
                 setLoadingRes(loadingIcon)
                 setLoadingText(context.getString(loadingString))
-                setRetryTask(holder.retryTask)
             }
 
             loadingStatusView!!.setBackgroundColor(bgColor)
         }
-
+        loadingStatusView.setRetryTask(holder.retryTask)
         loadingStatusView.setStatus(status)
         return loadingStatusView!!
     }

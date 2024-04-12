@@ -142,8 +142,12 @@ class PromotionListActivity : BaseActivity<MainHomeViewModel, ActivityPromotionL
     }
 
     private fun onTabChanged(item: ActivityCategory) {
-        loadingHolder.showLoading()
-        viewModel.getActivityList(if (item.id > 0) item.id else null)
+        adapter.setList(null)
+        loadingHolder.withRetry{
+            loadingHolder.showLoading()
+            viewModel.getActivityList(if (item.id > 0) item.id else null)
+        }
+        loadingHolder.go()
     }
 
 }
