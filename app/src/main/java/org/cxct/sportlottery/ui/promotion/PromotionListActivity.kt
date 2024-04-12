@@ -46,15 +46,21 @@ class PromotionListActivity : BaseActivity<MainHomeViewModel, ActivityPromotionL
 
     private fun initObserver() = viewModel.run {
         activityList.observe(this@PromotionListActivity) {
-            if (it.second.isNullOrEmpty()) {
+            val activityList = it.second
+            if (activityList == null) {
                 loadingHolder.showLoadFailed()
                 toast(it.first ?: getString(R.string.N655))
                 return@observe
             }
 
+            if (activityList.isEmpty()) {
+                loadingHolder.showEmpty()
+                return@observe
+            }
+
             binding.tabLayout.visible()
             binding.divider.visible()
-            adapter.setList(it.second)
+            adapter.setList(activityList)
             loadingHolder.showLoadSuccess()
         }
 
