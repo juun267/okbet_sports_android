@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
@@ -56,6 +57,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>(clazz: KClass<
         onInitView()
         onInitData()
 //        ServiceFloatingButton.targetActivity(this)
+        Log.e("For Test", "=======>>> BaseActivity ${this.javaClass.name}")
     }
     protected abstract fun onInitView()
 

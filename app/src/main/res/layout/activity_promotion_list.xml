@@ -14,11 +14,46 @@
         android:layout_height="wrap_content"
         app:topTitleText="@string/promotion"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_dbdeeb"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:paddingVertical="6dp"
+        android:paddingHorizontal="12dp"
+        android:background="@color/white"
+        android:clipToPadding="false"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabBackground="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="fill"
+        app:tabIndicator="@null"
+        app:tabIndicatorFullWidth="false"
+        app:tabMinWidth="74dp"
+        app:tabMode="scrollable"
+        app:tabPaddingStart="0dp"
+        app:tabPaddingEnd="0dp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_dbdeeb"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
    <androidx.recyclerview.widget.RecyclerView
        android:id="@+id/rvPromotion"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:layout_marginTop="@dimen/margin_5"
+       android:paddingBottom="12dp"
+       android:clipToPadding="false"
        tools:itemCount="3"
        tools:listitem="@layout/item_promotion_list"
        android:orientation="vertical"

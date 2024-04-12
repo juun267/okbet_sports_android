@@ -10,6 +10,7 @@ import org.cxct.sportlottery.net.user.data.VerifyConfig
 import org.cxct.sportlottery.net.user.data.WheelActivityInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.ACTIVITY_APPLY
+import org.cxct.sportlottery.network.Constants.ACTIVITY_CATEGORY_LIST
 import org.cxct.sportlottery.network.Constants.ACTIVITY_DETAIL_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_RECORD
@@ -41,7 +42,10 @@ interface UserApiService {
     suspend fun verifyOrResetInfo(@Body params: JsonObject): ApiResult<SendCodeRespnose>
 
     @GET(ACTIVITY_IMAGELIST_H5)
-    suspend fun activityImageListH5(): ApiResult<List<ActivityImageList>>
+    suspend fun activityImageListH5(@QueryMap categoryId: Map<String, String>): ApiResult<List<ActivityImageList>>
+
+    @GET(ACTIVITY_CATEGORY_LIST)
+    suspend fun activityCategoryList(): ApiResult<List<ActivityCategory>>
 
     @GET(ACTIVITY_DETAIL_H5)
     suspend fun activityDetailH5(@Path("activityId") activityId: String): ApiResult<ActivityImageList>
