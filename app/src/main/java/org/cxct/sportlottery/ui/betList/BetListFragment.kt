@@ -261,14 +261,14 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
         val layoutManager = ScrollCenterLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rvBetList.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
-        (binding.rvBetList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        binding.rvBetList.itemAnimator=null
         binding.rvBetList.adapter = betListRefactorAdapter
 
         //生成注单项的item
         val parlayLayoutManager =
             ScrollCenterLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rvParlayList.layoutManager = parlayLayoutManager
-        (binding.rvParlayList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        binding.rvParlayList.itemAnimator=null
         betParlayListRefactorAdapter?.setHasStableIds(true)
         binding.rvParlayList.adapter = betParlayListRefactorAdapter
 

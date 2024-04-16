@@ -225,6 +225,7 @@ abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewMod
     private fun initSportTypeList() = binding.run {
         sportTypeList.layoutManager = ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         sportTypeList.edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
+        sportTypeList.itemAnimator = null
         sportTypeList.adapter = gameTypeAdapter
     }
 
