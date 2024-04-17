@@ -361,8 +361,11 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
         }
 
         sportMenuResult.observe(viewLifecycleOwner) {
-            hideLoading()
-            updateUiWithResult(it)
+            //这里的回调数据有可能来自其他页面的请求
+            if (isAdded) {
+                hideLoading()
+                updateUiWithResult(it)
+            }
         }
 
         sportTypeMenuData.observe(viewLifecycleOwner) { updateFavoriteItem(it.first) }
