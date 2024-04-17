@@ -105,6 +105,7 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResu
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
+import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OtherBetHistoryDetailResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.uploadImg.UploadVerifyPhotoResult
 import org.cxct.sportlottery.network.user.authbind.AuthBindResult
@@ -381,7 +382,7 @@ object ErrorUtils {
                     }
                     (url.contains(QUERY_SECOND_ORDERS)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return QueryTransfersResult(it.code, it.msg, it.success, null, null) as T
+                        return OtherBetHistoryDetailResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(USER_WITHDRAW_INFO)) -> {
                         @Suppress("UNCHECKED_CAST")
