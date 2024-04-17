@@ -15,15 +15,7 @@ open class OkWebChromeClient : WebChromeClient() {
      * 处理Bitmap.getWidth()为空的崩溃问题
      */
     override fun getDefaultVideoPoster(): Bitmap? {
-        return if (super.getDefaultVideoPoster() == null) {
-            kotlin.runCatching {
-                val bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565)
-                val canvas = Canvas(bitmap)
-                canvas.drawARGB(255, 255, 255, 255)
-                bitmap}.getOrNull()
-        } else {
-            super.getDefaultVideoPoster()
-        }
+        return super.getDefaultVideoPoster() ?: kotlin.runCatching{Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888)}.getOrNull()
     }
 
 }
