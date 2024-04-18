@@ -286,41 +286,81 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
     }
 
     private fun setupPrivacy() = binding.run {
+       if (sConfigData?.registerTermsDefaultCheckedSwitch==0){
+           layoutPrivacy.root.isVisible = true
+           layoutPrivacyNew.root.isVisible = false
+           layoutPrivacy.ivPrivacy.isSelected = true
+           viewModel.agreeChecked = true
+           layoutPrivacy.ivPrivacy.setOnClickListener {
+               layoutPrivacy.ivPrivacy.isSelected = !layoutPrivacy.ivPrivacy.isSelected
+               if (layoutPrivacy.ivPrivacy.isSelected) {
+                   layoutPrivacy.ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_sel)
+               } else {
+                   layoutPrivacy.ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_nor)
+               }
+               btnGoogle.setBtnEnable(layoutPrivacy.ivPrivacy.isSelected)
+               viewModel.agreeChecked = layoutPrivacy.ivPrivacy.isSelected
+           }
 
-        cbPrivacy.isChecked = sConfigData?.registerTermsDefaultCheckedSwitch==1
-        setPrivacyState()
-        cbPrivacy.setOnCheckedChangeListener { compoundButton, b ->
-            setPrivacyState()
-        }
-        tvPrivacyLine1.makeLinks(
-            Pair(
-                applicationContext.getString(R.string.login_privacy_policy),
-                View.OnClickListener {
-                    JumpUtil.toInternalWeb(
-                        it.context,
-                        Constants.getPrivacyRuleUrl(it.context),
-                        resources.getString(R.string.login_privacy_policy)
-                    )
-                })
-        )
-        tvPrivacyLine2.makeLinks(
-            Pair(
-                applicationContext.getString(R.string.login_terms_conditions),
-                View.OnClickListener {
-                    JumpUtil.toInternalWeb(
-                        it.context,
-                        Constants.getAgreementRuleUrl(it.context),
-                        resources.getString(R.string.login_terms_conditions)
-                    )
-                })
-        )
-    }
-    private fun setPrivacyState()=binding.run{
-        btnGoogle.setBtnEnable(cbPrivacy.isChecked)
-        viewModel.agreeChecked = cbPrivacy.isChecked
+           layoutPrivacy.tvPrivacy.setVisibilityByMarketSwitch()
+           layoutPrivacy.tvPrivacy.makeLinks(
+               Pair(
+                   applicationContext.getString(R.string.login_privacy_policy),
+                   View.OnClickListener {
+                       JumpUtil.toInternalWeb(
+                           it.context,
+                           Constants.getPrivacyRuleUrl(it.context),
+                           resources.getString(R.string.login_privacy_policy)
+                       )
+                   })
+           )
+           layoutPrivacy.tvPrivacy.makeLinks(
+               Pair(
+                   applicationContext.getString(R.string.login_terms_conditions),
+                   View.OnClickListener {
+                       JumpUtil.toInternalWeb(
+                           it.context,
+                           Constants.getAgreementRuleUrl(it.context),
+                           resources.getString(R.string.login_terms_conditions)
+                       )
+                   })
+           )
+       }else{
+           layoutPrivacy.root.isVisible = false
+           layoutPrivacyNew.root.isVisible = true
+           layoutPrivacyNew.cbPrivacy.isChecked = false
+           viewModel.agreeChecked = false
+           layoutPrivacyNew.cbPrivacy.setOnCheckedChangeListener { compoundButton, b ->
+               btnGoogle.setBtnEnable(b)
+               viewModel.agreeChecked = b
+           }
+           layoutPrivacyNew.tvPrivacyLine1.makeLinks(
+               Pair(
+                   applicationContext.getString(R.string.login_privacy_policy_new),
+                   View.OnClickListener {
+                       JumpUtil.toInternalWeb(
+                           it.context,
+                           Constants.getPrivacyRuleUrl(it.context),
+                           resources.getString(R.string.login_privacy_policy_new)
+                       )
+                   })
+           )
+           layoutPrivacyNew.tvPrivacyLine2.makeLinks(
+               Pair(
+                   applicationContext.getString(R.string.login_terms_conditions_new),
+                   View.OnClickListener {
+                       JumpUtil.toInternalWeb(
+                           it.context,
+                           Constants.getAgreementRuleUrl(it.context),
+                           resources.getString(R.string.login_terms_conditions_new)
+                       )
+                   })
+           )
+       }
     }
     private fun setupServiceButton() {
-        binding.tvCustomerService.setServiceClick(supportFragmentManager)
+        binding.layoutPrivacy.tvCustomerService.setServiceClick(supportFragmentManager)
+        binding.layoutPrivacyNew.tvCustomerService.setServiceClick(supportFragmentManager)
     }
 
     private fun initObserve() {

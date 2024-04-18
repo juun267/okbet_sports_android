@@ -1156,6 +1156,8 @@
     <string name="login_privacy">By Signing up, you are confirming that you are above 21 years old, and agreed to our Privacy Policy and Terms &amp; Conditions.</string>
     <string name="login_terms_conditions">Terms &amp; Conditions</string>
     <string name="login_privacy_policy">Privacy Policy</string>
+    <string name="login_terms_conditions_new">Terms &amp; Conditions</string>
+    <string name="login_privacy_policy_new">Privacy Policy</string>
     <string name="otp_login">OTP Login</string>
     <string name="auth_login">Authorization Login</string>
     <string name="set">Set</string>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="174dp"
+    android:background="@drawable/bg_white_radius_16_stoke_blue"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_4"
+            android:fadeScrollbars="false"
+            android:paddingTop="@dimen/margin_12"
+            android:scrollbarThumbVertical="@drawable/bg_scroll_vertical_thumb"
+            android:scrollbars="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_6"
+                android:orientation="vertical"
+                android:scrollbars="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="@dimen/margin_16"
+                        android:text="1. "
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvPrivacyLine1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="@dimen/margin_16"
+                        android:text="@string/P341"
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="@dimen/margin_16"
+                        android:text="2. "
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvPrivacyLine2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="@dimen/margin_16"
+                        android:text="@string/P342"
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="@dimen/margin_16"
+                        android:text="3. "
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="@dimen/margin_16"
+                        android:text="@string/P343"
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="@dimen/margin_16"
+                        android:text="4. "
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="@dimen/margin_16"
+                        android:text="@string/P344"
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="@dimen/margin_16"
+                        android:text="5. "
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="@dimen/margin_16"
+                        android:text="@string/P345"
+                        android:textColor="@color/color_6D7693"
+                        android:textSize="@dimen/textSize12sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:adjustViewBounds="true"
+            android:src="@drawable/bg_privacy_shadow" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_1"
+        android:background="@drawable/bg_white_radius_16_bottom"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/margin_10"
+        android:paddingVertical="@dimen/margin_8">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cbPrivacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selector_login_checked"
+            android:gravity="center_vertical"
+            android:lineHeight="@dimen/margin_16"
+            android:paddingLeft="@dimen/margin_5"
+            android:text="@string/P346"
+            android:textColor="@color/color_0D2245"
+            android:textSize="@dimen/textSize12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/need_help"
+                android:textColor="@color/color_535D76"
+                android:textColorLink="@color/color_025BE8"
+                android:textSize="@dimen/textSize12sp" />
+
+            <TextView
+                android:id="@+id/tv_customer_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:drawableLeft="@drawable/ic_customer_service"
+                android:drawablePadding="3dp"
+                android:gravity="left"
+                android:text="@string/live_service"
+                android:textColor="@color/color_025BE8"
+                android:textSize="@dimen/textSize12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

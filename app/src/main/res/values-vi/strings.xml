@@ -1090,8 +1090,10 @@
     <string name="mobile">SĐT</string>
     <string name="login_again">Vui lòng đăng nhập lại.</string>
     <string name="change_password">Đổi mật khẩu</string>
-    <string name="login_terms_conditions">Điều khoản và thoả thuận</string>
-    <string name="login_privacy_policy">Chính sách quyền riêng tư</string>
+    <string name="login_terms_conditions">Điều khoản &amp; điều kiện của chúng tôi</string>
+    <string name="login_privacy_policy">Chính sách bảo mật</string>
+    <string name="login_terms_conditions_new">Điều khoản và thoả thuận</string>
+    <string name="login_privacy_policy_new">Chính sách quyền riêng tư</string>
     <string name="hint_link_google">Liên kết tài khoản Google</string>
     <string name="hint_link_facebook">Liên kết tài khoản Facebook</string>
     <string name="login_hint_account">SĐT / Email</string>
