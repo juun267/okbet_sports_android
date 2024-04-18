@@ -286,7 +286,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
     }
 
     private fun setupPrivacy() = binding.run {
-       if (sConfigData?.registerTermsDefaultCheckedSwitch==0){
+       if (sConfigData?.registerTermsDefaultCheckedSwitch==1){
            layoutPrivacy.root.isVisible = true
            layoutPrivacyNew.root.isVisible = false
            layoutPrivacy.ivPrivacy.isSelected = true
