@@ -1745,4 +1745,10 @@
     <string name="P337">The game has started, no bets can be made</string>
     <string name="J748">Promo</string>
     <string name="nickname_match_error">The characters you entered are inconsistent (may contain full-width or special characters or spaces)</string>
+    <string name="P341">Send me updates and promotions in accordance with the Privacy Policy.</string>
+    <string name="P342">I am over 21 years of age and have read and agree to the OKBET’s Terms &amp; Conditions.</string>
+    <string name="P343">I am not a government official and/or employee directly connected with the operation of the Philippine government or any of its agencies.</string>
+    <string name="P344">I am not a student of any school, college, or university in the Philippines.</string>
+    <string name="P345">I understand that should my provided information has been found incorrect, OKBET has the right to impose a penalty on my account subject to its Terms and Conditions Sections 5.1 - 5.2.</string>
+    <string name="P346">I agree to all the above terms and conditions.</string>
 </resources>

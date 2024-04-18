@@ -1087,8 +1087,8 @@
     <string name="password_login">Login password</string>
     <string name="or">O</string>
     <string name="login_privacy">Sa pamamagitan ng pag-sign up, kinukumpirma mo na ikaw ay higit sa 21 taong gulang at sumasang-ayon sa aming Patakaran sa Pagkapribado at Mga Termino at Kundisyon</string>
-    <string name="login_terms_conditions">Mga Termino at Kundisyon </string>
-    <string name="login_privacy_policy">Patakaran sa Pagkapribado</string>
+    <string name="login_terms_conditions">Mga Tuntunin at Kundisyon</string>
+    <string name="login_privacy_policy">Privacy Policy</string>
     <string name="otp_login">OTP Login </string>
     <string name="auth_login">Awtorisadong pag-login</string>
     <string name="set">Set up</string>
@@ -1588,5 +1588,11 @@
     <string name="P337">Nagsimula na ang laro, walang pwedeng tumaya</string>
     <string name="J748">Promotion</string>
     <string name="nickname_match_error">Character na iyong ipinasok ay hindi tugma (maaaring maglaman ng buong lapad o mga espesyal na character o espasyo)</string>
+    <string name="P341">Padalhan ako ng mga update at promosyon alinsunod sa Privacy Policy.</string>
+    <string name="P342">Ako ay mahigit 21 taong gulang at nabasa at sumasang-ayon sa Mga Tuntunin at Kundisyon ng OKBET.</string>
+    <string name="P343">Hindi ako opisyal at/o empleyado ng gobyerno na direktang konektado sa operasyon ng gobyerno ng Pilipinas o alinman sa mga ahensya nito.</string>
+    <string name="P344">Hindi ako isang mag-aaral ng anumang paaralan, kolehiyo, o unibersidad sa Pilipinas.</string>
+    <string name="P345">Naiintindihan ko na kung ang aking ibinigay na impormasyon ay nakitang mali, ang OKBET ay may karapatang magpataw ng parusa sa aking account na napapailalim sa Mga Tuntunin at Kundisyon ng Seksyon 5.1 - 5.2 nito.</string>
+    <string name="P346">Sumasang-ayon ako sa lahat ng nasa itaas na mga tuntunin at kundisyon.</string>
 </resources>
 

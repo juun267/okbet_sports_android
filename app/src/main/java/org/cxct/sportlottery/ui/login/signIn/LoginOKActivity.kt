@@ -287,19 +287,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
 
     private fun setupPrivacy() = binding.run {
 
-        ivPrivacy.setVisibilityByMarketSwitch()
-        ivPrivacy.isSelected = sConfigData?.registerTermsDefaultCheckedSwitch==1
+        cbPrivacy.isChecked = sConfigData?.registerTermsDefaultCheckedSwitch==1
         setPrivacyState()
-        ivPrivacy.setOnClickListener {
-            ivPrivacy.isSelected = !ivPrivacy.isSelected
+        cbPrivacy.setOnCheckedChangeListener { compoundButton, b ->
             setPrivacyState()
         }
-
-        tvPrivacy.setVisibilityByMarketSwitch()
-//        binding.tvPrivacy.setOnCheckedChangeListener { buttonView, isChecked ->
-//            viewModel.agreeChecked = isChecked
-//        }
-        tvPrivacy.makeLinks(
+        tvPrivacyLine1.makeLinks(
             Pair(
                 applicationContext.getString(R.string.login_privacy_policy),
                 View.OnClickListener {
@@ -310,7 +303,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                     )
                 })
         )
-        binding.tvPrivacy.makeLinks(
+        tvPrivacyLine2.makeLinks(
             Pair(
                 applicationContext.getString(R.string.login_terms_conditions),
                 View.OnClickListener {
@@ -323,13 +316,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         )
     }
     private fun setPrivacyState()=binding.run{
-        if (ivPrivacy.isSelected) {
-            ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_sel)
-        } else {
-            ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_nor)
-        }
-        btnGoogle.setBtnEnable(ivPrivacy.isSelected)
-        viewModel.agreeChecked = ivPrivacy.isSelected
+        btnGoogle.setBtnEnable(cbPrivacy.isChecked)
+        viewModel.agreeChecked = cbPrivacy.isChecked
     }
     private fun setupServiceButton() {
         binding.tvCustomerService.setServiceClick(supportFragmentManager)
