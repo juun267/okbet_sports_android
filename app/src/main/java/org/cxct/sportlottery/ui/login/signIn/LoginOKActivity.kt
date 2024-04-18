@@ -288,16 +288,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
     private fun setupPrivacy() = binding.run {
 
         ivPrivacy.setVisibilityByMarketSwitch()
-        ivPrivacy.isSelected = true
+        ivPrivacy.isSelected = sConfigData?.registerTermsDefaultCheckedSwitch==1
+        setPrivacyState()
         ivPrivacy.setOnClickListener {
             ivPrivacy.isSelected = !ivPrivacy.isSelected
-            if (ivPrivacy.isSelected) {
-                ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_sel)
-            } else {
-                ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_nor)
-            }
-            btnGoogle.setBtnEnable(ivPrivacy.isSelected)
-            viewModel.agreeChecked = ivPrivacy.isSelected
+            setPrivacyState()
         }
 
         tvPrivacy.setVisibilityByMarketSwitch()
@@ -327,7 +322,15 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                 })
         )
     }
-
+    private fun setPrivacyState()=binding.run{
+        if (ivPrivacy.isSelected) {
+            ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_sel)
+        } else {
+            ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_nor)
+        }
+        btnGoogle.setBtnEnable(ivPrivacy.isSelected)
+        viewModel.agreeChecked = ivPrivacy.isSelected
+    }
     private fun setupServiceButton() {
         binding.tvCustomerService.setServiceClick(supportFragmentManager)
     }
