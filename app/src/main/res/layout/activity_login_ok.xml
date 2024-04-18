@@ -449,7 +449,7 @@
                                     android:lineHeight="@dimen/margin_16"
                                     android:textColor="@color/color_6D7693"
                                     android:textSize="@dimen/textSize12sp"
-                                    android:text="2. "/>
+                                    android:text="3. "/>
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
