@@ -43,6 +43,7 @@ import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.redeem.RedeemActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
@@ -135,6 +136,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
     }
 
     private fun setupHeadButton() {
+        binding.ivHead1.setOnClickListener { it.context.startActivity<VipBenefitsActivity>() }
 //        iv_head.setOnClickListener {
 //            AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
 //        }
