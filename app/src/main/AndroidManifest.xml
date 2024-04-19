@@ -190,6 +190,9 @@
             android:name=".ui.profileCenter.profile.ProfileActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.profileCenter.vip.VipBenefitsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.profileCenter.nickname.ModifyProfileInfoActivity"
             android:screenOrientation="portrait" />
         <activity
