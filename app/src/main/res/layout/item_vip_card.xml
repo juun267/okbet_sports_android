@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card"
+        android:layout_width="340dp"
+        android:layout_height="164dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/img_vip_card_0">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    
+    <TextView
+        android:id="@+id/tvCurrent"
+        android:layout_width="94dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:background="@drawable/ic_vip_label_left"
+        android:paddingBottom="0.5dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:text="current"/>
+
+</FrameLayout>
