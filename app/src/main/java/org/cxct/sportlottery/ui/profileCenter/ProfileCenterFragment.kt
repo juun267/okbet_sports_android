@@ -119,6 +119,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         binding.tvVersionCode.text = getString(R.string.current_version) + version
         binding.tvWithdrawTitle.setTitleLetterSpacing2F()
         binding.tvDepositTitle.setTitleLetterSpacing2F()
+        binding.userVipView.setup(this)
     }
 
     fun initToolBar() {
