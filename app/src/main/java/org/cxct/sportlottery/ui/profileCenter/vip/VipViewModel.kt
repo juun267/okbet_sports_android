@@ -50,7 +50,7 @@ class VipViewModel(
             }
         }
     }
-    fun vipRedenpApply(activityId: Int, rewardType: Int, levelV2Id: Int){
+    fun vipRedenpApply(levelV2Id: Int){
         callApi({UserRepository.vipRedenpApply(levelV2Id)}){
             if (it.succeeded()){
                 applyResultEvent.postValue(it?.getData())

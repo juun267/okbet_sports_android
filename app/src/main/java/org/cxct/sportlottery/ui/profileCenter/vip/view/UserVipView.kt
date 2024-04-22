@@ -39,10 +39,11 @@ class UserVipView(context: Context, attrs: AttributeSet) : LinearLayout(context,
         tvCurrentLevel.text = userVip.levelName
         val nextLevelIndex = userVip.rewardInfo.indexOfFirst { it.levelCode == userVip.levelCode}+1
         val nextRewardInfo = userVip.rewardInfo.getOrNull(nextLevelIndex)
-        if (nextRewardInfo==null){
-            (ivNextLevel.parent as ViewGroup).gone()
+        if (nextLevelIndex>=userVip.rewardInfo.size){
+            ivNextLevel.gone()
+            tvNextLevel.text = "MAX"
         }else{
-            (ivNextLevel.parent as ViewGroup).visible()
+            ivNextLevel.visible()
             ivNextLevel.setLevelTagIcon(nextRewardInfo?.levelCode)
             tvNextLevel.text = nextRewardInfo?.levelName
         }
