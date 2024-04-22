@@ -420,6 +420,14 @@ object Constants {
     const val LOGIN_CHECK_NEED_CODE = "/api/front/index/checkUserNeedCode"   // loginV3登陆前检查是否需要校验短信验证码
     const val LOGIN = "/api/front/index/loginV4"   // 用户登陆  2023.10.24
     const val WHEEL_ACTIVITY_INFO = "/api/front/wheelActivity/info"
+    //VIP特權
+    const val VIP_USER = "/api/front/activity/vip/user"
+    //VIP特權详情
+    const val VIP_DETAIL = "/api/front/activity/vip/detail"
+    //领取VIP特权奖项
+    const val VIP_REWARD = "/api/front/activity/vip/award"
+    //專屬紅包申請
+    const val VIP_UNIREDENP_APPLY = "/api/front/activity/vip/uniredenp/apply"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image#url_ignore" //上传图片,url_ignore避免域名被动态替换

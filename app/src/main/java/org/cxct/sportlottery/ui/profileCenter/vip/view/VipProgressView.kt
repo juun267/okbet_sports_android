@@ -33,9 +33,9 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
         }
         binding.progressBar.setProgress(progress,true)
     }
-    open fun setTintColor(@ColorRes colorProgress: Int,@ColorRes backgroundProgress: Int){
+    open fun setTintColor(@ColorRes colorProgress: Int,@ColorRes colorBackground: Int){
         binding.progressBar.progressTintList = ColorStateList.valueOf(getColor(colorProgress))
-        binding.progressBar.progressBackgroundTintList = ColorStateList.valueOf(getColor(backgroundProgress))
+        binding.progressBar.progressBackgroundTintList = ColorStateList.valueOf(getColor(colorBackground))
     }
 
 }

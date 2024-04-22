@@ -15,6 +15,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.UserVipType.setLevelTagIcon
 import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentProfileCenterBinding
@@ -43,7 +44,9 @@ import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.ui.profileCenter.vip.MyVipDetailActivity
 import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
+import org.cxct.sportlottery.ui.profileCenter.vip.VipViewModel
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.redeem.RedeemActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
@@ -63,6 +66,7 @@ import java.io.FileNotFoundException
 class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfileCenterBinding>() {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
+    private val vipViewModel: VipViewModel by viewModel()
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
@@ -119,7 +123,10 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         binding.tvVersionCode.text = getString(R.string.current_version) + version
         binding.tvWithdrawTitle.setTitleLetterSpacing2F()
         binding.tvDepositTitle.setTitleLetterSpacing2F()
-        binding.userVipView.setup(this)
+        binding.userVipView.setup(this,vipViewModel)
+        binding.userVipView.setOnClickListener {
+            startActivity(MyVipDetailActivity::class.java)
+        }
     }
 
     fun initToolBar() {
@@ -562,7 +569,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             .load(userInfo?.iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
             .into(ivHead1) //載入頭像
-
+        ivVipLevel.setLevelTagIcon(userInfo?.levelCode)
         tvUserNickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
             userInfo?.userName
         } else {

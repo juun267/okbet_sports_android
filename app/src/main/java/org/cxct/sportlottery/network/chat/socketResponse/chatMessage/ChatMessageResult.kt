@@ -27,6 +27,7 @@ data class ChatMessageResult(
     val userType: String?, //会员角色 0游客、1会员、2管理员、3訪客
     val bgColor: String?,
     val textColor: String?,
+    val levelCode: String?,
 ) {
     @Transient
     var chatRedEnvelopeMessageResult: ChatRedEnvelopeMessageResult? = null

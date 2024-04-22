@@ -160,4 +160,23 @@ object UserRepository {
         params.addProperty("activityId", activityId)
         return userApi.activityRecord(params)
     }
+    suspend fun getUserVip(): ApiResult<UserVip> {
+        return userApi.getUserVip()
+    }
+    suspend fun getVipDetail(): ApiResult<VipDetail> {
+        return userApi.getVipDetail()
+    }
+    suspend fun vipReward(activityId: Int, rewardType: Int, levelV2Id: Int): ApiResult<String> {
+        val params = JsonObject()
+        params.addProperty("activityId", activityId)
+        params.addProperty("rewardType", rewardType)
+        params.addProperty("levelV2Id", levelV2Id)
+        return userApi.vipReward(params)
+    }
+    suspend fun vipRedenpApply(levelV2Id: Int): ApiResult<VipRedenpApplyResult> {
+        val params = JsonObject()
+        params.addProperty("levelV2Id", levelV2Id)
+        return userApi.vipRedenpApply(params)
+    }
+
 }

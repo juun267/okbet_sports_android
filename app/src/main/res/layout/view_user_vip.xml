@@ -144,6 +144,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:src="@drawable/ic_vip_bonus_promote"/>
+                <ImageView
+                    android:id="@+id/ivLockPromote"
+                    android:layout_width="@dimen/margin_16"
+                    android:layout_height="@dimen/margin_16"
+                    app:layout_constraintRight_toRightOf="@id/ivBonusPromote"
+                    app:layout_constraintBottom_toBottomOf="@id/ivBonusPromote"
+                    android:layout_marginRight="-7dp"
+                    android:layout_marginBottom="-4dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_vip_benefit_lock"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -173,6 +183,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:src="@drawable/ic_vip_bonus_birthday"/>
+                <ImageView
+                    android:id="@+id/ivLockBirthday"
+                    android:layout_width="@dimen/margin_16"
+                    android:layout_height="@dimen/margin_16"
+                    app:layout_constraintRight_toRightOf="@id/ivBonusBirthday"
+                    app:layout_constraintBottom_toBottomOf="@id/ivBonusBirthday"
+                    android:layout_marginRight="-7dp"
+                    android:layout_marginBottom="-4dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_vip_benefit_lock"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -202,6 +222,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:src="@drawable/ic_vip_bonus_weekly"/>
+                <ImageView
+                    android:id="@+id/ivLockWeekly"
+                    android:layout_width="@dimen/margin_16"
+                    android:layout_height="@dimen/margin_16"
+                    app:layout_constraintRight_toRightOf="@id/ivBonusWeekly"
+                    app:layout_constraintBottom_toBottomOf="@id/ivBonusWeekly"
+                    android:layout_marginRight="-7dp"
+                    android:layout_marginBottom="-4dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_vip_benefit_lock"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -231,6 +261,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:src="@drawable/ic_vip_bonus_packet"/>
+                <ImageView
+                    android:id="@+id/ivLockPacket"
+                    android:layout_width="@dimen/margin_16"
+                    android:layout_height="@dimen/margin_16"
+                    app:layout_constraintRight_toRightOf="@id/ivBonusPacket"
+                    app:layout_constraintBottom_toBottomOf="@id/ivBonusPacket"
+                    android:layout_marginRight="-7dp"
+                    android:layout_marginBottom="-4dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_vip_benefit_lock"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -24,6 +24,10 @@ import org.cxct.sportlottery.network.Constants.UPLOAD_REVIEW_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_VERIFY_CONFIG
 import org.cxct.sportlottery.network.Constants.SET_USERNAME
 import org.cxct.sportlottery.network.Constants.UPLOAD_VERIFY_PHOTO
+import org.cxct.sportlottery.network.Constants.VIP_DETAIL
+import org.cxct.sportlottery.network.Constants.VIP_REWARD
+import org.cxct.sportlottery.network.Constants.VIP_UNIREDENP_APPLY
+import org.cxct.sportlottery.network.Constants.VIP_USER
 import org.cxct.sportlottery.network.Constants.WHEEL_ACTIVITY_INFO
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -83,4 +87,15 @@ interface UserApiService {
     @GET(WHEEL_ACTIVITY_INFO)
     suspend fun getWheelActivityInfo(): ApiResult<WheelActivityInfo>
 
+    @GET(VIP_USER)
+    suspend fun getUserVip(): ApiResult<UserVip>
+
+    @GET(VIP_DETAIL)
+    suspend fun getVipDetail(): ApiResult<VipDetail>
+
+    @POST(VIP_REWARD)
+    suspend fun vipReward(@Body params : JsonObject): ApiResult<String>
+
+    @POST(VIP_UNIREDENP_APPLY)
+    suspend fun vipRedenpApply(@Body params : JsonObject): ApiResult<VipRedenpApplyResult>
 }

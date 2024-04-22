@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.profileCenter.vip.MyVipDetailActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
@@ -156,6 +157,15 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             startActivity(PromotionListActivity::class.java)
         }.apply {
             setVisibilityByMarketSwitch()
+        }
+        menuVip.setItem(
+            cxt.getIconSelector(R.drawable.ic_left_menu_vip_sel, R.drawable.ic_left_menu_vip_sel),
+            R.string.B005
+        ){
+            loginedRun(requireContext()){
+                close()
+                startActivity(MyVipDetailActivity::class.java)
+            }
         }
         menuAffiliate.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),
