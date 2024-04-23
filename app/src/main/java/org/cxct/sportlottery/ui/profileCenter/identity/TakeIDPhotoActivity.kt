@@ -95,7 +95,7 @@ class TakeIDPhotoActivity: BaseActivity<ProfileCenterViewModel, ActivityTakeidPh
             ocrInfo = it.third
 
             if (url.isEmptyStr()) {
-                toast(getString(R.string.chat_connection_error))
+                toast(getString(R.string.upload_fail))
                 return@observe
             }
 
@@ -248,7 +248,7 @@ class TakeIDPhotoActivity: BaseActivity<ProfileCenterViewModel, ActivityTakeidPh
     }
 
     private fun saveToLocal(bitmap: Bitmap): File? {
-        val file = File(cacheDir.absolutePath + File.separator + MD5Util.MD5Encode("${System.currentTimeMillis()}"))
+        val file = File(cacheDir.absolutePath + File.separator + MD5Util.MD5Encode("${System.currentTimeMillis()}")+ ".png")
         if (file.exists()) {
             file.delete()
         }
