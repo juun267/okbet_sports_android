@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.net.user.api
 
 import com.google.gson.JsonObject
+import okhttp3.MultipartBody
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.PageData
 import org.cxct.sportlottery.net.user.data.*
@@ -27,6 +28,10 @@ import org.cxct.sportlottery.network.Constants.UPLOAD_VERIFY_PHOTO
 import org.cxct.sportlottery.network.Constants.WHEEL_ACTIVITY_INFO
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
+import org.cxct.sportlottery.network.interceptor.HEADER_UPLOAD_IMG
+import org.cxct.sportlottery.network.interceptor.KEY_BASE_URL
+import org.cxct.sportlottery.network.uploadImg.UploadImgResult
+import retrofit2.Response
 import retrofit2.http.*
 
 //用户账户相关Api

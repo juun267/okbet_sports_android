@@ -1,6 +1,9 @@
 package org.cxct.sportlottery.net.user
 
 import com.google.gson.JsonObject
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.PageData
 import org.cxct.sportlottery.net.RetrofitHolder
@@ -14,6 +17,7 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.MD5Util
 import retrofit2.http.Body
+import java.io.File
 
 object UserRepository {
 
@@ -124,9 +128,9 @@ object UserRepository {
         return userApi.resetWithdraw(params)
     }
 
-    suspend fun getOCRInfo(idType: Int, imgUrl: String): ApiResult<OCRInfo> {
+    suspend fun getOCRInfo(ocrTypeId: Int, imgUrl: String): ApiResult<OCRInfo> {
         val params = JsonObject()
-        params.addProperty("ocrTypeId", idType)
+        params.addProperty("ocrTypeId", ocrTypeId)
         params.addProperty("imageUrl", sConfigData?.resServerHost + imgUrl)
         return ocrApi.getOCRInfo(params)
     }
@@ -142,6 +146,17 @@ object UserRepository {
         params.addProperty("lastName", lastName)
         params.addProperty("birthday", birthday)
         return userApi.uploadKYCInfo(params)
+    }
+
+    suspend fun getOCRInfoByHuawei(ocrTypeId: Int, file: File, imageUrl: String): ApiResult<OCRInfo> {
+        val mediaType = "image/*".toMediaTypeOrNull()
+        val requestFile = file.asRequestBody(mediaType)
+        val part = MultipartBody.Builder().setType(MultipartBody.FORM)
+            .addFormDataPart("ocrTypeId", ocrTypeId.toString())
+            .addFormDataPart("imageUrl", imageUrl)
+            .addFormDataPart("file", file.name, requestFile)
+            .build().parts
+        return ocrApi.getOCRInfoByHuawei(part)
     }
     suspend fun activityRecord(activityId: String,page: Int,pageSize: Int): ApiResult<PageData<RewardRecord>> {
         val params = JsonObject()
