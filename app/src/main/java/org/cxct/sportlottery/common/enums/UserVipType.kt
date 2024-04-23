@@ -4,6 +4,7 @@ import android.widget.ImageView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.jetbrains.annotations.Range
 
 
 object UserVipType{
@@ -64,6 +65,22 @@ object UserVipType{
                 LEVEL_CODE_10-> R.drawable.ic_vip_lv_tag10
                 else-> R.color.transparent
             })
+        }
+    }
+
+    fun getVipCard(level: Int): Int {
+        return when(level) {
+            1 -> R.drawable.bg_vip1
+            2 -> R.drawable.bg_vip2
+            3 -> R.drawable.bg_vip3
+            4 -> R.drawable.bg_vip4
+            5 -> R.drawable.bg_vip5
+            6 -> R.drawable.bg_vip6
+            7 -> R.drawable.bg_vip7
+            8 -> R.drawable.bg_vip8
+            9 -> R.drawable.bg_vip9
+            10 -> R.drawable.bg_vip10
+            else -> R.drawable.bg_vip0
         }
     }
 }

@@ -6,36 +6,52 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.annotation.ColorRes
 import androidx.core.view.marginLeft
-import androidx.core.view.marginTop
 import org.cxct.sportlottery.common.extentions.getColor
 import org.cxct.sportlottery.databinding.ViewVipProgressBinding
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import splitties.systemservices.layoutInflater
 
 class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    val binding = ViewVipProgressBinding.inflate(layoutInflater,this,true)
+    val binding = ViewVipProgressBinding.inflate(layoutInflater,this)
     init {
         orientation = VERTICAL
     }
-    open fun setProgress(progress:Int){
-        binding.tvProgress.apply {
-            val leftMargin = binding.progressBar.marginLeft+binding.progressBar.width*progress/100-width/2
-            val lp = layoutParams as LayoutParams
-            lp.setMargins(leftMargin, 0, 0, 0)
-            layoutParams = lp
-        }
+
+    open fun setProgress(progress:Int) {
+
         binding.tvProgress.text = "$progress%"
-        binding.ivThumb.apply {
-            val leftMargin =  binding.progressBar.marginLeft+binding.progressBar.width*progress/100-width/2
-            val lp = layoutParams as LayoutParams
-            lp.setMargins(leftMargin, marginTop, 0, 0)
-            layoutParams = lp
+        post {
+            val leftMargin = binding.progressBar.marginLeft + binding.progressBar.measuredWidth * progress / 100
+            binding.tvProgress.apply {
+                val lp = layoutParams as LayoutParams
+                lp.setMargins(leftMargin - width / 2, 0, 0, 0)
+                layoutParams = lp
+            }
+
+            binding.ivThumb.apply {
+                val lp = binding.ivThumb.layoutParams as LayoutParams
+                lp.leftMargin = leftMargin
+                binding.ivThumb.layoutParams = lp
+            }
+
+            binding.progressBar.setProgress(progress,true)
         }
-        binding.progressBar.setProgress(progress,true)
     }
+
     open fun setTintColor(@ColorRes colorProgress: Int,@ColorRes colorBackground: Int){
         binding.progressBar.progressTintList = ColorStateList.valueOf(getColor(colorProgress))
         binding.progressBar.progressBackgroundTintList = ColorStateList.valueOf(getColor(colorBackground))
+    }
+
+    fun setThumbColor(@ColorRes color: Int) {
+        val wh = 10.dp
+        binding.ivThumb.background = ShapeDrawable()
+            .setSolidColor(getColor(color))
+            .setWidth(wh)
+            .setHeight(wh)
+            .setRadius(wh.toFloat())
     }
 
 }

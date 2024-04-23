@@ -1,9 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.vip
 
 import androidx.recyclerview.widget.RecyclerView
-import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.extentions.circleOf
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
@@ -47,7 +45,7 @@ class VipBenefitsActivity: BaseActivity<MainHomeViewModel, ActivityVipBenefitsBi
     private fun initVipCard() = binding.run {
         rcvVipCard.setLinearLayoutManager(RecyclerView.HORIZONTAL)
         val adapter = VipCardAdapter()
-        adapter.setNewInstance(mutableListOf("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+        adapter.setNewInstance(mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9))
         LeftLinearSnapHelper().attachToRecyclerView(rcvVipCard)
         rcvVipCard.adapter = adapter
     }
