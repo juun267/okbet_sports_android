@@ -10,60 +10,62 @@
         android:id="@+id/linSettledMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/color_1A2C38">
 
     <RadioGroup
         android:id="@+id/rgDate"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:paddingHorizontal="@dimen/margin_12"
-        android:background="@color/color_202839"
+        android:layout_height="@dimen/margin_50"
+        android:paddingHorizontal="@dimen/margin_8"
+        android:layout_marginVertical="@dimen/margin_8"
+        android:layout_marginHorizontal="@dimen/margin_12"
+        android:background="@drawable/bg_darkblue_radius_30"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical|right">
 
         <RadioButton
             android:id="@+id/rbtnToday"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_40"
+            android:layout_weight="1"
             android:button="@null"
             android:checked="true"
             android:gravity="center"
+            android:background="@drawable/selector_radio_trans_dark"
             android:fontFamily="@font/helvetica_normal"
             android:paddingHorizontal="@dimen/margin_12"
             android:text="@string/home_tab_today"
-            android:textColor="@color/color_6d7693_ffffff"
+            android:textColor="@color/color_b1bad3_ffffff"
             android:textSize="@dimen/sp_14" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="20dp"
-            android:background="@color/color_314363"
-            android:layout_marginHorizontal="@dimen/margin_16"/>
         <RadioButton
             android:id="@+id/rbtnYesterday"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_40"
+            android:layout_weight="1"
             android:button="@null"
             android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:background="@drawable/selector_radio_trans_dark"
             android:textSize="@dimen/sp_14"
             android:paddingHorizontal="@dimen/margin_12"
-            android:textColor="@color/color_6d7693_ffffff"
+            android:textColor="@color/color_b1bad3_ffffff"
             android:text="@string/I023"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="20dp"
-            android:background="@color/color_314363"
-            android:layout_marginHorizontal="@dimen/margin_16"/>
+
         <RadioButton
             android:id="@+id/rbtnLast"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_40"
+            android:layout_weight="1"
             android:button="@null"
             android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:background="@drawable/selector_radio_trans_dark"
             android:textSize="@dimen/sp_14"
             android:paddingHorizontal="@dimen/margin_12"
-            android:textColor="@color/color_6d7693_ffffff"
+            android:textColor="@color/color_b1bad3_ffffff"
             android:text="@string/P128"/>
     </RadioGroup>
     <LinearLayout
@@ -71,7 +73,7 @@
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/margin_12"
         android:layout_marginTop="2dp"
-        android:background="@color/color_1A202E">
+        android:background="@color/color_213643">
      <LinearLayout
          android:layout_width="0dp"
          android:layout_height="match_parent"
@@ -83,7 +85,7 @@
             android:layout_height="wrap_content"
             android:lines="1"
             android:ellipsize="end"
-            android:textColor="@color/color_6D7693"
+            android:textColor="@color/color_638095"
             android:textSize="@dimen/textSize12sp"
             android:text="@string/H018"/>
          <TextView
@@ -93,7 +95,7 @@
              android:lines="1"
              android:ellipsize="end"
              android:layout_marginTop="@dimen/margin_4"
-             android:textColor="@color/color_BEC7DC"
+             android:textColor="@color/color_FFFFFF"
              android:textSize="@dimen/textSize14sp"
              tools:text="1,000,000.00"/>
 
@@ -109,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:ellipsize="end"
-                android:textColor="@color/color_6D7693"
+                android:textColor="@color/color_638095"
                 android:textSize="@dimen/textSize12sp"
                 android:text="@string/P321"/>
             <TextView
@@ -119,7 +121,7 @@
                 android:lines="1"
                 android:ellipsize="end"
                 android:layout_marginTop="@dimen/margin_4"
-                android:textColor="@color/color_BEC7DC"
+                android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="27"/>
 
@@ -135,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:ellipsize="end"
-                android:textColor="@color/color_6D7693"
+                android:textColor="@color/color_638095"
                 android:textSize="@dimen/textSize12sp"
                 android:text="@string/H020"/>
             <TextView
@@ -145,7 +147,7 @@
                 android:lines="1"
                 android:ellipsize="end"
                 android:layout_marginTop="@dimen/margin_4"
-                android:textColor="@color/color_BEC7DC"
+                android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="1,000,000.00"/>
 

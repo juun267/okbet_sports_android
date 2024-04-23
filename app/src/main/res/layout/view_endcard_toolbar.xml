@@ -4,7 +4,7 @@
     android:layout_height="56dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:background="@color/color_1B2436"
+    android:background="@color/color_1A2C38"
     android:paddingHorizontal="@dimen/margin_12">
     <ImageView
         android:id="@+id/ivLogo"
