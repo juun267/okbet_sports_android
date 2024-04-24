@@ -1,14 +1,11 @@
 package org.cxct.sportlottery.ui.sport.endcard.record
 
 import android.view.View
-import org.cxct.sportlottery.common.extentions.canDelayClick
 import org.cxct.sportlottery.databinding.FragmentEndcardRecordBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
-import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.Param
-import org.cxct.sportlottery.util.setSelectorTypeFace
 
 class EndCardRecordFragment: BaseFragment<EndCardVM,FragmentEndcardRecordBinding>() {
 

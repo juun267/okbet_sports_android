@@ -6,31 +6,97 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="16dp"
-    app:cardBackgroundColor="@color/color_1A202E">
+    app:cardBackgroundColor="@color/color_213743">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal">
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/color_21283A">
+            android:layout_height="@dimen/margin_44"
+            android:paddingHorizontal="@dimen/margin_12"
+            android:gravity="center_vertical"
+            android:background="@color/color_2F4553">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_4"
                 android:textSize="@dimen/textSize18sp"
                 android:textColor="@color/color_BEC7DC"
                 android:text="@string/P305"/>
-            <ImageView
-                android:id="@+id/ivClose"
-                android:layout_width="@dimen/margin_36"
-                android:layout_height="@dimen/margin_36"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="@dimen/margin_10"
-                android:src="@drawable/ic_endcard_result_close"/>
-        </FrameLayout>
+            <TextView
+                android:id="@+id/tvCount"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_20"
+                android:minWidth="@dimen/margin_20"
+                android:gravity="center"
+                android:textSize="@dimen/textSize11sp"
+                android:textColor="@color/color_FFFFFF"
+                android:text="0"
+                android:background="@drawable/bg_circle_red"/>
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <LinearLayout
+                android:id="@+id/linDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_20"
+                android:gravity="center"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="@dimen/margin_24"
+                    android:layout_height="@dimen/margin_24"
+                    android:src="@drawable/ic_endcard_delete"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_B1BAD3"
+                    android:text="@string/text_clear"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linCollapse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="@dimen/margin_24"
+                    android:layout_height="@dimen/margin_24"
+                    android:src="@drawable/ic_endcard_collapse"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_B1BAD3"
+                    android:text="@string/D039"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="@dimen/margin_24"
+                    android:layout_height="@dimen/margin_24"
+                    android:src="@drawable/ic_endcard_result_close"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_B1BAD3"
+                    android:text="@string/bottom_sheet_close"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_0.5"
@@ -50,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_12"
             android:lineHeight="@dimen/margin_16"
-            android:textColor="@color/color_BEC7DC"
+            android:textColor="@color/color_B1BAD3"
             android:textSize="@dimen/textSize12sp"
             android:text="@string/P306"/>
         <TextView
@@ -61,7 +127,7 @@
             android:paddingVertical="@dimen/margin_12"
             android:includeFontPadding="true"
             android:layout_marginTop="@dimen/margin_16"
-            android:background="@drawable/bg_yellow_stroke_radius_8"
+            android:background="@drawable/bg_darkblue_radius_8_1a2c38"
             android:layout_marginHorizontal="@dimen/margin_12"
             android:lineHeight="@dimen/margin_16"
             android:textColor="@color/color_FFFFFF"
@@ -83,7 +149,7 @@
                 android:paddingHorizontal="8dp"
                 android:foreground="@drawable/fg_ripple"
                 android:layout_marginLeft="@dimen/margin_12"
-                android:background="@drawable/bg_darkblue_radius_8"
+                android:background="@drawable/bg_darkblue_radius_8_3f5b6b"
                 android:textSize="@dimen/textSize16sp"
                 android:textColor="@color/color_FFFFFF"
                 android:text="@string/P310"/>
@@ -98,7 +164,7 @@
                 android:foreground="@drawable/fg_ripple"
                 android:layout_marginLeft="@dimen/margin_14"
                 android:layout_marginRight="@dimen/margin_12"
-                android:background="@drawable/selector_button_default"
+                android:background="@drawable/selector_button_default_darkblue"
                 android:textSize="@dimen/textSize16sp"
                 android:textColor="@color/color_FFFFFF"
                 android:text="@string/betting"/>

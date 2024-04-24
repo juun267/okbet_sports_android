@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
+import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardWinTipDialog
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
@@ -32,6 +33,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     private val oddsAdapter = EndCardOddsAdapter(::onOddClick)
     private val betAmountAdapter = BetAmountAdapter(::onBetAmountChanged)
     private var selectedEndCardBet: EndCardBet?=null
+    private var endCardBetDialog: EndCardBetDialog?=null
 
     override fun createRootView(
         inflater: LayoutInflater,
@@ -47,22 +49,10 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     }
 
     override fun onInitView(view: View) {
-        initMatchInfo()
         binding.ivBack.setOnClickListener { requireActivity().onBackPressed() }
         initAmountList()
         initOddsList()
         initFloatMenu()
-    }
-
-    private fun initMatchInfo() = binding.run {
-        tvTime.background = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_1C283C)
-        sections.background = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_202839)
-        clMatchInfo.background = DrawableCreatorUtils.getCommonBackgroundStyle(
-            leftTopCornerRadius = 16,
-            rightTopCornerRadius = 16,
-            solidColor = R.color.color_1A202E,
-            strokeWidth = 0)
-
     }
 
     private lateinit var matchInfo: MatchInfo
@@ -81,6 +71,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         ivHomeLogo.circleOf(matchInfo.homeIcon, R.drawable.ic_team_default_1)
         ivAwayLogo.circleOf(matchInfo.awayIcon, R.drawable.ic_team_default_1)
         ivLeague.setLeagueLogo(matchInfo.categoryIcon, R.drawable.ic_team_default_1)
+
     }
 
     private fun initAmountList() {
@@ -95,6 +86,9 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     }
 
     private fun onBetAmountChanged(endCardBet: EndCardBet) = binding.run {
+        tvWinQuestion.setOnClickListener {
+            EndCardWinTipDialog.newInstance(endCardBet).show(childFragmentManager)
+        }
         selectedEndCardBet = endCardBet
         val sign = showCurrencySign
         tvQ1Amount.text = "$sign${endCardBet.lastDigit1}"
@@ -107,7 +101,8 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     private fun initFloatMenu(){
         binding.parlayFloatWindow.onViewClick = {
             selectedEndCardBet?.let {
-                EndCardBetDialog.newInstance(it).show(childFragmentManager)
+                endCardBetDialog=EndCardBetDialog.newInstance(it)
+                endCardBetDialog?.show(childFragmentManager)
                 binding.parlayFloatWindow.gone()
             }
         }
@@ -127,7 +122,8 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         if (EndCardBetManager.getBetOdds().size==1&&!isAdded){
             binding.parlayFloatWindow.gone()
             selectedEndCardBet?.let {
-                EndCardBetDialog.newInstance(it).show(childFragmentManager)
+                endCardBetDialog=EndCardBetDialog.newInstance(it)
+                endCardBetDialog?.show(childFragmentManager)
             }
         }else{
             showFloatBet()
@@ -174,6 +170,15 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         EndCardBetManager.removeAll()
         showFloatBet()
         oddsAdapter.notifyDataSetChanged()
+        endCardBetDialog?.dismiss()
+    }
+    fun removeEndCardBet(oddId: String){
+        EndCardBetManager.removeBetOdd(oddId)
+        showFloatBet()
+        oddsAdapter.notifyDataSetChanged()
+    }
+    fun startBet(){
+        endCardBetDialog?.addBet()
     }
     fun reload(){
         loadingHolder.withRetry{ viewModel.getLGPCOFLDetail(matchInfo.id) }

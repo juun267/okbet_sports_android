@@ -37,6 +37,7 @@ data class LeagueOdd(
                     matchInfo.leagueName = league.name
                 }
                 matchInfo.categoryCode = league.categoryCode
+                matchInfo.shortName = league.shortName
             }
         }
         return@lazy list

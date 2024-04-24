@@ -1745,4 +1745,13 @@
     <string name="P337">The game has started, no bets can be made</string>
     <string name="J748">Promo</string>
     <string name="nickname_match_error">The characters you entered are inconsistent (may contain full-width or special characters or spaces)</string>
+    <string name="P340">Tutorial</string>
+    <string name="P349">Quarter 1</string>
+    <string name="P350">Quarter 2</string>
+    <string name="P351">Quarter 3</string>
+    <string name="P352">FT (Full Time Score)</string>
+    <string name="P348">The possible winnings you can get for each quarter are:</string>
+    <string name="P353">Note: If all of the quarter scores end in what you bet, it means they will be stacked up, and you can win all the winnings for each quarter.</string>
+    <string name="P354">Stacked up - it means that if certain conditions are met across multiple quarters, the outcomes are combined or stacked to determine the final result or payout, potentially resulting in larger winnings for the player.</string>
+    <string name="prex_note">Note:</string>
 </resources>

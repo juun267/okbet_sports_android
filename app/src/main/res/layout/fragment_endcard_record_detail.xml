@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:ignore="MissingDefaultResource"
-    android:background="@color/color_0E131F">
+    android:background="@color/color_1A2C38">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linBack"
         android:layout_width="match_parent"
@@ -59,8 +59,7 @@
         android:paddingHorizontal="@dimen/margin_12"
         android:paddingBottom="@dimen/margin_12"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/margin_8"
-        android:background="@color/color_1A202E">
+        android:background="@color/color_213743">
      <androidx.constraintlayout.widget.ConstraintLayout
          android:layout_width="match_parent"
          android:layout_height="wrap_content">
@@ -101,8 +100,8 @@
             tools:listitem="@layout/item_endcard_record_odd" />
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_0.5"
-            android:background="@color/color_0E131F"/>
+            android:layout_height="@dimen/margin_1"
+            android:background="@color/color_071824"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
@@ -113,7 +112,7 @@
                 android:lines="1"
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
-                android:textColor="@color/color_6D7693"
+                android:textColor="@color/color_8EAEC5"
                 android:text="@string/I041"/>
             <TextView
                 android:id="@+id/tvLeagueName"
@@ -130,8 +129,8 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_0.5"
-            android:background="@color/color_0E131F"/>
+            android:layout_height="@dimen/margin_1"
+            android:background="@color/color_071824"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
@@ -142,7 +141,7 @@
                 android:lines="1"
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
-                android:textColor="@color/color_6D7693"
+                android:textColor="@color/color_8EAEC5"
                 android:text="@string/P317"/>
             <androidx.legacy.widget.Space
                 android:layout_width="0dp"
@@ -185,8 +184,8 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_0.5"
-            android:background="@color/color_0E131F"/>
+            android:layout_height="@dimen/margin_1"
+            android:background="@color/color_071824"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
@@ -197,7 +196,7 @@
                 android:lines="1"
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
-                android:textColor="@color/color_6D7693"
+                android:textColor="@color/color_8EAEC5"
                 android:text="@string/I039"/>
             <TextView
                 android:id="@+id/tvBettingTime"
@@ -214,8 +213,8 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_0.5"
-            android:background="@color/color_0E131F"/>
+            android:layout_height="@dimen/margin_1"
+            android:background="@color/color_071824"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
@@ -226,7 +225,7 @@
                 android:lines="1"
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
-                android:textColor="@color/color_6D7693"
+                android:textColor="@color/color_8EAEC5"
                 android:text="Bet"/>
             <TextView
                 android:id="@+id/tvBet"
@@ -243,8 +242,8 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_0.5"
-            android:background="@color/color_0E131F"/>
+            android:layout_height="@dimen/margin_1"
+            android:background="@color/color_071824"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
@@ -255,7 +254,7 @@
                 android:lines="1"
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
-                android:textColor="@color/color_6D7693"
+                android:textColor="@color/color_8EAEC5"
                 android:text="@string/LT042"/>
             <TextView
                 android:id="@+id/tvBetAmount"
@@ -272,8 +271,8 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_0.5"
-            android:background="@color/color_0E131F"/>
+            android:layout_height="@dimen/margin_1"
+            android:background="@color/color_071824"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
@@ -284,7 +283,7 @@
                 android:lines="1"
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
-                android:textColor="@color/color_6D7693"
+                android:textColor="@color/color_8EAEC5"
                 android:text="@string/N142"/>
             <TextView
                 android:id="@+id/tvOrderNumber"
@@ -301,8 +300,8 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_0.5"
-            android:background="@color/color_0E131F"/>
+            android:layout_height="@dimen/margin_1"
+            android:background="@color/color_071824"/>
         <TextView
             android:id="@+id/tvTips"
             android:layout_width="wrap_content"
@@ -310,7 +309,7 @@
             android:layout_marginTop="@dimen/margin_8"
             android:lineSpacingExtra="3dp"
             android:textSize="@dimen/textSize12sp"
-            android:textColor="@color/color_BEC7DC"
+            android:textColor="@color/color_B1BAD3"
             android:text="@string/P322"/>
 
     </LinearLayout>
@@ -320,7 +319,7 @@
         android:orientation="vertical"
         android:layout_marginTop="@dimen/margin_2"
         android:padding="@dimen/margin_12"
-        android:background="@color/color_1A202E">
+        android:background="@color/color_1A2C38">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -349,15 +348,16 @@
                     <include
                         android:id="@+id/rowTitle"
                         layout="@layout/item_endcard_detail_result_row_title"/>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvResult"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/color_0C121E"
                         android:orientation="vertical"
-                        android:background="@color/color_1A2334"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="3"
-                        tools:listitem="@layout/item_endcard_detail_result_row_content"/>
+                        tools:listitem="@layout/item_endcard_detail_result_row_content" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
@@ -369,7 +369,7 @@
         android:layout_marginTop="2dp"
         android:paddingHorizontal="@dimen/margin_12"
         android:gravity="center_vertical"
-        android:background="@color/color_1A202E">
+        android:background="@color/color_213743">
         <TextView
             android:id="@+id/tvWinner"
             android:layout_width="wrap_content"
@@ -385,7 +385,7 @@
             android:layout_width="@dimen/margin_0.5"
             android:layout_height="@dimen/margin_28"
             android:layout_marginHorizontal="@dimen/margin_16"
-            android:background="@color/color_0C121E"/>
+            android:background="@color/color_3A586D"/>
         <TextView
             android:id="@+id/tvTotalWin"
             android:layout_width="wrap_content"
@@ -409,7 +409,7 @@
         android:lines="1"
         android:ellipsize="end"
         android:textSize="@dimen/textSize12sp"
-        android:textColor="@color/color_BEC7DC"
+        android:textColor="@color/color_B1BAD3"
         android:text="@string/N664"
         tools:text="settlement time: 09/02/2024  18:30"/>
 

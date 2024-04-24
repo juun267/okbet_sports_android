@@ -1,14 +1,16 @@
 package org.cxct.sportlottery.ui.sport.endcard.dialog
 
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
-import android.text.style.TypefaceSpan
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlinx.android.synthetic.main.dialog_transfer_money.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.common.extentions.clickDelay
+import org.cxct.sportlottery.common.extentions.setOnClickListeners
+import org.cxct.sportlottery.common.extentions.showPromptDialog
 import org.cxct.sportlottery.databinding.DialogEndcardBetBinding
 import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.repository.showCurrencySign
@@ -17,8 +19,11 @@ import org.cxct.sportlottery.ui.betList.holder.MAX_BET_VALUE
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.bet.EndCardGameFragment
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.GridItemDecoration
+import org.cxct.sportlottery.util.NetworkUtil
+import org.cxct.sportlottery.util.Spanny
+import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.dialog.BetBalanceDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
@@ -35,7 +40,21 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
     init {
         marginHorizontal = 12.dp
     }
-    private val oddAdapter by lazy { EndCardBetOddAdapter() }
+    private val oddAdapter by lazy { EndCardBetOddAdapter().apply {
+        setOnItemClickListener { adapter, view, position ->
+            val item = getItem(position)
+            if (deleteOddsId==item){
+                if(EndCardClearTipDialog.isNeedShow()){
+                    EndCardClearTipDialog.newInstance(item).show(childFragmentManager)
+                }else{
+                    removeAt(position)
+                    (requireParentFragment() as EndCardGameFragment).removeEndCardBet(item)
+                }
+            }else{
+                setDeleteId(item)
+            }
+        }
+    } }
     private val endCardBet by lazy { arguments?.getParcelable<EndCardBet>("endCardBet")!! }
     private val gameFragment by lazy { requireParentFragment() as EndCardGameFragment}
 
@@ -49,9 +68,12 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
 
     private fun initClick()=binding.run{
         btnBetting.text = "${root.context.getString(R.string.betting)} ${endCardBet.betMoney}"
-        setOnClickListeners(ivClose){
+        setOnClickListeners(linClose,linCollapse){
             gameFragment.showFloatBet()
             dismiss()
+        }
+        linDelete.setOnClickListener{
+            EndCardDeleteConfirmDialog.newInstance().show(childFragmentManager)
         }
         btnAddMore.clickDelay {
             gameFragment.showFloatBet()
@@ -61,8 +83,8 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             addBet()
         }
     }
-    private fun initOddList(){
-        binding.rvOdd.apply {
+    private fun initOddList()=binding.run{
+        rvOdd.apply {
             layoutManager = GridLayoutManager(context,5)
             if(itemDecorationCount==0){
                 addItemDecoration(GridItemDecoration(6.dp,8.dp, Color.TRANSPARENT,false))
@@ -71,6 +93,23 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             oddAdapter.setList(EndCardBetManager.getBetOdds())
             layoutParams.height = if (oddAdapter.itemCount>20) 160.dp else -2
         }
+        if (EndCardDeleteGuideDialog.needShow()){
+            rvOdd.post {
+                val globalRect = Rect()
+                val location = IntArray(2)
+                rvOdd.getChildAt(0).getLocationOnScreen(location)
+                globalRect.left = location[0]
+                globalRect.top = location[1]
+                EndCardDeleteGuideDialog.newInstance(globalRect).show(childFragmentManager)
+            }
+        }
+
+        val onlyOne = EndCardBetManager.getBetOdds().size==1
+        linClose.isVisible = onlyOne
+        linCollapse.isVisible = !onlyOne
+        linDelete.isVisible = !onlyOne
+        tvCount.isVisible = !onlyOne
+        tvCount.text = EndCardBetManager.getBetOdds().size.toString()
     }
     private fun setTips(){
         if (EndCardBetManager.getBetOdds().isEmpty()) return
@@ -80,12 +119,12 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
         val totalWin = "$showCurrencySign $totalLastDigit"
         val notice = String.format(getString(R.string.P306),betMoney,oddNames,totalWin)
         binding.tvTips.text = Spanny(notice)
-            .findAndSpan(betMoney) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_6AA4FF)) }
-            .findAndSpan(oddNames) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_6AA4FF)) }
-            .findAndSpan(totalWin) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_6AA4FF)) }
+            .findAndSpan(betMoney) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_FFD600)) }
+            .findAndSpan(oddNames) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_00E701)) }
+            .findAndSpan(totalWin) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_FFD600)) }
         val tips = "${getString(R.string.KYC055)} : "
         binding.tvPrompt.text = Spanny(tips+getString(R.string.P309))
-            .findAndSpan(tips) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_FFD600)) }
+            .findAndSpan(tips) { ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_00E701)) }
     }
     private fun initObservable(){
         viewModel.addBetResult.observe(this){
@@ -101,7 +140,7 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             dismiss()
         }
     }
-    private fun addBet(){
+    fun addBet(){
         if (!NetworkUtil.isAvailable(requireContext())) {
             requireActivity().showPromptDialog(
                 getString(R.string.prompt), getString(R.string.message_network_no_connect)
@@ -135,4 +174,21 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             viewModel.addBetLGPCOFL(endCardBet.matchId,EndCardBetManager.getBetOdds(),viewModel.userInfo.value?.nickName?:"",endCardBet.betMoney)
         }
     }
+    fun updateOddList(){
+        if (EndCardBetManager.getBetOdds().size==0){
+            dismiss()
+        }else{
+            initOddList()
+            setTips()
+        }
+    }
+    fun clearAll(){
+        gameFragment.clearAllEndCardBet()
+        dismiss()
+    }
+    fun removeItem(oddsId: String){
+        oddAdapter.removeItem(oddsId)
+        (requireParentFragment() as EndCardGameFragment).removeEndCardBet(oddsId)
+    }
+
 }

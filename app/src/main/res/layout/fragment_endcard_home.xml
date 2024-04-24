@@ -2,7 +2,8 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_1A2C38">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,9 +21,15 @@
                 android:layout_marginLeft="@dimen/margin_28"
                 android:layout_marginTop="22dp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 android:textSize="@dimen/textSize18sp"
                 android:textColor="@color/color_FFFFFF"
                 android:text="@string/P293"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_24"
+                android:layout_marginTop="62dp">
             <TextView
                 android:id="@+id/tvRule"
                 android:layout_width="wrap_content"
@@ -31,12 +38,41 @@
                 android:paddingHorizontal="@dimen/margin_10"
                 android:gravity="center"
                 android:foreground="@drawable/fg_ripple"
-                android:background="@drawable/bg_darkblue_radius_14"
-                android:layout_marginLeft="@dimen/margin_28"
-                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_darkblue_radius_6_stroke_white"
                 android:textSize="@dimen/textSize14sp"
                 android:textColor="@color/color_FFFFFF"
                 android:text="@string/P323"/>
+            <TextView
+                android:id="@+id/tvTutorial"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_28"
+                android:minWidth="74dp"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:gravity="center"
+                android:foreground="@drawable/fg_ripple"
+                android:background="@drawable/bg_blue_radius_6"
+                android:layout_marginLeft="@dimen/margin_8"
+                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/color_FFFFFF"
+                android:text="@string/P340"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_36"
+            android:background="@color/color_1A2C38"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/margin_12">
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:src="@drawable/ic_notice_yellow"/>
+            <com.luck.picture.lib.widget.MarqueeTextView
+                android:id="@+id/tvMarguee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_8"
+                android:textColor="@color/color_BEC7DC"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -44,13 +80,14 @@
             android:layout_width="match_parent"
             android:layout_height="102dp"
             android:clipToPadding="false"
+            android:background="@color/color_0F212E"
             android:paddingLeft="12dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvDate"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:background="@color/color_1A202E"
+            android:background="@color/color_213643"
             android:clipToPadding="false"
             android:paddingEnd="12dp" />
 

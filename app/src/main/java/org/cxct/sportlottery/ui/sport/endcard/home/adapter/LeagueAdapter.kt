@@ -35,7 +35,7 @@ class LeagueAdapter(private val onItemClick: (LeagueOdd) -> Unit)
     private val nameLP = LinearLayout.LayoutParams(-2, -2).apply { topMargin = 4.dp }
     private val iconBg by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_314260))
+            .setSolidColor(context.getColor(R.color.color_415C6D))
             .setWidth(iconWH)
             .setHeight(iconWH)
             .setRadius(iconWH.toFloat())
@@ -114,9 +114,11 @@ class LeagueAdapter(private val onItemClick: (LeagueOdd) -> Unit)
     private fun changeStyle(isSelected: Boolean, icon: ImageView, nameText: TextView) {
         if (isSelected) {
             nameText.setTextColor(selectedColor)
+            nameText.paint.isFakeBoldText = true
             icon.foreground = null
         } else {
             nameText.setTextColor(unSelectedColor)
+            nameText.paint.isFakeBoldText = false
             icon.foreground = iconForeground
         }
     }

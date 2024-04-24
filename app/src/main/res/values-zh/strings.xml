@@ -1672,4 +1672,13 @@
     <string name="P337">已开赛，无法投注</string>
     <string name="J748">优惠活动</string>
     <string name="nickname_match_error">您输入的字元不符(可能含有全形或特殊字元或空格)</string>
+    <string name="P340">教程</string>
+    <string name="P349">第一节</string>
+    <string name="P350">第二节</string>
+    <string name="P351">第三节</string>
+    <string name="P352">FT（全场得分）</string>
+    <string name="P348">每节您可能获得的奖金为：</string>
+    <string name="P353">注：如果每个节的分数都以您下注的金额结尾，则意味着它们将被叠加，您可以赢得每个节的所有奖金。</string>
+    <string name="P354">叠加- 这意味着如果每个节满足某些条件，结果将被合并或叠加以确定最终结果或支出，从而可能为玩家带来更大的奖金</string>
+    <string name="prex_note">注：</string>
 </resources>

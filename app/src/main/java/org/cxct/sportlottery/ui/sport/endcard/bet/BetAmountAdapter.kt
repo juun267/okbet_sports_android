@@ -19,21 +19,21 @@ class BetAmountAdapter(private val onItemClick: (EndCardBet)-> Unit): BaseQuickA
 
     private var selectedItem: EndCardBet? = null
     private val selectedColor = Color.WHITE
-    private val defaultTextColor by lazy { context.getColor(R.color.color_BEC7DC) }
+    private val defaultTextColor by lazy { context.getColor(R.color.color_FFFFFF) }
     private val selectedBg by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_1F75FF), context.getColor(R.color.color_0D31AF))
+            .setSolidColor(context.getColor(R.color.color_1475E1), context.getColor(R.color.color_003CD7))
             .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
-            .setRadius(5.dp.toFloat())
+            .setRadius(20.dp.toFloat())
             .setWidth(80.dp)
-            .setHeight(36.dp)
+            .setHeight(40.dp)
     }
     private val defaultBg by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_26354D))
-            .setRadius(5.dp.toFloat())
+            .setSolidColor(context.getColor(R.color.transparent))
+            .setRadius(20.dp.toFloat())
             .setWidth(80.dp)
-            .setHeight(36.dp)
+            .setHeight(40.dp)
     }
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -41,8 +41,7 @@ class BetAmountAdapter(private val onItemClick: (EndCardBet)-> Unit): BaseQuickA
         textView.textSize = 14f
         textView.gravity = Gravity.CENTER
         val lp = LinearLayout.LayoutParams(-2, -2)
-        lp.leftMargin = 8.dp
-        lp.topMargin = 7.dp
+        lp.leftMargin = 4.dp
         textView.layoutParams = lp
         return BaseViewHolder(textView)
     }
