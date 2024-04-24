@@ -5,6 +5,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.circleOf
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
+import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ActivityVipBenefitsBinding
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -16,17 +18,21 @@ import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 
 class VipBenefitsActivity: BaseActivity<MainHomeViewModel, ActivityVipBenefitsBinding>() {
 
+    val loadingHolder by lazy { Gloading.cover(binding.llBottom) }
+
     override fun onInitView() = binding.run {
         setStatusBarDarkFont(false)
         initVipCard()
         initBtnStyle()
         initActivatedBenefits()
         initUnactivatedBenefits()
+
     }
 
     private fun initBtnStyle() = binding.run {
         content.fitsSystemStatus()
         ivBack.setOnClickListener { finish() }
+        tvGrowth.setOnClickListener { startActivity<MyVipDetailActivity>() }
         ivProfile.circleOf(UserInfoRepository.loginedInfo()?.iconUrl, R.drawable.ic_person_avatar)
         llBottom.background = ShapeDrawable().setSolidColor(getColor(R.color.color_F8F9FD)).setRadius(24.dp.toFloat(), 0f, 0f, 0f)
         val dp37 = 37.dp.toFloat()

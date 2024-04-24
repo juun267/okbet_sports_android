@@ -2,9 +2,11 @@ package org.cxct.sportlottery.ui.profileCenter.vip.view
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.core.view.marginLeft
 import org.cxct.sportlottery.common.extentions.getColor
 import org.cxct.sportlottery.databinding.ViewVipProgressBinding
@@ -19,7 +21,7 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
         orientation = VERTICAL
     }
 
-    open fun setProgress(progress:Int) {
+    fun setProgress(progress:Int) {
 
         binding.tvProgress.text = "$progress%"
         post {
@@ -27,6 +29,28 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
             binding.tvProgress.apply {
                 val lp = layoutParams as LayoutParams
                 lp.setMargins(leftMargin - width / 2, 0, 0, 0)
+                layoutParams = lp
+            }
+
+            binding.ivThumb.apply {
+                val lp = binding.ivThumb.layoutParams as LayoutParams
+                lp.leftMargin = leftMargin
+                binding.ivThumb.layoutParams = lp
+            }
+
+            binding.progressBar.setProgress(progress,true)
+        }
+    }
+
+    fun setProgress2(progress:Int, offset: Int, bg: Drawable) {
+
+        binding.tvProgress.text = "$progress%"
+        binding.tvProgress.background = bg
+        post {
+            val leftMargin = binding.progressBar.marginLeft + binding.progressBar.measuredWidth * progress / 100
+            binding.tvProgress.apply {
+                val lp = layoutParams as LayoutParams
+                lp.setMargins(leftMargin - offset, 0, 0, 0)
                 layoutParams = lp
             }
 
@@ -53,5 +77,7 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
             .setHeight(wh)
             .setRadius(wh.toFloat())
     }
+
+    fun getProgressTextView() = binding.tvProgress
 
 }
