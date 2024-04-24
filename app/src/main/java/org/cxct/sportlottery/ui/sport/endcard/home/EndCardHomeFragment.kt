@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.luck.picture.lib.utils.ToastUtils
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.ui.sport.endcard.home.adapter.DateAdapter
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.EndCardLeague
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.LeagueAdapter
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.MatchAdapter
+import org.cxct.sportlottery.ui.sport.endcard.home.adapter.WinnersMarqueeAdapter
 
 class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>() {
 
@@ -32,6 +34,7 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
     private lateinit var leagueAdapter: LeagueAdapter
     private lateinit var dateAdapter: DateAdapter
     private lateinit var matchAdapter: MatchAdapter
+    private lateinit var marqueeAdapter: WinnersMarqueeAdapter
 
     override fun createRootView(
         inflater: LayoutInflater,
@@ -54,6 +57,7 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
 
     override fun onInitView(view: View) {
         initRecyclerView()
+        initMarquee()
         binding.tvRule.clickDelay {
             (activity as EndCardActivity).showEndCardRule()
         }
@@ -64,12 +68,27 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
 
     override fun onBindViewStatus(view: View) {
         initObserver()
+        binding.rcvMarquee.bindLifecycler(this)
         loadingHolder.withRetry{
             loadingHolder.showLoading()
             viewModel.loadEndCardMatchList()
         }
         loadingHolder.go()
 
+    }
+
+    private fun initMarquee() {
+        binding.rcvMarquee.setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
+        marqueeAdapter = WinnersMarqueeAdapter()
+        binding.rcvMarquee.adapter = marqueeAdapter
+
+        marqueeAdapter.setNewInstance(mutableListOf("Sid win ₱ 888,888 in New Orleans Pelicans VS Los Angles Lakers. Bill bet in New Orleans Pelicans VS Los Angles Lakers."
+        ,"Sid win ₱ 888,888 in New Orleans Pelicans VS Los Angles Lakers. Bill bet in New Orleans Pelicans VS Los Angles Lakers."
+        ,"Sid win ₱ 888,888 in New Orleans Pelicans VS Los Angles Lakers. Bill bet in New Orleans Pelicans VS Los Angles Lakers."
+        ,"Sid win ₱ 888,888 in New Orleans Pelicans VS Los Angles Lakers. Bill bet in New Orleans Pelicans VS Los Angles Lakers."
+        ,"Sid win ₱ 888,888 in New Orleans Pelicans VS Los Angles Lakers. Bill bet in New Orleans Pelicans VS Los Angles Lakers."))
+
+        binding.rcvMarquee.startAuto(false)
     }
 
     private fun initObserver() {
