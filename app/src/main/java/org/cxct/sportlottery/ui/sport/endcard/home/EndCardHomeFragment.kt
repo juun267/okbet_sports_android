@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
+import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardGuideDialog
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.DateAdapter
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.EndCardLeague
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.LeagueAdapter
@@ -55,6 +56,9 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
         initRecyclerView()
         binding.tvRule.clickDelay {
             (activity as EndCardActivity).showEndCardRule()
+        }
+        binding.tvTutorial.clickDelay{
+            EndCardGuideDialog().show(childFragmentManager)
         }
     }
 
