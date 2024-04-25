@@ -42,10 +42,11 @@
         android:paddingHorizontal="@dimen/margin_25"
         android:paddingTop="@dimen/margin_15"
         android:paddingBottom="@dimen/margin_25"
+        android:gravity="center"
         android:background="@drawable/ic_endcard_delete_tips"
         android:textSize="@dimen/textSize14sp"
         android:textColor="@color/color_FFFFFF"
-        android:text="Check out the selected scores here. Move the mouse over the score to choose delete" />
+        android:text="@string/P359" />
 
     <TextView
         android:id="@+id/btnConfirm"
@@ -59,5 +60,5 @@
         app:layout_constraintTop_toBottomOf="@id/tvTips"
         android:textSize="@dimen/textSize16sp"
         android:textColor="@color/color_F5FFC700"
-        android:text="i see"/>
+        android:text="@string/str_ok_i_got_it"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

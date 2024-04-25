@@ -1681,4 +1681,11 @@
     <string name="P353">注：如果每个节的分数都以您下注的金额结尾，则意味着它们将被叠加，您可以赢得每个节的所有奖金。</string>
     <string name="P354">叠加- 这意味着如果每个节满足某些条件，结果将被合并或叠加以确定最终结果或支出，从而可能为玩家带来更大的奖金</string>
     <string name="prex_note">注：</string>
+    <string name="P355">您有已选择的比分尚未投注，离开本页面比分将会清除</string>
+    <string name="P356">我已知晓，以后不再提示</string>
+    <string name="P357">立即投注</string>
+    <string name="P358">确认离开</string>
+    <string name="P359">点击所选比分 可以删除</string>
+    <string name="P360">%s 人正在查看卡片</string>
+    <string name="P361">已售出 %s 份</string>
 </resources>

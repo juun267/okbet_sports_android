@@ -1754,4 +1754,11 @@
     <string name="P353">Note: If all of the quarter scores end in what you bet, it means they will be stacked up, and you can win all the winnings for each quarter.</string>
     <string name="P354">Stacked up - it means that if certain conditions are met across multiple quarters, the outcomes are combined or stacked to determine the final result or payout, potentially resulting in larger winnings for the player.</string>
     <string name="prex_note">Note:</string>
+    <string name="P355">You have selected a score that you have not yet bet on. The scores will be cleared when you leave this page.</string>
+    <string name="P356">I already know, I won’t remind you again</string>
+    <string name="P357">Bet now</string>
+    <string name="P358">Confirm to leave</string>
+    <string name="P359">Click the selected score to delete</string>
+    <string name="P360">%s people are viewing the card</string>
+    <string name="P361">Sold %s copies</string>
 </resources>

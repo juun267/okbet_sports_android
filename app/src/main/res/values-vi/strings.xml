@@ -1626,4 +1626,11 @@
     <string name="P353">Lưu ý: Nếu bạn cược đến khi tất cả các hiệp kết thúc, thì tiền thưởng sẽ được cộng dồn và nhận tiền thưởng cho tất cả các hiệp trên.</string>
     <string name="P354">Cộng dồn - có nghĩa là nếu một số điều kiện nhất định được đáp ứng trong nhiều hiệp thì kết quả sẽ được kết hợp hoặc cộng dồn lên nhau để xác định kết quả cuối cùng hoặc tiền thưởng được thanh toán, có khả năng mang lại tiền thắng lớn hơn cho người chơi.</string>
     <string name="prex_note">Lưu ý:</string>
+    <string name="P355">Bạn chưa đặt cược tỷ số đã chọn. Tỷ số sẽ bị xóa khi bạn rời khỏi trang này.</string>
+    <string name="P356">Tôi biết rồi, không nhắc lại nữa</string>
+    <string name="P357">Cược ngay</string>
+    <string name="P358">Xác nhận rời khỏi</string>
+    <string name="P359">Nhấp vào tỷ số đã chọn để xóa</string>
+    <string name="P360">%s người đang xem</string>
+    <string name="P361">Đã bán %s lượt</string>
 </resources>

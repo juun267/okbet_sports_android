@@ -32,11 +32,11 @@
            android:layout_marginTop="@dimen/margin_20"
            android:textColor="@color/color_BEC7DC"
            android:textSize="@dimen/textSize14sp"
-           android:text="You have selected a score that you have not yet placed a bet on. The scores will be cleared when you leave this page!"/>
+           android:text="@string/P355"/>
        <CheckBox
            android:id="@+id/cbOkIknow"
            android:layout_width="wrap_content"
-           android:layout_height="32dp"
+           android:layout_height="wrap_content"
            android:gravity="center"
            android:button="@drawable/selector_check_okay"
            android:paddingLeft="@dimen/margin_8"
@@ -44,7 +44,7 @@
            android:layout_gravity="center_horizontal"
            android:textSize="@dimen/textSize14sp"
            android:textColor="@color/color_FFFFFF"
-           android:text="Okay, I know"/>
+           android:text="@string/P356"/>
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                android:background="@drawable/bg_darkblue_radius_8_3f5b6b"
                android:textSize="@dimen/textSize18sp"
                android:textColor="@color/color_FFFFFF"
-               android:text="Bet Now"/>
+               android:text="@string/P357"/>
            <Button
                android:id="@+id/btnConfirm"
                android:layout_width="0dp"
@@ -71,7 +71,7 @@
                android:background="@drawable/selector_button_default_darkblue"
                android:textSize="@dimen/textSize18sp"
                android:textColor="@color/color_FFFFFF"
-               android:text="@string/btn_confirm"/>
+               android:text="@string/P358"/>
        </LinearLayout>
 
    </LinearLayout>

@@ -1,10 +1,12 @@
 package org.cxct.sportlottery.ui.sport.endcard.home.adapter
 
 import android.graphics.Color
+import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.math.MathUtils
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
@@ -23,6 +25,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.Spanny
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import splitties.systemservices.layoutInflater
@@ -149,11 +152,22 @@ private class EndCardMatchProvider(
                 tvNum.gone()
             }
             //2. 热度说明：NBA及PBA赛事11-30中随机值；其他联赛1-15中随机值（可由前端做）
-            tvHotCount.text=if (matchInfo.shortName?.contains("NBA") == true||matchInfo.leagueName?.contains("NBA") == true){
+            val hotCount=if (matchInfo.shortName?.contains("NBA") == true||matchInfo.leagueName?.contains("NBA") == true){
                 Random.nextInt(11,30)
             }else{
                 Random.nextInt(1,15)
             }.toString()
+            tvHotCount.text = Spanny(String.format(context.getString(R.string.P360),hotCount))
+                .findAndSpan(hotCount){ ForegroundColorSpan(ContextCompat.getColor(context,R.color.color_1CD219)) }
+
+            val betCount=if (matchInfo.shortName?.contains("NBA") == true||matchInfo.leagueName?.contains("NBA") == true){
+                Random.nextInt(100,199)
+            }else{
+                Random.nextInt(50,99)
+            }.toString()
+            tvBetCount.text = Spanny(String.format(context.getString(R.string.P361),betCount))
+                .findAndSpan(betCount){ ForegroundColorSpan(ContextCompat.getColor(context,R.color.color_1CD219)) }
+
         }
     }
 
