@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.sport.endcard.bet
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,9 +23,12 @@ import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardWinTipDialog
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
+import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
+import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 import org.cxct.sportlottery.util.setLeagueLogo
 
 class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBinding>() {
@@ -53,6 +57,10 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         initAmountList()
         initOddsList()
         initFloatMenu()
+
+        binding.vShadow.background = ShapeDrawable()
+            .setSolidColor(context().getColor(R.color.transparent_black_40), Color.TRANSPARENT)
+            .setSolidGradientOrientation(ShapeGradientOrientation.BOTTOM_TO_TOP)
     }
 
     private lateinit var matchInfo: MatchInfo
@@ -77,6 +85,11 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     private fun initAmountList() {
         binding.rcvBetAmount.setLinearLayoutManager(RecyclerView.HORIZONTAL)
         binding.rcvBetAmount.adapter = betAmountAdapter
+        30.dp.toFloat().let {
+            binding.rcvBetAmount.background = ShapeDrawable()
+                .setSolidColor(context().getColor(R.color.color_0F212E))
+                .setRadius(it, 0f, it, 0f)
+        }
     }
 
     private fun initOddsList() {

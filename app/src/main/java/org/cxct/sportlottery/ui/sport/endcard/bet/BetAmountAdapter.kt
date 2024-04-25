@@ -40,8 +40,8 @@ class BetAmountAdapter(private val onItemClick: (EndCardBet)-> Unit): BaseQuickA
         val textView = AppCompatTextView(parent.context)
         textView.textSize = 14f
         textView.gravity = Gravity.CENTER
-        val lp = LinearLayout.LayoutParams(-2, -2)
-        lp.leftMargin = 4.dp
+        val lp = LinearLayout.LayoutParams(-2, 40.dp)
+        5.dp.let { lp.setMargins(4.dp, it, 0, it) }
         textView.layoutParams = lp
         return BaseViewHolder(textView)
     }
