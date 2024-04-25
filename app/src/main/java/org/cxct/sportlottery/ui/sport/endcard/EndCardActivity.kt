@@ -22,6 +22,8 @@ import org.cxct.sportlottery.ui.sport.endcard.home.EndCardRuleFragment
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordDetailFragment
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
+import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 import splitties.fragments.addToBackStack
 
 class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(EndCardVM::class) {
@@ -44,6 +46,9 @@ class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(End
         showHome()
         checkGuide()
         initObservable()
+        binding.vShadow.background = ShapeDrawable()
+            .setSolidColor(getColor(R.color.transparent_black_40), Color.TRANSPARENT)
+            .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
     }
 
     private fun initObservable() {
