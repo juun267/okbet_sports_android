@@ -43,7 +43,11 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
 
             val leagueOdds = result?.oddsListData?.leagueOdds
             if (leagueOdds == null) {
-                endcardMatchList.value = null
+                if (result?.success == true) {
+                    endcardMatchList.value = listOf()
+                } else {
+                    endcardMatchList.value = null
+                }
             } else {
                 dealLeagueList(matchType, matchType, leagueOdds, listOf())
                 endcardMatchList.value = leagueOdds
