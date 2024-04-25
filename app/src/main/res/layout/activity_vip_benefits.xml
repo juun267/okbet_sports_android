@@ -101,7 +101,6 @@
             android:layout_marginTop="20dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivProfile">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -186,6 +185,14 @@
 
         </FrameLayout>
 
+        <View
+            android:id="@+id/vLoading"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivProfile"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

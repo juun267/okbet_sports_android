@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.ui.profileCenter.vip
 
+import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.circleOf
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
+import org.cxct.sportlottery.common.extentions.postDelayed
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.loading.Gloading
@@ -18,7 +20,7 @@ import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 
 class VipBenefitsActivity: BaseActivity<MainHomeViewModel, ActivityVipBenefitsBinding>() {
 
-    val loadingHolder by lazy { Gloading.cover(binding.llBottom) }
+    val loadingHolder by lazy { Gloading.cover(binding.vLoading) }
 
     override fun onInitView() = binding.run {
         setStatusBarDarkFont(false)
@@ -27,6 +29,9 @@ class VipBenefitsActivity: BaseActivity<MainHomeViewModel, ActivityVipBenefitsBi
         initActivatedBenefits()
         initUnactivatedBenefits()
 
+        loadingHolder.showLoading()
+        loadingHolder.wrapper.setBackgroundColor(Color.CYAN)
+        postDelayed(3000) { loadingHolder.showLoadSuccess() }
     }
 
     private fun initBtnStyle() = binding.run {
