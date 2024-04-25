@@ -330,6 +330,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
            layoutPrivacyNew.root.isVisible = true
            layoutPrivacyNew.cbPrivacy.isChecked = false
            viewModel.agreeChecked = false
+           btnGoogle.setBtnEnable(false)
            layoutPrivacyNew.cbPrivacy.setOnCheckedChangeListener { compoundButton, b ->
                btnGoogle.setBtnEnable(b)
                viewModel.agreeChecked = b
