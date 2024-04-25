@@ -76,6 +76,11 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
                 return@observe
             }
 
+            if (it.isEmpty()) {
+                loadingHolder.showEmpty()
+                return@observe
+            }
+
             val list = it.toMutableList()
             leagueAdapter.setNewInstance(list)
             changeLeague(list.getOrNull(0))
