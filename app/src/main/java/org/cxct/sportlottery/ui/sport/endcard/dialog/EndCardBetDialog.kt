@@ -73,7 +73,7 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             dismiss()
         }
         linDelete.setOnClickListener{
-            EndCardDeleteConfirmDialog.newInstance().show(childFragmentManager)
+            clearAll()
         }
         btnAddMore.clickDelay {
             gameFragment.showFloatBet()
