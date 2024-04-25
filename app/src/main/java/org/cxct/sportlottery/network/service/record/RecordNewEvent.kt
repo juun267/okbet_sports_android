@@ -9,7 +9,7 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @Parcelize
 @KeepMembers
 class RecordNewEvent(
-    override val eventType: String,
+    override val eventType: String?,
     val player: String = "",
     val games: String = "",
     val betAmount: String,
