@@ -5,6 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -19,6 +23,7 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.SingleLiveEvent
 import java.io.File
 
@@ -294,7 +299,6 @@ class ProfileCenterViewModel(
     }
 
     fun startOCR(photo: File, idType: Int, id: Int) = viewModelScope.launch {
-
         val uploadImgRequest = UploadVerifyDocRequest(userInfo.value?.userId.toString(), photo).toPars()
         val uploadResult = kotlin.runCatching { OneBoSportApi.uploadImgService.uploadImg(uploadImgRequest) }.getOrNull()
         val url = uploadResult?.body()?.imgData?.path
@@ -307,9 +311,15 @@ class ProfileCenterViewModel(
             ocrResult.postValue(Triple(false, url!!, null))
             return@launch
         }
-        val ocrResponse = safeApi { UserRepository.getOCRInfo(id, url!!) }
+        //选择KYC识别厂商
+        val ocrResponse = if (sConfigData?.kycsupplierSelectionValue==1){
+             safeApi { UserRepository.getOCRInfoByHuawei(id, photo,url!!) }
+        }else{
+             safeApi { UserRepository.getOCRInfo(id, url!!) }
+        }
         ocrResult.postValue(Triple(ocrResponse.succeeded(), url!!, ocrResponse.getData()))
     }
+
 
     fun putKYCInfo(idType: Int, idNumber: String?, idImageUrl: String,
                    firstName: String, middleName: String, lastName: String, birthday: String) {
