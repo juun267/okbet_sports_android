@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_radius_16_stoke_blue"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/margin_10"
+    android:paddingBottom="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp">
+
+        <ImageView
+            android:id="@+id/ivPrivacy"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/ic_radiobtn_1_sel" />
+
+        <TextView
+            android:id="@+id/tvPrivacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:lineSpacingExtra="3dp"
+            android:paddingStart="5dp"
+            android:text="@string/login_privacy"
+            android:textColor="@color/color_6D7693"
+            android:textColorLink="@color/color_025BE8"
+            android:textSize="@dimen/textSize12sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/need_help"
+            android:textColor="@color/color_6D7693"
+            android:textColorLink="@color/color_025BE8"
+            android:textSize="@dimen/textSize12sp" />
+
+        <TextView
+            android:id="@+id/tv_customer_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:drawableLeft="@drawable/ic_customer_service"
+            android:drawablePadding="3dp"
+            android:gravity="left"
+            android:text="@string/live_service"
+            android:textColor="@color/color_025BE8"
+            android:textSize="@dimen/textSize12sp" />
+    </LinearLayout>
+</LinearLayout>

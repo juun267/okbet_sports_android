@@ -1143,6 +1143,8 @@
     <string name="login_privacy">注册即表示您确认您已年满21岁，并且同意我们的《隐私政策》和《规则条款》</string>
     <string name="login_terms_conditions">规则条款</string>
     <string name="login_privacy_policy">隐私政策</string>
+    <string name="login_terms_conditions_new">条款和条件</string>
+    <string name="login_privacy_policy_new">隐私政策</string>
     <string name="otp_login">验证码登录/注册</string>
     <string name="auth_login">授权登录</string>
     <string name="set">设定</string>
@@ -1672,4 +1674,10 @@
     <string name="P337">已开赛，无法投注</string>
     <string name="J748">优惠活动</string>
     <string name="nickname_match_error">您输入的字元不符(可能含有全形或特殊字元或空格)</string>
+    <string name="P341">根据隐私政策向我发送更新和促销信息。</string>
+    <string name="P342">我已年满21岁，并已阅读并同意OKBET的条款和条件。</string>
+    <string name="P343">我不是与菲律宾政府或其任何机构的运营直接相关的政府官员和/或雇员。</string>
+    <string name="P344">我不是菲律宾的任何学校、学院或大学的学生。</string>
+    <string name="P345">我理解，如果发现我提供的信息不正确，OKBET有权根据其条款和条件第5.1 - 5.2节对我的账户施加处罚。</string>
+    <string name="P346">我同意以上所有条款和条件。</string>
 </resources>

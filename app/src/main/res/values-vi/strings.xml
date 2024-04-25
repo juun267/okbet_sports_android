@@ -1092,6 +1092,8 @@
     <string name="change_password">Đổi mật khẩu</string>
     <string name="login_terms_conditions">Điều khoản &amp; điều kiện của chúng tôi</string>
     <string name="login_privacy_policy">Chính sách bảo mật</string>
+    <string name="login_terms_conditions_new">Điều khoản và thoả thuận</string>
+    <string name="login_privacy_policy_new">Chính sách quyền riêng tư</string>
     <string name="hint_link_google">Liên kết tài khoản Google</string>
     <string name="hint_link_facebook">Liên kết tài khoản Facebook</string>
     <string name="login_hint_account">SĐT / Email</string>
@@ -1617,4 +1619,10 @@
     <string name="P337">Đã bắt đầu trận, không thể đặt cược</string>
     <string name="J748">Ưu đãi</string>
     <string name="nickname_match_error">Các ký tự bạn nhập không khớp (có thể chứa khoảng cách hoặc các ký tự đặc biệt)</string>
+    <string name="P341">Gửi cho tôi thông tin cập nhật và khuyến mãi theo Chính sách quyền riêng tư.</string>
+    <string name="P342">Tôi đã trên 21 tuổi, đã đọc và đồng ý với các Điều khoản và thoả thuận của OKBET.</string>
+    <string name="P343">Tôi không phải là quan chức hoặc nhân viên chính phủ có liên quan trực tiếp đến hoạt động của Chính phủ Philippines hoặc bất kỳ cơ quan nào của Chính phủ.</string>
+    <string name="P344">Tôi không phải là sinh viên của bất kỳ trường học, cao đẳng hay đại học nào ở Philippines.</string>
+    <string name="P345">Tôi hiểu rằng nếu thông tin tôi cung cấp bị phát hiện là không chính xác, OKBET có quyền áp dụng hình phạt đối với tài khoản của tôi theo Mục 5.1 - 5.2 trong Điều khoản và Thoả thuận.</string>
+    <string name="P346">Tôi đồng ý với tất cả các điều khoản và thoả thuận trên.</string>
 </resources>
