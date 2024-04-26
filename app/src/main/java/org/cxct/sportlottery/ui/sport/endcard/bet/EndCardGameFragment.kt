@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.circleOf
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.databinding.FragmentEndcardgameBinding
@@ -22,6 +19,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardBetDialog
+import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardClearTipDialog
 import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardWinTipDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
@@ -35,7 +33,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
 
     private lateinit var loadingHolder: Gloading.Holder
     private val oddsAdapter = EndCardOddsAdapter(::onOddClick)
-    private val betAmountAdapter = BetAmountAdapter(::onBetAmountChanged)
+    private val betAmountAdapter = BetAmountAdapter(this,::onBetAmountChanged)
     private var selectedEndCardBet: EndCardBet?=null
     private var endCardBetDialog: EndCardBetDialog?=null
 
@@ -53,7 +51,11 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     }
 
     override fun onInitView(view: View) {
-        binding.ivBack.setOnClickListener { requireActivity().onBackPressed() }
+        binding.ivBack.setOnClickListener {
+            showClearTip{
+                requireActivity().onBackPressed()
+            }
+        }
         initAmountList()
         initOddsList()
         initFloatMenu()
@@ -79,7 +81,9 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         ivHomeLogo.circleOf(matchInfo.homeIcon, R.drawable.ic_team_default_1)
         ivAwayLogo.circleOf(matchInfo.awayIcon, R.drawable.ic_team_default_1)
         ivLeague.setLeagueLogo(matchInfo.categoryIcon, R.drawable.ic_team_default_1)
-
+        tvWinQuestion.setOnClickListener {
+            selectedEndCardBet?.let { it1 -> EndCardWinTipDialog.newInstance(it1).show(childFragmentManager) }
+        }
     }
 
     private fun initAmountList() {
@@ -99,17 +103,14 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     }
 
     private fun onBetAmountChanged(endCardBet: EndCardBet) = binding.run {
-        tvWinQuestion.setOnClickListener {
-            EndCardWinTipDialog.newInstance(endCardBet).show(childFragmentManager)
-        }
-        selectedEndCardBet = endCardBet
-        val sign = showCurrencySign
-        tvQ1Amount.text = "$sign${endCardBet.lastDigit1}"
-        tvQ2Amount.text = "$sign${endCardBet.lastDigit2}"
-        tvQ3Amount.text = "$sign${endCardBet.lastDigit3}"
-        tvQ4Amount.text = "$sign${endCardBet.lastDigit4}"
-        oddsAdapter.setUpData(endCardBet)
-        clearAllEndCardBet()
+            selectedEndCardBet = endCardBet
+            val sign = showCurrencySign
+            tvQ1Amount.text = "$sign${endCardBet.lastDigit1}"
+            tvQ2Amount.text = "$sign${endCardBet.lastDigit2}"
+            tvQ3Amount.text = "$sign${endCardBet.lastDigit3}"
+            tvQ4Amount.text = "$sign${endCardBet.lastDigit4}"
+            oddsAdapter.setUpData(endCardBet)
+            clearAllEndCardBet()
     }
     private fun initFloatMenu(){
         binding.parlayFloatWindow.onViewClick = {
@@ -191,11 +192,26 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         oddsAdapter.notifyDataSetChanged()
     }
     fun startBet(){
-        endCardBetDialog?.addBet()
+        binding.parlayFloatWindow.gone()
+        selectedEndCardBet?.let {
+            endCardBetDialog=EndCardBetDialog.newInstance(it)
+            endCardBetDialog?.show(childFragmentManager)
+            postDelayed(1000){
+                endCardBetDialog?.addBet()
+            }
+        }
     }
     fun reload(){
         loadingHolder.withRetry{ viewModel.getLGPCOFLDetail(matchInfo.id) }
         loadingHolder.go()
     }
-
+    fun showClearTip(onNext: ()->Unit){
+        if (EndCardBetManager.getBetOdds().size>0 && EndCardClearTipDialog.isNeedShow()){
+            EndCardClearTipDialog.newInstance().apply {
+                this.onConfirm = onConfirm
+            }.show(childFragmentManager)
+        }else{
+            onNext.invoke()
+        }
+    }
 }

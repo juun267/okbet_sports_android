@@ -44,12 +44,8 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
         setOnItemClickListener { adapter, view, position ->
             val item = getItem(position)
             if (deleteOddsId==item){
-                if(EndCardClearTipDialog.isNeedShow()){
-                    EndCardClearTipDialog.newInstance(item).show(childFragmentManager)
-                }else{
-                    removeAt(position)
-                    (requireParentFragment() as EndCardGameFragment).removeEndCardBet(item)
-                }
+                removeAt(position)
+                (requireParentFragment() as EndCardGameFragment).removeEndCardBet(item)
             }else{
                 setDeleteId(item)
             }
@@ -185,10 +181,6 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
     fun clearAll(){
         gameFragment.clearAllEndCardBet()
         dismiss()
-    }
-    fun removeItem(oddsId: String){
-        oddAdapter.removeItem(oddsId)
-        (requireParentFragment() as EndCardGameFragment).removeEndCardBet(oddsId)
     }
 
 }

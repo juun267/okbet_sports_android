@@ -11,11 +11,12 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 
-class BetAmountAdapter(private val onItemClick: (EndCardBet)-> Unit): BaseQuickAdapter<EndCardBet, BaseViewHolder>(0) {
+class BetAmountAdapter(val fragment: EndCardGameFragment,private val onItemClick: (EndCardBet)-> Unit): BaseQuickAdapter<EndCardBet, BaseViewHolder>(0) {
 
     private var selectedItem: EndCardBet? = null
     private val selectedColor = Color.WHITE
@@ -55,12 +56,14 @@ class BetAmountAdapter(private val onItemClick: (EndCardBet)-> Unit): BaseQuickA
             text = "${context.getText(R.string.P318)} $showCurrencySign${item.betMoney}"
             changeStyle(selectedItem == item, this)
             setOnClickListener {
-                if (selectedItem != item) {
-                    onItemClick.invoke(item)
-                    val lastPosition = getItemPosition(selectedItem)
-                    selectedItem = item
-                    notifyItemChanged(lastPosition, lastPosition)
-                    changeStyle(true, this)
+                fragment.showClearTip {
+                    if (selectedItem != item) {
+                        onItemClick.invoke(item)
+                        val lastPosition = getItemPosition(selectedItem)
+                        selectedItem = item
+                        notifyItemChanged(lastPosition, lastPosition)
+                        changeStyle(true, this)
+                    }
                 }
             }
         }

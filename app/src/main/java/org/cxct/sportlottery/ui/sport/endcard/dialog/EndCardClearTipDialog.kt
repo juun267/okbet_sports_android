@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport.endcard.dialog
 
 import android.os.Bundle
+import android.view.View
 import org.cxct.sportlottery.databinding.DialogEndcardClearTipBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -12,17 +13,13 @@ class EndCardClearTipDialog: BaseDialog<BaseViewModel, DialogEndcardClearTipBind
 
     companion object{
         fun isNeedShow()= !KvUtils.decodeBoolean(KvUtils.KEY_ENDCARD_CLEAR)
-        fun newInstance(oddId: String) = EndCardClearTipDialog().apply {
-            arguments = Bundle().apply {
-                putString("oddId",oddId)
-            }
-        }
+        fun newInstance() = EndCardClearTipDialog()
     }
     init {
         marginHorizontal = 12.dp
     }
 
-    private val oddId by lazy { arguments?.getString("oddId") }
+    var onConfirm: (()->Unit)?=null
 
     override fun onInitView() {
         initClick()
@@ -36,13 +33,11 @@ class EndCardClearTipDialog: BaseDialog<BaseViewModel, DialogEndcardClearTipBind
         }
         btnBet.setOnClickListener {
             dismiss()
-            (requireParentFragment() as EndCardBetDialog).addBet()
+            (requireParentFragment() as EndCardGameFragment).startBet()
         }
         btnConfirm.setOnClickListener {
             dismiss()
-            oddId?.let { it1 ->
-                (requireParentFragment() as EndCardBetDialog).removeItem(it1)
-            }
+            onConfirm?.invoke()
         }
     }
 }
