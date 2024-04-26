@@ -125,7 +125,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         binding.tvDepositTitle.setTitleLetterSpacing2F()
         binding.userVipView.setup(this,vipViewModel)
         binding.userVipView.setOnClickListener {
-            startActivity(MyVipDetailActivity::class.java)
+            startActivity(VipBenefitsActivity::class.java)
         }
     }
 
