@@ -63,7 +63,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
             val winMoney= "$showCurrencySign ${TextUtil.formatMoney(it.maximumWinnable?:0,2)}"
             val notice = String.format(getString(R.string.P322),winMoney)
             tvTips.text = Spanny(notice).findAndSpan(winMoney) {
-                TextAppearanceSpan(null, Typeface.NORMAL, 14.dp, ColorStateList.valueOf(requireContext().getColor(R.color.color_6AA4FF)), null)
+                TextAppearanceSpan(null, Typeface.NORMAL, 14.dp, ColorStateList.valueOf(requireContext().getColor(R.color.color_00E701)), null)
             }
         }
         tvBettingTime.text = TimeUtil.timeFormat(row.addTime, TimeUtil.DMY_HM_FORMAT)

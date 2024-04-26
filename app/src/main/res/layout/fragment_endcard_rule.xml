@@ -10,11 +10,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linBack"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="52dp"
         android:foreground="@drawable/fg_ripple"
         android:gravity="center_vertical"
         android:layout_marginTop="@dimen/margin_1"
-        android:background="@color/color_1B2436">
+        android:background="@color/color_1A2C38">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -41,7 +41,8 @@
             android:layout_marginLeft="@dimen/margin_4"
             android:lines="1"
             android:ellipsize="end"
-            android:textSize="@dimen/textSize14sp"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
             android:textColor="@color/color_FFFFFF"
             android:text="@string/P323"/>
 
