@@ -1830,59 +1830,8 @@
     <string name="P438">Exclusive VIP channel, payment will be received in seconds</string>
     <string name="P439">Highest</string>
     <string name="P440">Relegation will be calculated monthly</string>
-    "The exclusive red envelope needs to be applied manually by the user. After review, it will be automatically transferred to the wallet without further notice. Each level can only be received once to meet the corresponding withdrawal flow.
-    You can withdraw money multiple turnover"
-    "1. Calculate the growth value obtained on the previous day at a fixed time each day
-    2. The growth value is calculated by multiplying the effective betting amount of the game by the turnover multiple
-    3. The new growth value obtained every day will be added to the original growth value. If the total is greater than the requirement for the next level, the level will be automatically promoted.
-    4. The corresponding demand growth value will be deducted from the promotion level, and only one level can be promoted at most every day.
-    5. The platform has the right to modify, suspend, cancel, etc. the event without special notice, and reserves the right to final interpretation of the event."
-    Reached maximum level
-    Relegation details
-    Relegation experience
-    Growth value can complete relegation
-    Congratulations on completing the relegation task
-    Relegation rules
-    Starting from the 1st of the next month after a member's "VIP level change", members must complete the valid betting requirements of the corresponding level before they can continue to maintain their level for 30 days.
-    When relegation fails, the VIP level will be dropped to the previous level and a part of the growth value will be retained.
-    Only the VIP growth value obtained within 30 days will be assessed for relegation. The assessment time for relegation will be reset when upgrading.
-    Dedicated customer service
-    Your exclusive customer service is available 24/7 to answer your questions and meet all reasonable needs.
-    Fast withdrawals
-    Open up a VIP exclusive withdrawal channel and arrange withdrawal requests according to VIP levels to ensure your gaming experience
-    Relegation related
-    Apply
-    Supreme enjoyment
-    Game type
-    Growth value multiple
-    In 3 mins
-    The platform has the right to modify, suspend, cancel, etc. the event without special notice, and reserves the right to final interpretation of the event.
-    A valid bet of 1 point on can earn X points of growth value
-    OK Sports
-    Already achieved
-    Remaining Bet
-    My VIP
-    You have been upgraded to VIP
-    No need to maintain the current level
-    Growth value details
-    Display data for the past 30 days
-    Game Betting
-    Upgrade deduction
-    Deduction violations
-    Platform increased
-    Relegation failed
-    level system
-    Upgrade conditions
-    Relegation conditions
-    No relegation required
-    How to get growth value
-    List of benefits
-    Upgrade to get rewards
-    On your birthday, you can receive the birthday gift we have carefully prepared for you.
-    Complete designated bets every week to receive your weekly red packet
-    Large exclusive red packet are waiting for you to collect
-    7x24 hours customer service to serve you
-    Exclusive VIP channel, payment will be received in seconds
-    Highest
-    Relegation will be calculated monthly
+    <string name="P441">Next level:</string>
+    <string name="P442">Relegation:</string>
+    <string name="P443">Growth value is settled at 15:50 every day</string>
+
 </resources>

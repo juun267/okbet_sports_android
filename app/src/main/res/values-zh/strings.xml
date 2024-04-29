@@ -1756,4 +1756,7 @@
     <string name="P438">VIP专属通道，出款秒到账</string>
     <string name="P439">最高</string>
     <string name="P440">保级将每月计算一次</string>
+    <string name="P441">下一级：</string>
+    <string name="P442">保级：</string>
+    <string name="P443">成长值于每日15:50进行结算</string>
 </resources>
