@@ -167,6 +167,8 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
                 close()
                 startActivity(VipBenefitsActivity::class.java)
             }
+        }.apply {
+            isVisible = StaticData.vipOpened()
         }
         menuAffiliate.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),

@@ -4,6 +4,7 @@ import android.widget.ImageView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.repository.StaticData
 import org.jetbrains.annotations.Range
 
 
@@ -25,8 +26,10 @@ object UserVipType{
     const val REWARD_TYPE_WEEKLY = 6
     const val REWARD_TYPE_PACKET = 7
 
+
+
     fun ImageView.setLevelIcon(levelCode: String?){
-        if (levelCode.isNullOrEmpty()){
+        if (!StaticData.vipOpened()||levelCode.isNullOrEmpty()){
             gone()
         }else {
             visible()
@@ -47,7 +50,7 @@ object UserVipType{
         }
     }
     fun ImageView.setLevelTagIcon(levelCode: String?){
-        if (levelCode.isNullOrEmpty()){
+        if (!StaticData.vipOpened()||levelCode.isNullOrEmpty()){
             gone()
         }else{
             visible()

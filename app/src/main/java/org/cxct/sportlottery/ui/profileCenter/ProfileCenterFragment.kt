@@ -17,7 +17,9 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.UserVipType.setLevelTagIcon
 import org.cxct.sportlottery.common.extentions.clickDelay
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentProfileCenterBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
@@ -123,9 +125,14 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         binding.tvVersionCode.text = getString(R.string.current_version) + version
         binding.tvWithdrawTitle.setTitleLetterSpacing2F()
         binding.tvDepositTitle.setTitleLetterSpacing2F()
-        binding.userVipView.setup(this,vipViewModel)
-        binding.userVipView.setOnClickListener {
-            startActivity(VipBenefitsActivity::class.java)
+        if (StaticData.vipOpened()){
+            binding.userVipView.visible()
+            binding.userVipView.setup(this,vipViewModel)
+            binding.userVipView.setOnClickListener {
+                startActivity(VipBenefitsActivity::class.java)
+            }
+        }else{
+            binding.userVipView.gone()
         }
     }
 
