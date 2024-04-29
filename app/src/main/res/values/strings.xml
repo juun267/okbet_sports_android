@@ -1745,4 +1745,144 @@
     <string name="P337">The game has started, no bets can be made</string>
     <string name="J748">Promo</string>
     <string name="nickname_match_error">The characters you entered are inconsistent (may contain full-width or special characters or spaces)</string>
+    <string name="P362">Growth value</string>
+    <string name="P363">Upgrade bonus</string>
+    <string name="P364">Weekly turnover bonus</string>
+    <string name="P365">Birthday bonus</string>
+    <string name="P366">Exclusive bonus</string>
+    <string name="P367">upgrade to next level</string>
+    <string name="P368">Activated benefits</string>
+    <string name="P369">There are no benefits at the current level.Please continue betting to gain growth points to upgrade your level</string>
+    <string name="P370">Unactivated benefits</string>
+    <string name="P371">VIP privileges</string>
+    <string name="P372">VIP details</string>
+    <string name="P373">Receive</string>
+    <string name="P374">Received</string>
+    <string name="P375">Pending</string>
+    <string name="P376">Not eligible</string>
+    <string name="P377">Expired</string>
+    <string name="P378">Operation fails, please contact customer service</string>
+    <string name="P379">VIP growth value turnover rate</string>
+    <string name="P380">Growth value multiplier obtained by each VIP level in designated games</string>
+    <string name="P381">Upgrade related</string>
+    <string name="P382">Birthday</string>
+    <string name="P383">Fill in and get a birthday gift</string>
+    <string name="P384">The birthday cannot be modified again. Are you sure to save it?</string>
+    <string name="P385">Birthday xxxx/xx/xx saved successfully</string>
+    <string name="P386">Current level</string>
+    <string name="P387">Other games</string>
+    <string name="P388">The promotion bonus can be claimed within 30 days of the upgrade. Each level can only be claimed once. It can be withdrawn after meeting the corresponding withdrawal turnover multiple.</string>
+    <string name="P389">The birthday gift needs to be set in personal information first and registered for 60 days. The corresponding amount will be distributed according to the level of the birthday. \nIt can be collected within 30 days if the corresponding requirements are met.Withdrawal can be made at a multiple of the withdrawal turnover</string>
+    <string name="P390">Weekly red envelopes are open for collection from Monday to Friday, and the total effective turnover from last Monday to last Sunday must meet the demand to be eligible for receipt (demand turnover and issuance\nThe amount is determined according to the level of last Sunday), and the withdrawal can be made if the corresponding withdrawal turnover multiple is met.</string>
+    <string name="P391">The exclusive red envelope needs to be applied manually by the user. After review, it will be automatically transferred to the wallet without further notice. Each level can only be received once to meet the corresponding withdrawal flow. You can withdraw money multiple turnover</string>
+    <string name="P392">
+        1. Calculate the growth value obtained on the previous day at a fixed time each day
+        \n2. The growth value is calculated by multiplying the effective betting amount of the game by the turnover multiple
+        \n3. The new growth value obtained every day will be added to the original growth value. If the total is greater than the requirement for the next level, the level will be automatically promoted.
+        \n4. The corresponding demand growth value will be deducted from the promotion level, and only one level can be promoted at most every day.
+        \n5. The platform has the right to modify, suspend, cancel, etc. the event without special notice, and reserves the right to final interpretation of the event.
+    </string>
+    <string name="P393">Reached maximum level</string>
+    <string name="P394">Relegation details</string>
+    <string name="P395">Relegation experience</string>
+    <string name="P396">Growth value can complete relegation</string>
+    <string name="P397">Congratulations on completing the relegation task</string>
+    <string name="P398">Relegation rules</string>
+    <string name="P399">Starting from the 1st of the next month after a member\'s \"VIP level change\", members must complete the valid betting requirements of the corresponding level before they can continue to maintain their level for 30 days.</string>
+    <string name="P400">When relegation fails, the VIP level will be dropped to the previous level and a part of the growth value will be retained.</string>
+    <string name="P401">Only the VIP growth value obtained within 30 days will be assessed for relegation. The assessment time for relegation will be reset when upgrading.</string>
+    <string name="P402">Dedicated customer service</string>
+    <string name="P403">Your exclusive customer service is available 24/7 to answer your questions and meet all reasonable needs.</string>
+    <string name="P404">Fast withdrawals</string>
+    <string name="P405">Open up a VIP exclusive withdrawal channel and arrange withdrawal requests according to VIP levels to ensure your gaming experience</string>
+    <string name="P406">Relegation related</string>
+    <string name="P407">Apply</string>
+    <string name="P408">Supreme enjoyment</string>
+    <string name="P409">Game type</string>
+    <string name="P410">Growth value multiple</string>
+    <string name="P411">In 3 mins</string>
+    <string name="P412">The platform has the right to modify, suspend, cancel, etc. the event without special notice, and reserves the right to final interpretation of the event.</string>
+    <string name="P413">A valid bet of 1 point on can earn X points of growth value</string>
+    <string name="P414">OK Sports</string>
+    <string name="P415">Already achieved</string>
+    <string name="P416">Remaining Bet</string>
+    <string name="P417">My VIP</string>
+    <string name="P418">You have been upgraded to VIP</string>
+    <string name="P419">No need to maintain the current level</string>
+    <string name="P420">Growth value details</string>
+    <string name="P421">Display data for the past 30 days</string>
+    <string name="P422">Game Betting</string>
+    <string name="P423">Upgrade deduction</string>
+    <string name="P424">Deduction violations</string>
+    <string name="P425">Platform increased</string>
+    <string name="P426">Relegation failed</string>
+    <string name="P427">level system</string>
+    <string name="P428">Upgrade conditions</string>
+    <string name="P429">Relegation conditions</string>
+    <string name="P430">No relegation required</string>
+    <string name="P431">How to get growth value</string>
+    <string name="P432">List of benefits</string>
+    <string name="P433">Upgrade to get rewards</string>
+    <string name="P434">On your birthday, you can receive the birthday gift we have carefully prepared for you.</string>
+    <string name="P435">Complete designated bets every week to receive your weekly red packet</string>
+    <string name="P436">Large exclusive red packet are waiting for you to collect</string>
+    <string name="P437">7x24 hours customer service to serve you</string>
+    <string name="P438">Exclusive VIP channel, payment will be received in seconds</string>
+    <string name="P439">Highest</string>
+    <string name="P440">Relegation will be calculated monthly</string>
+    "The exclusive red envelope needs to be applied manually by the user. After review, it will be automatically transferred to the wallet without further notice. Each level can only be received once to meet the corresponding withdrawal flow.
+    You can withdraw money multiple turnover"
+    "1. Calculate the growth value obtained on the previous day at a fixed time each day
+    2. The growth value is calculated by multiplying the effective betting amount of the game by the turnover multiple
+    3. The new growth value obtained every day will be added to the original growth value. If the total is greater than the requirement for the next level, the level will be automatically promoted.
+    4. The corresponding demand growth value will be deducted from the promotion level, and only one level can be promoted at most every day.
+    5. The platform has the right to modify, suspend, cancel, etc. the event without special notice, and reserves the right to final interpretation of the event."
+    Reached maximum level
+    Relegation details
+    Relegation experience
+    Growth value can complete relegation
+    Congratulations on completing the relegation task
+    Relegation rules
+    Starting from the 1st of the next month after a member's "VIP level change", members must complete the valid betting requirements of the corresponding level before they can continue to maintain their level for 30 days.
+    When relegation fails, the VIP level will be dropped to the previous level and a part of the growth value will be retained.
+    Only the VIP growth value obtained within 30 days will be assessed for relegation. The assessment time for relegation will be reset when upgrading.
+    Dedicated customer service
+    Your exclusive customer service is available 24/7 to answer your questions and meet all reasonable needs.
+    Fast withdrawals
+    Open up a VIP exclusive withdrawal channel and arrange withdrawal requests according to VIP levels to ensure your gaming experience
+    Relegation related
+    Apply
+    Supreme enjoyment
+    Game type
+    Growth value multiple
+    In 3 mins
+    The platform has the right to modify, suspend, cancel, etc. the event without special notice, and reserves the right to final interpretation of the event.
+    A valid bet of 1 point on can earn X points of growth value
+    OK Sports
+    Already achieved
+    Remaining Bet
+    My VIP
+    You have been upgraded to VIP
+    No need to maintain the current level
+    Growth value details
+    Display data for the past 30 days
+    Game Betting
+    Upgrade deduction
+    Deduction violations
+    Platform increased
+    Relegation failed
+    level system
+    Upgrade conditions
+    Relegation conditions
+    No relegation required
+    How to get growth value
+    List of benefits
+    Upgrade to get rewards
+    On your birthday, you can receive the birthday gift we have carefully prepared for you.
+    Complete designated bets every week to receive your weekly red packet
+    Large exclusive red packet are waiting for you to collect
+    7x24 hours customer service to serve you
+    Exclusive VIP channel, payment will be received in seconds
+    Highest
+    Relegation will be calculated monthly
 </resources>

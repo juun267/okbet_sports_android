@@ -161,7 +161,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
         }
         menuVip.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_vip_sel, R.drawable.ic_left_menu_vip_sel),
-            R.string.B005
+            R.string.P371
         ){
             loginedRun(requireContext()){
                 close()
