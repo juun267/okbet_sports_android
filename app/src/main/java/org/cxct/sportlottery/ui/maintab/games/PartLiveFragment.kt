@@ -73,7 +73,7 @@ class PartLiveFragment : BaseFragment<OKLiveViewModel,FragmentPartOkgamesBinding
         adapter = gameChildAdapter
         loadMore { onMoreClick() }
         gameChildAdapter.setOnItemClickListener { _, _, position ->
-            val okGameBean = gameChildAdapter.getItem(position)
+            val okGameBean = gameChildAdapter.getItemOrNull(position)?:return@setOnItemClickListener
             mOkLiveFragment().enterGame(okGameBean)
         }
     }

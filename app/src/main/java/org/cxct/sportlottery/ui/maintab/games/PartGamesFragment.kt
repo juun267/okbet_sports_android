@@ -72,7 +72,7 @@ class PartGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentPartOkgame
         adapter = gameChildAdapter
         loadMore(::onMoreClick)
         gameChildAdapter.setOnItemClickListener { _, _, position ->
-            val okGameBean = gameChildAdapter.getItem(position)
+            val okGameBean = gameChildAdapter.getItemOrNull(position)?:return@setOnItemClickListener
             if (LoginRepository.isLogined()) {
                 okGamesFragment().enterGame(okGameBean)
             } else {
