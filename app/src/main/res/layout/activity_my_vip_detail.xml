@@ -11,7 +11,7 @@
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:topTitleText="My VIP Details"/>
+        app:topTitleText="@string/P372"/>
 
    <FrameLayout
        android:id="@+id/linStatus"
