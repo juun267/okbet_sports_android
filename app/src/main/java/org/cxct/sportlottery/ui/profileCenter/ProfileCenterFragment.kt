@@ -46,7 +46,6 @@ import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
-import org.cxct.sportlottery.ui.profileCenter.vip.MyVipDetailActivity
 import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
 import org.cxct.sportlottery.ui.profileCenter.vip.VipViewModel
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
@@ -104,22 +103,15 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         //默认显示代理入口
         binding.btnAffiliate.isVisible = (sConfigData?.frontEntranceStatus != "0")
         //   btn_affiliate.setVisibilityByCreditSystem()
-        mVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
-            if (it.isNewVersion) {
-                //下载更新要做判断 当前有没有新版本
-                binding.updateVersion.setOnClickListener {
-                    //外部下載
-                    JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
-                    // startActivity(Intent(requireActivity(), VersionUpdateActivity::class.java))
-                }
-                binding.ivVersionNew.visibility = View.VISIBLE
-                return@observe
+        mVersionUpdateViewModel.appMinVersionState.observe(viewLifecycleOwner) {
+            binding.ivVersionNew.isVisible = it.isShowUpdateDialog
+            binding.btnVersionNow.isEnabled = it.isShowUpdateDialog
+            binding.btnVersionNow.setOnClickListener {
+                //外部下載
+                JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
             }
-
-            binding.updateVersion.setOnClickListener { }
-            binding.ivVersionNew.visibility = View.GONE
         }
-
+        mVersionUpdateViewModel.checkAppMinVersion()
         val version = " V${BuildConfig.VERSION_NAME}"
         binding.tvCurrentVersion.text = version
         binding.tvVersionCode.text = getString(R.string.current_version) + version

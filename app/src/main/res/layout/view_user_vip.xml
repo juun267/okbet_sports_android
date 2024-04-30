@@ -35,19 +35,20 @@
 
                 <ImageView
                     android:id="@+id/ivCurrentLevel"
-                    android:layout_width="@dimen/margin_28"
-                    android:layout_height="@dimen/margin_28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/margin_40"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/ic_vip_lv0" />
 
                 <TextView
                     android:id="@+id/tvCurrentLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_4"
                     android:fontFamily="@font/inter_regular"
                     android:includeFontPadding="false"
-                    android:text="vip 4"
-                    android:textColor="@color/color_000000"
+                    android:textAllCaps="true"
+                    android:text="vip 0"
+                    android:textColor="@color/color_854C00"
                     android:textFontWeight="700"
                     android:textSize="@dimen/textSize18sp"
                     android:textStyle="bold" />
@@ -70,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginRight="@dimen/margin_8"
-                    android:text="next Level"
+                    android:text="@string/P441"
                     android:textColor="@color/color_D48C1A"
                     android:textSize="@dimen/textSize12sp" />
             </LinearLayout>
@@ -83,18 +84,19 @@
 
                 <ImageView
                     android:id="@+id/ivNextLevel"
-                    android:layout_width="@dimen/margin_28"
-                    android:layout_height="@dimen/margin_28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/margin_40"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/ic_vip_lv1" />
 
                 <TextView
                     android:id="@+id/tvNextLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_4"
                     android:includeFontPadding="false"
-                    android:text="vip 4"
-                    android:textColor="@color/color_000000"
+                    android:textAllCaps="true"
+                    android:text="vip 1"
+                    android:textColor="@color/color_854C00"
                     android:textFontWeight="700"
                     android:textSize="@dimen/textSize18sp"
                     android:textStyle="bold" />

@@ -73,6 +73,7 @@ object UserVipType{
 
     fun getVipCard(level: Int): Int {
         return when(level) {
+            0 -> R.drawable.bg_vip0
             1 -> R.drawable.bg_vip1
             2 -> R.drawable.bg_vip2
             3 -> R.drawable.bg_vip3

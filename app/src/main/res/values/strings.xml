@@ -1830,8 +1830,8 @@
     <string name="P438">Exclusive VIP channel, payment will be received in seconds</string>
     <string name="P439">Highest</string>
     <string name="P440">Relegation will be calculated monthly</string>
-    <string name="P441">Next level:</string>
-    <string name="P442">Relegation:</string>
+    <string name="P441">Next level</string>
+    <string name="P442">Relegation</string>
     <string name="P443">Growth value is settled at 15:50 every day</string>
 
 </resources>

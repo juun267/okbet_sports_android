@@ -14,6 +14,7 @@ import org.cxct.sportlottery.common.enums.UserVipType.REWARD_TYPE_BIRTHDAY
 import org.cxct.sportlottery.common.enums.UserVipType.REWARD_TYPE_PACKET
 import org.cxct.sportlottery.common.enums.UserVipType.REWARD_TYPE_PROMOTE
 import org.cxct.sportlottery.common.enums.UserVipType.REWARD_TYPE_WEEKLY
+import org.cxct.sportlottery.common.enums.UserVipType.setLevelIcon
 import org.cxct.sportlottery.common.enums.UserVipType.setLevelTagIcon
 import org.cxct.sportlottery.common.extentions.getColor
 import org.cxct.sportlottery.common.extentions.gone
@@ -50,7 +51,7 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
         viewModel.getUserVip()
     }
     private fun updateUI(userVip: UserVip)=binding.run{
-        ivCurrentLevel.setLevelTagIcon(userVip.levelCode)
+        ivCurrentLevel.setLevelIcon(userVip.levelCode)
         tvCurrentLevel.text = userVip.levelName
         val nextLevelIndex = userVip.rewardInfo.indexOfFirst { it.levelCode == userVip.levelCode}+1
         val nextRewardInfo = userVip.rewardInfo.getOrNull(nextLevelIndex)
@@ -59,7 +60,7 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
             tvNextLevel.text = resources.getString(R.string.P439)
         }else{
             ivNextLevel.visible()
-            ivNextLevel.setLevelTagIcon(nextRewardInfo?.levelCode)
+            ivNextLevel.setLevelIcon(nextRewardInfo?.levelCode)
             tvNextLevel.text = nextRewardInfo?.levelName
         }
 

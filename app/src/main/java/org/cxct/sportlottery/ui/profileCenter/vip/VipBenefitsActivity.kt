@@ -51,6 +51,9 @@ class VipBenefitsActivity: BaseActivity<MainHomeViewModel, ActivityVipBenefitsBi
             .setSolidColor(getColor(R.color.color_5182FF), getColor(R.color.color_0029FF))
             .setSolidGradientOrientation(ShapeGradientOrientation.LEFT_TO_RIGHT)
             .setRadius(8.dp.toFloat())
+        frDetail.setOnClickListener {
+            startActivity<MyVipDetailActivity>()
+        }
     }
 
     private fun initVipCard() = binding.run {
