@@ -329,7 +329,7 @@
     <string name="hint_pay1">1. Pagkatapos ng matagumpay na pagbabayad, awtomatikong maikredito ang account, at may lalabas na paalala.</string>
     <string name="hint_pay2">2. Matagal na walang tugon, mangyaring makipag-ugnayan sa customer service。</string>
     <string name="btn_look_for">Suriin ang transaksyon</string>
-    <string name="btn_service">makipag ugnayan sa CS</string>
+    <string name="btn_service">Tawagan ang CS</string>
     <string name="txv_transfer_pay">Ilipat</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
     <string name="error_first_recharge_amount">Ang halaga ng unang deposito ay hindi maaaring mas mababa sa %s</string>

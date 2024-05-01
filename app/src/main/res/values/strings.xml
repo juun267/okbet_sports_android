@@ -335,7 +335,7 @@
     <string name="hint_pay1">1. The payment will be automatically received after successful payment, and the prompt will pop up.</string>
     <string name="hint_pay2">2. If there is no response for a long time, please contact customer service.</string>
     <string name="btn_look_for">Check trade</string>
-    <string name="btn_service">contact CS</string>
+    <string name="btn_service">Contact CS</string>
     <string name="txv_transfer_pay">Transfer</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
     <string name="error_first_recharge_amount">The first deposit amount cannot be less than %1$s</string>
