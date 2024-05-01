@@ -239,6 +239,7 @@ abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewMod
             return@setupBackTop true
         }
         layoutManager = getGameLayoutManger()
+        itemAnimator = null
         adapter = getGameListAdapter().apply { setEmptyView(EmptySportGamesView(context())) }
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
