@@ -58,11 +58,4 @@ class VerifyStatusFragment :
         tvCustomer.setServiceClick(childFragmentManager)
     }
 
-    private fun openService() {
-        val serviceUrl = sConfigData?.customerServicveVideoUrl
-        if (!serviceUrl.isNullOrBlank()) {
-            activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-        }
-    }
-
 }

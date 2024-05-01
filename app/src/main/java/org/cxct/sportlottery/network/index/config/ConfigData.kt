@@ -111,7 +111,7 @@ data class ConfigData(
     val creditSystem: Int? = null,
     val firstRechLessAmountLimit: String?,//首存金额限制
     var idUploadNumber: String?,//KYC認證個數
-    var customerServicveVideoUrl: String?,
+//    var customerServicveVideoUrl: String?,
 //    val enableBirthday: String?, //是否开启Birthday(1：开启，0：关闭)
 //    val enableSalarySource: String?, //是否开启SalarySource(1：开启，0：关闭)
 //    val enableIdentityNumber: String?, //是否开启IdentityNumber(1：开启，0：关闭)

@@ -7,6 +7,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.setServiceClick
 
 class VerifyRejectFragment :
     BaseFragment<ProfileCenterViewModel, FragmentVerifyRejectBinding>() {
@@ -14,18 +15,9 @@ class VerifyRejectFragment :
     override fun onInitView(view: View) {
         binding.tvReasonLabel.text = "${getString(R.string.P332)}: "
         binding.tvReason.text = "${viewModel.userInfo.value?.rejectRemark}"
-        binding.btnCS.setOnClickListener {
-           openService()
-        }
+        binding.btnCS.setServiceClick(childFragmentManager)
         binding.btnSubmit.setOnClickListener {
             (requireActivity() as? VerifyIdentityActivity)?.rejectResubmit()
-        }
-    }
-
-    private fun openService() {
-        val serviceUrl = sConfigData?.customerServicveVideoUrl
-        if (!serviceUrl.isNullOrBlank()) {
-            activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
         }
     }
 
