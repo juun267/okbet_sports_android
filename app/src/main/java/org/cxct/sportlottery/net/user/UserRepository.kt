@@ -156,4 +156,7 @@ object UserRepository {
         params.addProperty("activityId", activityId)
         return userApi.activityRecord(params)
     }
+    suspend fun reVerify(): ApiResult<String?> {
+        return userApi.reVerify()
+    }
 }

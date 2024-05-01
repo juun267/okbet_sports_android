@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
 import org.cxct.sportlottery.network.Constants.LOGIN
 import org.cxct.sportlottery.network.Constants.LOGIN_CHECK_NEED_CODE
+import org.cxct.sportlottery.network.Constants.REVERIFY
 import org.cxct.sportlottery.network.Constants.RRESET_WITHDRAW
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.UPLOAD_REVIEW_PHOTO
@@ -78,5 +79,8 @@ interface UserApiService {
 
     @GET(WHEEL_ACTIVITY_INFO)
     suspend fun getWheelActivityInfo(): ApiResult<WheelActivityInfo>
+
+    @GET(REVERIFY)
+    suspend fun reVerify(): ApiResult<String?>
 
 }

@@ -11,7 +11,7 @@ enum class VerifiedType(val value: Int,@StringRes val nameResId: Int,@ColorRes v
     NOT_YET(0,R.string.kyc_unverified,R.color.color_A5B2D0),
     PASSED(1,R.string.kyc_passed,R.color.color_1CD219),
     VERIFYING(2,R.string.kyc_unverifing,R.color.color_FFA800),
-    VERIFIED_FAILED(3,R.string.kyc_unverified,R.color.color_F23C3B),
+    VERIFIED_FAILED(3,R.string.kyc_unverified,R.color.color_A5B2D0),
     VERIFIED_WAIT(4,R.string.kyc_unverifing,R.color.color_FFA800),
     REVERIFIED_NEED(5, R.string.P211,R.color.color_FFA800),
     REVERIFYING(6,R.string.P196,R.color.color_FFA800),

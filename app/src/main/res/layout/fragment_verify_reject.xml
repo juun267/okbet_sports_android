@@ -14,8 +14,6 @@
             android:background="@color/color_FFFFFF"
             android:paddingHorizontal="@dimen/margin_20"
             android:layout_gravity="center_horizontal"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:orientation="vertical">
 
             <ImageView
@@ -63,6 +61,8 @@
                 android:layout_marginBottom="@dimen/margin_30">
                 <Button
                     android:id="@+id/btnCS"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:foreground="@drawable/fg_ripple"
                     android:layout_width="0dp"
                     android:layout_height="44dp"
                     android:layout_weight="1"
@@ -73,6 +73,8 @@
                     android:text="@string/btn_service"/>
                 <Button
                     android:id="@+id/btnSubmit"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:foreground="@drawable/fg_ripple"
                     android:layout_width="0dp"
                     android:layout_height="44dp"
                     android:layout_weight="1"

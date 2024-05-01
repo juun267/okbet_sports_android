@@ -314,6 +314,8 @@ object Constants {
 
     const val OCR_INFO = "/idscan/api/front/ocr/getOCRInfo"
 
+    const val REVERIFY = "/api/front/user/reVerify"
+
     //登录或注册(新版优化登录注册->使用)
     const val LOGIN_OR_REG = "/api/front/index/loginOrRegV3"
 

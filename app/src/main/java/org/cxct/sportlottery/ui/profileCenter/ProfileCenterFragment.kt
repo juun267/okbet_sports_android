@@ -80,7 +80,6 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         setupWithdrawButton()
         setupLogout()
         setupMoreButtons()
-        getUserInfo()
         initObserve()
         updateThirdOpenUI()
         updateCreditAccountUI()
@@ -132,6 +131,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     override fun onResume() {
         super.onResume()
+        getUserInfo()
         getMoney()
     }
 

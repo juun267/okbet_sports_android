@@ -13,12 +13,12 @@ class VerifyRejectFragment :
 
     override fun onInitView(view: View) {
         binding.tvReasonLabel.text = "${getString(R.string.P332)}: "
-        binding.tvReason.text = "${viewModel.userInfo.value?.iconUrl}: "
+        binding.tvReason.text = "${viewModel.userInfo.value?.rejectRemark}"
         binding.btnCS.setOnClickListener {
            openService()
         }
         binding.btnSubmit.setOnClickListener {
-            (requireActivity() as VerifyIdentityActivity).rejectResubmit()
+            (requireActivity() as? VerifyIdentityActivity)?.rejectResubmit()
         }
     }
 

@@ -50,9 +50,9 @@ class ProfileCenterViewModel(
     val verifyConfig = SingleLiveEvent<ApiResult<VerifyConfig>>()
     val imgUpdated = SingleLiveEvent<Pair<File, ImgData?>>()
     val uploadReview = SingleLiveEvent<ApiResult<String>>()
-    val userInfoEvent = SingleLiveEvent<Any>()
     val ocrResult = SingleLiveEvent<Triple<Boolean, String, OCRInfo?>>()
     val kycResult = SingleLiveEvent<ApiResult<String>>()
+    val reVerifyResult = SingleLiveEvent<ApiResult<String?>>()
 
     fun getUserInfo() {
         viewModelScope.launch {
@@ -263,14 +263,6 @@ class ProfileCenterViewModel(
         callApi({ UserRepository.getVerifyConfig() }) { verifyConfig.value = it}
     }
 
-    fun loadUserInfo() {
-        viewModelScope.launch {
-            doRequest({ UserInfoRepository.getUserInfo()}) {
-                userInfoEvent.value = Any()
-            }
-        }
-    }
-
 
     fun uploadImage(imgeFile: File) {
         viewModelScope.launch {
@@ -315,6 +307,12 @@ class ProfileCenterViewModel(
                    firstName: String, middleName: String, lastName: String, birthday: String) {
         callApi({ UserRepository.uploadKYCInfo(idType, idNumber, idImageUrl, firstName, middleName, lastName, birthday) }) {
             kycResult.value = it
+        }
+    }
+
+    fun reVerify() {
+        callApi({ UserRepository.reVerify() }) {
+            reVerifyResult.postValue(it)
         }
     }
 }

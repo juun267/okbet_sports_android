@@ -62,22 +62,20 @@
 
         <action
             android:id="@+id/action_reverifyKYCFragment_to_verifyStatusFragment"
-            app:destination="@id/verifyStatusFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:popExitAnim="@anim/exit_to_right" />
+            app:destination="@id/verifyStatusFragment" />
 
     </fragment>
     <fragment
         android:id="@+id/verifyRejectFragment"
         android:name="org.cxct.sportlottery.ui.profileCenter.identity.VerifyRejectFragment"
-        android:label="VerifyRejectFragment"
+        android:label="VerifyKYCFragment"
         tools:layout="@layout/fragment_verify_reject">
 
-        <action
-            android:id="@+id/action_reverifyKYCFragment_to_verifyRejectFragment"
-            app:destination="@id/verifyStatusFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:popExitAnim="@anim/exit_to_right" />
+<!--        <action-->
+<!--            android:id="@+id/action_reverifyKYCFragment_to_verifyRejectFragment"-->
+<!--            app:destination="@id/verifyRejectFragment"-->
+<!--            app:enterAnim="@anim/enter_from_right"-->
+<!--            app:popExitAnim="@anim/exit_to_right" />-->
 
     </fragment>
 

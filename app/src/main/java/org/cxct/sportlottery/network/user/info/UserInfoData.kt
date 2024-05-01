@@ -68,5 +68,5 @@ data class UserInfoData(
     val middleName: String?="",
     val lastName: String?="",
     val birthday: String?="",
-
+    val rejectRemark: String?="",
 )

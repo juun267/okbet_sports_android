@@ -8,6 +8,7 @@ import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ActivityVerifyIdentityBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
+import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class VerifyIdentityActivity :
@@ -36,7 +37,7 @@ class VerifyIdentityActivity :
             && verified != VerifiedType.PASSED.value) {
             loadingHolder.withRetry {
                 loadingHolder.showLoading()
-                viewModel.loadUserInfo()
+                viewModel.getUserInfo()
             }
             loadingHolder.go()
         } else {
@@ -45,9 +46,17 @@ class VerifyIdentityActivity :
     }
 
     private fun initObserver() {
-        viewModel.userInfoEvent.observe(this) {
+        viewModel.userInfo.observe(this) {
             checkKYCStatus()
             loadingHolder.showLoadSuccess()
+        }
+        viewModel.reVerifyResult.observe(this) {
+            if (it.succeeded()){
+                viewModel.getUserInfo()
+            }else{
+                loadingHolder.showLoadFailed()
+                ToastUtil.showToast(this,it.msg)
+            }
         }
     }
 
@@ -106,6 +115,7 @@ class VerifyIdentityActivity :
         super.onBackPressed()
     }
     fun rejectResubmit(){
-        mNavController.navigate(R.id.reverifyKYCFragment)
+        loadingHolder.showLoading()
+        viewModel.reVerify()
     }
 }
