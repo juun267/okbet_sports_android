@@ -15,6 +15,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentProfileCenterBinding
@@ -79,7 +80,6 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         setupWithdrawButton()
         setupLogout()
         setupMoreButtons()
-        getUserInfo()
         initObserve()
         updateThirdOpenUI()
         updateCreditAccountUI()
@@ -131,6 +131,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     override fun onResume() {
         super.onResume()
+        getUserInfo()
         getMoney()
     }
 
@@ -630,35 +631,15 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
     private fun bindVerifyStatus(userInfo: UserInfo?) {
         binding.tvKycStatus.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
-
-        when (userInfo?.verified) {
-            ProfileActivity.VerifiedType.PASSED.value -> {
-                setVerify(R.string.kyc_passed, R.color.color_1EB65B)
-            }
-            ProfileActivity.VerifiedType.NOT_YET.value,ProfileActivity.VerifiedType.VERIFIED_FAILED.value -> {
-                setVerify(R.string.kyc_unverified, R.color.color_C4CDE3)
-            }
-            ProfileActivity.VerifiedType.VERIFYING.value,ProfileActivity.VerifiedType.VERIFIED_WAIT.value -> {
-                setVerify(R.string.kyc_unverifing, R.color.color_FF8A00)
-
-            }
-            ProfileActivity.VerifiedType.REVERIFIED_NEED.value -> {
-                setVerify(R.string.P211, R.color.color_FF8A00)
-
-            }
-            ProfileActivity.VerifiedType.REVERIFYING.value -> {
-                setVerify(R.string.P196, R.color.color_FF8A00)
-            }
-            else -> {
-                setVerify(R.string.kyc_unverified, R.color.color_C4CDE3)
-            }
+        VerifiedType.getVerifiedType(userInfo?.verified).let{
+            setVerify(text = it.nameResId, color = ContextCompat.getColor(requireContext(),it.colorResId))
         }
     }
 
-    private fun setVerify(text: Int, colorResId: Int) {
+    private fun setVerify(text: Int, color: Int) {
         binding.tvKycStatus.setText(text)
         val bgDrawable = DrawableCreator.Builder()
-            .setSolidColor(ContextCompat.getColor(requireContext(), colorResId))
+            .setSolidColor(color)
             .setSizeHeight(18.dp.toFloat())
             .setCornersRadius(9.dp.toFloat())
             .build()

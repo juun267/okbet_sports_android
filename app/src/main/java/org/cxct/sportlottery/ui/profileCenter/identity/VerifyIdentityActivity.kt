@@ -2,12 +2,13 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 
 import androidx.navigation.fragment.NavHostFragment
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ActivityVerifyIdentityBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class VerifyIdentityActivity :
@@ -32,11 +33,11 @@ class VerifyIdentityActivity :
         }
         isFirst = false
         val verified = viewModel.userInfo.value?.verified
-        if (verified != ProfileActivity.VerifiedType.NOT_YET.value
-            && verified != ProfileActivity.VerifiedType.PASSED.value) {
+        if (verified != VerifiedType.NOT_YET.value
+            && verified != VerifiedType.PASSED.value) {
             loadingHolder.withRetry {
                 loadingHolder.showLoading()
-                viewModel.loadUserInfo()
+                viewModel.getUserInfo()
             }
             loadingHolder.go()
         } else {
@@ -45,23 +46,34 @@ class VerifyIdentityActivity :
     }
 
     private fun initObserver() {
-        viewModel.userInfoEvent.observe(this) {
+        viewModel.userInfo.observe(this) {
             checkKYCStatus()
             loadingHolder.showLoadSuccess()
+        }
+        viewModel.reVerifyResult.observe(this) {
+            if (it.succeeded()){
+                viewModel.getUserInfo()
+            }else{
+                loadingHolder.showLoadFailed()
+                ToastUtil.showToast(this,it.msg)
+            }
         }
     }
 
     private fun checkKYCStatus() {
         val opt1 = when (viewModel.userInfo.value?.verified) {
-            ProfileActivity.VerifiedType.VERIFYING.value,
-//            ProfileActivity.VerifiedType.VERIFIED_FAILED.value,
-            ProfileActivity.VerifiedType.PASSED.value,
-            ProfileActivity.VerifiedType.VERIFIED_WAIT.value,
-            ProfileActivity.VerifiedType.REVERIFYING.value -> {
+            VerifiedType.VERIFYING.value,
+//            VerifiedType.VERIFIED_FAILED.value,
+            VerifiedType.PASSED.value,
+            VerifiedType.VERIFIED_WAIT.value,
+            VerifiedType.REVERIFYING.value -> {
                 R.id.verifyStatusFragment
             }
-            ProfileActivity.VerifiedType.REVERIFIED_NEED.value -> {
+            VerifiedType.REVERIFIED_NEED.value -> {
                 R.id.reverifyKYCFragment
+            }
+            VerifiedType.REJECT.value -> {
+                R.id.verifyRejectFragment
             }
             else -> {
                 R.id.verifyKYCFragment
@@ -101,5 +113,9 @@ class VerifyIdentityActivity :
             }
         }
         super.onBackPressed()
+    }
+    fun rejectResubmit(){
+        loadingHolder.showLoading()
+        viewModel.reVerify()
     }
 }

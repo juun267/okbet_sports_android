@@ -15,6 +15,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.SecurityCodeEnterType
+import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityProfileBinding
 import org.cxct.sportlottery.network.Constants
@@ -59,14 +61,6 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
 
     //KYC驗證彈窗
     private var kYCVerifyDialog: CustomSecurityDialog? = null
-
-    enum class VerifiedType(val value: Int) {
-        NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3), VERIFIED_WAIT(4), REVERIFIED_NEED(5), REVERIFYING(6)
-    }
-
-    enum class SecurityCodeEnterType(val value: Int) {
-        REALNAME(0), PW(1)
-    }
 
     //生日选择
     private var dateTimePicker: TimePickerView? = null
@@ -526,46 +520,9 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
                 if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
             setIdentifyStatus(binding.llVerified.isVisible&&it?.verified==VerifiedType.PASSED.value)
             viewModel.userDetail.value?.let { setIdentityDetail(it) }
-            when (it?.verified) {
-                VerifiedType.PASSED.value -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.kyc_passed)
-                }
-
-                VerifiedType.NOT_YET.value, VerifiedType.VERIFIED_FAILED.value -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.kyc_unverified)
-
-                }
-
-                VerifiedType.REVERIFIED_NEED.value -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.P211)
-
-                }
-
-                VerifiedType.VERIFYING.value, VerifiedType.VERIFIED_WAIT.value -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.kyc_unverifing)
-
-                }
-                VerifiedType.REVERIFYING.value -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.P196)
-
-                }
-
-                else -> {
-                     binding.llVerified.isEnabled = true
-                     binding.llVerified.isClickable = true
-                     binding.tvVerified.text = getString(R.string.kyc_unverified)
-
-                }
+            VerifiedType.getVerifiedType(it?.verified).let {
+                binding.tvVerified.text = getString(it.nameResId)
+                binding.tvVerified.setTextColor(ContextCompat.getColor(this,it.colorResId))
             }
 
             if (it?.setted == FLAG_NICKNAME_IS_SET) {

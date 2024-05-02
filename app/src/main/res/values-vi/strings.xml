@@ -1625,4 +1625,7 @@
     <string name="P344">Tôi không phải là sinh viên của bất kỳ trường học, cao đẳng hay đại học nào ở Philippines.</string>
     <string name="P345">Tôi hiểu rằng nếu thông tin tôi cung cấp bị phát hiện là không chính xác, OKBET có quyền áp dụng hình phạt đối với tài khoản của tôi theo Mục 5.1 - 5.2 trong Điều khoản và Thoả thuận.</string>
     <string name="P346">Tôi đồng ý với tất cả các điều khoản và thoả thuận trên.</string>
+    <string name="P331">Chúng tôi rất tiếc phải thông báo với bạn rằng yêu cầu KYC của bạn đã bị từ chối. Vui lòng gửi lại các tài liệu hợp lệ để hoàn tất quá trình. Cảm ơn bạn!</string>
+    <string name="P332">Lý do</string>
+    <string name="P330">Gửi lại</string>
 </resources>
