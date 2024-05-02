@@ -38,7 +38,8 @@ class MyVipDetailActivity: BaseActivity<VipViewModel,ActivityMyVipDetailBinding>
                 tvContent.text = getString(R.string.P396)
                 linStatus.setBackgroundResource(R.drawable.bg_vipdetails_orange)
                 tvTag.setBackgroundResource(R.drawable.bg_keepgrade_orange)
-                vpProgress.setTintColor(R.color.color_FFB828,R.color.color_A78031)
+                vpProgress.setTintColor(R.color.color_025BE8,R.color.color_19025BE8)
+//                vpProgress.setTintColor(R.color.color_FFB828,R.color.color_A78031)
                 val levelExp = userVip.rewardInfo.firstOrNull { it.levelCode == userVip.levelCode }?.upgradeExp?:0L
                 vpProgress.setProgress((userVip.upgradeExp*100/levelExp).toInt())
                 tvAmount.text = (userVip.upgradeExp-userVip.exp).toString()
