@@ -958,7 +958,7 @@
     <string name="kyc_verify_successful">您已完成实名验证！</string>
     <string name="kyc_unverified">未验证</string>
     <string name="kyc_unverifing">验证中</string>
-    <string name="kyc_passed">已验证</string>
+    <string name="kyc_passed">已通过</string>
     <string name="kyc_enter_id_num">请输入证件号码</string>
 
     <string name="next_step">下一步</string>
