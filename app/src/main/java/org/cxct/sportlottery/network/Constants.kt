@@ -237,6 +237,9 @@ object Constants {
     //篮球末位比分规则页面
     fun getEndCardRuleUrl() = "${getH5BaseUrl()}mobile/newBkEnd/rules"
 
+    //VIP等级说明页面
+    fun getVipRuleUrl(context: Context) = "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}vip-details-my"
+
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
     /**
@@ -247,9 +250,14 @@ object Constants {
             return url
         }
         val url = pingHostAndPath(getH5BaseUrl(),url)
-        return url + (if (url.contains("?")) "&" else "?") + "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}&lang=${
-            getSelectLanguage(MultiLanguagesApplication.appContext).key
-        }&token=${URLEncoder.encode(LoginRepository.token, "utf-8")}"
+        return url +
+                (if (url.contains("?")) "&" else "?") +
+                "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}" +
+                "&from=android" +
+                "&version=${BuildConfig.VERSION_NAME}" +
+                "&lang=${getSelectLanguage(MultiLanguagesApplication.appContext).key}" +
+                "&token=${URLEncoder.encode(LoginRepository.token, "utf-8")}" +
+                "&platform=${MultiLanguagesApplication.appContext.getString(R.string.app_name)}"
     }
 
     /**
