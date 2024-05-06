@@ -1654,13 +1654,13 @@
     <string name="P245">Step 2</string>
     <string name="P246">Step 3</string>
     <string name="P247">Choose A Valid ID Type</string>
-    <string name="P248">Take Photo Or Upload Of ID</string>
-    <string name="P249">Information Confirm</string>
-    <string name="P250">Recommended IDs get verified in 3mins</string>
-    <string name="P251">Other IDs get verified in 24hrs</string>
-    <string name="P252">Make sure information below is clear on your ID</string>
+    <string name="P248">Upload ID Photo</string>
+    <string name="P249">Confirm Information</string>
+    <string name="P250">Choose Recommend IDs for Quick Verification within 3 minutes</string>
+    <string name="P251">Other IDs may take up to 24 hours</string>
+    <string name="P252">Take a picture of your ID or select from your album. Make sure it clearly shows your:</string>
     <string name="P253">ID Photo</string>
-    <string name="P254">Double check the informations scan from your ID</string>
+    <string name="P254">Double-check all scanned details from your ID.</string>
     <string name="P255">Take a photo or choose one form your albums of your ID and put well in the frame</string>
     <string name="P256">Take ID Photo</string>
     <string name="P257">Oops Invalid ID</string>
@@ -1756,4 +1756,5 @@
     <string name="P331">We regret to inform you that your KYC submission has been rejected. Please resubmit valid documents to complete the process. Thank you.</string>
     <string name="P332">Reason</string>
     <string name="P330">Resubmit</string>
+    <string name="birthofdate">Date of Birth</string>
 </resources>
