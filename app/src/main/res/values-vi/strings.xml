@@ -1628,4 +1628,5 @@
     <string name="P331">Chúng tôi rất tiếc phải thông báo với bạn rằng yêu cầu KYC của bạn đã bị từ chối. Vui lòng gửi lại các tài liệu hợp lệ để hoàn tất quá trình. Cảm ơn bạn!</string>
     <string name="P332">Lý do</string>
     <string name="P330">Gửi lại</string>
+    <string name="forget_password_title">Tìm lại mật khẩu</string>
 </resources>

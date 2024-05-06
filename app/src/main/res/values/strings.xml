@@ -1756,4 +1756,5 @@
     <string name="P331">We regret to inform you that your KYC submission has been rejected. Please resubmit valid documents to complete the process. Thank you.</string>
     <string name="P332">Reason</string>
     <string name="P330">Resubmit</string>
+    <string name="forget_password_title">Forgot password</string>
 </resources>
