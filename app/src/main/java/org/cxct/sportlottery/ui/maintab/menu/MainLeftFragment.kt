@@ -15,6 +15,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentMainLeftBinding
 import org.cxct.sportlottery.network.Constants
@@ -26,13 +27,11 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
@@ -274,44 +273,10 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
         menuVerify.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
 
-        when (userInfo?.verified) {
-            ProfileActivity.VerifiedType.PASSED.value -> {
-                setVerify(enable = true, clickAble = true,
-                    text = R.string.kyc_passed,
-                    statusColor = ContextCompat.getColor(requireContext(),R.color.color_1CD219))
-
-            }
-            ProfileActivity.VerifiedType.NOT_YET.value,ProfileActivity.VerifiedType.VERIFIED_FAILED.value -> {
-                setVerify(enable = true, clickAble = true,
-                    text = R.string.kyc_unverified,
-                    statusColor = ContextCompat.getColor(requireContext(),R.color.color_FF2E00))
-            }
-            ProfileActivity.VerifiedType.VERIFYING.value,ProfileActivity.VerifiedType.VERIFIED_WAIT.value -> {
-                setVerify(enable = true,
-                    clickAble = true,
-                    text = R.string.kyc_unverifing,
-                    statusColor = resources.getColor(R.color.color_6D7693))
-
-            }
-            ProfileActivity.VerifiedType.REVERIFIED_NEED.value -> {
-                setVerify(enable = true,
-                    clickAble = true,
-                    text = R.string.P211,
-                    statusColor = resources.getColor(R.color.color_6D7693))
-
-            }
-            ProfileActivity.VerifiedType.REVERIFYING.value -> {
-                setVerify(enable = true,
-                    clickAble = true,
-                    text = R.string.P196,
-                    statusColor = resources.getColor(R.color.color_6D7693))
-            }
-            else -> {
-                setVerify(enable = true,
-                    clickAble = true,
-                    text = R.string.kyc_unverified,
-                    statusColor = resources.getColor(R.color.color_FF2E00))
-            }
+        VerifiedType.getVerifiedType(userInfo?.verified).let{
+            setVerify(enable = true, clickAble = true,
+                text = it.nameResId,
+                statusColor = ContextCompat.getColor(requireContext(),it.colorResId))
         }
     }
 

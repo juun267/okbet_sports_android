@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/margin_10"
+    android:background="@color/color_F0F5FA"
+    tools:context=".ui.profileCenter.identity.VerifyStatusFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_FFFFFF"
+            android:paddingHorizontal="@dimen/margin_20"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_status"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="24dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_close_circle_red" />
+
+            <TextView
+                android:id="@+id/txv_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="@dimen/margin_12"
+                android:gravity="center_horizontal"
+                android:text="@string/P331"
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/textSize14sp"/>
+
+            <TextView
+                android:id="@+id/tvReasonLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/P332"
+                android:textStyle="bold"
+                android:textColor="@color/color_0D2245"
+                android:textSize="@dimen/textSize14sp"/>
+
+            <TextView
+                android:id="@+id/tvReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cropped id!Cropped id!Cropped id!Cropped id! Croppe d  id!Cropped id!"
+                android:textColor="@color/color_F23C3B"
+                android:textSize="@dimen/textSize14sp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_30">
+                <Button
+                    android:id="@+id/btnCS"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:foreground="@drawable/fg_ripple"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="@dimen/margin_10"
+                    android:background="@drawable/bg_white_radius_8_stoke_gray"
+                    android:textColor="@color/color_6D7693"
+                    android:textSize="@dimen/textSize16sp"
+                    android:text="@string/btn_service"/>
+                <Button
+                    android:id="@+id/btnSubmit"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:foreground="@drawable/fg_ripple"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:paddingHorizontal="@dimen/margin_10"
+                    android:background="@drawable/bg_blue_radius_8"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/textSize16sp"
+                    android:text="@string/P330"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+</LinearLayout>

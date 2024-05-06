@@ -68,7 +68,6 @@ object UserInfoRepository {
         if (userInfoData == null) {
             return
         }
-
         val userInfo = transform(userInfoData)
 //            OLD_DISCOUNT = it.discount ?: 1f
         //userInfoDao.upsert(userInfo)
@@ -261,7 +260,8 @@ object UserInfoRepository {
             middleName = userInfoData.middleName,
             lastName = userInfoData.lastName,
             birthday = userInfoData.birthday,
-            discountByGameTypeList = userInfoData.discountByGameTypeList
+            discountByGameTypeList = userInfoData.discountByGameTypeList,
+            rejectRemark = userInfoData.rejectRemark
         )
 
     suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {

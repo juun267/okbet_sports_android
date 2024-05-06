@@ -958,7 +958,7 @@
     <string name="kyc_verify_successful">您已完成实名验证！</string>
     <string name="kyc_unverified">未验证</string>
     <string name="kyc_unverifing">验证中</string>
-    <string name="kyc_passed">已验证</string>
+    <string name="kyc_passed">已通过</string>
     <string name="kyc_enter_id_num">请输入证件号码</string>
 
     <string name="next_step">下一步</string>
@@ -1680,4 +1680,7 @@
     <string name="P344">我不是菲律宾的任何学校、学院或大学的学生。</string>
     <string name="P345">我理解，如果发现我提供的信息不正确，OKBET有权根据其条款和条件第5.1 - 5.2节对我的账户施加处罚。</string>
     <string name="P346">我同意以上所有条款和条件。</string>
+    <string name="P331">我们很遗憾地通知您，您的KYC提交已被拒绝。请重新提交有效的文件以完成流程。谢谢。</string>
+    <string name="P332">原因</string>
+    <string name="P330">"重新提交 "</string>
 </resources>

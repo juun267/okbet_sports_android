@@ -9,7 +9,9 @@ import org.cxct.sportlottery.util.commonCheckDialog
 
 private var mTokenPromptDialog: CustomAlertDialog? = null
 
-fun FragmentActivity.showTokenPromptDialog(errorMessage: String, positiveClickListener: () -> Unit?) {
+fun FragmentActivity.showTokenPromptDialog(errorMessage: String?, positiveClickListener: () -> Unit?) {
+    //解决errorMessage 为空的 Parameter specified as non-null is null: method fe.m.h, parameter errorMessage
+    if (errorMessage.isNullOrEmpty()) return
     runWithCatch{
         //防止跳出多個 error dialog
         if (mTokenPromptDialog != null)
