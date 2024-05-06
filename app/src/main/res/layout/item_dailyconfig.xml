@@ -24,12 +24,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_kapian">
+            android:background="@drawable/bg_bonus">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="92"
+                android:paddingVertical="14dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -40,12 +41,15 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:textColor="@color/color_025BE8"
-                    android:textSize="36sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvType"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:gravity="center"
                     android:text="@string/P277"
                     android:textColor="@color/color_025BE8"
                     android:textSize="14sp" />
