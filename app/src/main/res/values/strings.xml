@@ -89,7 +89,7 @@
     <string name="security_pb">Security Question</string>
     <string name="security_answer">Answer</string>
     <string name="hint_security_answer">Please enter your answer</string>
-    <string name="real_name">Full name</string>
+    <string name="real_name">Full Name</string>
     <string name="income_source">Source Of Income</string>
     <string name="identity_type">Valid ID Type</string>
     <string name="betting_shop">Outlet</string>
