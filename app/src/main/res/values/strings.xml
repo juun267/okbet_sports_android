@@ -1153,7 +1153,7 @@
     <string name="login_hint_account">Phone Number / Email</string>
     <string name="password_login">Password Login</string>
     <string name="or">Or</string>
-    <string name="login_privacy">By Signing up, you are confirming that you are above 21 years old, and agreed to our Privacy Policy and Terms &amp; Conditions.</string>
+    <string name="login_privacy">I agree to the Terms &amp; Conditions and Privacy Policy.</string>
     <string name="login_terms_conditions">Terms &amp; Conditions</string>
     <string name="login_privacy_policy">Privacy Policy</string>
     <string name="login_terms_conditions_new">Terms &amp; Conditions</string>
