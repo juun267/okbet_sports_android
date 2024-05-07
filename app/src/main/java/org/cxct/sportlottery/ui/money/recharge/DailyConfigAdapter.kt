@@ -26,8 +26,8 @@ class DailyConfigAdapter(val onSelectedItem: (DailyConfig)->Unit): BindingAdapte
         }
         //4 为新用户首充，6 为每日首充
         tvType.text = when (item.activityType){
-            ActivityType.FIRST_DEPOSIT_BONUS -> "First Deposit Bonus"
-            ActivityType.DAILY_BONUS-> "Daily Bonus"
+            ActivityType.FIRST_DEPOSIT_BONUS -> context.getString(R.string.P446)
+            ActivityType.DAILY_BONUS-> context.getString(R.string.P445)
             else -> null
         }
         linChooseReward.isSelected = selectPos ==position

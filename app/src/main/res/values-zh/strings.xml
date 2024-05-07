@@ -1682,5 +1682,7 @@
     <string name="P346">我同意以上所有条款和条件。</string>
     <string name="P331">我们很遗憾地通知您，您的KYC提交已被拒绝。请重新提交有效的文件以完成流程。谢谢。</string>
     <string name="P332">原因</string>
-    <string name="P330">"重新提交 "</string>
+    <string name="P330">重新提交</string>
+    <string name="P445">每日奖励</string>
+    <string name="P446">首充奖励</string>
 </resources>
