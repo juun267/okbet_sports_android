@@ -14,10 +14,12 @@ import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ActivityVipBenefitsBinding
 import org.cxct.sportlottery.net.user.data.RewardInfo
 import org.cxct.sportlottery.net.user.data.UserVip
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.DelayRunable
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LeftLinearSnapHelper
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
@@ -78,7 +80,10 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
             .setSolidGradientOrientation(ShapeGradientOrientation.LEFT_TO_RIGHT)
             .setRadius(8.dp.toFloat())
         frDetail.setOnClickListener {
-            startActivity<MyVipDetailActivity>()
+            JumpUtil.toInternalWeb(this@VipBenefitsActivity,
+                Constants.getVipRuleUrl(this@VipBenefitsActivity),
+                getString(R.string.P372)
+            )
         }
     }
 
