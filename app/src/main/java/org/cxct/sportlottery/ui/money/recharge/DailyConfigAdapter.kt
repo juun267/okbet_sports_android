@@ -28,7 +28,7 @@ class DailyConfigAdapter(val onSelectedItem: (DailyConfig)->Unit): BindingAdapte
         tvType.text = when (item.activityType){
             ActivityType.FIRST_DEPOSIT_BONUS -> context.getString(R.string.P446)
             ActivityType.DAILY_BONUS-> context.getString(R.string.P445)
-            else -> null
+            else -> context.getString(R.string.P277)
         }
         linChooseReward.isSelected = selectPos ==position
         tvPercent.text = "${item.additional}%"

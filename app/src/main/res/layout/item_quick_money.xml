@@ -11,8 +11,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:background="@drawable/selector_quick_money"
-        android:textFontWeight="600"
-        android:textSize="@dimen/textSize20sp"
+        android:textSize="@dimen/textSize18sp"
         android:textColor="@color/color_black_blue"
         tools:text="1000" />
     <TextView

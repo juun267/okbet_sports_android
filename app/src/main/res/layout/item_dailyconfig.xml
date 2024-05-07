@@ -30,7 +30,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="92"
-                android:paddingVertical="14dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -47,20 +46,14 @@
                 <TextView
                     android:id="@+id/tvType"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_4"
+                    android:lines="2"
                     android:gravity="center"
-                    android:text="@string/P277"
+                    android:text="@string/P445"
                     android:textColor="@color/color_025BE8"
                     android:textSize="14sp" />
             </LinearLayout>
-
-            <ImageView
-                android:layout_width="@dimen/margin_1"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:src="@drawable/bg_line_dash_greenlight" />
 
             <LinearLayout
                 android:layout_width="0dp"
