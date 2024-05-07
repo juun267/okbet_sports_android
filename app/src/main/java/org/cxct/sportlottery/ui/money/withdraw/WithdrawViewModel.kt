@@ -11,7 +11,9 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
+import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toDoubleS
+import org.cxct.sportlottery.net.message.AnnouncementRepository
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
@@ -21,6 +23,7 @@ import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bettingStation.AreaAll
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
+import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
@@ -205,6 +208,20 @@ class WithdrawViewModel(
     var uwCheckData: UwCheckData?=null
 
     val onEmsCodeSended = SingleLiveEvent<NetResult?>()
+    val withdrawAnnouncement by lazy { SingleLiveEvent<MutableList<String>>() }
+
+    //獲取提款公告
+    fun getAnnouncement()  = callApi({ AnnouncementRepository.getWithdrawAnnouncement() }) {
+        val messageList = mutableListOf<String>()
+        val sortMsgList = it.getData()?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })
+        sortMsgList?.forEach {data ->
+            if (data.type.toInt() == 1) {
+                messageList.add(data.title + " - " + data.message)
+            }
+        }
+
+        withdrawAnnouncement.value = messageList
+    }
 
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
