@@ -3,11 +3,11 @@ package org.cxct.sportlottery.ui.profileCenter.vip
 import android.app.Application
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toast
+import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.UserVip
 import org.cxct.sportlottery.net.user.data.VipDetail
 import org.cxct.sportlottery.net.user.data.VipRedenpApplyResult
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.SingleLiveEvent
 
@@ -16,22 +16,15 @@ class VipViewModel(
 ) : BaseViewModel(
     androidContext
 ) {
-    val userVipEvent = SingleLiveEvent<UserVip>()
+    val userVipEvent = SingleLiveEvent<ApiResult<UserVip>>()
     val vipDetailEvent = SingleLiveEvent<VipDetail?>()
     val vipRewardEvent = SingleLiveEvent<String>()
     val applyResultEvent = SingleLiveEvent<VipRedenpApplyResult?>()
 
     fun getUserVip(){
-        callApi({UserRepository.getUserVip()}){
-            if (it.succeeded()){
-                it.getData()?.let {
-                    userVipEvent.postValue(it)
-                }
-            }else{
-                toast(it.msg)
-            }
-        }
+        callApi({UserRepository.getUserVip()}) { userVipEvent.postValue(it) }
     }
+
     fun getVipDetail() {
         callApi({ UserRepository.getVipDetail() }) {
             if (it.succeeded()) {

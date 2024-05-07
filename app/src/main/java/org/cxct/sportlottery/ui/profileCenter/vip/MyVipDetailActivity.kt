@@ -16,9 +16,10 @@ class MyVipDetailActivity: BaseActivity<VipViewModel,ActivityMyVipDetailBinding>
             finish()
         }
         setStatus(null)
-      viewModel.userVipEvent.observe(this){
-          setStatus(it)
+      viewModel.userVipEvent.observe(this) { result->
+          result.getData()?.let { setStatus(it) }
       }
+
       viewModel.getUserVip()
     }
 

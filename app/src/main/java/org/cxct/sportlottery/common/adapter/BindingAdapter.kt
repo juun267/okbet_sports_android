@@ -23,7 +23,7 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
 
     fun enableDefaultEmptyView(context: Context,
                                imgResId: Int = R.drawable.ic_no_data_img,
-                               text: Int = R.string.finance_list_no_record) {
+                               text: Int = R.string.finance_list_no_record): EmptyView {
         _emptyView = EmptyView(context).apply {
             if (imgResId > 0) {
                 setEmptyImg(imgResId)
@@ -32,6 +32,7 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
         }
 
         setEmptyView(_emptyView!!)
+        return _emptyView!!
     }
 
     fun setEmptyImg(imgResId: Int) = _emptyView?.setEmptyImg(imgResId)

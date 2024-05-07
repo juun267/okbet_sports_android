@@ -84,7 +84,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:background="@drawable/ic_vip_label_left"
-        android:paddingBottom="0.5dp"
+        android:paddingBottom="3dp"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:text="current"/>

@@ -45,8 +45,8 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
     }
 
     fun setup(fragment: ProfileCenterFragment,viewModel: VipViewModel) {
-        viewModel.userVipEvent.observe(fragment){
-            updateUI(it)
+        viewModel.userVipEvent.observe(fragment) { result->
+            result.getData()?.let { updateUI(it) }
         }
         viewModel.getUserVip()
     }

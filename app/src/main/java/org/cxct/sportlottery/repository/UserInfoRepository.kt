@@ -37,6 +37,8 @@ object UserInfoRepository {
 
     fun userId() = userInfo.value?.userId ?: -1
 
+    fun userName() = userInfo.value?.userName ?: -1
+
     fun nickName() = userInfo.value?.nickName ?: ""
 
     fun isGlifeAccount(): Boolean {
