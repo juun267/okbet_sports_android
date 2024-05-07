@@ -78,6 +78,7 @@ import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.math.RoundingMode
 
 fun AppBarLayout.expand(animate: Boolean) {
     val behavior = (layoutParams as CoordinatorLayout.LayoutParams).behavior
@@ -996,5 +997,12 @@ fun AppCompatActivity.showFavoriteNotify(result: MyFavoriteNotify) {
         (it as? RadioButton)?.apply {
             typeface = if(isChecked) checked else normal
         }
+    }
+}
+fun TextView.showCollectAmount(amount: Int){
+    text = when{
+        amount  < 1000 -> "$amount"
+        amount  < 1000000 -> ArithUtil.round(ArithUtil.div(amount.toDouble(),1000.0),1,RoundingMode.HALF_UP)+"K"
+        else -> ArithUtil.round(ArithUtil.div(amount.toDouble(),1000000.0),1,RoundingMode.HALF_UP)+"M"
     }
 }

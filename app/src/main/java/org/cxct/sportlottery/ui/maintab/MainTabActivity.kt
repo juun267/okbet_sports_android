@@ -722,7 +722,6 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             loading()
             gamesViewModel.requestEnterThirdGameNoLogin(gameData)
         }
-
     }
 
     fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String, gameEntryTagName: String) {
@@ -733,5 +732,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             gamesViewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType, gameEntryTagName)
         }
     }
-
+    fun collectGame(gameData: OKGameBean): Boolean {
+        return loginedRun(binding.root.context) { gamesViewModel.collectGame(gameData) }
+    }
 }

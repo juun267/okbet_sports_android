@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ViewHomeOkliveBinding
 import org.cxct.sportlottery.repository.StaticData
@@ -21,7 +22,12 @@ import splitties.systemservices.layoutInflater
 class HomeOkLiveView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
     private val binding  = ViewHomeOkliveBinding.inflate(layoutInflater,this)
-    private val gameAdapter = HomeOkGamesAdapter()
+    private lateinit var fragment: BaseSocketFragment<*, *>
+    private val gameAdapter = HomeOkGamesAdapter(onFavoriate = { view, gameBean ->
+        if ((fragment.activity as MainTabActivity?)?.collectGame(gameBean)==true) {
+            view.animDuang(1.3f)
+        }
+    })
 
     init {
         gone()
@@ -40,6 +46,7 @@ class HomeOkLiveView(context: Context, attrs: AttributeSet) : LinearLayout(conte
         if (fragment == null) {
             return
         }
+        this.fragment = fragment
         gameAdapter.bindLifecycleOwner(fragment)
         //请求games数据
         fragment.viewModel.getOkLiveOKGamesList()
@@ -48,7 +55,15 @@ class HomeOkLiveView(context: Context, attrs: AttributeSet) : LinearLayout(conte
             gameAdapter.setList(it)
             this@HomeOkLiveView.isVisible = gameAdapter.dataCount() > 0
         }
-
+        (fragment.activity as MainTabActivity).gamesViewModel.collectOkGamesResult.observe(fragment.viewLifecycleOwner) {
+            gameAdapter.data.forEachIndexed { index, item ->
+                if (item.id == it.first) {
+                    item.markCollect = it.second.markCollect
+                    gameAdapter.notifyItemChanged(index, it)
+                    return@observe
+                }
+            }
+        }
         binding.tvMore.onClick {
             if(StaticData.okLiveOpened()){
                 (fragment.activity as MainTabActivity).jumpToOkLive()

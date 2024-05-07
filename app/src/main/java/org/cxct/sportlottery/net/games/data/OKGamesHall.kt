@@ -92,6 +92,7 @@ data class OKGameBean(
     var maintain: Int?, // 0:游戏正常开启, 1: 维护状态
     val jackpotAmount:Double, //0不显示1显示
     val jackpotOpen:Int,
+    var favoriteCount: Int=0,
 ): BaseNode() {
     // 列表的父节点
     @Transient

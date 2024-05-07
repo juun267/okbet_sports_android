@@ -85,14 +85,27 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="6dp"
-                android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/color_414655"
                 android:textFontWeight="700"
                 android:textSize="14sp"
                 tools:text="Game Name" />
-
+            <TextView
+                android:id="@+id/tvCollect1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:drawableLeft="@drawable/ic_collect_heart"
+                android:drawablePadding="@dimen/margin_4"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="11" />
         </LinearLayout>
 
         <TextView
@@ -188,13 +201,27 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="6dp"
-                android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/color_414655"
                 android:textFontWeight="700"
                 android:textSize="14sp"
                 tools:text="Game Name" />
+            <TextView
+                android:id="@+id/tvCollect2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:drawableLeft="@drawable/ic_collect_heart"
+                android:drawablePadding="@dimen/margin_4"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="11" />
         </LinearLayout>
 
         <TextView
@@ -290,13 +317,27 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="6dp"
-                android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/color_414655"
                 android:textFontWeight="700"
                 android:textSize="14sp"
                 tools:text="Game Name" />
+            <TextView
+                android:id="@+id/tvCollect3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:drawableLeft="@drawable/ic_collect_heart"
+                android:drawablePadding="@dimen/margin_4"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="11" />
         </LinearLayout>
 
         <TextView
@@ -395,13 +436,27 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="6dp"
-                android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/color_414655"
                 android:textFontWeight="700"
                 android:textSize="14sp"
                 tools:text="Game Name" />
+            <TextView
+                android:id="@+id/tvCollect4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:drawableLeft="@drawable/ic_collect_heart"
+                android:drawablePadding="@dimen/margin_4"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="11" />
         </LinearLayout>
 
         <TextView
@@ -498,13 +553,27 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="6dp"
-                android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/color_414655"
                 android:textFontWeight="700"
                 android:textSize="14sp"
                 tools:text="Game Name" />
+            <TextView
+                android:id="@+id/tvCollect5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:drawableLeft="@drawable/ic_collect_heart"
+                android:drawablePadding="@dimen/margin_4"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="11" />
         </LinearLayout>
 
         <TextView
@@ -602,13 +671,27 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="6dp"
-                android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/color_414655"
                 android:textFontWeight="700"
                 android:textSize="14sp"
                 tools:text="Game Name" />
+            <TextView
+                android:id="@+id/tvCollect6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:drawableLeft="@drawable/ic_collect_heart"
+                android:drawablePadding="@dimen/margin_4"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="11" />
         </LinearLayout>
 
         <eightbitlab.com.blurview.BlurView

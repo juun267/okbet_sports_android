@@ -22,8 +22,10 @@ import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.showCollectAmount
 import org.cxct.sportlottery.view.setTextColorGradient
 
 class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
@@ -98,6 +100,7 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
             ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
             tvName.text = item.gameName
             tvFirmName.text = item.firmName
+            tvCollect.showCollectAmount(item.favoriteCount)
             ivFav.isVisible = showFavorite
             ivFav.isSelected = item.markCollect
             ivFav.isEnabled = !item.isMaintain()

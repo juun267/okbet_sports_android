@@ -131,6 +131,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
                  it.gameList?.forEach {
                      if(result.second.id==it.id){
                          it.markCollect=result.second.markCollect
+                         if(it.markCollect) it.favoriteCount++ else it.favoriteCount--
                          tempIndex=index
                          return@forEachIndexed
                      }
@@ -143,6 +144,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
                 it.forEach {
                     if(result.second.id==it.id){
                         it.markCollect=result.second.markCollect
+                        if(it.markCollect) it.favoriteCount++ else it.favoriteCount--
                         return@forEach
                     }
                 }
