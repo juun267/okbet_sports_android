@@ -20,7 +20,13 @@
         <attr name="cvDividerColor" format="reference" />
         <attr name="cvHint" format="string" />
         <attr name="cvText" format="string" />
-        <attr name="cvTextSize" format="integer" />
+        <attr name="cvTextSize" format="dimension" />
+        <attr name="cvTextStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="bold_italic" value="3" />
+        </attr>
         <attr name="cvEms" format="integer" />
         <attr name="cvTitleMinEms" format="integer" />
         <attr name="cvTextColor" format="reference|color" />

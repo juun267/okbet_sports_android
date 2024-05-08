@@ -11,6 +11,7 @@ import android.text.method.DigitsKeyListener
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.View.OnFocusChangeListener
@@ -85,6 +86,8 @@ class LoginEditText @JvmOverloads constructor(
             tvTitle.setTextColor( typedArray.getInt(R.styleable.CustomView_cvTextColor, 1))
             etInput.setText(typedArray.getText(R.styleable.CustomView_cvText))
             etInput.hint = typedArray.getText(R.styleable.CustomView_cvHint)
+            etInput.setTextSize(TypedValue.COMPLEX_UNIT_PX,typedArray.getDimension(R.styleable.CustomView_cvTextSize,resources.getDimension(R.dimen.textSize14sp)))
+            etInput.setTypeface(null, typedArray.getInt(R.styleable.CustomView_cvTextStyle, 0))
             isShowLine = typedArray.getBoolean(R.styleable.CustomView_cvBottomLine, true)
             vBottomLine2.isVisible = isShowLine
             if (!editable) {
