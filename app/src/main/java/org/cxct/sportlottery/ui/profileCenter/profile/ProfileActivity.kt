@@ -56,12 +56,6 @@ import java.util.Calendar
  */
 class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
 
-    //簡訊驗證彈窗
-    private var customSecurityDialog: CustomSecurityDialog? = null
-
-    //KYC驗證彈窗
-    private var kYCVerifyDialog: CustomSecurityDialog? = null
-
     //生日选择
     private var dateTimePicker: TimePickerView? = null
 
@@ -533,93 +527,6 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
                 binding.iconArrowNickname.visibility = View.VISIBLE
             }
 
-        }
-
-        //是否顯示簡訊驗證彈窗
-        viewModel.needToSendTwoFactor.observe(this) {
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                customSecurityDialog = CustomSecurityDialog().apply {
-                    getSecurityCodeClickListener {
-                        this.showSmeTimer300()
-                        this@ProfileActivity.viewModel.sendTwoFactor()
-                    }
-
-                    positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
-                        this@ProfileActivity.viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
-                    }
-                }
-
-                customSecurityDialog?.show(supportFragmentManager, null)
-                return@observe
-            }
-
-            //有手機號碼又不用驗證的狀態下
-            securityEnter()
-        }
-
-        //簡訊驗證失敗
-        viewModel.errorMessageDialog.observe(this) {
-            val errorMsg = it ?: getString(R.string.unknown_error)
-            CustomAlertDialog().apply {
-                setMessage(errorMsg)
-                setNegativeButtonText(null)
-                setCanceledOnTouchOutside(false)
-                isCancelable = false
-            }.show(supportFragmentManager, null)
-        }
-
-        //簡訊驗證成功
-        viewModel.twoFactorSuccess.observe(this) {
-            if (it != true) {
-                return@observe
-            }
-
-            customSecurityDialog?.dismiss()
-            securityEnter()
-        }
-
-        //確認收到簡訊驗證碼
-        viewModel.twoFactorResult.observe(this) {
-            //傳送驗證碼成功後才能解鎖提交按鈕
-            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
-            sConfigData?.hasGetTwoFactorResult = true
-        }
-
-        //使用者沒有電話號碼
-        viewModel.showPhoneNumberMessageDialog.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (!b) phoneNumCheckDialog(this, supportFragmentManager)
-            }
-        }
-
-        viewModel.isWithdrawShowVerifyDialog.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
-            }
-        }
-
-        viewModel.isRechargeShowVerifyDialog.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkRechargeSystem()
-            }
-        }
-    }
-
-    private fun securityEnter() {
-        if (securityCodeEnter == SecurityCodeEnterType.REALNAME) {
-            putExtraForProfileInfoActivity(ModifyType.RealName)
-            return
-        }
-
-        if (securityCodeEnter == SecurityCodeEnterType.PW) {
-            startActivity(SettingPasswordActivity::class.java)
         }
     }
 

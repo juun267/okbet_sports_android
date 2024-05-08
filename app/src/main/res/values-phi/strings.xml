@@ -1599,5 +1599,8 @@
     <string name="P331">Ikinalulungkot naming ipaalam sa iyo na tinanggihan ang iyong pagsusumite sa KYC. Mangyaring muling isumite ang mga wastong dokumento upang makumpleto ang proseso. salamat po.</string>
     <string name="P332">Rason</string>
     <string name="P330">Isumite muli</string>
+    <string name="P447">Para sa seguridad ng iyong account at mga pondo, kinakailangan mong kumpletuhin ang mga sumusunod</string>
+    <string name="P448">I-set up</string>
+    <string name="P242">KYC Verify</string>
 </resources>
 

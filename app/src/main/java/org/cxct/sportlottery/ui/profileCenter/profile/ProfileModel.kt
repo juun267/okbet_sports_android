@@ -82,7 +82,7 @@ class ProfileModel(
     //確認是否需要驗證手機
     fun checkNeedToShowSecurityDialog() {
         viewModelScope.launch {
-            withdrawRepository.checkNeedToShowSecurityDialog()
+            WithdrawRepository.checkNeedToShowSecurityDialog()
         }
     }
 

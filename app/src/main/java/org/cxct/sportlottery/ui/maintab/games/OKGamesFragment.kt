@@ -86,7 +86,7 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBindi
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
-        attach(this@OKGamesFragment, mainTabActivity(), mainTabActivity().viewModel)
+        attach(this@OKGamesFragment)
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
             mainTabActivity().showMainRightMenu()

@@ -39,7 +39,7 @@ class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(End
 
     override fun onInitView() {
 //        setStatusbar(R.color.color_1B2436,false)
-        binding.toolbar.attach(this, { finish() }, viewModel)
+        binding.toolbar.attach(this, { finish() })
         initTab()
         showHome()
         checkGuide()
@@ -48,31 +48,6 @@ class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(End
 
     private fun initObservable() {
         bindSportMaintenance()
-
-        viewModel.isRechargeShowVerifyDialog.observe(this) {
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                VerifyIdentityDialog().show(supportFragmentManager, null)
-            } else {
-                loading()
-                viewModel.checkRechargeSystem()
-            }
-        }
-
-        viewModel.rechargeSystemOperation.observe(this) {
-            hideLoading()
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                startActivity(Intent(this, MoneyRechargeActivity::class.java))
-                return@observe
-            }
-
-            showPromptDialog(
-                getString(R.string.prompt),
-                getString(R.string.message_recharge_maintain)
-            ) {}
-
-        }
     }
 
     private fun initTab() = binding.run {

@@ -1628,4 +1628,7 @@
     <string name="P331">Chúng tôi rất tiếc phải thông báo với bạn rằng yêu cầu KYC của bạn đã bị từ chối. Vui lòng gửi lại các tài liệu hợp lệ để hoàn tất quá trình. Cảm ơn bạn!</string>
     <string name="P332">Lý do</string>
     <string name="P330">Gửi lại</string>
+    <string name="P447">Để đảm bảo an toàn cho tài khoản và tiền của bạn, bạn cần hoàn thành các bước sau</string>
+    <string name="P448">Thiết lập</string>
+    <string name="P242">Xác minh KYC</string>
 </resources>

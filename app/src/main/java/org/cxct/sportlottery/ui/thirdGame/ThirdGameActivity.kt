@@ -36,6 +36,7 @@ import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.isThirdTransferOpen
+import org.cxct.sportlottery.util.jumpToDeposit
 import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
@@ -157,7 +158,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
     private fun setupMenu() {
         binding.ivDeposit.setOnClickListener {
             if (checkLogin()) {
-                ToGcashDialog.showByClick { viewModel.checkRechargeKYCVerify() }
+                ToGcashDialog.showByClick { jumpToDeposit() }
             }
         }
 //        binding.motionMenu.setOnMenuListener(object : MotionFloatingMenu.OnMenuListener {
@@ -200,163 +201,6 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
     private fun initObserve() {
         viewModel.userInfo.observe(this) {
             mUserInfo = it
-        }
-
-        viewModel.withdrawSystemOperation.observe(this) {
-            val operation = it.getContentIfNotHandled()
-            if (operation == false) {
-                showPromptDialog(getString(R.string.prompt),
-                    getString(R.string.message_withdraw_maintain)) {}
-            }
-        }
-
-        viewModel.rechargeSystemOperation.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    startActivity(Intent(this, MoneyRechargeActivity::class.java))
-                } else {
-                    showPromptDialog(getString(R.string.prompt),
-                        getString(R.string.message_recharge_maintain)) {}
-                }
-            }
-        }
-
-        viewModel.needToUpdateWithdrawPassword.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting),
-                        getString(R.string.please_setting_withdraw_password),
-                        getString(R.string.go_to_setting),
-                        true) {
-                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply {
-                            putExtra(
-                                SettingPasswordActivity.PWD_PAGE,
-                                SettingPasswordActivity.PwdPage.BANK_PWD)
-                        })
-                    }
-                } else {
-                    viewModel.checkProfileInfoComplete()
-                }
-            }
-        }
-
-        viewModel.needToCompleteProfileInfo.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting),
-                        getString(R.string.please_complete_profile_info),
-                        getString(R.string.go_to_setting),
-                        true) {
-                        startActivity(Intent(this, ProfileActivity::class.java))
-                    }
-                } else {
-                    viewModel.checkBankCardPermissions()
-                }
-            }
-        }
-
-        viewModel.needToBindBankCard.observe(this) {
-            it.getContentIfNotHandled()?.let { messageId ->
-                if (messageId != -1) {
-                    showPromptDialog(getString(R.string.withdraw_setting),
-                        getString(messageId),
-                        getString(R.string.go_to_setting),
-                        true) {
-                        startActivity(Intent(this, BankActivity::class.java))
-                    }
-                } else {
-                    startActivity(Intent(this, WithdrawActivity::class.java))
-                }
-            }
-        }
-
-        viewModel.settingNeedToUpdateWithdrawPassword.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting),
-                        getString(R.string.please_setting_withdraw_password),
-                        getString(R.string.go_to_setting),
-                        true) {
-                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply {
-                            putExtra(
-                                SettingPasswordActivity.PWD_PAGE,
-                                SettingPasswordActivity.PwdPage.BANK_PWD)
-                        })
-                    }
-                } else if (!b) {
-                    startActivity(Intent(this, BankActivity::class.java))
-                }
-            }
-        }
-
-        viewModel.settingNeedToCompleteProfileInfo.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting),
-                        getString(R.string.please_complete_profile_info),
-                        getString(R.string.go_to_setting),
-                        true) {
-                        startActivity(Intent(this, ProfileActivity::class.java))
-                    }
-                } else if (!b) {
-                    startActivity(Intent(this, BankActivity::class.java))
-                }
-            }
-        }
-
-        viewModel.needToSendTwoFactor.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                        customSecurityDialog = CustomSecurityDialog().apply {
-                            getSecurityCodeClickListener {
-                                this.showSmeTimer300()
-                                this@ThirdGameActivity.viewModel.sendTwoFactor()
-                            }
-                            positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
-                                this@ThirdGameActivity.viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
-                            }
-                        }
-                        customSecurityDialog?.show(supportFragmentManager, null)
-
-                }
-            }
-        }
-
-        //確認收到簡訊驗證碼
-        viewModel.twoFactorResult.observe(this) {
-            //傳送驗證碼成功後才能解鎖提交按鈕
-            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
-            sConfigData?.hasGetTwoFactorResult = true
-        }
-
-        //簡訊驗證成功
-        viewModel.twoFactorSuccess.observe(this) {
-            if (it == true)
-                customSecurityDialog?.dismiss()
-        }
-
-        viewModel.intoWithdraw.observe(this) {
-            it.getContentIfNotHandled()?.let {
-                startActivity(Intent(this, WithdrawActivity::class.java))
-            }
-        }
-
-        viewModel.isWithdrawShowVerifyDialog.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
-            }
-        }
-
-        viewModel.isRechargeShowVerifyDialog.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkRechargeSystem()
-            }
         }
     }
 

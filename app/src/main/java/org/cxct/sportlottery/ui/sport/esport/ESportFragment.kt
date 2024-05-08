@@ -102,7 +102,7 @@ class ESportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Bindin
             binding.tabLayout.removeAllTabs()
         }
         footView.setUp(this, mianViewModel)
-        binding.homeToolbar.attach(this@ESportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
+        binding.homeToolbar.attach(this@ESportFragment, moneyViewEnable = false, onlyShowSeach = true)
         getMenuData(true)
         favoriteDelayRunable.doOnDelay(0)
 
@@ -335,13 +335,6 @@ class ESportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Bindin
     }
 
     private fun initObserve() = viewModel.run {
-
-        //使用者沒有電話號碼
-        showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (!b) phoneNumCheckDialog(requireContext(), childFragmentManager)
-            }
-        }
 
         sportMenuResult.observe(viewLifecycleOwner) {
             hideLoading()

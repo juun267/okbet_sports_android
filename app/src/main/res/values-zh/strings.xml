@@ -1683,4 +1683,7 @@
     <string name="P331">我们很遗憾地通知您，您的KYC提交已被拒绝。请重新提交有效的文件以完成流程。谢谢。</string>
     <string name="P332">原因</string>
     <string name="P330">"重新提交 "</string>
+    <string name="P447">为了您的账户和资金的安全，您需要完成以下步骤</string>
+    <string name="P448">" 设置"</string>
+    <string name="P242">实名认证</string>
 </resources>

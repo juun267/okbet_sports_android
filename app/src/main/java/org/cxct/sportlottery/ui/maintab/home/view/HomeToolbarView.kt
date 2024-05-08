@@ -27,6 +27,9 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
@@ -59,7 +62,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private lateinit var tvLogin: TextView
     private lateinit var tvRegist: TextView
 
-    private lateinit var fragment: LifecycleOwner
+    private lateinit var fragment: BaseFragment<*,*>
     private lateinit var logoEvent: View.OnClickListener
     private lateinit var viewModel: BaseSocketViewModel
     private var userModelEnable = true
@@ -258,7 +261,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             userMoneyView.visible()
             bindMoneyText(LoginRepository.userMoney())
             btnDeposit.setOnClickListener {
-                ToGcashDialog.showByClick { viewModel.checkRechargeKYCVerify() }
+                ToGcashDialog.showByClick { (fragment.requireActivity() as BaseActivity<*,*>).jumpToDeposit() }
             }
         } else {
             searchView.visible()
@@ -268,23 +271,20 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     fun attach(
-        lifecycleOwner: LifecycleOwner,
-        mainTabActivity: MainTabActivity,
-        viewModel: BaseSocketViewModel,
+        fragment: BaseFragment<*,*>,
         moneyViewEnable: Boolean = true,
         onlyShowSeach: Boolean = false,
-    ) = attach(lifecycleOwner, { mainTabActivity.backMainHome() }, viewModel, moneyViewEnable, onlyShowSeach)
+    ) = attach(fragment, { (fragment.requireActivity() as MainTabActivity).backMainHome() }, moneyViewEnable, onlyShowSeach)
 
     fun attach(
-        lifecycleOwner: LifecycleOwner,
+        fragment: BaseFragment<*,*>,
         logoEvent: OnClickListener,
-        viewModel: BaseSocketViewModel,
         moneyViewEnable: Boolean = true,
         onlyShowSeach: Boolean = false,
     ) {
-        this.fragment = lifecycleOwner
+        this.fragment = fragment
         this.logoEvent = logoEvent
-        this.viewModel = viewModel
+        this.viewModel = fragment.viewModel as BaseSocketViewModel
         this.userModelEnable = moneyViewEnable
         this.onlyShowSeach = onlyShowSeach
 

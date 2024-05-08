@@ -29,11 +29,11 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.common.enums.ChannelType
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.holder.MAX_BET_VALUE
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -720,31 +720,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
             betParlayListRefactorAdapter?.userLogin = it
         }
 
-        viewModel.isRechargeShowVerifyDialog.observe(this.viewLifecycleOwner){
-//            this.hideLoading()
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    VerifyIdentityDialog().show(childFragmentManager, null)
-                }else
-                    viewModel.checkRechargeSystem()
-            }
-        }
-
-        viewModel.rechargeSystemOperation.observe(this.viewLifecycleOwner) {
-            this.hideLoading()
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                requireContext().startActivity(Intent(context, MoneyRechargeActivity::class.java))
-                return@observe
-            }
-
-            showPromptDialog(
-                requireActivity().getString(R.string.prompt),
-                requireActivity().getString(R.string.message_recharge_maintain)
-            ) {}
-
-        }
-
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let { money ->
                 binding.tvBalance.text = TextUtil.formatMoney(money)
@@ -995,11 +970,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
             dialog.showDialog{
                 //跳转充值
                 ToGcashDialog.showByClick{
-                    loading()
-                    viewModel.checkRechargeKYCVerify()
+                    (requireActivity() as BaseActivity<*,*>).jumpToDeposit()
                 }
             }
-//            ToastUtil.showToast(requireContext(), R.string.bet_info_bet_balance_insufficient)
         }
         val overMax = {
             setBetLoadingVisibility(false)

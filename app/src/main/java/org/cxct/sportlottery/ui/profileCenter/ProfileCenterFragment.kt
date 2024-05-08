@@ -203,7 +203,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         binding.btnWithdraw.clickDelay {
             //Glife用户
             ToGcashDialog.showByClick{
-                viewModel.checkWithdrawKYCVerify()
+                startActivity(WithdrawActivity::class.java)
             }
         }
     }
@@ -339,185 +339,6 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             updateUI(it)
         }
 
-
-        viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
-            val operation = it.getContentIfNotHandled()
-            if (operation == false) {
-                showPromptDialog(
-                    getString(R.string.prompt),
-                    getString(R.string.message_withdraw_maintain)
-                ) {}
-            }
-        }
-
-        viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
-            hideLoading()
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    startActivity(Intent(requireActivity(), MoneyRechargeActivity::class.java))
-                } else {
-                    showPromptDialog(
-                        getString(R.string.prompt),
-                        getString(R.string.message_recharge_maintain)
-                    ) {}
-                }
-            }
-        }
-
-        viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
-
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_setting_withdraw_password),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(
-                            requireActivity(), SettingPasswordActivity::class.java
-                        ).apply {
-                            putExtra(
-                                PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD
-                            )
-                        })
-                    }
-                } else {
-                    viewModel.checkProfileInfoComplete()
-                }
-            }
-        }
-        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
-            }
-        }
-        viewModel.needToCompleteProfileInfo.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_complete_profile_info),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(requireActivity(), ProfileActivity::class.java))
-                    }
-                } else {
-                    viewModel.checkBankCardPermissions()
-                }
-            }
-        }
-
-        viewModel.needToBindBankCard.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { messageId ->
-                if (messageId != -1) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(messageId),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(requireActivity(), BankActivity::class.java))
-                    }
-                } else {
-                    startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
-                }
-            }
-        }
-
-
-        viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    customSecurityDialog = CustomSecurityDialog().apply {
-                        getSecurityCodeClickListener {
-                            this.showSmeTimer300()
-                            this@ProfileCenterFragment.viewModel.sendTwoFactor()
-                        }
-                        positiveClickListener =
-                            CustomSecurityDialog.PositiveClickListener { number ->
-                                this@ProfileCenterFragment.viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
-                            }
-                    }
-                    customSecurityDialog?.show(childFragmentManager, null)
-                }
-            }
-        }
-
-        viewModel.errorMessageDialog.observe(viewLifecycleOwner) {
-            val errorMsg = it ?: getString(R.string.unknown_error)
-            CustomAlertDialog().apply {
-                setMessage(errorMsg)
-                setNegativeButtonText(null)
-                setCanceledOnTouchOutside(false)
-                setCancelable(false)
-            }.show(childFragmentManager, null)
-        }
-
-        viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
-            if (it == true) customSecurityDialog?.dismiss()
-        }
-
-        viewModel.twoFactorResult.observe(viewLifecycleOwner) {
-            //傳送驗證碼成功後才能解鎖提交按鈕
-            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
-            sConfigData?.hasGetTwoFactorResult = true
-        }
-
-        //使用者沒有電話號碼
-        viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (!b) phoneNumCheckDialog(requireContext(), childFragmentManager)
-            }
-        }
-
-        viewModel.settingNeedToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_setting_withdraw_password),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(
-                            Intent(
-                                requireActivity(),
-                                SettingPasswordActivity::class.java
-                            ).apply {
-                                putExtra(
-                                    PWD_PAGE,
-                                    SettingPasswordActivity.PwdPage.BANK_PWD
-                                )
-                            })
-                    }
-                } else if (!b) {
-                    startActivity(Intent(requireActivity(), BankActivity::class.java))
-                }
-            }
-        }
-
-        viewModel.settingNeedToCompleteProfileInfo.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_complete_profile_info),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(requireActivity(), ProfileActivity::class.java))
-                    }
-                } else if (!b) {
-                    startActivity(Intent(requireActivity(), BankActivity::class.java))
-                }
-            }
-        }
-
         viewModel.editIconUrlResult.observe(viewLifecycleOwner) {
             val iconUrlResult = it?.getContentIfNotHandled()
             if (iconUrlResult?.success == true)
@@ -528,12 +349,6 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(title = "", msg) {} }
         }
-
-        viewModel.intoWithdraw.observe(viewLifecycleOwner) { it ->
-            it.getContentIfNotHandled()?.let {
-                startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
-            }
-        }
         InfoCenterRepository.totalUnreadMsgCount.observe(viewLifecycleOwner) {
             updateNoticeCount(it)
         }
@@ -543,15 +358,6 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             updateUserIdentity(it?.testFlag)
         }
 
-
-        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
-            }
-        }
     }
 
     @SuppressLint("SetTextI18n")
