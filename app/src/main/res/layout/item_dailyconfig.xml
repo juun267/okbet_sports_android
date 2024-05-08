@@ -35,19 +35,20 @@
 
                 <TextView
                     android:id="@+id/tvPercent"
-                    tools:text="10%"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/margin_24"
+                    android:gravity="center"
                     android:includeFontPadding="false"
                     android:textColor="@color/color_025BE8"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="10%"/>
 
                 <TextView
                     android:id="@+id/tvType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_marginTop="@dimen/margin_2"
                     android:lines="2"
                     android:gravity="center"
                     android:text="@string/P445"
@@ -65,7 +66,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/margin_24"
                     android:gravity="center_vertical">
 
                     <TextView
@@ -104,8 +105,10 @@
                     android:id="@+id/tvRewardDesp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_2"
+                    android:gravity="center_vertical"
                     android:ellipsize="end"
-                    android:maxLines="2"
+                    android:lines="2"
                     android:text="@string/P281"
                     android:textColor="@color/color_6D7693"
                     android:textSize="@dimen/textSize12sp" />
