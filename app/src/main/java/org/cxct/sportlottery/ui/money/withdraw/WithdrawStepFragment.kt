@@ -11,21 +11,31 @@ import org.cxct.sportlottery.databinding.FragmentWithdrawStepBinding
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.util.LogUtil
 
 class WithdrawStepFragment: BaseFragment<WithdrawViewModel, FragmentWithdrawStepBinding>() {
 
     override fun onInitView(view: View) {
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         setup()
     }
     fun setup()=binding.run{
-        val needPhoneNumner = UserInfoRepository.userInfo.value?.phone.isNullOrBlank()
+        val needPhoneNumber = UserInfoRepository.userInfo.value?.phone.isNullOrBlank()
         val needPassword = UserInfoRepository.userInfo.value?.passwordSet != false
         val needPayPW = UserInfoRepository.userInfo.value?.updatePayPw == 1
         val needVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value
-        setStepItem(needPhoneNumner,ivStep1,line1,tvStepState1,ivStepArrow1,::onItemClick)
+        setStepItem(needPhoneNumber,ivStep1,line1,tvStepState1,ivStepArrow1,::onItemClick)
         setStepItem(needPassword,ivStep2,line2,tvStepState2,ivStepArrow2,::onItemClick)
         setStepItem(needPayPW,ivStep3,line3,tvStepState3,ivStepArrow3,::onItemClick)
         setStepItem(needVerify,ivStep4,null,tvStepState4,ivStepArrow4,::onItemClick)
+        //若全部完成，就切换页面到提款页面
+        if (!needPhoneNumber&&!needPassword&&!needPayPW&&!needVerify){
+            (requireActivity() as WithdrawActivity).jumpToFragment()
+        }
     }
     fun setStepItem(enable: Boolean, ivIcon: ImageView, line: View?, tvState: TextView, ivArrow: ImageView,onClick: ()->Unit){
         (tvState.parent as ViewGroup).let{
@@ -48,7 +58,7 @@ class WithdrawStepFragment: BaseFragment<WithdrawViewModel, FragmentWithdrawStep
                         setTextColor(requireContext().getColor(it.colorResId))
                     }
                 }else{
-                    text =  "Done"
+                    text = getString(R.string.D038)
                     setTextColor(requireContext().getColor(R.color.color_1CD219))
                 }
             }
@@ -57,6 +67,5 @@ class WithdrawStepFragment: BaseFragment<WithdrawViewModel, FragmentWithdrawStep
     }
     fun onItemClick(){
         requireActivity().startActivity(ProfileActivity::class.java)
-        requireActivity().finish()
     }
 }

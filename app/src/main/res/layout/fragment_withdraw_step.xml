@@ -48,7 +48,8 @@
         <View
             android:id="@+id/line2"
             android:layout_width="2dp"
-            android:layout_height="40dp"
+            android:layout_height="36dp"
+            android:layout_marginVertical="2dp"
             android:background="@color/color_D0D4DD"/>
         <ImageView
             android:id="@+id/ivStep3"
@@ -60,7 +61,8 @@
         <View
             android:id="@+id/line3"
             android:layout_width="2dp"
-            android:layout_height="40dp"
+            android:layout_height="36dp"
+            android:layout_marginVertical="2dp"
             android:background="@color/color_D0D4DD"/>
         <ImageView
             android:id="@+id/ivStep4"

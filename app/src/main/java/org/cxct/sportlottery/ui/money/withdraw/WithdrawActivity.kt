@@ -21,21 +21,13 @@ class WithdrawActivity : BaseActivity<WithdrawViewModel, ActivityWithdrawBinding
             supportFragmentManager, binding.flContent.id, arrayOf(
                 Param(WithdrawStepFragment::class.java, needRemove = true),
                 Param(WithdrawFragment::class.java, needRemove = true),
-                Param(BetStationFragment::class.java,needRemove = true),
             )
         )
     }
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
         initToolbar()
-        checkNeedStep().apply {
-            if (this){
-                fragmentHelper.showFragment(0)
-            }else{
-                fragmentHelper.showFragment(1)
-                setToolbarRightText()
-            }
-        }
+        jumpToFragment()
         viewModel.isVisibleView.observe(this) {
             binding.toolBar.tvToolbarTitleRight.isVisible = it
         }
@@ -55,12 +47,22 @@ class WithdrawActivity : BaseActivity<WithdrawViewModel, ActivityWithdrawBinding
         tvToolbarTitleRight.isVisible = viewModel.isVisibleView.value ?: true
         tvToolbarTitleRight.text = getString(R.string.withdraw_setting)
     }
+    fun jumpToFragment(){
+        checkNeedStep().apply {
+            if (this){
+                fragmentHelper.showFragment(0)
+            }else{
+                fragmentHelper.showFragment(1)
+                setToolbarRightText()
+            }
+        }
+    }
     private fun checkNeedStep():Boolean{
-        val needPhoneNumner = UserInfoRepository.userInfo.value?.phone.isNullOrBlank()
+        val needPhoneNumber = UserInfoRepository.userInfo.value?.phone.isNullOrBlank()
         val needPassword = UserInfoRepository.userInfo.value?.passwordSet != false
         val needPayPW = UserInfoRepository.userInfo.value?.updatePayPw == 1
         val needVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value
-        return needPhoneNumner||needPassword||needPayPW||needVerify
+        return needPhoneNumber||needPassword||needPayPW||needVerify
     }
 
 }
