@@ -1656,7 +1656,7 @@
     <string name="P247">Choose a VALID ID TYPE</string>
     <string name="P248">Upload ID Photo</string>
     <string name="P249">Confirm Information</string>
-    <string name="P250">Choose Recommend IDs for Quick Verification within 3 minutes</string>
+    <string name="P250">Choose Recommend IDs for Quick Verification within 3 minutes;</string>
     <string name="P251">Other IDs may take up to 24 hours</string>
     <string name="P252">Take a picture of your ID or select from your album. Make sure it clearly shows your:</string>
     <string name="P253">ID Photo</string>
