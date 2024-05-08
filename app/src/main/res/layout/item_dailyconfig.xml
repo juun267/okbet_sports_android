@@ -29,7 +29,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="92"
+                android:layout_weight="100"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:textColor="@color/color_025BE8"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -52,13 +52,13 @@
                     android:gravity="center"
                     android:text="@string/P445"
                     android:textColor="@color/color_025BE8"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="238"
+                android:layout_weight="230"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/margin_10">
