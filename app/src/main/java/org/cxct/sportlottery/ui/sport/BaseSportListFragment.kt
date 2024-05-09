@@ -41,7 +41,6 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
-import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.util.*
@@ -230,7 +229,7 @@ abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewMod
     }
 
     protected open fun getGameLayoutManger(): LayoutManager {
-        return SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+        return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
     private fun initGameListView() = binding.gameList.run {
