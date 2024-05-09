@@ -69,7 +69,11 @@ class RewardHistoryDialog: BaseDialog<MainHomeViewModel,DialogRewardHistoryBindi
                 }else{
                     adapter.addData(datas)
                 }
-                refreshHelper.setLoadMoreEnable(adapter.itemCount<totalCount)
+                if (adapter.itemCount < totalCount) {
+                    refreshHelper.finishLoadMore()
+                } else {
+                    refreshHelper.finishLoadMoreWithNoMoreData()
+                }
             }
         }
     }

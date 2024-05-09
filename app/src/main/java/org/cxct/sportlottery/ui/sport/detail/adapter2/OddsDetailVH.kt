@@ -702,15 +702,15 @@ class OddsDetailVH (
         if (oddsDetail.gameTypeFgLgSelect == FGLGType.FG) {
             tvFg?.isSelected = true
             tvLg?.isSelected = false
-            oddArrayList.add(oddsDetail.oddArrayList[0])
-            oddArrayList.add(oddsDetail.oddArrayList[1])
-            oddArrayList.add(oddsDetail.oddArrayList[2])
+            oddArrayList.add(oddsDetail.oddArrayList.getOrNull(0))
+            oddArrayList.add(oddsDetail.oddArrayList.getOrNull(1))
+            oddArrayList.add(oddsDetail.oddArrayList.getOrNull(2))
         } else {
             tvFg?.isSelected = false
             tvLg?.isSelected = true
-            oddArrayList.add(oddsDetail.oddArrayList[3])
-            oddArrayList.add(oddsDetail.oddArrayList[4])
-            oddArrayList.add(oddsDetail.oddArrayList[2])
+            oddArrayList.add(oddsDetail.oddArrayList.getOrNull(3))
+            oddArrayList.add(oddsDetail.oddArrayList.getOrNull(4))
+            oddArrayList.add(oddsDetail.oddArrayList.getOrNull(2))
         }
 
         return OddsDetailListData(
