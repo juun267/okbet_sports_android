@@ -403,6 +403,8 @@ class BetInfoItemViewHolder(
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
 
+        isHandicapShowSetup()
+
         if (oddsId == itemData.matchOdd.oddsId && itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != "" && oldOdds != TextUtil.formatForOdd(
                 getOdds(itemData.matchOdd, currentOddsType)
             )
@@ -504,53 +506,64 @@ class BetInfoItemViewHolder(
 //        tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
         Timber.d("itemData:${itemData.matchOdd}")
 //        Timber.d("betPlayCateNameMap:${itemData.matchOdd.}")
+
         val tvNameText: String
-        when {
-            itemData.betPlayCateNameMap.isNullOrEmpty() -> {
-                tvNameText = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
-                    true -> {
-                        root.context.getString(
-                            R.string.bet_info_in_play_score,
-                            itemData.matchOdd.playCateName,
-                            itemData.matchOdd.homeScore.toString(),
-                            itemData.matchOdd.awayScore.toString()
-                        )
-                    }
-
-                    else -> {
-                        if (itemData.matchOdd.playCateName.isEmpty()) {
-                            tvName.gone()
-                        } else {
-                            tvName.visible()
-                        }
-                        itemData.matchOdd.playCateName
-                    }
+        if (itemData.betPlayCateNameMap.isNullOrEmpty()) {
+            tvNameText = if (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
+                if (itemData.matchOdd.playCode.isCornerPlayCate()) {
+                    root.context.getString(
+                        R.string.bet_info_in_play_score,
+                        itemData.matchOdd.playCateName,
+                        itemData.matchOdd.homeCornerKicks.toStringS("0"),
+                        itemData.matchOdd.awayCornerKicks.toStringS("0")
+                    )
+                } else {
+                    root.context.getString(
+                        R.string.bet_info_in_play_score,
+                        itemData.matchOdd.playCateName,
+                        itemData.matchOdd.homeScore.toString(),
+                        itemData.matchOdd.awayScore.toString()
+                    )
                 }
-                tvName.text = tvNameText
+
+                } else  {
+                    if (itemData.matchOdd.playCateName.isEmpty()) {
+                        tvName.gone()
+                    } else {
+                        tvName.visible()
+                    }
+                    itemData.matchOdd.playCateName
             }
+        } else {
+            val playCateName = itemData.betPlayCateNameMap?.getNameMap(
+                itemData.matchOdd.gameType, itemData.matchOdd.playCode
+            )?.get(LanguageManager.getSelectLanguage(root.context).key) ?: ""
 
-            else -> {
-                val playCateName = itemData.betPlayCateNameMap?.getNameMap(
-                    itemData.matchOdd.gameType, itemData.matchOdd.playCode
-                )?.get(LanguageManager.getSelectLanguage(root.context).key) ?: ""
 
-                tvNameText = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
-                    true -> {
-                        root.context.getString(
-                            R.string.bet_info_in_play_score,
-                            itemData.matchOdd.playCateName,
-                            itemData.matchOdd.homeScore.toString(),
-                            itemData.matchOdd.awayScore.toString()
-                        )
-                    }
-
-                    else -> {
-                        nameOneLine(playCateName)
-                    }
+            tvNameText = if (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
+                if (itemData.matchOdd.playCode.isCornerPlayCate()) {
+                    root.context.getString(
+                        R.string.bet_info_in_play_score,
+                        itemData.matchOdd.playCateName,
+                        itemData.matchOdd.homeCornerKicks.toStringS("0"),
+                        itemData.matchOdd.awayCornerKicks.toStringS("0")
+                    )
+                } else {
+                    root.context.getString(
+                        R.string.bet_info_in_play_score,
+                        itemData.matchOdd.playCateName,
+                        itemData.matchOdd.homeScore.toString(),
+                        itemData.matchOdd.awayScore.toString()
+                    )
                 }
-                tvName.text = tvNameText
+
+            } else  {
+                nameOneLine(playCateName)
             }
         }
+
+        tvName.text = tvNameText
+
         //設定隊伍名稱, 聯賽名稱, 開賽時間
         when (itemData.matchType) {
             MatchType.OUTRIGHT -> {

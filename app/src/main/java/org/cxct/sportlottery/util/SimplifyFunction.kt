@@ -394,6 +394,8 @@ fun WebView.setWebViewCommonBackgroundColor() {
     )
 }
 
+fun String.isCornerPlayCate(): Boolean = contains("CORNER-")
+
 /**
  * 判斷盤口啟用參數是否有配置
  * @return true: 有配置, false: 沒有配置(為空或null)
