@@ -1020,7 +1020,7 @@
     <string name="main_tab_sport">Sports</string>
     <string name="main_tab_betlist">Bet Slip</string>
     <string name="main_tab_favorite">Favorite</string>
-    <string name="main_tab_mine">My</string>
+    <string name="main_tab_mine">Account</string>
     <string name="sport_match">Matches</string>
     <string name="match_analyze">Match analysis</string>
     <string name="no_search_match">No matches were found</string>
