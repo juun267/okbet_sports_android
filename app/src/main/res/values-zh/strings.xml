@@ -1684,4 +1684,5 @@
     <string name="P332">原因</string>
     <string name="P330">"重新提交 "</string>
     <string name="forget_password_title">密码找回</string>
+    <string name="birthofdate">生日</string>
 </resources>

@@ -1600,5 +1600,6 @@
     <string name="P332">Rason</string>
     <string name="P330">Isumite muli</string>
     <string name="forget_password_title">Pagbawi ng password</string>
+    <string name="birthofdate">Birthday</string>
 </resources>
 

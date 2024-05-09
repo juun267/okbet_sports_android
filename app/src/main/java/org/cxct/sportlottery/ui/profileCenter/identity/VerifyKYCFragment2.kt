@@ -27,7 +27,7 @@ class VerifyKYCFragment2: BaseFragment<ProfileCenterViewModel, FragmentVerifyIde
         binding.ivImg3.background = bg1
 
         val dp4 = 4.dp.toFloat()
-        binding.text2.text = "* ${getString(R.string.real_name)}  \n* ${getString(R.string.P253)}  \n* ${getString(R.string.J902)}".replaceSpan("*") {
+        binding.text2.text = "* ${getString(R.string.real_name)}  \n* ${getString(R.string.P253)}  \n* ${getString(R.string.birthofdate)}".replaceSpan("*") {
             CenterImageSpan(DrawableCreator.Builder()
                 .setSizeHeight(dp4)
                 .setSizeWidth(dp4)
