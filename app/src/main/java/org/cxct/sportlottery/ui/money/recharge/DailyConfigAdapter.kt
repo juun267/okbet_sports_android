@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.money.recharge
 import androidx.appcompat.app.AppCompatActivity
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.enums.ActivityType
 import org.cxct.sportlottery.databinding.ItemDailyconfigBinding
 import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.repository.sConfigData
@@ -22,6 +23,12 @@ class DailyConfigAdapter(val onSelectedItem: (DailyConfig)->Unit): BindingAdapte
             (context as? AppCompatActivity)?.let { it1 ->
                 FirstDepositNoticeDialog.newInstance(item.content).show(it1.supportFragmentManager)
             }
+        }
+        //4 为新用户首充，6 为每日首充
+        tvType.text = when (item.activityType){
+            ActivityType.FIRST_DEPOSIT_BONUS -> context.getString(R.string.P446)
+            ActivityType.DAILY_BONUS-> context.getString(R.string.P445)
+            else -> context.getString(R.string.P277)
         }
         linChooseReward.isSelected = selectPos ==position
         tvPercent.text = "${item.additional}%"

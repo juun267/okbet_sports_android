@@ -1758,4 +1758,6 @@
     <string name="P330">Resubmit</string>
     <string name="forget_password_title">Forgot password</string>
     <string name="birthofdate">Date of Birth</string>
+    <string name="P445">Daily Bonus</string>
+    <string name="P446">First Deposit Bonus</string>
 </resources>

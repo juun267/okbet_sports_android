@@ -368,7 +368,9 @@
             android:paddingLeft="4dp"
             app:cvHint="@string/edt_hint_deposit_money"
             app:cvInputType="number"
-            app:cvTextColor="@color/color_9BB3D9_535D76"
+            app:cvTextColor="@color/color_0D2245"
+            app:cvTextSize ="@dimen/textSize18sp"
+            app:cvTextStyle="bold"
             app:cvTitleTextStyle="normal"
             app:cvTitle="@string/title_deposit_money" />
 

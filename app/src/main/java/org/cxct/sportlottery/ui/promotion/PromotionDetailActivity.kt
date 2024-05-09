@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.core.os.postDelayed
 import androidx.core.view.postDelayed
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.ActivityType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityPromotionDetailBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
@@ -41,7 +42,7 @@ class PromotionDetailActivity :
             LogUtil.toJson(activityData)
             if (!it.activityId.isNullOrEmpty()){
                 viewModel.activityDetailH5(it.activityId)
-            }else if(it.activityType==4||it.activityType==6){
+            }else if(it.activityType==ActivityType.FIRST_DEPOSIT_BONUS||it.activityType==ActivityType.DAILY_BONUS){
                 if (LoginRepository.isLogined()) {
                     viewModel.getDailyConfig()
                 }
@@ -52,7 +53,7 @@ class PromotionDetailActivity :
         }
         viewModel.activityApply.observe(this) {
             when(viewModel.activityDetail.value?.activityType){
-                3,5->{}
+                ActivityType.LOSE,ActivityType.PROFIT->{}
                 else->{
                     binding.tvDeposit.text = TextUtil.formatMoney(0)
                 }
@@ -111,16 +112,16 @@ class PromotionDetailActivity :
             linActivity.show()
             tvDeposit.text = TextUtil.formatMoney(activityDetail.amount)
             tvDepositName.text = when (activityDetail.activityType) {
-                1 -> getString(R.string.H019)
-                2 -> getString(R.string.title_deposit_money)//充值活动
-                3 -> getString(R.string.P225)//充值活动
-                4,6 -> getString(R.string.P277)//充值活动
-                5 -> getString(R.string.N713)//盈利金额
+                ActivityType.BET -> getString(R.string.H019)
+                ActivityType.DEPOSIT -> getString(R.string.title_deposit_money)//充值活动
+                ActivityType.LOSE -> getString(R.string.P225)//充值活动
+                ActivityType.FIRST_DEPOSIT_BONUS,ActivityType.DAILY_BONUS -> getString(R.string.P277)//充值活动
+                ActivityType.PROFIT -> getString(R.string.N713)//盈利金额
                 else -> getString(R.string.deposits)//亏损金额
             }
             tvReward.text = TextUtil.formatMoney(activityDetail.reward)
             tvRewardName.text = when (activityDetail.activityType) {
-                4,6 -> getString(R.string.P278)
+                ActivityType.FIRST_DEPOSIT_BONUS,ActivityType.DAILY_BONUS -> getString(R.string.P278)
                 else -> getString(R.string.P156)//亏损金额
             }
             linHistory.show()

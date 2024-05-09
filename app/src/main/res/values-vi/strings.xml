@@ -1630,4 +1630,6 @@
     <string name="P330">Gửi lại</string>
     <string name="forget_password_title">Tìm lại mật khẩu</string>
     <string name="birthofdate">Ngày sinh nhật</string>
+    <string name="P445">Thưởng hằng ngày</string>
+    <string name="P446">Thưởng nạp lần đầu</string>
 </resources>

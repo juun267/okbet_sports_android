@@ -837,8 +837,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
             etRechargeAmount.setMarginBottom(0.dp)
             if (includeQuickMoney.rvQuickMoney.adapter == null) {
                 includeQuickMoney.rvQuickMoney.layoutManager = GridLayoutManager(requireContext(), 3)
-                includeQuickMoney.rvQuickMoney.addItemDecoration(GridItemDecoration(10.dp,
-                    12.dp,
+                includeQuickMoney.rvQuickMoney.addItemDecoration(GridItemDecoration(0.dp,
+                    0.dp,
                     requireContext().getColor(R.color.color_FFFFFF),
                     false))
                 includeQuickMoney.rvQuickMoney.adapter = QuickMoneyAdapter().apply {

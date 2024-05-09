@@ -1601,5 +1601,7 @@
     <string name="P330">Isumite muli</string>
     <string name="forget_password_title">Pagbawi ng password</string>
     <string name="birthofdate">Birthday</string>
+    <string name="P445">Araw-araw na bonus</string>
+    <string name="P446">Bonus sa Unang Deposit</string>
 </resources>
 
