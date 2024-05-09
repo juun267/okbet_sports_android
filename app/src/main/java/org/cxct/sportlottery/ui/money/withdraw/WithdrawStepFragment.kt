@@ -52,14 +52,13 @@ class WithdrawStepFragment: BaseFragment<WithdrawViewModel, FragmentWithdrawStep
                 text = getString(R.string.P448)
                 setTextColor(requireContext().getColor(R.color.color_A5A9B3))
             }else{
-                if (tvState==binding.tvStepState4){
-                    VerifiedType.getVerifiedType(UserInfoRepository.userInfo.value?.verified).let {
-                        text =  getString(it.nameResId)
-                        setTextColor(requireContext().getColor(it.colorResId))
-                    }
-                }else{
-                    text = getString(R.string.D038)
-                    setTextColor(requireContext().getColor(R.color.color_1CD219))
+                text = getString(R.string.D038)
+                setTextColor(requireContext().getColor(R.color.color_1CD219))
+            }
+            if (tvState==binding.tvStepState4){
+                VerifiedType.getVerifiedType(UserInfoRepository.userInfo.value?.verified).let {
+                    text =  getString(it.nameResId)
+                    setTextColor(requireContext().getColor(it.colorResId))
                 }
             }
         }
