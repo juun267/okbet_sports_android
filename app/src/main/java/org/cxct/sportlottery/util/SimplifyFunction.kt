@@ -394,7 +394,7 @@ fun WebView.setWebViewCommonBackgroundColor() {
     )
 }
 
-fun String.isCornerPlayCate(): Boolean = startsWith("CORNER-")
+fun String.isCornerPlayCate(): Boolean = contains("CORNER-")
 
 /**
  * 判斷盤口啟用參數是否有配置
