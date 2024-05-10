@@ -9,10 +9,12 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.util.SingleLiveEvent
 
 object OKGamesRepository {
 
     val okGamesApi by lazy { RetrofitHolder.createApiService(OKGamesApi::class.java) }
+    var okPlayBean: OKGameBean?=null
 
     private fun paramDevice(gameEntryType: String = GameEntryType.OKGAMES): JsonObject {
         val params = JsonObject()
@@ -108,4 +110,9 @@ object OKGamesRepository {
 
         return okGamesApi.getOKGamesList(params)
     }
+
+    suspend fun getHallOKSport(): ApiResult<OKGameBean> {
+        return okGamesApi.getHallOKSport().apply { okPlayBean = getData()}
+    }
+
 }

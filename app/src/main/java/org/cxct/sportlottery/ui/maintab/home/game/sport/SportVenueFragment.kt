@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
 import org.cxct.sportlottery.databinding.ViewOksportNewBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
@@ -17,7 +19,9 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
+import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.JumpUtil
 
 // 体育分类
 open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTabViewModel, FragmentGamevenueBinding>() {
@@ -25,6 +29,7 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
     protected val matchTabAdapter = MatchTableAdapter(::onTabClick)
     private val leftManager by lazy { LinearLayoutManager(requireContext() ,RecyclerView.VERTICAL,false) }
     protected val rightManager by lazy { LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false) }
+    private val sportTypeAdapter = SportTypeAdapter()
 
     override fun onInitView(view: View) {
         super.onInitView(view)
@@ -58,12 +63,7 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
     }
 
     protected open fun RecyclerView.initGameList() {
-        val sportTypeAdapter = SportTypeAdapter()
-        val okSportNew = ViewOksportNewBinding.inflate(layoutInflater).root
-        okSportNew.setOnClickListener {
-
-        }
-        sportTypeAdapter.setFooterView(okSportNew)
+        setOKPlay()
         binding.rvcGameList.adapter = sportTypeAdapter
         sportTypeAdapter.setOnItemClickListener { _, _, position ->
             val selectItem = sportTypeAdapter.data[position]
@@ -128,5 +128,15 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
             }
         }
     }
-
+    fun setOKPlay(){
+        if (isAdded) {
+            OKGamesRepository.okPlayBean?.let { gameBean ->
+                val okSportNew = ViewOksportNewBinding.inflate(layoutInflater).root
+                okSportNew.setOnClickListener {
+                    getMainTabActivity()?.enterThirdGame(gameBean)
+                }
+                sportTypeAdapter.setFooterView(okSportNew)
+            }
+        }
+    }
 }

@@ -98,6 +98,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         initIndicate()
         binding.ivService.setOnTouchListener(SuckEdgeTouch())
         binding.ivService.setServiceClick(childFragmentManager)
+        viewModel.getHallOkSport()
     }
 
     override fun onBindViewStatus(view: View) {
@@ -132,6 +133,9 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         setupSportStatusChange(this){
             homeMenuAdapter.notifyDataSetChanged()
             homeMenuAdapter.checkMaintain()
+        }
+        viewModel.okSportBean.observe(this){
+            (fragmentHelper2.currentFragment() as? SportVenueFragment<*,*>)?.setOKPlay()
         }
     }
 

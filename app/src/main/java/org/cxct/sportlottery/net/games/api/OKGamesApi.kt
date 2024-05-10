@@ -39,4 +39,7 @@ interface OKGamesApi {
 
     @GET(Constants.GET_GAMEFIRMS)
     suspend fun getGameFirms(): ApiResult<List<OKGamesFirm>>
+
+    @GET(Constants.GET_HALL_OKSPORT)
+    suspend fun getHallOKSport(): ApiResult<OKGameBean>
 }
