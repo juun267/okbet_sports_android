@@ -15,19 +15,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.enums.SecurityCodeEnterType
 import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityProfileBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
-import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
 import org.cxct.sportlottery.ui.login.signUp.info.DateTimePickerOptions
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.profileCenter.authbind.AuthActivity
@@ -44,7 +40,6 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.isStatusOpen
-import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.cxct.sportlottery.view.dialog.SourceOfIncomeDialog
 import timber.log.Timber
 import java.io.File
@@ -58,9 +53,6 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
 
     //生日选择
     private var dateTimePicker: TimePickerView? = null
-
-    private var securityCodeEnter = SecurityCodeEnterType.REALNAME
-
     private var dialogBtmAdapter = DialogBottomDataAdapter()
     private lateinit var rvData: RecyclerView
     private lateinit var btnDialogTitle: TextView
@@ -210,8 +202,6 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
         //真實姓名
         llRealName.setOnClickListener {
             startActivity(EditUserNameActivity::class.java)
-//            securityCodeEnter = SecurityCodeEnterType.REALNAME
-//            viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
         }
         //暱稱
         btnNickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
@@ -221,8 +211,7 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
         llZipCodeCurrent.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.ZipCode) }
         //密碼設置
         btnPwdSetting.setOnClickListener {
-            securityCodeEnter = SecurityCodeEnterType.PW
-            viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
+            startActivity(SettingPasswordActivity::class.java)
         }
         //登录授权
         linAuth.setOnClickListener { startActivity(AuthActivity::class.java) }

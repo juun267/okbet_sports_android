@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.money.withdraw
 
+import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -10,28 +11,46 @@ import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentWithdrawStepBinding
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
-import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
+import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.modify.ModifyBindInfoActivity
+import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 
-class WithdrawStepFragment: BaseFragment<WithdrawViewModel, FragmentWithdrawStepBinding>() {
+class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdrawStepBinding>() {
 
     override fun onInitView(view: View) {
-
+        setup()
+       viewModel.userInfo.observe(this){
+           hideLoading()
+           setup()
+       }
     }
 
     override fun onResume() {
         super.onResume()
-        setup()
+        loading()
+        viewModel.getUserInfo()
     }
     fun setup()=binding.run{
         val needPhoneNumber = UserInfoRepository.userInfo.value?.phone.isNullOrBlank()
         val needPassword = UserInfoRepository.userInfo.value?.passwordSet != false
         val needPayPW = UserInfoRepository.userInfo.value?.updatePayPw == 1
         val needVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value
-        setStepItem(needPhoneNumber,ivStep1,line1,tvStepState1,ivStepArrow1,::onItemClick)
-        setStepItem(needPassword,ivStep2,line2,tvStepState2,ivStepArrow2,::onItemClick)
-        setStepItem(needPayPW,ivStep3,line3,tvStepState3,ivStepArrow3,::onItemClick)
-        setStepItem(needVerify,ivStep4,null,tvStepState4,ivStepArrow4,::onItemClick)
+        setStepItem(needPhoneNumber,ivStep1,line1,tvStepState1,ivStepArrow1){
+            ModifyBindInfoActivity.start(requireActivity(), ModifyType.PhoneNumber, 100, null, null, null)
+        }
+        setStepItem(needPassword,ivStep2,line2,tvStepState2,ivStepArrow2){
+            startActivity(SettingPasswordActivity::class.java)
+        }
+        setStepItem(needPayPW,ivStep3,line3,tvStepState3,ivStepArrow3){
+            startActivity(Intent(requireActivity(), SettingPasswordActivity::class.java)
+                .apply { putExtra(SettingPasswordActivity.PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) }
+            )
+        }
+        setStepItem(needVerify,ivStep4,null,tvStepState4,ivStepArrow4){
+            startActivity(VerifyIdentityActivity::class.java)
+        }
         //若全部完成，就切换页面到提款页面
         if (!needPhoneNumber&&!needPassword&&!needPayPW&&!needVerify){
             (requireActivity() as WithdrawActivity).jumpToFragment()
@@ -57,14 +76,14 @@ class WithdrawStepFragment: BaseFragment<WithdrawViewModel, FragmentWithdrawStep
             }
             if (tvState==binding.tvStepState4){
                 VerifiedType.getVerifiedType(UserInfoRepository.userInfo.value?.verified).let {
+                    if (it == VerifiedType.NOT_YET || it == VerifiedType.VERIFIED_FAILED){
+                        return
+                    }
                     text =  getString(it.nameResId)
                     setTextColor(requireContext().getColor(it.colorResId))
                 }
             }
         }
         ivArrow.setImageResource(if (enable) R.drawable.ic_arrow_edit else R.drawable.ic_check_green)
-    }
-    fun onItemClick(){
-        requireActivity().startActivity(ProfileActivity::class.java)
     }
 }
