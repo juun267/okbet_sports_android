@@ -76,7 +76,7 @@ class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdra
             }
             if (tvState==binding.tvStepState4){
                 VerifiedType.getVerifiedType(UserInfoRepository.userInfo.value?.verified).let {
-                    if (it == VerifiedType.NOT_YET || it == VerifiedType.VERIFIED_FAILED){
+                    if (it == VerifiedType.NOT_YET || it == VerifiedType.VERIFIED_FAILED || it == VerifiedType.PASSED){
                         return
                     }
                     text =  getString(it.nameResId)
