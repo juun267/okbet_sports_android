@@ -150,8 +150,7 @@ class MoneyRechViewModel(
 
     //獲取充值的基礎配置
     fun getRechCfg() {
-        Log.e(">>>", "getRechCfg")
-        WithdrawRepository.moneyRechCfgResult.value?.rechCfg?.let {
+        MoneyRepository.moneyRechCfgResult.value?.rechCfg?.let {
             _rechargeConfigs.value = it
             filterBankList(it.rechTypes,it.rechCfgs)
         }

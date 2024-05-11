@@ -1019,7 +1019,7 @@ fun BaseActivity<*, *>.jumpToDeposit(){
             viewModel.launch {
                 checkRecharge = true
                 val result = viewModel.doNetwork(applicationContext) {
-                    WithdrawRepository.checkRechargeSystem()
+                    MoneyRepository.checkRechargeSystem()
                 }
 
                 if (result == null || !result.success) {

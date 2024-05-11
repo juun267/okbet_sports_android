@@ -101,7 +101,6 @@ object AppViewModel {
         single { AvatarRepository }
         single { FeedbackRepository }
         single { HostRepository }
-        single { WithdrawRepository }
         single { FavoriteRepository }
         single { SelfLimitRepository }
         single { GamePlayNameRepository }
