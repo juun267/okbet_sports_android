@@ -149,8 +149,6 @@ open class MainHomeViewModel(
         get() = _newsCategory
     private val _newsCategory = MutableLiveData<List<NewsCategory>>()
 
-    val okSportBean = SingleLiveEvent<OKGameBean>()
-
     //region 宣傳頁用
     fun getRecommend(gameType: GameType?=null) {
         viewModelScope.launch {
@@ -669,8 +667,8 @@ open class MainHomeViewModel(
         }
     }
     fun getHallOkSport() {
-        callApi({ OKGamesRepository.getHallOKSport()}){
-            it.getData().let { okSportBean.postValue(it) }
+        if (sConfigData?.sbSportSwitch==1) {
+            callApi({ OKGamesRepository.getHallOKSport() }) {}
         }
     }
 }

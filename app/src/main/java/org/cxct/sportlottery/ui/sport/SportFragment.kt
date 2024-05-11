@@ -117,7 +117,7 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
             when(it){
                 0-> {}
                 1-> {
-                    OKGamesRepository.okPlayBean?.let { it1 ->
+                    OKGamesRepository.okPlayEvent.value?.let { it1 ->
                         getMainTabActivity().enterThirdGame(it1)
                     }
                 }
@@ -384,6 +384,9 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
             if (favorMatchs == it) { return@observe }
             favorMatchs = it
             favoriteDelayRunable.doOnDelay(1300)
+        }
+        OKGamesRepository.okPlayEvent.observe(viewLifecycleOwner){
+            binding.homeToolbar.setupOKPlay()
         }
     }
 

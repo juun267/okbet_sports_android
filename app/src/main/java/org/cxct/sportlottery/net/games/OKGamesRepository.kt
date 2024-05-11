@@ -14,7 +14,7 @@ import org.cxct.sportlottery.util.SingleLiveEvent
 object OKGamesRepository {
 
     val okGamesApi by lazy { RetrofitHolder.createApiService(OKGamesApi::class.java) }
-    var okPlayBean: OKGameBean?=null
+    val okPlayEvent = SingleLiveEvent<OKGameBean?>()
 
     private fun paramDevice(gameEntryType: String = GameEntryType.OKGAMES): JsonObject {
         val params = JsonObject()
@@ -112,7 +112,7 @@ object OKGamesRepository {
     }
 
     suspend fun getHallOKSport(): ApiResult<OKGameBean> {
-        return okGamesApi.getHallOKSport().apply { okPlayBean = getData()}
+        return okGamesApi.getHallOKSport().apply { okPlayEvent.postValue(getData())}
     }
 
 }

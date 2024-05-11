@@ -130,7 +130,7 @@ open class SportVenueFragment<VM : BaseViewModel, VB>: GameVenueFragment<SportTa
     }
     fun setOKPlay(){
         if (isAdded) {
-            OKGamesRepository.okPlayBean?.let { gameBean ->
+            OKGamesRepository.okPlayEvent.value?.let { gameBean ->
                 val okSportNew = ViewOksportNewBinding.inflate(layoutInflater).root
                 okSportNew.setOnClickListener {
                     getMainTabActivity()?.enterThirdGame(gameBean)

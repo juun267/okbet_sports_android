@@ -14,6 +14,7 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.Row
@@ -134,7 +135,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
             homeMenuAdapter.notifyDataSetChanged()
             homeMenuAdapter.checkMaintain()
         }
-        viewModel.okSportBean.observe(this){
+        OKGamesRepository.okPlayEvent.observe(this){
             (fragmentHelper2.currentFragment() as? SportVenueFragment<*,*>)?.setOKPlay()
         }
     }

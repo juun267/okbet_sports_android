@@ -27,6 +27,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
@@ -333,7 +334,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         viewModel.getMoneyAndTransferOut()
     }
     fun setupOKPlay(){
-        if (OKGamesRepository.okPlayBean!=null){
+        if (OKGamesRepository?.okPlayEvent.value!=null){
             linOKPlay = LinearLayout(context).apply {
                 gravity = Gravity.CENTER_VERTICAL
                 val tvName = AppCompatTextView(context).apply {
