@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.vip
 
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -136,6 +137,8 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
                 withdrawalBinding.tvAction.gone()
                 activatedAdapter.addFooterView(withdrawalBinding.root)
             }
+            val showEmpty = activatedAdapter.itemCount==0 && !currentLevel.exclusiveService && !currentLevel.expressWithdrawal
+            binding.includeActivatedEmpty.root.isVisible = showEmpty
             unActivatedAdapter.setList(nextLevel?.rewardDetail?.filter { it.enable })
         }
 

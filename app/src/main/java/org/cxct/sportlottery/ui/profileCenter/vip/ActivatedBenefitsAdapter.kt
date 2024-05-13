@@ -59,7 +59,7 @@ class ActivatedBenefitsAdapter: BindingAdapter<RewardDetail, ItemActivatedBenefi
         tvAmount.text = TextUtil.formatMoney(item.value)
         //1:未中奖,2:待审核,3:审核不通过,4:审核通过,5:已领取,6:已失效,7:未领取, null:無資格（專屬紅包則視為未申請）
         when(item.status){
-            7-> {
+            1,7-> {
                 tvAction.setActionBtn(true)
                 tvAction.text = if (item.rewardType == UserVipType.REWARD_TYPE_PACKET) context.getString(R.string.P407) else context.getString(R.string.P373)
             }

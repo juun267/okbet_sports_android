@@ -128,10 +128,20 @@
                         android:textColor="@color/color_0D2245"
                         android:textSize="16sp" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rcvActivatedBenefits"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcvActivatedBenefits"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                        <include
+                            android:id="@+id/includeActivatedEmpty"
+                            layout="@layout/view_vip_activated_empty"
+                            android:visibility="gone"
+                            />
+                    </FrameLayout>
+
 
                     <TextView
                         android:layout_width="wrap_content"

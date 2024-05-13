@@ -47,7 +47,7 @@ class UnactivatedBenefitsAdapter: BindingAdapter<RewardDetail, ItemUnactivatedBe
                 ivBenefits.setImageResource(R.drawable.ic_vip_bonus_birthday)
                 tvBenefitsName.text = context.getString(R.string.P365)
             }
-            UserVipType.REWARD_TYPE_PROMOTE->{
+            UserVipType.REWARD_TYPE_PACKET->{
                 ivBenefits.setImageResource(R.drawable.ic_vip_bonus_packet)
                 tvBenefitsName.text = context.getString(R.string.P366)
             }
