@@ -18,7 +18,20 @@ public class OKVideoPlayer extends GSYVideoPlayer {
         void onError();
     }
 
+    public interface PlayStatusListener {
+        void onPrepare();
+        void onPlaying();
+        void onPause();
+        void onPlayComplete();
+        void onError();
+    }
+
+    private PlayStatusListener playStatusListener;
     public OnOkListener onOkListener;
+
+    public void setPlayStatusListener(PlayStatusListener playStatusListener) {
+        this.playStatusListener = playStatusListener;
+    }
 
     public void setOnOkListener(OnOkListener onOkListener) {
         this.onOkListener = onOkListener;
@@ -34,6 +47,10 @@ public class OKVideoPlayer extends GSYVideoPlayer {
 
     public OKVideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    public void setNeedMute(boolean needMute) {
+        GSYVideoManager.instance().setNeedMute(needMute);
     }
 
     @Override
@@ -263,5 +280,39 @@ public class OKVideoPlayer extends GSYVideoPlayer {
 
     public void showTranBar(Boolean show) {
         findViewById(R.id.rl_tran_cover).setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    protected void setStateAndUi(int state) {
+        super.setStateAndUi(state);
+        if (playStatusListener == null) {
+            return;
+        }
+
+        if (CURRENT_STATE_PREPAREING == state) {
+            playStatusListener.onPrepare();
+            return;
+        }
+
+        if (CURRENT_STATE_PLAYING == state) {
+            playStatusListener.onPlaying();
+            return;
+        }
+
+        if (CURRENT_STATE_PAUSE == state) {
+            playStatusListener.onPause();
+            return;
+        }
+
+        if (CURRENT_STATE_AUTO_COMPLETE == state) {
+            playStatusListener.onPlayComplete();
+            return;
+        }
+
+        if (CURRENT_STATE_ERROR == state) {
+            playStatusListener.onError();
+            return;
+        }
+
     }
 }

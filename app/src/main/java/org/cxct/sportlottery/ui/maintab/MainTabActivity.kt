@@ -143,6 +143,8 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
                 onMenuEvent(MenuEvent(true))
                 if (currentFragment is SportFragment) {
                     showSportLeftMenu()
+                } else if (currentFragment is HomeFragment) {
+                    showMainLeftMenu(currentFragment.getCurrentFragment()?.javaClass as Class<BaseFragment<*,*>>? )
                 } else {
                     showMainLeftMenu(currentFragment.javaClass as Class<BaseFragment<*,*>>?)
                 }
@@ -367,7 +369,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     }
 
 
-    fun showMainLeftMenu(contentFragment: Class<BaseFragment<*,*>>?) {
+    private fun showMainLeftMenu(contentFragment: Class<BaseFragment<*,*>>?) {
         fragmentHelper2.show(MainLeftFragment::class.java, Bundle()) { fragment, _ ->
             fragment.openWithFragment(contentFragment)
         }
@@ -603,6 +605,14 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
     private fun navToPosition(position: Int) {
         fragmentHelper.showFragment(position)
+    }
+
+    fun jumpToPerya() {
+        navToPosition(INDEX_HOME)
+        val fragment = fragmentHelper.getFragment(INDEX_HOME)
+        if (fragment is HomeFragment) {
+            fragment.jumpToPerya()
+        }
     }
 
     fun jumpToESport(gameType: String) {

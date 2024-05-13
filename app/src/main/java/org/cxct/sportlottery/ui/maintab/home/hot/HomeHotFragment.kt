@@ -75,6 +75,8 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         if (binding.scrollView.scrollY != 0) {
             binding.scrollView.postDelayed({ backTop() }, 50)
         }
+        binding.miniGameView.startPlay("")
+        binding.miniGameView.bindLifeCycle(this@HomeHotFragment)
         bottomView.bindServiceClick(childFragmentManager)
         recentView.setup(this@HomeHotFragment)
         hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@HomeHotFragment)

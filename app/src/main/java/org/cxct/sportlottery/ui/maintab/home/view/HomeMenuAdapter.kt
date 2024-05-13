@@ -16,6 +16,7 @@ import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragment
+import org.cxct.sportlottery.ui.maintab.home.game.perya.MiniGameListFragment
 import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
@@ -44,6 +45,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private val promotionMenuItem = MenuTab(R.drawable.ic_home_menu_promotion_sel, R.drawable.ic_home_menu_promotion_nor, R.string.promo, null)
     private val sericeMenuItem = MenuTab(R.drawable.ic_home_menu_service_sel, R.drawable.ic_home_menu_service_nor, R.string.LT050_1, null)
     private val endcardMenuItem = MenuTab(R.drawable.ic_home_menu_endcard_sel, R.drawable.ic_home_menu_endcard_nor, R.string.P333, null)
+    private val peryaMenuItem = MenuTab(R.drawable.ic_home_menu_perya_sel, R.drawable.ic_home_menu_perya_nor, R.string.P333, MiniGameListFragment::class.java)
 
     private var selectItem: MenuTab? = null
     private var selectedPosition = initiallyPosition
@@ -123,6 +125,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         if (StaticData.okGameOpened()){
             itemDatas.add(okGameMenuItem)
         }
+        itemDatas.add(peryaMenuItem)
         if (StaticData.okLiveOpened()){
             itemDatas.add(okLiveGameItem)
         }
@@ -133,6 +136,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
             itemDatas.add(esportMenuItem)
         }
         itemDatas.add(promotionMenuItem)
+
         itemDatas.add(sericeMenuItem)
 
         val less = itemDatas.size % pageSize
@@ -203,6 +207,11 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     }
 
     fun selectedRecommend() = changeSelected(hotMenuItem, initiallyPosition, 0)
+    fun selectedPerya(): Int {
+        val index = datas.indexOf(peryaMenuItem)
+        changeSelected(peryaMenuItem, initiallyPosition, index)
+        return initiallyPosition
+    }
 
     fun checkMaintain() {
         if (selectItem == sportMenuItem || selectItem == esportMenuItem) {

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
@@ -28,6 +29,7 @@ import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragment
+import org.cxct.sportlottery.ui.maintab.home.game.perya.MiniGameListFragment
 import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
@@ -77,12 +79,18 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         return@HomeMenuAdapter true
     }
 
+    fun jumpToPerya() {
+        post{  binding.rvMenu.scrollToPosition(homeMenuAdapter.selectedPerya()) }
+        fragmentHelper2.show(MiniGameListFragment::class.java)
+    }
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden) {
             binding.appBarLayout.expand(false)
-        }else{
             homeMenuAdapter.selectedRecommend()
+        }else{
+
         }
         fragmentHelper2.currentFragment()?.let {
             if (it.isAdded) {

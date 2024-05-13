@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import org.cxct.sportlottery.ui.chat.hideSoftInput
-import org.cxct.sportlottery.util.BreatheInterpolator
+import org.cxct.sportlottery.util.interpolator.BreatheInterpolator
 import org.cxct.sportlottery.util.ScreenUtil
 import java.util.regex.Pattern
 
@@ -138,7 +138,8 @@ fun View.flashAnimation(
 
     val alphaAnimator: ObjectAnimator = ObjectAnimator.ofFloat(this, "alpha", startAlpha, endAlpha)
     alphaAnimator.duration = duration
-    alphaAnimator.interpolator = BreatheInterpolator()
+    alphaAnimator.interpolator =
+        BreatheInterpolator()
     alphaAnimator.repeatCount = repeatCount
     alphaAnimator.addListener(object : AnimatorListenerAdapter() {
 
