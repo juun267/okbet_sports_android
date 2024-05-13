@@ -613,6 +613,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         if (fragment is HomeFragment) {
             fragment.jumpToPerya()
         }
+        tabHelper.clearSelected()
     }
 
     fun jumpToESport(gameType: String) {
