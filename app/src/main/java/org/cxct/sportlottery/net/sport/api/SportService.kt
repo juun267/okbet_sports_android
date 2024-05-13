@@ -39,4 +39,7 @@ interface SportService {
 
     @POST(Constants.MATCH_LGPCOFL_DETAIL + "/{matchId}")
     suspend fun getLGPCOFLDetail(@Path("matchId") matchId: String): ApiResult<Array<EndCardBet>>
+
+    @POST(Constants.WINNINGNEWS_LIST)
+    suspend fun getWinningList(): ApiResult<List<String>?>
 }

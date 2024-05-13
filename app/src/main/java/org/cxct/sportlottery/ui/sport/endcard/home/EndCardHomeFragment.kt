@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.luck.picture.lib.utils.ToastUtils
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.clickDelay
-import org.cxct.sportlottery.common.extentions.collectWith
-import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.databinding.FragmentEndcardHomeBinding
@@ -72,6 +70,7 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
         loadingHolder.withRetry{
             loadingHolder.showLoading()
             viewModel.loadEndCardMatchList()
+            viewModel.getWinningList()
         }
         loadingHolder.go()
 
@@ -81,14 +80,6 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
         binding.rcvMarquee.setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
         marqueeAdapter = WinnersMarqueeAdapter()
         binding.rcvMarquee.adapter = marqueeAdapter
-
-        marqueeAdapter.setNewInstance(mutableListOf("Sid win ₱ 888,888 in New Orleans Pelicans VS Los Angles Lakers. Bill bet in New Orleans Pelicans VS Los Angles Lakers."
-        ,"Sid win ₱ 888,888 in New Orleans Pelicans VS Los Angles Lakers. Bill bet in New Orleans Pelicans VS Los Angles Lakers."
-        ,"Sid win ₱ 888,888 in New Orleans Pelicans VS Los Angles Lakers. Bill bet in New Orleans Pelicans VS Los Angles Lakers."
-        ,"Sid win ₱ 888,888 in New Orleans Pelicans VS Los Angles Lakers. Bill bet in New Orleans Pelicans VS Los Angles Lakers."
-        ,"Sid win ₱ 888,888 in New Orleans Pelicans VS Los Angles Lakers. Bill bet in New Orleans Pelicans VS Los Angles Lakers."))
-
-        binding.rcvMarquee.startAuto(false)
     }
 
     private fun initObserver() {
@@ -112,6 +103,15 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
 
         viewModel.betNum.collectWith(lifecycleScope) {
             matchAdapter.updateBetsNum(it.first, it.second)
+        }
+        viewModel.winningList.observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()){
+                binding.rcvMarquee.gone()
+            }else{
+                binding.rcvMarquee.visible()
+                marqueeAdapter.setList(it)
+                binding.rcvMarquee.startAuto(false)
+            }
         }
     }
 

@@ -104,4 +104,7 @@ object SportRepository {
     }
 
     suspend fun getLGPCOFLDetail(matchId: String) = sportApi.getLGPCOFLDetail(matchId)
+
+    suspend fun getWinningList() = sportApi.getWinningList()
+
 }

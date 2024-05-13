@@ -160,11 +160,7 @@ private class EndCardMatchProvider(
             tvHotCount.text = Spanny(String.format(context.getString(R.string.P360),hotCount))
                 .findAndSpan(hotCount){ ForegroundColorSpan(ContextCompat.getColor(context,R.color.color_1CD219)) }
 
-            val betCount=if (matchInfo.shortName?.contains("NBA") == true||matchInfo.leagueName?.contains("NBA") == true){
-                Random.nextInt(100,199)
-            }else{
-                Random.nextInt(50,99)
-            }.toString()
+            val betCount = matchInfo.betCount.toString()
             tvBetCount.text = Spanny(String.format(context.getString(R.string.P361),betCount))
                 .findAndSpan(betCount){ ForegroundColorSpan(ContextCompat.getColor(context,R.color.color_1CD219)) }
 

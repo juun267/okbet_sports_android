@@ -131,4 +131,5 @@ data class MatchInfo(
     var categoryCode: String? = null
 
     var pullRtmpUrl: String? = null
+    var betCount: Int=0 //endcard模块会有下注数量
 }
