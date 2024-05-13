@@ -67,7 +67,7 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
                 holder.setImageResource(imgId, R.drawable.img_mini_game_cover)
                 holder.setVisible(textId, false)
             } else {
-                holder.setImageResource(imgId, R.drawable.img_mini_game_cover)
+                holder.setImageResource(imgId, R.drawable.img_minigame_unknow)
                 holder.setVisible(textId, true)
             }
         }

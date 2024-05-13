@@ -33,7 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/ivGameICon"
-        android:paddingBottom="90dp"/>
+        android:clipToPadding="false"
+        android:paddingBottom="105dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
