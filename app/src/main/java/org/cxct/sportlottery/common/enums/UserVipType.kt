@@ -85,4 +85,21 @@ object UserVipType{
             else -> R.drawable.bg_vip0
         }
     }
+
+    fun getBenefitName(code: Int): Int {
+        return 0
+//        return when(code) {
+//            1 -> R.string.bg_vip1
+//            2 -> R.string.bg_vip2
+//            3 -> R.string.bg_vip3
+//            4 -> R.string.bg_vip4
+//            5 -> R.string.bg_vip5
+//            6 -> R.string.bg_vip6
+//            7 -> R.string.bg_vip7
+//            8 -> R.string.bg_vip8
+//            9 -> R.string.bg_vip9
+//            10 -> R.string.bg_vip10
+//            else -> R.string.bg_vip0
+//        }
+    }
 }

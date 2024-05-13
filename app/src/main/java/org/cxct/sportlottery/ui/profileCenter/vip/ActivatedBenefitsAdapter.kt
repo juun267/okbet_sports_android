@@ -13,8 +13,6 @@ import org.cxct.sportlottery.net.user.data.RewardDetail
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
-import org.cxct.sportlottery.util.drawable.shape.ShapeType
-import org.w3c.dom.Text
 
 class ActivatedBenefitsAdapter: BindingAdapter<RewardDetail, ItemActivatedBenefitsBinding>() {
 
