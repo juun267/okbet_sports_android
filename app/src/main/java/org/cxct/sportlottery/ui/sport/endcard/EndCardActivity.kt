@@ -9,11 +9,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityEndcardBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.endcard.bet.EndCardGameFragment
 import org.cxct.sportlottery.ui.sport.endcard.home.EndCardHomeFragment

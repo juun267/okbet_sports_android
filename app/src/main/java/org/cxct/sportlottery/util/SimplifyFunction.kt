@@ -81,7 +81,6 @@ import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
-import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream

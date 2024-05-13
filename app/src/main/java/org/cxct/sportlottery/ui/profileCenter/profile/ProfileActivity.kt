@@ -30,7 +30,6 @@ import org.cxct.sportlottery.ui.profileCenter.authbind.AuthActivity
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.modify.ModifyBindInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.modify.VerificationWaysActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.EditUserNameActivity
@@ -551,11 +550,6 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
 
         setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_939393_999999))
     }
-
-    private fun showKYCVerifyDialog() {
-        VerifyIdentityDialog().show(supportFragmentManager, null)
-    }
-
 
     /**
      * 初始化时间选择控件

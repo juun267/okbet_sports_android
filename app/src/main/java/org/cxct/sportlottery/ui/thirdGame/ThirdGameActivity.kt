@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.thirdGame
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.view.View
@@ -10,30 +9,23 @@ import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.ScreenAdapter
-import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.common.extentions.collectWith
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.databinding.ActivityThirdGameBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
-import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.common.WebActivity.Companion.FIRM_CODE
 import org.cxct.sportlottery.ui.common.WebActivity.Companion.GAME_CATEGORY_CODE
 import org.cxct.sportlottery.ui.common.WebActivityImp
-import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
 import org.cxct.sportlottery.ui.maintab.MainViewModel
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.money.withdraw.BankActivity
-import org.cxct.sportlottery.ui.money.withdraw.WithdrawActivity
-import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.isThirdTransferOpen
 import org.cxct.sportlottery.util.jumpToDeposit
@@ -47,9 +39,6 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
     private var density: Float = 0f
 
     private var mUserInfo: UserInfo? = null
-
-    //簡訊驗證彈窗
-    private var customSecurityDialog: CustomSecurityDialog? = null
 
     private val firmCode by lazy { intent.getStringExtra(FIRM_CODE) }
     private val gameType by lazy { intent.getStringExtra(GAME_CATEGORY_CODE) }
@@ -202,10 +191,6 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         viewModel.userInfo.observe(this) {
             mUserInfo = it
         }
-    }
-
-    private fun showKYCVerifyDialog() {
-        VerifyIdentityDialog().show(supportFragmentManager, null)
     }
 
     private val refreshTokenDuring = 5 * 60_000L

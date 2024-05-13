@@ -22,18 +22,14 @@ import org.cxct.sportlottery.databinding.FragmentProfileCenterBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
-import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.money.withdraw.WithdrawActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
@@ -59,9 +55,6 @@ import java.io.FileNotFoundException
 class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfileCenterBinding>() {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
-
-    //簡訊驗證彈窗
-    private var customSecurityDialog: CustomSecurityDialog? = null
     private var noticeCount: Int = 0
     private var isGuest: Boolean? = null
 
@@ -426,10 +419,6 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             (if (noticeCount > 0 && isGuest == false) View.VISIBLE else View.GONE)
     }
 
-    //实名验证
-    private fun showKYCVerifyDialog() {
-        VerifyIdentityDialog().show(childFragmentManager, null)
-    }
     private fun bindVerifyStatus(userInfo: UserInfo?) {
         binding.tvKycStatus.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
