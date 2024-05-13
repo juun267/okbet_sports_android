@@ -3,10 +3,14 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import com.google.gson.JsonObject
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.VipRedenpApplyResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
@@ -437,6 +441,8 @@ object Constants {
     //專屬紅包申請
     const val VIP_UNIREDENP_APPLY = "/api/front/activity/vip/uniredenp/apply"
 
+    const val SETBIRTHDAY = "/api/front/user/setBirthday"
+
     //upload image
     const val UPLOAD_IMG = "/api/upload/image#url_ignore" //上传图片,url_ignore避免域名被动态替换
     const val UPLOAD_VERIFY_PHOTO = "/api/front/user/uploadVerifyPhoto" //上傳實名制文件
@@ -515,7 +521,6 @@ object Constants {
     const val WORKS_QUERYALL = "/api/front/works/queryAll"//获取所有工作性质列表
     const val USER_QUERYUSERINFODETAILS = "/api/front/user/queryUserInfoDetails"//完善用户信息详情查询
     const val USER_COMPLETEUSERDETAILS = "/api/front/user/CompleteUserDetails"//完善用户信息详情
-
     //注销账户
     const val CANCEL_ACCOUNT = "/api/front/user/remove"
 

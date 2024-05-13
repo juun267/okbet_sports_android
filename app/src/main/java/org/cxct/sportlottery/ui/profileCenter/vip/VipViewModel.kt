@@ -16,18 +16,18 @@ class VipViewModel(
 ) : BaseViewModel(
     androidContext
 ) {
-    val userVipEvent = SingleLiveEvent<UserVip>()
+    val userVipEvent = SingleLiveEvent<UserVip?>()
     val vipDetailEvent = SingleLiveEvent<VipDetail?>()
     val vipRewardEvent = SingleLiveEvent<String>()
     val applyResultEvent = SingleLiveEvent<VipRedenpApplyResult?>()
+    val setBirthdayEvent = SingleLiveEvent<String?>()
 
     fun getUserVip(){
         callApi({UserRepository.getUserVip()}){
             if (it.succeeded()){
-                it.getData()?.let {
-                    userVipEvent.postValue(it)
-                }
+                userVipEvent.postValue(it.getData())
             }else{
+                userVipEvent.postValue(null)
                 toast(it.msg)
             }
         }
@@ -35,7 +35,7 @@ class VipViewModel(
     fun getVipDetail() {
         callApi({ UserRepository.getVipDetail() }) {
             if (it.succeeded()) {
-                vipDetailEvent.postValue(it?.getData())
+                vipDetailEvent.postValue(it.getData())
             } else {
                 toast(it.msg)
             }
@@ -44,7 +44,7 @@ class VipViewModel(
     fun vipReward(activityId: Int, rewardType: Int, levelV2Id: Int){
         callApi({UserRepository.vipReward(activityId,rewardType,levelV2Id)}){
             if (it.succeeded()){
-                vipRewardEvent.postValue(it?.getData())
+                vipRewardEvent.postValue(it.getData())
             }else{
                 toast(it.msg)
             }
@@ -53,7 +53,16 @@ class VipViewModel(
     fun vipRedenpApply(levelV2Id: Int){
         callApi({UserRepository.vipRedenpApply(levelV2Id)}){
             if (it.succeeded()){
-                applyResultEvent.postValue(it?.getData())
+                applyResultEvent.postValue(it.getData())
+            }else{
+                toast(it.msg)
+            }
+        }
+    }
+    fun setBirthday(birthday: String){
+        callApi({UserRepository.setBirthday(birthday)}){
+            if (it.succeeded()){
+                setBirthdayEvent.postValue(it.getData())
             }else{
                 toast(it.msg)
             }

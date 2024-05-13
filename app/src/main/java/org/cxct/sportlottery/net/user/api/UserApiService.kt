@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.Constants.LOGIN
 import org.cxct.sportlottery.network.Constants.LOGIN_CHECK_NEED_CODE
 import org.cxct.sportlottery.network.Constants.RRESET_WITHDRAW
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
+import org.cxct.sportlottery.network.Constants.SETBIRTHDAY
 import org.cxct.sportlottery.network.Constants.UPLOAD_REVIEW_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_VERIFY_CONFIG
 import org.cxct.sportlottery.network.Constants.SET_USERNAME
@@ -98,4 +99,8 @@ interface UserApiService {
 
     @POST(VIP_UNIREDENP_APPLY)
     suspend fun vipRedenpApply(@Body params : JsonObject): ApiResult<VipRedenpApplyResult>
+
+    @POST(SETBIRTHDAY)
+    suspend fun setBirthday(@Body params : JsonObject): ApiResult<String>
+
 }

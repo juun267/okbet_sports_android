@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.profileCenter.vip
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewGroup
@@ -16,13 +15,16 @@ import org.cxct.sportlottery.common.enums.UserVipType
 import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.ItemVipCardBinding
+import org.cxct.sportlottery.net.user.data.RewardInfo
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 
-class VipCardAdapter: BindingAdapter<Int, ItemVipCardBinding>() {
+class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
 
     private val leftProgress by lazy { context.getDrawable(R.drawable.bg_vip_progress_left)!! }
     private val rightProgress by lazy { context.getDrawable(R.drawable.bg_vip_progress_right)!! }
+    var userExp: Long=0
 
     override fun onCreateDefViewHolder(
         parent: ViewGroup,
@@ -44,26 +46,28 @@ class VipCardAdapter: BindingAdapter<Int, ItemVipCardBinding>() {
         return holder
     }
 
-    override fun onBinding(position: Int, binding: ItemVipCardBinding, item: Int) = binding.run {
-        if (position % 3 == 0) {
+    override fun onBinding(position: Int, binding: ItemVipCardBinding, item: RewardInfo) = binding.run {
+        val isCurrentLevel = UserInfoRepository.userInfo.value?.levelCode==item.levelCode
+        if (isCurrentLevel) {
             binding.tvCurrent.show()
-            vipProgressView.setProgress2(5, 5.dp, leftProgress)
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 12.dp
+//            vipProgressView.setProgress2((userExp*100/item.upgradeExp).toInt(), 5.dp, leftProgress)
+            setProgress(userExp, item.upgradeExp, binding.tvPercent)
         } else {
             binding.tvCurrent.hide()
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 10.dp
-            vipProgressView.setProgress2(91, 24.dp, rightProgress)
+            vipProgressView.setProgress2(0, 24.dp, rightProgress)
+            setProgress(0, item.upgradeExp, binding.tvPercent)
         }
 
-        tvDescribe.text = "Ang halaga ng paglago ay binabayaran sa 15:50 araw-araw Ang halaga ng paglago ay binabayaran sa 15:50 araw-araw"
+        tvDescribe.text = context.getString(R.string.P443)
         card.setBackgroundResource(UserVipType.getVipCard(position))
 
-        tvLevel.text = "VIP $item"
-        tvNextLevel.text = "VIP ${item + 1}"
-        setProgress(50, 900, binding.tvPercent)
+        tvLevel.text = item.levelName
+        tvNextLevel.text = getItemOrNull(position+1)?.levelName?:context.getString(R.string.P439)
     }
 
-    private fun setProgress(progress: Int, max: Int, progressText: TextView) {
+    private fun setProgress(progress: Long, max: Long, progressText: TextView) {
         progressText.text = "$progress/"
             .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
             .addSpan("$max", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))

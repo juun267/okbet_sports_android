@@ -19,6 +19,7 @@ object UserRepository {
 
     val userApi by lazy { RetrofitHolder.createApiService(UserApiService::class.java) }
     val ocrApi by lazy { RetrofitHolder.createOCRApiService(OCRApiService::class.java) }
+    var userVip: UserVip?=null
 
     suspend fun sendEmailForget(email: String, validCodeIdentity :String, validCode: String): ApiResult<SendCodeRespnose> {
         val params = mutableMapOf("email" to email).apply {
@@ -161,7 +162,9 @@ object UserRepository {
         return userApi.activityRecord(params)
     }
     suspend fun getUserVip(): ApiResult<UserVip> {
-        return userApi.getUserVip()
+        return userApi.getUserVip().apply {
+            userVip = getData()
+        }
     }
     suspend fun getVipDetail(): ApiResult<VipDetail> {
         return userApi.getVipDetail()
@@ -179,4 +182,9 @@ object UserRepository {
         return userApi.vipRedenpApply(params)
     }
 
+    suspend fun setBirthday(birthday: String): ApiResult<String> {
+        val params = JsonObject()
+        params.addProperty("birthday", birthday)
+        return userApi.setBirthday(params)
+    }
 }

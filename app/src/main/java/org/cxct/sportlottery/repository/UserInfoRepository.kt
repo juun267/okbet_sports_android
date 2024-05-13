@@ -261,7 +261,8 @@ object UserInfoRepository {
             middleName = userInfoData.middleName,
             lastName = userInfoData.lastName,
             birthday = userInfoData.birthday,
-            discountByGameTypeList = userInfoData.discountByGameTypeList
+            discountByGameTypeList = userInfoData.discountByGameTypeList,
+            levelCode = userInfoData.levelCode,
         )
 
     suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {

@@ -7,10 +7,10 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 @KeepMembers
 @Parcelize
 data class UserVip(
-    val exp: Int,
+    val exp: Long,
     val levelCode: String?,
     val levelName: String,
-    val protectionLevelGrowthValue: Int,
+    val protectionLevelGrowthValue: Long,
     val protectionStatus: Int,
     val rewardInfo: List<RewardInfo>,
     val upgradeExp: Long

@@ -5,8 +5,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.repository.StaticData
-import org.jetbrains.annotations.Range
-
 
 object UserVipType{
     const val LEVEL_CODE_0 = "PT"
