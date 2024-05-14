@@ -1,20 +1,22 @@
 package org.cxct.sportlottery.ui.sport.endcard.bet
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
 
-class OddsItemDecoration: RecyclerView.ItemDecoration() {
+class OddsItemDecoration(context: Context): RecyclerView.ItemDecoration() {
 
     private val spanCount = 4
     private val horSpacing = 5.dp
     private val verSpacing = 4.dp
-    private val mDivider = ColorDrawable(Color.BLACK)
+    private val mDivider = ColorDrawable(context.getColor(R.color.color_1A2C38))
     private val lineHeight = 2.dp
     private val divideHeight = 22.dp
 

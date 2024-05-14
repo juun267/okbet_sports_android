@@ -61,7 +61,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         initFloatMenu()
 
         binding.vShadow.background = ShapeDrawable()
-            .setSolidColor(context().getColor(R.color.transparent_black_40), Color.TRANSPARENT)
+            .setSolidColor(context().getColor(R.color.transparent_black_30), Color.TRANSPARENT)
             .setSolidGradientOrientation(ShapeGradientOrientation.BOTTOM_TO_TOP)
     }
 
@@ -98,7 +98,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
 
     private fun initOddsList() {
         binding.rcvOddsList.layoutManager = GridLayoutManager(context(), 4)
-        binding.rcvOddsList.addItemDecoration(OddsItemDecoration())
+        binding.rcvOddsList.addItemDecoration(OddsItemDecoration(context()))
         binding.rcvOddsList.adapter = oddsAdapter
     }
 
