@@ -270,6 +270,7 @@ abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(cl
                 if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) {
                     return
                 }
+                viewModel.doCleanToken()
                 showTokenPromptDialog(result.msg) {
                     viewModel.doLogoutCleanUser {
                         if (isErrorTokenToMainActivity()) {
@@ -277,7 +278,7 @@ abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(cl
                         }
                     }
                 }
-                viewModel.doCleanToken()
+
             }
         }
     }
