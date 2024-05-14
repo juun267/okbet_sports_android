@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ViewHomeOkliveBinding
@@ -17,6 +18,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.GameCollectManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.onClick
 import splitties.systemservices.layoutInflater
@@ -26,7 +28,7 @@ class HomeOkLiveView(context: Context, attrs: AttributeSet) : LinearLayout(conte
     private val binding  = ViewHomeOkliveBinding.inflate(layoutInflater,this)
     private lateinit var fragment: BaseSocketFragment<*, *>
     private val gameAdapter = HomeOkGamesAdapter(onFavoriate = { view, gameBean ->
-        if ((fragment.activity as MainTabActivity?)?.collectGame(gameBean)==true) {
+        if ((fragment.activity as MainTabActivity?)?.collectGame(gameBean, GameEntryType.OKLIVE)==true) {
             view.animDuang(1.3f)
         }
     })

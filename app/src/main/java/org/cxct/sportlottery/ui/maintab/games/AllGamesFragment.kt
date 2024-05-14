@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.maintab.games
 import android.view.View
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
-import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.repository.LoginRepository
@@ -122,14 +121,32 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
             }else{
                 binding.gameViewCollect.gone()
             }
-
         }
-
         collectOkGamesResult.observe(viewLifecycleOwner) { result ->
+            //更新列表
+            gameListAdapter.data.forEachIndexed {index,it->
+                it.gameList?.forEach {
+                    if(result.second.id==it.id){
+                        it.markCollect=result.second.markCollect
+                        return@forEachIndexed
+                    }
+                }
+            }
             gameListAdapter.notifyDataSetChanged()
+            //更新最近游戏
+            binding.gameViewRecent.getDataList().forEach {
+
+                it.forEach {
+                    if(result.second.id==it.id){
+                        it.markCollect=result.second.markCollect
+                        return@forEach
+                    }
+                }
+            }
             binding.gameViewRecent.notifyDataChange()
         }
         GameCollectManager.gameCollectNum.observe(viewLifecycleOwner) {
+            binding.gameViewRecent.notifyDataChange()
             gameListAdapter.notifyDataSetChanged()
         }
         recentPlay.observe(viewLifecycleOwner) {list->

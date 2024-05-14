@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
@@ -732,7 +733,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             gamesViewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType, gameEntryTagName)
         }
     }
-    fun collectGame(gameData: OKGameBean): Boolean {
-        return loginedRun(binding.root.context) { gamesViewModel.collectGame(gameData) }
+    fun collectGame(gameData: OKGameBean,gameEntryType: String = GameEntryType.OKGAMES): Boolean {
+        return loginedRun(binding.root.context) { gamesViewModel.collectGame(gameData,gameEntryType) }
     }
 }

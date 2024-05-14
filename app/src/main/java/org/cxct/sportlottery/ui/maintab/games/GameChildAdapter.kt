@@ -136,6 +136,7 @@ class GameChildAdapter(val onFavoriate: (View, OKGameBean) -> Unit,
                 setMaintain(binding.tvCover, item.isMaintain())
             } else {
                 binding.ivFav.isSelected = item.markCollect
+                binding.tvCollect.showCollectAmount(item.id)
             }
         }
     }

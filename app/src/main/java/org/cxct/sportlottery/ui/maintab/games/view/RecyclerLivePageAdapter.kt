@@ -27,7 +27,7 @@ class RecyclerLivePageAdapter:
     private var isShowCollect: Boolean = true
 
     //是否显示收藏按钮
-    fun setIsShoeCollect(flag: Boolean) {
+    fun setIsShowCollect(flag: Boolean) {
         isShowCollect = flag
     }
 

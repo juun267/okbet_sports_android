@@ -158,7 +158,7 @@ class LivePageView @JvmOverloads constructor(
     }
 
     fun setIsShowCollect(flag:Boolean): LivePageView {
-        mAdapter.setIsShoeCollect(flag)
+        mAdapter.setIsShowCollect(flag)
         return this
     }
     //模块名称

@@ -1,9 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkliveBinding
@@ -14,6 +11,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerLiveListAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
+import org.cxct.sportlottery.util.GameCollectManager
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setupSportStatusChange
 
@@ -23,11 +21,6 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
     private fun getMainTabActivity() = activity as MainTabActivity
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
     private var categoryList = mutableListOf<OKGamesCategory>()
-
-    private var p3ogProviderFirstPosi: Int = 0
-    private var p3ogProviderLastPosi: Int = 3
-
-    private var lastRequestTimeStamp = 0L
 
 
     private fun okLiveFragment() = parentFragment as OKLiveFragment
@@ -158,6 +151,11 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
                 }
             }
             binding.gameViewRecent.notifyDataChange()
+            binding.okLiveGameView.notifyDataChanged()
+        }
+        GameCollectManager.gameCollectNum.observe(viewLifecycleOwner) {
+            binding.gameViewRecent.notifyDataChange()
+            gameListAdapter.notifyDataSetChanged()
         }
 
         recentPlay.observe(viewLifecycleOwner) {list->
@@ -237,7 +235,7 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
             //初始化最近游戏数据
             binding.okLiveGameView
                 .setIcon(R.drawable.ic_home_okgames_title)
-                .setIsShowCollect(false)
+                .setIsShowCollect(true)
                 .setMoreGone()
                 .setCategoryName(R.string.N704)
                 .setListData(it,false)

@@ -173,7 +173,6 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
                     if (it.id == result.first) {
                         it.markCollect = result.second.markCollect
                         gameAdapter2.notifyItemChanged(index, it)
-                        return@observe
                     }
                 }
             }
@@ -196,10 +195,7 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
         tabAdapter.setNewInstance(categoryList)
         return true
     }
-    fun collectGame(gameData: OKGameBean): Boolean {
+    open fun collectGame(gameData: OKGameBean): Boolean {
         return loginedRun(binding.root.context) { viewModel.collectGame(gameData) }
-    }
-    fun onFavorite(view: View, bean: OKGameBean){
-
     }
 }
