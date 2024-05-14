@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.net.sport.data.EndCardBet
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.util.AppFont
@@ -108,7 +109,12 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
 
         when {
             betted -> {
-                userText.text = UserInfoRepository.nickName()
+                val userInfo = UserInfoRepository.userInfo?.value
+                userText.text = if (userInfo?.nickName.isNullOrEmpty()) {
+                    userInfo?.userName
+                } else {
+                    userInfo?.nickName
+                }
                 oddText.setTextColor(context.getColor(R.color.color_1CD219))
                 oddText.paint.isFakeBoldText=true
                 userText.setTextColor(context.getColor(R.color.color_FFFFFF))

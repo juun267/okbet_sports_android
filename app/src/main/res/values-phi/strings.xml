@@ -1050,7 +1050,7 @@
     <string name="str_if_accept_odds_changes_des1">1. Tanggapin ang anumang pagbabago sa odds - kapag pinili mo ang opsyong ito, bubuo kami ng bet slip para sa iyo ayon sa pinakabagong odds.</string>
     <string name="str_if_accept_odds_changes_des2">2. Tanggapin ang pinakamahusay na pagbabago ng odds - kapag pinili mo ang opsyong ito, kung ang pinakabagong logro ay mas mahusay kaysa sa odds na iyong pinili, bubuo kami ng bet slip. Kung ang pinakabagong mga logro ay mas mababa kaysa sa iyong mga napiling odds, hindi kami bubuo ng slip ng taya at ipaalala sa iyo ang pagbabago ng odds.</string>
     <string name="str_if_accept_odds_changes_des3">3. Huwag tumanggap ng mga pagbabago sa odds--kapag pinili mo ang opsyong ito: kung ang pinakabagong odds ay iba sa iyong napiling odds, hindi kami gagawa ng slip ng taya at ipaalala sa iyo ang mga pagbabago sa odds.</string>
-    <string name="str_ok_i_got_it">Okay, alam ko na</string>
+    <string name="str_ok_i_got_it">Ok, I see</string>
     <string name="str_return_last_step">Bumalik</string>
     <string name="P065">Taya sa iba</string>
     <string name="str_press_again_to_exit_the_program">Pindutin muli upang lumabas sa programa</string>
@@ -1554,7 +1554,7 @@
     <string name="P302">Basketball Kard Game</string>
     <string name="P303">I-view ang mga kard</string>
     <string name="P304">Game Card</string>
-    <string name="P305">Mga Detalye ng Kard</string>
+    <string name="P305">Card Details</string>
     <string name="P306">Itataya mo ang %s sa mga pagpipilian %s sa puntos sa itaas. Magkakabisa ang bawat pagpipilian sa puntos kapag ang unang quarter, ikalawang quarter, ikatlong quarter, at full-time na mga puntos ay nabunot. Mayroong apat na pagkakataong manalo, at ang bonus ay Maaaring ipagsama, at maaari kang makakuha ng hanggang sa %s na mga reward.</string>
     <string name="P307">Pangalan:</string>
     <string name="P308">Default ay nickname ng user</string>

@@ -190,6 +190,9 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         EndCardBetManager.removeBetOdd(oddId)
         showFloatBet()
         oddsAdapter.notifyDataSetChanged()
+        if (EndCardBetManager.getBetOdds().size==0){
+            endCardBetDialog?.dismiss()
+        }
     }
     fun startBet(){
         binding.parlayFloatWindow.gone()

@@ -19,7 +19,7 @@
            android:textStyle="bold"
            android:textColor="@color/color_FFFFFF"
            android:textSize="@dimen/textSize18sp"
-           android:text="@string/notice"/>
+           android:text="@string/KYC055"/>
 
        <View
            android:layout_width="match_parent"
