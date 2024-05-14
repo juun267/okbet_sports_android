@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
@@ -82,18 +83,30 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType,this@HomeHotFragment)
         okLiveView.setUp(this@HomeHotFragment)
         providerView.setup(this@HomeHotFragment){
-            if (it.gameEntryTypeEnum==GameEntryType.OKGAMES){
-                getMainTabActivity().jumpToOKGames()
-                providerView.postDelayed(500){
-                    (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(it)
+            LogUtil.toJson(it)
+            when(it.gameEntryTypeEnum){
+                GameEntryType.OKGAMES->{
+                    getMainTabActivity().jumpToOKGames()
+                    providerView.postDelayed(500){
+                        (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(it)
+                    }
                 }
-            }else{
-                getMainTabActivity().jumpToOkLive()
-                providerView.postDelayed(500){
-                    (getMainTabActivity().getCurrentFragment() as? OKLiveFragment)?.showByProvider(it)
+                GameEntryType.OKLIVE->{
+                    getMainTabActivity().jumpToOKGames()
+                    providerView.postDelayed(500){
+                        (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(it)
+                    }
+                }
+                GameEntryType.OKSPORT->{
+                    setupOKPlay { okPlayBean ->
+                        if (okPlayBean==null){
+                            getMainTabActivity().showPromptDialog(message = getString(R.string.shaba_no_open)){}
+                        }else{
+                            getMainTabActivity()?.enterThirdGame(okPlayBean)
+                        }
+                    }
                 }
             }
-
         }
         promotionView.setup(this@HomeHotFragment)
         newsView.setup(this@HomeHotFragment)
