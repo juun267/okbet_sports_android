@@ -22,7 +22,7 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.showCollectAmount
+import org.cxct.sportlottery.util.GameCollectManager.showCollectAmount
 
 class ElectGameAdapter(val onFavoriate: (View, OKGameBean) -> Unit): BaseNodeAdapter() {
 
@@ -114,7 +114,7 @@ private class ElectGameProvider(val adapter: ElectGameAdapter,
         linMaintenance.gone()
         cvJackpot.gone()
         ivCover.load(bean.imgGame, R.drawable.ic_okgames_nodata)
-        tvCollect.showCollectAmount(bean.favoriteCount)
+        tvCollect.showCollectAmount(bean.id)
         ivFav.isSelected = bean.markCollect
         ivFav.setOnClickListener {
             onFavoriate.invoke(it,bean)
@@ -148,7 +148,7 @@ private class ElectGameProvider(val adapter: ElectGameAdapter,
         super.convert(helper, item, payloads)
         payloads.forEach {
             (it as? OKGameBean)?.let {
-                tvCollect.showCollectAmount(it.favoriteCount)
+                tvCollect.showCollectAmount(it.id)
                 ivFav.isSelected = it.markCollect
             }
         }

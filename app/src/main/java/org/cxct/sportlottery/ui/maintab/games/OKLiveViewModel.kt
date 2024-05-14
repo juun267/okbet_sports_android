@@ -12,6 +12,7 @@ import org.cxct.sportlottery.net.live.OKLiveRepository
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.GameCollectManager
 import org.cxct.sportlottery.util.ToastUtil
 
 class OKLiveViewModel(
@@ -122,7 +123,7 @@ class OKLiveViewModel(
             }
 
             gameData.markCollect = !gameData.markCollect
-            if(gameData.markCollect) gameData.favoriteCount++ else gameData.favoriteCount--
+            GameCollectManager.addCollectNum(gameData.id,gameData.markCollect)
             _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
 
             val markedGames = _collectList.value?.second?.toMutableList() ?: mutableListOf()

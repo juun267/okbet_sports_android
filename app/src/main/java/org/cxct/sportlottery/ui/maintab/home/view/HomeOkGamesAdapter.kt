@@ -6,15 +6,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
-import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.ItemHomeOkgameBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.util.showCollectAmount
-import org.cxct.sportlottery.view.onClick
+import org.cxct.sportlottery.util.GameCollectManager.showCollectAmount
 
 class HomeOkGamesAdapter(val onFavoriate: (View, OKGameBean) -> Unit) : BindingAdapter<OKGameBean, ItemHomeOkgameBinding>() {
 
@@ -38,7 +36,7 @@ class HomeOkGamesAdapter(val onFavoriate: (View, OKGameBean) -> Unit) : BindingA
         ivFav.clickDelay {
             onFavoriate(it,item)
         }
-        tvCollect.showCollectAmount(item.favoriteCount)
+        tvCollect.showCollectAmount(item.id)
         blurView
             .setupWith(root)
             .setFrameClearDrawable(root.background)
@@ -53,7 +51,7 @@ class HomeOkGamesAdapter(val onFavoriate: (View, OKGameBean) -> Unit) : BindingA
         payloads: List<Any>
     )=binding.run {
         linMaintenance.isVisible = item.isMaintain()
-        tvCollect.showCollectAmount(item.favoriteCount)
+        tvCollect.showCollectAmount(item.id)
         ivFav.isSelected = item.markCollect
     }
 

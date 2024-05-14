@@ -167,7 +167,7 @@ class OKGamesViewModel(
             }
 
             gameData.markCollect = !gameData.markCollect
-            if(gameData.markCollect) gameData.favoriteCount++ else gameData.favoriteCount--
+            GameCollectManager.addCollectNum(gameData.id,gameData.markCollect)
             _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
 
             val markedGames = _collectList.value?.second?.toMutableList() ?: mutableListOf()

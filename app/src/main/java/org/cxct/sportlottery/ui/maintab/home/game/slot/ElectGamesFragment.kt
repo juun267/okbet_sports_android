@@ -16,6 +16,7 @@ import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.onConfirm
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.net.games.data.OKGamesHall
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.GameCollectManager
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.util.loginedRun
@@ -175,6 +177,9 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
                     }
                 }
             }
+        }
+        GameCollectManager.gameCollectNum.observe(viewLifecycleOwner) {
+            gameAdapter2.notifyDataSetChanged()
         }
     }
 

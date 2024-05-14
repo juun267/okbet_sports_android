@@ -93,7 +93,6 @@ class WinsDialog : BaseDialog<BaseViewModel, DialogWinsBetdetailsBinding>() {
                 jackpotAmount = 0.0,
                 jackpotOpen = 0,
                 gameEntryType = betRecode.gameEntryType,
-                favoriteCount = 0,
             )
             RecentDataManager.addRecent(RecentRecord(1, gameBean = okGameBean))
             enterGame(betRecode)

@@ -132,7 +132,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
         viewModel.getSportMenuFilter()
-
+        viewModel.getGameCollectNum()
         PreLoader.startPreload()
     }
 

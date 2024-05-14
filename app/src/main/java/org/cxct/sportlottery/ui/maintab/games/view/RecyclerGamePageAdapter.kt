@@ -15,7 +15,7 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.showCollectAmount
+import org.cxct.sportlottery.util.GameCollectManager.showCollectAmount
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setTextColorGradient
 
@@ -224,7 +224,7 @@ class RecyclerGamePageAdapter:
             onFavoriteClick(item)
         }
         tvCover.isVisible = !moreItem && item.isMaintain()
-        tvCollect.showCollectAmount(item.favoriteCount)
+        tvCollect.showCollectAmount(item.id)
     }
 
 

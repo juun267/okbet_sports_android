@@ -12,7 +12,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ItemLivePageBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.util.showCollectAmount
+import org.cxct.sportlottery.util.GameCollectManager.showCollectAmount
 import org.cxct.sportlottery.view.onClick
 
 class RecyclerLivePageAdapter:
@@ -225,6 +225,6 @@ class RecyclerLivePageAdapter:
             onFavoriteClick(item)
         }
         tvCover.isVisible = !moreItem && item.isMaintain()
-        tvCollect.showCollectAmount(item.favoriteCount)
+        tvCollect.showCollectAmount(item.id)
     }
 }

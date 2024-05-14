@@ -12,11 +12,13 @@ import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.GameCollectManager
 import org.cxct.sportlottery.view.loadMore
 
 // 指定类别的三方游戏
@@ -94,7 +96,9 @@ class PartGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentPartOkgame
                 }
             }
         }
-
+        GameCollectManager.gameCollectNum.observe(viewLifecycleOwner) {
+            gameChildAdapter.notifyDataSetChanged()
+        }
     }
 
 

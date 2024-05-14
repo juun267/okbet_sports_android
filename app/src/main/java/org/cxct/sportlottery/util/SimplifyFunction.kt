@@ -50,6 +50,7 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ViewPaymentMaintenanceBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -997,12 +998,5 @@ fun AppCompatActivity.showFavoriteNotify(result: MyFavoriteNotify) {
         (it as? RadioButton)?.apply {
             typeface = if(isChecked) checked else normal
         }
-    }
-}
-fun TextView.showCollectAmount(amount: Int){
-    text = when{
-        amount  < 1000 -> "$amount"
-        amount  < 1000000 -> ArithUtil.round(ArithUtil.div(amount.toDouble(),1000.0),1,RoundingMode.HALF_UP)+"K"
-        else -> ArithUtil.round(ArithUtil.div(amount.toDouble(),1000000.0),1,RoundingMode.HALF_UP)+"M"
     }
 }

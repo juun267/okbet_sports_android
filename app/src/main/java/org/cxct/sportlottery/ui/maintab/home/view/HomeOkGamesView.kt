@@ -11,11 +11,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ViewHomeOkgameBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.GameCollectManager
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.onClick
 import splitties.systemservices.layoutInflater
@@ -66,7 +68,9 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : LinearLayout(cont
                 }
             }
         }
-
+        GameCollectManager.gameCollectNum.observe(fragment.viewLifecycleOwner) {
+            gameAdapter.notifyDataSetChanged()
+        }
         binding.tvMore.onClick {
             if(StaticData.okGameOpened()){
                (fragment.activity as MainTabActivity).jumpToOKGames()
