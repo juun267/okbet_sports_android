@@ -84,6 +84,5 @@
         android:layout_gravity="right"
         android:layout_marginRight="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_10"
-        android:tint="@color/color_213743"
         android:src="@drawable/ic_endcard_result_close"/>
 </androidx.cardview.widget.CardView>
