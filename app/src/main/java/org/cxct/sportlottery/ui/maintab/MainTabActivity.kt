@@ -717,7 +717,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
     fun enterThirdGame(gameData: OKGameBean) {
         if(gameData.firmType==Constants.FIRM_TYPE_SBTY&&!StaticData.sbSportOpened()){
-            showPromptDialog(message = getString(R.string.bottom_sheet_close)){}
+            showPromptDialog(message = getString(R.string.shaba_no_open)){}
             return
         }
         if(LoginRepository.isLogined()) {
@@ -732,7 +732,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
     fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String, gameEntryTagName: String) {
         if(firmType==Constants.FIRM_TYPE_SBTY&&!StaticData.sbSportOpened()){
-            showPromptDialog(message = getString(R.string.bottom_sheet_close)){}
+            showPromptDialog(message = getString(R.string.shaba_no_open)){}
             return
         }
         if (LoginRepository.isLogined()) {
