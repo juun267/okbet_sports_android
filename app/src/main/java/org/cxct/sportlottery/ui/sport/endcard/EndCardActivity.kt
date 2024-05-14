@@ -9,9 +9,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityEndcardBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
@@ -47,7 +45,7 @@ class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(End
         checkGuide()
         initObservable()
         binding.vShadow.background = ShapeDrawable()
-            .setSolidColor(getColor(R.color.transparent_black_40), Color.TRANSPARENT)
+            .setSolidColor(getColor(R.color.transparent_black_20), Color.TRANSPARENT)
             .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
     }
 

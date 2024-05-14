@@ -38,7 +38,7 @@
             android:paddingHorizontal="@dimen/margin_12"
             android:text="@string/home_tab_today"
             android:textColor="@color/color_b1bad3_ffffff"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/textSize16sp" />
 
         <RadioButton
             android:id="@+id/rbtnYesterday"
@@ -49,7 +49,7 @@
             android:gravity="center"
             android:layout_marginLeft="@dimen/margin_4"
             android:background="@drawable/selector_radio_trans_dark"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/textSize16sp"
             android:paddingHorizontal="@dimen/margin_12"
             android:textColor="@color/color_b1bad3_ffffff"
             android:text="@string/I023"/>
@@ -63,7 +63,7 @@
             android:gravity="center"
             android:layout_marginLeft="@dimen/margin_4"
             android:background="@drawable/selector_radio_trans_dark"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/textSize16sp"
             android:paddingHorizontal="@dimen/margin_12"
             android:textColor="@color/color_b1bad3_ffffff"
             android:text="@string/P128"/>
@@ -87,6 +87,7 @@
             android:ellipsize="end"
             android:textColor="@color/color_638095"
             android:textSize="@dimen/textSize12sp"
+            android:textFontWeight="300"
             android:text="@string/H018"/>
          <TextView
              android:id="@+id/tvTotalValue"
@@ -159,8 +160,9 @@
         android:id="@+id/rvBetRecord"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/margin_4"
+        android:background="@color/color_1A2C38"
         android:orientation="vertical"
-        tools:listitem="@layout/item_endcard_record"
-        tools:itemCount="3"/>
+        android:paddingTop="@dimen/margin_4"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_endcard_record" />
 </LinearLayout>

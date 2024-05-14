@@ -84,7 +84,7 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
         date.typeface = AppFont.regular
         date.gravity = Gravity.CENTER_HORIZONTAL
         date.id = dateId
-        date.textSize = 14f
+        date.textSize = 13f
         date.setTextColor(Color.WHITE)
         val dateLP = FrameLayout.LayoutParams(-1, -2)
         dateLP.bottomMargin = 3.dp

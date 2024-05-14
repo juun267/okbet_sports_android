@@ -152,10 +152,14 @@ private class EndCardMatchProvider(
                 tvNum.gone()
             }
             //2. 热度说明：NBA及PBA赛事11-30中随机值；其他联赛1-15中随机值（可由前端做）
-            val hotCount=if (matchInfo.shortName?.contains("NBA") == true||matchInfo.leagueName?.contains("NBA") == true){
-                Random.nextInt(11,30)
-            }else{
-                Random.nextInt(1,15)
+            val hotCount=when{
+                matchInfo.shortName?.contains("NBA") == true||
+                matchInfo.shortName?.contains("NBA") == true||
+                matchInfo.leagueName?.contains("PBA") == true||
+                matchInfo.leagueName?.contains("PBA") == true
+                ->
+                    Random.nextInt(11,30)
+                else->  Random.nextInt(1,15)
             }.toString()
             tvHotCount.text = Spanny(String.format(context.getString(R.string.P360),hotCount))
                 .findAndSpan(hotCount){ ForegroundColorSpan(ContextCompat.getColor(context,R.color.color_1CD219)) }

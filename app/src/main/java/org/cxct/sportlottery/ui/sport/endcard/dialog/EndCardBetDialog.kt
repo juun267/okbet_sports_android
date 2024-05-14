@@ -110,7 +110,10 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
     private fun setTips(){
         if (EndCardBetManager.getBetOdds().isEmpty()) return
         val betMoney =  "$showCurrencySign ${endCardBet.betMoney*EndCardBetManager.getBetOdds().size}"
-        val oddNames =  "${EndCardBetManager.getBetOdds().joinToString("," )}"
+        val oddNames =  if (EndCardBetManager.getBetOdds().size<=7)
+            "${EndCardBetManager.getBetOdds().joinToString("," )}"
+        else
+            "${EndCardBetManager.getBetOdds().subList(0,7).joinToString("," )}..."
         val totalLastDigit = endCardBet.lastDigit1+endCardBet.lastDigit2+endCardBet.lastDigit3+endCardBet.lastDigit4
         val totalWin = "$showCurrencySign $totalLastDigit"
         val notice = String.format(getString(R.string.P306),betMoney,oddNames,totalWin)

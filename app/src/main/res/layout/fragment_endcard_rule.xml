@@ -51,6 +51,5 @@
         android:id="@+id/okWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_1A202E"
-        android:layout_marginTop="8dp"/>
+        android:background="@color/color_213743"/>
 </LinearLayout>

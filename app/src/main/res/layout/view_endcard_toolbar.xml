@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/textSize12sp"
-            android:textColor="@color/color_6D7693"
+            android:textColor="@color/color_8EAEC5"
             android:text="PHP"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -52,10 +52,10 @@
 
     <ImageView
         android:id="@+id/ivDeposit"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:foreground="@drawable/fg_ripple"
-        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginLeft="@dimen/margin_16"
         android:src="@drawable/ic_deposit_blue"/>
     <Button
         android:id="@+id/btnLogin"

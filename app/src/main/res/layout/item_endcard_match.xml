@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="243dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="55dp"
         android:background="@color/color_071824" />
 
     <ImageView
@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="28dp"
-        android:background="@drawable/bg_circle_stroke_team_log_dark"/>
+        android:background="@drawable/bg_circle_team_log_dark"/>
     
     <TextView
         android:id="@+id/tvHomeName"
@@ -66,7 +66,7 @@
         app:layout_constraintStart_toEndOf="@+id/tvVS"
         app:layout_constraintTop_toTopOf="@+id/ivHomeLogo"
         android:layout_marginStart="32dp"
-        android:background="@drawable/bg_circle_stroke_team_log_dark"/>
+        android:background="@drawable/bg_circle_team_log_dark"/>
 
     <TextView
         android:id="@+id/tvAwayName"

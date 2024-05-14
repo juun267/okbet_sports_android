@@ -30,6 +30,7 @@
            android:layout_height="wrap_content"
            android:layout_marginHorizontal="@dimen/margin_16"
            android:layout_marginTop="@dimen/margin_20"
+           android:lineHeight="20dp"
            android:textColor="@color/color_BEC7DC"
            android:textSize="@dimen/textSize14sp"
            android:text="@string/P355"/>
@@ -83,5 +84,6 @@
         android:layout_gravity="right"
         android:layout_marginRight="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_10"
+        android:tint="@color/color_213743"
         android:src="@drawable/ic_endcard_result_close"/>
 </androidx.cardview.widget.CardView>

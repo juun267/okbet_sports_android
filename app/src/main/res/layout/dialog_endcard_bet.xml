@@ -24,7 +24,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/margin_4"
                 android:textSize="@dimen/textSize18sp"
-                android:textColor="@color/color_BEC7DC"
+                android:textColor="@color/color_FFFFFF"
                 android:text="@string/P305"/>
             <TextView
                 android:id="@+id/tvCount"
@@ -117,7 +117,7 @@
             android:layout_marginHorizontal="@dimen/margin_12"
             android:lineHeight="@dimen/margin_16"
             android:textColor="@color/color_B1BAD3"
-            android:textSize="@dimen/textSize12sp"
+            android:textSize="@dimen/textSize13sp"
             android:text="@string/P306"/>
         <TextView
             android:id="@+id/tvPrompt"
@@ -131,7 +131,7 @@
             android:layout_marginHorizontal="@dimen/margin_12"
             android:lineHeight="@dimen/margin_16"
             android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/textSize12sp"
+            android:textSize="@dimen/textSize14sp"
             android:text="@string/P309"/>
 
         <LinearLayout

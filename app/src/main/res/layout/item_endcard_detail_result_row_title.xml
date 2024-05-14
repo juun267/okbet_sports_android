@@ -11,7 +11,7 @@
         android:layout_weight="115"
         android:gravity="center"
         android:text="@string/P312"
-        android:textColor="@color/color_B1BAD3"
+        android:textColor="@color/color_8EAEC5"
         android:textSize="@dimen/textSize14sp" />
 
     <View
@@ -26,7 +26,7 @@
         android:layout_weight="80"
         android:gravity="center"
         android:text="@string/B003"
-        android:textColor="@color/color_B1BAD3"
+        android:textColor="@color/color_8EAEC5"
         android:textSize="@dimen/textSize14sp" />
 
     <View
@@ -41,6 +41,6 @@
         android:layout_weight="170"
         android:gravity="center"
         android:text="@string/P314"
-        android:textColor="@color/color_B1BAD3"
+        android:textColor="@color/color_8EAEC5"
         android:textSize="@dimen/textSize14sp" />
 </LinearLayout>

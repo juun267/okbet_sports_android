@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.text.style.TextAppearanceSpan
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.setColors
 
 class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecordDetailBinding>() {
@@ -63,7 +65,7 @@ class EndCardRecordDetailFragment: BaseFragment<EndCardVM, FragmentEndcardRecord
             val winMoney= "$showCurrencySign ${TextUtil.formatMoney(it.maximumWinnable?:0,2)}"
             val notice = String.format(getString(R.string.P322),winMoney)
             tvTips.text = Spanny(notice).findAndSpan(winMoney) {
-                TextAppearanceSpan(null, Typeface.NORMAL, 14.dp, ColorStateList.valueOf(requireContext().getColor(R.color.color_00E701)), null)
+                TextAppearanceSpan(null, Typeface.NORMAL, 14.dp, ColorStateList.valueOf(requireContext().getColor(R.color.color_00FF81)), null)
             }
         }
         tvBettingTime.text = TimeUtil.timeFormat(row.addTime, TimeUtil.DMY_HM_FORMAT)

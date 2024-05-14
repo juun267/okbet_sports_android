@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_marginBottom="@dimen/margin_4"
+    android:layout_marginBottom="@dimen/margin_8"
     android:foreground="@drawable/fg_ripple"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/color_213743">

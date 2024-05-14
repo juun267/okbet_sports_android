@@ -196,9 +196,6 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
         selectedEndCardBet?.let {
             endCardBetDialog=EndCardBetDialog.newInstance(it)
             endCardBetDialog?.show(childFragmentManager)
-            postDelayed(1000){
-                endCardBetDialog?.addBet()
-            }
         }
     }
     fun reload(){
@@ -208,7 +205,9 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
     fun showClearTip(onNext: ()->Unit){
         if (EndCardBetManager.getBetOdds().size>0 && EndCardClearTipDialog.isNeedShow()){
             EndCardClearTipDialog.newInstance().apply {
-                this.onConfirm = onConfirm
+                this.onConfirm ={
+                    onNext.invoke()
+                }
             }.show(childFragmentManager)
         }else{
             onNext.invoke()

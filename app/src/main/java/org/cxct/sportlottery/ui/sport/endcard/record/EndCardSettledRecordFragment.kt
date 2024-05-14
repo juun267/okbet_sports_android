@@ -57,6 +57,9 @@ class EndCardSettledRecordFragment: BaseFragment<EndCardVM, FragmentEndcardSettl
                     endTime = TimeUtil.getTodayEndTimeStamp()
                 }
             }
+            binding.rgDate.children.forEach {
+                (it as? RadioButton)?.paint?.isFakeBoldText = (it.id==checkedId)
+            }
             resetListData()
             reload()
         }
