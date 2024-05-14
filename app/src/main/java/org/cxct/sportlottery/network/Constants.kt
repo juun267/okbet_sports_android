@@ -585,4 +585,6 @@ object Constants {
     const val CHAT_GET_STICKER="/api/chat/front/emoticons/queryList"
 
     const val GET_HALL_OKSPORT="/api/front/gameEntryGames/getHallOkSport"
+
+    const val FIRM_TYPE_SBTY="SBTY"
 }

@@ -25,10 +25,7 @@ import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.net.games.OKGamesRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
@@ -334,38 +331,40 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         viewModel.getMoneyAndTransferOut()
     }
     fun setupOKPlay(){
-        if (OKGamesRepository?.okPlayEvent.value!=null){
-            linOKPlay = LinearLayout(context).apply {
-                gravity = Gravity.CENTER_VERTICAL
-                val tvName = AppCompatTextView(context).apply {
-                    typeface = Typeface.DEFAULT_BOLD
-                    setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f)
-                    setTextColor(resources.getColor(R.color.color_313F56))
-                    addView(this, LayoutParams(-2, -2))
-                    text = "OKSport"
-                }
-                val ivArrow = ImageView(context).apply {
-                    setImageResource(R.drawable.ic_arrow_down_triangle)
-                    val ivParams = LayoutParams(16.dp, 16.dp)
-                    ivParams.leftMargin = 4.dp
-                    addView(this, ivParams)
-                }
-                setOnClickListener {
-                    okPlaySelectPop.apply {
-                        this.tvName = tvName
-                        this.ivArrow = ivArrow
+        setupOKPlay{ okPlayBean->
+            if (okPlayBean!=null){
+                linOKPlay = LinearLayout(context).apply {
+                    gravity = Gravity.CENTER_VERTICAL
+                    val tvName = AppCompatTextView(context).apply {
+                        typeface = Typeface.DEFAULT_BOLD
+                        setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f)
+                        setTextColor(resources.getColor(R.color.color_313F56))
+                        addView(this, LayoutParams(-2, -2))
+                        text = "OKSport"
                     }
-                    okPlaySelectPop.showAsDropDown(this,(width-122.dp)/2,5.dp)
+                    val ivArrow = ImageView(context).apply {
+                        setImageResource(R.drawable.ic_arrow_down_triangle)
+                        val ivParams = LayoutParams(16.dp, 16.dp)
+                        ivParams.leftMargin = 4.dp
+                        addView(this, ivParams)
+                    }
+                    setOnClickListener {
+                        okPlaySelectPop.apply {
+                            this.tvName = tvName
+                            this.ivArrow = ivArrow
+                        }
+                        okPlaySelectPop.showAsDropDown(this,(width-122.dp)/2,5.dp)
+                    }
+                    linOKPlay?.setPadding(5.dp,5.dp,5.dp,5.dp)
                 }
-                linOKPlay?.setPadding(5.dp,5.dp,5.dp,5.dp)
-            }
-            addView(linOKPlay, LayoutParams(-2, -2, Gravity.RIGHT or Gravity.BOTTOM).apply {
-                rightMargin = 120.dp
-            })
-        }else{
-            if (linOKPlay!=null){
-                removeView(linOKPlay)
-                linOKPlay = null
+                addView(linOKPlay, LayoutParams(-2, -2, Gravity.RIGHT or Gravity.BOTTOM).apply {
+                    rightMargin = 120.dp
+                })
+            }else{
+                if (linOKPlay!=null){
+                    removeView(linOKPlay)
+                    linOKPlay = null
+                }
             }
         }
     }

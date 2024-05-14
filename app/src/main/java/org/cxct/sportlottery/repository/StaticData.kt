@@ -156,6 +156,10 @@ class StaticData {
 
         fun isNeedOTPBank() = 1 == sConfigData?.isNeedOTPBank
 
+        //沙巴体育是否开启
+        fun sbSportOpened():Boolean {
+            return sConfigData?.sbSportSwitch == 1
+        }
     }
 
 }
