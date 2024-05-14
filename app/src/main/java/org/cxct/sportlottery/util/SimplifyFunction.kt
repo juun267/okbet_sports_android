@@ -998,3 +998,10 @@ fun AppCompatActivity.showFavoriteNotify(result: MyFavoriteNotify) {
         }
     }
 }
+fun RadioGroup.setTextBold(){
+    children.forEach {
+        (it as? RadioButton)?.apply {
+            paint.isFakeBoldText = isChecked
+        }
+    }
+}
