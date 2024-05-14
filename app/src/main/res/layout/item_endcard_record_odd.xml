@@ -5,8 +5,9 @@
     android:id="@+id/tvOddName"
     android:gravity="center"
     android:background="@drawable/bg_darkblue_radius_6"
+    android:fontFamily="@font/helvetica_normal"
     android:textColor="@color/color_FFFFFF"
-    android:textSize="@dimen/textSize14sp"
+    android:textSize="14sp"
     android:text="0-1">
 
 </TextView>
