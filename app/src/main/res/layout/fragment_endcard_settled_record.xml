@@ -35,7 +35,7 @@
             android:gravity="center"
             android:background="@drawable/selector_radio_trans_dark"
             android:fontFamily="@font/helvetica_normal"
-            android:paddingHorizontal="@dimen/margin_12"
+            android:paddingHorizontal="@dimen/margin_8"
             android:text="@string/home_tab_today"
             android:textColor="@color/color_b1bad3_ffffff"
             android:textSize="@dimen/textSize16sp" />
@@ -50,7 +50,7 @@
             android:layout_marginLeft="@dimen/margin_4"
             android:background="@drawable/selector_radio_trans_dark"
             android:textSize="@dimen/textSize16sp"
-            android:paddingHorizontal="@dimen/margin_12"
+            android:paddingHorizontal="@dimen/margin_8"
             android:textColor="@color/color_b1bad3_ffffff"
             android:text="@string/I023"/>
 
@@ -64,7 +64,7 @@
             android:layout_marginLeft="@dimen/margin_4"
             android:background="@drawable/selector_radio_trans_dark"
             android:textSize="@dimen/textSize16sp"
-            android:paddingHorizontal="@dimen/margin_12"
+            android:paddingHorizontal="@dimen/margin_8"
             android:textColor="@color/color_b1bad3_ffffff"
             android:text="@string/P128"/>
     </RadioGroup>

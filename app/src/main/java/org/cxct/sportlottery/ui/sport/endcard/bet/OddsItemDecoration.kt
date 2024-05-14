@@ -18,7 +18,7 @@ class OddsItemDecoration(context: Context): RecyclerView.ItemDecoration() {
     private val verSpacing = 4.dp
     private val mDivider = ColorDrawable(context.getColor(R.color.color_1A2C38))
     private val lineHeight = 2.dp
-    private val divideHeight = 22.dp
+    private val divideHeight = 18.dp
 
     override fun getItemOffsets(
         outRect: Rect,

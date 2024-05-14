@@ -129,7 +129,7 @@
             android:layout_marginTop="@dimen/margin_16"
             android:background="@drawable/bg_darkblue_radius_8_1a2c38"
             android:layout_marginHorizontal="@dimen/margin_12"
-            android:lineHeight="@dimen/margin_16"
+            android:lineHeight="@dimen/margin_20"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize14sp"
             android:text="@string/P309"/>

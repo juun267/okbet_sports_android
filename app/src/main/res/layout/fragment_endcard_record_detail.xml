@@ -57,13 +57,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/margin_12"
         android:paddingBottom="@dimen/margin_12"
         android:orientation="vertical"
         android:background="@color/color_213743">
      <androidx.constraintlayout.widget.ConstraintLayout
          android:layout_width="match_parent"
-         android:layout_height="wrap_content">
+         android:layout_height="wrap_content"
+         android:paddingHorizontal="@dimen/margin_12">
          <TextView
              android:layout_width="0dp"
              android:layout_height="@dimen/margin_24"
@@ -94,6 +94,7 @@
             android:id="@+id/rvOdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/margin_12"
             android:layout_marginBottom="@dimen/margin_12"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="10"
@@ -102,7 +103,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_1"
-            android:background="@color/color_071824"/>
+            android:background="@color/color_071824" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/margin_12">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_44"
@@ -312,7 +319,7 @@
             android:textSize="@dimen/textSize12sp"
             android:textColor="@color/color_8EAEC5"
             android:text="@string/P322"/>
-
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -379,7 +386,7 @@
             android:gravity="center"
             android:lines="1"
             android:ellipsize="end"
-            android:textSize="@dimen/textSize16sp"
+            android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_FFFFFF"
             android:text="@string/H020"/>
         <View
@@ -394,7 +401,7 @@
             android:gravity="center"
             android:lines="1"
             android:ellipsize="end"
-            android:textSize="@dimen/textSize18sp"
+            android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_FFFFFF"
             android:fontFamily="@font/inter_bold"
             android:textFontWeight="600"

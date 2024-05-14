@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/margin_6"
                 android:fontFamily="@font/inter_bold"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize16sp"
                 android:textColor="@color/color_FFFFFF"
                 android:text="6,983,187.15"/>
             <ImageView
