@@ -1590,9 +1590,9 @@
     <string name="nickname_match_error">Character na iyong ipinasok ay hindi tugma (maaaring maglaman ng buong lapad o mga espesyal na character o espasyo)</string>
     <string name="P340">Tutorial</string>
     <string name="P349">1st Quarter</string>
-    <string name="P350">2st Quarter</string>
-    <string name="P351">3st Quarter</string>
-    <string name="P352">"FT (Full Time Score) "</string>
+    <string name="P350">2nd Quarter</string>
+    <string name="P351">3rd Quarter</string>
+    <string name="P352">FT (Full Time Score)</string>
     <string name="P348">Ang mga posibleng panalo na makukuha mo sa bawat quarter ay:</string>
     <string name="P353">Tandaan: Kung ang lahat ng mga iskor ng quarter ay nagtatapos sa kung ano ang iyong taya, nangangahulugan ito na sila ay isalansan, at maaari mong mapanalunan ang lahat ng mga panalo para sa bawat quarter.</string>
     <string name="P354"></string>

@@ -1760,5 +1760,5 @@
     <string name="P358">Confirm to leave</string>
     <string name="P359">Click the selected score to delete</string>
     <string name="P360">%s people are viewing the card</string>
-    <string name="P361">Sold %s copies</string>
+    <string name="P361">%s Slots Sold</string>
 </resources>
