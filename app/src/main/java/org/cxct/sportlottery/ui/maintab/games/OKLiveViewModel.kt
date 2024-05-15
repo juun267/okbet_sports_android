@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -65,7 +66,7 @@ class OKLiveViewModel(
             val data = it.getData() ?: return@callApi
 
             _gameHall.postValue(data)
-            GameCollectManager.setUpCollect(data.collectList?.toMutableList()?: mutableListOf())
+            GameCollectManager.setUpLiveCollect(data.collectList?.toMutableList()?: mutableListOf())
 
             data.categoryList?.forEach {
                 it.gameList?.forEach {
@@ -113,7 +114,7 @@ class OKLiveViewModel(
 
             gameData.markCollect = !gameData.markCollect
             GameCollectManager.addCollectNum(gameData.id,gameData.markCollect)
-            GameCollectManager.updateCollect(gameData)
+            GameCollectManager.updateCollect(gameData,GameEntryType.OKLIVE)
         }
 
     /**

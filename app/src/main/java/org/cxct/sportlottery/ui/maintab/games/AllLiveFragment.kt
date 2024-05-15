@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.games
 
 import android.view.View
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkliveBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -105,7 +106,7 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
             val firmList = resultData?.firmList ?: return@observe
             okLiveFragment().setupProvider(firmList.toMutableList())
         }
-        GameCollectManager.collectList.observe(viewLifecycleOwner) {
+        GameCollectManager.collectLiveList.observe(viewLifecycleOwner) {
             if(LoginRepository.isLogined()){
                 if(it.isNullOrEmpty()){
                     binding.gameViewCollect.gone()
@@ -152,7 +153,7 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
                 }
             }
             binding.gameViewRecent.notifyDataChange()
-            binding.okLiveGameView.getDataList().forEach {
+            binding.okGameView.getDataList().forEach {
                 it.forEach {
                     if(result.first==it.id){
                         it.markCollect=result.second
@@ -160,7 +161,7 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
                     }
                 }
             }
-            binding.okLiveGameView.notifyDataChanged()
+            binding.okGameView.notifyDataChanged()
         }
         GameCollectManager.gameCollectNum.observe(viewLifecycleOwner) {
             binding.gameViewRecent.notifyDataChange()
@@ -240,16 +241,16 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
     private fun initRecommendLiveGame(){
         viewModel.getHomeOKGamesList300()
         viewModel.homeGamesList300.observe(this){
-            binding.okLiveGameView.visible()
+            binding.okGameView.visible()
             //初始化最近游戏数据
-            binding.okLiveGameView
+            binding.okGameView
                 .setIcon(R.drawable.ic_home_okgames_title)
                 .setIsShowCollect(true)
                 .setMoreGone()
                 .setCategoryName(R.string.N704)
                 .setListData(it,false)
                 .setOnFavoriteClick {
-                    okLiveFragment().collectGame(it)
+                    okLiveFragment().mainTabActivity().collectGame(it,GameEntryType.OKGAMES)
                 }
                 .setOnGameClick {
                     enterGame(it)

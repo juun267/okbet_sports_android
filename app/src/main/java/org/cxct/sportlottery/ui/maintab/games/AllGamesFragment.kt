@@ -96,7 +96,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
             viewModel.getRecentPlay()
         }
 
-        GameCollectManager.collectList.observe(viewLifecycleOwner) {
+        GameCollectManager.collectGameList.observe(viewLifecycleOwner) {
             if(LoginRepository.isLogined()){
                 if(it.isNullOrEmpty()){
                     binding.gameViewCollect.gone()

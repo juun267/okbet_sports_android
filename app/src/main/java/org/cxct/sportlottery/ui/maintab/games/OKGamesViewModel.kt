@@ -96,7 +96,7 @@ class OKGamesViewModel(
 
             _gameHall.postValue(data)
 
-            GameCollectManager.setUpCollect(data.collectList?.toMutableList()?: mutableListOf())
+            GameCollectManager.setUpGameCollect(data.collectList?.toMutableList()?: mutableListOf())
 
             data.categoryList?.forEach {
                 it.gameList?.forEach {
@@ -155,7 +155,7 @@ class OKGamesViewModel(
             }
             gameData.markCollect = !gameData.markCollect
             GameCollectManager.addCollectNum(gameData.id,gameData.markCollect)
-            GameCollectManager.updateCollect(gameData)
+            GameCollectManager.updateCollect(gameData,gameEntryType)
         }
 
 
@@ -279,7 +279,7 @@ class OKGamesViewModel(
             val data = it.getData() ?: return@callApi
 
             _gameHall.postValue(data)
-            GameCollectManager.setUpCollect(data.collectList?.toMutableList()?: mutableListOf())
+            GameCollectManager.setUpLiveCollect(data.collectList?.toMutableList()?: mutableListOf())
 
             data.categoryList?.forEach {
                 it.gameList?.forEach {
