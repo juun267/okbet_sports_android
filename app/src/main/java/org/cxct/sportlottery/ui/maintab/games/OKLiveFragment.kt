@@ -162,7 +162,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
     private fun showFavorites(tab: OKGameTab) {
         retagRequest()
         changePartGamesLabel(tab)
-        showPartGameList(viewModel.collectList.value?.second, 0)
+        showPartGameList(GameCollectManager.collectList.value, 0)
     }
 
     fun enterGame(bean: OKGameBean) {

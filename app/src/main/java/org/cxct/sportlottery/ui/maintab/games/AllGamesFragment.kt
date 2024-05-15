@@ -96,10 +96,9 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
             viewModel.getRecentPlay()
         }
 
-        collectList.observe(viewLifecycleOwner) {
-
+        GameCollectManager.collectList.observe(viewLifecycleOwner) {
             if(LoginRepository.isLogined()){
-                if(it.second.isNullOrEmpty()){
+                if(it.isNullOrEmpty()){
                     binding.gameViewCollect.gone()
                     return@observe
                 }
@@ -108,7 +107,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
                 binding.gameViewCollect
                     .setIcon(GameTab.TAB_FAVORITES.labelIcon)
                     .setCategoryName(GameTab.TAB_FAVORITES.name)
-                    .setListData(it.second)
+                    .setListData(it)
                     .setOnFavoriteClick {gameBean->
                         okGamesFragment().collectGame(gameBean)
                     }
@@ -122,12 +121,12 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
                 binding.gameViewCollect.gone()
             }
         }
-        collectOkGamesResult.observe(viewLifecycleOwner) { result ->
+        GameCollectManager.collectStatus.observe(viewLifecycleOwner) { result ->
             //更新列表
             gameListAdapter.data.forEachIndexed {index,it->
                 it.gameList?.forEach {
-                    if(result.second.id==it.id){
-                        it.markCollect=result.second.markCollect
+                    if(result.first==it.id){
+                        it.markCollect=result.second
                         return@forEachIndexed
                     }
                 }
@@ -137,8 +136,8 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
             binding.gameViewRecent.getDataList().forEach {
 
                 it.forEach {
-                    if(result.second.id==it.id){
-                        it.markCollect=result.second.markCollect
+                    if(result.first==it.id){
+                        it.markCollect=result.second
                         return@forEach
                     }
                 }

@@ -88,10 +88,10 @@ class PartGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentPartOkgame
     }
 
     private fun initObserve() = okGamesFragment().viewModel.run {
-        collectOkGamesResult.observe(viewLifecycleOwner) { result ->
+        GameCollectManager.collectStatus.observe(viewLifecycleOwner) { result ->
             gameChildAdapter.data.forEachIndexed { index, okGameBean ->
                 if (okGameBean.id == result.first) {
-                    okGameBean.markCollect = result.second.markCollect
+                    okGameBean.markCollect = result.second
                     gameChildAdapter.notifyItemChanged(index, okGameBean)
                     return@observe
                 }

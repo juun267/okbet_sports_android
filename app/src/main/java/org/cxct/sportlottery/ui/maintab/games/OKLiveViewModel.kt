@@ -25,21 +25,10 @@ class OKLiveViewModel(
         get() = _providerresult
     private val _providerresult = MutableLiveData<OKGamesHall>()
 
-    //游戏收藏结果
-    val collectOkGamesResult: LiveData<Pair<Int, OKGameBean>>
-        get() = _collectOkGamesResult
-    private val _collectOkGamesResult = MutableLiveData<Pair<Int, OKGameBean>>()
-
-
     //游戏大厅数据
     val gameHall: LiveData<OKGamesHall>
         get() = _gameHall
     private val _gameHall = MutableLiveData<OKGamesHall>()
-
-    //收藏游戏列表
-    val collectList: LiveData<Pair<Boolean, List<OKGameBean>>> // 是否是通过服务端拉取-收藏列表
-        get() = _collectList
-    private val _collectList = MutableLiveData<Pair<Boolean, List<OKGameBean>>>()
 
     //最近游戏列表
     val recentPlay: LiveData<List<OKGameBean>>
@@ -76,7 +65,7 @@ class OKLiveViewModel(
             val data = it.getData() ?: return@callApi
 
             _gameHall.postValue(data)
-            _collectList.postValue(Pair(true, data.collectList ?: listOf()))
+            GameCollectManager.setUpCollect(data.collectList?.toMutableList()?: mutableListOf())
 
             data.categoryList?.forEach {
                 it.gameList?.forEach {
@@ -124,16 +113,7 @@ class OKLiveViewModel(
 
             gameData.markCollect = !gameData.markCollect
             GameCollectManager.addCollectNum(gameData.id,gameData.markCollect)
-            _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
-
-            val markedGames = _collectList.value?.second?.toMutableList() ?: mutableListOf()
-            if (gameData.markCollect) {
-                markedGames.add(0, gameData)
-                _collectList.value = Pair(false, markedGames)
-                return@callApi
-            }
-
-            _collectList.value = Pair(false, markedGames.filter { it.id != gameData.id }.toList())
+            GameCollectManager.updateCollect(gameData)
         }
 
     /**

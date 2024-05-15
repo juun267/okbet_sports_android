@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.GameCollectManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.onClick
 import splitties.systemservices.layoutInflater
@@ -59,10 +60,10 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : LinearLayout(cont
             gameAdapter.setList(it)
             this@HomeOkGamesView.isVisible = gameAdapter.dataCount() > 0
         }
-        (fragment.activity as MainTabActivity).gamesViewModel.collectOkGamesResult.observe(fragment.viewLifecycleOwner) {
+        GameCollectManager.collectStatus.observe(fragment.viewLifecycleOwner) {
             gameAdapter.data.forEachIndexed { index, item ->
                 if (item.id == it.first) {
-                    item.markCollect = it.second.markCollect
+                    item.markCollect = it.second
                     gameAdapter.notifyItemChanged(index, it)
                     return@observe
                 }

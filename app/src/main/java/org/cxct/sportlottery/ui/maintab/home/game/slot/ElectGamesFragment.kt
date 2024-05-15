@@ -167,11 +167,11 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
 //            hideLoadingView()
             setData(it)
         }
-        viewModel.collectOkGamesResult.observe(viewLifecycleOwner) { result ->
+        GameCollectManager.collectStatus.observe(viewLifecycleOwner) { result ->
             gameAdapter2.data.forEachIndexed { index, item ->
                 (item as? OKGameBean)?.let {
                     if (it.id == result.first) {
-                        it.markCollect = result.second.markCollect
+                        it.markCollect = result.second
                         gameAdapter2.notifyItemChanged(index, it)
                     }
                 }

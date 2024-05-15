@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.GameCollectManager
 import org.cxct.sportlottery.view.loadMore
 
 // 指定类别的三方游戏
@@ -79,10 +80,10 @@ class PartLiveFragment : BaseFragment<OKLiveViewModel,FragmentPartOkgamesBinding
     }
 
     private fun initObserve() = mOkLiveFragment().viewModel.run {
-        collectOkGamesResult.observe(viewLifecycleOwner) { result ->
+        GameCollectManager.collectStatus.observe(viewLifecycleOwner) { result ->
             gameChildAdapter.data.forEachIndexed { index, okGameBean ->
                 if (okGameBean.id == result.first) {
-                    okGameBean.markCollect = result.second.markCollect
+                    okGameBean.markCollect = result.second
                     gameChildAdapter.notifyItemChanged(index, okGameBean)
                     return@observe
                 }

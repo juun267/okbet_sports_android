@@ -12,6 +12,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerLiveListAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.util.GameCollectManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setupSportStatusChange
 
@@ -104,9 +105,9 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
             val firmList = resultData?.firmList ?: return@observe
             okLiveFragment().setupProvider(firmList.toMutableList())
         }
-        collectList.observe(viewLifecycleOwner) {
+        GameCollectManager.collectList.observe(viewLifecycleOwner) {
             if(LoginRepository.isLogined()){
-                if(it.second.isNullOrEmpty()){
+                if(it.isNullOrEmpty()){
                     binding.gameViewCollect.gone()
                     return@observe
                 }
@@ -115,7 +116,7 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
                 binding.gameViewCollect
                     .setIcon(GameTab.TAB_FAVORITES.labelIcon)
                     .setCategoryName(GameTab.TAB_FAVORITES.name)
-                    .setListData(it.second)
+                    .setListData(it)
                     .setOnFavoriteClick {gameBean->
                         okLiveFragment().collectGame(gameBean)
                     }
@@ -130,12 +131,12 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
             }
         }
 
-        collectOkGamesResult.observe(viewLifecycleOwner) { result ->
+        GameCollectManager.collectStatus.observe(viewLifecycleOwner) { result ->
             //更新列表
             gameListAdapter.data.forEachIndexed {index,it->
                 it.gameList?.forEach {
-                    if(result.second.id==it.id){
-                        it.markCollect=result.second.markCollect
+                    if(result.first==it.id){
+                        it.markCollect=result.second
                         return@forEachIndexed
                     }
                 }
@@ -144,13 +145,21 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
             //更新最近游戏
             binding.gameViewRecent.getDataList().forEach {
                 it.forEach {
-                    if(result.second.id==it.id){
-                        it.markCollect=result.second.markCollect
+                    if(result.first==it.id){
+                        it.markCollect=result.second
                         return@forEach
                     }
                 }
             }
             binding.gameViewRecent.notifyDataChange()
+            binding.okLiveGameView.getDataList().forEach {
+                it.forEach {
+                    if(result.first==it.id){
+                        it.markCollect=result.second
+                        return@forEach
+                    }
+                }
+            }
             binding.okLiveGameView.notifyDataChanged()
         }
         GameCollectManager.gameCollectNum.observe(viewLifecycleOwner) {
