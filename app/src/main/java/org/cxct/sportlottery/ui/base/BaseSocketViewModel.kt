@@ -172,28 +172,22 @@ abstract class BaseSocketViewModel(
         get() = _isRechargeShowVerifyDialog
 
     fun doLogoutAPI() {
-        viewModelScope.launch {
-            runCatching { LoginRepository.logoutAPI() }
-        }
-    }
-    fun doCleanToken() {
-        viewModelScope.launch {
-            BetInfoRepository.clear()
-            InfoCenterRepository.clear()
-            LoginRepository.logout()
-            BackService.cleanUserChannel()
-        }
+        LoginRepository.logoutAPI()
     }
 
     fun doLogoutCleanUser(finishFunction: () -> Unit) {
-        viewModelScope.launch {
-            BetInfoRepository.clear()
-            InfoCenterRepository.clear()
-            LoginRepository.logout()
-            //退出登入後盤口回到預設
-            updateDefaultHandicapType()
-            finishFunction.invoke()
-        }
+        clearAll()
+        finishFunction.invoke()
+    }
+
+    fun clearAll() {
+        MultiLanguagesApplication.saveSearchHistory(null)
+        LoginRepository.clear()
+        BackService.cleanUserChannel()
+        BetInfoRepository.clear()
+        InfoCenterRepository.clear()
+        //退出登入後盤口回到預設
+        updateDefaultHandicapType()
     }
 
     fun checkIsUserAlive() {

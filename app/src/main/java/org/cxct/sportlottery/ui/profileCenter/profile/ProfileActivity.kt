@@ -125,7 +125,10 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
     private fun setupLogout() {
         binding.btnSignOut.setOnClickListener {
             viewModel.doLogoutAPI()
-            viewModel.doLogoutCleanUser { MainTabActivity.reStart(this) }
+            viewModel.doLogoutCleanUser {
+                finish()
+                MainTabActivity.reStart(applicationContext)
+            }
         }
     }
 

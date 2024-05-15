@@ -60,7 +60,7 @@ interface IndexService {
     ): Response<NetResult>
 
     @POST(INDEX_LOGOUT)
-    suspend fun logout(@Body logoutRequest: LogoutRequest): Response<NetResult>
+    suspend fun logout(@Header("x-session-token") token: String): Response<NetResult>
 
     @POST(USER_BASIC_INFO_UPDATE)
     suspend fun commitUserBasicInfo(@Body infoRequest: UserBasicInfoRequest): Response<NetResult>
