@@ -38,7 +38,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
     private val unActivatedAdapter = UnactivatedBenefitsAdapter()
     //生日选择
     private var dateTimePicker: TimePickerView? = null
-    private var currentRewardInfo: RewardInfo?=null
+    private var userRewardInfo: RewardInfo?=null
 
     override fun onInitView() = binding.run {
         setStatusBarDarkFont(false)
@@ -154,7 +154,9 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         vipCardAdapter.userExp = userVip.exp
         vipCardAdapter.setList(userVip.rewardInfo)
         val selectPosition = userVip.rewardInfo.indexOfFirst {userVip.levelCode == it.levelCode }
+        userRewardInfo = userVip.rewardInfo.getOrNull(selectPosition)
         binding.rcvVipCard.scrollToPosition(selectPosition)
+        activatedAdapter.setBirthday = userVip.birthday.isNullOrEmpty()
         if (selectPosition>0){
             onSelectLevel(selectPosition)
         }else{
@@ -165,10 +167,9 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         viewModel.userVipEvent?.value?.let {
             activatedAdapter.setList(null)
             activatedAdapter.removeAllFooterView()
-            currentRewardInfo = it.rewardInfo.getOrNull(position)?:return
-            val nextLevel = it.rewardInfo.getOrNull(position+1)
+            val currentRewardInfo = it.rewardInfo.getOrNull(position)
             activatedAdapter.setList(currentRewardInfo?.rewardDetail?.filter { it.enable })
-            activatedAdapter.setBirthday = it.birthday.isNullOrEmpty()
+            activatedAdapter.disableStatus = currentRewardInfo!=userRewardInfo
             if (currentRewardInfo?.exclusiveService==true){
                 val exclusiveBinding = ItemActivatedBenefitsBinding.inflate(layoutInflater)
                 exclusiveBinding.ivBenefits.setImageResource(R.drawable.ic_vip_bonus_support)
@@ -187,6 +188,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
             }
             val showEmpty = activatedAdapter.itemCount==0 && !activatedAdapter.hasFooterLayout()
             binding.includeActivatedEmpty.root.isVisible = showEmpty
+            val nextLevel = it.rewardInfo.getOrNull(position+1)
             unActivatedAdapter.setList(nextLevel?.rewardDetail?.filter { it.enable })
         }
     }
@@ -206,7 +208,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
                 }
             }
             UserVipType.REWARD_TYPE_PACKET->{
-                currentRewardInfo?.levelV2Id?.let {
+                userRewardInfo?.levelV2Id?.let {
                     loading()
                     viewModel.vipRedenpApply(it)
                 }
@@ -215,7 +217,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
     }
     private fun getReward(rewardDetail: RewardDetail){
         val activityId = viewModel.vipDetailEvent.value?.vipUserLevelLimits?.firstOrNull { it.type == rewardDetail.rewardType }?.activityId
-        val levelV2Id = currentRewardInfo?.levelV2Id
+        val levelV2Id = userRewardInfo?.levelV2Id
         if (activityId!=null && levelV2Id!=null){
             loading()
             viewModel.vipReward(activityId,rewardDetail.rewardType, levelV2Id)

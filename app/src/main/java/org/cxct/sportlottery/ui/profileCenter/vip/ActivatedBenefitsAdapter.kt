@@ -8,8 +8,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
 import org.cxct.sportlottery.common.enums.UserVipType
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ItemActivatedBenefitsBinding
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.RewardDetail
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
@@ -26,11 +29,17 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
             .setHeight(dp40)
             .setRadius(dp40.toFloat())
     }
+
     var setBirthday: Boolean=false
     set(value) {
         field = value
         notifyDataSetChanged()
     }
+    var disableStatus: Boolean=false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateDefViewHolder(
         parent: ViewGroup,
@@ -63,6 +72,10 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
             }
         }
         tvAmount.text = TextUtil.formatMoney(item.value)
+        if(disableStatus){
+            tvAction.gone()
+            return
+        }
         tvAction.setOnClickListener {
             onItemClick.invoke(item)
         }
