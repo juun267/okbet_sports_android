@@ -152,7 +152,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             }
 
             R.string.bottom_nav_home -> {
-                backMainHome()
+                navToPosition(INDEX_HOME)
                 return true
             }
 
