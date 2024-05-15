@@ -53,6 +53,7 @@ class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeB
     }
 
     fun initToolBar() = binding.homeToolbar.run {
+        setMenuClick{ getMainTabActivity().showMainLeftMenu(this@NewsHomeFragment.javaClass) }
         attach(this@NewsHomeFragment, getMainTabActivity(), getMainTabActivity().viewModel)
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))

@@ -45,6 +45,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         addChildView()
     }
 
+    private lateinit var ivMenu: ImageView
     private lateinit var ivLogo: ImageView
     private lateinit var searchView: View
     lateinit var searchIcon: View
@@ -69,12 +70,14 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
 
     private fun addChildView() {
 
+        val dp36 = 36.dp
+        ivMenu = AppCompatImageView(context)
+        ivMenu.setImageResource(R.drawable.ic_home_titlebar_menu)
+        addView(ivMenu, LayoutParams(dp36, dp36).apply { leftMargin = 6.dp })
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
-        addView(ivLogo, LayoutParams(-2, 36.dp).apply {
-            leftMargin = 6.dp
-        })
+        addView(ivLogo, LayoutParams(-2, 33.dp).apply { leftMargin = 40.dp })
 
         addSearchView()
         addUserView()
@@ -322,5 +325,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         })
         viewModel.getMoneyAndTransferOut()
     }
+
+    fun setMenuClick(click: OnClickListener) = ivMenu.setOnClickListener(click)
 
 }

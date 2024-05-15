@@ -105,6 +105,7 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
 
     fun initToolBar() = binding.homeToolbar.run {
         background = null
+        setMenuClick{ getMainTabActivity().showSportLeftMenu() }
         attach(this@SportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         betlistIcon.setOnClickListener {

@@ -77,6 +77,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
+        setMenuClick{ mainTabActivity().showMainLeftMenu(this@OKLiveFragment.javaClass) }
         attach(this@OKLiveFragment, mainTabActivity(), mainTabActivity().viewModel)
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))

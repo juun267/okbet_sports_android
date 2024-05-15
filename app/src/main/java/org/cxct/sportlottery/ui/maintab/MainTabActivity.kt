@@ -70,7 +70,7 @@ import kotlin.system.exitProcess
 
 class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBinding>(MainTabViewModel::class) {
 
-    val gamesViewModel by viewModel<OKGamesViewModel>()
+    private val gamesViewModel by viewModel<OKGamesViewModel>()
     private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
@@ -125,7 +125,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         initDrawerLayout()
         initMenu()
         tabHelper = MainTabInflate(this, binding.linTab, ::onTabClick)
-        navToPosition(INDEX_HOME)
+        backMainHome()
         initBottomNavigation()
         initObserve()
         activityInstance = this
@@ -143,10 +143,17 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
                 onMenuEvent(MenuEvent(true))
                 if (currentFragment is SportFragment) {
                     showSportLeftMenu()
+                } else if (currentFragment is HomeFragment) {
+                    showMainLeftMenu(currentFragment.getCurrentFragment()?.javaClass as Class<BaseFragment<*,*>>? )
                 } else {
                     showMainLeftMenu(currentFragment.javaClass as Class<BaseFragment<*,*>>?)
                 }
                 false
+            }
+
+            R.string.bottom_nav_home -> {
+                backMainHome()
+                return true
             }
 
             R.string.main_tab_sport -> { // 体育
@@ -368,6 +375,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
 
     fun showMainLeftMenu(contentFragment: Class<BaseFragment<*,*>>?) {
+        onMenuEvent(MenuEvent(true))
         fragmentHelper2.show(MainLeftFragment::class.java, Bundle()) { fragment, _ ->
             fragment.openWithFragment(contentFragment)
         }
@@ -382,6 +390,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     private val fragmentHelperRight by lazy { FragmentHelper2(supportFragmentManager, R.id.right_menu) }
 
     fun showSportLeftMenu() {
+        onMenuEvent(MenuEvent(true))
         fragmentHelper2.show(SportLeftMenuFragment::class.java, Bundle()) { fragment, instance ->
             if(!instance){
                 fragment.reloadData()
@@ -569,7 +578,8 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
     fun backMainHome() {
         navToPosition(INDEX_HOME)
-        tabHelper.clearSelected()
+        tabHelper.selectedHome()
+//        tabHelper.clearSelected()
     }
 
     fun jumpToOKGames() {
