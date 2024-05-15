@@ -132,6 +132,8 @@ private class EndCardMatchProvider(
 
         with(binding) {
             val league = (item.parentNode as LeagueOdd).league
+            val topViewMargin = if(item.parentNode.childNode?.first() == item) 0 else 12.dp
+            viewTop.setMargins(topViewMargin,0,topViewMargin,0)
             matchInfo.categoryIcon = if (league.icon.isEmptyStr()) league.categoryIcon else league.icon
             tvView.setOnClickListener { showOdd(matchOdd) }
             tvHomeName.text = matchInfo.homeName

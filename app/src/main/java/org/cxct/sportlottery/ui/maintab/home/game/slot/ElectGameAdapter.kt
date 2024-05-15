@@ -21,6 +21,7 @@ import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setMargins
 
 class ElectGameAdapter: BaseNodeAdapter() {
 
@@ -102,9 +103,9 @@ private class ElectGameProvider(val adapter: ElectGameAdapter,
         val childPosition = item.parentNode.childNode?.indexOf(item) ?: return@run
         val bottomMargin = if (adapter.getItemOrNull(adapter.data.size - 2)  == item|| adapter.data.last() == item) 16.dp else dp8
         if (childPosition % 2 == 0){
-            setMargins(root, 0, 0, dp4, bottomMargin)
+            root.setMargins(0, 0, dp4, bottomMargin)
         }else{
-            setMargins(root, dp4, 0, 0, bottomMargin)
+            root.setMargins(dp4, 0, 0, bottomMargin)
         }
 
         linMaintenance.gone()
@@ -135,13 +136,6 @@ private class ElectGameProvider(val adapter: ElectGameAdapter,
         }else{
             cvJackpot.gone()
         }
-    }
-    private fun setMargins(btn: View, left: Int, top: Int, right: Int, bottom: Int) {
-        val lParams = btn.layoutParams as ViewGroup.MarginLayoutParams
-        lParams.leftMargin = left
-        lParams.topMargin = top
-        lParams.rightMargin = right
-        lParams.bottomMargin = bottom
     }
 }
 

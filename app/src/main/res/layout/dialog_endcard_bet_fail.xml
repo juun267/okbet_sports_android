@@ -13,17 +13,19 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
         <ImageView
-            android:layout_width="@dimen/margin_68"
-            android:layout_height="@dimen/margin_68"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_marginTop="54dp"
             android:src="@drawable/ic_fail_red"/>
 
         <TextView
             android:id="@+id/tvMsg"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_marginTop="@dimen/margin_16"
             android:layout_marginHorizontal="@dimen/margin_12"
+            android:lineHeight="@dimen/margin_20"
             android:text="@string/F042"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize18sp"

@@ -13,6 +13,7 @@ import com.drake.spannable.span.ColorSpan
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.util.AppFont
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.Spanny
 
 class WinnersMarqueeAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
@@ -22,6 +23,7 @@ class WinnersMarqueeAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
         textView.textSize = 14f
         textView.typeface = AppFont.helvetica
         textView.setTextColor(context.getColor(R.color.color_BEC7DC))
+        textView.setPadding(0,0, 25.dp,0)
         return BaseViewHolder(textView)
     }
 
