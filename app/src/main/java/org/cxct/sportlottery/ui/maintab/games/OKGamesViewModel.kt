@@ -91,6 +91,7 @@ class OKGamesViewModel(
     val gamesList: LiveData<Triple<Any, Int, List<OKGameBean>?>> // 请求id-总记录数-响应结果
         get() = _gamesList
     private val _gamesList = MutableLiveData<Triple<Any, Int, List<OKGameBean>?>>()
+    val miniGameList by lazy { SingleLiveEvent<List<OKGameBean>?>() }
 
     private var isLoadingOKGamesHall = false
     /**
@@ -312,6 +313,10 @@ class OKGamesViewModel(
                 _providerresult.postValue(data)
             }
         }
+    }
+
+    fun getMiniGameList() = callApi({ OKGamesRepository.getMiniGameList(1, 100) }) {
+        miniGameList.value = it.getData()
     }
 
 }

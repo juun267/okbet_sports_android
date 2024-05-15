@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.ui.maintab.home.game.perya
 
 import android.graphics.Color
+import android.os.Bundle
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -10,30 +12,61 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.cardview.widget.CardView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.roundOf
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentMinigameListBinding
+import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListBinding>() {
+class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListBinding>(), OnItemClickListener {
+
+    private val loadingHolder by lazy { Gloading.wrapView(binding.root) }
+    private val adapter = GameListAdapter()
+
+    override fun createRootView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = loadingHolder.wrapper
 
     override fun onInitView(view: View) {
         binding.recyclerView.setLinearLayoutManager()
-        binding.recyclerView.adapter = GameListAdapter()
+        binding.recyclerView.adapter = adapter
+        adapter.setOnItemClickListener(this)
+        loadingHolder.withRetry { viewModel.getMiniGameList() }
     }
 
-    private class GameListAdapter: BaseQuickAdapter<String, BaseViewHolder>(0) {
-
-        init {
-            setNewInstance(mutableListOf("as", "as", "as", "as", "as", "as", "as", "as"))
+    override fun onBindViewStatus(view: View) {
+        initObserver()
+        if (adapter.itemCount < 2) {
+            loadingHolder.go()
         }
+    }
+
+    private fun initObserver() {
+        viewModel.miniGameList.observe(viewLifecycleOwner) {
+            if (it == null) {
+                loadingHolder.showLoadFailed()
+            } else {
+                adapter.setNewInstance(it?.toMutableList())
+                loadingHolder.showLoadSuccess()
+            }
+        }
+    }
+
+    private class GameListAdapter: BaseQuickAdapter<OKGameBean?, BaseViewHolder>(0) {
 
         private val imgId = View.generateViewId()
         private val textId = View.generateViewId()
+
         override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             val dp8 = 8.dp
             val dp12 = 12.dp
@@ -62,9 +95,9 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
             return BaseViewHolder(root)
         }
 
-        override fun convert(holder: BaseViewHolder, item: String) {
-            if (holder.bindingAdapterPosition < getDefItemCount() - 1) {
-                holder.setImageResource(imgId, R.drawable.img_mini_game_cover)
+        override fun convert(holder: BaseViewHolder, item: OKGameBean?) {
+            if (item != null) {
+                holder.getView<ImageView>(imgId).roundOf(item.imgGame, 8.dp, R.drawable.img_placeholder_default)
                 holder.setVisible(textId, false)
             } else {
                 holder.setImageResource(imgId, R.drawable.img_minigame_unknow)
@@ -72,6 +105,16 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
             }
         }
 
+        override fun setNewInstance(list: MutableList<OKGameBean?>?) {
+            list?.add(null)
+            super.setNewInstance(list)
+        }
+
+    }
+
+    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        val item = adapter.getItemOrNull(position) ?: return
+        viewModel.requestEnterThirdGame(item as OKGameBean, requireActivity() as BaseActivity<*, *>)
     }
 
 

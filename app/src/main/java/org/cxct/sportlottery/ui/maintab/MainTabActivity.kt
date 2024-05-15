@@ -608,12 +608,20 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     }
 
     fun jumpToPerya() {
-        navToPosition(INDEX_HOME)
-        val fragment = fragmentHelper.getFragment(INDEX_HOME)
-        if (fragment is HomeFragment) {
-            fragment.jumpToPerya()
+        if (getMarketSwitch()) {
+            return
         }
-        tabHelper.clearSelected()
+
+        if(StaticData.miniGameOpened()){
+            navToPosition(INDEX_HOME)
+            val fragment = fragmentHelper.getFragment(INDEX_HOME)
+            if (fragment is HomeFragment) {
+                fragment.jumpToPerya()
+            }
+            tabHelper.clearSelected()
+        }else{
+            ToastUtil.showToast(this,getString(R.string.N700))
+        }
     }
 
     fun jumpToESport(gameType: String) {

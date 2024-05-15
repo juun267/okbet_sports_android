@@ -125,7 +125,11 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         if (StaticData.okGameOpened()){
             itemDatas.add(okGameMenuItem)
         }
-        itemDatas.add(peryaMenuItem)
+
+        if (StaticData.miniGameOpened()) {
+            itemDatas.add(peryaMenuItem)
+        }
+
         if (StaticData.okLiveOpened()){
             itemDatas.add(okLiveGameItem)
         }
@@ -231,6 +235,13 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
 
         if (selectItem == okLiveGameItem) {
             if (!StaticData.okLiveOpened()) {
+                selectedRecommend()
+            }
+            return
+        }
+
+        if (selectItem == peryaMenuItem) {
+            if (!StaticData.miniGameOpened()) {
                 selectedRecommend()
             }
             return
