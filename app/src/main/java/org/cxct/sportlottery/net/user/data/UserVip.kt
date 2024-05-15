@@ -13,5 +13,6 @@ data class UserVip(
     val protectionLevelGrowthValue: Long,
     val protectionStatus: Int,
     val rewardInfo: List<RewardInfo>,
-    val upgradeExp: Long
+    val upgradeExp: Long,
+    val birthday: String?=null
 ): Parcelable

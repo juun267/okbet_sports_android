@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter.vip
 import android.app.Application
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toast
+import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.UserVip
 import org.cxct.sportlottery.net.user.data.VipDetail
@@ -16,21 +17,14 @@ class VipViewModel(
 ) : BaseViewModel(
     androidContext
 ) {
-    val userVipEvent = SingleLiveEvent<UserVip?>()
+    val userVipEvent = UserRepository._userVipEvent
     val vipDetailEvent = SingleLiveEvent<VipDetail?>()
-    val vipRewardEvent = SingleLiveEvent<String>()
-    val applyResultEvent = SingleLiveEvent<VipRedenpApplyResult?>()
-    val setBirthdayEvent = SingleLiveEvent<String?>()
+    val vipRewardEvent = SingleLiveEvent<ApiResult<String>>()
+    val applyResultEvent = SingleLiveEvent<ApiResult<VipRedenpApplyResult>>()
+    val setBirthdayEvent = SingleLiveEvent<ApiResult<String>>()
 
     fun getUserVip(){
-        callApi({UserRepository.getUserVip()}){
-            if (it.succeeded()){
-                userVipEvent.postValue(it.getData())
-            }else{
-                userVipEvent.postValue(null)
-                toast(it.msg)
-            }
-        }
+        callApi({UserRepository.getUserVip()}){}
     }
     fun getVipDetail() {
         callApi({ UserRepository.getVipDetail() }) {
@@ -43,29 +37,17 @@ class VipViewModel(
     }
     fun vipReward(activityId: Int, rewardType: Int, levelV2Id: Int){
         callApi({UserRepository.vipReward(activityId,rewardType,levelV2Id)}){
-            if (it.succeeded()){
-                vipRewardEvent.postValue(it.getData())
-            }else{
-                toast(it.msg)
-            }
+            vipRewardEvent.postValue(it)
         }
     }
     fun vipRedenpApply(levelV2Id: Int){
         callApi({UserRepository.vipRedenpApply(levelV2Id)}){
-            if (it.succeeded()){
-                applyResultEvent.postValue(it.getData())
-            }else{
-                toast(it.msg)
-            }
+            applyResultEvent.postValue(it)
         }
     }
     fun setBirthday(birthday: String){
         callApi({UserRepository.setBirthday(birthday)}){
-            if (it.succeeded()){
-                setBirthdayEvent.postValue(it.getData())
-            }else{
-                toast(it.msg)
-            }
+            setBirthdayEvent.postValue(it)
         }
     }
 }

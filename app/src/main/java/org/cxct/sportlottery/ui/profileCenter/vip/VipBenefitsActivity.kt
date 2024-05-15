@@ -1,31 +1,44 @@
 package org.cxct.sportlottery.ui.profileCenter.vip
 
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bigkoo.pickerview.listener.CustomListener
+import com.bigkoo.pickerview.view.TimePickerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.UserVipType
 import org.cxct.sportlottery.common.enums.UserVipType.setLevelTagIcon
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ActivityVipBenefitsBinding
 import org.cxct.sportlottery.databinding.ItemActivatedBenefitsBinding
 import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.RewardDetail
+import org.cxct.sportlottery.net.user.data.RewardInfo
 import org.cxct.sportlottery.net.user.data.UserVip
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.signUp.info.DateTimePickerOptions
+import org.cxct.sportlottery.ui.profileCenter.profile.Uide
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LeftLinearSnapHelper
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
+import java.util.*
 
 class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding>() {
 
     val loadingHolder by lazy { Gloading.cover(binding.vLoading) }
     private val vipCardAdapter = VipCardAdapter()
-    private val activatedAdapter = ActivatedBenefitsAdapter()
+    private val activatedAdapter = ActivatedBenefitsAdapter(::onItemClick)
     private val unActivatedAdapter = UnactivatedBenefitsAdapter()
+    //生日选择
+    private var dateTimePicker: TimePickerView? = null
+    private var currentRewardInfo: RewardInfo?=null
 
     override fun onInitView() = binding.run {
         setStatusBarDarkFont(false)
@@ -34,6 +47,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         initActivatedBenefits()
         initUnactivatedBenefits()
         initObservable()
+        viewModel.getVipDetail()
     }
 
     private fun initObservable() {
@@ -41,6 +55,34 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
             if (it!=null) loadingHolder.showLoadSuccess() else loadingHolder.showLoadFailed()
             it?.let {
                 setUpVipCard(it)
+            }
+        }
+        viewModel.vipDetailEvent.observe(this){
+
+        }
+        viewModel.setBirthdayEvent.observe(this){
+            hideLoading()
+            if (it.succeeded()){
+                activatedAdapter.setBirthday = false
+                reload()
+            }else{
+                toast(it.msg)
+            }
+        }
+        viewModel.vipRewardEvent.observe(this){
+            hideLoading()
+            if (it.succeeded()){
+                reload()
+            }else{
+                toast(it.msg)
+            }
+        }
+        viewModel.applyResultEvent.observe(this){
+            hideLoading()
+            if (it.succeeded()){
+                reload()
+            }else{
+                toast(it.msg)
             }
         }
     }
@@ -91,7 +133,11 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
                 }
             }
         })
-        UserRepository.userVip?.let{ it-> setUpVipCard(it) }
+        if (viewModel.userVipEvent.value==null){
+            viewModel.getUserVip()
+        }else{
+            viewModel.userVipEvent.value?.let{ it-> setUpVipCard(it) }
+        }
         rcvVipCard.adapter = vipCardAdapter
     }
 
@@ -108,6 +154,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         vipCardAdapter.userExp = userVip.exp
         vipCardAdapter.setList(userVip.rewardInfo)
         val selectPosition = userVip.rewardInfo.indexOfFirst {userVip.levelCode == it.levelCode }
+        binding.rcvVipCard.scrollToPosition(selectPosition)
         if (selectPosition>0){
             onSelectLevel(selectPosition)
         }else{
@@ -115,13 +162,14 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         }
     }
     private fun onSelectLevel(position: Int){
-        UserRepository.userVip?.let {
+        viewModel.userVipEvent?.value?.let {
             activatedAdapter.setList(null)
             activatedAdapter.removeAllFooterView()
-            val currentLevel = it.rewardInfo.getOrNull(position)?:return
+            currentRewardInfo = it.rewardInfo.getOrNull(position)?:return
             val nextLevel = it.rewardInfo.getOrNull(position+1)
-            activatedAdapter.setList(currentLevel.rewardDetail.filter { it.enable })
-            if (currentLevel.exclusiveService){
+            activatedAdapter.setList(currentRewardInfo?.rewardDetail?.filter { it.enable })
+            activatedAdapter.setBirthday = it.birthday.isNullOrEmpty()
+            if (currentRewardInfo?.exclusiveService==true){
                 val exclusiveBinding = ItemActivatedBenefitsBinding.inflate(layoutInflater)
                 exclusiveBinding.ivBenefits.setImageResource(R.drawable.ic_vip_bonus_support)
                 exclusiveBinding.tvBenefitsName.text = getString(R.string.P402)
@@ -129,7 +177,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
                 exclusiveBinding.tvAction.gone()
                 activatedAdapter.addFooterView(exclusiveBinding.root)
             }
-            if (currentLevel.expressWithdrawal){
+            if (currentRewardInfo?.expressWithdrawal==true){
                 val withdrawalBinding = ItemActivatedBenefitsBinding.inflate(layoutInflater)
                 withdrawalBinding.ivBenefits.setImageResource(R.drawable.ic_vip_bonus_disbursement)
                 withdrawalBinding.tvBenefitsName.text = getString(R.string.P404)
@@ -137,16 +185,82 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
                 withdrawalBinding.tvAction.gone()
                 activatedAdapter.addFooterView(withdrawalBinding.root)
             }
-            val showEmpty = activatedAdapter.itemCount==0 && !currentLevel.exclusiveService && !currentLevel.expressWithdrawal
+            val showEmpty = activatedAdapter.itemCount==0 && !activatedAdapter.hasFooterLayout()
             binding.includeActivatedEmpty.root.isVisible = showEmpty
             unActivatedAdapter.setList(nextLevel?.rewardDetail?.filter { it.enable })
         }
-
     }
+    fun onItemClick(rewardDetail: RewardDetail){
+        when(rewardDetail.rewardType){
+            UserVipType.REWARD_TYPE_PROMOTE->{
+                getReward(rewardDetail)
+            }
+            UserVipType.REWARD_TYPE_WEEKLY->{
+                getReward(rewardDetail)
+            }
+            UserVipType.REWARD_TYPE_BIRTHDAY->{
+                if (viewModel.userVipEvent.value?.birthday.isNullOrEmpty()){
+                    showBirthday()
+                }else{
+                    getReward(rewardDetail)
+                }
+            }
+            UserVipType.REWARD_TYPE_PACKET->{
+                currentRewardInfo?.levelV2Id?.let {
+                    loading()
+                    viewModel.vipRedenpApply(it)
+                }
+            }
+        }
+    }
+    private fun getReward(rewardDetail: RewardDetail){
+        val activityId = viewModel.vipDetailEvent.value?.vipUserLevelLimits?.firstOrNull { it.type == rewardDetail.rewardType }?.activityId
+        val levelV2Id = currentRewardInfo?.levelV2Id
+        if (activityId!=null && levelV2Id!=null){
+            loading()
+            viewModel.vipReward(activityId,rewardDetail.rewardType, levelV2Id)
+        }
+    }
+
     private fun reload(){
-        loadingHolder.withRetry{
-            loadingHolder.showLoading()
-            viewModel.getUserVip()
+        loadingHolder.showLoading()
+        viewModel.getUserVip()
+    }
+    fun showBirthday(){
+        if (dateTimePicker==null){
+            val yesterday = Calendar.getInstance()
+            yesterday.add(Calendar.YEAR, -100)
+            val tomorrow = Calendar.getInstance()
+            tomorrow.add(Calendar.YEAR, -21)
+            tomorrow.add(Calendar.DAY_OF_MONTH, -1)
+            dateTimePicker = DateTimePickerOptions(this).getBuilder { date, _ ->
+                BirthdayConfirmDialog.newInstance(date).show(supportFragmentManager)
+            }
+                .setLayoutRes(R.layout.dialog_date_select, object : CustomListener {
+                    override fun customLayout(v: View) {
+                        //自定义布局中的控件初始化及事件处理
+                        v.findViewById<View>(R.id.btnBtmCancel).setOnClickListener {
+                            dateTimePicker?.dismiss()
+                        }
+                        v.findViewById<View>(R.id.btnBtmDone).setOnClickListener {
+                            dateTimePicker?.returnData()
+                            dateTimePicker?.dismiss()
+                        }
+
+                    }
+                })
+                .setItemVisibleCount(6)
+                .setLineSpacingMultiplier(2.0f)
+                .setRangDate(yesterday, tomorrow)
+                .setDate(tomorrow)
+                .build()
+        }
+        dateTimePicker?.show()
+    }
+    fun setBirthday(date: Date){
+        TimeUtil.dateToStringFormatYMD(date)?.let {
+            loading()
+            viewModel.setBirthday(it)
         }
     }
 }

@@ -11,10 +11,11 @@ import org.cxct.sportlottery.common.enums.UserVipType
 import org.cxct.sportlottery.databinding.ItemActivatedBenefitsBinding
 import org.cxct.sportlottery.net.user.data.RewardDetail
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 
-class ActivatedBenefitsAdapter: BindingAdapter<RewardDetail, ItemActivatedBenefitsBinding>() {
+class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAdapter<RewardDetail, ItemActivatedBenefitsBinding>() {
 
     private val bg by lazy { ShapeDrawable().setSolidColor(Color.WHITE).setRadius(8.dp.toFloat()) }
     private val bg0 by lazy { ShapeDrawable().setSolidColor(context.getColor(R.color.color_025BE8)).setRadius(8.dp.toFloat()) }
@@ -24,6 +25,11 @@ class ActivatedBenefitsAdapter: BindingAdapter<RewardDetail, ItemActivatedBenefi
             .setWidth(dp40)
             .setHeight(dp40)
             .setRadius(dp40.toFloat())
+    }
+    var setBirthday: Boolean=false
+    set(value) {
+        field = value
+        notifyDataSetChanged()
     }
 
     override fun onCreateDefViewHolder(
@@ -57,11 +63,14 @@ class ActivatedBenefitsAdapter: BindingAdapter<RewardDetail, ItemActivatedBenefi
             }
         }
         tvAmount.text = TextUtil.formatMoney(item.value)
+        tvAction.setOnClickListener {
+            onItemClick.invoke(item)
+        }
         //1:未中奖,2:待审核,3:审核不通过,4:审核通过,5:已领取,6:已失效,7:未领取, null:無資格（專屬紅包則視為未申請）
         when(item.status){
             1,7-> {
                 tvAction.setActionBtn(true)
-                tvAction.text = if (item.rewardType == UserVipType.REWARD_TYPE_PACKET) context.getString(R.string.P407) else context.getString(R.string.P373)
+                tvAction.text = context.getString(R.string.P373)
             }
             2->{
                 tvAction.setActionBtn(false)
@@ -76,17 +85,27 @@ class ActivatedBenefitsAdapter: BindingAdapter<RewardDetail, ItemActivatedBenefi
                 tvAction.text = context.getString(R.string.P377)
             }
             else->{
-                tvAction.setActionBtn(false)
-                tvAction.text = context.getString(R.string.P376)
+                if (item.rewardType == UserVipType.REWARD_TYPE_PACKET){
+                    tvAction.setActionBtn(true)
+                    tvAction.text = context.getString(R.string.P407)
+                }else{
+                    tvAction.setActionBtn(false)
+                    tvAction.text = context.getString(R.string.P376)
+                }
             }
-
+        }
+        if (item.rewardType == UserVipType.REWARD_TYPE_BIRTHDAY&&setBirthday){
+            tvAction.setActionBtn(true)
+            tvAction.text = context.getString(R.string.P448)
         }
     }
     private fun TextView.setActionBtn(isBtn: Boolean){
         if (isBtn) {
+            isEnabled = true
             background = bg0
             setTextColor(context.getColor(R.color.color_FFFFFF))
         } else {
+            isEnabled = false
             background = null
             setTextColor(context.getColor(R.color.color_999999))
         }

@@ -1703,5 +1703,10 @@
     <string name="P441">Cấp bậc tiếp theo</string>
     <string name="P442">Trụ hạng</string>
     <string name="P443">Tích luỹ thăng cấp kết toán vào 15:50 mỗi ngày</string>
+    <string name="P448">Thiết lập</string>
+    <string name="A017">Nhắc nhở</string>
+    <string name="P450">Ngày tháng đã chọn hiện tại</string>
+    <string name="P451">Sau khi xác nhận không thể thay đổi</string>
+    <string name="LT002">Quay lại</string>
 
 </resources>

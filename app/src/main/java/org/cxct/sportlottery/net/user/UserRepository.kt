@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.net.user
 
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.PageData
@@ -19,7 +20,7 @@ object UserRepository {
 
     val userApi by lazy { RetrofitHolder.createApiService(UserApiService::class.java) }
     val ocrApi by lazy { RetrofitHolder.createOCRApiService(OCRApiService::class.java) }
-    var userVip: UserVip?=null
+    var _userVipEvent = MutableLiveData<UserVip>()
 
     suspend fun sendEmailForget(email: String, validCodeIdentity :String, validCode: String): ApiResult<SendCodeRespnose> {
         val params = mutableMapOf("email" to email).apply {
@@ -163,7 +164,7 @@ object UserRepository {
     }
     suspend fun getUserVip(): ApiResult<UserVip> {
         return userApi.getUserVip().apply {
-            userVip = getData()
+            getData()?.let { _userVipEvent.postValue(it) }
         }
     }
     suspend fun getVipDetail(): ApiResult<VipDetail> {
