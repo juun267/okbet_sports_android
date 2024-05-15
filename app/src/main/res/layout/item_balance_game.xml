@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:paddingHorizontal="@dimen/margin_24"
-    android:elevation="0dp"
-    android:foreground="@drawable/fg_ripple">
+    android:elevation="0dp">
 
     <TextView
         android:id="@+id/tvName"

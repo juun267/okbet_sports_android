@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
+import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,13 +14,16 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.adapter.GameBalanceAdapter
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
 class MainRightFragment : BaseFragment<MoneyTransferViewModel, FragmentMainRightBinding>() {
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
-    private val adapter =GameBalanceAdapter()
+    private val adapter = GameBalanceAdapter()
 
     override fun onInitView(view: View) {
         initView()
@@ -27,10 +31,20 @@ class MainRightFragment : BaseFragment<MoneyTransferViewModel, FragmentMainRight
 
     override fun onBindViewStatus(view: View) {
        initObserver()
-        reloadData()
+       reloadData()
     }
 
     private fun initView() = binding.run {
+        tvDeposit.setOnClickListener {
+            ToGcashDialog.showByClick { getMainTabActivity().viewModel.checkRechargeKYCVerify() }
+        }
+        val dp8 = 8.dp.toFloat()
+        tvDeposit.background = ShapeDrawable()
+            .setRadius(dp8)
+            .setSolidColor(Color.TRANSPARENT)
+            .setStrokeColor(Color.WHITE)
+            .setStrokeSize(1.dp)
+        tvTransfer.background = ShapeDrawable().setRadius(dp8) .setSolidColor(Color.WHITE).setStrokeSize(1.dp)
         ivClose.setOnClickListener {
             EventBusUtil.post(MenuEvent(false,Gravity.RIGHT))
         }

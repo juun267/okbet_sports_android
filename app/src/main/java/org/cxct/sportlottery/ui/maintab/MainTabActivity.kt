@@ -358,6 +358,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     private fun initDrawerLayout() {
 //        binding.drawerLayout.setScrimColor(Color.TRANSPARENT)
 
+        binding.rightMenu.setOnClickListener {  }
         binding.drawerLayout.addDrawerListener(object : SimpleDrawerListener() {
             override fun onDrawerOpened(drawerView: View) {
                 if (drawerView.tag == "LEFT") {
