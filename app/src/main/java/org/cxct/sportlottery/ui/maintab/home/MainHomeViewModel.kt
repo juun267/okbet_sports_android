@@ -682,4 +682,9 @@ open class MainHomeViewModel(
             it.getData()?.let { _newsCategory.postValue(it) }
         }
     }
+    fun getHallOkSport() {
+        if (sConfigData?.sbSportSwitch==1) {
+            callApi({ OKGamesRepository.getHallOKSport() }) {}
+        }
+    }
 }

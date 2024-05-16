@@ -113,7 +113,7 @@ private class SportMatchProvider(val adapter: SportTypeAdapter, override val ite
         helper.setText(nameId, bean.name)
         helper.setText(numberId, bean.num.toString())
         helper.setImageResource(imgId, GameType.getSportHomeImg("${bean.code}"))
-        (helper.itemView.layoutParams as MarginLayoutParams).bottomMargin = if (item == adapter.data.last()) 20.dp else dp8
+        (helper.itemView.layoutParams as MarginLayoutParams).bottomMargin = if (helper.absoluteAdapterPosition==adapter.itemCount-1) 20.dp else dp8
     }
 
 

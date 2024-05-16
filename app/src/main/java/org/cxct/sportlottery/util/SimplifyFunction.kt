@@ -50,6 +50,8 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ViewPaymentMaintenanceBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -999,4 +1001,14 @@ fun AppCompatActivity.showFavoriteNotify(result: MyFavoriteNotify) {
             typeface = if(isChecked) checked else normal
         }
     }
+}
+fun setupOKPlay(showFunc: (OKGameBean?)->Unit){
+    if (StaticData.sbSportOpened()){
+        val okPlayBean = OKGamesRepository.okPlayEvent.value
+        if (okPlayBean!=null){
+            showFunc.invoke(okPlayBean)
+            return
+        }
+    }
+    showFunc.invoke(null)
 }

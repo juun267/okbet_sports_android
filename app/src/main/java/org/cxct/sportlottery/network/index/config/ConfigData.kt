@@ -158,6 +158,7 @@ data class ConfigData(
     val bkFinalScoreNewGameplaySwitch:Int=0,//篮球末尾比分新玩法 0-关，1-开
     val registerTermsDefaultCheckedSwitch: Int=1,//注册条款是否默认为勾选 1 是 0 否
     val kycsupplierSelectionValue:Int=1,//KYC调用前需要判断此处值 1-华为｜2-腾讯
+    val sbSportSwitch:Int=0,//沙巴体育开关 0-关，1-开
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

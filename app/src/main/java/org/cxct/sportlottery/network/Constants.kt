@@ -237,6 +237,8 @@ object Constants {
     //篮球末位比分规则页面
     fun getEndCardRuleUrl() = "${getH5BaseUrl()}mobile/newBkEnd/rules"
 
+    fun getOKSportUrl(gameName: String) = "${getH5BaseUrl()}mobile/oksport/play/$gameName"
+
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
     /**
@@ -586,4 +588,8 @@ object Constants {
     const val CHAT_CHECK_TOKEN =
         "/api/chat/front/user/checktoken" //----------------------------- 验证token 是否过期。如果不过期返回token信息，过期返回success: false
     const val CHAT_GET_STICKER="/api/chat/front/emoticons/queryList"
+
+    const val GET_HALL_OKSPORT="/api/front/gameEntryGames/getHallOkSport"
+
+    const val FIRM_TYPE_SBTY="SBTY"
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="wrap_content"
+    android:layout_height="100dp"
+    android:foreground="@drawable/fg_ripple"
+    android:layout_marginBottom="@dimen/margin_20">
+
+   <ImageView
+       android:layout_width="wrap_content"
+       android:layout_height="match_parent"
+       app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       android:adjustViewBounds="true"
+       android:src="@drawable/bg_oksports_new"/>
+    <LinearLayout
+        android:layout_width="136dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/margin_20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_025BE8"
+            android:text="OKPlay"/>
+        <TextView
+            android:id="@+id/tvDesp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_7"
+            android:textSize="@dimen/textSize12sp"
+            android:textColor="@color/color_6D7693"
+            android:text="@string/P338"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

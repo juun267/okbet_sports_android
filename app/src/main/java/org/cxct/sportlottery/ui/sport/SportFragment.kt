@@ -13,6 +13,7 @@ import org.cxct.sportlottery.common.extentions.toBinding
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
 import org.cxct.sportlottery.databinding.HomeCateTabBinding
 import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
@@ -112,6 +113,17 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
                 startActivity(BetRecordActivity::class.java)
             }
         }
+        onPlaySelectListener = {
+            when(it){
+                0-> {}
+                1-> {
+                    OKGamesRepository.okPlayEvent.value?.let { it1 ->
+                        getMainTabActivity().enterThirdGame(it1)
+                    }
+                }
+            }
+        }
+        setupOKPlay()
     }
 
     private fun initTabLayout() = binding.tabLayout.run {
@@ -375,6 +387,9 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
             if (favorMatchs == it) { return@observe }
             favorMatchs = it
             favoriteDelayRunable.doOnDelay(1300)
+        }
+        OKGamesRepository.okPlayEvent.observe(viewLifecycleOwner){
+            binding.homeToolbar.setupOKPlay()
         }
     }
 
