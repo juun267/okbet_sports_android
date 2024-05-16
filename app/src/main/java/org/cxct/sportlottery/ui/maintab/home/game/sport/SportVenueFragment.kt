@@ -145,10 +145,12 @@ open class SportVenueFragment<VM : BaseViewModel, VB> :
         if (isAdded) {
             setupOKPlay { okPlayBean ->
                 if (okPlayBean != null) {
-                    okPlayBinding.root.setOnClickListener {
-                        getMainTabActivity()?.enterThirdGame(okPlayBean)
+                    if (!sportTypeAdapter.hasHeaderLayout()) {
+                        okPlayBinding.root.setOnClickListener {
+                            getMainTabActivity()?.enterThirdGame(okPlayBean)
+                        }
+                        sportTypeAdapter.addHeaderView(okPlayBinding.root)
                     }
-                    sportTypeAdapter.addHeaderView(okPlayBinding.root)
                 } else {
                     sportTypeAdapter.removeHeaderView(okPlayBinding.root)
                 }
