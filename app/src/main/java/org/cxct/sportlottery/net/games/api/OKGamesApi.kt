@@ -7,9 +7,7 @@ import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface OKGamesApi {
 
@@ -42,4 +40,7 @@ interface OKGamesApi {
 
     @GET(Constants.GET_HALL_OKSPORT)
     suspend fun getHallOKSport(): ApiResult<OKGameBean>
+
+    @GET(Constants.GET_GAME_COLLECT_NUM)
+    suspend fun getGameCollectNum(@Query("platformId") platformId: Int): ApiResult<MutableMap<String,String>>
 }

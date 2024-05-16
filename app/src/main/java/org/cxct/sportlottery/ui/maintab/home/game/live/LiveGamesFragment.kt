@@ -2,12 +2,14 @@ package org.cxct.sportlottery.ui.maintab.home.game.live
 
 import android.widget.EditText
 import androidx.core.view.postDelayed
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragment
+import org.cxct.sportlottery.util.loginedRun
 
 class LiveGamesFragment: ElectGamesFragment<OKGamesViewModel, FragmentGamevenueBinding>() {
 
@@ -38,6 +40,9 @@ class LiveGamesFragment: ElectGamesFragment<OKGamesViewModel, FragmentGamevenueB
             }
         }
 
+    }
+    override fun collectGame(gameData: OKGameBean): Boolean {
+        return loginedRun(binding.root.context) { viewModel.collectGame(gameData, GameEntryType.OKLIVE) }
     }
 
 }

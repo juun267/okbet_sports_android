@@ -51,7 +51,7 @@
 
 
     <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
-        android:id="@+id/okLiveGameView"
+        android:id="@+id/okGameView"
         android:layout_width="match_parent"
         android:visibility="gone"
         android:layout_height="wrap_content"/>

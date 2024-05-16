@@ -566,6 +566,9 @@ object Constants {
     const val GET_CONFIG_BY_NAME = "/api/agent/game/config/getConfigByName/{name}"
 
     const val GET_GAMEFIRMS = "/api/front/gameEntryGames/getGameFirms"
+    //三方游戏收藏数量
+    const val GET_GAME_COLLECT_NUM = "/api/front/gameEntryGames/getGameCollectNum"
+
     //chat
     const val ROOM_QUERY_LIST =
         "/api/chat/front/room/queryList" //------------------------------- 查询所有开放的房间

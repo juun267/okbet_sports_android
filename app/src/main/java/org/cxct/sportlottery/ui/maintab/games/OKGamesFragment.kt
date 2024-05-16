@@ -189,7 +189,7 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBindi
     private fun showFavorites(tab: OKGameTab) {
         retagRequest()
         changePartGamesLabel(tab)
-        showPartGameList(viewModel.collectList.value?.second, 0)
+        showPartGameList(GameCollectManager.collectGameList.value, 0)
     }
 
     fun enterGame(okGameBean: OKGameBean) {

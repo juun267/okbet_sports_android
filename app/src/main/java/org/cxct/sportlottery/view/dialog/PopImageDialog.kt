@@ -172,7 +172,7 @@ class PopImageDialog : BaseDialog<BaseViewModel,DialogPopImageBinding>() {
         val images = imageList.map {
             XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }.toMutableList()
-        LogUtil.toJson(images)
+//        LogUtil.toJson(images)
         if (imageType == ImageType.DIALOG_HOME && images.isNotEmpty()) {
             xbanner.visible()
         }

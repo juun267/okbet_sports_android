@@ -8,12 +8,17 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ViewHomeOkgameBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.GameCollectManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.onClick
 import splitties.systemservices.layoutInflater
@@ -21,7 +26,12 @@ import splitties.systemservices.layoutInflater
 class HomeOkGamesView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
     private val binding  = ViewHomeOkgameBinding.inflate(layoutInflater,this)
-    private val gameAdapter = HomeOkGamesAdapter()
+    private lateinit var fragment: BaseSocketFragment<*, *>
+    private val gameAdapter = HomeOkGamesAdapter(onFavoriate = { view, gameBean ->
+        if ((fragment.activity as MainTabActivity?)?.collectGame(gameBean)==true) {
+            view.animDuang(1.3f)
+        }
+    })
 
     init {
         gone()
@@ -40,6 +50,7 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : LinearLayout(cont
         if (fragment == null) {
             return
         }
+        this.fragment = fragment
         gameAdapter.bindLifecycleOwner(fragment)
         //请求games数据
         fragment.viewModel.getHomeOKGamesList()
@@ -49,7 +60,18 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : LinearLayout(cont
             gameAdapter.setList(it)
             this@HomeOkGamesView.isVisible = gameAdapter.dataCount() > 0
         }
-
+        GameCollectManager.collectStatus.observe(fragment.viewLifecycleOwner) {
+            gameAdapter.data.forEachIndexed { index, item ->
+                if (item.id == it.first) {
+                    item.markCollect = it.second
+                    gameAdapter.notifyItemChanged(index, it)
+                    return@observe
+                }
+            }
+        }
+        GameCollectManager.gameCollectNum.observe(fragment.viewLifecycleOwner) {
+            gameAdapter.notifyDataSetChanged()
+        }
         binding.tvMore.onClick {
             if(StaticData.okGameOpened()){
                (fragment.activity as MainTabActivity).jumpToOKGames()

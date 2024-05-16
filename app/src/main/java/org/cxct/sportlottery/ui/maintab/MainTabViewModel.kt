@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.maintab
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.common.extentions.callApiWithNoCancel
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -28,5 +30,9 @@ class MainTabViewModel(
                 PlayCateMenuFilterUtils.filterList = it.t?.sportMenuList
             }
         }
+    }
+    //获取三方游戏收藏数量
+    fun getGameCollectNum() {
+        callApiWithNoCancel({OKGamesRepository.getGameCollectNum()}){}
     }
 }

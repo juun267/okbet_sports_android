@@ -10,6 +10,8 @@ import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.util.SingleLiveEvent
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.GameCollectManager
 
 object OKGamesRepository {
 
@@ -115,4 +117,12 @@ object OKGamesRepository {
         return okGamesApi.getHallOKSport().apply { okPlayEvent.postValue(getData())}
     }
 
+
+    suspend fun getGameCollectNum(): ApiResult<MutableMap<String,String>> {
+        return okGamesApi.getGameCollectNum(sConfigData?.platformId?.toInt() ?: 1).apply {
+            getData()?.let {
+                GameCollectManager.gameCollectNum.postValue(it)
+            }
+        }
+    }
 }
