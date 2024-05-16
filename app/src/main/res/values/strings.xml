@@ -54,7 +54,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
     <string name="error_confirm_password">Password and confirm password don\'t match</string>
-    <string name="withdrawal_pwd">Withdrawal password</string>
+    <string name="withdrawal_pwd">Withdraw Password</string>
     <string name="hint_withdrawal_pwd">4 digit password</string>
     <string name="phone_number">Phone number</string>
     <string name="hint_phone_number">Please enter the correct phone number</string>
