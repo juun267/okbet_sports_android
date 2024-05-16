@@ -103,6 +103,7 @@ class ESportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Bindin
         }
         footView.setUp(this, mianViewModel)
         binding.homeToolbar.attach(this@ESportFragment, moneyViewEnable = false, onlyShowSeach = true)
+        binding.homeToolbar.setMenuClick{ getMainTabActivity().showMainLeftMenu(this@ESportFragment.javaClass) }
         getMenuData(true)
         favoriteDelayRunable.doOnDelay(0)
 

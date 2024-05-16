@@ -10,9 +10,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="114dp"
-        android:orientation="horizontal"
         android:layout_marginHorizontal="28dp"
-        android:clickable="true">
+        android:clickable="true"
+        android:orientation="horizontal">
 
 
         <ImageView
@@ -24,76 +24,97 @@
             android:src="@drawable/ic_circle_close" />
 
     </FrameLayout>
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_vertical"
+        android:layout_height="108dp"
         android:layout_marginHorizontal="@dimen/margin_24"
-        android:paddingHorizontal="@dimen/margin_15"
         android:background="@drawable/bg_accountbalance">
+
         <TextView
+            android:id="@+id/tvBalanceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="21dp"
             android:text="@string/platform_account_money"
             android:textColor="@color/color_CADEFF"
-            android:textSize="14sp" />
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:viewBindingIgnore="true" />
+
+        <TextView
+            android:id="@+id/tvBanlance"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/margin_4">
-            <TextView
-                android:id="@+id/tvBanlance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="12,689,850.00"
-                android:textStyle="bold"
-                android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/textSize18sp" />
-            <TextView
-                android:id="@+id/tvTransfer"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:paddingHorizontal="@dimen/margin_12"
-                android:background="@drawable/bg_white_radius_15"
-                android:text="@string/P205"
-                android:textColor="@color/color_000000"
-                android:textSize="@dimen/textSize14sp" />
-        </LinearLayout>
-    </LinearLayout>
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="18dp"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/tvBalanceText"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12,689,850.00" />
+
+        <TextView
+            android:id="@+id/tvDeposit"
+            android:layout_width="134dp"
+            android:layout_height="36dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginStart="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center"
+            android:text="@string/J285"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvTransfer"
+            android:layout_width="134dp"
+            android:layout_height="36dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginEnd="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center"
+            android:text="@string/P205"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/rvGame"
-       android:layout_width="match_parent"
-       android:layout_height="0dp"
-       android:layout_weight="1"
-       android:layout_marginTop="@dimen/margin_10"
-       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-       android:orientation="vertical"
-       tools:listitem="@layout/item_balance_game"
-       tools:itemCount="5"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvGame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_balance_game" />
+
     <Button
         android:id="@+id/btnTransfer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="@drawable/fg_ripple"
-        android:layout_marginTop="@dimen/margin_24"
         android:layout_marginHorizontal="@dimen/margin_24"
+        android:layout_marginTop="@dimen/margin_24"
         android:layout_marginBottom="@dimen/margin_12"
         android:background="@drawable/selector_button_default"
-        android:textSize="@dimen/textSize14sp"
+        android:foreground="@drawable/fg_ripple"
+        android:text="@string/P212"
         android:textColor="@color/color_FFFFFF"
-        android:text="@string/P212"/>
+        android:textSize="@dimen/textSize14sp" />
+
     <TextView
         android:id="@+id/tvNotice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="75dp"
         android:layout_marginHorizontal="@dimen/margin_24"
+        android:layout_marginBottom="75dp"
         android:text="@string/P206"
         android:textColor="@color/color_ff0000"
         android:textSize="@dimen/textSize12sp" />
