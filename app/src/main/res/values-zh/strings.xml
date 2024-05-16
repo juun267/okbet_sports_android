@@ -217,7 +217,7 @@
     <string name="take_a_picture">拍一张照片</string>
     <string name="save_avatar_success">头像上传成功</string>
     <string name="change_nickname">更换昵称</string>
-    <string name="withdrawal_password">提款密码</string>
+    <string name="J570">提款密码</string>
     <string name="current_login_password">当前登录密码</string>
     <string name="current_withdrawal_password">当前提款密码</string>
     <string name="hint_current_login_password">请输入登录密码</string>
@@ -393,7 +393,7 @@
     <string name="withdraw_setting">提款设置</string>
     <string name="select_bank">选择银行</string>
     <string name="withdraw_amount">提款金额</string>
-    <string name="withdraw_password">提款密码</string>
+    <string name="J475">提款密码</string>
     <string name="total_withdrawal">提款总计</string>
     <string name="withdraw_all">全部提取</string>
     <string name="withdraw_handling_fee_hint">手续费率：%1$s%% 须支付手续费：%2$s %3$s</string>

@@ -173,7 +173,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="@dimen/textSize16sp"
                 android:textColor="@color/color_414655"
-                android:text="@string/withdrawal_pwd"/>
+                android:text="@string/J475"/>
             <TextView
                 android:id="@+id/tvStepState3"
                 android:layout_width="wrap_content"

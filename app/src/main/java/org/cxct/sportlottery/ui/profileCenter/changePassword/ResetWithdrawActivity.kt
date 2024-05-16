@@ -34,7 +34,7 @@ class ResetWithdrawActivity: BaseActivity<LoginViewModel, ActivityVerifyPhonenoB
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         bindFinish(toolBar.btnToolbarBack)
         toolBar.tvToolbarTitle.setTitleLetterSpacing()
-        toolBar.tvToolbarTitle.text = getString(R.string.withdraw_password)
+        toolBar.tvToolbarTitle.text = getString(R.string.J475)
     }
 
     private fun setVerifyInfo() = binding.run {

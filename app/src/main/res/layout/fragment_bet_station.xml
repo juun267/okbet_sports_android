@@ -176,7 +176,7 @@
                     app:cvInputType="textPassword"
                     app:cvMarginBottom="8dp"
                     app:cvTextColor="@color/color_414655"
-                    app:cvTitle="@string/withdraw_password" />
+                    app:cvTitle="@string/J475" />
 
             </LinearLayout>
 
