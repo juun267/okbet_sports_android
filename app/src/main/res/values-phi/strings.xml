@@ -226,7 +226,7 @@
     <string name="take_a_picture">Kumuha ng litrato</string>
     <string name="save_avatar_success">Matagumpay na na-upload ang avatar</string>
     <string name="change_nickname">Baguhin ang palayaw</string>
-    <string name="withdrawal_password">Withdrawal password</string>
+    <string name="J570">withdraw password</string>
     <string name="current_login_password">Kasalukuyang login password</string>
     <string name="current_withdrawal_password">Kasalukuyang withdrawal password</string>
     <string name="hint_current_login_password">Paki lagay ang password</string>
@@ -400,7 +400,7 @@
     <string name="withdraw_setting">Withdraw Setting</string>
     <string name="select_bank">Pumili ng bangko</string>
     <string name="withdraw_amount">Withdraw</string>
-    <string name="withdraw_password">Withdrawal password</string>
+    <string name="J475">Withdrawal password</string>
     <string name="total_withdrawal">Kabuuang Pag-withdraw</string>
     <string name="withdraw_all">Kunin lahat</string>
     <string name="withdraw_handling_fee_hint">Rate ng bayad: %1$s%% Mga bayarin na babayaran: (%2$s)：%3$s</string>

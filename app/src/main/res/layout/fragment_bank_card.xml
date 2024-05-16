@@ -402,7 +402,7 @@
                     app:endIcon="@drawable/ic_eye_close"
                     app:isResponsiveIconColor="false"
                     app:hintText="@string/hint_please_enter_withdraw_password"
-                    app:labelText="@string/withdraw_password"
+                    app:labelText="@string/J475"
                     app:labelTextStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

@@ -229,7 +229,7 @@
     <string name="take_a_picture">Take a photo</string>
     <string name="save_avatar_success">Upload profile successfully</string>
     <string name="change_nickname">Change nickname</string>
-    <string name="withdrawal_password">Withdrawal Password</string>
+    <string name="J570">Withdraw Password</string>
     <string name="current_login_password">Current login password</string>
     <string name="current_withdrawal_password">Current Withdrawal Password</string>
     <string name="hint_current_login_password">Password</string>
@@ -402,7 +402,7 @@
     <string name="withdraw_setting">Withdrawal Setting</string>
     <string name="select_bank">Bank</string>
     <string name="withdraw_amount">Withdraw</string>
-    <string name="withdraw_password">Withdrawal Password</string>
+    <string name="J475">Withdraw Password</string>
     <string name="total_withdrawal">Final Withdrawal</string>
     <string name="withdraw_all">EXTRACT ALL</string>
     <string name="withdraw_handling_fee_hint">Service Charge: %1$S %% Service Fee:%2$s%3$s</string>

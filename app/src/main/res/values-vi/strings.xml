@@ -221,7 +221,7 @@
     <string name="take_a_picture">Chụp ảnh</string>
     <string name="save_avatar_success">Ảnh đại diện tải lên thành công</string>
     <string name="change_nickname">Thay đổi tên</string>
-    <string name="withdrawal_password">Mật khẩu rút tiền</string>
+    <string name="J570">Mật khẩu rút tiền</string>
     <string name="current_withdrawal_password">Hiện tạiMật khẩu rút tiền</string>
     <string name="hint_current_login_password">Đăng nhập mật khẩu</string>
     <string name="hint_current_withdrawal_password">Mật khẩu rút tiền </string>
@@ -397,7 +397,7 @@
     <string name="withdraw_setting">Cài đặt rút tiền</string>
     <string name="select_bank">Chọn ngân hàng</string>
     <string name="withdraw_amount">Số tiền rút</string>
-    <string name="withdraw_password">Mật khẩu rút tiền</string>
+    <string name="J475">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
     <string name="withdraw_handling_fee_hint">Tỷ lệ phí xử lý: %1$s%% Phí xử lý phải trả: %2$s%3$s nhân dân tệ</string>
     <string name="withdraw_crypto_amount_hint">Số tiền rút(%1$s)：%2$s</string>
@@ -1656,4 +1656,5 @@
     <string name="P242">Xác minh KYC</string>
     <string name="D038">Hoàn thành</string>
     <string name="N645">Cài đặt mật khẩu đăng nhập trước</string>
+    <string name="J570">Mật khẩu rút tiền</string>
 </resources>

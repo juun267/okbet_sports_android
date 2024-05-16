@@ -39,7 +39,7 @@
                 android:layout_marginHorizontal="17dp"
                 app:endIcon="@drawable/ic_eye_close"
                 app:isResponsiveIconColor="false"
-                app:labelText="@string/withdraw_password"
+                app:labelText="@string/J475"
                 app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

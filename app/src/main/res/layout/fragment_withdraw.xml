@@ -318,7 +318,7 @@
                         app:cvHint="@string/hint_four_number_password"
                         app:cvInputType="numberPassword"
                         app:cvTextColor="@color/color_414655"
-                        app:cvTitle="@string/withdraw_password" />
+                        app:cvTitle="@string/J475" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
