@@ -31,18 +31,7 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
         viewType: Int
     ): BindingVH<ItemVipCardBinding> {
         val holder = super.onCreateDefViewHolder(parent, viewType)
-        holder.vb.vipProgressView.setTintColor(R.color.color_025BE8, R.color.color_e0ecfc)
-        holder.vb.vipProgressView.setThumbColor(R.color.color_025BE8)
-        val progressText = holder.vb.vipProgressView.getProgressTextView()
-        progressText.gravity = Gravity.CENTER
-        progressText.textSize = 10f
-        progressText.setTextColor(Color.WHITE)
-        val lp = progressText.layoutParams
-        lp.width = 38.dp
-        lp.height = 30.dp
-        holder.vb.tvPercent.background = ShapeDrawable()
-            .setRadius(30.dp.toFloat())
-            .setSolidColor(parent.context.getColor(R.color.color_f3f3f3))
+        holder.vb.vipProgressView.setBlueStyle()
         return holder
     }
 

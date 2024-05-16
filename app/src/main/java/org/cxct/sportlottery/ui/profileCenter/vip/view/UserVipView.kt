@@ -33,14 +33,7 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
     lateinit var viewModel: VipViewModel
 
     init {
-        binding.vipProgressView.apply {
-            setTintColor(R.color.color_FFB828, R.color.color_eed39f)
-            val progressTextView = getProgressTextView()
-            progressTextView.layoutParams.height = 30.dp
-            progressTextView.layoutParams.height = 38.dp
-            progressTextView.setTextColor(Color.WHITE)
-            progressTextView.gravity = Gravity.CENTER
-        }
+        binding.vipProgressView.setYellowStyle()
         setProgress(0)
     }
 

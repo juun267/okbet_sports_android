@@ -2,12 +2,15 @@ package org.cxct.sportlottery.ui.profileCenter.vip.view
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.Gravity
 import android.widget.LinearLayout
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.view.marginLeft
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.getColor
 import org.cxct.sportlottery.databinding.ViewVipProgressBinding
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -77,7 +80,22 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
             .setHeight(wh)
             .setRadius(wh.toFloat())
     }
-
-    fun getProgressTextView() = binding.tvProgress
+    fun setYellowStyle()=binding.run{
+        setTintColor(R.color.color_FFB828, R.color.color_eed39f)
+        tvProgress.layoutParams.height = 30.dp
+        tvProgress.layoutParams.height = 38.dp
+        tvProgress.setTextColor(Color.WHITE)
+        tvProgress.gravity = Gravity.CENTER
+    }
+    fun setBlueStyle()=binding.run{
+        setTintColor(R.color.color_025BE8, R.color.color_e0ecfc)
+        setThumbColor(R.color.color_025BE8)
+        tvProgress.gravity = Gravity.CENTER
+        tvProgress.textSize = 10f
+        tvProgress.setTextColor(Color.WHITE)
+        val lp = tvProgress.layoutParams
+        lp.width = 38.dp
+        lp.height = 30.dp
+    }
 
 }

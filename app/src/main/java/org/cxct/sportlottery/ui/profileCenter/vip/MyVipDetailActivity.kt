@@ -8,19 +8,22 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMyVipDetailBinding
 import org.cxct.sportlottery.net.user.data.UserVip
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LogUtil
 
 class MyVipDetailActivity: BaseActivity<VipViewModel,ActivityMyVipDetailBinding>() {
 
+    private val leftProgress by lazy { getDrawable(R.drawable.bg_vip_progress_left)!! }
     override fun onInitView() {
         setStatusbar()
         binding.customToolBar.setOnBackPressListener {
             finish()
         }
-      viewModel.userVipEvent.observe(this){
-          hideLoading()
-          setStatus(it)
-      }
+        binding.vpProgress.setBlueStyle()
+       viewModel.userVipEvent.observe(this){
+           hideLoading()
+           setStatus(it)
+        }
       loading()
       viewModel.getUserVip()
     }
@@ -41,8 +44,7 @@ class MyVipDetailActivity: BaseActivity<VipViewModel,ActivityMyVipDetailBinding>
                 tvContent.text = getString(R.string.P396)
                 linStatus.setBackgroundResource(R.drawable.bg_vipdetails_orange)
                 tvTag.setBackgroundResource(R.drawable.bg_keepgrade_orange)
-                vpProgress.setTintColor(R.color.color_025BE8,R.color.color_19025BE8)
-                vpProgress.setProgress((userVip.exp*100/userVip.upgradeExp).toInt())
+                vpProgress.setProgress2((userVip.exp*100/userVip.upgradeExp).toInt(), 5.dp, leftProgress)
                 tvAmount.text = (userVip.upgradeExp-userVip.exp).toString()
             }
             userVip.protectionStatus==1 || userVip.exp==userVip.protectionLevelGrowthValue-> {
