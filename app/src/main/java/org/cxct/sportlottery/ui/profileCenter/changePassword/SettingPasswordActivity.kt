@@ -89,6 +89,13 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel, ActivityS
             }
 
             if(position == 1) {
+                //设置提款密码需要先判断，是否设置了登录密码
+                if (mUserInfo?.passwordSet != false){
+                    showErrorPromptDialog(getString(R.string.N645)){
+                        binding.customTabLayout.selectTab(0)
+                    }
+                    return@setCustomTabSelectedListener
+                }
                 mPwdPage = PwdPage.BANK_PWD
                 updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
                 cleanField()
