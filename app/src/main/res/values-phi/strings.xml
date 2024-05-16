@@ -1621,5 +1621,9 @@
     <string name="P359">I-click ang napiling iskor para tanggalin</string>
     <string name="P360">%s tao ang tumitingin sa card</string>
     <string name="P361">Nabenta ang %s na kopya</string>
+    <string name="P447">Para sa seguridad ng iyong account at mga pondo, kinakailangan mong kumpletuhin ang mga sumusunod</string>
+    <string name="P448">I-set up</string>
+    <string name="P242">KYC Verify</string>
+    <string name="D038">Nakumpleto</string>
 </resources>
 

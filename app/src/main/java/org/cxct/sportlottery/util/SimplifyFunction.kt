@@ -43,11 +43,14 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import com.tbruyelle.rxpermissions2.RxPermissions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ViewPaymentMaintenanceBinding
 import org.cxct.sportlottery.net.games.OKGamesRepository
@@ -65,6 +68,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
@@ -72,6 +76,8 @@ import org.cxct.sportlottery.ui.login.CaptchaDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.util.drawable.DrawableCreator
@@ -1027,4 +1033,43 @@ fun View.setMargins(left: Int, top: Int, right: Int, bottom: Int) {
     lParams.topMargin = top
     lParams.rightMargin = right
     lParams.bottomMargin = bottom
+}
+
+//是否正在请求充值开关
+private var checkRecharge = false
+fun BaseActivity<*, *>.jumpToDeposit(){
+        val isNeedVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value && isKYCVerifyRechargeOpen()
+        if (isNeedVerify){
+            VerifyIdentityDialog().show(supportFragmentManager, null)
+        }else{
+            if (checkRecharge)
+                return
+            loading()
+            viewModel.launch {
+                checkRecharge = true
+                val result = viewModel.doNetwork(applicationContext) {
+                    MoneyRepository.checkRechargeSystem()
+                }
+
+                if (result == null || !result.success) {
+                    hideLoading()
+                    return@launch
+                }
+                val rechTypesList = result.rechCfg?.rechTypes //玩家層級擁有的充值方式
+                val rechCfgsList = result.rechCfg?.rechCfgs  //後台有開的充值方式
+                val operation = (rechTypesList?.size ?: 0 > 0) && (rechCfgsList?.size ?: 0 > 0)
+                withContext(Dispatchers.Main){
+                    hideLoading()
+                    if (operation) {
+                        startActivity(MoneyRechargeActivity::class.java)
+                    } else {
+                        showPromptDialog(
+                            getString(R.string.prompt),
+                            getString(R.string.message_recharge_maintain)
+                        ) {}
+                    }
+                }
+                checkRecharge = false
+            }
+        }
 }

@@ -106,7 +106,7 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
 
     fun initToolBar() = binding.homeToolbar.run {
         background = null
-        attach(this@SportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
+        attach(this@SportFragment, moneyViewEnable = false, onlyShowSeach = true)
         searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         betlistIcon.setOnClickListener {
             loginedRun(it.context) {
@@ -364,14 +364,6 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
     }
 
     private fun initObserve() = viewModel.run {
-
-        //使用者沒有電話號碼
-        showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (!b) phoneNumCheckDialog(requireContext(), childFragmentManager)
-            }
-        }
-
         sportMenuResult.observe(viewLifecycleOwner) {
             //这里的回调数据有可能来自其他页面的请求
             if (isAdded) {

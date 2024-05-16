@@ -264,31 +264,6 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             }
         }
 
-        viewModel.isRechargeShowVerifyDialog.observe(this) {
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                VerifyIdentityDialog().show(supportFragmentManager, null)
-            } else {
-                loading()
-                viewModel.checkRechargeSystem()
-            }
-        }
-
-        viewModel.rechargeSystemOperation.observe(this) {
-            hideLoading()
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                startActivity(Intent(this, MoneyRechargeActivity::class.java))
-                return@observe
-            }
-
-            showPromptDialog(
-                getString(R.string.prompt),
-                getString(R.string.message_recharge_maintain)
-            ) {}
-
-        }
-
         gamesViewModel.enterThirdGameResult.observe(this) {
             enterThirdGame(it.second, it.first)
         }
@@ -676,7 +651,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
     fun checkRechargeKYCVerify() {
         ToGcashDialog.showByClick{
-            viewModel.checkRechargeKYCVerify()
+            jumpToDeposit()
         }
     }
 

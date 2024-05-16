@@ -1651,4 +1651,8 @@
     <string name="P360">%s người đang xem</string>
     <string name="P361">Đã bán %s lượt</string>
     <string name="str_ok_i_got_it">Tôi biết rồi</string>
+    <string name="P447">Để đảm bảo an toàn cho tài khoản và tiền của bạn, bạn cần hoàn thành các bước sau</string>
+    <string name="P448">Thiết lập</string>
+    <string name="P242">Xác minh KYC</string>
+    <string name="D038">Hoàn thành</string>
 </resources>

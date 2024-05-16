@@ -14,6 +14,7 @@ import org.cxct.sportlottery.common.extentions.showPromptDialog
 import org.cxct.sportlottery.databinding.DialogEndcardBetBinding
 import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.betList.holder.MAX_BET_VALUE
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
@@ -160,8 +161,7 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             dialog.showDialog{
                 //跳转充值
                 ToGcashDialog.showByClick{
-                    gameFragment.loading()
-                    viewModel.checkRechargeKYCVerify()
+                    (requireActivity() as BaseActivity<*,*>).jumpToDeposit()
                 }
             }
         } else if (totalBetAmount > maxBetMoney.toDouble()) {

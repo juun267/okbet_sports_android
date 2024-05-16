@@ -1778,4 +1778,8 @@
     <string name="P359">Click the selected score to delete</string>
     <string name="P360">%s people are viewing the card</string>
     <string name="P361">%s Slots Sold</string>
+    <string name="P447">For the security of your account and funds, you are required to complete the following</string>
+    <string name="P448">Set up</string>
+    <string name="P242">KYC Verify</string>
+    <string name="D038">Done</string>
 </resources>
