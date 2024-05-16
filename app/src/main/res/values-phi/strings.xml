@@ -52,7 +52,7 @@
     <string name="confirm_password">Kumpirmahin ang password</string>
     <string name="hint_confirm_password">Kumpirmahin ang password</string>
     <string name="error_confirm_password">Ang dalawang password na nilagay ay hindi tugma</string>
-    <string name="withdrawal_pwd">Withdrawal password</string>
+    <string name="withdrawal_pwd">Withdraw Password</string>
     <string name="hint_withdrawal_pwd">Password ay 4 na numero</string>
     <string name="phone_number">Mobile number</string>
     <string name="hint_phone_number">Pakilagay ang tamang numero ng telepono</string>
