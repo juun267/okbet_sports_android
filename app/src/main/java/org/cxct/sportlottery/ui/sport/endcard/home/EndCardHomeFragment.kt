@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.luck.picture.lib.utils.ToastUtils
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.clickDelay
-import org.cxct.sportlottery.common.extentions.collectWith
-import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.databinding.FragmentEndcardHomeBinding
@@ -20,10 +19,12 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
+import org.cxct.sportlottery.ui.sport.endcard.dialog.EndCardGuideDialog
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.DateAdapter
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.EndCardLeague
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.LeagueAdapter
 import org.cxct.sportlottery.ui.sport.endcard.home.adapter.MatchAdapter
+import org.cxct.sportlottery.ui.sport.endcard.home.adapter.WinnersMarqueeAdapter
 
 class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>() {
 
@@ -31,6 +32,7 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
     private lateinit var leagueAdapter: LeagueAdapter
     private lateinit var dateAdapter: DateAdapter
     private lateinit var matchAdapter: MatchAdapter
+    private lateinit var marqueeAdapter: WinnersMarqueeAdapter
 
     override fun createRootView(
         inflater: LayoutInflater,
@@ -53,19 +55,31 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
 
     override fun onInitView(view: View) {
         initRecyclerView()
+        initMarquee()
         binding.tvRule.clickDelay {
             (activity as EndCardActivity).showEndCardRule()
+        }
+        binding.tvTutorial.clickDelay{
+            EndCardGuideDialog().show(childFragmentManager)
         }
     }
 
     override fun onBindViewStatus(view: View) {
         initObserver()
+        binding.rcvMarquee.bindLifecycler(this)
         loadingHolder.withRetry{
             loadingHolder.showLoading()
             viewModel.loadEndCardMatchList()
+            viewModel.getWinningList()
         }
         loadingHolder.go()
 
+    }
+
+    private fun initMarquee() {
+        binding.rcvMarquee.setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
+        marqueeAdapter = WinnersMarqueeAdapter()
+        binding.rcvMarquee.adapter = marqueeAdapter
     }
 
     private fun initObserver() {
@@ -89,6 +103,15 @@ class EndCardHomeFragment: BaseFragment<EndCardVM, FragmentEndcardHomeBinding>()
 
         viewModel.betNum.collectWith(lifecycleScope) {
             matchAdapter.updateBetsNum(it.first, it.second)
+        }
+        viewModel.winningList.observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()){
+                binding.rcvMarquee.gone()
+            }else{
+                binding.rcvMarquee.visible()
+                marqueeAdapter.setList(it)
+                binding.rcvMarquee.startAuto(false)
+            }
         }
     }
 

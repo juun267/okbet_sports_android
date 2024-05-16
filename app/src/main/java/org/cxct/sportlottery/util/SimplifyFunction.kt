@@ -1014,3 +1014,17 @@ fun setupOKPlay(showFunc: (OKGameBean?)->Unit){
     }
     showFunc.invoke(null)
 }
+fun RadioGroup.setTextBold(){
+    children.forEach {
+        (it as? RadioButton)?.apply {
+            paint.isFakeBoldText = isChecked
+        }
+    }
+}
+fun View.setMargins(left: Int, top: Int, right: Int, bottom: Int) {
+    val lParams = layoutParams as ViewGroup.MarginLayoutParams
+    lParams.leftMargin = left
+    lParams.topMargin = top
+    lParams.rightMargin = right
+    lParams.bottomMargin = bottom
+}

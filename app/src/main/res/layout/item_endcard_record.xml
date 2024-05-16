@@ -4,10 +4,10 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_marginBottom="@dimen/margin_4"
+    android:layout_marginBottom="@dimen/margin_8"
     android:foreground="@drawable/fg_ripple"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/color_1A202E">
+    android:background="@color/color_213743">
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="40dp"
@@ -38,14 +38,18 @@
            android:lines="1"
            android:ellipsize="end"
            android:fontFamily="@font/inter_regular"
-           android:textColor="@color/color_6D7693"
+           android:textColor="@color/color_638095"
            android:textSize="@dimen/textSize12sp"
            android:text="09/02/2024 08:42"/>
    </LinearLayout>
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_0E131F"/>
+        android:layout_height="@dimen/margin_0.5"
+        android:background="@color/color_071824"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/color_1A2C38"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -88,7 +92,7 @@
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:textSize="@dimen/textSize14sp"
-                        android:textColor="@color/color_BEC7DC"
+                        android:textColor="@color/color_B1BAD3"
                         android:text="New York Knicks"/>
                     <TextView
                         android:id="@+id/tvAwayName"
@@ -99,7 +103,7 @@
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:textSize="@dimen/textSize14sp"
-                        android:textColor="@color/color_BEC7DC"
+                        android:textColor="@color/color_B1BAD3"
                         android:text="Minnesota Timberwolves"/>
                 </LinearLayout>
         </LinearLayout>
@@ -151,7 +155,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_0.5"
-                android:background="@color/color_0C121E"/>
+                android:background="@color/color_071824"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

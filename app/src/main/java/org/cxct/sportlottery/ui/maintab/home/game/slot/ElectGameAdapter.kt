@@ -23,6 +23,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.GameCollectManager.showCollectAmount
+import org.cxct.sportlottery.util.setMargins
 
 class ElectGameAdapter(val onFavoriate: (View, OKGameBean) -> Unit): BaseNodeAdapter() {
 
@@ -106,9 +107,9 @@ private class ElectGameProvider(val adapter: ElectGameAdapter,
         val childPosition = item.parentNode.childNode?.indexOf(item) ?: return@run
         val bottomMargin = if (adapter.getItemOrNull(adapter.data.size - 2)  == item|| adapter.data.last() == item) 16.dp else dp8
         if (childPosition % 2 == 0){
-            setMargins(root, 0, 0, dp4, bottomMargin)
+            root.setMargins(0, 0, dp4, bottomMargin)
         }else{
-            setMargins(root, dp4, 0, 0, bottomMargin)
+            root.setMargins(dp4, 0, 0, bottomMargin)
         }
 
         linMaintenance.gone()

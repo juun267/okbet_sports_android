@@ -9,9 +9,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityEndcardBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
@@ -22,6 +20,8 @@ import org.cxct.sportlottery.ui.sport.endcard.home.EndCardRuleFragment
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordDetailFragment
 import org.cxct.sportlottery.ui.sport.endcard.record.EndCardRecordFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
+import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 import splitties.fragments.addToBackStack
 
 class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(EndCardVM::class) {
@@ -38,12 +38,15 @@ class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(End
     }
 
     override fun onInitView() {
-//        setStatusbar(R.color.color_1B2436,false)
+        setStatusbar(R.color.color_1A2C38,false)
         binding.toolbar.attach(this, { finish() }, viewModel)
         initTab()
         showHome()
         checkGuide()
         initObservable()
+        binding.vShadow.background = ShapeDrawable()
+            .setSolidColor(getColor(R.color.transparent_black_20), Color.TRANSPARENT)
+            .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
     }
 
     private fun initObservable() {
