@@ -1687,4 +1687,5 @@
     <string name="P448">设置</string>
     <string name="P242">实名认证</string>
     <string name="D038">已完成</string>
+    <string name="N645">请先设置登录密码</string>
 </resources>

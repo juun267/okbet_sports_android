@@ -1760,4 +1760,5 @@
     <string name="P448">Set up</string>
     <string name="P242">KYC Verify</string>
     <string name="D038">Done</string>
+    <string name="N645">Please set a login password first</string>
 </resources>
