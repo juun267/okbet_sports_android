@@ -18,6 +18,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
+import org.cxct.sportlottery.util.jumpToDeposit
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
 class MainRightFragment : BaseFragment<MoneyTransferViewModel, FragmentMainRightBinding>() {
@@ -36,7 +37,7 @@ class MainRightFragment : BaseFragment<MoneyTransferViewModel, FragmentMainRight
 
     private fun initView() = binding.run {
         tvDeposit.setOnClickListener {
-            ToGcashDialog.showByClick { getMainTabActivity().viewModel.checkRechargeKYCVerify() }
+            getMainTabActivity().jumpToDeposit()
         }
         val dp8 = 8.dp.toFloat()
         tvDeposit.background = ShapeDrawable()

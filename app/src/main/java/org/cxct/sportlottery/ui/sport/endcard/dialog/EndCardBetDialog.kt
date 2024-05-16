@@ -20,11 +20,8 @@ import org.cxct.sportlottery.ui.betList.holder.MAX_BET_VALUE
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.ui.sport.endcard.EndCardVM
 import org.cxct.sportlottery.ui.sport.endcard.bet.EndCardGameFragment
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.GridItemDecoration
-import org.cxct.sportlottery.util.NetworkUtil
-import org.cxct.sportlottery.util.Spanny
-import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.dialog.BetBalanceDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber

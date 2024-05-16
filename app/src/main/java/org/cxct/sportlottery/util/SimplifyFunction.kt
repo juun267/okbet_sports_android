@@ -55,7 +55,6 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ViewPaymentMaintenanceBinding
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
-import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt

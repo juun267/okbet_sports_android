@@ -39,7 +39,7 @@ class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(End
 
     override fun onInitView() {
         setStatusbar(R.color.color_1A2C38,false)
-        binding.toolbar.attach(this, { finish() }, viewModel)
+        binding.toolbar.attach(this, { finish() })
         initTab()
         showHome()
         checkGuide()
