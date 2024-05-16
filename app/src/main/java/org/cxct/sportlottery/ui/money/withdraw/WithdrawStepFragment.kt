@@ -56,7 +56,7 @@ class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdra
             (requireActivity() as WithdrawActivity).jumpToFragment()
         }
     }
-    fun setStepItem(enable: Boolean, ivIcon: ImageView, line: View?, tvState: TextView, ivArrow: ImageView,onClick: ()->Unit){
+    private fun setStepItem(enable: Boolean, ivIcon: ImageView, line: View?, tvState: TextView, ivArrow: ImageView, onClick: ()->Unit){
         (tvState.parent as ViewGroup).let{
             it.isEnabled = enable
             it.setOnClickListener{
@@ -77,7 +77,7 @@ class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdra
             if (tvState==binding.tvStepState4){
                 VerifiedType.getVerifiedType(UserInfoRepository.userInfo.value?.verified).let {
                     if (it == VerifiedType.NOT_YET || it == VerifiedType.VERIFIED_FAILED || it == VerifiedType.PASSED){
-                        return
+                        return@let
                     }
                     text =  getString(it.nameResId)
                     setTextColor(requireContext().getColor(it.colorResId))
