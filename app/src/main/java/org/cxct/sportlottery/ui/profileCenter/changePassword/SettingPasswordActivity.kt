@@ -6,9 +6,8 @@ import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivitySettingPasswordBinding
-import org.cxct.sportlottery.network.user.UserInfo
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.network.NetResult
-import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -32,9 +31,9 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel, ActivityS
     enum class PwdPage { LOGIN_PWD, BANK_PWD }
 
     private var mPwdPage = PwdPage.LOGIN_PWD //登入密碼 or 提款密碼 page flag
-    private var mUserInfo: UserInfo? = null
 
     private fun hasPassword() = viewModel.userInfo.value?.passwordSet == false
+    private fun needUpdatePayPw() = viewModel.userInfo.value?.updatePayPw == 1
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
@@ -83,21 +82,21 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel, ActivityS
         binding.customTabLayout.setCustomTabSelectedListener { position ->
             if (position == 0) {
                 mPwdPage = PwdPage.LOGIN_PWD
-                updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
+                updateCurrentPwdEditTextHint(mPwdPage)
                 cleanField()
                 return@setCustomTabSelectedListener
             }
 
             if(position == 1) {
                 //设置提款密码需要先判断，是否设置了登录密码
-                if (mUserInfo?.passwordSet != false){
+                if (!hasPassword()){
                     showErrorPromptDialog(getString(R.string.N645)){
                         binding.customTabLayout.selectTab(0)
                     }
                     return@setCustomTabSelectedListener
                 }
                 mPwdPage = PwdPage.BANK_PWD
-                updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
+                updateCurrentPwdEditTextHint(mPwdPage)
                 cleanField()
             }
         }
@@ -180,9 +179,8 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel, ActivityS
         }
 
         viewModel.userInfo.observe(this) {
-            mUserInfo = it
-            updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
-            binding.etCurrentPassword.isVisible = it?.passwordSet == false
+            updateCurrentPwdEditTextHint(mPwdPage)
+            binding.etCurrentPassword.isVisible = hasPassword()
         }
     }
 
@@ -190,6 +188,7 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel, ActivityS
         hideLoading()
         if (updatePwdResult?.success == true) {
             showPromptDialog(getString(R.string.prompt), getString(R.string.tips_login_password_success)) { finish() }
+            viewModel.getUserInfo()
         } else {
             showErrorPromptDialog(getString(R.string.prompt), updatePwdResult?.msg ?: getString(R.string.unknown_error)) {}
         }
@@ -199,12 +198,13 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel, ActivityS
         hideLoading()
         if (updateFundPwdResult?.success == true) {
             showPromptDialog(getString(R.string.prompt), getString(R.string.update_withdrawal_pwd)) { finish() }
+            viewModel.getUserInfo()
         } else {
             showErrorPromptDialog(getString(R.string.prompt), updateFundPwdResult?.msg ?: getString(R.string.unknown_error)) {}
         }
     }
 
-    private fun updateCurrentPwdEditTextHint(pwdPage: PwdPage, updatePayPw: Int?) = binding.run {
+    private fun updateCurrentPwdEditTextHint(pwdPage: PwdPage) = binding.run {
         if (pwdPage == PwdPage.LOGIN_PWD) {
             etCurrentPassword.setLabelText(getString(R.string.current_login_password))
             etCurrentPassword.setHintText(getString(R.string.hint_current_login_password))
@@ -212,7 +212,7 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel, ActivityS
             return@run
         }
 
-        if (updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW) {
+        if (needUpdatePayPw()) {
             etCurrentPassword.setLabelText(getString(R.string.current_login_password))
             etCurrentPassword.setHintText(getString(R.string.hint_current_login_password))
         } else {

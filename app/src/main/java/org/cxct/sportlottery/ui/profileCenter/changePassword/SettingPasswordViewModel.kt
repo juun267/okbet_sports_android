@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
@@ -146,6 +147,11 @@ class SettingPasswordViewModel(
     private fun checkInputComplete() {
         _submitEnable.value =
             (userInfo.value?.passwordSet == true || _currentPwdError.value.isNullOrEmpty()) && _newPwdError.value?.isEmpty() == true && _confirmPwdError.value?.isEmpty() == true
+    }
+    fun getUserInfo() {
+        viewModelScope.launch {
+            runWithCatch { UserInfoRepository.getUserInfo() }
+        }
     }
 
 }
