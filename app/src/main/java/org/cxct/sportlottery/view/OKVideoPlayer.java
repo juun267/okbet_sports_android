@@ -68,6 +68,7 @@ public class OKVideoPlayer extends GSYVideoPlayer {
     @Override
     public void startPlayLogic() {
         prepareVideo();
+        GSYVideoManager.instance().setNeedMute(true);
         setVideoAllCallBack(new VideoAllCallBack() {
             @Override
             public void onStartPrepared(String url, Object... objects) {
@@ -285,12 +286,11 @@ public class OKVideoPlayer extends GSYVideoPlayer {
 
     @Override
     protected void setStateAndUi(int state) {
-        Log.e("For Test", "========>>>> setStateAndUi 1111 " + state);
         super.setStateAndUi(state);
         if (playStatusListener == null) {
             return;
         }
-        Log.e("For Test", "========>>>> setStateAndUi 2222 " + state);
+
         if (CURRENT_STATE_NORMAL == state || CURRENT_STATE_PREPAREING == state) {
             playStatusListener.onPrepare();
             return;
@@ -313,7 +313,6 @@ public class OKVideoPlayer extends GSYVideoPlayer {
 
         if (CURRENT_STATE_ERROR == state) {
             playStatusListener.onError();
-            return;
         }
 
     }
