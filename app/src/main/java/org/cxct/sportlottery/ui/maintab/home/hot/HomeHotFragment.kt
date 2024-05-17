@@ -9,6 +9,7 @@ import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
@@ -30,6 +31,8 @@ import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.cxct.sportlottery.view.dialog.queue.DialogQueueManager
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
 
@@ -38,13 +41,19 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     private val PRIORITY_BIND_PHONE = 200
     private val PRIORITY_REGISTER_SUCCESS = 300
     private val PRIORITY_AGE_VERIFY = 400
+    private val okgameViewModel by lazy {
+        getViewModel(clazz = OKGamesViewModel::class.java.kotlin, owner = { ViewModelOwner.from(requireActivity(), requireActivity()) })
+    }
 
     private val recommendMiniGameHelper by lazy {
-        RecommendMiniGameHelper(context()) {
+        RecommendMiniGameHelper(context(), ::enterGame) {
             (binding.scrollView.getChildAt(0) as ViewGroup).addView(it, 0)
         }
     }
 
+    private fun enterGame(okGameBean: OKGameBean) {
+        okgameViewModel.requestEnterThirdGame(okGameBean, getMainTabActivity())
+    }
     fun getMainTabActivity() = activity as MainTabActivity
     private fun getHomeFragment() = parentFragment as HomeFragment
     private val mOddsChangeListener by lazy {

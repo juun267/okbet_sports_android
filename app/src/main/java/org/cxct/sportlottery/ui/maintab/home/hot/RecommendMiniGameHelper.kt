@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.home.hot
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.view.Gravity
@@ -12,7 +11,6 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
@@ -35,7 +33,6 @@ import org.cxct.sportlottery.databinding.LayoutRecommendMinigameBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
-import org.cxct.sportlottery.ui.profileCenter.timezone.DiffCallback
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
@@ -48,9 +45,10 @@ import java.util.Objects
 
 private const val PLAY_TAG = "RecommendMiniGameHelper"
 class RecommendMiniGameHelper(private val context: Context,
+                              onClick: (OKGameBean) -> Unit,
                               onLayout: (View) -> Unit) {
 
-    private val miniGameAdapter = MiniGameAdapter()
+    private val miniGameAdapter = MiniGameAdapter(onClick)
     private var currentPlayer: OKVideoPlayer? = null
     private val binding by lazy {
         val vb = LayoutRecommendMinigameBinding.inflate(context.layoutInflater)
@@ -197,7 +195,8 @@ class RecommendMiniGameHelper(private val context: Context,
         return Triple(lin, img, text)
     }
 
-    private class MiniGameAdapter : BindingAdapter<OKGameBean, ItemMinigameBinding>() {
+    private class MiniGameAdapter(private val onClick: (OKGameBean) -> Unit)
+        : BindingAdapter<OKGameBean, ItemMinigameBinding>() {
 
         init {
             setDiffCallback(object : DiffUtil.ItemCallback<OKGameBean>() {
@@ -254,8 +253,9 @@ class RecommendMiniGameHelper(private val context: Context,
         override fun convert(helper: BindingVH<ItemMinigameBinding>, item: OKGameBean) {
             val binding = helper.vb
             val position = helper.bindingAdapterPosition
+            binding.tvBetToWin.setOnClickListener { onClick.invoke(item) }
             binding.tvJackPotAmount.setNumberString(item.jackpotAmount.toString())
-            binding.vCover.load(item.imgGame, R.drawable.img_mini_game_cover)
+//            binding.vCover.load(item.imgGame, R.drawable.img_mini_game_cover)
             with(binding.videoPlayer.tag as GSYVideoOptionBuilder) {
                 setIsTouchWiget(false)
                 setCacheWithPlay(false)
