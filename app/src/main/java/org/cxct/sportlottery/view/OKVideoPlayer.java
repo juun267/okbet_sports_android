@@ -2,6 +2,7 @@ package org.cxct.sportlottery.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -284,12 +285,13 @@ public class OKVideoPlayer extends GSYVideoPlayer {
 
     @Override
     protected void setStateAndUi(int state) {
+        Log.e("For Test", "========>>>> setStateAndUi 1111 " + state);
         super.setStateAndUi(state);
         if (playStatusListener == null) {
             return;
         }
-
-        if (CURRENT_STATE_PREPAREING == state) {
+        Log.e("For Test", "========>>>> setStateAndUi 2222 " + state);
+        if (CURRENT_STATE_NORMAL == state || CURRENT_STATE_PREPAREING == state) {
             playStatusListener.onPrepare();
             return;
         }

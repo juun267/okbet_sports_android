@@ -11,6 +11,8 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DiffUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -41,22 +43,28 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
         binding.recyclerView.setLinearLayoutManager()
         binding.recyclerView.adapter = adapter
         adapter.setOnItemClickListener(this)
-        loadingHolder.withRetry { viewModel.getMiniGameList() }
+        loadingHolder.withRetry { OKGamesViewModel.loadMiniGameList(lifecycleScope) }
     }
 
     override fun onBindViewStatus(view: View) {
         initObserver()
+
         if (adapter.itemCount < 2) {
-            loadingHolder.go()
+            val cacheData = OKGamesViewModel.getActiveMiniGameData()
+            if (cacheData == null) {
+                loadingHolder.go()
+            } else {
+                adapter.setNewInstance(cacheData.toMutableList())
+            }
         }
     }
 
     private fun initObserver() {
-        viewModel.miniGameList.observe(viewLifecycleOwner) {
-            if (it == null) {
+        OKGamesViewModel.miniGameList.observe(viewLifecycleOwner) {
+            if (it.first == null) {
                 loadingHolder.showLoadFailed()
             } else {
-                adapter.setNewInstance(it?.toMutableList())
+                adapter.setNewInstance(it.first?.toMutableList())
                 loadingHolder.showLoadSuccess()
             }
         }
@@ -67,12 +75,20 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
         private val imgId = View.generateViewId()
         private val textId = View.generateViewId()
 
+        init {
+            setDiffCallback(object : DiffUtil.ItemCallback<OKGameBean?>() {
+                override fun areItemsTheSame(oldItem: OKGameBean, newItem: OKGameBean) = oldItem == newItem
+                override fun areContentsTheSame(oldItem: OKGameBean, newItem: OKGameBean) = oldItem.id == newItem.id
+            })
+        }
+
         override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             val dp8 = 8.dp
             val dp12 = 12.dp
             val root = CardView(context)
             root.cardElevation = 0f
             root.radius = dp8.toFloat()
+            root.foreground = context.getDrawable(R.drawable.fg_ripple)
             val lp = FrameLayout.LayoutParams(-1, 140.dp)
             lp.setMargins(dp12, dp8, dp12, 0)
             root.layoutParams = lp

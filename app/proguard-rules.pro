@@ -76,6 +76,7 @@
 -dontwarn tv.danmaku.ijk.**
 -keep class com.google.android.exoplayer2.** {*;}
 -keep interface com.google.android.exoplayer2.**
+-keep class tv.danmaku.ijk.media.player.** {*;}
 
 -keep class com.shuyu.alipay.** {*;}
 -keep interface com.shuyu.alipay.**

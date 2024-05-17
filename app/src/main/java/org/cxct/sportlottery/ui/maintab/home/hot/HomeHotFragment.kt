@@ -1,9 +1,10 @@
 package org.cxct.sportlottery.ui.maintab.home.hot
 
-import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
+import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
@@ -37,14 +39,21 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     private val PRIORITY_REGISTER_SUCCESS = 300
     private val PRIORITY_AGE_VERIFY = 400
 
-     fun getMainTabActivity() = activity as MainTabActivity
-     private fun getHomeFragment() = parentFragment as HomeFragment
-     private val mOddsChangeListener by lazy {
+    private val recommendMiniGameHelper by lazy {
+        RecommendMiniGameHelper(context()) {
+            (binding.scrollView.getChildAt(0) as ViewGroup).addView(it, 0)
+        }
+    }
+
+    fun getMainTabActivity() = activity as MainTabActivity
+    private fun getHomeFragment() = parentFragment as HomeFragment
+    private val mOddsChangeListener by lazy {
         ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
             binding.hotMatchView.updateOddChange(oddsChangeEvent)
             binding.hotEsportView.updateOddChange(oddsChangeEvent)
         }
     }
+
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
             if (hotMatchView.isVisible) {
@@ -75,35 +84,46 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         if (binding.scrollView.scrollY != 0) {
             binding.scrollView.postDelayed({ backTop() }, 50)
         }
-        binding.miniGameView.startPlay("")
-        binding.miniGameView.bindLifeCycle(this@HomeHotFragment)
+        recommendMiniGameHelper.bindLifeEvent(this@HomeHotFragment)
         bottomView.bindServiceClick(childFragmentManager)
         recentView.setup(this@HomeHotFragment)
-        hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@HomeHotFragment)
+        hotMatchView.onCreate(
+            viewModel.publicityRecommend,
+            viewModel.oddsType,
+            this@HomeHotFragment
+        )
         okGamesView.setUp(this@HomeHotFragment)
-        hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType,this@HomeHotFragment)
+        hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType, this@HomeHotFragment)
         okLiveView.setUp(this@HomeHotFragment)
-        providerView.setup(this@HomeHotFragment){
-            if (it.gameEntryTypeEnum==GameEntryType.OKGAMES){
+        providerView.setup(this@HomeHotFragment) {
+            if (it.gameEntryTypeEnum == GameEntryType.OKGAMES) {
                 getMainTabActivity().jumpToOKGames()
-                providerView.postDelayed(500){
-                    (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(it)
+                providerView.postDelayed(500) {
+                    (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(
+                        it
+                    )
                 }
-            }else{
+            } else {
                 getMainTabActivity().jumpToOkLive()
-                providerView.postDelayed(500){
-                    (getMainTabActivity().getCurrentFragment() as? OKLiveFragment)?.showByProvider(it)
+                providerView.postDelayed(500) {
+                    (getMainTabActivity().getCurrentFragment() as? OKLiveFragment)?.showByProvider(
+                        it
+                    )
                 }
             }
 
         }
         promotionView.setup(this@HomeHotFragment)
         newsView.setup(this@HomeHotFragment)
-        winsRankView.setUp(this@HomeHotFragment, { viewModel.getBetRecord() }, { viewModel.getWinRecord() })
+        winsRankView.setUp(
+            this@HomeHotFragment,
+            { viewModel.getBetRecord() },
+            { viewModel.getWinRecord() })
         bettingStationView.setup(this@HomeHotFragment)
         initObservable()
 
         viewModel.getSystemNotice()
+        OKGamesViewModel.loadMiniGameList(lifecycleScope)
     }
 
 
@@ -144,16 +164,20 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
 
         isShowed = true
         val fmProvider = ::getParentFragmentManager
-        PopImageDialog.buildImageDialog(PRIORITY_DIALOG_HOME, ImageType.DIALOG_HOME, fmProvider)?.let {
-            dialogQueueManager.enqueue(it)
-        }
+        PopImageDialog.buildImageDialog(PRIORITY_DIALOG_HOME, ImageType.DIALOG_HOME, fmProvider)
+            ?.let {
+                dialogQueueManager.enqueue(it)
+            }
 
-        if (viewModel.isLogin.value == true){
+        if (viewModel.isLogin.value == true) {
             BindPhoneDialog.bindBindPhoneDialog(PRIORITY_BIND_PHONE, fmProvider)?.let {
                 dialogQueueManager.enqueue(it)
             }
 
-            RegisterSuccessDialog.buildRegisterSuccessDialog(PRIORITY_REGISTER_SUCCESS, fmProvider) {
+            RegisterSuccessDialog.buildRegisterSuccessDialog(
+                PRIORITY_REGISTER_SUCCESS,
+                fmProvider
+            ) {
                 getMainTabActivity().checkRechargeKYCVerify()
             }?.let {
                 dialogQueueManager.enqueue(it)
@@ -174,8 +198,12 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         if (announcementsShowed) {
             return
         }
-        viewModel.systemNotice.value?.let { notice->
-            AnnouncementsDialog.buildAnnouncementsDialog(notice, PRIORITY_SYSTEM_NOTICE, ::getParentFragmentManager)?.let { dialog ->
+        viewModel.systemNotice.value?.let { notice ->
+            AnnouncementsDialog.buildAnnouncementsDialog(
+                notice,
+                PRIORITY_SYSTEM_NOTICE,
+                ::getParentFragmentManager
+            )?.let { dialog ->
                 announcementsShowed = true
                 dialogQueueManager.enqueue(dialog)
             }
@@ -187,13 +215,13 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             showDialogs()
         }
 
-        setupSportStatusChange(this){
-            if (it){
+        setupSportStatusChange(this) {
+            if (it) {
                 binding.hotMatchView.setVisible()
                 binding.hotEsportView.setVisible()
                 receiver.addOddsChangeListener(this, mOddsChangeListener)
                 refreshHotMatch()
-            }else{
+            } else {
                 binding.hotMatchView.gone()
                 binding.hotEsportView.gone()
             }
@@ -226,12 +254,12 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
 //      binding.homeTopView.initSportEnterStatus()
         //关闭/显示   热门赛事
         binding.hotMatchView.setVisible()
-        if(binding.hotMatchView.isVisible && isVisibleToUser()) { //判断当前fragment是否可见
+        if (binding.hotMatchView.isVisible && isVisibleToUser()) { //判断当前fragment是否可见
             viewModel.getRecommend()
         }
 
         binding.hotEsportView.setVisible()
-        if(binding.hotEsportView.isVisible && isVisibleToUser()) { //判断当前fragment是否可见
+        if (binding.hotEsportView.isVisible && isVisibleToUser()) { //判断当前fragment是否可见
             viewModel.getRecommend(GameType.ES)
         }
     }
@@ -240,6 +268,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         super.onVisibleExceptFirst()
         binding.winsRankView.startLoopCall()
     }
+
     override fun onInvisible() {
         super.onInvisible()
         binding.winsRankView.stopLoopCall()

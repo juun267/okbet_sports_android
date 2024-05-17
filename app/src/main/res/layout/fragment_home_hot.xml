@@ -16,14 +16,7 @@
             android:background="@color/color_FFFFFF"
             android:layout_marginBottom="@dimen/margin_4"
             android:orientation="vertical">
-            
-            <org.cxct.sportlottery.ui.maintab.home.view.RecommendMiniGame
-                android:id="@+id/miniGameView"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_marginHorizontal="12dp"
-                android:layout_marginBottom="10dp" />
-            
+
             <org.cxct.sportlottery.ui.maintab.home.view.HomeRecentView
                 android:id="@+id/recentView"
                 android:layout_width="match_parent"
