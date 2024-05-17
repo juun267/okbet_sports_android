@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="221dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:background="@drawable/bg_vip_top"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -15,25 +16,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/ivBack"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_marginStart="13dp"
-            android:src="@drawable/ic_back_white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/linTitle"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
-            android:gravity="center"
-            android:text="@string/P371"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="@dimen/tool_bar_height"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/margin_40"
+                android:layout_height="@dimen/margin_40"
+                android:padding="@dimen/margin_7"
+                android:layout_marginStart="13dp"
+                android:src="@drawable/ic_back_white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="53dp"
+                android:gravity="center"
+                android:text="@string/P371"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tvGrowth"
@@ -49,7 +60,7 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivBack" />
+            app:layout_constraintTop_toBottomOf="@+id/linTitle" />
 
         <ImageView
             android:id="@+id/ivProfile"
@@ -58,7 +69,7 @@
             android:layout_marginStart="14dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivBack" />
+            app:layout_constraintTop_toBottomOf="@+id/linTitle" />
 
         <TextView
             android:id="@+id/tvUserName"
@@ -78,6 +89,7 @@
             android:layout_width="64dp"
             android:layout_height="20dp"
             android:layout_marginBottom="3dp"
+            android:layout_marginLeft="-2dp"
             android:src="@drawable/ic_vip_lv_tag10"
             app:layout_constraintBottom_toBottomOf="@+id/ivProfile"
             app:layout_constraintStart_toStartOf="@+id/tvUserName" />

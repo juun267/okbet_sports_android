@@ -9,6 +9,7 @@ import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
 import org.cxct.sportlottery.common.enums.UserVipType
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemActivatedBenefitsBinding
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.RewardDetail
@@ -36,10 +37,6 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
         notifyDataSetChanged()
     }
     var disableStatus: Boolean=false
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     override fun onCreateDefViewHolder(
         parent: ViewGroup,
@@ -75,6 +72,8 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
         if(disableStatus){
             tvAction.gone()
             return
+        }else{
+            tvAction.visible()
         }
         tvAction.setOnClickListener {
             onItemClick.invoke(item)

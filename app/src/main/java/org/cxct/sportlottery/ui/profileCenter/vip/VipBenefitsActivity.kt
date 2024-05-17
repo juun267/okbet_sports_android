@@ -25,6 +25,7 @@ import org.cxct.sportlottery.ui.profileCenter.profile.Uide
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LeftLinearSnapHelper
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
@@ -123,13 +124,18 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
 
     private fun initVipCard() = binding.run {
         rcvVipCard.setLinearLayoutManager(RecyclerView.HORIZONTAL)
-        LeftLinearSnapHelper().attachToRecyclerView(rcvVipCard)
+        val leftLinearSnapHelper = LeftLinearSnapHelper()
+        leftLinearSnapHelper.attachToRecyclerView(rcvVipCard)
         rcvVipCard.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (RecyclerView.SCROLL_STATE_IDLE == newState) {
-                    val currentPosition = (rcvVipCard.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
-                    onSelectLevel(currentPosition)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    leftLinearSnapHelper.findSnapView(rcvVipCard.layoutManager as LinearLayoutManager)?.let {
+                        val position = (rcvVipCard.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                        if(position>=0){
+                            onSelectLevel(position)
+                        }
+                    }
                 }
             }
         })
@@ -168,8 +174,8 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
             activatedAdapter.setList(null)
             activatedAdapter.removeAllFooterView()
             val currentRewardInfo = it.rewardInfo.getOrNull(position)
+            activatedAdapter.disableStatus = currentRewardInfo?.levelCode!=userRewardInfo?.levelCode
             activatedAdapter.setList(currentRewardInfo?.rewardDetail?.filter { it.enable })
-            activatedAdapter.disableStatus = currentRewardInfo!=userRewardInfo
             if (currentRewardInfo?.exclusiveService==true){
                 val exclusiveBinding = ItemActivatedBenefitsBinding.inflate(layoutInflater)
                 exclusiveBinding.ivBenefits.setImageResource(R.drawable.ic_vip_bonus_support)
