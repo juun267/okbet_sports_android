@@ -8,13 +8,17 @@
 
     <TextView
         android:id="@+id/tvProgress"
-        android:layout_width="44dp"
+        android:layout_width="38dp"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="2dp"
+        android:paddingTop="@dimen/margin_1"
+        android:layout_marginLeft="@dimen/margin_10"
         android:background="@drawable/bg_vip_progress"
         android:gravity="center_horizontal"
-        android:textColor="@color/color_ff0000"
+        android:textColor="@color/color_FFFFFF"
+        android:lines="1"
         android:textStyle="bold"
-        android:textSize="@dimen/textSize12sp"
+        android:textSize="@dimen/textSize10sp"
         android:text="0%"/>
 
     <ProgressBar

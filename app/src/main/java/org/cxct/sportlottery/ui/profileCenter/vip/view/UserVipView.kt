@@ -68,15 +68,7 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
     }
 
     private fun setProgress(progress: Int) {
-        if (progress < 90) {
-            val drawableProgress = context.getDrawable(R.drawable.bg_vip_progress_left)!!.mutate()
-            drawableProgress.setTint(getColor(R.color.color_ff871f))
-            binding.vipProgressView.setProgress2(progress, 5.dp, drawableProgress)
-        } else {
-            val drawableProgress = context.getDrawable(R.drawable.bg_vip_progress_right)!!.mutate()
-            drawableProgress.setTint(getColor(R.color.color_ff871f))
-            binding.vipProgressView.setProgress2(progress, 24.dp, drawableProgress)
-        }
+        binding.vipProgressView.setProgress(progress)
     }
 
     private fun ImageView.setBenefitEnable(rewardInfo: RewardInfo,rewardType: Int){

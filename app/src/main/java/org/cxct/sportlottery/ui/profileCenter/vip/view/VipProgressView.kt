@@ -20,6 +20,9 @@ import splitties.systemservices.layoutInflater
 class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
     val binding = ViewVipProgressBinding.inflate(layoutInflater,this)
+    private val leftProgress by lazy { context.getDrawable(R.drawable.bg_vip_progress_left)!! }
+    private val rightProgress by lazy { context.getDrawable(R.drawable.bg_vip_progress_right)!! }
+
     init {
         orientation = VERTICAL
     }
@@ -28,10 +31,10 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
 
         binding.tvProgress.text = "$progress%"
         post {
-            val leftMargin = binding.progressBar.marginLeft + binding.progressBar.measuredWidth * progress / 100
+            val leftMargin = binding.progressBar.marginLeft - binding.ivThumb.width/2 + binding.progressBar.measuredWidth * progress / 100
             binding.tvProgress.apply {
                 val lp = layoutParams as LayoutParams
-                lp.setMargins(leftMargin - width / 2, 0, 0, 0)
+                lp.setMargins(leftMargin - 5.dp, 0, 0, 0)
                 layoutParams = lp
             }
 
@@ -45,12 +48,13 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
         }
     }
 
-    fun setProgress2(progress:Int, offset: Int, bg: Drawable) {
+    fun setProgress2(progress:Int) {
 
+        val offset = if (progress < 90) 5.dp else 24.dp
         binding.tvProgress.text = "$progress%"
-        binding.tvProgress.background = bg
+        binding.tvProgress.background = if (progress < 90) leftProgress else rightProgress
         post {
-            val leftMargin = binding.progressBar.marginLeft + binding.progressBar.measuredWidth * progress / 100
+            val leftMargin = binding.progressBar.marginLeft - binding.ivThumb.width/2 + binding.progressBar.measuredWidth * progress / 100
             binding.tvProgress.apply {
                 val lp = layoutParams as LayoutParams
                 lp.setMargins(leftMargin - offset, 0, 0, 0)
@@ -82,10 +86,13 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
     }
     fun setYellowStyle()=binding.run{
         setTintColor(R.color.color_FFB828, R.color.color_eed39f)
-        tvProgress.layoutParams.height = 30.dp
-        tvProgress.layoutParams.height = 38.dp
         tvProgress.setTextColor(Color.WHITE)
-        tvProgress.gravity = Gravity.CENTER
+        tvProgress.gravity = Gravity.CENTER_HORIZONTAL
+        progressBar.apply {
+            val lp = layoutParams as LayoutParams
+            lp.setMargins(30.dp, 0, 30.dp, 0)
+            layoutParams = lp
+        }
     }
     fun setBlueStyle()=binding.run{
         setTintColor(R.color.color_025BE8, R.color.color_e0ecfc)

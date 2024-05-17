@@ -160,7 +160,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         rcvUnactivatedBenefits.adapter = unActivatedAdapter
     }
     private fun setUpVipCard(userVip: UserVip){
-        vipCardAdapter.userExp = userVip.exp
+        vipCardAdapter.userVip = userVip
         vipCardAdapter.setList(userVip.rewardInfo)
         val selectPosition = userVip.rewardInfo.indexOfFirst {userVip.levelCode == it.levelCode }
         userRewardInfo = userVip.rewardInfo.getOrNull(selectPosition)

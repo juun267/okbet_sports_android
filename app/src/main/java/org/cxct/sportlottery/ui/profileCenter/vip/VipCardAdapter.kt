@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.ui.profileCenter.vip
 
-import android.graphics.Color
-import android.view.Gravity
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
@@ -16,15 +14,14 @@ import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.ItemVipCardBinding
 import org.cxct.sportlottery.net.user.data.RewardInfo
+import org.cxct.sportlottery.net.user.data.UserVip
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 
 class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
 
-    private val leftProgress by lazy { context.getDrawable(R.drawable.bg_vip_progress_left)!! }
-    private val rightProgress by lazy { context.getDrawable(R.drawable.bg_vip_progress_right)!! }
-    var userExp: Long=0
+
+    lateinit var userVip: UserVip
 
     override fun onCreateDefViewHolder(
         parent: ViewGroup,
@@ -40,13 +37,20 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
         if (isCurrentLevel) {
             binding.tvCurrent.show()
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 12.dp
-            vipProgressView.setProgress2((userExp*100/item.upgradeExp).toInt(), 5.dp, leftProgress)
-            setProgress(userExp, item.upgradeExp, binding.tvPercent)
+            vipProgressView.setProgress2((userVip.exp*100/item.upgradeExp).toInt())
+            setProgress(userVip.exp, item.upgradeExp, binding.tvPercent)
         } else {
             binding.tvCurrent.hide()
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 10.dp
-            vipProgressView.setProgress2(0, 24.dp, rightProgress)
-            setProgress(0, item.upgradeExp, binding.tvPercent)
+            val currentLevelIndex = userVip.rewardInfo.indexOfFirst { it.levelCode == item.levelCode }
+            val userLevelIndex = userVip.rewardInfo.indexOfFirst { it.levelCode == userVip.levelCode }
+            if (userLevelIndex>currentLevelIndex){
+                vipProgressView.setProgress2(100)
+                setProgress(item.upgradeExp, item.upgradeExp, binding.tvPercent)
+            }else{
+                vipProgressView.setProgress2(0)
+                setProgress(0, item.upgradeExp, binding.tvPercent)
+            }
         }
 
         tvDescribe.text = context.getString(R.string.P443)

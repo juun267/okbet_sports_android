@@ -242,7 +242,7 @@ object Constants {
     fun getEndCardRuleUrl() = "${getH5BaseUrl()}mobile/newBkEnd/rules"
 
     //VIP等级说明页面
-    fun getVipRuleUrl(context: Context) = "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}vip-details-my"
+    fun getVipRuleUrl(context: Context) = "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}vip-details"
 
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
