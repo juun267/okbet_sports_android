@@ -2,10 +2,12 @@ package org.cxct.sportlottery.ui.profileCenter.vip
 
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.listener.CustomListener
 import com.bigkoo.pickerview.view.TimePickerView
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.UserVipType
 import org.cxct.sportlottery.common.enums.UserVipType.setLevelTagIcon
@@ -153,7 +155,8 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
     }
 
     private fun initUnactivatedBenefits() = binding.run {
-        rcvUnactivatedBenefits.setLinearLayoutManager(RecyclerView.HORIZONTAL)
+        rcvUnactivatedBenefits.layoutManager = GridLayoutManager(this@VipBenefitsActivity,3)
+        rcvUnactivatedBenefits.addItemDecoration(GridSpacingItemDecoration(3, 8.dp,false))
         rcvUnactivatedBenefits.adapter = unActivatedAdapter
     }
     private fun setUpVipCard(userVip: UserVip){

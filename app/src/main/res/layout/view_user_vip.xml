@@ -111,12 +111,14 @@
         android:layout_marginTop="-10dp"
         android:background="@drawable/bg_white_gradient_radius_10_white_stroke"
         android:orientation="vertical"
-        android:padding="@dimen/margin_16"
+        android:paddingVertical="@dimen/margin_16"
+        android:paddingHorizontal="@dimen/margin_7"
         app:layout_constraintTop_toBottomOf="@id/linProgress">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_24"
+            android:paddingHorizontal="@dimen/margin_5"
             android:gravity="center_vertical">
 
             <ImageView
@@ -183,8 +185,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:paddingHorizontal="@dimen/margin_10"
                     android:text="@string/P363"
                     android:textColor="@color/color_0D2245"
                     android:textSize="@dimen/textSize12sp"
@@ -226,8 +226,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:paddingHorizontal="@dimen/margin_10"
                     android:text="@string/P365"
                     android:textColor="@color/color_0D2245"
                     android:textSize="@dimen/textSize12sp"
@@ -269,8 +267,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:paddingHorizontal="@dimen/margin_10"
                     android:text="@string/P364"
                     android:textColor="@color/color_0D2245"
                     android:textSize="@dimen/textSize12sp"
@@ -312,8 +308,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:paddingHorizontal="@dimen/margin_10"
                     android:text="@string/P366"
                     android:textColor="@color/color_0D2245"
                     android:textSize="@dimen/textSize12sp"
