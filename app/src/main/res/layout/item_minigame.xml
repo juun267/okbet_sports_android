@@ -17,7 +17,8 @@
         android:id="@+id/vCover"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:background="@drawable/img_mini_game_cover"/>
 
     <View
         android:layout_width="match_parent"
