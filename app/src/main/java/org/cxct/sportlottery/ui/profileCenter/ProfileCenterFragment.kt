@@ -183,17 +183,13 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     private fun setupRechargeButton() {
         binding.btnRecharge.clickDelay{
-            //Glife用户
-            (activity as MainTabActivity).checkRechargeKYCVerify()
+            (requireActivity() as BaseActivity<*,*>).jumpToDeposit()
         }
     }
 
     private fun setupWithdrawButton() {
         binding.btnWithdraw.clickDelay {
-            //Glife用户
-            ToGcashDialog.showByClick{
-                startActivity(WithdrawActivity::class.java)
-            }
+            requireActivity().jumpToWithdraw()
         }
     }
 

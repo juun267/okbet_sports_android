@@ -969,9 +969,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
             val dialog= BetBalanceDialog(requireContext())
             dialog.showDialog{
                 //跳转充值
-                ToGcashDialog.showByClick{
-                    (requireActivity() as BaseActivity<*,*>).jumpToDeposit()
-                }
+
             }
         }
         val overMax = {

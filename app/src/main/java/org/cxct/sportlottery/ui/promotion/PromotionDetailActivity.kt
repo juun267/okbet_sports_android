@@ -71,7 +71,7 @@ class PromotionDetailActivity :
             binding.linApply.setOnClickListener {
                 MainTabActivity.reStart(this)
                 binding.linApply.postDelayed(1000){
-                    (AppManager.currentActivity() as? MainTabActivity)?.checkRechargeKYCVerify()
+                    (AppManager.currentActivity() as? MainTabActivity)?.jumpToDeposit()
                 }
             }
             binding.tvDepositName.text = getString(R.string.P277)

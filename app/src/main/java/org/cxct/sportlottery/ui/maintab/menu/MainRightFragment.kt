@@ -19,7 +19,6 @@ import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.jumpToDeposit
-import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
 class MainRightFragment : BaseFragment<MoneyTransferViewModel, FragmentMainRightBinding>() {
 

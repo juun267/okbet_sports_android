@@ -278,7 +278,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             userMoneyView.visible()
             bindMoneyText(LoginRepository.userMoney())
             btnDeposit.setOnClickListener {
-                ToGcashDialog.showByClick { (fragment.requireActivity() as BaseActivity<*,*>).jumpToDeposit() }
+                (fragment.requireActivity() as BaseActivity<*,*>).jumpToDeposit()
             }
         } else {
             searchView.visible()

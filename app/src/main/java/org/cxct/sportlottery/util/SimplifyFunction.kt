@@ -76,6 +76,7 @@ import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.money.withdraw.WithdrawActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
@@ -83,6 +84,7 @@ import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -1037,12 +1039,13 @@ fun View.setMargins(left: Int, top: Int, right: Int, bottom: Int) {
 //是否正在请求充值开关
 private var checkRecharge = false
 fun BaseActivity<*, *>.jumpToDeposit(){
+    ToGcashDialog.showByClick{
         val isNeedVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value && isKYCVerifyRechargeOpen()
         if (isNeedVerify){
             VerifyIdentityDialog().show(supportFragmentManager, null)
         }else{
             if (checkRecharge)
-                return
+                return@showByClick
             loading()
             viewModel.launch {
                 checkRecharge = true
@@ -1071,4 +1074,10 @@ fun BaseActivity<*, *>.jumpToDeposit(){
                 checkRecharge = false
             }
         }
+    }
+}
+fun FragmentActivity.jumpToWithdraw(){
+    ToGcashDialog.showByClick{
+        startActivity(WithdrawActivity::class.java)
+    }
 }

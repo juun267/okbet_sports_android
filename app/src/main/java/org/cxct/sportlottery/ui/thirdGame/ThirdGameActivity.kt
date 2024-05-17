@@ -146,9 +146,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
 
     private fun setupMenu() {
         binding.ivDeposit.setOnClickListener {
-            if (checkLogin()) {
-                ToGcashDialog.showByClick { jumpToDeposit() }
-            }
+            ToGcashDialog.showByClick { jumpToDeposit() }
         }
 //        binding.motionMenu.setOnMenuListener(object : MotionFloatingMenu.OnMenuListener {
 //            override fun onHome() {

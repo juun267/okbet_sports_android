@@ -660,12 +660,6 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     fun getCurrentFragment():Fragment  = fragmentHelper.getCurrentFragment()
 
 
-    fun checkRechargeKYCVerify() {
-        ToGcashDialog.showByClick{
-            jumpToDeposit()
-        }
-    }
-
     fun enterThirdGame(result: EnterThirdGameResult, firmType: String) {
 
         hideLoading()

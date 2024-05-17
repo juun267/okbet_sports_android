@@ -17,7 +17,6 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.jumpToDeposit
 import org.cxct.sportlottery.util.refreshMoneyLoading
 import org.cxct.sportlottery.util.startLogin
-import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import splitties.systemservices.layoutInflater
 
 class EndCardToolbarView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
@@ -40,7 +39,7 @@ class EndCardToolbarView @JvmOverloads constructor(context: Context, attrs: Attr
 
     private fun initView()=binding.run {
         ivRefresh.setOnClickListener { onRefreshMoney() }
-        ivDeposit.setOnClickListener { ToGcashDialog.showByClick { activity.jumpToDeposit() } }
+        ivDeposit.setOnClickListener { activity.jumpToDeposit() }
         btnLogin.setOnClickListener { context.startLogin() }
         btnRegister.setOnClickListener { LoginOKActivity.startRegist(context) }
         setupLogin()

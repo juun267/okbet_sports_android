@@ -165,7 +165,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             }
 
             RegisterSuccessDialog.buildRegisterSuccessDialog(PRIORITY_REGISTER_SUCCESS, fmProvider) {
-                getMainTabActivity().checkRechargeKYCVerify()
+                getMainTabActivity().jumpToDeposit()
             }?.let {
                 dialogQueueManager.enqueue(it)
             }
