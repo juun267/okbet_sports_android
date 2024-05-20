@@ -15,4 +15,12 @@ data class UserVip(
     val rewardInfo: List<RewardInfo>,
     val upgradeExp: Long,
     val birthday: String?=null
-): Parcelable
+): Parcelable{
+    fun getExpPercent():Int{
+       return if (upgradeExp==0L){
+            100
+        }else{
+           (exp*100/upgradeExp).toInt()
+        }
+    }
+}

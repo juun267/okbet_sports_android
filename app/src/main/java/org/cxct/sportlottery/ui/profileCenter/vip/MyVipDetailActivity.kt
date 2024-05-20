@@ -43,7 +43,7 @@ class MyVipDetailActivity: BaseActivity<VipViewModel,ActivityMyVipDetailBinding>
                 tvContent.text = getString(R.string.P396)
                 linStatus.setBackgroundResource(R.drawable.bg_vipdetails_orange)
                 tvTag.setBackgroundResource(R.drawable.bg_keepgrade_orange)
-                vpProgress.setProgress2((userVip.exp*100/userVip.upgradeExp).toInt())
+                vpProgress.setProgress2(userVip.getExpPercent())
                 tvAmount.text = (userVip.upgradeExp-userVip.exp).toString()
             }
             userVip.protectionStatus==1 || userVip.exp==userVip.protectionLevelGrowthValue-> {

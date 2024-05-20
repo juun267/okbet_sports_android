@@ -7,6 +7,7 @@
         android:id="@+id/linContent"
         android:layout_width="match_parent"
         android:layout_height="68dp"
+        android:background="@drawable/bg_white_radius_8"
         android:layout_marginTop="8dp"
         android:layout_marginHorizontal="12dp"
         app:layout_constraintTop_toTopOf="parent">
@@ -15,6 +16,7 @@
         android:id="@+id/ivBenefits"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:background="@drawable/bg_circle_f1f4fc"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="8dp"

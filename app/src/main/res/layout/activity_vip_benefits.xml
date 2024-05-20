@@ -139,6 +139,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="12dp"
                         android:text="@string/P368"
+                        android:textStyle="bold"
                         android:textColor="@color/color_0D2245"
                         android:textSize="16sp" />
 
@@ -172,6 +173,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="8dp"
                         android:text="@string/P370"
+                        android:textStyle="bold"
                         android:textColor="@color/color_0D2245"
                         android:textSize="16sp" />
 

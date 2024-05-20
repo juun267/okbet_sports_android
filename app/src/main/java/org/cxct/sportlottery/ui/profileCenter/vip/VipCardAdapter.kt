@@ -37,7 +37,7 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
         if (isCurrentLevel) {
             binding.tvCurrent.show()
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 12.dp
-            vipProgressView.setProgress2((userVip.exp*100/item.upgradeExp).toInt())
+            vipProgressView.setProgress2(userVip.getExpPercent())
             setProgress(userVip.exp, item.upgradeExp, binding.tvPercent)
         } else {
             binding.tvCurrent.hide()

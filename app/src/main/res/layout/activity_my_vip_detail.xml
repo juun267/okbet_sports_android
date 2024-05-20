@@ -95,7 +95,7 @@
                android:layout_height="wrap_content"
                android:layout_marginTop="@dimen/margin_4"
                android:textSize="@dimen/textSize14sp"
-               android:textColor="@color/color_999999"
+               android:textColor="@color/color_BEC7DC"
                android:text="@string/P419"/>
        </LinearLayout>
    </FrameLayout>
@@ -113,27 +113,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="@dimen/textSize18sp"
+            android:textSize="@dimen/textSize16sp"
             android:textColor="@color/color_0D2245"
             android:text="@string/P398"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_12"
+            android:lineHeight="20dp"
             android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_6D7693"
             android:text="@string/P399"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_16"
+            android:lineHeight="20dp"
             android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_6D7693"
             android:text="@string/P400"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_16"
+            android:lineHeight="20dp"
             android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_6D7693"
             android:text="@string/P401"/>

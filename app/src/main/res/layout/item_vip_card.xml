@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="27dp"
+            android:layout_marginTop="@dimen/margin_25"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/helvetica_bold"
             android:textColor="@color/color_0D2245"
@@ -36,9 +36,10 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="64dp"
             android:layout_marginEnd="123dp"
+            android:lineHeight="16dp"
             android:maxLines="2"
             android:fontFamily="@font/helvetica_normal"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:textColor="@color/color_6D7693"
             tools:text="Ang halaga ng paglago ay binabayaran sa 15:50 araw-araw"/>
         
@@ -52,6 +53,7 @@
             android:layout_marginBottom="27dp"
             android:fontFamily="@font/helvetica_bold"
             android:textColor="@color/color_0D2245"
+            android:textStyle="bold"
             android:textSize="16sp"
             tools:text="VIP 5"/>
 
@@ -69,6 +71,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/bg_gray_radius_10_f3f3f3"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="6dp"
             android:paddingHorizontal="6dp"
@@ -80,8 +83,8 @@
     <TextView
         android:id="@+id/tvCurrent"
         android:layout_width="94dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="18dp"
         android:gravity="center"
         android:background="@drawable/ic_vip_label_left"
         android:paddingBottom="3dp"

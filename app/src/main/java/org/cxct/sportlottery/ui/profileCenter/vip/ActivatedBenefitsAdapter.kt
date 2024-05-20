@@ -1,35 +1,20 @@
 package org.cxct.sportlottery.ui.profileCenter.vip
 
-import android.graphics.Color
-import android.util.Log
-import android.view.ViewGroup
 import android.widget.TextView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
-import org.cxct.sportlottery.common.adapter.BindingVH
 import org.cxct.sportlottery.common.enums.UserVipType
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemActivatedBenefitsBinding
-import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.RewardDetail
-import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 
 class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAdapter<RewardDetail, ItemActivatedBenefitsBinding>() {
 
-    private val bg by lazy { ShapeDrawable().setSolidColor(Color.WHITE).setRadius(8.dp.toFloat()) }
     private val bg0 by lazy { ShapeDrawable().setSolidColor(context.getColor(R.color.color_025BE8)).setRadius(8.dp.toFloat()) }
-    private val bg1 by lazy {
-        val dp40 = 40.dp
-        ShapeDrawable().setSolidColor(context.getColor(R.color.color_F1F4FC))
-            .setWidth(dp40)
-            .setHeight(dp40)
-            .setRadius(dp40.toFloat())
-    }
     private val weeklySurplus by lazy {
         val radius = 8.dp.toFloat()
         ShapeDrawable().setSolidColor(context.getColor(R.color.color_FF8A00))
@@ -42,17 +27,6 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
         notifyDataSetChanged()
     }
     var disableStatus: Boolean=false
-
-    override fun onCreateDefViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): BindingVH<ItemActivatedBenefitsBinding> {
-        val holder = super.onCreateDefViewHolder(parent, viewType)
-        holder.vb.linContent.background = bg
-        holder.vb.ivBenefits.background = bg1
-
-        return holder
-    }
 
     override fun onBinding(position: Int, binding: ItemActivatedBenefitsBinding, item: RewardDetail) = binding.run {
         tvWeeklySurplus.gone()

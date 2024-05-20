@@ -56,8 +56,7 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
             ivNextLevel.setLevelIcon(nextRewardInfo?.levelCode)
             tvNextLevel.text = nextRewardInfo?.levelName
         }
-
-        setProgress((userVip.exp*100/userVip.upgradeExp).toInt())
+        setProgress((userVip.getExpPercent()))
         val currentRewardInfo = userVip.rewardInfo.firstOrNull { it.levelCode == userVip.levelCode }
         currentRewardInfo?.let {
             ivLockPromote.setBenefitEnable(it, REWARD_TYPE_PROMOTE)
@@ -73,11 +72,7 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
 
     private fun ImageView.setBenefitEnable(rewardInfo: RewardInfo,rewardType: Int){
         val benefitDetail = rewardInfo.rewardDetail.firstOrNull{ it.rewardType==rewardType}
-        isVisible = if (benefitDetail==null){
-            false
-        }else{
-            benefitDetail.enable&&benefitDetail.status==7
-        }
+        isVisible = benefitDetail?.enable!=true
     }
 
 }

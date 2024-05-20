@@ -114,7 +114,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
             .setShadowOffsetX(1.dp)
             .setShadowOffsetY(1.dp)
             .setSolidColor(getColor(R.color.color_5182FF), getColor(R.color.color_0029FF))
-            .setSolidGradientOrientation(ShapeGradientOrientation.LEFT_TO_RIGHT)
+            .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
             .setRadius(8.dp.toFloat())
         frDetail.setOnClickListener {
             JumpUtil.toInternalWeb(this@VipBenefitsActivity,
