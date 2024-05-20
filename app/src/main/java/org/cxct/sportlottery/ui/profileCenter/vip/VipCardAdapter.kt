@@ -38,7 +38,11 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
             binding.tvCurrent.show()
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 12.dp
             vipProgressView.setProgress2(userVip.getExpPercent())
-            setProgress(userVip.exp, item.upgradeExp, binding.tvPercent)
+            if (item.levelCode==UserVipType.LEVEL_CODE_10){
+                setProgress(userVip.rewardInfo.getOrNull(9)?.upgradeExp?:userVip.exp, item.upgradeExp, binding.tvPercent)
+            }else{
+                setProgress(userVip.exp, item.upgradeExp, binding.tvPercent)
+            }
         } else {
             binding.tvCurrent.hide()
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 10.dp
@@ -49,7 +53,11 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
                 setProgress(item.upgradeExp, item.upgradeExp, binding.tvPercent)
             }else{
                 vipProgressView.setProgress2(0)
-                setProgress(0, item.upgradeExp, binding.tvPercent)
+                if (item.levelCode==UserVipType.LEVEL_CODE_10){
+                    setProgress(userVip.rewardInfo.getOrNull(9)?.upgradeExp?:0, item.upgradeExp, binding.tvPercent)
+                }else{
+                    setProgress(0, item.upgradeExp, binding.tvPercent)
+                }
             }
         }
 

@@ -7,7 +7,9 @@ import org.cxct.sportlottery.common.enums.UserVipType
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemActivatedBenefitsBinding
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.RewardDetail
+import org.cxct.sportlottery.net.user.data.UserVip
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
@@ -38,9 +40,13 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
             UserVipType.REWARD_TYPE_WEEKLY->{
                 ivBenefits.setImageResource(R.drawable.ic_vip_bonus_weekly)
                 tvBenefitsName.text = context.getString(R.string.P364)
-                tvWeeklySurplus.visible()
-                tvWeeklySurplus.background = weeklySurplus
-                tvWeeklySurplus.text = "${context.getString(R.string.P416)}: ${TextUtil.formatMoney(item.remainingWeekRedenpAmount)}"
+                if (disableStatus){
+                    tvWeeklySurplus.gone()
+                }else{
+                    tvWeeklySurplus.visible()
+                    tvWeeklySurplus.background = weeklySurplus
+                    tvWeeklySurplus.text = "${context.getString(R.string.P416)}: ${TextUtil.formatMoney(item.remainingWeekRedenpAmount)}"
+                }
             }
             UserVipType.REWARD_TYPE_BIRTHDAY->{
                 ivBenefits.setImageResource(R.drawable.ic_vip_bonus_birthday)
@@ -71,7 +77,11 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
                 tvAction.setActionBtn(false)
                 tvAction.text = context.getString(R.string.P375)
             }
-            5->{
+            3->{
+                tvAction.setActionBtn(false)
+                tvAction.text = context.getString(R.string.N417)
+            }
+            4,5->{
                 tvAction.setActionBtn(false)
                 tvAction.text = context.getString(R.string.P374)
             }

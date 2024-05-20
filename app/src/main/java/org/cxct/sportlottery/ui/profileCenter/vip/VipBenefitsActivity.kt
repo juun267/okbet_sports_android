@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.listener.CustomListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
+import kotlinx.android.synthetic.main.activity_vip_benefits.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.UserVipType
 import org.cxct.sportlottery.common.enums.UserVipType.setLevelTagIcon
@@ -160,6 +161,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         rcvUnactivatedBenefits.adapter = unActivatedAdapter
     }
     private fun setUpVipCard(userVip: UserVip){
+        LogUtil.toJson(userVip)
         vipCardAdapter.userVip = userVip
         vipCardAdapter.setList(userVip.rewardInfo)
         val selectPosition = userVip.rewardInfo.indexOfFirst {userVip.levelCode == it.levelCode }
@@ -199,6 +201,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
             binding.includeActivatedEmpty.root.isVisible = showEmpty
             val nextLevel = it.rewardInfo.getOrNull(position+1)
             unActivatedAdapter.setList(nextLevel?.rewardDetail?.filter { it.enable })
+            linUnactivated.isVisible = unActivatedAdapter.itemCount!=0
         }
     }
     fun onItemClick(rewardDetail: RewardDetail){

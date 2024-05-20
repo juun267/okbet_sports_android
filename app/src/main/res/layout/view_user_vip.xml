@@ -45,7 +45,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
-                    android:includeFontPadding="false"
                     android:textAllCaps="true"
                     android:text="vip 0"
                     android:textColor="@color/color_854C00"
@@ -94,7 +93,6 @@
                     android:id="@+id/tvNextLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
                     android:textAllCaps="true"
                     android:text="vip 1"
                     android:textColor="@color/color_854C00"
@@ -147,174 +145,16 @@
                 android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>
-
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvReward"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_12">
+            android:layout_marginTop="@dimen/margin_12"
+            android:orientation="horizontal"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_user_vip_reward"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/ivBonusPromote"
-                    android:layout_width="@dimen/margin_36"
-                    android:layout_height="@dimen/margin_36"
-                    android:src="@drawable/ic_vip_bonus_promote"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/ivLockPromote"
-                    android:layout_width="@dimen/margin_16"
-                    android:layout_height="@dimen/margin_16"
-                    android:layout_marginRight="-7dp"
-                    android:layout_marginBottom="-4dp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_vip_benefit_lock"
-                    app:layout_constraintBottom_toBottomOf="@id/ivBonusPromote"
-                    app:layout_constraintRight_toRightOf="@id/ivBonusPromote" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:gravity="center"
-                    android:text="@string/P363"
-                    android:textColor="@color/color_6D7693"
-                    android:textSize="@dimen/textSize10sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivBonusPromote" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_12"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/ivBonusBirthday"
-                    android:layout_width="@dimen/margin_36"
-                    android:layout_height="@dimen/margin_36"
-                    android:src="@drawable/ic_vip_bonus_birthday"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/ivLockBirthday"
-                    android:layout_width="@dimen/margin_16"
-                    android:layout_height="@dimen/margin_16"
-                    android:layout_marginRight="-7dp"
-                    android:layout_marginBottom="-4dp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_vip_benefit_lock"
-                    app:layout_constraintBottom_toBottomOf="@id/ivBonusBirthday"
-                    app:layout_constraintRight_toRightOf="@id/ivBonusBirthday" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:gravity="center"
-                    android:text="@string/P365"
-                    android:textColor="@color/color_6D7693"
-                    android:textSize="@dimen/textSize10sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivBonusBirthday" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_12"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/ivBonusWeekly"
-                    android:layout_width="@dimen/margin_36"
-                    android:layout_height="@dimen/margin_36"
-                    android:src="@drawable/ic_vip_bonus_weekly"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/ivLockWeekly"
-                    android:layout_width="@dimen/margin_16"
-                    android:layout_height="@dimen/margin_16"
-                    android:layout_marginRight="-7dp"
-                    android:layout_marginBottom="-4dp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_vip_benefit_lock"
-                    app:layout_constraintBottom_toBottomOf="@id/ivBonusWeekly"
-                    app:layout_constraintRight_toRightOf="@id/ivBonusWeekly" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:gravity="center"
-                    android:text="@string/P364"
-                    android:textColor="@color/color_6D7693"
-                    android:textSize="@dimen/textSize10sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivBonusWeekly" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_12"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/ivBonusPacket"
-                    android:layout_width="@dimen/margin_36"
-                    android:layout_height="@dimen/margin_36"
-                    android:src="@drawable/ic_vip_bonus_packet"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/ivLockPacket"
-                    android:layout_width="@dimen/margin_16"
-                    android:layout_height="@dimen/margin_16"
-                    android:layout_marginRight="-7dp"
-                    android:layout_marginBottom="-4dp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_vip_benefit_lock"
-                    app:layout_constraintBottom_toBottomOf="@id/ivBonusPacket"
-                    app:layout_constraintRight_toRightOf="@id/ivBonusPacket" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:gravity="center"
-                    android:text="@string/P366"
-                    android:textColor="@color/color_6D7693"
-                    android:textSize="@dimen/textSize10sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivBonusPacket" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 </merge>

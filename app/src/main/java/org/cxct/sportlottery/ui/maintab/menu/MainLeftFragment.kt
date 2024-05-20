@@ -159,17 +159,6 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
         }.apply {
             setVisibilityByMarketSwitch()
         }
-        menuVip.setItem(
-            cxt.getIconSelector(R.drawable.ic_left_menu_vip_sel, R.drawable.ic_left_menu_vip_sel),
-            R.string.P371
-        ){
-            loginedRun(requireContext()){
-                close()
-                startActivity(VipBenefitsActivity::class.java)
-            }
-        }.apply {
-            isVisible = StaticData.vipOpened()
-        }
         menuAffiliate.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),
             R.string.B015
@@ -181,6 +170,17 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             )
         }.apply {
             setVisibilityByMarketSwitch()
+        }
+        menuVip.setItem(
+            cxt.getIconSelector(R.drawable.ic_left_menu_vip_sel, R.drawable.ic_left_menu_vip_sel),
+            R.string.P371
+        ){
+            loginedRun(requireContext()){
+                close()
+                startActivity(VipBenefitsActivity::class.java)
+            }
+        }.apply {
+            isVisible = StaticData.vipOpened()
         }
         menuNews.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),

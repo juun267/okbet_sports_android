@@ -334,6 +334,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     private fun getUserInfo() {
         viewModel.getUserInfo()
+        vipViewModel.getUserVip()
     }
 
     private fun initObserve() {
