@@ -107,7 +107,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
         val cxt = binding.root.context
         menuPerya.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_perya_sel, R.drawable.ic_left_menu_perya_nor),
-            R.string.P160
+            R.string.P452
         ){
             close()
             getMainTabActivity().jumpToPerya()
