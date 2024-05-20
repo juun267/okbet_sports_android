@@ -87,6 +87,6 @@
         android:paddingBottom="3dp"
         android:textColor="@color/white"
         android:textSize="14sp"
-        android:text="current"/>
+        android:text="Current"/>
 
 </FrameLayout>

@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="68dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="8dp"
-    android:layout_marginHorizontal="12dp">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linContent"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="12dp"
+        app:layout_constraintTop_toTopOf="parent">
 
     <ImageView
         android:id="@+id/ivBenefits"
@@ -43,7 +48,6 @@
         android:textSize="16sp"
         android:textColor="@color/color_0D2245"
         android:text="999,999,900"/>
-
     <TextView
         android:id="@+id/tvAction"
         android:layout_width="88dp"
@@ -53,5 +57,18 @@
         android:textSize="14sp"
         android:gravity="center"
         android:text="claim"/>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tvWeeklySurplus"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:paddingHorizontal="6dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="4dp"
+        android:textSize="10sp"
+        android:textColor="@color/color_FFFFFF"
+        android:gravity="center"
+        android:text="claim"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

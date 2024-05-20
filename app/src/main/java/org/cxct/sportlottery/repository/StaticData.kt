@@ -157,7 +157,7 @@ class StaticData {
         fun isNeedOTPBank() = 1 == sConfigData?.isNeedOTPBank
 
         //是否显示vip相关页面
-        fun vipOpened():Boolean= sConfigData?.valvipVersionStatus == 1
+        fun vipOpened():Boolean= sConfigData?.vipVersionStatus == 1
     }
 
 }

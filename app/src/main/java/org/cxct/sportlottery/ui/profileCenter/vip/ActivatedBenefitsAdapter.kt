@@ -30,6 +30,11 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
             .setHeight(dp40)
             .setRadius(dp40.toFloat())
     }
+    private val weeklySurplus by lazy {
+        val radius = 8.dp.toFloat()
+        ShapeDrawable().setSolidColor(context.getColor(R.color.color_FF8A00))
+            .setRadius(radius,radius,0f,radius)
+    }
 
     var setBirthday: Boolean=false
     set(value) {
@@ -43,13 +48,14 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
         viewType: Int
     ): BindingVH<ItemActivatedBenefitsBinding> {
         val holder = super.onCreateDefViewHolder(parent, viewType)
-        holder.itemView.background = bg
+        holder.vb.linContent.background = bg
         holder.vb.ivBenefits.background = bg1
 
         return holder
     }
 
     override fun onBinding(position: Int, binding: ItemActivatedBenefitsBinding, item: RewardDetail) = binding.run {
+        tvWeeklySurplus.gone()
         when(item.rewardType){
             UserVipType.REWARD_TYPE_PROMOTE->{
                 ivBenefits.setImageResource(R.drawable.ic_vip_bonus_promote)
@@ -58,6 +64,9 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
             UserVipType.REWARD_TYPE_WEEKLY->{
                 ivBenefits.setImageResource(R.drawable.ic_vip_bonus_weekly)
                 tvBenefitsName.text = context.getString(R.string.P364)
+                tvWeeklySurplus.visible()
+                tvWeeklySurplus.background = weeklySurplus
+                tvWeeklySurplus.text = "${context.getString(R.string.P416)}: ${TextUtil.formatMoney(item.remainingWeekRedenpAmount)}"
             }
             UserVipType.REWARD_TYPE_BIRTHDAY->{
                 ivBenefits.setImageResource(R.drawable.ic_vip_bonus_birthday)
