@@ -171,7 +171,8 @@ class RecommendMiniGameHelper(private val context: Context,
             tab.customView = itemView.first
             tab.text = item.gameName
             itemView.third.text = item.gameName
-            itemView.second.load(item.imgGame)
+//            itemView.second.load(item.imgGame)
+            itemView.second.load(R.drawable.ic_minigame_dice)
         }
 
         tabMediator.attach()
@@ -229,31 +230,24 @@ class RecommendMiniGameHelper(private val context: Context,
                     holder.vb.vCover.show()
                 }
                 override fun onPlaying() {
-                    holder.vb.vCover.alpahAnimation(400, 1f, 0f) {
-                        holder.vb.vCover.hide()
-                        holder.vb.vCover.alpha = 1f
-                    }
+                    holder.vb.vCover.alpahAnimation(400, 1f, 0f)
                 }
                 override fun onPause() {
-                    holder.vb.vCover.show()
+                    holder.vb.vCover.alpha = 1f
                 }
                 override fun onPlayComplete() {
-                    holder.vb.vCover.show()
+                    holder.vb.vCover.alpha = 1f
                 }
                 override fun onError() {
-                    holder.vb.vCover.show()
+                    holder.vb.vCover.alpha = 1f
                 }
 
             })
             return holder
         }
 
-        override fun onBinding(position: Int, binding: ItemMinigameBinding, item: OKGameBean) { }
-
-        override fun convert(helper: BindingVH<ItemMinigameBinding>, item: OKGameBean) {
-            val binding = helper.vb
-            val position = helper.bindingAdapterPosition
-            binding.tvBetToWin.setOnClickListener { onClick.invoke(item) }
+        override fun onBinding(position: Int, binding: ItemMinigameBinding, item: OKGameBean) {
+            binding.vCover.setOnClickListener { onClick.invoke(item) }
             binding.tvJackPotAmount.setNumberString(item.jackpotAmount.toString())
 //            binding.vCover.load(item.imgGame, R.drawable.img_mini_game_cover)
             with(binding.videoPlayer.tag as GSYVideoOptionBuilder) {
