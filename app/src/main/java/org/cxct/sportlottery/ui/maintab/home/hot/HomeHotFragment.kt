@@ -105,6 +105,13 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType, this@HomeHotFragment)
         okLiveView.setUp(this@HomeHotFragment)
         providerView.setup(this@HomeHotFragment) {
+            if (it.gameEntryTypeEnum == GameEntryType.MINIGAMES) {
+                OKGamesViewModel.getActiveMiniGameData(Long.MAX_VALUE)?.first()?.let {
+                    getMainTabActivity().enterThirdGame(it)
+                }
+                return@setup
+            }
+
             if (it.gameEntryTypeEnum == GameEntryType.OKGAMES) {
                 getMainTabActivity().jumpToOKGames()
                 providerView.postDelayed(500) {
