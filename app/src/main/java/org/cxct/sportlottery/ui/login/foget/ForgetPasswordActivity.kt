@@ -216,7 +216,9 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPasswor
     override fun onVerifySucceed(identity: String, validCode: String, tag: String?) {
         with(binding) {
             sendCode(identity, validCode)
-            eetSmsCode.requestFocus()
+            eetSmsCode.setText("")
+            binding.etSmsValidCode.setError(null, true)
+//            eetSmsCode.requestFocus()
         }
     }
 
