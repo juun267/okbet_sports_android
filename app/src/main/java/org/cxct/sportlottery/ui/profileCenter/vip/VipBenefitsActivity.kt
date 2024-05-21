@@ -188,8 +188,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
             if (currentRewardInfo?.expressWithdrawal==true){
                 activatedAdapter.addData(RewardDetail(otherType = 2))
             }
-            val showEmpty = activatedAdapter.itemCount==0 && !activatedAdapter.hasFooterLayout()
-            binding.includeActivatedEmpty.root.isVisible = showEmpty
+            binding.includeActivatedEmpty.root.isVisible = activatedAdapter.itemCount==0
             val nextLevel = it.rewardInfo.getOrNull(position+1)
             unActivatedAdapter.setList(nextLevel?.rewardDetail?.filter { it.enable })
             if (nextLevel?.exclusiveService==true){
