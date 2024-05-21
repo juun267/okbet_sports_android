@@ -57,7 +57,6 @@
                    android:id="@+id/tvContent"
                    android:layout_width="200dp"
                    android:layout_height="wrap_content"
-                   android:includeFontPadding="false"
                    android:lineHeight="16dp"
                    android:textSize="@dimen/textSize14sp"
                    android:textColor="@color/color_0D2245"

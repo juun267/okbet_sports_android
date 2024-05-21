@@ -32,6 +32,21 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
 
     override fun onBinding(position: Int, binding: ItemActivatedBenefitsBinding, item: RewardDetail) = binding.run {
         tvWeeklySurplus.gone()
+        if (item.otherType==1){
+            ivBenefits.setImageResource(R.drawable.ic_vip_bonus_support)
+            tvBenefitsName.text = context.getString(R.string.P402)
+            tvAmount.text = "24x7"
+            tvAction.gone()
+            return@run
+        }
+        if (item.otherType==2){
+            ivBenefits.setImageResource(R.drawable.ic_vip_bonus_disbursement)
+            tvBenefitsName.text = context.getString(R.string.P404)
+            tvAmount.text = context.getString(R.string.P411)
+            tvAction.gone()
+            return@run
+        }
+
         when(item.rewardType){
             UserVipType.REWARD_TYPE_PROMOTE->{
                 ivBenefits.setImageResource(R.drawable.ic_vip_bonus_promote)

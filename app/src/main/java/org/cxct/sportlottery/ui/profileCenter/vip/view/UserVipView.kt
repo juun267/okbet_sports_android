@@ -38,7 +38,7 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
 
     init {
         binding.vipProgressView.setYellowStyle()
-        setProgress(0)
+        setProgress(0.0)
     }
 
     fun setup(fragment: ProfileCenterFragment,viewModel: VipViewModel) {
@@ -53,7 +53,7 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
         val nextRewardInfo = userVip.rewardInfo.getOrNull(nextLevelIndex)
         if (nextLevelIndex>=userVip.rewardInfo.size){
             ivNextLevel.gone()
-            tvNextLevel.text = resources.getString(R.string.P439)
+            tvNextLevel.text = "Max"
         }else{
             ivNextLevel.visible()
             ivNextLevel.setLevelIcon(nextRewardInfo?.levelCode)
@@ -69,7 +69,7 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
         rewardAdapter.setList(items)
     }
 
-    private fun setProgress(progress: Int) {
+    private fun setProgress(progress: Double) {
         binding.vipProgressView.setProgress(progress)
     }
 

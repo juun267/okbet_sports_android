@@ -158,7 +158,7 @@ data class ConfigData(
     val bkFinalScoreNewGameplaySwitch:Int=0,//篮球末尾比分新玩法 0-关，1-开
     val servicePhoneNationNumber: String?=null, //客服专线国家码
     val servicePhoneNumber: String?=null, //客服专线
-    val vipVersionStatus:Int=1,//是否开启用户VIP功能 0-关，1-开
+    val vipSwitch:Int=1,//是否开启用户VIP功能 0-关，1-开
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

@@ -126,13 +126,13 @@
                 android:paddingHorizontal="12dp"/>
 
             <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuVip"
+                android:id="@+id/menuAffiliate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="12dp"/>
 
             <org.cxct.sportlottery.view.MainMenuItemView
-                android:id="@+id/menuAffiliate"
+                android:id="@+id/menuVip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="12dp"/>

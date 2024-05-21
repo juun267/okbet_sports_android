@@ -35,6 +35,16 @@ class MyVipDetailActivity: BaseActivity<VipViewModel,ActivityMyVipDetailBinding>
                 linStatus.setBackgroundResource(R.drawable.bg_white_radius_12)
                 tvTag.setBackgroundResource(R.drawable.bg_keepgrade_gray)
             }
+            userVip.protectionStatus==1-> {
+                linContent.visible()
+                linEmpty.gone()
+                tvAmount.gone()
+                tvContent.text = getString(R.string.P397)
+                linStatus.setBackgroundResource(R.drawable.bg_vipdetails_blue)
+                tvTag.setBackgroundResource(R.drawable.bg_keepgrade_blue)
+                vpProgress.setTintColor(R.color.color_025BE8,R.color.color_19025BE8)
+                vpProgress.setProgress2(100.0)
+            }
             userVip.exp < userVip.protectionLevelGrowthValue-> {
                 linContent.visible()
                 linEmpty.gone()
@@ -43,17 +53,7 @@ class MyVipDetailActivity: BaseActivity<VipViewModel,ActivityMyVipDetailBinding>
                 tvContent.text = getString(R.string.P396)
                 linStatus.setBackgroundResource(R.drawable.bg_vipdetails_orange)
                 tvTag.setBackgroundResource(R.drawable.bg_keepgrade_orange)
-                vpProgress.setProgress2((userVip.exp*100/userVip.protectionLevelGrowthValue).toInt())
-            }
-            userVip.protectionStatus==1 || userVip.exp==userVip.protectionLevelGrowthValue-> {
-                linContent.visible()
-                linEmpty.gone()
-                tvAmount.gone()
-                tvContent.text = getString(R.string.P397)
-                linStatus.setBackgroundResource(R.drawable.bg_vipdetails_blue)
-                tvTag.setBackgroundResource(R.drawable.bg_keepgrade_blue)
-                vpProgress.setTintColor(R.color.color_025BE8,R.color.color_19025BE8)
-                vpProgress.setProgress2(100)
+                vpProgress.setProgress2((userVip.exp*100/userVip.protectionLevelGrowthValue).toDouble())
             }
         }
     }

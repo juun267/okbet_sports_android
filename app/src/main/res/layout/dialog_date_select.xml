@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Birthday"
+            android:text="@string/P382"
             android:textColor="@color/color_414655"
             android:textSize="16sp" />
 

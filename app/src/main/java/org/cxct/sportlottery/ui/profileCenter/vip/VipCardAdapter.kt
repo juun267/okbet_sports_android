@@ -49,10 +49,10 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
             val currentLevelIndex = userVip.rewardInfo.indexOfFirst { it.levelCode == item.levelCode }
             val userLevelIndex = userVip.rewardInfo.indexOfFirst { it.levelCode == userVip.levelCode }
             if (userLevelIndex>currentLevelIndex){
-                vipProgressView.setProgress2(100)
+                vipProgressView.setProgress2(100.0)
                 setProgress(item.upgradeExp, item.upgradeExp, binding.tvPercent)
             }else{
-                vipProgressView.setProgress2(0)
+                vipProgressView.setProgress2(0.0)
                 if (item.levelCode==UserVipType.LEVEL_CODE_10){
                     setProgress(userVip.rewardInfo.getOrNull(9)?.upgradeExp?:0, item.upgradeExp, binding.tvPercent)
                 }else{
@@ -65,7 +65,7 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
         card.setBackgroundResource(UserVipType.getVipCard(position))
 
         tvLevel.text = item.levelName
-        tvNextLevel.text = getItemOrNull(position+1)?.levelName?:context.getString(R.string.P439)
+        tvNextLevel.text = getItemOrNull(position+1)?.levelName?:"Max"
     }
 
     private fun setProgress(progress: Long, max: Long, progressText: TextView) {

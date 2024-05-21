@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/tvProgress"
-        android:layout_width="38dp"
+        android:layout_width="42dp"
         android:layout_height="wrap_content"
         android:paddingHorizontal="2dp"
         android:paddingTop="@dimen/margin_1"

@@ -16,6 +16,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ActivityVipBenefitsBinding
 import org.cxct.sportlottery.databinding.ItemActivatedBenefitsBinding
+import org.cxct.sportlottery.databinding.ItemUnactivatedBenefitsBinding
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.RewardDetail
 import org.cxct.sportlottery.net.user.data.RewardInfo
@@ -180,27 +181,23 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
             activatedAdapter.removeAllFooterView()
             val currentRewardInfo = it.rewardInfo.getOrNull(position)
             activatedAdapter.disableStatus = currentRewardInfo?.levelCode!=userRewardInfo?.levelCode
-            activatedAdapter.setList(currentRewardInfo?.rewardDetail?.filter { it.enable })
+            activatedAdapter.setList(currentRewardInfo?.rewardDetail?.filter { it.enable }?.toMutableList())
             if (currentRewardInfo?.exclusiveService==true){
-                val exclusiveBinding = ItemActivatedBenefitsBinding.inflate(layoutInflater)
-                exclusiveBinding.ivBenefits.setImageResource(R.drawable.ic_vip_bonus_support)
-                exclusiveBinding.tvBenefitsName.text = getString(R.string.P402)
-                exclusiveBinding.tvAmount.text = "24x7"
-                exclusiveBinding.tvAction.gone()
-                activatedAdapter.addFooterView(exclusiveBinding.root)
+                activatedAdapter.addData(RewardDetail(otherType = 1))
             }
             if (currentRewardInfo?.expressWithdrawal==true){
-                val withdrawalBinding = ItemActivatedBenefitsBinding.inflate(layoutInflater)
-                withdrawalBinding.ivBenefits.setImageResource(R.drawable.ic_vip_bonus_disbursement)
-                withdrawalBinding.tvBenefitsName.text = getString(R.string.P404)
-                withdrawalBinding.tvAmount.text = getString(R.string.P411)
-                withdrawalBinding.tvAction.gone()
-                activatedAdapter.addFooterView(withdrawalBinding.root)
+                activatedAdapter.addData(RewardDetail(otherType = 2))
             }
             val showEmpty = activatedAdapter.itemCount==0 && !activatedAdapter.hasFooterLayout()
             binding.includeActivatedEmpty.root.isVisible = showEmpty
             val nextLevel = it.rewardInfo.getOrNull(position+1)
             unActivatedAdapter.setList(nextLevel?.rewardDetail?.filter { it.enable })
+            if (nextLevel?.exclusiveService==true){
+                unActivatedAdapter.addData(RewardDetail(otherType = 1))
+            }
+            if (nextLevel?.expressWithdrawal==true){
+                unActivatedAdapter.addData(RewardDetail(otherType = 2))
+            }
             linUnactivated.isVisible = unActivatedAdapter.itemCount!=0
         }
     }
@@ -272,7 +269,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         dateTimePicker?.show()
     }
     fun setBirthday(date: Date){
-        TimeUtil.dateToStringFormatYMD(date)?.let {
+        TimeUtil.dateToFormat(date,TimeUtil.YMD_FORMAT_2)?.let {
             loading()
             viewModel.setBirthday(it)
         }

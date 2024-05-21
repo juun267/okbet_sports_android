@@ -14,8 +14,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.getColor
 import org.cxct.sportlottery.databinding.ViewVipProgressBinding
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import splitties.systemservices.layoutInflater
+import java.math.BigDecimal
 
 class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
@@ -27,11 +29,11 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
         orientation = VERTICAL
     }
 
-    fun setProgress(progress:Int) {
+    fun setProgress(progress:Double) {
 
-        binding.tvProgress.text = "$progress%"
+        binding.tvProgress.text = "${getProgressText(progress)}%"
         post {
-            val leftMargin = binding.progressBar.marginLeft - binding.ivThumb.width/2 + binding.progressBar.measuredWidth * progress / 100
+            val leftMargin = binding.progressBar.marginLeft - binding.ivThumb.width/2 + binding.progressBar.measuredWidth * progress.toInt() / 100
             binding.tvProgress.apply {
                 val lp = layoutParams as LayoutParams
                 lp.setMargins(leftMargin - 5.dp, 0, 0, 0)
@@ -44,17 +46,17 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
                 binding.ivThumb.layoutParams = lp
             }
 
-            binding.progressBar.setProgress(progress,true)
+            binding.progressBar.setProgress(progress.toInt(),true)
         }
     }
 
-    fun setProgress2(progress:Int) {
+    fun setProgress2(progress:Double) {
 
-        val offset = if (progress < 90) 5.dp else 24.dp
-        binding.tvProgress.text = "$progress%"
+        val offset = if (progress < 90) 3.dp else 28.dp
+        binding.tvProgress.text = "${getProgressText(progress)}%"
         binding.tvProgress.background = if (progress < 90) leftProgress else rightProgress
         post {
-            val leftMargin = binding.progressBar.marginLeft - binding.ivThumb.width/2 + binding.progressBar.measuredWidth * progress / 100
+            val leftMargin = binding.progressBar.marginLeft - binding.ivThumb.width/2 + binding.progressBar.measuredWidth * progress.toInt() / 100
             binding.tvProgress.apply {
                 val lp = layoutParams as LayoutParams
                 lp.setMargins(leftMargin - offset, 0, 0, 0)
@@ -67,7 +69,7 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
                 binding.ivThumb.layoutParams = lp
             }
 
-            binding.progressBar.setProgress(progress,true)
+            binding.progressBar.setProgress(progress.toInt(),true)
         }
     }
 
@@ -101,8 +103,15 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
         tvProgress.textSize = 10f
         tvProgress.setTextColor(Color.WHITE)
         val lp = tvProgress.layoutParams
-        lp.width = 38.dp
+        lp.width = 42.dp
         lp.height = 30.dp
     }
-
+    //如果是整数就不显示小数点
+   private fun getProgressText(progress: Double): String{
+       return if (progress.toInt().toDouble()==progress){
+           progress.toInt().toString()
+       }else{
+           progress.toString()
+       }
+   }
 }
