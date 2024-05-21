@@ -90,7 +90,7 @@ open class SportVenueFragment<VM : BaseViewModel, VB> :
                     return
                 }
 
-                when (val selectItem = sportTypeAdapter.data[firstItemPosition]) {
+                when (val selectItem = sportTypeAdapter.getItemOrNull(firstItemPosition)) {
                     is SportGroup -> matchTabAdapter.data.indexOfFirst { selectItem.name == it.first }
                     is Item -> matchTabAdapter.data.indexOfFirst {
                         it.second.items.contains(selectItem)
