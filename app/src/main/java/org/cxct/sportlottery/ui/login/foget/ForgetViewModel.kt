@@ -20,7 +20,7 @@ class ForgetViewModel(
         get() = _smsResult
     private val _smsResult = MutableLiveData<SendSmsResult?>()
     //短信验证码返回值
-    val smsCodeResult: LiveData<NetResult?>
+    private val smsCodeResult: LiveData<NetResult?>
         get() = _smsCodeResult
     private val _smsCodeResult = MutableLiveData<NetResult?>()
     //重设密码数据
@@ -89,12 +89,15 @@ class ForgetViewModel(
 
     }
     //提交密码
-    fun resetPassword(userName: String, confirmPassword :String,
-                      newPassword: String){
+    fun resetPassword(userName: String,
+                      confirmPassword :String,
+                      newPassword: String,
+                      phoneNumber: String?,
+                      code: String?){
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.resetPassWord(
-                    ResetPasswordRequest(userName,confirmPassword,newPassword)
+                    ResetPasswordRequest(userName,confirmPassword,newPassword, phoneNumber, code)
                 )
             }
 

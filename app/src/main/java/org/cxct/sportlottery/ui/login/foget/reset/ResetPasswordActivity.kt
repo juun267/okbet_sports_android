@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.login.foget.reset
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.widget.EditText
 import androidx.core.view.isVisible
@@ -16,7 +15,6 @@ import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
-import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 
 /**
  * @app_destination 忘记密码
@@ -25,16 +23,23 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBi
 
     companion object {
 
-        fun start(activity: Activity, userName: String, byPhoneNumber: Boolean = true) {
+        fun start(activity: Activity, userName: String,
+                  phoneNumber: String?,
+                  code: String?,
+                  byPhoneNumber: Boolean = true) {
             val intent = Intent(activity, ResetPasswordActivity::class.java)
             intent.putExtra("userName", userName)
             intent.putExtra("byPhoneNumber", byPhoneNumber)
+            intent.putExtra("phoneNumber", phoneNumber)
+            intent.putExtra("code", code)
             activity.startActivityForResult(intent, 100)
         }
     }
 
     private val userName by lazy { "${intent.getSerializableExtra("userName")}" }
     private val byPhoneNumber by lazy { intent.getBooleanExtra("byPhoneNumber", true) }
+    private val phone by lazy { intent.getStringExtra("phoneNumber") }
+    private val code by lazy { intent.getStringExtra("code") }
 
     override fun onInitView() {
         setStatusBarDarkFont()
@@ -80,9 +85,8 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBi
         val otherInput = otherEditText.text.toString()
 
         val msg = when {
-            input.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwd(input) ->
-                LocalUtils.getString(R.string.error_register_password)
+            input.isNullOrEmpty() -> getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPwd(input) -> getString(R.string.error_register_password)
             else -> null
         }
 
@@ -103,7 +107,7 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBi
             return true
         }
 
-        fieldBox.setError(LocalUtils.getString(R.string.error_tips_confirm_password), false)
+        fieldBox.setError(getString(R.string.error_tips_confirm_password), false)
         return false
     }
 
@@ -116,7 +120,7 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBi
         val confirmPassword = binding.eetConfirmPasswordForget.text.toString()
         val newPassword = binding.eetLoginPasswordForget.text.toString()
         if (confirmPassword != newPassword) {
-            ToastUtil.showToast(this, LocalUtils.getString(R.string.error_tips_confirm_password))
+            ToastUtil.showToast(this, getString(R.string.error_tips_confirm_password))
             return
         }
 
@@ -126,7 +130,7 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBi
         val encodedPassword = MD5Util.MD5Encode(confirmPassword)
 
         if (byPhoneNumber) {
-            viewModel.resetPassword(userName, encodedPassword, encodedPassword)
+            viewModel.resetPassword(userName, encodedPassword, encodedPassword, phone, code)
         } else {
             viewModel.resetPassWorkByEmail(userName, encodedPassword)
         }
