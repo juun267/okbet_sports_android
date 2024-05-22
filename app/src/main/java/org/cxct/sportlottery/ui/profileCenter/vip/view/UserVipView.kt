@@ -53,7 +53,7 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
         val nextRewardInfo = userVip.rewardInfo.getOrNull(nextLevelIndex)
         if (nextLevelIndex>=userVip.rewardInfo.size){
             ivNextLevel.gone()
-            tvNextLevel.text = "Max"
+            tvNextLevel.text = context.getString(R.string.max)
         }else{
             ivNextLevel.visible()
             ivNextLevel.setLevelIcon(nextRewardInfo?.levelCode)

@@ -38,37 +38,31 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
             binding.tvCurrent.show()
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 12.dp
             vipProgressView.setProgress2(userVip.getExpPercent())
-            if (item.levelCode==UserVipType.LEVEL_CODE_10){
-                setProgress(userVip.rewardInfo.getOrNull(9)?.upgradeExp?:userVip.exp, item.upgradeExp, binding.tvPercent)
-            }else{
-                setProgress(userVip.exp, item.upgradeExp, binding.tvPercent)
-            }
-        } else {
+            setProgress(userVip.exp.toString(), item.upgradeExp.toString(), binding.tvPercent)
+        }else{
             binding.tvCurrent.hide()
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 10.dp
             val currentLevelIndex = userVip.rewardInfo.indexOfFirst { it.levelCode == item.levelCode }
             val userLevelIndex = userVip.rewardInfo.indexOfFirst { it.levelCode == userVip.levelCode }
             if (userLevelIndex>currentLevelIndex){
                 vipProgressView.setProgress2(100.0)
-                setProgress(item.upgradeExp, item.upgradeExp, binding.tvPercent)
+                setProgress(item.upgradeExp.toString(), item.upgradeExp.toString(), binding.tvPercent)
             }else{
                 vipProgressView.setProgress2(0.0)
-                if (item.levelCode==UserVipType.LEVEL_CODE_10){
-                    setProgress(userVip.rewardInfo.getOrNull(9)?.upgradeExp?:0, item.upgradeExp, binding.tvPercent)
-                }else{
-                    setProgress(0, item.upgradeExp, binding.tvPercent)
-                }
+                setProgress("0", item.upgradeExp.toString(), binding.tvPercent)
             }
         }
-
+        if (item.levelCode==UserVipType.LEVEL_CODE_10){
+            setProgress(if (isCurrentLevel) userVip.exp.toString() else "0", context.getString(R.string.max), binding.tvPercent)
+        }
         tvDescribe.text = context.getString(R.string.P443)
         card.setBackgroundResource(UserVipType.getVipCard(position))
 
         tvLevel.text = item.levelName
-        tvNextLevel.text = getItemOrNull(position+1)?.levelName?:"Max"
+        tvNextLevel.text = getItemOrNull(position+1)?.levelName?:context.getString(R.string.max)
     }
 
-    private fun setProgress(progress: Long, max: Long, progressText: TextView) {
+    private fun setProgress(progress: String, max: String, progressText: TextView) {
         progressText.text = "$progress/"
             .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
             .addSpan("$max", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))

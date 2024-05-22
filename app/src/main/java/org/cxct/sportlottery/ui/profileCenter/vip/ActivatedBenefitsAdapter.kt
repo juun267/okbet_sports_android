@@ -60,7 +60,10 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
                 }else{
                     tvWeeklySurplus.visible()
                     tvWeeklySurplus.background = weeklySurplus
-                    tvWeeklySurplus.text = "${context.getString(R.string.P416)}: ${TextUtil.formatMoney(item.remainingWeekRedenpAmount)}"
+                    tvWeeklySurplus.text = if (item.remainingWeekRedenpAmount==0.0)
+                        context.getString(R.string.P415)
+                    else
+                        "${context.getString(R.string.P416)}: ${TextUtil.formatMoney(item.remainingWeekRedenpAmount)}"
                 }
             }
             UserVipType.REWARD_TYPE_BIRTHDAY->{
