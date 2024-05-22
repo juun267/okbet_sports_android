@@ -95,13 +95,9 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         tvGrowth.setOnClickListener { startActivity<MyVipDetailActivity>() }
         UserInfoRepository.loginedInfo()?.let {
             ivProfile.circleOf(it.iconUrl, R.drawable.ic_person_avatar)
-            tvUserName.text = if (it.nickName.isNullOrEmpty()) {
-                it.userName
-            } else {
-                it.nickName
-            }
+            tvNickName.text = if (it.nickName.isNullOrEmpty()) it.userName else it.nickName
             ivLVTips.setLevelTagIcon(it.levelCode)
-            tvId.text = "ID：${it?.userId}"
+            tvUserName.text = "${getString(R.string.username)}：${it?.userName}"
         }
         llBottom.background = ShapeDrawable().setSolidColor(getColor(R.color.color_F8F9FD)).setRadius(24.dp.toFloat(), 0f, 0f, 0f)
         val dp37 = 37.dp.toFloat()

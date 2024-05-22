@@ -74,7 +74,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linTitle" />
 
         <TextView
-            android:id="@+id/tvUserName"
+            android:id="@+id/tvNickName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -94,15 +94,15 @@
             android:layout_marginLeft="-2dp"
             android:src="@drawable/ic_vip_lv_tag10"
             app:layout_constraintBottom_toBottomOf="@+id/ivProfile"
-            app:layout_constraintStart_toStartOf="@+id/tvUserName" />
+            app:layout_constraintStart_toStartOf="@+id/tvNickName" />
 
         <TextView
-            android:id="@+id/tvId"
+            android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginStart="4dp"
             android:gravity="center_vertical"
-            android:text="ID: 88888888"
+            android:text="@string/username"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/ivLVTips"
