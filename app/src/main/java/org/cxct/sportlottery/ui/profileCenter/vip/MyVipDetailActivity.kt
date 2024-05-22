@@ -8,8 +8,10 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMyVipDetailBinding
 import org.cxct.sportlottery.net.user.data.UserVip
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LogUtil
+import java.math.RoundingMode
 
 class MyVipDetailActivity: BaseActivity<VipViewModel,ActivityMyVipDetailBinding>() {
 
@@ -53,7 +55,7 @@ class MyVipDetailActivity: BaseActivity<VipViewModel,ActivityMyVipDetailBinding>
                 tvContent.text = getString(R.string.P396)
                 linStatus.setBackgroundResource(R.drawable.bg_vipdetails_orange)
                 tvTag.setBackgroundResource(R.drawable.bg_keepgrade_orange)
-                var progress = (userVip.exp * 100 / userVip.protectionLevelGrowthValue).toDouble()
+                var progress = ArithUtil.div(ArithUtil.mul(userVip.exp.toDouble(),100.0), userVip.protectionLevelGrowthValue.toDouble(),1,RoundingMode.DOWN)
                     .coerceAtMost(100.0)
                 vpProgress.setProgress2(progress)
             }
