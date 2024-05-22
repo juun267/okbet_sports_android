@@ -51,7 +51,7 @@ class MyVipDetailActivity: BaseActivity<VipViewModel,ActivityMyVipDetailBinding>
                 linContent.visible()
                 linEmpty.gone()
                 tvAmount.visible()
-                tvAmount.text = (userVip.protectionLevelGrowthValue-userVip.exp).toString()
+                tvAmount.text = (userVip.protectionLevelGrowthValue - userVip.exp).coerceAtLeast(0).toString()
                 tvContent.text = getString(R.string.P396)
                 linStatus.setBackgroundResource(R.drawable.bg_vipdetails_orange)
                 tvTag.setBackgroundResource(R.drawable.bg_keepgrade_orange)

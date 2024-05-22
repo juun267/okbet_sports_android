@@ -68,23 +68,27 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         viewModel.setBirthdayEvent.observe(this){
             hideLoading()
             toast(it.msg)
-            if (it.succeeded()){
+            if (it.succeeded()) {
                 activatedAdapter.setBirthday = false
                 reload()
             }
         }
         viewModel.vipRewardEvent.observe(this){
             hideLoading()
-            toast(it.msg)
             if (it.succeeded()){
+                toast(getString(R.string.P454))
                 reload()
+            }else{
+                toast(it.msg)
             }
         }
         viewModel.applyResultEvent.observe(this){
             hideLoading()
-            toast(it.msg)
             if (it.succeeded()){
+                toast(getString(R.string.P453))
                 reload()
+            }else{
+                toast(it.msg)
             }
         }
     }

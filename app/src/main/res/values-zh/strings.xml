@@ -1764,4 +1764,6 @@
     <string name="P450">当前所选日期</string>
     <string name="P451">确认后将不可修改</string>
     <string name="LT002">返回</string>
+    <string name="P453">申请成功</string>
+    <string name="P454">领取成功</string>
 </resources>

@@ -1708,5 +1708,7 @@
     <string name="P450">Ngày tháng đã chọn hiện tại</string>
     <string name="P451">Sau khi xác nhận không thể thay đổi</string>
     <string name="LT002">Quay lại</string>
+    <string name="P453">Yêu cầu thành công</string>
+    <string name="P454">Nhận thành công</string>
 
 </resources>

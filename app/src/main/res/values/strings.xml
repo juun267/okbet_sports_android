@@ -1838,5 +1838,7 @@
     <string name="P450">Current selected date</string>
     <string name="P451">No modification will be allowed after confirmation.</string>
     <string name="LT002">Return</string>
+    <string name="P453">Application successful</string>
+    <string name="P454">Received successfully</string>
 
 </resources>
