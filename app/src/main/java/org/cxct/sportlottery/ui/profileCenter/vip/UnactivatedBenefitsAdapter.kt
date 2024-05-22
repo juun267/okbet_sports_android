@@ -42,6 +42,6 @@ class UnactivatedBenefitsAdapter: BindingAdapter<RewardDetail, ItemUnactivatedBe
                 tvBenefitsName.text = context.getString(R.string.P366)
             }
         }
-        tvAmount.text = TextUtil.formatMoney(item.value)
+        tvAmount.text = TextUtil.formatMoney(item.value,0)
     }
 }

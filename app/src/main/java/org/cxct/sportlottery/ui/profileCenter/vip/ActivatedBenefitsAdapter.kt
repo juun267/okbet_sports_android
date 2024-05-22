@@ -72,7 +72,7 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
                 tvBenefitsName.text = context.getString(R.string.P366)
             }
         }
-        tvAmount.text = TextUtil.formatMoney(item.value)
+        tvAmount.text = TextUtil.formatMoney(item.value,0)
         if(disableStatus){
             tvAction.gone()
             return

@@ -67,27 +67,24 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         }
         viewModel.setBirthdayEvent.observe(this){
             hideLoading()
+            toast(it.msg)
             if (it.succeeded()){
                 activatedAdapter.setBirthday = false
                 reload()
-            }else{
-                toast(it.msg)
             }
         }
         viewModel.vipRewardEvent.observe(this){
             hideLoading()
+            toast(it.msg)
             if (it.succeeded()){
                 reload()
-            }else{
-                toast(it.msg)
             }
         }
         viewModel.applyResultEvent.observe(this){
             hideLoading()
+            toast(it.msg)
             if (it.succeeded()){
                 reload()
-            }else{
-                toast(it.msg)
             }
         }
     }
@@ -162,7 +159,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         rcvUnactivatedBenefits.adapter = unActivatedAdapter
     }
     private fun setUpVipCard(userVip: UserVip){
-        LogUtil.toJson(userVip)
+//        LogUtil.toJson(userVip)
         vipCardAdapter.userVip = userVip
         vipCardAdapter.setList(userVip.rewardInfo)
         val selectPosition = userVip.rewardInfo.indexOfFirst {userVip.levelCode == it.levelCode }

@@ -88,6 +88,7 @@ class VipProgressView(context: Context, attrs: AttributeSet) : LinearLayout(cont
     }
     fun setYellowStyle()=binding.run{
         setTintColor(R.color.color_FFB828, R.color.color_eed39f)
+        setThumbColor(R.color.color_FFB828)
         tvProgress.setTextColor(Color.WHITE)
         tvProgress.gravity = Gravity.CENTER_HORIZONTAL
         progressBar.apply {
