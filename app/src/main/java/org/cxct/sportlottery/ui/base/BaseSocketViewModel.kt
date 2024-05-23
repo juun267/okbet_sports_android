@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.*
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -129,6 +130,7 @@ abstract class BaseSocketViewModel(
         InfoCenterRepository.clear()
         //退出登入後盤口回到預設
         updateDefaultHandicapType()
+        UserRepository.clear()
     }
 
     fun checkIsUserAlive() {

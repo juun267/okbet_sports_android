@@ -287,16 +287,20 @@ fun TextView.setTitleLetterSpacing2F() {
 }
 
 
-fun loginedRun(context: Context, block: () -> Unit): Boolean {
+fun loginedRun(context: Context, jumpToLoginPage: Boolean = false, block: () -> Unit): Boolean {
     if (LoginRepository.isLogined()) {
         block.invoke()
         return true
     }
-    if (context is FragmentActivity){
-         context.showLoginSnackbar()
-        return false
+    if (jumpToLoginPage){
+        context.startActivity(Intent(context, LoginOKActivity::class.java))
+    }else{
+        if (context is FragmentActivity){
+            context.showLoginSnackbar()
+            return false
+        }
+        context.startActivity(Intent(context, LoginOKActivity::class.java))
     }
-    context.startActivity(Intent(context, LoginOKActivity::class.java))
     return false
 }
 

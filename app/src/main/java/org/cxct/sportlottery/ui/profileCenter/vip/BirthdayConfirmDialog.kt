@@ -4,7 +4,7 @@ import android.os.Bundle
 import org.cxct.sportlottery.databinding.ViewBirthdayConfirmBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import java.text.SimpleDateFormat
+import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
 class BirthdayConfirmDialog: BaseDialog<VipViewModel,ViewBirthdayConfirmBinding>() {
@@ -21,11 +21,7 @@ class BirthdayConfirmDialog: BaseDialog<VipViewModel,ViewBirthdayConfirmBinding>
     private val date by lazy { arguments?.getSerializable("date") as Date }
 
     override fun onInitView() {
-        val month = SimpleDateFormat("MMM").format(date)
-        val dateStr = Calendar.getInstance().apply {
-            time = date
-        }.get(Calendar.DAY_OF_MONTH)
-        binding.tvDate.text = "$month $dateStr"
+        binding.tvDate.text = TimeUtil.dateToFormat(date,TimeUtil.YMD_FORMAT)
         binding.btnReturn.setOnClickListener {
             (requireActivity() as VipBenefitsActivity).showBirthday()
             dismiss()

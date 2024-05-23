@@ -14,16 +14,14 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
+import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentMainLeftBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.StaticData
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -102,6 +100,9 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
         viewModel.userInfo.observe(this) {
             bindVerifyStatus(userInfo = it)
         }
+        ConfigRepository.config.observe(this){
+            menuVip.isVisible = StaticData.vipOpened()
+        }
     }
     // 新增菜单在这里修改
     private fun initMenuItem() = binding.run {
@@ -175,7 +176,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             cxt.getIconSelector(R.drawable.ic_left_menu_vip_sel, R.drawable.ic_left_menu_vip_sel),
             R.string.P371
         ){
-            loginedRun(requireContext()){
+            loginedRun(requireContext(),true){
                 close()
                 startActivity(VipBenefitsActivity::class.java)
             }

@@ -162,6 +162,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
     }
     private fun setUpVipCard(userVip: UserVip){
 //        LogUtil.toJson(userVip)
+        ivLVTips.setLevelTagIcon(userVip.levelCode)
         vipCardAdapter.userVip = userVip
         vipCardAdapter.setList(userVip.rewardInfo)
         val selectPosition = userVip.rewardInfo.indexOfFirst {userVip.levelCode == it.levelCode }
