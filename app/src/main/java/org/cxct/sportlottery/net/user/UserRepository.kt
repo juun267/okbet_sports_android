@@ -20,7 +20,12 @@ object UserRepository {
 
     val userApi by lazy { RetrofitHolder.createApiService(UserApiService::class.java) }
     val ocrApi by lazy { RetrofitHolder.createOCRApiService(OCRApiService::class.java) }
-    var _userVipEvent = MutableLiveData<UserVip>()
+    var _userVipEvent = MutableLiveData<UserVip?>()
+
+
+    fun clear() {
+        _userVipEvent.postValue(null)
+    }
 
     suspend fun sendEmailForget(email: String, validCodeIdentity :String, validCode: String): ApiResult<SendCodeRespnose> {
         val params = mutableMapOf("email" to email).apply {

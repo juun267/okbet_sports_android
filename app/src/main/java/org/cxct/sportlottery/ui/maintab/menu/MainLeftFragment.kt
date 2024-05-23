@@ -14,6 +14,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
+import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentMainLeftBinding
@@ -61,6 +62,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
     override fun onBindViewStatus(view: View) {
         initObserver()
         binSelected()
+        menuVip.isVisible = StaticData.vipOpened()
     }
 
     private fun initView() = binding.run {
@@ -175,7 +177,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             cxt.getIconSelector(R.drawable.ic_left_menu_vip_sel, R.drawable.ic_left_menu_vip_sel),
             R.string.P371
         ){
-            loginedRun(requireContext()){
+            loginedRun(requireContext(),true){
                 close()
                 startActivity(VipBenefitsActivity::class.java)
             }

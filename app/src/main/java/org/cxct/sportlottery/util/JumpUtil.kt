@@ -63,7 +63,7 @@ object JumpUtil {
             }
             path == "mobile/user/vipCenter"
                     || path == "vipCenter"->{
-                loginedRun(context){
+                loginedRun(context,true){
                     (context as AppCompatActivity).startActivity(VipBenefitsActivity::class.java)
                 }
             }

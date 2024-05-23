@@ -21,11 +21,7 @@ class BirthdayConfirmDialog: BaseDialog<VipViewModel,ViewBirthdayConfirmBinding>
     private val date by lazy { arguments?.getSerializable("date") as Date }
 
     override fun onInitView() {
-        val month = SimpleDateFormat("MMM").format(date)
-        val dateStr = Calendar.getInstance().apply {
-            time = date
-        }.get(Calendar.DAY_OF_MONTH)
-        binding.tvDate.text = "$month $dateStr"
+        binding.tvDate.text = SimpleDateFormat("MMM dd").format(date)
         binding.btnReturn.setOnClickListener {
             (requireActivity() as VipBenefitsActivity).showBirthday()
             dismiss()
