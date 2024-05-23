@@ -15,7 +15,6 @@ import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.ItemVipCardBinding
 import org.cxct.sportlottery.net.user.data.RewardInfo
 import org.cxct.sportlottery.net.user.data.UserVip
-import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
@@ -33,7 +32,7 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
     }
 
     override fun onBinding(position: Int, binding: ItemVipCardBinding, item: RewardInfo) = binding.run {
-        val isCurrentLevel = UserInfoRepository.userInfo.value?.levelCode==item.levelCode
+        val isCurrentLevel = userVip.levelCode==item.levelCode
         if (isCurrentLevel) {
             binding.tvCurrent.show()
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 12.dp

@@ -151,6 +151,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_12"
             android:orientation="horizontal"
+            android:touchscreenBlocksFocus="true"
+            android:focusableInTouchMode="false"
             tools:itemCount="4"
             tools:listitem="@layout/item_user_vip_reward"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">

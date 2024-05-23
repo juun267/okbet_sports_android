@@ -105,8 +105,8 @@
             android:text="@string/username"
             android:textColor="@color/white"
             android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/ivLVTips"
-            app:layout_constraintTop_toTopOf="@+id/ivLVTips" />
+            app:layout_constraintStart_toEndOf="@id/ivLVTips"
+            app:layout_constraintTop_toBottomOf="@id/tvNickName" />
 
         <LinearLayout
             android:id="@+id/llBottom"
