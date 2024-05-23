@@ -41,14 +41,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:textColor="@color/color_chat_message_name"
-                android:textSize="@dimen/textSize12sp"
-                tools:text="Peter024" />
+                android:gravity="center_vertical">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/color_chat_message_name"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="Peter024" />
+                <ImageView
+                    android:id="@+id/ivVipLevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/margin_16"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="@dimen/margin_4"
+                    android:src="@drawable/ic_vip_lv_tag0"/>
+            </LinearLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"

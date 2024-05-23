@@ -16,8 +16,11 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
+import org.cxct.sportlottery.common.enums.UserVipType.setLevelTagIcon
 import org.cxct.sportlottery.common.extentions.clickDelay
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentProfileCenterBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
@@ -36,6 +39,8 @@ import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
+import org.cxct.sportlottery.ui.profileCenter.vip.VipViewModel
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.redeem.RedeemActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
@@ -55,6 +60,7 @@ import java.io.FileNotFoundException
 class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfileCenterBinding>() {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
+    private val vipViewModel: VipViewModel by viewModel()
     private var noticeCount: Int = 0
     private var isGuest: Boolean? = null
 
@@ -86,27 +92,29 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         //默认显示代理入口
         binding.btnAffiliate.isVisible = (sConfigData?.frontEntranceStatus != "0")
         //   btn_affiliate.setVisibilityByCreditSystem()
-        mVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
-            if (it.isNewVersion) {
-                //下载更新要做判断 当前有没有新版本
-                binding.updateVersion.setOnClickListener {
-                    //外部下載
-                    JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
-                    // startActivity(Intent(requireActivity(), VersionUpdateActivity::class.java))
-                }
-                binding.ivVersionNew.visibility = View.VISIBLE
-                return@observe
+        mVersionUpdateViewModel.appMinVersionState.observe(viewLifecycleOwner) {
+            binding.ivVersionNew.isVisible = it.isShowUpdateDialog
+            binding.btnVersionNow.isEnabled = it.isShowUpdateDialog
+            binding.btnVersionNow.setOnClickListener {
+                //外部下載
+                JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
             }
-
-            binding.updateVersion.setOnClickListener { }
-            binding.ivVersionNew.visibility = View.GONE
         }
-
+        mVersionUpdateViewModel.checkAppMinVersion()
         val version = " V${BuildConfig.VERSION_NAME}"
         binding.tvCurrentVersion.text = version
         binding.tvVersionCode.text = getString(R.string.current_version) + version
         binding.tvWithdrawTitle.setTitleLetterSpacing2F()
         binding.tvDepositTitle.setTitleLetterSpacing2F()
+        if (StaticData.vipOpened()){
+            binding.userVipView.visible()
+            binding.userVipView.setup(this,vipViewModel)
+            binding.userVipView.setOnClickListener {
+                startActivity(VipBenefitsActivity::class.java)
+            }
+        }else{
+            binding.userVipView.gone()
+        }
     }
 
     fun initToolBar() {
@@ -311,6 +319,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     private fun getUserInfo() {
         viewModel.getUserInfo()
+        vipViewModel.getUserVip()
     }
 
     private fun initObserve() {
@@ -351,7 +360,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             .load(userInfo?.iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
             .into(ivHead1) //載入頭像
-
+        ivVipLevel.setLevelTagIcon(userInfo?.levelCode)
         tvUserNickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
             userInfo?.userName
         } else {

@@ -54,6 +54,8 @@ data class UserInfo(
     val birthday: String?="",
     var discountByGameTypeList: List<UserGameTypeDiscount>? = null,
     var rejectRemark: String? = null
+    var discountByGameTypeList: List<UserGameTypeDiscount>? = null,
+    val levelCode: String?=null,
 ){
     fun isGlifeAccount():Boolean = vipType==1
     fun hasFullName() = !firstName.isEmptyStr() || !lastName.isEmptyStr()

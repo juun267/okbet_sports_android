@@ -159,6 +159,9 @@ data class ConfigData(
     val registerTermsDefaultCheckedSwitch: Int=1,//注册条款是否默认为勾选 1 是 0 否
     val kycsupplierSelectionValue:Int=1,//KYC调用前需要判断此处值 1-华为｜2-腾讯
     val sbSportSwitch:Int=0,//沙巴体育开关 0-关，1-开
+    val servicePhoneNationNumber: String?=null, //客服专线国家码
+    val servicePhoneNumber: String?=null, //客服专线
+    val vipSwitch:Int=0,//是否开启用户VIP功能 1-开启 2-关闭
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

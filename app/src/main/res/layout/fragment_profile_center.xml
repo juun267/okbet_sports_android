@@ -144,7 +144,7 @@
                             android:layout_height="@dimen/margin_18"
                             android:paddingHorizontal="6dp"
                             android:layout_marginLeft="@dimen/margin_5"
-                            android:background="@drawable/bg_white_radius_10"
+                            android:background="@drawable/bg_white_radius_10_fcfcfc"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:gravity="center"
@@ -153,31 +153,36 @@
                             tools:text="unverfied" />
                     </LinearLayout>
 
-
-                    <TextView
-                        android:id="@+id/label_user_name"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/linName"
                         android:layout_marginStart="16dp"
-                        android:layout_toEndOf="@+id/rl_head"
-                        android:text="@string/username"
-                        android:textColor="@color/color_7F7F7F_999999"
-                        android:textSize="@dimen/textSize12sp" />
+                        android:layout_toEndOf="@+id/rl_head">
+                        <ImageView
+                            android:id="@+id/ivVipLevel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/margin_20"
+                            android:layout_marginRight="@dimen/margin_5"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_vip_lv_tag0" />
+                        <TextView
+                            android:id="@+id/label_user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/username"
+                            android:textColor="@color/color_7F7F7F_999999"
+                            android:textSize="@dimen/textSize12sp" />
 
-                    <TextView
-                        android:id="@+id/tv_user_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/linName"
-                        android:layout_marginEnd="20dp"
-                        android:layout_toEndOf="@+id/label_user_name"
-                        android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/label_user_name"
-                        app:layout_constraintTop_toTopOf="@id/label_user_name"
-                        tools:text="48745884554" />
+                        <TextView
+                            android:id="@+id/tv_user_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:textColor="@color/color_6C7BA8_A7B2C4"
+                            android:textSize="@dimen/textSize12sp"
+                            tools:text="48745884554" />
+                    </LinearLayout>
 
                     <ImageView
                         android:id="@+id/iv_logout"
@@ -263,7 +268,6 @@
                         android:id="@+id/btn_refresh_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_4"
                         android:background="@null"
                         android:contentDescription="@null"
                         android:padding="@dimen/margin_4"
@@ -271,7 +275,8 @@
                         android:src="@drawable/icon_money_refresh"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_account_balance"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tv_account_balance" />
+                        app:layout_constraintTop_toTopOf="@+id/tv_account_balance"
+                        tools:ignore="SpeakableTextPresentCheck" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -283,7 +288,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginHorizontal="@dimen/margin_15"
-                android:background="@drawable/bg_white_radius_10"
+                android:background="@drawable/bg_white_radius_10_fcfcfc"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/block_amount">
@@ -379,7 +384,13 @@
                 </LinearLayout>
 
             </LinearLayout>
-
+            <org.cxct.sportlottery.ui.profileCenter.vip.view.UserVipView
+                android:id="@+id/userVipView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginHorizontal="@dimen/margin_15"
+                android:foreground="@drawable/fg_ripple" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -389,7 +400,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_10"
+                    android:background="@drawable/bg_white_radius_10_fcfcfc"
                     android:layout_marginHorizontal="@dimen/margin_15"
                     android:orientation="vertical">
 

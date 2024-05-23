@@ -3,10 +3,14 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import com.google.gson.JsonObject
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.VipRedenpApplyResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
@@ -239,6 +243,9 @@ object Constants {
 
     fun getOKSportUrl(gameName: String) = "${getH5BaseUrl()}mobile/oksport/play/$gameName"
 
+    //VIP等级说明页面
+    fun getVipRuleUrl(context: Context) = "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}vip-details"
+
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
     /**
@@ -249,9 +256,14 @@ object Constants {
             return url
         }
         val url = pingHostAndPath(getH5BaseUrl(),url)
-        return url + (if (url.contains("?")) "&" else "?") + "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}&lang=${
-            getSelectLanguage(MultiLanguagesApplication.appContext).key
-        }&token=${URLEncoder.encode(LoginRepository.token, "utf-8")}"
+        return url +
+                (if (url.contains("?")) "&" else "?") +
+                "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}" +
+                "&from=android" +
+                "&version=${BuildConfig.VERSION_NAME}" +
+                "&lang=${getSelectLanguage(MultiLanguagesApplication.appContext).key}" +
+                "&token=${URLEncoder.encode(LoginRepository.token, "utf-8")}" +
+                "&platform=${MultiLanguagesApplication.appContext.getString(R.string.app_name)}"
     }
 
     /**
@@ -427,6 +439,16 @@ object Constants {
     const val LOGIN_CHECK_NEED_CODE = "/api/front/index/checkUserNeedCode"   // loginV3登陆前检查是否需要校验短信验证码
     const val LOGIN = "/api/front/index/loginV4"   // 用户登陆  2023.10.24
     const val WHEEL_ACTIVITY_INFO = "/api/front/wheelActivity/info"
+    //VIP特權
+    const val VIP_USER = "/api/front/activity/vip/user"
+    //VIP特權详情
+    const val VIP_DETAIL = "/api/front/activity/vip/detail"
+    //领取VIP特权奖项
+    const val VIP_REWARD = "/api/front/activity/vip/award"
+    //專屬紅包申請
+    const val VIP_UNIREDENP_APPLY = "/api/front/activity/vip/uniredenp/apply"
+
+    const val SETBIRTHDAY = "/api/front/user/setBirthday"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image#url_ignore" //上传图片,url_ignore避免域名被动态替换
@@ -506,7 +528,6 @@ object Constants {
     const val WORKS_QUERYALL = "/api/front/works/queryAll"//获取所有工作性质列表
     const val USER_QUERYUSERINFODETAILS = "/api/front/user/queryUserInfoDetails"//完善用户信息详情查询
     const val USER_COMPLETEUSERDETAILS = "/api/front/user/CompleteUserDetails"//完善用户信息详情
-
     //注销账户
     const val CANCEL_ACCOUNT = "/api/front/user/remove"
 

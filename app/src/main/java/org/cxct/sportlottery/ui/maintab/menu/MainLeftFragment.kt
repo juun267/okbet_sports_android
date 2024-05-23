@@ -32,6 +32,9 @@ import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.profileCenter.vip.MyVipDetailActivity
+import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
@@ -167,6 +170,17 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             )
         }.apply {
             setVisibilityByMarketSwitch()
+        }
+        menuVip.setItem(
+            cxt.getIconSelector(R.drawable.ic_left_menu_vip_sel, R.drawable.ic_left_menu_vip_sel),
+            R.string.P371
+        ){
+            loginedRun(requireContext()){
+                close()
+                startActivity(VipBenefitsActivity::class.java)
+            }
+        }.apply {
+            isVisible = StaticData.vipOpened()
         }
         menuNews.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),

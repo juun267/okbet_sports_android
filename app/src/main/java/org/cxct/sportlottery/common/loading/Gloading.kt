@@ -9,6 +9,7 @@ import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 
 
 class Gloading private constructor() {
@@ -48,6 +49,10 @@ class Gloading private constructor() {
 
         fun wrapView(view: View): Holder {
             return default.wrap(view)
+        }
+
+        fun cover(view: View): Holder {
+            return default.cover(view)
         }
 
         /**
@@ -131,7 +136,7 @@ class Gloading private constructor() {
         val viewGroup = parent as ViewGroup
         val wrapper = FrameLayout(view.context)
         viewGroup.addView(wrapper, view.layoutParams)
-        return Holder.of(mAdapter, view.context, wrapper)
+        return Holder.of(mAdapter, view.context, wrapper, true)
     }
 
     /**
@@ -139,11 +144,14 @@ class Gloading private constructor() {
      * create by [Gloading.wrap] or [Gloading.wrap]<br></br>
      * the core API for showing all status view
      */
-    class Holder private constructor(private val mAdapter: Adapter, val context: Context,  val wrapper: ViewGroup) {
+    class Holder private constructor(private val mAdapter: Adapter,
+                                     val context: Context,
+                                     val wrapper: ViewGroup,
+                                     private val isCover: Boolean) {
 
         companion object {
-            fun of(mAdapter: Adapter, context: Context, wrapper: ViewGroup): Holder {
-                return Holder(mAdapter, context, wrapper)
+            fun of(mAdapter: Adapter, context: Context, wrapper: ViewGroup, isCover: Boolean = false): Holder {
+                return Holder(mAdapter, context, wrapper, isCover)
             }
         }
 
@@ -230,19 +238,24 @@ class Gloading private constructor() {
             }
             try {
                 //call customer adapter to get UI for specific status. convertView can be reused
-                val view = mAdapter!!.getView(this, convertView, status)
+                val view = mAdapter.getView(this, convertView, status)
                 if (view == null) {
                     printLog(mAdapter.javaClass.name + ".getView returns null")
                     return
                 }
-                if (view !== mCurStatusView || wrapper!!.indexOfChild(view) < 0) {
+
+                if (isCover) {
+                    wrapper.isVisible = status != STATUS_LOAD_SUCCESS
+                }
+
+                if (view !== mCurStatusView || wrapper.indexOfChild(view) < 0) {
                     if (mCurStatusView != null) {
-                        wrapper!!.removeView(mCurStatusView)
+                        wrapper.removeView(mCurStatusView)
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         view.elevation = Float.MAX_VALUE
                     }
-                    wrapper!!.addView(view)
+                    wrapper.addView(view)
                     val lp = view.layoutParams
                     if (lp != null) {
                         lp.width = ViewGroup.LayoutParams.MATCH_PARENT

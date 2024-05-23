@@ -13,6 +13,8 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LogUtil
+import timber.log.Timber
 
 /**
  * Create by Simon Chang
@@ -45,6 +47,7 @@ open class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<Main
         if (!mToolbarVisibility) customToolBar.gone() else initToolBar()
         webActivityImp.setCookie(mUrl)
         webActivityImp.setupWebView(okWebView)
+        Timber.d("loadUrl=$mUrl")
         okWebView.loadUrl(mUrl)
     }
 
@@ -69,6 +72,7 @@ open class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<Main
             }
             return true
         }
+         Timber.d("overrideUrlLoading=$mUrl")
         view.loadUrl(url)
         return true
     }

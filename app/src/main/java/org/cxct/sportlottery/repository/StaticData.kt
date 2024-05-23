@@ -156,6 +156,8 @@ class StaticData {
         fun sbSportOpened():Boolean {
             return sConfigData?.sbSportSwitch == 1
         }
+        //是否显示vip相关页面
+        fun vipOpened():Boolean= sConfigData?.vipSwitch == 1
     }
 
 }

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.net.user
 
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -23,6 +24,7 @@ object UserRepository {
 
     val userApi by lazy { RetrofitHolder.createApiService(UserApiService::class.java) }
     val ocrApi by lazy { RetrofitHolder.createOCRApiService(OCRApiService::class.java) }
+    var _userVipEvent = MutableLiveData<UserVip>()
 
     suspend fun sendEmailForget(email: String, validCodeIdentity :String, validCode: String): ApiResult<SendCodeRespnose> {
         val params = mutableMapOf("email" to email).apply {
@@ -177,5 +179,31 @@ object UserRepository {
     }
     suspend fun reVerify(): ApiResult<String?> {
         return userApi.reVerify()
+    }
+    suspend fun getUserVip(): ApiResult<UserVip> {
+        return userApi.getUserVip().apply {
+            getData()?.let { _userVipEvent.postValue(it) }
+        }
+    }
+    suspend fun getVipDetail(): ApiResult<VipDetail> {
+        return userApi.getVipDetail()
+    }
+    suspend fun vipReward(activityId: Int, rewardType: Int, levelV2Id: Int): ApiResult<String> {
+        val params = JsonObject()
+        params.addProperty("activityId", activityId)
+        params.addProperty("rewardType", rewardType)
+        params.addProperty("levelV2Id", levelV2Id)
+        return userApi.vipReward(params)
+    }
+    suspend fun vipRedenpApply(levelV2Id: Int): ApiResult<VipRedenpApplyResult> {
+        val params = JsonObject()
+        params.addProperty("levelV2Id", levelV2Id)
+        return userApi.vipRedenpApply(params)
+    }
+
+    suspend fun setBirthday(birthday: String): ApiResult<String> {
+        val params = JsonObject()
+        params.addProperty("birthday", birthday)
+        return userApi.setBirthday(params)
     }
 }
