@@ -20,10 +20,7 @@ import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentMainLeftBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.StaticData
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -62,7 +59,6 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
     override fun onBindViewStatus(view: View) {
         initObserver()
         binSelected()
-        menuVip.isVisible = StaticData.vipOpened()
     }
 
     private fun initView() = binding.run {
@@ -103,6 +99,9 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
     private fun initObserver() {
         viewModel.userInfo.observe(this) {
             bindVerifyStatus(userInfo = it)
+        }
+        ConfigRepository.config.observe(this){
+            menuVip.isVisible = StaticData.vipOpened()
         }
     }
     // 新增菜单在这里修改
