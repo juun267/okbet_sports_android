@@ -9,12 +9,13 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemActivatedBenefitsBinding
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.RewardDetail
+import org.cxct.sportlottery.net.user.data.RewardInfo
 import org.cxct.sportlottery.net.user.data.UserVip
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 
-class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAdapter<RewardDetail, ItemActivatedBenefitsBinding>() {
+class ActivatedBenefitsAdapter(val onItemClick: (RewardInfo, RewardDetail)->Unit): BindingAdapter<RewardDetail, ItemActivatedBenefitsBinding>() {
 
     private val bg0 by lazy { ShapeDrawable().setSolidColor(context.getColor(R.color.color_025BE8)).setRadius(8.dp.toFloat()) }
     private val weeklySurplus by lazy {
@@ -29,6 +30,7 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
         notifyDataSetChanged()
     }
     var disableStatus: Boolean=false
+    lateinit var rewardInfo: RewardInfo
 
     override fun onBinding(position: Int, binding: ItemActivatedBenefitsBinding, item: RewardDetail) = binding.run {
         tvWeeklySurplus.gone()
@@ -55,7 +57,7 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
             UserVipType.REWARD_TYPE_WEEKLY->{
                 ivBenefits.setImageResource(R.drawable.ic_vip_bonus_weekly)
                 tvBenefitsName.text = context.getString(R.string.P364)
-                if (disableStatus){
+                if (item.remainingWeekRedenpAmount==null){
                     tvWeeklySurplus.gone()
                 }else{
                     tvWeeklySurplus.visible()
@@ -63,7 +65,7 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
                     tvWeeklySurplus.text = if (item.remainingWeekRedenpAmount==0.0)
                         context.getString(R.string.P415)
                     else
-                        "${context.getString(R.string.P416)}: ${TextUtil.formatMoney(item.remainingWeekRedenpAmount)}"
+                        "${context.getString(R.string.P416)}: ${TextUtil.formatMoney(item.remainingWeekRedenpAmount,0)}"
                 }
             }
             UserVipType.REWARD_TYPE_BIRTHDAY->{
@@ -83,7 +85,7 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardDetail)->Unit): BindingAd
             tvAction.visible()
         }
         tvAction.setOnClickListener {
-            onItemClick.invoke(item)
+            onItemClick.invoke(rewardInfo,item)
         }
         //1:未中奖,2:待审核,3:审核不通过,4:审核通过,5:已领取,6:已失效,7:未领取, null:無資格（專屬紅包則視為未申請）
         when(item.status){

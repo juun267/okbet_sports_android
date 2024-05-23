@@ -177,55 +177,58 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
     }
     private fun onSelectLevel(position: Int){
         viewModel.userVipEvent?.value?.let {
+            val currentRewardInfo = it.rewardInfo.getOrNull(position)?:return@let
             activatedAdapter.setList(null)
-            activatedAdapter.removeAllFooterView()
-            val currentRewardInfo = it.rewardInfo.getOrNull(position)
-            activatedAdapter.disableStatus = currentRewardInfo?.levelCode!=userRewardInfo?.levelCode
+            val userLevelPosition = it.rewardInfo.indexOfFirst { userRewardInfo?.levelCode==it.levelCode }
+            activatedAdapter.disableStatus = position>userLevelPosition
+            activatedAdapter.rewardInfo = currentRewardInfo
             activatedAdapter.setList(currentRewardInfo?.rewardDetail?.filter { it.enable }?.toMutableList())
-            if (currentRewardInfo?.exclusiveService==true){
+            if (currentRewardInfo.exclusiveService){
                 activatedAdapter.addData(RewardDetail(otherType = 1))
             }
-            if (currentRewardInfo?.expressWithdrawal==true){
+            if (currentRewardInfo.expressWithdrawal){
                 activatedAdapter.addData(RewardDetail(otherType = 2))
             }
             binding.includeActivatedEmpty.root.isVisible = activatedAdapter.itemCount==0
             val nextLevel = it.rewardInfo.getOrNull(position+1)
-            unActivatedAdapter.setList(nextLevel?.rewardDetail?.filter { it.enable })
-            if (nextLevel?.exclusiveService==true){
-                unActivatedAdapter.addData(RewardDetail(otherType = 1))
-            }
-            if (nextLevel?.expressWithdrawal==true){
-                unActivatedAdapter.addData(RewardDetail(otherType = 2))
+            if (nextLevel!=null){
+                unActivatedAdapter.setList(nextLevel?.rewardDetail?.filter { it.enable })
+                if (nextLevel.exclusiveService){
+                    unActivatedAdapter.addData(RewardDetail(otherType = 1))
+                }
+                if (nextLevel.expressWithdrawal){
+                    unActivatedAdapter.addData(RewardDetail(otherType = 2))
+                }
+            }else{
+                unActivatedAdapter.setList(null)
             }
             linUnactivated.isVisible = unActivatedAdapter.itemCount!=0
         }
     }
-    fun onItemClick(rewardDetail: RewardDetail){
+    fun onItemClick(rewardInfo: RewardInfo, rewardDetail: RewardDetail){
         when(rewardDetail.rewardType){
             UserVipType.REWARD_TYPE_PROMOTE->{
-                getReward(rewardDetail)
+                getReward(rewardInfo, rewardDetail)
             }
             UserVipType.REWARD_TYPE_WEEKLY->{
-                getReward(rewardDetail)
+                getReward(rewardInfo, rewardDetail)
             }
             UserVipType.REWARD_TYPE_BIRTHDAY->{
                 if (viewModel.userVipEvent.value?.birthday.isNullOrEmpty()){
                     showBirthday()
                 }else{
-                    getReward(rewardDetail)
+                    getReward(rewardInfo,rewardDetail)
                 }
             }
             UserVipType.REWARD_TYPE_PACKET->{
-                userRewardInfo?.levelV2Id?.let {
-                    loading()
-                    viewModel.vipRedenpApply(it)
-                }
+                loading()
+                viewModel.vipRedenpApply(rewardInfo.levelV2Id)
             }
         }
     }
-    private fun getReward(rewardDetail: RewardDetail){
+    private fun getReward(rewardInfo: RewardInfo, rewardDetail: RewardDetail){
         val activityId = viewModel.vipDetailEvent.value?.vipUserLevelLimits?.firstOrNull { it.type == rewardDetail.rewardType }?.activityId
-        val levelV2Id = userRewardInfo?.levelV2Id
+        val levelV2Id = rewardInfo.levelV2Id
         if (activityId!=null && levelV2Id!=null){
             loading()
             viewModel.vipReward(activityId,rewardDetail.rewardType, levelV2Id)
