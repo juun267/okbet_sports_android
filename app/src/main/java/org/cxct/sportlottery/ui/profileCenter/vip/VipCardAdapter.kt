@@ -51,7 +51,7 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
                 setProgress("0", item.upgradeExp.toString(), binding.tvPercent)
             }
         }
-        if (item.levelCode==UserVipType.LEVEL_CODE_10){
+        if (position == (userVip.rewardInfo.size-1)){
             setProgress(if (isCurrentLevel) userVip.exp.toString() else "0", context.getString(R.string.max), binding.tvPercent)
         }
         tvDescribe.text = context.getString(R.string.P443)
