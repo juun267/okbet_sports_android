@@ -143,7 +143,6 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
     }
 
     private fun setupHeadButton() {
-        binding.ivHead1.setOnClickListener { it.context.startActivity<VipBenefitsActivity>() }
 //        iv_head.setOnClickListener {
 //            AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
 //        }

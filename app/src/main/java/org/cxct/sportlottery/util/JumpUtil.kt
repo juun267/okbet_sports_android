@@ -63,7 +63,9 @@ object JumpUtil {
             }
             path == "mobile/user/vipCenter"
                     || path == "vipCenter"->{
-                (context as AppCompatActivity).startActivity(VipBenefitsActivity::class.java)
+                loginedRun(context){
+                    (context as AppCompatActivity).startActivity(VipBenefitsActivity::class.java)
+                }
             }
             path == "mobile/personal/activity_v2"
                     || path == "promo"->{
