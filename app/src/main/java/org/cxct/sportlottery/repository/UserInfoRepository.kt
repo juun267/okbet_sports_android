@@ -263,8 +263,7 @@ object UserInfoRepository {
             lastName = userInfoData.lastName,
             birthday = userInfoData.birthday,
             discountByGameTypeList = userInfoData.discountByGameTypeList,
-            rejectRemark = userInfoData.rejectRemark
-            discountByGameTypeList = userInfoData.discountByGameTypeList,
+            rejectRemark = userInfoData.rejectRemark,
             levelCode = userInfoData.levelCode,
         )
 

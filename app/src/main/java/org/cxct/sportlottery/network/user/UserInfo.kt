@@ -53,8 +53,7 @@ data class UserInfo(
     val lastName: String?="",
     val birthday: String?="",
     var discountByGameTypeList: List<UserGameTypeDiscount>? = null,
-    var rejectRemark: String? = null
-    var discountByGameTypeList: List<UserGameTypeDiscount>? = null,
+    var rejectRemark: String? = null,
     val levelCode: String?=null,
 ){
     fun isGlifeAccount():Boolean = vipType==1
