@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import org.cxct.sportlottery.R
@@ -48,8 +47,6 @@ class RecommendMiniGameHelper(private val context: Context,
                               onClick: (OKGameBean) -> Unit,
                               onLayout: (View) -> Unit) {
 
-    private val miniGameAdapter = MiniGameAdapter(onClick)
-    private var currentPlayer: OKVideoPlayer? = null
     private val binding by lazy {
         val vb = LayoutRecommendMinigameBinding.inflate(context.layoutInflater)
         val lp = LinearLayout.LayoutParams(-1, 220.dp)
@@ -60,6 +57,11 @@ class RecommendMiniGameHelper(private val context: Context,
         initTabLayout(vb.tabLayout)
         vb
     }
+
+    private val miniGameAdapter = MiniGameAdapter(onClick)
+    private var currentPlayer: OKVideoPlayer? = null
+    private val tabLayout: TabLayout get() = binding.tabLayout
+    private val viewPager2: ViewPager2 get() = binding.vp
 
     private var dataList: List<OKGameBean>? = null
 
@@ -96,6 +98,8 @@ class RecommendMiniGameHelper(private val context: Context,
 
             override fun onTabSelected(tab: TabLayout.Tab) {
                 changeSelect(tab, AppFont.inter_bold, ContextCompat.getColor(context, R.color.color_025BE8))
+                val position = viewPager2.currentItem - viewPager2.currentItem % tabLayout.tabCount + tab.position
+                viewPager2.currentItem = position
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -115,6 +119,7 @@ class RecommendMiniGameHelper(private val context: Context,
 
             override fun onPageSelected(position: Int) {
 
+                tabLayout.selectTab(tabLayout.getTabAt(position % tabLayout.tabCount), true)
                 val playPosition = GSYVideoManager.instance().playPosition
                 if (playPosition >= 0
                     && GSYVideoManager.instance().playTag == PLAY_TAG
@@ -148,17 +153,33 @@ class RecommendMiniGameHelper(private val context: Context,
             return
         }
 
+        binding.root.show()
         currentPlayer?.release()
         dataList = gameList
+
+
+//        val dataList = mutableListOf<OKGameBean>()
+//        dataList.addAll(gameList)
+//        dataList.addAll(gameList)
+//        dataList.addAll(gameList)
+//        dataList.addAll(gameList)
+//        dataList.addAll(gameList)
+//        dataList.addAll(gameList)
+
+//        miniGameAdapter.setNewInstance(gameList.toMutableList())
         gameList.toMutableList().let {
             miniGameAdapter.setNewInstance(it)
             setTabData(it)
         }
+
+        viewPager2.setCurrentItem(100000 * gameList.size, false)
     }
 
     private fun setTabData(gameList: MutableList<OKGameBean>) {
+        binding.tabLayout.removeAllTabs()
 
-        val tabMediator = TabLayoutMediator(binding.tabLayout, binding.vp) { tab, position ->
+        gameList.forEachIndexed { index, okGameBean ->
+            val tab = binding.tabLayout.newTab()
             var itemView = if (tab.tag == null) {
                 val triple = createTabItem(context)
                 tab.tag = triple
@@ -167,15 +188,14 @@ class RecommendMiniGameHelper(private val context: Context,
                 tab.tag as Triple<View, ImageView, TextView>
             }
 
-            val item = gameList[position]
             tab.customView = itemView.first
-            tab.text = item.gameName
-            itemView.third.text = item.gameName
+            tab.text = okGameBean.gameName
+            itemView.third.text = okGameBean.gameName
 //            itemView.second.load(item.imgGame)
             itemView.second.load(R.drawable.ic_minigame_dice)
+            binding.tabLayout.addTab(tab)
         }
 
-        tabMediator.attach()
     }
 
     private fun createTabItem(context: Context): Triple<View, ImageView, TextView> {
@@ -213,7 +233,16 @@ class RecommendMiniGameHelper(private val context: Context,
             })
         }
 
-        override fun onCreateDefViewHolder(
+        override fun getItem(position: Int): OKGameBean {
+            return super.getItem(position % super.getDefItemCount())
+        }
+
+        override fun getDefItemCount() : Int {
+            val count = super.getDefItemCount()
+            return if (count > 1) Int.MAX_VALUE else count
+        }
+
+        override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
         ): BindingVH<ItemMinigameBinding> {
