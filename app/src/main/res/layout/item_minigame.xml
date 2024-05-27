@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        tools:background="@drawable/img_mini_game_cover"/>
+        tools:background="@drawable/img_placeholder_default"/>
 
     <View
         android:layout_width="match_parent"
