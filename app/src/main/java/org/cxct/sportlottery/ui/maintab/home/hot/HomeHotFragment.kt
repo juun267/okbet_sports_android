@@ -106,9 +106,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         okLiveView.setUp(this@HomeHotFragment)
         providerView.setup(this@HomeHotFragment) {
             if (it.gameEntryTypeEnum == GameEntryType.MINIGAMES) {
-                OKGamesViewModel.getActiveMiniGameData(Long.MAX_VALUE)?.first()?.let {
-                    getMainTabActivity().enterThirdGame(it)
-                }
+                getHomeFragment().jumpToPerya()
                 return@setup
             }
 
