@@ -108,9 +108,13 @@ class BasketballEndingCardViewHolder(
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = binding.run {
         fun showTotalStakeWinAmount(bet: Double) {
-            val totalBet = ArithUtil.toMoneyFormatFloor(bet * betListSize)
-            val totalCanWin = ArithUtil.toMoneyFormatFloor(bet * itemData.matchOdd.odds)
-            includeControl.tvCanWinAmount.text = "${totalCanWin}"
+            if (bet==0.0){
+                includeControl.tvCanWinAmount.text = ""
+            }else {
+                val totalBet = ArithUtil.toMoneyFormatFloor(bet * betListSize)
+                val totalCanWin = ArithUtil.toMoneyFormatFloor(bet * itemData.matchOdd.odds)
+                includeControl.tvCanWinAmount.text = "${totalCanWin}"
+            }
         }
         //移除TextChangedListener
         includeControl.etBet.etBetParlay.apply {
@@ -146,25 +150,24 @@ class BasketballEndingCardViewHolder(
         }
         //設定editText內容
         includeControl.etBet.etBetParlay.apply {
-            if (itemData.input == null) {
-                val minBet = itemData.parlayOdds?.min ?: 0
-                if (isLogin) {
-                    if (minBet > mUserMoney) {
-                        itemData.input = mUserMoney.toString()
-                    } else {
-                        itemData.input = minBet.toString()
-                    }
-                } else {
-                    itemData.input = minBet.toString()
-                }
-            }
+//            if (itemData.input == null) {
+//                val minBet = itemData.parlayOdds?.min ?: 0
+//                if (isLogin) {
+//                    if (minBet > mUserMoney) {
+//                        itemData.input = mUserMoney.toString()
+//                    } else {
+//                        itemData.input = minBet.toString()
+//                    }
+//                } else {
+//                    itemData.input = minBet.toString()
+//                }
+//            }
             itemData.inputBetAmountStr = itemData.input
-            itemData.betAmount = itemData.input!!.toDouble()
-//            setText(itemData.inputBetAmountStr) //OKF-1558 [安卓]最低投注金额默认不要显示，包括单关，串关
+            itemData.betAmount = itemData.input?.toDouble()?:0.0
+            setText(if(itemData.inputBetAmountStr.toDoubleS(0.0)==0.0) "" else itemData.inputBetAmountStr)
             setSelection(text.length)
-
             //显示总投注
-            val bet = itemData.inputBetAmountStr!!.toDouble()
+            val bet = itemData.inputBetAmountStr?.toDouble()?:0.0
             showTotalStakeWinAmount(bet)
         }
         setEtBackground(itemData)
@@ -236,16 +239,6 @@ class BasketballEndingCardViewHolder(
             }
             false
         }
-        //單筆注單展開時，預設開啟輸入本金的鍵盤
-        if (betListSize == 1) {
-            includeControl.etBet.etBetParlay.requestFocus()
-            itemData.isInputBet = true
-            layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
-            layoutKeyBoard.showKeyboard(
-                includeControl.etBet.etBetParlay, position
-            )
-
-        }
         includeControl.etBet.etBetParlay.setOnFocusChangeListener { _, hasFocus ->
             itemData.isInputBet = hasFocus
             if (hasFocus) {
@@ -253,6 +246,12 @@ class BasketballEndingCardViewHolder(
             }
             setEtBackground(itemData)
         }
+        includeControl.etBet.etBetParlay.requestFocus()
+        itemData.isInputBet = true
+        layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
+        layoutKeyBoard.showKeyboard(
+            includeControl.etBet.etBetParlay, position
+        )
     }
 
     private fun setupOddInfo(
