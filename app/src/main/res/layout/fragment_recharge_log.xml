@@ -126,7 +126,6 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvlist"
-            android:layout_marginHorizontal="@dimen/margin_9"
             android:layout_marginBottom="@dimen/margin_7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
