@@ -221,7 +221,7 @@ class BetInfoItemViewHolder(
             }
             itemData.inputBetAmountStr = itemData.input
             itemData.betAmount = itemData.input!!.toDouble()
-            setText(itemData.inputBetAmountStr)
+//            setText(itemData.inputBetAmountStr) //OKF-1558 [安卓]最低投注金额默认不要显示，包括单关，串关
             update()
             setSelection(text.length)
         }
