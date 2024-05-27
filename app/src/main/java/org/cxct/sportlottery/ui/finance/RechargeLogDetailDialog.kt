@@ -7,6 +7,8 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.copyText
 import kotlin.math.abs
 
 /**
@@ -20,6 +22,12 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel,DialogLogRechargeDet
     override fun onInitView()=binding.run {
         logDetailConfirm.setOnClickListener {
             dismiss()
+        }
+        tvCopy.setOnClickListener {
+            viewModel.rechargeLogDetail?.value?.peekContent()?.orderNo?.let {
+                requireContext().copyText(it)
+                ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
+            }
         }
         viewModel.rechargeLogDetail.observe(this@RechargeLogDetailDialog.viewLifecycleOwner) { event ->
             event.peekContent().let {

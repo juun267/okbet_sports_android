@@ -12,6 +12,8 @@ import org.cxct.sportlottery.ui.finance.df.OrderState
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.copyText
 import kotlin.math.abs
 
 /**
@@ -26,6 +28,12 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel,DialogWithdrawLogDet
     override fun onInitView()=binding.run {
         binding.logDetailConfirm.setOnClickListener {
             dismiss()
+        }
+        binding.tvCopy.setOnClickListener {
+            viewModel.withdrawLogDetail?.value?.peekContent()?.orderNo?.let {
+                requireContext().copyText(it)
+                ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
+            }
         }
         wdLogDetailRemarksLeft.text = getString(R.string.N064) + "："
         viewModel.withdrawLogDetail.observe(this@WithdrawLogDetailDialog.viewLifecycleOwner) { event ->
