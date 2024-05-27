@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.databinding.FragmentRechargeLogBinding
@@ -79,7 +78,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel, FragmentRechargeLogBi
     }
 
     private fun setupSearch() {
-        binding.dateRangeSelector.clickDelay {
+        binding.dateRangeSelector.setOnClickSearchListener {
             startReload()
         }
     }
