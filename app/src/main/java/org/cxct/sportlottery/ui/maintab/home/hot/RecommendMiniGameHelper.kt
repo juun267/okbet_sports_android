@@ -283,7 +283,7 @@ class RecommendMiniGameHelper(private val context: Context,
             val item = getItem(position)
             binding.vCover.setOnClickListener { onClick.invoke(item) }
             binding.tvJackPotAmount.setNumberString(item.jackpotAmount.toString())
-//            binding.vCover.load(item.imgGame, R.drawable.img_mini_game_cover)
+            binding.vCover.load(item.imgGame, R.drawable.img_placeholder_default)
             with(binding.videoPlayer.tag as GSYVideoOptionBuilder) {
                 setIsTouchWiget(false)
                 setCacheWithPlay(false)
