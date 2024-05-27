@@ -276,7 +276,11 @@ class RecommendMiniGameHelper(private val context: Context,
             return holder
         }
 
-        override fun onBinding(position: Int, binding: ItemMinigameBinding, item: OKGameBean) {
+        override fun onBinding(position: Int, binding: ItemMinigameBinding, item: OKGameBean) { }
+
+        override fun onBindViewHolder(holder: BindingVH<ItemMinigameBinding>, position: Int) {
+            val binding = holder.vb
+            val item = getItem(position)
             binding.vCover.setOnClickListener { onClick.invoke(item) }
             binding.tvJackPotAmount.setNumberString(item.jackpotAmount.toString())
 //            binding.vCover.load(item.imgGame, R.drawable.img_mini_game_cover)
