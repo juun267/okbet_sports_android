@@ -276,6 +276,7 @@ class VerifyKYCFragment : BaseFragment<ProfileCenterViewModel,FragmentVerifyIden
 
     private fun setSpinnerStyle()=binding.run {
         identity1st.selectorType.setOnItemSelectedListener { checkSubmitStatus() }
+        identity1st.selectorType.binding.tvName.setPadding(0,0,0,0)
         val constraintLayout = identity1st.selectorType.binding.clRoot
         val constraintSet = ConstraintSet()
         constraintSet.clone(constraintLayout)
@@ -286,6 +287,7 @@ class VerifyKYCFragment : BaseFragment<ProfileCenterViewModel,FragmentVerifyIden
         constraintSet.applyTo(constraintLayout)
 
         identity2nd.selectorType.setOnItemSelectedListener { checkSubmitStatus() }
+        identity2nd.selectorType.binding.tvName.setPadding(0,0,0,0)
         val constraintLayout2 = identity2nd.selectorType.binding.clRoot
         val constraintSet2 = ConstraintSet()
         constraintSet2.clone(constraintLayout2)

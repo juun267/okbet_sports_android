@@ -174,6 +174,7 @@ class StatusSpinnerView @JvmOverloads constructor(
             connect(R.id.iv_arrow, ConstraintSet.END, R.id.cl_root, ConstraintSet.END, 6.dp)
             applyTo(binding.clRoot)
         }
+        binding.tvName.setPadding(0,0,0,0)
     }
 
     fun setItemData(itemData: MutableList<StatusSheetData>, isSelectedDefault: Boolean = true) {
