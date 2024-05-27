@@ -71,10 +71,7 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel,DialogWithdrawLogDet
 
 //                wd_log_detail_review_time.text = it.operatorDateAndTime ?: ""
 //                wd_log_detail_reason.text = it.reason ?: ""
-                it.displayMoney?.let { nonNullDisplayMoney ->
-                    wdLogDetailAmount.text =
-                        "${sConfigData?.systemCurrencySign} $nonNullDisplayMoney"
-                }
+                wdLogDetailAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.applyMoney?:0,0)}"
 
                 it.withdrawDeductMoney?.let { nonNullDeductMoney ->
                     wdLogDetailCommission.text =
@@ -100,7 +97,7 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel,DialogWithdrawLogDet
                         }
                         rvChild.layoutManager =
                             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                        rvChild.adapter = WithdrawLogDetailAdapter(it)
+                        rvChild.adapter = WithdrawLogDetailAdapter().apply { setList(it) }
                     }
                 }
             }

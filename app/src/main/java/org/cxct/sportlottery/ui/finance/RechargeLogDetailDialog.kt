@@ -51,7 +51,7 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel,DialogLogRechargeDet
                         logDetailStatus.setTextColor(resources.getColor(R.color.color_BBBBBB_333333))
                     }
                 }
-                logDetailAmount.text = "${sConfigData?.systemCurrencySign} ${it.displayMoney}"
+                logDetailAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.rechMoney,0)}"
                 logDetailReason.text = it.reason ?: ""
 
                 (it.rebateMoney ?: 0.0).let { nonNullDisplayFee ->
