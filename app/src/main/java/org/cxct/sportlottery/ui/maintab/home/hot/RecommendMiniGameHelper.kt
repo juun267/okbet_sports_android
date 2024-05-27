@@ -250,7 +250,7 @@ class RecommendMiniGameHelper(private val context: Context,
             holder.vb.tvJackPotAmount.setPrefixString("$showCurrencySign ")
             holder.vb.videoPlayer.tag = GSYVideoOptionBuilder()
             val context = parent.context
-            holder.vb.tvBetToWin.text = "${showCurrencySign}5 To Win "
+            holder.vb.tvBetToWin.text = "${showCurrencySign}5 To Win"
             holder.vb.tvBetToWin.background = ShapeDrawable()
                 .setSolidColor(context.getColor(R.color.color_0063FF), context.getColor(R.color.color_00C2FF))
                 .setRadius(30.dp.toFloat())
