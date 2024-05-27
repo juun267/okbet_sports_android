@@ -49,7 +49,7 @@
         android:layout_marginBottom="12dp"
         android:gravity="center"
         android:paddingHorizontal="6dp"
-        android:text="$5 To Win"
+        tools:text="$5 To Win"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold" />
