@@ -26,6 +26,7 @@ import org.cxct.sportlottery.common.adapter.BindingVH
 import org.cxct.sportlottery.common.extentions.alpahAnimation
 import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.ItemMinigameBinding
 import org.cxct.sportlottery.databinding.LayoutRecommendMinigameBinding
@@ -119,14 +120,15 @@ class RecommendMiniGameHelper(private val context: Context,
 
             override fun onPageSelected(position: Int) {
 
-                tabLayout.selectTab(tabLayout.getTabAt(position % tabLayout.tabCount), true)
+                val index = position % tabLayout.tabCount
+                tabLayout.selectTab(tabLayout.getTabAt(index), true)
                 val playPosition = GSYVideoManager.instance().playPosition
                 if (playPosition >= 0
                     && GSYVideoManager.instance().playTag == PLAY_TAG
                     && position != playPosition) {
                     GSYVideoManager.releaseAllVideos()
                 }
-                playPosition(position)
+                post{ playPosition(position) }
             }
 
         })
