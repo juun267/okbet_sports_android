@@ -311,9 +311,9 @@ dependencies {
 //    implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack'   // 全量包引入
 
     // 基本功能需求引入
-    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.4-release-jitpack'
-    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.4-release-jitpack'
-    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.3.4-release-jitpack'
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.6.0-release-jitpack'
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.6.0-release-jitpack'
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.6.0-release-jitpack'
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:31.2.2')

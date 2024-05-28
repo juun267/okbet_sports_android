@@ -67,10 +67,12 @@ object LogUtil {
     }
 
     fun toJson(obj: Any?) {
-        if (obj == null) {
-            Logger.json("null")
-        } else {
-            Logger.json(JsonUtil.toJson(obj))
+        if (BuildConfig.DEBUG) {
+            if (obj == null) {
+                Logger.json("null")
+            } else {
+                Logger.json(JsonUtil.toJson(obj))
+            }
         }
     }
 }

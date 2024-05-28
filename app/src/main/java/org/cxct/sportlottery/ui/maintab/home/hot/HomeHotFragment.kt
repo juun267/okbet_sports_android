@@ -105,6 +105,11 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType, this@HomeHotFragment)
         okLiveView.setUp(this@HomeHotFragment)
         providerView.setup(this@HomeHotFragment) {
+            if (it.gameEntryTypeEnum == GameEntryType.MINIGAMES) {
+                getHomeFragment().jumpToPerya()
+                return@setup
+            }
+
             if (it.gameEntryTypeEnum == GameEntryType.OKGAMES) {
                 getMainTabActivity().jumpToOKGames()
                 providerView.postDelayed(500) {
