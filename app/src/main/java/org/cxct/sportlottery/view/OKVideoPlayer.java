@@ -2,7 +2,6 @@ package org.cxct.sportlottery.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -20,11 +19,7 @@ public class OKVideoPlayer extends GSYVideoPlayer {
     }
 
     public interface PlayStatusListener {
-        void onPrepare();
-        void onPlaying();
-        void onPause();
-        void onPlayComplete();
-        void onError();
+        void onStatuChanged(int state);
     }
 
     private PlayStatusListener playStatusListener;
@@ -291,29 +286,6 @@ public class OKVideoPlayer extends GSYVideoPlayer {
             return;
         }
 
-        if (CURRENT_STATE_NORMAL == state || CURRENT_STATE_PREPAREING == state) {
-            playStatusListener.onPrepare();
-            return;
-        }
-
-        if (CURRENT_STATE_PLAYING == state) {
-            playStatusListener.onPlaying();
-            return;
-        }
-
-        if (CURRENT_STATE_PAUSE == state) {
-            playStatusListener.onPause();
-            return;
-        }
-
-        if (CURRENT_STATE_AUTO_COMPLETE == state) {
-            playStatusListener.onPlayComplete();
-            return;
-        }
-
-        if (CURRENT_STATE_ERROR == state) {
-            playStatusListener.onError();
-        }
-
+        playStatusListener.onStatuChanged(state);
     }
 }

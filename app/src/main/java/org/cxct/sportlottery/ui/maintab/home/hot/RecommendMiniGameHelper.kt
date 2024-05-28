@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
@@ -20,6 +21,7 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
+import com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PLAYING
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
@@ -257,24 +259,7 @@ class RecommendMiniGameHelper(private val context: Context,
                 .setSolidColor(context.getColor(R.color.color_0063FF), context.getColor(R.color.color_00C2FF))
                 .setRadius(30.dp.toFloat())
                 .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
-            holder.vb.videoPlayer.setPlayStatusListener(object : OKVideoPlayer.PlayStatusListener {
-                override fun onPrepare() {
-                    holder.vb.vCover.show()
-                }
-                override fun onPlaying() {
-                    holder.vb.vCover.alpahAnimation(400, 1f, 0f)
-                }
-                override fun onPause() {
-                    holder.vb.vCover.alpha = 1f
-                }
-                override fun onPlayComplete() {
-                    holder.vb.vCover.alpha = 1f
-                }
-                override fun onError() {
-                    holder.vb.vCover.alpha = 1f
-                }
-
-            })
+            holder.vb.videoPlayer.setPlayStatusListener { holder.vb.vCover.isVisible = it != CURRENT_STATE_PLAYING}
             return holder
         }
 
