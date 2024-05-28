@@ -444,13 +444,17 @@ open class MainHomeViewModel(
             }
 
             val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory, gameEntryTagName)
-            if (isThirdTransferOpen()){
+            if (OKGamesRepository.isSingleWalletType(firmType)){
                 _enterThirdGameResult.postValue(Pair(firmType, thirdGameResult))
                 baseActivity.hideLoading()
             }else{
-                getGameBalance(firmType,thirdGameResult,baseActivity)
+                if (isThirdTransferOpen()){
+                    _enterThirdGameResult.postValue(Pair(firmType, thirdGameResult))
+                    baseActivity.hideLoading()
+                }else{
+                    getGameBalance(firmType,thirdGameResult,baseActivity)
+                }
             }
-
         }
     }
     fun transfer(firmType: String){

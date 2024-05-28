@@ -14,6 +14,7 @@ import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.databinding.ActivityThirdGameBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.LoginRepository
@@ -26,10 +27,7 @@ import org.cxct.sportlottery.ui.common.WebActivity.Companion.FIRM_CODE
 import org.cxct.sportlottery.ui.common.WebActivity.Companion.GAME_CATEGORY_CODE
 import org.cxct.sportlottery.ui.common.WebActivityImp
 import org.cxct.sportlottery.ui.maintab.MainViewModel
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.isThirdTransferOpen
-import org.cxct.sportlottery.util.jumpToDeposit
-import org.cxct.sportlottery.util.startLogin
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
 open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBinding>() {
@@ -139,7 +137,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         super.onDestroy()
         releaseRefreshToken()
         binding.webView.destroy()
-        if (isThirdTransferOpen()) {
+        if (!OKGamesRepository.isSingleWalletType(firmCode)&&isThirdTransferOpen()) {
             LoginRepository.allTransferOut()
         }
     }

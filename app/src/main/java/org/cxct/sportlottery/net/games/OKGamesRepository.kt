@@ -9,14 +9,17 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.GameCollectManager
+import org.cxct.sportlottery.util.LogUtil
 
 object OKGamesRepository {
 
     val okGamesApi by lazy { RetrofitHolder.createApiService(OKGamesApi::class.java) }
     val okPlayEvent = SingleLiveEvent<OKGameBean?>()
+    val gameFiremEvent = SingleLiveEvent<List<GameFirmValues>>()
 
     private fun paramDevice(gameEntryType: String = GameEntryType.OKGAMES): JsonObject {
         val params = JsonObject()
@@ -124,5 +127,11 @@ object OKGamesRepository {
                 GameCollectManager.gameCollectNum.postValue(it)
             }
         }
+    }
+    open fun isSingleWalletType(firmType: String?): Boolean{
+        if (firmType==null){
+            return false
+        }
+        return gameFiremEvent.value?.firstOrNull{it.firmType == firmType }?.walletType == 1
     }
 }
