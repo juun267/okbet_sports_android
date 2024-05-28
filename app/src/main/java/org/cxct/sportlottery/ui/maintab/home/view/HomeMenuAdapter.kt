@@ -187,8 +187,8 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         itemClick.invoke(selectItem!!)
     }
 
-    private fun changeSelected(item: MenuTab, position: Int, position2: Int) {
-        if (selectItem == item || !itemClick.invoke(item)) {
+    private fun changeSelected(item: MenuTab, position: Int, position2: Int, check: Boolean = true) {
+        if (selectItem == item || (!itemClick.invoke(item) && check)) {
             return
         }
 
@@ -210,10 +210,10 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         }
     }
 
-    fun selectedRecommend() = changeSelected(hotMenuItem, initiallyPosition, 0)
+    fun selectedRecommend() = changeSelected(hotMenuItem, initiallyPosition, 0, false)
     fun selectedPerya(): Int {
         val index = datas.indexOf(peryaMenuItem)
-        changeSelected(peryaMenuItem, initiallyPosition, index)
+        changeSelected(peryaMenuItem, initiallyPosition, index, false)
         return initiallyPosition
     }
 
