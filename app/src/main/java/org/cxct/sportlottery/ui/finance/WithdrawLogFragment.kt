@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.ActivityWithdrawLogBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
@@ -16,6 +17,9 @@ import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.RefreshHelper
+import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.DividerItemDecorator
 
 /**
@@ -23,57 +27,7 @@ import org.cxct.sportlottery.view.DividerItemDecorator
  */
 class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBinding>() {
     private var reserveTime: String = ""
-    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
-        object : RecyclerView.OnScrollListener() {
-            //TODO 位置改动 这个后续要删除掉 暂时隐藏
-            private fun scrollToTopControl(firstVisibleItemPosition: Int) {
-                binding.ivScrollToTop.apply {
-                    when {
-                        firstVisibleItemPosition > 0 && alpha == 0f -> {
-                            // visibility = View.VISIBLE
-                            animate().alpha(1f).setDuration(300).setListener(null)
-                        }
-                        firstVisibleItemPosition <= 0 && alpha == 1f -> {
-                            animate().alpha(0f).setDuration(300)
-                                .setListener(object : AnimatorListenerAdapter() {
-                                    override fun onAnimationEnd(animation: Animator) {
-                                        visibility = View.GONE
-                                    }
-                                })
-                        }
-                    }
-                }
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                recyclerView.layoutManager?.let {
-                    val firstVisibleItemPosition: Int =
-                        (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                    viewModel.getUserWithdrawList(
-                        false,
-                        binding.dateRangeSelector.startTime.toString(),
-                        binding.dateRangeSelector.endTime.toString(),
-                        binding.selectorOrderStatus.selectedTag,
-                        binding.selectorMethodStatus.selectedTag
-                    )
-                    scrollToTopControl(firstVisibleItemPosition)
-                }
-           //     isSlidingToLast = dy>0 //dy表示水平方向的滑动 大于0表示向下 小于0表示向上
-                if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
-                    viewModel.userWithdrawListResult.observe(this@WithdrawLogFragment) {
-                        if (it.isNullOrEmpty()){
-                            binding.tvNoData.visibility = View.GONE
-                        }else{
-                            binding.tvNoData.visibility = View.VISIBLE
-                        }
-                    }
-                }else{
-                    binding.tvNoData.visibility = View.GONE
-                }
-            }
-
-        }
+    private lateinit var refreshHelper: RefreshHelper
 
     private val logDetailDialog by lazy {
         WithdrawLogDetailDialog()
@@ -99,7 +53,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
     override fun onInitView(view: View) {
         binding.selectorOrderStatus.setItemData(withdrawStateList as MutableList<StatusSheetData>)
         binding.selectorMethodStatus.setItemData(withdrawTypeList as MutableList<StatusSheetData>)
-        setupListColumn()
         setupWithdrawLogList()
         setupSearch()
         initOnclick()
@@ -108,11 +61,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
 
 
     private fun initOnclick() =binding.run{
-        //TODO 位置改动 这个方法要删除掉 暂时隐藏
-        ivScrollToTop.setOnClickListener {
-            rvlist.smoothScrollToPosition(0)
-        }
-
         dateRangeSelector.setOnClickSearchListener {
             viewModel.getUserWithdrawList(
                 true, dateRangeSelector.startTime.toString(),
@@ -133,14 +81,9 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
         }
     }
 
-    private fun setupListColumn() {
-        binding.rechLogRechargeAmount.text = getString(R.string.withdraw_amount)
-    }
-
-    private fun setupWithdrawLogList() {
-        binding.rvlist.apply {
+    private fun setupWithdrawLogList()=binding.run {
+        rvlist.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            addOnScrollListener(recyclerViewOnScrollListener)
             this.adapter = withdrawLogAdapter
             addItemDecoration(
                 DividerItemDecorator(
@@ -150,7 +93,23 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
                     )
                 )
             )
+            refreshHelper = RefreshHelper.of(rvlist, this@WithdrawLogFragment, false, true)
+            refreshHelper.setLoadMoreListener(object : RefreshHelper.LoadMore {
+                override fun onLoadMore(pageIndex: Int, pageSize: Int) {
+                    reload(pageIndex, pageSize)
+                }
+            })
         }
+    }
+
+    private fun reload(pageIndex: Int, pageSize: Int) {
+        viewModel.getUserWithdrawList(
+            pageIndex==1,
+            binding.dateRangeSelector.startTime.toString(),
+            binding.dateRangeSelector.endTime.toString(),
+            binding.selectorOrderStatus.selectedTag,
+            binding.selectorMethodStatus.selectedTag
+        )
     }
 
     private fun setupSearch() {
@@ -161,8 +120,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         viewModel.queryByBettingStationIdResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { it ->
                 if (it.success) {
@@ -181,6 +138,12 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
         }
 
         viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner) {
+            LogUtil.d("isFinalPage="+viewModel.isFinalPage.value)
+            if (viewModel.isFinalPage.value==true) {
+                refreshHelper.finishLoadMoreWithNoMoreData()
+            } else {
+                refreshHelper.finishLoadMore()
+            }
             it?.let {
                 withdrawLogAdapter.setList(it)
                 setupNoRecordView(it.isNullOrEmpty())

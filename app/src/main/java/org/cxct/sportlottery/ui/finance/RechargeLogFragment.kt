@@ -32,7 +32,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel, FragmentRechargeLogBi
     private val rechargeAdapter by lazy { RechargeLogAdapter() }
 
     override fun onInitView(view: View) {
-        binding.ivScrollToTop.setOnClickListener { binding.rvlist.smoothScrollToPosition(0) }
         setupListColumn()
         setupRechargeLogList()
         setupSearch()
