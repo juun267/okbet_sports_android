@@ -138,7 +138,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
         }
 
         viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner) {
-            LogUtil.d("isFinalPage="+viewModel.isFinalPage.value)
             if (viewModel.isFinalPage.value==true) {
                 refreshHelper.finishLoadMoreWithNoMoreData()
             } else {

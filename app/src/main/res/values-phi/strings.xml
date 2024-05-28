@@ -208,8 +208,8 @@
     <string name="third_party">3rd party</string>
     <string name="N643">Maaring pumunta sa Glife applet para mag-recharge</string>
     <string name="N644">Maaring pumunta sa Glife applet para mag-withdraw ng pera</string>
-    <string name="N618">Mã giao dịch phụ</string>
-    <string name="N653">nakapending na babayarin</string>
+    <string name="N619">Sub-order transaction no.</string>
+    <string name="N653">Pending</string>
     <string name="money_recycle_succeed">Matagumpay na nabawi ang quota</string>
     <string name="news_center">Message Center</string>
     <string name="help_center">Help center</string>

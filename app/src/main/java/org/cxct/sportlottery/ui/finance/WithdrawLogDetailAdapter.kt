@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.finance
 
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.databinding.ItemWithdrawLogDetailBinding
@@ -11,16 +9,24 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.finance.df.OrderState
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.copyText
 
 
 class WithdrawLogDetailAdapter: BindingAdapter<Row, ItemWithdrawLogDetailBinding>() {
 
     override fun onBinding(position: Int, binding: ItemWithdrawLogDetailBinding, item: Row): Unit = binding.run {
 
-        wdLogDetailTransNumSubtitle.text = "${context.getString(R.string.N618)}${position + 1}："
+        wdLogDetailTransNumSubtitle.text = "${context.getString(R.string.N619)}${position + 1}："
         wdLogDetailAmountSubtitle.text =
             "${context.getString(R.string.text_account_history_amount)}："
         wdLogDetailTransNum.text = item.orderNo
+        tvCopy.setOnClickListener {
+            item.orderNo?.let {
+                it1 -> context.copyText(it1)
+                ToastUtil.showToastInCenter(context, context.getString(R.string.text_money_copy_success))
+            }
+        }
         wdLogDetailAmount.text =
             "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(item.actualMoney ?: 0, 0)}"
         wdLogDetailStatus.apply {
