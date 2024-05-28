@@ -1117,7 +1117,7 @@
     <string name="J803">Manalo at Parehong koponan upang makapuntos - Oo</string>
     <string name="J804">Panalo at Parehong koponan upang makapuntos - Hindi</string>
     <string name="recharge_state_success">Tagumpay</string>
-
+    <string name="recharge_state_failed">Failed</string>
 
     <string name="N846">Pangunahing impormasyon</string>
     <string name="J055">Tunay na pangalan</string>

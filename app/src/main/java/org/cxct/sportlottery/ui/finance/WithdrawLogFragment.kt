@@ -1,15 +1,11 @@
 package org.cxct.sportlottery.ui.finance
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.ActivityWithdrawLogBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
@@ -17,9 +13,7 @@ import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.RefreshHelper
-import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.DividerItemDecorator
 
 /**
@@ -28,10 +22,6 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBinding>() {
     private var reserveTime: String = ""
     private lateinit var refreshHelper: RefreshHelper
-
-    private val logDetailDialog by lazy {
-        WithdrawLogDetailDialog()
-    }
 
     private val withdrawLogAdapter by lazy {
         WithdrawLogAdapter().apply {
@@ -42,7 +32,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
                             reserveTime = it.withdrawDateAndTime.toString()
                             viewModel.getQueryByBettingStationId(it.channel)
                         } else {
-                            viewModel.setWithdrawLogDetail(event)
+                            WithdrawLogDetailDialog.newInstance(it).show(childFragmentManager)
                         }
                     }
                 }
@@ -149,14 +139,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
             }
         }
 
-        viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner) {
-            if (it.getContentIfNotHandled() == null) return@observe
-
-            if (logDetailDialog.dialog?.isShowing != true) {
-                logDetailDialog.show(parentFragmentManager)
-            }
-        }
-
         viewModel.getUserWithdrawList(true)
     }
 
@@ -167,7 +149,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel, ActivityWithdrawLogBi
             binding.viewNoRecord.root.visibility = View.GONE
         }
     }
-
 
     private val withdrawStateList by lazy {
         this.resources.getStringArray(R.array.withdraw_state_array).map {
