@@ -198,16 +198,17 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         }
 
         selectItem = item
-        val lastPosition = selectedPosition
-        selectedPosition = position
-        notifyItemChanged(position, position2)
-        if (position % 2 == lastPosition % 2) { // 因为目前实际数据最多2页，%2的方式即可判断是否跟选中的在同一页
-            notifyItemChanged(position, oldIndex % pageSize)
-        } else {
-            val oldIndex2 = oldIndex % pageSize
-            notifyItemChanged(position - 1, oldIndex2)
-            notifyItemChanged(position + 1, oldIndex2)
-        }
+        notifyDataSetChanged()
+//        val lastPosition = selectedPosition
+//        selectedPosition = position
+//        notifyItemChanged(position, position2)
+//        if (position % 2 == lastPosition % 2) { // 因为目前实际数据最多2页，%2的方式即可判断是否跟选中的在同一页
+//            notifyItemChanged(position, oldIndex % pageSize)
+//        } else {
+//            val oldIndex2 = oldIndex % pageSize
+//            notifyItemChanged(position - 1, oldIndex2)
+//            notifyItemChanged(position + 1, oldIndex2)
+//        }
     }
 
     fun selectedRecommend() = changeSelected(hotMenuItem, initiallyPosition, 0, false)
