@@ -341,7 +341,7 @@ class RecommendMiniGameHelper(private val context: Context,
                 comingsoonText.setTextColor(Color.WHITE)
                 comingsoonText.textSize = 18f
                 comingsoonText.typeface = AppFont.helvetica_bold
-                comingsoonText.setText(R.string.M013)
+                comingsoonText.setText(R.string.N257)
                 binding.root.addView(comingsoonText, lp)
                 binding.tvJackPotAmount.tag = comingsoonText
             } else {
