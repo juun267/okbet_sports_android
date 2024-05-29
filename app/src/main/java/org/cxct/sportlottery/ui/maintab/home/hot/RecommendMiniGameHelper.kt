@@ -107,7 +107,9 @@ class RecommendMiniGameHelper(private val context: Context,
         lifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
 
             override fun onResume(owner: LifecycleOwner) {
-                currentPlayer?.startPlayLogic()
+                if (StaticData.miniGameOpened() && dataList?.getOrNull(0)?.isMaintain() == false) {
+                    currentPlayer?.startPlayLogic()
+                }
             }
 
             override fun onPause(owner: LifecycleOwner) {
@@ -295,7 +297,9 @@ class RecommendMiniGameHelper(private val context: Context,
                 .setSolidColor(context.getColor(R.color.color_0063FF), context.getColor(R.color.color_00C2FF))
                 .setRadius(30.dp.toFloat())
                 .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
-            holder.vb.videoPlayer.setPlayStatusListener { holder.vb.vCover.isVisible = it != CURRENT_STATE_PLAYING}
+            holder.vb.videoPlayer.setPlayStatusListener {
+                holder.vb.vCover.alpha = if (it != CURRENT_STATE_PLAYING) 1f else 0f
+            }
             return holder
         }
 
