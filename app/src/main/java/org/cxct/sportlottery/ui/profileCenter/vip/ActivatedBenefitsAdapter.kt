@@ -7,7 +7,6 @@ import org.cxct.sportlottery.common.enums.UserVipType
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemActivatedBenefitsBinding
-import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.RewardDetail
 import org.cxct.sportlottery.net.user.data.RewardInfo
 import org.cxct.sportlottery.net.user.data.UserVip
@@ -24,12 +23,7 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardInfo, RewardDetail)->Unit
             .setRadius(radius,radius,0f,radius)
     }
 
-    var setBirthday: Boolean=false
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
-    var disableStatus: Boolean=false
+    lateinit var userVip: UserVip
     lateinit var rewardInfo: RewardInfo
 
     override fun onBinding(position: Int, binding: ItemActivatedBenefitsBinding, item: RewardDetail) = binding.run {
@@ -78,7 +72,14 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardInfo, RewardDetail)->Unit
             }
         }
         tvAmount.text = TextUtil.formatMoney(item.value,0)
-        if(disableStatus){
+        val currentLevelPos = userVip.rewardInfo.indexOfFirst { it.levelCode == rewardInfo.levelCode }
+        val userLevelPos = userVip.rewardInfo.indexOfFirst { it.levelCode == userVip.levelCode }
+        val hideStatus = when(item.rewardType){
+            UserVipType.REWARD_TYPE_PACKET-> currentLevelPos>userLevelPos
+            else-> item.status==null
+        }
+
+        if(hideStatus){
             tvAction.gone()
             return
         }else{
@@ -119,7 +120,7 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardInfo, RewardDetail)->Unit
                 }
             }
         }
-        if (item.rewardType == UserVipType.REWARD_TYPE_BIRTHDAY&&setBirthday){
+        if (item.rewardType == UserVipType.REWARD_TYPE_BIRTHDAY&&userVip.birthday.isNullOrEmpty()){
             tvAction.setActionBtn(true)
             tvAction.text = context.getString(R.string.P448)
         }
