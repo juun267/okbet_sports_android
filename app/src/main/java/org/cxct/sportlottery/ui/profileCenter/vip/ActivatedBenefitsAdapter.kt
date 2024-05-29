@@ -75,7 +75,7 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardInfo, RewardDetail)->Unit
         val currentLevelPos = userVip.rewardInfo.indexOfFirst { it.levelCode == rewardInfo.levelCode }
         val userLevelPos = userVip.rewardInfo.indexOfFirst { it.levelCode == userVip.levelCode }
         val hideStatus = when(item.rewardType){
-            UserVipType.REWARD_TYPE_PACKET-> currentLevelPos>userLevelPos
+            UserVipType.REWARD_TYPE_PACKET-> currentLevelPos>userLevelPos && item.status==null
             else-> item.status==null
         }
 
@@ -98,15 +98,11 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardInfo, RewardDetail)->Unit
                 tvAction.setActionBtn(false)
                 tvAction.text = context.getString(R.string.P375)
             }
-            3->{
-                tvAction.setActionBtn(false)
-                tvAction.text = context.getString(R.string.N417)
-            }
             4,5->{
                 tvAction.setActionBtn(false)
                 tvAction.text = context.getString(R.string.P374)
             }
-            6->{
+            3,6->{
                 tvAction.setActionBtn(false)
                 tvAction.text = context.getString(R.string.P377)
             }
