@@ -304,7 +304,11 @@ class RecommendMiniGameHelper(private val context: Context,
         override fun onBindViewHolder(holder: BindingVH<ItemMinigameBinding>, position: Int) {
             val binding = holder.vb
             val item = getItem(position)
-            binding.vCover.setOnClickListener { if (binding.vAmountBg.tag == null) { onClick.invoke(item) } }
+            binding.vCover.setOnClickListener {
+                if (!item.isMaintain() && StaticData.miniGameOpened()) {
+                    onClick.invoke(item)
+                }
+            }
             binding.tvJackPotAmount.setNumberString(item.jackpotAmount.toString())
             binding.vCover.load(item.imgGame, R.drawable.img_placeholder_default)
             with(binding.videoPlayer.tag as GSYVideoOptionBuilder) {

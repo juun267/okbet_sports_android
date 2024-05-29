@@ -175,7 +175,7 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         val item = adapter.getItemOrNull(position) ?: return
         val okGameBean = item as OKGameBean
-        if (!okGameBean.isMaintain()) {
+        if (!okGameBean.isMaintain() && StaticData.miniGameOpened()) {
             viewModel.requestEnterThirdGame(item, requireActivity() as BaseActivity<*, *>)
         }
     }
