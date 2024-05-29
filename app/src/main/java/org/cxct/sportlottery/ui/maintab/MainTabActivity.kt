@@ -618,7 +618,6 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             if (fragment is HomeFragment) {
                 fragment.jumpToPerya()
             }
-            tabHelper.clearSelected()
         }else{
             ToastUtil.showToast(this,getString(R.string.N700))
         }

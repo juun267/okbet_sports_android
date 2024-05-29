@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
@@ -29,6 +30,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private val pageSize = 6
     private var selectedBg = R.drawable.bg_home_menu_sel
     private var normalBg = R.drawable.bg_home_menu_nor
+
 
     data class MenuTab(@DrawableRes val selectedIcon: Int,
                        @DrawableRes val norIcon: Int,
@@ -106,9 +108,13 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab?>) { }
 
     private fun setMaintanence(linMaintenance: View, @StringRes name: Int){
-        if ((name == R.string.main_tab_sport || name == R.string.esports || name == R.string.P333)
-            && getSportEnterIsClose()) {
-            linMaintenance.visible()
+        if ((name == R.string.main_tab_sport || name == R.string.esports || name == R.string.P333)) {
+            linMaintenance.isVisible = getSportEnterIsClose()
+            return
+        }
+
+        if (name == R.string.P452) {
+            linMaintenance.isVisible = !StaticData.miniGameOpened()
             return
         }
 

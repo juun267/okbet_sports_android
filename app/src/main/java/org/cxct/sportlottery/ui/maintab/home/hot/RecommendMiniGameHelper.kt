@@ -1,10 +1,12 @@
 package org.cxct.sportlottery.ui.maintab.home.hot
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -14,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -22,10 +25,11 @@ import com.google.android.material.tabs.TabLayout
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PLAYING
+import eightbitlab.com.blurview.BlurView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
-import org.cxct.sportlottery.common.extentions.alpahAnimation
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.post
@@ -33,7 +37,10 @@ import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.ItemMinigameBinding
 import org.cxct.sportlottery.databinding.LayoutRecommendMinigameBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.repository.ConfigRepository
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -67,10 +74,36 @@ class RecommendMiniGameHelper(private val context: Context,
     private val viewPager2: ViewPager2 get() = binding.vp
 
     private var dataList: List<OKGameBean>? = null
+    private var isClosed: Boolean = false
 
     fun bindLifeEvent(lifecycleOwner: LifecycleOwner) {
+        isClosed = !StaticData.miniGameOpened()
         setup(OKGamesViewModel.getActiveMiniGameData())
         OKGamesViewModel.miniGameList.observe(lifecycleOwner) { setup(it.first) }
+        ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleOwner.lifecycleScope) {
+            if (it.firmCode != "OKMINI" || dataList.isNullOrEmpty() || dataList!!.first().maintain == it.maintain) {
+                return@collectWith
+            }
+
+            val maintain = it.maintain
+            dataList!!.forEach { it.maintain = maintain }
+            miniGameAdapter.notifyDataSetChanged()
+        }
+
+        ConfigRepository.onNewConfig(lifecycleOwner) {
+            isClosed = !StaticData.miniGameOpened()
+            if (isClosed) {
+                currentPlayer?.onVideoPause()
+                if (!dataList.isNullOrEmpty()) {
+                    binding.root.hide()
+                }
+            } else {
+                if (!dataList.isNullOrEmpty()) {
+                    binding.root.show()
+                }
+            }
+        }
+
         lifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
 
             override fun onResume(owner: LifecycleOwner) {
@@ -130,7 +163,10 @@ class RecommendMiniGameHelper(private val context: Context,
                     && position != playPosition) {
                     GSYVideoManager.releaseAllVideos()
                 }
-                post{ playPosition(position) }
+
+                if (!isClosed && false == dataList?.getOrNull(index)?.isMaintain()) {
+                    post{ playPosition(position) }
+                }
             }
 
         })
@@ -157,7 +193,7 @@ class RecommendMiniGameHelper(private val context: Context,
             return
         }
 
-        binding.root.show()
+        binding.root.isVisible = !isClosed
         currentPlayer?.release()
         dataList = gameList
 
@@ -268,7 +304,7 @@ class RecommendMiniGameHelper(private val context: Context,
         override fun onBindViewHolder(holder: BindingVH<ItemMinigameBinding>, position: Int) {
             val binding = holder.vb
             val item = getItem(position)
-            binding.vCover.setOnClickListener { onClick.invoke(item) }
+            binding.vCover.setOnClickListener { if (binding.vAmountBg.tag == null) { onClick.invoke(item) } }
             binding.tvJackPotAmount.setNumberString(item.jackpotAmount.toString())
             binding.vCover.load(item.imgGame, R.drawable.img_placeholder_default)
             with(binding.videoPlayer.tag as GSYVideoOptionBuilder) {
@@ -280,6 +316,49 @@ class RecommendMiniGameHelper(private val context: Context,
                 build(binding.videoPlayer)
             }
 
+            if (item.isMaintain()) {
+                enableMaintain(binding)
+            } else {
+                disableMaintain(binding)
+            }
+        }
+
+        private fun enableMaintain(binding: ItemMinigameBinding) {
+            binding.vAmountBg.hide()
+            binding.tvJackPotAmount.hide()
+            binding.tvBetToWin.hide()
+            binding.vCover.show()
+            var blurView = binding.vAmountBg.tag as? BlurView
+            var comingsoonText = binding.tvJackPotAmount.tag as? TextView
+            if (blurView == null) {
+                blurView = BlurView(context)
+                val lp = FrameLayout.LayoutParams(-1, -1)
+                binding.root.addView(blurView, lp)
+                blurView.setupWith(binding.root)
+                binding.vAmountBg.tag = blurView
+                comingsoonText = AppCompatTextView(context)
+                comingsoonText.gravity = Gravity.CENTER
+                comingsoonText.setTextColor(Color.WHITE)
+                comingsoonText.textSize = 18f
+                comingsoonText.typeface = AppFont.helvetica_bold
+                comingsoonText.setText(R.string.M013)
+                binding.root.addView(comingsoonText, lp)
+                binding.tvJackPotAmount.tag = comingsoonText
+            } else {
+                blurView.setupWith(binding.root)
+                blurView.show()
+                comingsoonText!!.show()
+            }
+
+        }
+
+        private fun disableMaintain(binding: ItemMinigameBinding) {
+            binding.vAmountBg.show()
+            binding.tvJackPotAmount.show()
+            binding.tvBetToWin.show()
+            binding.vCover.show()
+            (binding.vAmountBg.tag as? BlurView)?.hide()
+            (binding.tvJackPotAmount.tag as? TextView)?.hide()
         }
 
     }

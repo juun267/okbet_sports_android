@@ -101,7 +101,6 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
 
     override fun onInitView(view: View) {
         initToolBar()
-        binding.rvMarquee.bindLifecycler(this)
         initMenu()
         initIndicate()
         binding.ivService.setOnTouchListener(SuckEdgeTouch())
@@ -110,6 +109,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
 
     override fun onBindViewStatus(view: View) {
         initObservable()
+        binding.rvMarquee.bindLifecycler(this)
         viewModel.getConfigData()
         viewModel.getAnnouncement()
     }

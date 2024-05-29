@@ -21,6 +21,7 @@
         tools:background="@drawable/img_placeholder_default"/>
 
     <View
+        android:id="@+id/vAmountBg"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_gravity="bottom"
