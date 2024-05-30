@@ -24,6 +24,7 @@ import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -135,6 +136,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         LotteryManager.instance.getLotteryInfo()
         viewModel.getSportMenuFilter()
         viewModel.getGameCollectNum()
+        viewModel.getThirdGames()
         PreLoader.startPreload()
     }
 
@@ -666,7 +668,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> {
                 JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.thirdGameCategoryCode ?: "")
-                if (isThirdTransferOpen()) gamesViewModel.transfer(firmType)
+                if (!OKGamesRepository.isSingleWalletType(firmType) && isThirdTransferOpen()) gamesViewModel.transfer(firmType)
             }
 
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
