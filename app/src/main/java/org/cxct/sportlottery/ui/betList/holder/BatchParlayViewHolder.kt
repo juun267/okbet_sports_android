@@ -150,7 +150,7 @@ class BatchParlayViewHolder(
                         }
                     }
                 }
-
+                data.amountError = data.input.isNullOrEmpty()&&data.betAmount == 0.0
                 setEtBetParlayBackground(data)
                 onItemClickListener.refreshBetInfoTotal()
                 refreshSingleWinAmount(data)

@@ -673,7 +673,28 @@ class BetInfoItemViewHolder(
     private fun checkBetLimit(
         itemData: BetInfoListData
     ) {
-        itemData.amountError = false
+//       contentView.apply {
+//            val betAmount = itemData.betAmount
+//
+//            var amountError = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+//                !itemData.input.isNullOrEmpty()
+//            } else {
+//                if (betAmount > inputMaxMoney) {
+//                    //超過最大限額
+//                    true
+//                } else {
+//                    betAmount != 0.0 && betAmount < inputMinMoney
+//                }
+//            }
+//            if (itemData.input.isNullOrEmpty()) {
+//                amountError = true
+//            }
+//
+//            Timber.d("用户余额:$mUserMoney")
+//            val balanceError = betAmount != 0.0 && betAmount > mUserMoney
+//            itemData.amountError = balanceError || amountError
+//        }
+        itemData.amountError = itemData.input.isNullOrEmpty()&&itemData.betAmount == 0.0
         setEtBackground(itemData)
     }
 

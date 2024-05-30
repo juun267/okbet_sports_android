@@ -87,11 +87,10 @@ class BetButton @JvmOverloads constructor(
 
     private fun setupBetClickable() {
         val opt1 = hasBetPlatClose == true
-//        val opt2 = amountCanBet == false
+        val opt2 = amountCanBet == false
         val opt3 = betCounts == 0
         val opt4 = isParlay && currentBetListCounts == 1
-        val betClickable = !(opt1 || opt3 || opt4)
-        Timber.d("setupBetClickable: betClickable:${betClickable} opt1:${opt1} op2:${true} opt3:${opt3} opt4:${opt4}")
+        val betClickable = !(opt1 || opt2|| opt3 || opt4)
         binding.clBet.apply {
             isSelected = betClickable
             isClickable = betClickable

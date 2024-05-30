@@ -209,6 +209,7 @@ class BasketballEndingCardViewHolder(
                     val bet = it.toString().toDoubleS()
                     showTotalStakeWinAmount(bet)
                 }
+                itemData.amountError = itemData.input.isNullOrEmpty()&&itemData.betAmount == 0.0
                 setEtBackground(itemData)
                 onItemClickListener.refreshBetInfoTotal()
             }
