@@ -3,10 +3,7 @@ package org.cxct.sportlottery.ui.finance
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.databinding.FragmentRechargeLogBinding
@@ -14,7 +11,6 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
-import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.RefreshHelper
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.DividerItemDecorator
@@ -22,18 +18,13 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 /**
  * @app_destination 存款记录
  */
-class RechargeLogFragment : BaseFragment<FinanceViewModel, FragmentRechargeLogBinding>(), OnItemClickListener {
+class RechargeLogFragment : BaseFragment<FinanceViewModel, FragmentRechargeLogBinding>() {
 
     private lateinit var refreshHelper: RefreshHelper
-
-    private val logDetailDialog by lazy {
-        RechargeLogDetailDialog()
-    }
 
     private val rechargeAdapter by lazy { RechargeLogAdapter() }
 
     override fun onInitView(view: View) {
-        binding.ivScrollToTop.setOnClickListener { binding.rvlist.smoothScrollToPosition(0) }
         setupListColumn()
         setupRechargeLogList()
         setupSearch()
@@ -57,7 +48,9 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel, FragmentRechargeLogBi
     private fun setupRechargeLogList()=binding.run {
         rvlist.setLinearLayoutManager()
         rvlist.adapter = rechargeAdapter
-        rechargeAdapter.setOnItemClickListener(this@RechargeLogFragment)
+        rechargeAdapter.setOnItemClickListener { adapter, view, position ->
+            RechargeLogDetailDialog.newInstance(rechargeAdapter.getItem(position)).show(childFragmentManager)
+        }
         rechargeAdapter.setEmptyView(LayoutInflater.from(view.context).inflate(R.layout.view_no_record, null))
         rvlist.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(view.context, R.drawable.recycleview_decoration)))
         refreshHelper = RefreshHelper.of(rvlist, this@RechargeLogFragment, false, true)
@@ -79,7 +72,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel, FragmentRechargeLogBi
     }
 
     private fun setupSearch() {
-        binding.dateRangeSelector.clickDelay {
+        binding.dateRangeSelector.setOnClickSearchListener {
             startReload()
         }
     }
@@ -108,14 +101,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel, FragmentRechargeLogBi
 
             if (!it.first.isNullOrEmpty()) {
                 rechargeAdapter.addData(it.first!!)
-            }
-        }
-
-        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
-                if (logDetailDialog.dialog?.isShowing != true) {
-                    logDetailDialog.show(parentFragmentManager)
-                }
             }
         }
     }
@@ -191,10 +176,5 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel, FragmentRechargeLogBi
             }
         }
     }
-
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        viewModel.setLogDetail(Event(rechargeAdapter.getItem(position)))
-    }
-
 }
 

@@ -1,17 +1,21 @@
 package org.cxct.sportlottery.ui.finance
 
+import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogWithdrawLogDetailBinding
+import org.cxct.sportlottery.network.withdraw.list.Row
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.finance.df.OrderState
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.copyText
 import kotlin.math.abs
 
 /**
@@ -19,17 +23,31 @@ import kotlin.math.abs
  */
 class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel,DialogWithdrawLogDetailBinding>() {
 
+    companion object{
+        fun newInstance(row: Row)= WithdrawLogDetailDialog().apply{
+            arguments = Bundle().apply {
+                putParcelable("row",row)
+            }
+        }
+    }
 
     init {
         marginHorizontal=40.dp
     }
-    override fun onInitView()=binding.run {
+    private val row by lazy { arguments?.getParcelable("row") as Row? }
+
+    override fun onInitView(): Unit =binding.run {
         binding.logDetailConfirm.setOnClickListener {
             dismiss()
         }
+        binding.tvCopy.setOnClickListener {
+            row?.orderNo?.let {
+                requireContext().copyText(it)
+                ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
+            }
+        }
         wdLogDetailRemarksLeft.text = getString(R.string.N064) + "："
-        viewModel.withdrawLogDetail.observe(this@WithdrawLogDetailDialog.viewLifecycleOwner) { event ->
-            event.peekContent().let { it ->
+        row?.let { it ->
                 wdLogDetailRemarksRight.text = it.reason
                 wdLogDetailTransNumSubtitle.text = "${getString(R.string.J630)}："
                 wdLogDetailAmountSubtitle.text =
@@ -63,10 +81,7 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel,DialogWithdrawLogDet
 
 //                wd_log_detail_review_time.text = it.operatorDateAndTime ?: ""
 //                wd_log_detail_reason.text = it.reason ?: ""
-                it.displayMoney?.let { nonNullDisplayMoney ->
-                    wdLogDetailAmount.text =
-                        "${sConfigData?.systemCurrencySign} $nonNullDisplayMoney"
-                }
+                wdLogDetailAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.applyMoney?:0,0)}"
 
                 it.withdrawDeductMoney?.let { nonNullDeductMoney ->
                     wdLogDetailCommission.text =
@@ -92,10 +107,9 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel,DialogWithdrawLogDet
                         }
                         rvChild.layoutManager =
                             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                        rvChild.adapter = WithdrawLogDetailAdapter(it)
+                        rvChild.adapter = WithdrawLogDetailAdapter().apply { setList(it) }
                     }
                 }
-            }
         }
     }
 }

@@ -1,9 +1,13 @@
 package org.cxct.sportlottery.network.money.list
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
+@Parcelize
 @JsonClass(generateAdapter = true) @KeepMembers
 data class Row(
     @Json(name = "account")
@@ -68,7 +72,7 @@ data class Row(
     val userName: String,
     @Json(name = "reason")
     val reason: String?
-) {
+): Parcelable{
     var rechDateAndTime: String? = null
     var rechDateStr: String? = null
     var rechTimeStr: String? = null

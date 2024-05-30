@@ -20,8 +20,8 @@ class WithdrawLogAdapter : BindingAdapter<Row,ItemWithdrawLogBinding>() {
             rechLogDate.text = item.withdrawDate
             rechLogTime.text = item.withdrawTime
             tvOrderNumber.text = item.orderNo
-            rechLogAmount.text = item.displayMoney
-            tvReceiveAmount.text = TextUtil.formatMoney(item.actualMoney ?: 0.0)
+            rechLogAmount.text = TextUtil.formatMoney(item.applyMoney?:0,0)
+            tvReceiveAmount.text = TextUtil.formatMoney(item.actualMoney?:0,0)
             //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
             rechLogState.apply {
                 when (item.orderState) {

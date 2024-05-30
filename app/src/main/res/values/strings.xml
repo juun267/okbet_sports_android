@@ -1232,12 +1232,12 @@
     <string name="third_party">3rd party</string>
     <string name="L019">Succeed</string>
     <string name="N627">Please go to the betting station to withdraw money</string>
-    <string name="N618">Sub-order transaction no.</string>
+    <string name="N619">Sub-order transaction no.</string>
     <string name="N626">Withdrawal failed</string>
     <string name="N628">Total bill transaction number</string>
     <string name="N646">Received amount</string>
     <string name="N647">Order amount</string>
-    <string name="N653">Pending payment</string>
+    <string name="N653">Pending</string>
     <string name="N643">Please go to Glife app to deposit</string>
     <string name="N644">Please go to Glife app to withdraw</string>
     <string name="J630">Order no.</string>

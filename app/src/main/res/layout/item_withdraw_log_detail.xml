@@ -29,7 +29,22 @@
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_trans_num_subtitle"
             app:layout_constraintStart_toStartOf="@id/wd_log_detail_trans_num_subtitle"
             tools:text="10201223151804075637" />
-
+        <TextView
+            android:id="@+id/tvCopy"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_18"
+            android:paddingHorizontal="@dimen/margin_8"
+            app:layout_constraintLeft_toRightOf="@id/wd_log_detail_trans_num"
+            app:layout_constraintTop_toTopOf="@id/wd_log_detail_trans_num"
+            app:layout_constraintBottom_toBottomOf="@id/wd_log_detail_trans_num"
+            android:background="@drawable/bg_blue_radius_4_stroke"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:drawableLeft="@drawable/ic_copy_blue"
+            android:drawablePadding="@dimen/margin_4"
+            android:textColor="@color/color_025BE8"
+            android:textSize="@dimen/textSize8sp"
+            android:text="@string/btn_copy"/>
         <TextView
             android:id="@+id/wd_log_detail_amount_subtitle"
             android:layout_width="wrap_content"
