@@ -525,12 +525,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
         val betList = getCurrentBetList()
         val parlayList = getCurrentParlayList()
         //僅判斷對應tab裡的amountError
-        Timber.d("amountError3:${currentBetType}")
         if (currentBetType == SINGLE || currentBetType == BASKETBALL_ENDING_CARD) {
-            betList.forEach {
-                Timber.d("balanceError3:${it.amountError}")
+            betList.getOrNull(0)?.let {
                 if (it.amountError) {
-                    Timber.d("balanceError4:${it.amountError}")
                     binding.btnBet.amountCanBet = false
                     return
                 }
