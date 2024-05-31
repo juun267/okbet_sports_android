@@ -214,6 +214,7 @@ class LoginViewModel(
         }
         if (loginData.ifnew != false) {
             AFInAppEventUtil.register("username",HashMap<String, Any>().apply {
+                put("uid",loginData.uid.toString())
                 put("userId",loginData.userId.toString())
                 put("userName",loginData.userName.toString())
                 put("phone",loginData.phone.toString())
@@ -221,6 +222,7 @@ class LoginViewModel(
             })
         } else {
             AFInAppEventUtil.login(loginData.uid.toString(),HashMap<String, Any>().apply {
+                put("uid",loginData.uid.toString())
                 put("userId",loginData.userId.toString())
                 put("userName",loginData.userName.toString())
                 put("phone",loginData.phone.toString())
