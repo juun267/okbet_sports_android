@@ -76,6 +76,7 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardInfo, RewardDetail)->Unit
         val userLevelPos = userVip.rewardInfo.indexOfFirst { it.levelCode == userVip.levelCode }
         val hideStatus = when(item.rewardType){
             UserVipType.REWARD_TYPE_PACKET-> currentLevelPos>userLevelPos && item.status==null
+            UserVipType.REWARD_TYPE_BIRTHDAY,UserVipType.REWARD_TYPE_WEEKLY-> currentLevelPos!=userLevelPos &&item.status ==null
             else-> item.status==null
         }
 
