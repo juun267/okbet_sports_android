@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:layout_height="206dp"
     android:background="@color/color_F7FAFE"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp">
@@ -55,4 +56,27 @@
         android:textSize="14sp"
         android:textStyle="bold" />
 
+    <LinearLayout
+        android:id="@+id/linMaintenance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:visibility="gone"
+        android:background="@color/transparent_black_50">
+        <ImageView
+            android:layout_width="52dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_home_maintenance"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSize18sp"
+            android:textColor="@color/color_FFFFFF"
+            android:text="@string/N257"/>
+
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

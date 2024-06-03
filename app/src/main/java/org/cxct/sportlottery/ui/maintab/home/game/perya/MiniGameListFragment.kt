@@ -7,11 +7,15 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.LinearLayoutCompat.OrientationMode
+import androidx.appcompat.widget.LinearLayoutCompat.VERTICAL
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
@@ -88,7 +92,7 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
 
         private val imgId = View.generateViewId()
         private val textId = View.generateViewId()
-        private val coverId = View.generateViewId()
+        private val maintainceId = View.generateViewId()
 
         init {
             setDiffCallback(object : DiffUtil.ItemCallback<OKGameBean?>() {
@@ -114,9 +118,26 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
             img.id = imgId
             root.addView(img, lpChild)
 
-            val cover = BlurView(context)
-            cover.id = coverId
-            root.addView(cover, lpChild)
+            val linMaintaince = LinearLayout(context).apply {
+                setBackgroundResource(R.color.transparent_black_50)
+                orientation = LinearLayout.VERTICAL
+                gravity = Gravity.CENTER
+                val img = AppCompatImageView(context)
+                img.adjustViewBounds=true
+                addView(img, LinearLayout.LayoutParams(52.dp,LayoutParams.WRAP_CONTENT))
+
+                val text = AppCompatTextView(context)
+                text.typeface = AppFont.helvetica_bold
+                text.gravity = Gravity.CENTER
+                text.setTextColor(Color.WHITE)
+                text.textSize = 18f
+                text.text = context.getString(R.string.N257)
+                addView(text, LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT).apply {
+                    topMargin = 6.dp
+                })
+            }
+            linMaintaince.id = maintainceId
+            root.addView(linMaintaince, lpChild)
 
             val text = AppCompatTextView(context)
             text.id = textId
@@ -133,26 +154,19 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
 
             if (item == null) {
                 holder.setImageResource(imgId, R.drawable.img_minigame_unknow)
-                holder.setVisible(coverId, false)
+                holder.setVisible(maintainceId, false)
                 val textView = holder.getView<TextView>(textId)
                 textView.show()
                 textView.setText(R.string.M013)
                 holder.setVisible(textId, true)
                 return
             }
-
+            holder.setVisible(textId, false)
             holder.getView<ImageView>(imgId).roundOf(item.imgGame, 8.dp, R.drawable.img_placeholder_default)
             if (!item.isMaintain()) {
-                holder.setVisible(coverId, false)
-                holder.setVisible(textId, false)
+                holder.setVisible(maintainceId, false)
             } else {
-                val textView = holder.getView<TextView>(textId)
-                val blurView = holder.getView<BlurView>(coverId)
-                blurView.setupWith(holder.itemView as ViewGroup)
-                textView.setText(R.string.N257)
-                blurView.show()
-                textView.show()
-
+                holder.setVisible(maintainceId, true)
             }
         }
 
