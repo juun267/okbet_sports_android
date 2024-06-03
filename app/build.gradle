@@ -134,11 +134,10 @@ android {
             manifestPlaceholders = [CHANNEL    : "vivo",
                                     INVITE_CODE: "vivo888"]
         }
-//
-//        inmobi {
-//            manifestPlaceholders = [CHANNEL    : "inmobi",
-//                                    INVITE_CODE: "inmobi"]
-//        }
+        apkpure {
+            manifestPlaceholders = [CHANNEL    : "apkpure",
+                                    INVITE_CODE: "apkpureokbet"]
+        }
         //okbet预发环境 app-phuat.abaoooiap.com
         phuat {
             buildConfigField "String", "CHANNEL_NAME", "\"yfp2\""
