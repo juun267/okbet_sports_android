@@ -216,7 +216,7 @@ class WithdrawViewModel(
         val sortMsgList = it.getData()?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })
         sortMsgList?.forEach {data ->
             if (data.type.toInt() == 1) {
-                messageList.add(data.title + " - " + data.message)
+                messageList.add(data.message)
             }
         }
 

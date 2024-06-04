@@ -9,6 +9,6 @@ import retrofit2.http.Query
 interface AnnouncementService {
 
     @GET(Constants.INDEX_PROMOTENOTICE)
-    suspend fun getPromoteNotice(@Query("typeList") typeList: Array<Int>): ApiResult<Array<Row>>
+    suspend fun getPromoteNotice( @Query("typeList") typeList: Array<Int>, @Query("msgType") msgType: Int?): ApiResult<Array<Row>>
 
 }

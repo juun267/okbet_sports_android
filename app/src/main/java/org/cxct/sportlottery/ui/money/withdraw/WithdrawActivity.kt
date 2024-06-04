@@ -4,8 +4,10 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityWithdrawBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
@@ -66,11 +68,12 @@ class WithdrawActivity : BaseActivity<WithdrawViewModel, ActivityWithdrawBinding
         }
 
         viewModel.withdrawAnnouncement.observe(this) {
-            marqueeAdapter.setData(it)
-            val haveData = it.isNotEmpty()
-            binding.linAnnouncement.isVisible = haveData
-            if (haveData) {
+            if (it.isNotEmpty()){
+                binding.linAnnouncement.visible()
+                marqueeAdapter.setData(it)
                 binding.rvMarquee.startAuto(false)
+            }else{
+                binding.linAnnouncement.gone()
             }
         }
     }

@@ -1,18 +1,20 @@
 package org.cxct.sportlottery.ui.money.recharge
 
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.hideLoading
-import org.cxct.sportlottery.common.extentions.loading
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityMoneyRechargeBinding
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
@@ -38,7 +40,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private var apiResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
     private var cryptoResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
-
+    private lateinit var marqueeAdapter: MarqueeAdapter
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
@@ -48,6 +50,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
         initData()
         initView()
         initTabLayout()
+        initMarquee()
     }
 
     private fun initToolbar() {
@@ -59,6 +62,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun initData() {
         getMoneyConfig()
+        viewModel.getAnnouncement()
     }
 
     private fun getMoneyConfig() {
@@ -164,6 +168,15 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                 it.toString()
             ).show(supportFragmentManager)
         })
+        viewModel.withdrawAnnouncement.observe(this) {
+            if (it.isNotEmpty()){
+                binding.linAnnouncement.visible()
+                marqueeAdapter.setData(it)
+                binding.rvMarquee.startAuto(false)
+            }else{
+                binding.linAnnouncement.gone()
+            }
+        }
     }
 
 
@@ -180,7 +193,22 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
         }
 
     }
+    private fun initMarquee() {
+        binding.rvMarquee.bindLifecycler(this)
+        val rvMarquee = binding.rvMarquee
+        rvMarquee.setLinearLayoutManager(RecyclerView.HORIZONTAL)
+        marqueeAdapter = object : MarqueeAdapter() {
+            override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+                val viewHolder = super.onCreateViewHolder(viewGroup, viewType)
+                if (viewHolder is MarqueeVH) {
+                    viewHolder.textView.setTextColor(getColor(R.color.color_313F56))
+                }
+                return viewHolder
+            }
+        }
 
+        rvMarquee.adapter = marqueeAdapter
+    }
     private fun onlinePageChange() {
         viewModel.clearnRechargeStatus()
         bankTypeAdapter.setList(onlinePayList)

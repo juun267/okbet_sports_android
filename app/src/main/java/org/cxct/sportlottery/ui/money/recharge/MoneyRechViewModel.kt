@@ -13,10 +13,12 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.message.AnnouncementRepository
 import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.common.MoneyType
+import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
@@ -138,6 +140,8 @@ class MoneyRechViewModel(
     private var _rechCheckMsg = MutableLiveData<Event<String>>()
 
     var dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
+
+    val withdrawAnnouncement by lazy { SingleLiveEvent<MutableList<String>>() }
 
     //更新使用者資料
     fun getUserInfo() {
@@ -726,5 +730,17 @@ class MoneyRechViewModel(
                 }
             }
         }
+    }
+    //獲取提款公告
+    fun getAnnouncement()  = callApi({ AnnouncementRepository.getWithdrawAnnouncement() }) {
+        val messageList = mutableListOf<String>()
+        val sortMsgList = it.getData()?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })
+        sortMsgList?.forEach {data ->
+            if (data.type.toInt() == 1) {
+                messageList.add(data.message)
+            }
+        }
+
+        withdrawAnnouncement.value = messageList
     }
 }
