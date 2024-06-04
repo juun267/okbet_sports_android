@@ -1,9 +1,9 @@
 package org.cxct.sportlottery.ui.maintab.home.hot
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -25,6 +25,7 @@ import com.google.android.material.tabs.TabLayout
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PLAYING
+import eightbitlab.com.blurview.BlurView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
@@ -232,8 +233,7 @@ class RecommendMiniGameHelper(private val context: Context,
             tab.customView = itemView.first
             tab.text = okGameBean.gameName
             itemView.third.text = okGameBean.gameName
-//            itemView.second.load(item.imgGame)
-            itemView.second.load(R.drawable.ic_minigame_dice)
+            itemView.second.load(okGameBean.imgGame, R.drawable.ic_okbet_round)
             binding.tabLayout.addTab(tab)
         }
 
@@ -313,7 +313,7 @@ class RecommendMiniGameHelper(private val context: Context,
                 }
             }
             binding.tvJackPotAmount.setNumberString(item.jackpotAmount.toString())
-            binding.vCover.load(item.imgGame, R.drawable.img_placeholder_default)
+            binding.vCover.load(item.imgBigGame, R.drawable.img_placeholder_default)
             with(binding.videoPlayer.tag as GSYVideoOptionBuilder) {
                 setIsTouchWiget(false)
                 setCacheWithPlay(false)
@@ -335,7 +335,22 @@ class RecommendMiniGameHelper(private val context: Context,
             binding.tvJackPotAmount.hide()
             binding.tvBetToWin.hide()
             binding.vCover.show()
-            binding.linMaintenance.show()
+            var blurView = binding.vAmountBg.tag as? BlurView
+            var maintenanceView = binding.tvJackPotAmount.tag as? View
+            if (blurView == null) {
+                blurView = BlurView(context)
+                val lp = FrameLayout.LayoutParams(-1, -1)
+                binding.root.addView(blurView, lp)
+                blurView.setupWith(binding.root)
+                binding.vAmountBg.tag = blurView
+                maintenanceView = LayoutInflater.from(context).inflate(R.layout.view_game_maintenance, binding.root)
+                binding.tvJackPotAmount.tag = maintenanceView
+            } else {
+                blurView.setupWith(binding.root)
+                blurView.show()
+                maintenanceView!!.show()
+            }
+
         }
 
         private fun disableMaintain(binding: ItemMinigameBinding) {
@@ -343,7 +358,8 @@ class RecommendMiniGameHelper(private val context: Context,
             binding.tvJackPotAmount.show()
             binding.tvBetToWin.show()
             binding.vCover.show()
-            binding.linMaintenance.hide()
+            (binding.vAmountBg.tag as? BlurView)?.hide()
+            (binding.tvJackPotAmount.tag as? View)?.hide()
         }
 
     }
