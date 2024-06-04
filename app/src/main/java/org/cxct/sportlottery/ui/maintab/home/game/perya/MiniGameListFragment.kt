@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab.home.game.perya
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -14,15 +13,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.LinearLayoutCompat.OrientationMode
-import androidx.appcompat.widget.LinearLayoutCompat.VERTICAL
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import eightbitlab.com.blurview.BlurView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.roundOf
@@ -38,7 +34,6 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.JsonUtil
 
 class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListBinding>(), OnItemClickListener {
 
@@ -84,7 +79,6 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
             if ("OKMINI" == it.firmCode) {
                 adapter.updateMaintainStatus(it.maintain)
             }
-            Log.e("For Test", "=======>>> thirdGamesMaintain ${JsonUtil.toJson(it)}")
         }
     }
 
@@ -108,7 +102,7 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
             root.cardElevation = 0f
             root.radius = dp8.toFloat()
             root.foreground = context.getDrawable(R.drawable.fg_ripple)
-            val lp = FrameLayout.LayoutParams(-1, 180.dp)
+            val lp = FrameLayout.LayoutParams(-1, 140.dp)
             lp.setMargins(dp12, dp8, dp12, 0)
             root.layoutParams = lp
 

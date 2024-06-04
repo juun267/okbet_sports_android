@@ -3,10 +3,8 @@ package org.cxct.sportlottery.ui.maintab.home.hot
 import android.content.Context
 import android.graphics.Typeface
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -25,7 +23,6 @@ import com.google.android.material.tabs.TabLayout
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PLAYING
-import eightbitlab.com.blurview.BlurView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
@@ -335,21 +332,7 @@ class RecommendMiniGameHelper(private val context: Context,
             binding.tvJackPotAmount.hide()
             binding.tvBetToWin.hide()
             binding.vCover.show()
-            var blurView = binding.vAmountBg.tag as? BlurView
-            var maintenanceView = binding.tvJackPotAmount.tag as? View
-            if (blurView == null) {
-                blurView = BlurView(context)
-                val lp = FrameLayout.LayoutParams(-1, -1)
-                binding.root.addView(blurView, lp)
-                blurView.setupWith(binding.root)
-                binding.vAmountBg.tag = blurView
-                maintenanceView = LayoutInflater.from(context).inflate(R.layout.view_game_maintenance, binding.root)
-                binding.tvJackPotAmount.tag = maintenanceView
-            } else {
-                blurView.setupWith(binding.root)
-                blurView.show()
-                maintenanceView!!.show()
-            }
+            binding.linMaintenance.show()
 
         }
 
@@ -358,8 +341,7 @@ class RecommendMiniGameHelper(private val context: Context,
             binding.tvJackPotAmount.show()
             binding.tvBetToWin.show()
             binding.vCover.show()
-            (binding.vAmountBg.tag as? BlurView)?.hide()
-            (binding.tvJackPotAmount.tag as? View)?.hide()
+            binding.linMaintenance.hide()
         }
 
     }
