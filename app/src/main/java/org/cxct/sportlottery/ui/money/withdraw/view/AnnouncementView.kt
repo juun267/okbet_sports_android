@@ -31,7 +31,7 @@ class AnnouncementView @JvmOverloads constructor(context: Context, attrs: Attrib
         initMarquee(lifecycleOwner)
         viewModel.launch {
             callApi({ AnnouncementRepository.getWithdrawAnnouncement(typeList,msgType) }) {
-               it.getData()?.filter { it.type.toInt() == 1 }?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })?.map { it.title+" - "+it.message }.let {
+               it.getData()?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })?.map { it.title+" - "+it.message }.let {
                    setList(it?.toMutableList())
                }
             }
