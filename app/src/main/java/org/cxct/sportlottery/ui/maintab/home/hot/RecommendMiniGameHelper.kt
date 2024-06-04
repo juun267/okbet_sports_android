@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -233,8 +234,7 @@ class RecommendMiniGameHelper(private val context: Context,
             tab.customView = itemView.first
             tab.text = okGameBean.gameName
             itemView.third.text = okGameBean.gameName
-//            itemView.second.load(item.imgGame)
-            itemView.second.load(R.drawable.ic_minigame_dice)
+            itemView.second.load(okGameBean.imgGame, R.drawable.ic_okbet_round)
             binding.tabLayout.addTab(tab)
         }
 
@@ -314,7 +314,7 @@ class RecommendMiniGameHelper(private val context: Context,
                 }
             }
             binding.tvJackPotAmount.setNumberString(item.jackpotAmount.toString())
-            binding.vCover.load(item.imgGame, R.drawable.img_placeholder_default)
+            binding.vCover.load(item.imgBigGame, R.drawable.img_placeholder_default)
             with(binding.videoPlayer.tag as GSYVideoOptionBuilder) {
                 setIsTouchWiget(false)
                 setCacheWithPlay(false)
@@ -337,25 +337,19 @@ class RecommendMiniGameHelper(private val context: Context,
             binding.tvBetToWin.hide()
             binding.vCover.show()
             var blurView = binding.vAmountBg.tag as? BlurView
-            var comingsoonText = binding.tvJackPotAmount.tag as? TextView
+            var maintenanceView = binding.tvJackPotAmount.tag as? View
             if (blurView == null) {
                 blurView = BlurView(context)
                 val lp = FrameLayout.LayoutParams(-1, -1)
                 binding.root.addView(blurView, lp)
                 blurView.setupWith(binding.root)
                 binding.vAmountBg.tag = blurView
-                comingsoonText = AppCompatTextView(context)
-                comingsoonText.gravity = Gravity.CENTER
-                comingsoonText.setTextColor(Color.WHITE)
-                comingsoonText.textSize = 18f
-                comingsoonText.typeface = AppFont.helvetica_bold
-                comingsoonText.setText(R.string.N257)
-                binding.root.addView(comingsoonText, lp)
-                binding.tvJackPotAmount.tag = comingsoonText
+                maintenanceView = LayoutInflater.from(context).inflate(R.layout.view_game_maintenance, binding.root)
+                binding.tvJackPotAmount.tag = maintenanceView
             } else {
                 blurView.setupWith(binding.root)
                 blurView.show()
-                comingsoonText!!.show()
+                maintenanceView!!.show()
             }
 
         }

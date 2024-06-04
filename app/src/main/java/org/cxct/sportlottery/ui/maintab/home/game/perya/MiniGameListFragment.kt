@@ -1,17 +1,12 @@
 package org.cxct.sportlottery.ui.maintab.home.game.perya
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
@@ -21,20 +16,21 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import eightbitlab.com.blurview.BlurView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.collectWith
+import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.roundOf
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentMinigameListBinding
+import org.cxct.sportlottery.databinding.ViewGameMaintenanceBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
-import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.JsonUtil
+import splitties.systemservices.layoutInflater
 
 class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListBinding>(), OnItemClickListener {
 
@@ -80,14 +76,12 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
             if ("OKMINI" == it.firmCode) {
                 adapter.updateMaintainStatus(it.maintain)
             }
-            Log.e("For Test", "=======>>> thirdGamesMaintain ${JsonUtil.toJson(it)}")
         }
     }
 
     private class GameListAdapter: BaseQuickAdapter<OKGameBean?, BaseViewHolder>(0) {
 
         private val imgId = View.generateViewId()
-        private val textId = View.generateViewId()
         private val coverId = View.generateViewId()
 
         init {
@@ -118,40 +112,35 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
             cover.id = coverId
             root.addView(cover, lpChild)
 
-            val text = AppCompatTextView(context)
-            text.id = textId
-            text.typeface = AppFont.helvetica_bold
-            text.gravity = Gravity.CENTER
-            text.setTextColor(Color.WHITE)
-            text.textSize = 18f
-            root.addView(text, lpChild)
+            root.tag = ViewGameMaintenanceBinding.inflate(context.layoutInflater, root, true)
 
             return BaseViewHolder(root)
         }
 
         override fun convert(holder: BaseViewHolder, item: OKGameBean?) {
 
+            val maintainBinding = holder.itemView.tag as ViewGameMaintenanceBinding
             if (item == null) {
                 holder.setImageResource(imgId, R.drawable.img_minigame_unknow)
                 holder.setVisible(coverId, false)
-                val textView = holder.getView<TextView>(textId)
-                textView.show()
-                textView.setText(R.string.M013)
-                holder.setVisible(textId, true)
+                maintainBinding.ivMaintentance.hide()
+                maintainBinding.tvMaintentance.show()
+                maintainBinding.tvMaintentance.setText(R.string.M013)
                 return
             }
 
-            holder.getView<ImageView>(imgId).roundOf(item.imgGame, 8.dp, R.drawable.img_placeholder_default)
+            holder.getView<ImageView>(imgId).roundOf(item.imgBigGame, 8.dp, R.drawable.img_placeholder_default)
             if (!item.isMaintain()) {
                 holder.setVisible(coverId, false)
-                holder.setVisible(textId, false)
+                maintainBinding.ivMaintentance.hide()
+                maintainBinding.tvMaintentance.hide()
             } else {
-                val textView = holder.getView<TextView>(textId)
                 val blurView = holder.getView<BlurView>(coverId)
                 blurView.setupWith(holder.itemView as ViewGroup)
-                textView.setText(R.string.N257)
+                maintainBinding.tvMaintentance.setText(R.string.N257)
                 blurView.show()
-                textView.show()
+                maintainBinding.tvMaintentance.show()
+                maintainBinding.ivMaintentance.show()
 
             }
         }
