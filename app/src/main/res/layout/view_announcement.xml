@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_0.5"
+        android:background="@color/color_C3DCFF"/>
+    <LinearLayout
+        android:id="@+id/linAnnouncement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:background="@color/color_E5EFFF"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/ivBroadcast"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_notice" />
+
+        <org.cxct.sportlottery.view.AutoScrollRecyclerView
+            android:id="@+id/rvMarquee"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_4"
+            android:layout_marginRight="@dimen/margin_3"
+            android:layout_weight="1"
+            android:clipChildren="false"
+            app:speed_dp_sec="60dp"
+            tools:itemCount="1"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_0.5"
+        android:background="@color/color_C3DCFF"/>
+</merge>

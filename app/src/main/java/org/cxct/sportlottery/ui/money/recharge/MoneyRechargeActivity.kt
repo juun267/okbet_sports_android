@@ -40,7 +40,6 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private var apiResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
     private var cryptoResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
-    private lateinit var marqueeAdapter: MarqueeAdapter
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
@@ -62,7 +61,6 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun initData() {
         getMoneyConfig()
-        viewModel.getAnnouncement()
     }
 
     private fun getMoneyConfig() {
@@ -168,15 +166,6 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                 it.toString()
             ).show(supportFragmentManager)
         })
-        viewModel.withdrawAnnouncement.observe(this) {
-            if (it.isNotEmpty()){
-                binding.linAnnouncement.visible()
-                marqueeAdapter.setData(it)
-                binding.rvMarquee.startAuto(false)
-            }else{
-                binding.linAnnouncement.gone()
-            }
-        }
     }
 
 
@@ -194,20 +183,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     }
     private fun initMarquee() {
-        binding.rvMarquee.bindLifecycler(this)
-        val rvMarquee = binding.rvMarquee
-        rvMarquee.setLinearLayoutManager(RecyclerView.HORIZONTAL)
-        marqueeAdapter = object : MarqueeAdapter() {
-            override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-                val viewHolder = super.onCreateViewHolder(viewGroup, viewType)
-                if (viewHolder is MarqueeVH) {
-                    viewHolder.textView.setTextColor(getColor(R.color.color_313F56))
-                }
-                return viewHolder
-            }
-        }
-
-        rvMarquee.adapter = marqueeAdapter
+        binding.announcement.setUp(this,viewModel, arrayOf(3),5)
     }
     private fun onlinePageChange() {
         viewModel.clearnRechargeStatus()

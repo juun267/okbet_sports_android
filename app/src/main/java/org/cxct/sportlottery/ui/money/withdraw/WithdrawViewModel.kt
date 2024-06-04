@@ -208,20 +208,6 @@ class WithdrawViewModel(
     var uwCheckData: UwCheckData?=null
 
     val onEmsCodeSended = SingleLiveEvent<NetResult?>()
-    val withdrawAnnouncement by lazy { SingleLiveEvent<MutableList<String>>() }
-
-    //獲取提款公告
-    fun getAnnouncement()  = callApi({ AnnouncementRepository.getWithdrawAnnouncement() }) {
-        val messageList = mutableListOf<String>()
-        val sortMsgList = it.getData()?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })
-        sortMsgList?.forEach {data ->
-            if (data.type.toInt() == 1) {
-                messageList.add(data.message)
-            }
-        }
-
-        withdrawAnnouncement.value = messageList
-    }
 
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關

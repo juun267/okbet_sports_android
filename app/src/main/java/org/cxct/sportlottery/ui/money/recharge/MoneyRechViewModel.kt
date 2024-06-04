@@ -141,8 +141,6 @@ class MoneyRechViewModel(
 
     var dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
 
-    val withdrawAnnouncement by lazy { SingleLiveEvent<MutableList<String>>() }
-
     //更新使用者資料
     fun getUserInfo() {
         viewModelScope.launch {
@@ -730,17 +728,5 @@ class MoneyRechViewModel(
                 }
             }
         }
-    }
-    //獲取提款公告
-    fun getAnnouncement()  = callApi({ AnnouncementRepository.getWithdrawAnnouncement() }) {
-        val messageList = mutableListOf<String>()
-        val sortMsgList = it.getData()?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })
-        sortMsgList?.forEach {data ->
-            if (data.type.toInt() == 1) {
-                messageList.add(data.message)
-            }
-        }
-
-        withdrawAnnouncement.value = messageList
     }
 }
