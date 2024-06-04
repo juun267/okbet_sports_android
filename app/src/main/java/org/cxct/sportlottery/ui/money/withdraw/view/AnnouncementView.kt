@@ -31,7 +31,7 @@ class AnnouncementView @JvmOverloads constructor(context: Context, attrs: Attrib
         initMarquee(lifecycleOwner)
         viewModel.launch {
             callApi({ AnnouncementRepository.getWithdrawAnnouncement(typeList,msgType) }) {
-               it.getData()?.filter { it.type.toInt() == 1 }?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })?.map { it.message }.let {
+               it.getData()?.filter { it.type.toInt() == 1 }?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })?.map { it.title+" - "+it.message }.let {
                    setList(it?.toMutableList())
                }
             }
@@ -55,9 +55,9 @@ class AnnouncementView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     private fun setList(items: MutableList<String>?)=binding.run{
         if (items.isNullOrEmpty()){
-            linAnnouncement.gone()
+            gone()
         }else{
-            linAnnouncement.visible()
+            visible()
             marqueeAdapter.setData(items)
             rvMarquee.startAuto(false)
         }
