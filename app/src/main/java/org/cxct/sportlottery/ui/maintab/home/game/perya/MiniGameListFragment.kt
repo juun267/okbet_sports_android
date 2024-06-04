@@ -91,7 +91,9 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
         init {
             setDiffCallback(object : DiffUtil.ItemCallback<OKGameBean?>() {
                 override fun areItemsTheSame(oldItem: OKGameBean, newItem: OKGameBean) = oldItem == newItem
-                override fun areContentsTheSame(oldItem: OKGameBean, newItem: OKGameBean) = oldItem.id == newItem.id
+                override fun areContentsTheSame(oldItem: OKGameBean, newItem: OKGameBean): Boolean {
+                    return oldItem.id == newItem.id && oldItem.maintain == newItem.maintain
+                }
             })
         }
 

@@ -75,7 +75,6 @@ class RecommendMiniGameHelper(private val context: Context,
 
     fun bindLifeEvent(lifecycleOwner: LifecycleOwner) {
         isClosed = !StaticData.miniGameOpened()
-        setup(OKGamesViewModel.getActiveMiniGameData())
         OKGamesViewModel.miniGameList.observe(lifecycleOwner) { setup(it.first) }
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleOwner.lifecycleScope) {
             if (it.firmCode != "OKMINI" || dataList.isNullOrEmpty() || dataList!!.first().maintain == it.maintain) {
@@ -181,9 +180,6 @@ class RecommendMiniGameHelper(private val context: Context,
     }
 
     fun setup(gameList: List<OKGameBean>?) {
-        if (gameList == dataList) {
-            return
-        }
 
         if (gameList.isNullOrEmpty()) {
             if (dataList.isNullOrEmpty()) {
@@ -266,6 +262,7 @@ class RecommendMiniGameHelper(private val context: Context,
                             && oldItem.jackpotAmount == newItem.jackpotAmount
                             && Objects.equals(oldItem.imgGame, newItem.imgGame)
                             && Objects.equals(oldItem.extraParam, newItem.extraParam)
+                            && oldItem.maintain == newItem.maintain
                 }
 
             })
