@@ -158,7 +158,7 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
                 return
             }
             holder.setVisible(textId, false)
-            holder.getView<ImageView>(imgId).roundOf(item.imgGame, 8.dp, R.drawable.img_placeholder_default)
+            holder.getView<ImageView>(imgId).roundOf(item.imgBigGame, 8.dp, R.drawable.img_placeholder_default)
             if (!item.isMaintain()) {
                 holder.setVisible(maintainceId, false)
             } else {
