@@ -104,7 +104,7 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
             root.cardElevation = 0f
             root.radius = dp8.toFloat()
             root.foreground = context.getDrawable(R.drawable.fg_ripple)
-            val lp = FrameLayout.LayoutParams(-1, 140.dp)
+            val lp = FrameLayout.LayoutParams(-1, 180.dp)
             lp.setMargins(dp12, dp8, dp12, 0)
             root.layoutParams = lp
 
