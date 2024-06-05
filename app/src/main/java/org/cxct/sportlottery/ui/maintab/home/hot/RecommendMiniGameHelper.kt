@@ -329,7 +329,7 @@ class RecommendMiniGameHelper(private val context: Context,
             binding.tvJackPotAmount.hide()
             binding.tvBetToWin.hide()
             binding.vCover.show()
-            binding.linMaintenance.show()
+            binding.linMaintenance.root.show()
 
         }
 
@@ -338,7 +338,7 @@ class RecommendMiniGameHelper(private val context: Context,
             binding.tvJackPotAmount.show()
             binding.tvBetToWin.show()
             binding.vCover.show()
-            binding.linMaintenance.hide()
+            binding.linMaintenance.root.hide()
         }
 
     }

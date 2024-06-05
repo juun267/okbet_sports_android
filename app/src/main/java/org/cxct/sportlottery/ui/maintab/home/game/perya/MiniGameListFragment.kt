@@ -114,24 +114,7 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
             img.id = imgId
             root.addView(img, lpChild)
 
-            val linMaintaince = LinearLayout(context).apply {
-                setBackgroundResource(R.color.transparent_black_50)
-                orientation = LinearLayout.VERTICAL
-                gravity = Gravity.CENTER
-                val img = AppCompatImageView(context)
-                img.adjustViewBounds=true
-                addView(img, LinearLayout.LayoutParams(52.dp,LayoutParams.WRAP_CONTENT))
-
-                val text = AppCompatTextView(context)
-                text.typeface = AppFont.helvetica_bold
-                text.gravity = Gravity.CENTER
-                text.setTextColor(Color.WHITE)
-                text.textSize = 18f
-                text.text = context.getString(R.string.N257)
-                addView(text, LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT).apply {
-                    topMargin = 6.dp
-                })
-            }
+            val linMaintaince = LayoutInflater.from(context).inflate(R.layout.view_game_maintenance, null)
             linMaintaince.id = maintainceId
             root.addView(linMaintaince, lpChild)
 
