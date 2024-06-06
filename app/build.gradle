@@ -62,7 +62,9 @@ android {
         }
 
     }
-
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     signingConfigs {
         release {
             storeFile file("key.jks")
