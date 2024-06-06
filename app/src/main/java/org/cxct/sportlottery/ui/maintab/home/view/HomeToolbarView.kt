@@ -74,8 +74,6 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private lateinit var viewModel: BaseSocketViewModel
     private var userModelEnable = true
     private var onlyShowSeach = true
-    private var mailsIcon = R.drawable.icon_mails
-    private var mailsIcon1 = R.drawable.icon_mails1
     private var linOKPlay: LinearLayout?=null
     var onPlaySelectListener: ((position:Int) -> Unit)?=null
     private val okPlaySelectPop by lazy { OKPlaySelectPop(context){ position ->
@@ -248,7 +246,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private var mailsNum = 0
     private fun updateMailsIcon() {
         if (::ivMails.isInitialized) {
-            ivMails.setImageResource(if (mailsNum > 0) mailsIcon1 else mailsIcon)
+            ivMails.setImageResource(if (mailsNum > 0) R.drawable.icon_mails1 else R.drawable.icon_mails)
         }
     }
 
