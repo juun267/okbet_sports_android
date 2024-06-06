@@ -1110,7 +1110,7 @@
     <string name="pls_enter_correct_email">Pakilagay ang tamang email</string>
     <string name="next">Susunod</string>
     <string name="hint_phone_format">Ang mobile number format ay 11 numero at nagsisimula sa 09</string>
-    <string name="username">Account ng miyembro</string>
+    <string name="username">Username</string>
     <string name="kyc_unverifing">Nag veverify</string>
     <string name="J801">Manalo at malaki</string>
     <string name="J802">Manalo at maliit</string>
