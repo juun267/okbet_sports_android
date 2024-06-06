@@ -69,7 +69,6 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
             hideLoading()
             if (it.succeeded()) {
                 toast(getString(R.string.J533))
-                activatedAdapter.setBirthday = false
                 reload()
             }else{
                 toast(it.msg)
@@ -161,14 +160,13 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         rcvUnactivatedBenefits.adapter = unActivatedAdapter
     }
     private fun setUpVipCard(userVip: UserVip){
-//        LogUtil.toJson(userVip)
+        LogUtil.toJson(userVip)
         ivLVTips.setLevelTagIcon(userVip.levelCode)
         vipCardAdapter.userVip = userVip
         vipCardAdapter.setList(userVip.rewardInfo)
         val selectPosition = userVip.rewardInfo.indexOfFirst {userVip.levelCode == it.levelCode }
         userRewardInfo = userVip.rewardInfo.getOrNull(selectPosition)
         binding.rcvVipCard.scrollToPosition(selectPosition)
-        activatedAdapter.setBirthday = userVip.birthday.isNullOrEmpty()
         if (selectPosition>0){
             onSelectLevel(selectPosition)
         }else{
@@ -179,8 +177,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         viewModel.userVipEvent?.value?.let {
             val currentRewardInfo = it.rewardInfo.getOrNull(position)?:return@let
             activatedAdapter.setList(null)
-            val userLevelPosition = it.rewardInfo.indexOfFirst { userRewardInfo?.levelCode==it.levelCode }
-            activatedAdapter.disableStatus = position>userLevelPosition
+            activatedAdapter.userVip = it
             activatedAdapter.rewardInfo = currentRewardInfo
             activatedAdapter.setList(currentRewardInfo?.rewardDetail?.filter { it.enable }?.toMutableList())
             if (currentRewardInfo.exclusiveService){

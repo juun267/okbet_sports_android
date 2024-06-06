@@ -100,6 +100,7 @@ android {
 
     productFlavors {
         forqa {
+            resValue "string", "app_name", "OKBET-qa"
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
             buildConfigField "String", "AF_APPKEY", "\"PFhWPPwiFS8BaLpFHDE3Rn\""
             applicationId "com.happysport.sl.test"
@@ -140,6 +141,7 @@ android {
         }
         //okbet预发环境 app-phuat.abaoooiap.com
         phuat {
+            resValue "string", "app_name", "OKBET-uat"
             buildConfigField "String", "CHANNEL_NAME", "\"yfp2\""
         }
 
