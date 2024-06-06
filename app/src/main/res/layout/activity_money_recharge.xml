@@ -18,6 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <org.cxct.sportlottery.ui.money.withdraw.view.AnnouncementView
+            android:id="@+id/announcement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

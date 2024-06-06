@@ -8,10 +8,13 @@ import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.collectWith
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.showPromptDialog
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityChatBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.setTextTypeFace
+import org.cxct.sportlottery.view.isVisible
 
 class ChatActivity : BaseActivity<ChatViewModel, ActivityChatBinding>() {
 
@@ -55,8 +58,14 @@ class ChatActivity : BaseActivity<ChatViewModel, ActivityChatBinding>() {
         chatEvent.collectWith(lifecycleScope) { chatEvent ->
 
             if (chatEvent is ChatEvent.UpdateMarquee) {
-                marqueeAdapter.setData(chatEvent.marqueeList)
-                binding.rvMarquee.startAuto(false)
+                if(chatEvent.marqueeList.isNullOrEmpty()){
+                    binding.llMarquee.gone()
+                    binding.rvMarquee.stopAuto()
+                }else{
+                    binding.llMarquee.visible()
+                    marqueeAdapter.setData(chatEvent.marqueeList)
+                    binding.rvMarquee.startAuto(false)
+                }
                 return@collectWith
             }
 
@@ -86,13 +95,13 @@ class ChatActivity : BaseActivity<ChatViewModel, ActivityChatBinding>() {
 
     override fun onResume() {
         super.onResume()
-        binding.rvMarquee.startAuto()
+        if (binding.llMarquee.isVisible())
+            binding.rvMarquee.startAuto()
     }
 
     override fun onStop() {
         super.onStop()
+        if (binding.llMarquee.isVisible())
         binding.rvMarquee.stopAuto()
     }
-
-
 }

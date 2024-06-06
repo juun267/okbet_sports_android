@@ -28,9 +28,8 @@ class WithdrawActivity : BaseActivity<WithdrawViewModel, ActivityWithdrawBinding
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
         initToolbar()
         jumpToFragment()
-        viewModel.isVisibleView.observe(this) {
-            binding.toolBar.tvToolbarTitleRight.isVisible = it
-        }
+        initMarquee()
+        initObserver()
     }
 
     private fun initToolbar() =binding.toolBar.run{
@@ -46,6 +45,15 @@ class WithdrawActivity : BaseActivity<WithdrawViewModel, ActivityWithdrawBinding
         }
         tvToolbarTitleRight.isVisible = viewModel.isVisibleView.value ?: true
         tvToolbarTitleRight.text = getString(R.string.withdraw_setting)
+    }
+    private fun initMarquee() {
+        binding.announcement.setUp(this,viewModel,arrayOf(3),5)
+    }
+
+    private fun initObserver() {
+        viewModel.isVisibleView.observe(this) {
+            binding.toolBar.tvToolbarTitleRight.isVisible = it
+        }
     }
     fun jumpToFragment(){
         checkNeedStep().apply {
