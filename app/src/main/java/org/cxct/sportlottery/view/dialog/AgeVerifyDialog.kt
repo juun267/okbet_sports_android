@@ -46,10 +46,15 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
         (sConfigData?.ageVerificationChecked==1).let {
             updateCheckStatus(it)
         }
-        cbAgree.setOnClickListener {
-            updateCheckStatus(!cbAgree.isSelected)
-        }
         cbAgree.text = getString(R.string.dialog_age_verify_hint)+" "+getString(R.string.M311)
+        cbAgree.makeLinks(
+            Pair(
+                getString(R.string.dialog_age_verify_hint),
+                View.OnClickListener {
+                    updateCheckStatus(!cbAgree.isSelected)
+                }),
+            linkColor = requireContext().getColor(R.color.color_0D2245)
+        )
         cbAgree.makeLinks(
             Pair(
                 getString(R.string.M311),
@@ -59,7 +64,8 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
                         Constants.getAgreementRuleUrl(requireContext()),
                         resources.getString(R.string.login_terms_conditions)
                     )
-                })
+                }),
+            linkColor = requireContext().getColor(R.color.color_025BE8)
         )
         btnConfirm.setOnClickListener {
             dismiss()

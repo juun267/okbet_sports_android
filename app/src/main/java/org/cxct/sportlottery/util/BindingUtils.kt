@@ -499,7 +499,7 @@ fun TextView.setPlayItem(playName: String?,
 //
 }
 
-fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
+fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>,linkColor: Int? = null) {
     val spannableString = SpannableString(this.text)
     var startIndexOfLink = -1
     links.forEachIndexed { index, link ->
@@ -509,7 +509,7 @@ fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
                 if (links.size > 1 && index == 0) {
                     textPaint.color = textPaint.color
                 } else {
-                    textPaint.color = textPaint.linkColor
+                    textPaint.color = linkColor ?: textPaint.linkColor
                 }
                 textPaint.isUnderlineText = false
             }
