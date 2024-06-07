@@ -20,7 +20,7 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
     }
     companion object{
          var isAgeVerifyNeedShow :Boolean = true
-//             get() = KvUtils.decodeBooleanTure("isAgeVerifyNeedShow",true)
+             get() = KvUtils.decodeBooleanTure("isAgeVerifyNeedShow",true)
              set(value) {
                 field = value
                 KvUtils.put("isAgeVerifyNeedShow",value)
