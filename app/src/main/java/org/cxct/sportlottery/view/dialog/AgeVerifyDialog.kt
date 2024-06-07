@@ -1,12 +1,14 @@
 package org.cxct.sportlottery.view.dialog
 
-import android.os.Bundle
-import android.view.*
 import androidx.fragment.app.FragmentManager
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.databinding.DialogAgeVerifyBinding
+import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
 import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
@@ -39,11 +41,23 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
         }
     }
 
-    override fun onInitView() {
-        binding.btnConfirm.setOnClickListener {
+    override fun onInitView()=binding.run {
+        cbAgree.setOnCheckedChangeListener { compoundButton, b ->
+            btnConfirm.isEnabled = b
+        }
+        cbAgree.isChecked = sConfigData?.ageVerificationChecked==1
+
+        tvTC.clickDelay{
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getAgreementRuleUrl(requireContext()),
+                resources.getString(R.string.login_terms_conditions)
+            )
+        }
+        btnConfirm.setOnClickListener {
             dismiss()
         }
-        binding.btnExit.setOnClickListener {
+        btnExit.setOnClickListener {
             dismiss()
         }
     }
