@@ -10,7 +10,7 @@
           android:orientation="vertical"
           android:gravity="center_horizontal"
           android:layout_marginHorizontal="@dimen/margin_15"
-          android:paddingBottom="@dimen/margin_20"
+          android:paddingBottom="@dimen/margin_30"
           android:background="@drawable/bg_age_verify">
           <ImageView
               android:id="@+id/iv_logo"
@@ -47,6 +47,7 @@
               android:layout_marginTop="@dimen/margin_12"
               android:drawableLeft="@drawable/selector_login_checked"
               android:textColorLink="@color/color_025BE8"
+              android:gravity="center_horizontal"
               android:drawablePadding="@dimen/margin_5"
               android:lineSpacingExtra="3dp"
               android:text="@string/dialog_age_verify_hint"
