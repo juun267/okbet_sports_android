@@ -20,7 +20,7 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
     }
     companion object{
          var isAgeVerifyNeedShow :Boolean = true
-             get() = KvUtils.decodeBooleanTure("isAgeVerifyNeedShow",true)
+//             get() = KvUtils.decodeBooleanTure("isAgeVerifyNeedShow",true)
              set(value) {
                 field = value
                 KvUtils.put("isAgeVerifyNeedShow",value)
@@ -42,11 +42,13 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
     }
 
     override fun onInitView()=binding.run {
+        (sConfigData?.ageVerificationChecked==1).let {
+            cbAgree.isChecked = it
+            btnConfirm.isEnabled = it
+        }
         cbAgree.setOnCheckedChangeListener { compoundButton, b ->
             btnConfirm.isEnabled = b
         }
-        cbAgree.isChecked = sConfigData?.ageVerificationChecked==1
-
         tvTC.clickDelay{
             JumpUtil.toInternalWeb(
                 requireContext(),

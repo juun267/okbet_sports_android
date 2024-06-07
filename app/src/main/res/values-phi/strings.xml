@@ -839,7 +839,7 @@
          \n4. Hindi ako estudyante ng anumang paaralan, kolehiyo o unibersidad sa Pilipinas.
          \n5. Naiintindihan ko na kung ang impormasyong ibinigay ko ay napatunayang mali, ang OKbet ay may panghuling karapatan na parusahan ang aking account ayon sa mga tuntunin at kundisyon nito.
     </string>
-    <string name="dialog_age_verify_hint">Tinatanggap at sumasang-ayon ako sa OKbet</string>
+    <string name="dialog_age_verify_hint">Sumasang-ayon ako sa OKBET</string>
     <string name="dialog_age_verify_confirm">Ako ay higit sa 21 taong gulang</string>
     <string name="dialog_age_verify_exit">Umalis</string>
     <string name="dialog_age_verify_hint_and_terms_conditions">I agree to the OKBET Terms &amp; Conditions</string>
@@ -1721,6 +1721,7 @@
     <string name="P453">Matagumpay ang aplikasyon</string>
     <string name="P454">Matagumpay na natanggap</string>
     <string name="J533">Successfully set</string>
+    <string name="M311">Termino at Kundisyon</string>
 
 </resources>
 

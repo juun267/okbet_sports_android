@@ -863,7 +863,7 @@
     <!--region 確認年齡彈窗-->
     <string name="dialog_age_verify_statement">OKBet cam kết mang đến trải nghiệm chơi game an toàn, thoải mái cho tất cả khách hàng của chúng tôi.\n\nĐối với đại đa số mọi người, chơi game là một hoạt động giải trí thú vị. Tuy nhiên, chúng tôi nhận thấy rằng đôi khi chơi game không còn là niềm vui đối với một số khách hàng.\n\nChúng tôi đặc biệt khuyến khích bạn dành chút thời gian đọc đồ họa và tuyên bố TRÒ CHƠI TRÁCH NHIỆM của chúng tôi trước khi bạn tiếp tục. Người dùng từ 21 tuổi trở xuống hoàn toàn không được phép.\n\nTrách nhiệm của chúng tôi là giúp khách hàng đánh bạc một cách an toàn và có trách nhiệm, giảm nguy cơ thiệt hại và giúp những người cần điều trị có được điều đó.
 \n\nĐừng ngần ngại liên hệ với keepitfun@pagcor.ph nếu bạn hoặc thành viên gia đình của bạn đang gặp sự cố chơi game.</string>
-    <string name="dialog_age_verify_hint">Vui lòng xác minh rằng bạn từ 21 tuổi trở lên để vào trang web này</string>
+    <string name="dialog_age_verify_hint">Tôi đồng ý với các OKBET</string>
     <string name="dialog_age_verify_confirm">TÔI HƠN 21 TUỔI</string>
     <string name="dialog_age_verify_exit">LỐI RA</string>
     <string name="dialog_age_verify_hint_and_terms_conditions">Vui lòng xác minh rằng bạn từ 21 tuổi trở lên để vào trang web này Điều Khoản &amp; Điều Kiện</string>
@@ -1749,5 +1749,6 @@
     <string name="P453">Yêu cầu thành công</string>
     <string name="P454">Nhận thành công</string>
     <string name="J533">cài đặt thành công</string>
+    <string name="M311">Điều Khoản &amp; Điều Kiện</string>
 
 </resources>

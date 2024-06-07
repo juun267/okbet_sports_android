@@ -10,7 +10,6 @@
           android:orientation="vertical"
           android:gravity="center_horizontal"
           android:layout_marginHorizontal="@dimen/margin_15"
-          android:paddingBottom="@dimen/margin_40"
           android:background="@drawable/bg_age_verify">
           <ImageView
               android:id="@+id/iv_logo"
@@ -49,12 +48,13 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:button="@null"
-                  android:drawableLeft="@drawable/selector_checkbox_style"
+                  android:drawableLeft="@drawable/selector_login_checked"
+                  android:checked="false"
                   android:drawablePadding="@dimen/margin_5"
                   android:lineSpacingExtra="3dp"
-                  android:text="I agree to the OKBET"
+                  android:text="@string/dialog_age_verify_hint"
                   android:textColor="@color/color_0D2245"
-                  android:textSize="@dimen/textSize13sp"/>
+                  android:textSize="@dimen/textSize12sp"/>
               <TextView
                   android:id="@+id/tvTC"
                   android:layout_width="wrap_content"
@@ -62,9 +62,9 @@
                   android:button="@null"
                   android:layout_marginLeft="@dimen/margin_5"
                   android:lineSpacingExtra="3dp"
-                  android:text="Terms and Conditions"
+                  android:text="@string/M311"
                   android:textColor="@color/color_025BE8"
-                  android:textSize="@dimen/textSize13sp"/>
+                  android:textSize="@dimen/textSize12sp"/>
           </LinearLayout>
 
 
