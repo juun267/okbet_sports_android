@@ -93,9 +93,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
 
         }
         fragmentHelper2.currentFragment()?.let {
-            if (it.isAdded) {
-                it.onHiddenChanged(hidden)
-            }
+            it.onHiddenChanged(hidden)
         }
     }
 

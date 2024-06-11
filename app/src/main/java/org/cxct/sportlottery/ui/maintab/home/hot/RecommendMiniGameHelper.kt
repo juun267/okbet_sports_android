@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -96,7 +95,7 @@ class RecommendMiniGameHelper(private val context: Context,
         ConfigRepository.onNewConfig(lifecycleOwner) {
             isClosed = !StaticData.miniGameOpened()
             if (isClosed) {
-                currentPlayer?.onVideoPause()
+                clearPostPlay()
                 if (!dataList.isNullOrEmpty()) {
                     binding.root.hide()
                 }
@@ -113,14 +112,11 @@ class RecommendMiniGameHelper(private val context: Context,
                 if (StaticData.miniGameOpened()
                     && dataList?.getOrNull(0)?.isMaintain() == false
                     && (owner !is VisibilityFragment || owner.isVisibleToUser())) {
-                    Log.e("For Test", "=========>>> RecommendMiniGameHelper postPlay 44444444")
                     postPlay()
                 }
             }
 
             override fun onPause(owner: LifecycleOwner) {
-                currentPlayer?.onVideoPause()
-                Log.e("For Test", "=========>>> RecommendMiniGameHelper postPlay clearPostPlay 5555555555")
                 clearPostPlay()
             }
 
@@ -135,7 +131,6 @@ class RecommendMiniGameHelper(private val context: Context,
     }
 
     fun pausePlay() {
-        currentPlayer?.onVideoPause()
         clearPostPlay()
     }
 
@@ -185,7 +180,6 @@ class RecommendMiniGameHelper(private val context: Context,
                 }
 
                 if (!isClosed && false == dataList?.getOrNull(index)?.isMaintain()) {
-                    Log.e("For Test", "=========>>> RecommendMiniGameHelper postPlay 5555555 ${index}  ${position}  ${viewPager2.currentItem}")
                     postPlay()
                 }
             }
@@ -196,22 +190,19 @@ class RecommendMiniGameHelper(private val context: Context,
     private val handler = Handler(Looper.getMainLooper())
     private val playRunnable by lazy { Runnable { playPosition() } }
     private fun postPlay() {
-        Log.e("For Test", "=========>>> RecommendMiniGameHelper postPlay 1111")
         clearPostPlay()
-        handler.postDelayed(playRunnable, 200)
+        handler.postDelayed(playRunnable, 100)
     }
 
     private fun clearPostPlay() {
-        Log.e("For Test", "=========>>> RecommendMiniGameHelper postPlay clearPostPlay 2222")
+        currentPlayer?.onVideoPause()
+        currentPlayer = null
         handler.removeCallbacks(playRunnable)
     }
 
     private fun playPosition() {
-        Log.e("For Test", "=========>>> RecommendMiniGameHelper playPosition AAAAA")
         val viewHolder = (binding.vp.getChildAt(0) as RecyclerView).findViewHolderForAdapterPosition(binding.vp.currentItem)
-        currentPlayer?.onVideoPause()
         if (viewHolder != null) {
-            Log.e("For Test", "=========>>> RecommendMiniGameHelper playPosition BBBBB")
             currentPlayer = (viewHolder as BindingVH<ItemMinigameBinding>).vb.videoPlayer
             currentPlayer!!.startPlayLogic()
         }
@@ -242,7 +233,6 @@ class RecommendMiniGameHelper(private val context: Context,
 //        dataList.addAll(gameList)
 //        dataList.addAll(gameList)
 //        dataList.addAll(gameList)
-        Log.e("For Test", "=========>>> 8888888")
 //        miniGameAdapter.setNewInstance(gameList.toMutableList())
         gameList.toMutableList().let {
             miniGameAdapter.setNewInstance(it)
