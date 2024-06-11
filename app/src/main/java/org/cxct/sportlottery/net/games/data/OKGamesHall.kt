@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.net.games.data
 
+import android.os.Parcelable
 import android.widget.ImageView
 import android.widget.TextView
 import com.chad.library.adapter.base.entity.node.BaseNode
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.proguards.KeepMembers
@@ -75,24 +77,25 @@ data class OKGamesFirm(
 }
 
 @KeepMembers
+@Parcelize
 data class OKGameBean(
-    val id: Int,
-    val firmId: Int,
+    val id: Int = 0,
+    val firmId: Int = 0,
     val firmType: String?,
-    val firmCode: String?,
-    val firmName: String?,
+    val firmCode: String? = null,
+    val firmName: String? = null,
     val gameCode: String?,
-    val gameName: String?,
-    val gameType: String?,
-    val imgGame: String?,
-    val gameEntryTagName: String?,
-    val thirdGameCategory: String?,
-    var markCollect: Boolean,
+    val gameName: String? = null,
+    val gameType: String? = null,
+    val imgGame: String? = null,
+    val gameEntryTagName: String? = null,
+    val thirdGameCategory: String? = null,
+    var markCollect: Boolean = false,
     var gameEntryType: String?,
-    var maintain: Int?, // 0:游戏正常开启, 1: 维护状态
-    val jackpotAmount:Double, //0不显示1显示
-    val jackpotOpen:Int,
-): BaseNode() {
+    var maintain: Int? = 0, // 0:游戏正常开启, 1: 维护状态
+    val jackpotAmount:Double = 0.0, //0不显示1显示
+    val jackpotOpen:Int = 0,
+): Parcelable,BaseNode() {
     // 列表的父节点
     @Transient
     lateinit var parentNode: BaseNode

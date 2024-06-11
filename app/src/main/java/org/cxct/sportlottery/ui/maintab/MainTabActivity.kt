@@ -138,6 +138,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         viewModel.getGameCollectNum()
         viewModel.getThirdGames()
         PreLoader.startPreload()
+        jumpGameAfterLogin()
     }
 
     private fun onTabClick(tabName: Int): Boolean {
@@ -294,6 +295,15 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
                     enterThirdGame(thirdGameResult, firmType)
                 }
                 trialDialog.show()
+            }
+        }
+        gamesViewModel.guestLoginGameResult.observe(this) {
+            hideLoading()
+            if (it == null) {
+                //不支持访客
+                startLogin()
+            } else {
+                enterThirdGame(it.second, it.first)
             }
         }
     }
@@ -663,12 +673,14 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
 
     fun enterThirdGame(result: EnterThirdGameResult, firmType: String) {
-
         hideLoading()
+        if (result.okGameBean==null){
+            return
+        }
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> {
-                JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.thirdGameCategoryCode ?: "")
-                if (!OKGamesRepository.isSingleWalletType(firmType) && isThirdTransferOpen()) gamesViewModel.transfer(firmType)
+                JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.okGameBean, result.guestLogin)
+                if (LoginRepository.isLogined()&&!OKGamesRepository.isSingleWalletType(firmType) && isThirdTransferOpen()) gamesViewModel.transfer(firmType)
             }
 
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
@@ -686,37 +698,29 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         }
         if (result.resultType != EnterThirdGameResult.ResultType.NONE) gamesViewModel.clearThirdGame()
     }
-
-    fun enterHomeGame(gameData: OKGameBean) {
-        if(LoginRepository.isLogined()) {
-            gamesViewModel.homeOkGamesEnterThirdGame(gameData, this)
-            gamesViewModel.homeOkGameAddRecentPlay(gameData)
-        } else {
-            //请求试玩路线
-            loading()
-            gamesViewModel.requestEnterThirdGameNoLogin(gameData)
-        }
-    }
-
-    fun enterThirdGame(gameData: OKGameBean) {
+    fun enterThirdGame(gameData: OKGameBean, addRecent: Boolean = true) {
         if(LoginRepository.isLogined()) {
             gamesViewModel.requestEnterThirdGame(gameData, this)
+            LogUtil.toJson(gameData)
+            //有些是手动构造的OKGameBean，需要排除
+            //&& (gameData.gameEntryType == GameEntryType.OKGAMES || gameData.gameEntryType==GameEntryType.OKLIVE)
+            if (gameData.id > 0){
+                OKGamesRepository.addRecentPlayGame(gameData.id.toString())
+            }
+            RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         } else {
             //请求试玩路线
             loading()
             gamesViewModel.requestEnterThirdGameNoLogin(gameData)
-        }
-    }
-
-    fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String, gameEntryTagName: String) {
-        if (LoginRepository.isLogined()) {
-            gamesViewModel.requestEnterThirdGame(firmType, gameCode, firmType, gameEntryTagName, this)
-        } else {
-            loading()
-            gamesViewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType, gameEntryTagName)
         }
     }
     fun collectGame(gameData: OKGameBean,gameEntryType: String = GameEntryType.OKGAMES): Boolean {
         return loginedRun(binding.root.context) { gamesViewModel.collectGame(gameData,gameEntryType) }
+    }
+    private fun jumpGameAfterLogin(){
+        if (LoginRepository.isLogined()&&OKGamesRepository.enterGameAfterLogin !=null){
+            enterThirdGame(OKGamesRepository.enterGameAfterLogin!!)
+        }
+        OKGamesRepository.enterGameAfterLogin=null
     }
 }

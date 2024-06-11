@@ -25,8 +25,9 @@ open class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<Main
         const val KEY_TITLE = "key-title"
         const val KEY_TOOLBAR_VISIBILITY = "key-toolbar-visibility"
         const val KEY_BACK_EVENT = "key-back-event"
-        const val FIRM_CODE = "firm-code" // 厂商id
-        const val GAME_CATEGORY_CODE = "game-category-code" //OK_GAMES、OK_LIVE、OK_BINGO、OK_SPORT
+        const val FIRM_TYPE = "firmType" // 厂商id
+        const val GAME_BEAN = "gameBean"
+        const val GUESTLOGIN = "guestLogin"
         const val BET_STATION = "betstation"
         const val TAG = "tag"
 

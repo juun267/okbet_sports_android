@@ -7,6 +7,7 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toIntS
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.net.live.OKLiveRepository
@@ -35,10 +36,6 @@ class OKLiveViewModel(
     val recentPlay: LiveData<List<OKGameBean>>
         get() = _recentPlay
     private val _recentPlay = MutableLiveData<List<OKGameBean>>()
-
-    val newRecentPlay: LiveData<OKGameBean>
-        get() = _newRecentPlay
-    private val _newRecentPlay = MutableLiveData<OKGameBean>()
 
     /**
      * 全部的赛事，map 类型
@@ -124,7 +121,7 @@ class OKLiveViewModel(
         if (!LoginRepository.isLogined()) {  // 没登录不显示最近玩的游戏
             return
         }
-        val ids = LoginRepository.getRecentPlayGameIds()
+        val ids = OKGamesRepository.getRecentPlayGameIds()
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
@@ -138,17 +135,15 @@ class OKLiveViewModel(
     /**
      * 记录最近游戏
      */
-    fun addRecentPlay(okGameBean: OKGameBean) {
-        val ids = LoginRepository.addRecentPlayGame(okGameBean.id.toString())
+    fun updateRecentPlay() {
+        val ids = OKGamesRepository.getRecentPlayGameIds()
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
                 recentList.add(it.copy())
             }
         }
-
         recentList.reverse()
-        _newRecentPlay.value = okGameBean
         _recentPlay.postValue(recentList)
     }
 

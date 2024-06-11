@@ -4,17 +4,16 @@ import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.view.View
 import android.webkit.WebView
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.collectWith
-import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.runWithCatch
-import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityThirdGameBinding
 import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.LoginRepository
@@ -23,8 +22,9 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.WebActivity
-import org.cxct.sportlottery.ui.common.WebActivity.Companion.FIRM_CODE
-import org.cxct.sportlottery.ui.common.WebActivity.Companion.GAME_CATEGORY_CODE
+import org.cxct.sportlottery.ui.common.WebActivity.Companion.FIRM_TYPE
+import org.cxct.sportlottery.ui.common.WebActivity.Companion.GAME_BEAN
+import org.cxct.sportlottery.ui.common.WebActivity.Companion.GUESTLOGIN
 import org.cxct.sportlottery.ui.common.WebActivityImp
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.*
@@ -38,8 +38,9 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
 
     private var mUserInfo: UserInfo? = null
 
-    private val firmCode by lazy { intent.getStringExtra(FIRM_CODE) }
-    private val gameType by lazy { intent.getStringExtra(GAME_CATEGORY_CODE) }
+    private val firmType by lazy { intent.getStringExtra(FIRM_TYPE) }
+    private val okGameBean by lazy { intent.getParcelableExtra(GAME_BEAN) as? OKGameBean }
+    private val guestLogin by lazy { intent.getBooleanExtra(GUESTLOGIN, false) }
     private val mUrl: String by lazy { intent?.getStringExtra(WebActivity.KEY_URL) ?: "about:blank" }
 
     private val webActivityImp by lazy { WebActivityImp(this,this::overrideUrlLoading) }
@@ -54,11 +55,14 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         if (enable) {
 
             10.dp.let { binding.toolBar.setPadding(it, 0, it, 0) }
-            val dp28 = 28.dp
-            changeViewWH(binding.toolBar, -1, 40.dp)
-            changeViewWH(binding.ivBack, dp28, dp28)
-            changeViewWH(binding.ivDeposit, dp28, dp28)
-            changeViewWH(binding.ivLogo, 68.dp, dp28)
+            val childHeight = 28.dp
+            val toolBarHeight = 40.dp
+            changeViewWH(binding.toolBar, -1, toolBarHeight)
+            changeViewWH(binding.ivBack, childHeight, childHeight)
+            changeViewWH(binding.ivDeposit, childHeight, childHeight)
+            changeViewWH(binding.ivLogo, -2, childHeight)
+            changeViewWH(binding.tvLogin,-2, childHeight)
+            changeViewWH(binding.tvRegist,-2, childHeight)
 
             ImmersionBar.with(this)
                 .hideBar(BarHide.FLAG_SHOW_BAR)
@@ -67,13 +71,15 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
                 .fitsSystemWindows(true)
                 .init()
         } else {
-
             33.dp.let { binding.toolBar.setPadding(it, 0, it, 0) }
-            val dp20 = 20.dp
-            changeViewWH(binding.toolBar, -1, 28.dp)
-            changeViewWH(binding.ivBack, dp20, dp20)
-            changeViewWH(binding.ivDeposit, dp20, dp20)
-            changeViewWH(binding.ivLogo, 48.dp, dp20)
+            val childHeight = if(guestLogin) 28.dp else 20.dp
+            val toolBarHeight = if(guestLogin) 40.dp else 28.dp
+            changeViewWH(binding.toolBar, -1, toolBarHeight)
+            changeViewWH(binding.ivBack, childHeight, childHeight)
+            changeViewWH(binding.ivDeposit, childHeight, childHeight)
+            changeViewWH(binding.ivLogo, -2, childHeight)
+            changeViewWH(binding.tvLogin, -2, childHeight)
+            changeViewWH(binding.tvRegist,-2, childHeight)
 
             ImmersionBar.with(this)
                 .hideBar(BarHide.FLAG_HIDE_BAR)
@@ -93,6 +99,17 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         density = resources.displayMetrics.density
         setStatuEnable(ORIENTATION_PORTRAIT ==resources.configuration.orientation)
         ivBack.setOnClickListener { finish() }
+        ivDeposit.isVisible = !guestLogin
+        tvLogin.isVisible = guestLogin
+        tvRegist.isVisible = guestLogin
+        tvLogin.clickDelay {
+            OKGamesRepository.enterGameAfterLogin= okGameBean
+            startLogin()
+        }
+        tvRegist.clickDelay {
+            OKGamesRepository.enterGameAfterLogin= okGameBean
+            startRegister()
+        }
         webActivityImp.setCookie(mUrl)
         webActivityImp.setupWebView(webView)
         webView.loadUrl(mUrl)
@@ -100,7 +117,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         initObserve()
         postRefreshToken() // 避免用户长期在三方游戏中导致token过期
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
-            if (it.maintain == 1 && firmCode == it.firmType /*&& gameType == it.gameType*/) {
+            if (it.maintain == 1 && firmType == it.firmType /*&& gameType == it.gameType*/) {
 //                motionMenu.gone()
                 showErrorPromptDialog(getString(R.string.error), getString(R.string.hint_game_maintenance)) {
                     finish()
@@ -137,7 +154,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         super.onDestroy()
         releaseRefreshToken()
         binding.webView.destroy()
-        if (!OKGamesRepository.isSingleWalletType(firmCode)&&isThirdTransferOpen()) {
+        if (!OKGamesRepository.isSingleWalletType(firmType)&&isThirdTransferOpen()) {
             LoginRepository.allTransferOut()
         }
     }

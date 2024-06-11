@@ -169,7 +169,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
     fun enterGame(bean: OKGameBean) {
         mainTabActivity().enterThirdGame(bean)
         if (LoginRepository.isLogined()) {
-            viewModel.addRecentPlay(bean)
+            viewModel.updateRecentPlay()
         }
     }
 

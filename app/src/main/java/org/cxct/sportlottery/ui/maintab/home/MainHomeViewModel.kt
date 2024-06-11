@@ -79,6 +79,11 @@ open class MainHomeViewModel(
     val enterTrialPlayGameResult: LiveData<Pair<String, EnterThirdGameResult>?>
         get() = _enterTrialPlayGameResult
 
+    //试玩线路
+    private val _guestLoginGameResult = SingleLiveEvent<Pair<String, EnterThirdGameResult>?>()
+    val guestLoginGameResult: LiveData<Pair<String, EnterThirdGameResult>?>
+        get() = _guestLoginGameResult
+
     val gameBalanceResult: LiveData<Event<Triple<String, EnterThirdGameResult, Double>>>
         get() = _gameBalanceResult
     private var _gameBalanceResult =
@@ -288,27 +293,6 @@ open class MainHomeViewModel(
         }
     }
 
-    /**
-     * 进入OKgame游戏
-     */
-    fun homeOkGamesEnterThirdGame(gameData: OKGameBean, baseActivity: BaseActivity<*,*>) {
-        RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
-        requestEnterThirdGame(
-            "${gameData.firmType}",
-            "${gameData.gameCode}",
-            "${gameData.gameCode}",
-            "${gameData.gameType}",
-            baseActivity
-        )
-    }
-
-    /**
-     * 记录最近游戏
-     */
-    fun homeOkGameAddRecentPlay(okGameBean: OKGameBean) {
-         LoginRepository.addRecentPlayGame(okGameBean.id.toString())
-    }
-
     //region 宣傳頁推薦賽事資料處理
     /**
      * 設置賽事類型參數(滾球、即將、今日、早盤,波胆)
@@ -369,17 +353,12 @@ open class MainHomeViewModel(
             }?.let { result -> _messageListResult.postValue(Event(result)) }
         }
     }
-
-    fun requestEnterThirdGameNoLogin(okGameBean: OKGameBean) {
-        RecentDataManager.addRecent(RecentRecord(1, gameBean = okGameBean))
-        requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory, okGameBean.gameType)
-    }
-
     /**
      * 未登录试玩
      */
-    fun requestEnterThirdGameNoLogin(firmType: String?, gameCode: String?, gameCategory: String?, gameEntryTagName: String?){
-        if(firmType==null){
+    fun requestEnterThirdGameNoLogin(okGameBean: OKGameBean){
+        RecentDataManager.addRecent(RecentRecord(1, gameBean = okGameBean))
+        if(okGameBean.firmType==null){
             //不支持试玩
             _enterTrialPlayGameResult.postValue(null)
             return
@@ -388,37 +367,51 @@ open class MainHomeViewModel(
         viewModelScope.launch {
             //请求试玩线路
             val result= doNetwork(androidContext) {
-               OneBoSportApi.thirdGameService.thirdNoLogin(firmType, gameCode)
+               OneBoSportApi.thirdGameService.thirdNoLogin(okGameBean.firmType, okGameBean.gameCode)
             }
-            if(result==null){
-                //不支持试玩
-                _enterTrialPlayGameResult.postValue(null)
+            if (result!=null&&result.success&&result.msg.isNotEmpty()){
+                //获得了试玩路径
+                val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, result.msg, null, okGameBean)
+                _enterTrialPlayGameResult.postValue(Pair(okGameBean.firmType, thirdGameResult))
             }else{
-                if(result.success&&result.msg.isNotEmpty()){
-                    //获得了试玩路径
-                    val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, result.msg, gameCategory, gameEntryTagName)
-                    _enterTrialPlayGameResult.postValue(Pair(firmType, thirdGameResult))
+                requestGuestEnterGame(okGameBean)
+            }
+        }
+    }
+
+    /**
+     * 访客登录三方游戏
+     */
+    private fun requestGuestEnterGame(okGameBean: OKGameBean){
+        if(okGameBean.firmType==null){
+            _guestLoginGameResult.postValue(null)
+            return
+        }
+        if (OKGamesRepository.isGuestOpen(okGameBean.firmType)){
+            callApi({ OKGamesRepository.guestLogin(okGameBean.firmType!!,okGameBean.gameCode!!)}) {
+                if (it.succeeded()){
+                    val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, it.msg, null, okGameBean, guestLogin = true)
+                    _guestLoginGameResult.postValue(Pair(okGameBean.firmType, thirdGameResult))
                 }else{
-                    //不支持试玩
-                    _enterTrialPlayGameResult.postValue(null)
+                    _guestLoginGameResult.postValue(null)
                 }
             }
+        }else{
+            _guestLoginGameResult.postValue(null)
         }
     }
 
     //避免多次请求游戏
     var jumpingGame = false
     fun requestEnterThirdGame(
-        firmType: String,
-        gameCode: String,
-        gameCategory: String,
-        gameEntryTagName: String,
+        okGameBean: OKGameBean,
         baseActivity: BaseActivity<*,*>,
     ) {
+        val firmType = okGameBean.firmType!!
 //        Timber.e("gameData: $gameData")
         if (LoginRepository.isLogin.value != true) {
             _enterThirdGameResult.postValue(Pair(firmType,
-                EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER, null, "", gameEntryTagName)))
+                EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER, null, "", okGameBean)))
             return
         }
 
@@ -428,7 +421,7 @@ open class MainHomeViewModel(
         jumpingGame = true
         baseActivity.loading()
         viewModelScope.launch {
-            val thirdLoginResult = thirdGameLogin(firmType!!, gameCode!!)
+            val thirdLoginResult = thirdGameLogin(firmType!!, okGameBean.gameCode!!)
             jumpingGame = false
             //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
             if (thirdLoginResult == null) {
@@ -438,12 +431,12 @@ open class MainHomeViewModel(
 
             //先调用三方游戏的登入接口, 确认返回成功200之后再接著调用自动转换额度的接口, 如果没有登入成功, 后面就不做额度自动转换的调用了
             if (!thirdLoginResult.success) {
-                _enterThirdGameResult.postValue(Pair(firmType, EnterThirdGameResult(EnterThirdGameResult.ResultType.FAIL,  null, thirdLoginResult?.msg, gameEntryTagName)))
+                _enterThirdGameResult.postValue(Pair(firmType, EnterThirdGameResult(EnterThirdGameResult.ResultType.FAIL,  null, thirdLoginResult?.msg, okGameBean)))
                 baseActivity.hideLoading()
                 return@launch
             }
 
-            val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory, gameEntryTagName)
+            val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, url = thirdLoginResult.msg,errorMsg = null, okGameBean)
             if (OKGamesRepository.isSingleWalletType(firmType)){
                 _enterThirdGameResult.postValue(Pair(firmType, thirdGameResult))
                 baseActivity.hideLoading()
@@ -469,7 +462,7 @@ open class MainHomeViewModel(
             resultType = EnterThirdGameResult.ResultType.NONE,
             url = null,
             errorMsg = null,
-            ""
+            okGameBean = null
         )))
     }
 

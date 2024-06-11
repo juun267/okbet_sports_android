@@ -65,10 +65,6 @@ class OKGamesViewModel(
         get() = _recentPlay
     private val _recentPlay = MutableLiveData<List<OKGameBean>>()
 
-    val newRecentPlay: LiveData<OKGameBean>
-        get() = _newRecentPlay
-    private val _newRecentPlay = MutableLiveData<OKGameBean>()
-
     /**
      * 全部的赛事，map 类型
      */
@@ -158,21 +154,6 @@ class OKGamesViewModel(
             GameCollectManager.updateCollect(gameData,gameEntryType)
         }
 
-
-    /**
-     * 进入OKgame游戏
-     */
-    fun requestEnterThirdGame(gameData: OKGameBean, baseActivity: BaseActivity<*,*>) {
-        RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
-        requestEnterThirdGame(
-            "${gameData.firmType}",
-            "${gameData.gameCode}",
-            "${gameData.gameCode}",
-            "${gameData.gameType}",
-            baseActivity
-        )
-    }
-
     /**
      * 获取最近游戏
      */
@@ -180,7 +161,7 @@ class OKGamesViewModel(
         if (!LoginRepository.isLogined()) {  // 没登录不显示最近玩的游戏
             return
         }
-        val ids = LoginRepository.getRecentPlayGameIds()
+        val ids = OKGamesRepository.getRecentPlayGameIds()
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
@@ -194,17 +175,15 @@ class OKGamesViewModel(
     /**
      * 记录最近游戏
      */
-    fun addRecentPlay(okGameBean: OKGameBean) {
-        val ids = LoginRepository.addRecentPlayGame(okGameBean.id.toString())
+    fun updateRecentPlay() {
+        val ids = OKGamesRepository.getRecentPlayGameIds()
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
                 recentList.add(it.copy())
             }
         }
-
         recentList.reverse()
-        _newRecentPlay.value = okGameBean
         _recentPlay.postValue(recentList)
     }
 

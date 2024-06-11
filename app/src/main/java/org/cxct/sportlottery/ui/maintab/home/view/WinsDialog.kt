@@ -94,8 +94,9 @@ class WinsDialog : BaseDialog<BaseViewModel, DialogWinsBetdetailsBinding>() {
                 jackpotOpen = 0,
                 gameEntryType = betRecode.gameEntryType,
             )
-            RecentDataManager.addRecent(RecentRecord(1, gameBean = okGameBean))
-            enterGame(betRecode)
+            (activity as? MainTabActivity)?.let {
+                it.enterThirdGame(okGameBean)
+            }
             return
         }
         (activity as? MainTabActivity)?.let {  mainTabActivity->
@@ -106,14 +107,5 @@ class WinsDialog : BaseDialog<BaseViewModel, DialogWinsBetdetailsBinding>() {
             }
         }
     }
-    private fun enterGame(recordNewEvent: RecordNewEvent) {
-        (activity as? MainTabActivity)?.let {
-            val firmType = "${recordNewEvent.firmType}"
-            val gameCode = "${recordNewEvent.gameCode}"
-            val gameEntryTagName = "${recordNewEvent.gameEntryType}"
-            it.requestEnterThirdGame(firmType, gameCode, firmType, gameEntryTagName)
-        }
-    }
-
 
 }

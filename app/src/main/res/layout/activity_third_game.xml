@@ -25,6 +25,7 @@
             android:id="@+id/ivLogo"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
+            android:adjustViewBounds="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivBack"
@@ -39,6 +40,43 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:src="@drawable/ic_deposit_circle"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_28"
+            android:minWidth="74dp"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/margin_8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvRegist"
+            android:background="@drawable/bg_btn_home_login"
+            android:autoSizeMinTextSize="@dimen/textSize10sp"
+            android:autoSizeMaxTextSize="@dimen/textSize14sp"
+            android:lines="1"
+            android:textColor="@color/color_025BE8"
+            android:textSize="@dimen/textSize14sp"
+            android:text="@string/J134"
+            android:visibility="visible"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRegist"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_28"
+            android:minWidth="74dp"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/bg_btn_home_register"
+            android:autoSizeMinTextSize="@dimen/textSize10sp"
+            android:autoSizeMaxTextSize="@dimen/textSize14sp"
+            android:lines="1"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/textSize14sp"
+            android:text="@string/J151"
+            android:visibility="visible"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

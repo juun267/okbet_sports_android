@@ -13,6 +13,7 @@ import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -195,6 +196,9 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBindi
 
     fun enterGame(okGameBean: OKGameBean) {
         mainTabActivity().enterThirdGame(okGameBean)
+        if (LoginRepository.isLogined()) {
+            viewModel.updateRecentPlay()
+        }
     }
 
     fun backGameAll() {
