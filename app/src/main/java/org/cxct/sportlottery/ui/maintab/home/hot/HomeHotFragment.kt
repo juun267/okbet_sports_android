@@ -158,12 +158,14 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         if (hidden) {
             //隐藏时取消赛事监听
             unSubscribeChannelHallAll()
+            recommendMiniGameHelper.pausePlay()
         } else {
             receiver.addOddsChangeListener(this, mOddsChangeListener)
             refreshHotMatch()
             //返回页面时，刷新体育相关view状态
             checkToCloseView()
             binding.providerView.loadData()
+            recommendMiniGameHelper.resumePlay()
         }
 
     }
