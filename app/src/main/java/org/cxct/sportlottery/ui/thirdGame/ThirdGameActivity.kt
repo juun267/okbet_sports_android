@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.common.WebActivity.Companion.FIRM_TYPE
 import org.cxct.sportlottery.ui.common.WebActivity.Companion.GAME_BEAN
 import org.cxct.sportlottery.ui.common.WebActivity.Companion.GUESTLOGIN
 import org.cxct.sportlottery.ui.common.WebActivityImp
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
@@ -102,14 +103,6 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         ivDeposit.isVisible = !guestLogin
         tvLogin.isVisible = guestLogin
         tvRegist.isVisible = guestLogin
-        tvLogin.clickDelay {
-            OKGamesRepository.enterGameAfterLogin= okGameBean
-            startLogin()
-        }
-        tvRegist.clickDelay {
-            OKGamesRepository.enterGameAfterLogin= okGameBean
-            startRegister()
-        }
         webActivityImp.setCookie(mUrl)
         webActivityImp.setupWebView(webView)
         webView.loadUrl(mUrl)
@@ -159,9 +152,22 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         }
     }
 
-    private fun setupMenu() {
-        binding.ivDeposit.setOnClickListener {
-            ToGcashDialog.showByClick { jumpToDeposit() }
+    private fun setupMenu() =binding.run{
+        ivDeposit.setOnClickListener {
+            //需要判断用户未登录的情况
+            if (LoginRepository.isLogined()){
+                jumpToDeposit()
+            }else{
+                startLogin()
+            }
+        }
+        tvLogin.clickDelay {
+            OKGamesRepository.enterGameAfterLogin= okGameBean
+            startLogin()
+        }
+        tvRegist.clickDelay {
+            OKGamesRepository.enterGameAfterLogin= okGameBean
+            LoginOKActivity.startRegist(this@ThirdGameActivity)
         }
 //        binding.motionMenu.setOnMenuListener(object : MotionFloatingMenu.OnMenuListener {
 //            override fun onHome() {

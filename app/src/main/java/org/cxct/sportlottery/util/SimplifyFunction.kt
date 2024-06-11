@@ -692,19 +692,6 @@ fun Context.copyText(copyText: String) {
     clipboard?.setPrimaryClip(clipData)
 }
 
-fun Activity.startRegister() {
-    if (isUAT()) {
-        return
-    }
-    startLogin()
-//    this.startActivity(Intent(this,
-//        if (isOKPlat())
-//            RegisterOkActivity::class.java
-//        else
-//            RegisterActivity::class.java)
-//    )
-}
-
 fun DialogFragment.showAllowingStateLoss(fragmentManager: FragmentManager, tag: String? = null) {
     fragmentManager.beginTransaction().add(this, tag).commitAllowingStateLoss()
 }

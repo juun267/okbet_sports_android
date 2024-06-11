@@ -687,7 +687,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
                 getString(R.string.prompt), result.errorMsg ?: ""
             ) {}
 
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> startRegister()
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> LoginOKActivity.startRegist(this)
 
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error), result.errorMsg ?: ""
