@@ -163,6 +163,7 @@ data class ConfigData(
     val servicePhoneNumber: String?=null, //客服专线
     val vipSwitch:Int=0,//是否开启用户VIP功能 1-开启 2-关闭
     val ageVerificationChecked:Int=1,//是否默认勾选21岁 0-关闭 1-打开
+    val gameUserDepositURL: String? = null,//三方游戏内充值跳转链接
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
