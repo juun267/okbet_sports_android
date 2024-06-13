@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.WebActivity
@@ -45,6 +46,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
     private val mUrl: String by lazy { intent?.getStringExtra(WebActivity.KEY_URL) ?: "about:blank" }
 
     private val webActivityImp by lazy { WebActivityImp(this,this::overrideUrlLoading) }
+    private val depositURL = sConfigData?.gameUserDepositURL
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -118,11 +120,17 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
             }
         }
     }
-     fun overrideUrlLoading(view: WebView, url: String): Boolean {
+
+     private fun overrideUrlLoading(view: WebView, url: String): Boolean {
         if (url.isEmptyStr()) {
             view.loadUrl(url)
             return false
         }
+
+         if (!depositURL.isNullOrEmpty() && url.endsWith(depositURL, true)) {
+             ToGcashDialog.showByClick { jumpToDeposit() }
+             return true
+         }
 
         val requestUrl = url.replace("https", "http", true)
         val host = Constants.getBaseUrl().replace("https", "http", true)
