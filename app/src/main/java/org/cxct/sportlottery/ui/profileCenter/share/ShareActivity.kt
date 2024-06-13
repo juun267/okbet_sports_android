@@ -11,7 +11,7 @@ class ShareActivity : BaseActivity<ProfileModel,ActivityShareBinding>(){
             ShareUtil.shareFacebook(this@ShareActivity,"share to facebook https://www.okbet.com/")
         }
         btnMessenger.setOnClickListener {
-            ShareUtil.shareMessenger(this@ShareActivity,"share to messenger")
+            ShareUtil.shareMessenger(this@ShareActivity,"share to messenger https://www.okbet.com/")
         }
         btnInstagram.setOnClickListener {
             ShareUtil.shareInstagram(this@ShareActivity, "share to instagram")

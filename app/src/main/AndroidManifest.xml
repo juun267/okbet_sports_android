@@ -51,8 +51,8 @@
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="true" />
-    <queries><provider android:authorities="com.facebook.katana.provider.PlatformProvider" /></queries>
-
+    <queries><provider android:authorities="com.facebook.katana.provider.PlatformProvider"/></queries>
+    <queries><provider android:authorities="com.facebook.orca.provider.PlatformProvider"/></queries>
     <application
         android:name=".application.MultiLanguagesApplication"
         android:allowBackup="false"
