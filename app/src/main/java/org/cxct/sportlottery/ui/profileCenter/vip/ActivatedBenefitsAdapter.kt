@@ -93,7 +93,7 @@ class ActivatedBenefitsAdapter(val onItemClick: (RewardInfo, RewardDetail)->Unit
         when(item.status){
             1,7-> {
                 tvAction.setActionBtn(true)
-                tvAction.text = context.getString(R.string.P373)
+                tvAction.text = context.getString(R.string.P407)
             }
             2->{
                 tvAction.setActionBtn(false)
