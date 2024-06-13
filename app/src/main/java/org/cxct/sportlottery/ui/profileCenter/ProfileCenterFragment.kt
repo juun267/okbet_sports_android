@@ -37,6 +37,7 @@ import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivi
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.profileCenter.share.ShareActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
@@ -300,12 +301,13 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         }
         //关于我们
         btnAboutUs.setOnClickListener {
-            startActivity(
-                Intent(
-                    requireActivity(),
-                    org.cxct.sportlottery.ui.aboutMe.AboutMeActivity::class.java
-                )
-            )
+//            startActivity(
+//                Intent(
+//                    requireActivity(),
+//                    org.cxct.sportlottery.ui.aboutMe.AboutMeActivity::class.java
+//                )
+//            )
+            startActivity(Intent(requireContext(),ShareActivity::class.java))
         }
 
         //资产检测
