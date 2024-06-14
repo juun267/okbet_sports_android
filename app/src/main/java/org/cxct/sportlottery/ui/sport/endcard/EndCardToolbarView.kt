@@ -5,48 +5,49 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.common.extentions.doOnResume
 import org.cxct.sportlottery.databinding.ViewEndcardToolbarBinding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.jumpToDeposit
 import org.cxct.sportlottery.util.refreshMoneyLoading
 import org.cxct.sportlottery.util.startLogin
-import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import splitties.systemservices.layoutInflater
 
 class EndCardToolbarView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle)  {
 
     val binding by lazy { ViewEndcardToolbarBinding.inflate(layoutInflater,this,true) }
+    private lateinit var activity: BaseSocketActivity<*,*>
     private lateinit var viewModel: BaseSocketViewModel
-    private lateinit var lifecycleOwner: LifecycleOwner
     fun attach(
-        lifecycleOwner: LifecycleOwner,
+        activity: BaseSocketActivity<*,*>,
         clickLogo: ()->Unit,
-        viewModel: BaseSocketViewModel,
     ) {
-        this.lifecycleOwner = lifecycleOwner
-        this.viewModel = viewModel
+        this.activity = activity
+        this.viewModel = activity.viewModel
         binding.ivLogo.setOnClickListener { clickLogo.invoke() }
         initView()
         initObservable()
-        lifecycleOwner.doOnResume(-1) { onRefreshMoney() }
+        activity.doOnResume(-1) { onRefreshMoney() }
     }
 
     private fun initView()=binding.run {
         ivRefresh.setOnClickListener { onRefreshMoney() }
-        ivDeposit.setOnClickListener { ToGcashDialog.showByClick { viewModel.checkRechargeKYCVerify() } }
+        ivDeposit.setOnClickListener { activity.jumpToDeposit() }
         btnLogin.setOnClickListener { context.startLogin() }
         btnRegister.setOnClickListener { LoginOKActivity.startRegist(context) }
         setupLogin()
     }
     private fun initObservable()=viewModel.run {
         if (LoginRepository.isLogined()) {
-            isLogin.observe(lifecycleOwner) { setupLogin() }
-            userMoney.observe(lifecycleOwner) {
+            isLogin.observe(activity) { setupLogin() }
+            userMoney.observe(activity) {
                 it?.let { bindMoneyText(it) }
             }
         }

@@ -165,29 +165,33 @@ class BetInfoItemViewHolder(
     ) = contentView.run {
 
         val update = {
-            //更新可贏額
-            var win = itemData.betAmount * getOddsAndSaveRealAmount(
-                itemData, currentOddsType
-            )
+            if (itemData.input==null){
+                tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
+            }else {
+                //更新可贏額
+                var win = itemData.betAmount * getOddsAndSaveRealAmount(
+                    itemData, currentOddsType
+                )
 
-            val strTvCanWin =
-                "${root.context.getString(R.string.bet_win)}：${sConfigData?.systemCurrencySign} ${
-                    TextUtil.formatInputMoney(win)
-                }"
-            val canWinSpannable = SpannableString(strTvCanWin)
-            canWinSpannable.setSpan(
-                ForegroundColorSpan(root.context.getColor(R.color.color_E23434)),
-                "${LocalUtils.getString(R.string.bet_win)}：".length,
-                strTvCanWin.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            canWinSpannable.setSpan(
-                StyleSpan(Typeface.BOLD),
-                "${LocalUtils.getString(R.string.bet_win)}：".length,
-                strTvCanWin.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            tvCanWin.text = canWinSpannable
+                val strTvCanWin =
+                    "${root.context.getString(R.string.bet_win)}：${sConfigData?.systemCurrencySign} ${
+                        TextUtil.formatInputMoney(win)
+                    }"
+                val canWinSpannable = SpannableString(strTvCanWin)
+                canWinSpannable.setSpan(
+                    ForegroundColorSpan(root.context.getColor(R.color.color_E23434)),
+                    "${LocalUtils.getString(R.string.bet_win)}：".length,
+                    strTvCanWin.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                canWinSpannable.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    "${LocalUtils.getString(R.string.bet_win)}：".length,
+                    strTvCanWin.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                tvCanWin.text = canWinSpannable
+            }
         }
 
 
@@ -207,21 +211,21 @@ class BetInfoItemViewHolder(
             if (isTouched) {
                 return@apply
             }
-            if (itemData.input == null) {
-                val minBet = itemData.parlayOdds?.min ?: 0
-                if (isLogin) {
-                    if (minBet > mUserMoney) {
-                        itemData.input = mUserMoney.toString()
-                    } else {
-                        itemData.input = minBet.toString()
-                    }
-                } else {
-                    itemData.input = minBet.toString()
-                }
-            }
+//            if (itemData.input == null) {
+//                val minBet = itemData.parlayOdds?.min ?: 0
+//                if (isLogin) {
+//                    if (minBet > mUserMoney) {
+//                        itemData.input = mUserMoney.toString()
+//                    } else {
+//                        itemData.input = minBet.toString()
+//                    }
+//                } else {
+//                    itemData.input = minBet.toString()
+//                }
+//            }
             itemData.inputBetAmountStr = itemData.input
-            itemData.betAmount = itemData.input!!.toDouble()
-            setText(itemData.inputBetAmountStr)
+            itemData.betAmount = itemData.input?.toDouble()?:0.0
+            setText(if(itemData.input.isNullOrEmpty()) "" else itemData.inputBetAmountStr) //OKF-1558 [安卓]最低投注金额默认不要显示，包括单关，串关
             update()
             setSelection(text.length)
         }
@@ -669,7 +673,28 @@ class BetInfoItemViewHolder(
     private fun checkBetLimit(
         itemData: BetInfoListData
     ) {
-        itemData.amountError = false
+//       contentView.apply {
+//            val betAmount = itemData.betAmount
+//
+//            var amountError = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+//                !itemData.input.isNullOrEmpty()
+//            } else {
+//                if (betAmount > inputMaxMoney) {
+//                    //超過最大限額
+//                    true
+//                } else {
+//                    betAmount != 0.0 && betAmount < inputMinMoney
+//                }
+//            }
+//            if (itemData.input.isNullOrEmpty()) {
+//                amountError = true
+//            }
+//
+//            Timber.d("用户余额:$mUserMoney")
+//            val balanceError = betAmount != 0.0 && betAmount > mUserMoney
+//            itemData.amountError = balanceError || amountError
+//        }
+        itemData.amountError = itemData.input.isNullOrEmpty()&&itemData.betAmount == 0.0
         setEtBackground(itemData)
     }
 

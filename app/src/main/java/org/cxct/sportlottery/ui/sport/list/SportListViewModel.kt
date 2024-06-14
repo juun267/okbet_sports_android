@@ -144,6 +144,7 @@ open class SportListViewModel(
                     matchOdd.matchInfo.startTimeDisplay = TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
                     matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     matchInfo.categoryCode = leagueOdd.league.categoryCode
+                    matchInfo.leagueName = leagueOdd.league.name
 
                     matchOdd.oddsMap?.forEach { map ->
                         map.value?.updateOddSelectState()

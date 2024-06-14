@@ -11,38 +11,38 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.net.sport.data.EndCardBet
 import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 
-class BetAmountAdapter(private val onItemClick: (EndCardBet)-> Unit): BaseQuickAdapter<EndCardBet, BaseViewHolder>(0) {
+class BetAmountAdapter(val fragment: EndCardGameFragment,private val onItemClick: (EndCardBet)-> Unit): BaseQuickAdapter<EndCardBet, BaseViewHolder>(0) {
 
     private var selectedItem: EndCardBet? = null
     private val selectedColor = Color.WHITE
-    private val defaultTextColor by lazy { context.getColor(R.color.color_BEC7DC) }
+    private val defaultTextColor by lazy { context.getColor(R.color.color_FFFFFF) }
     private val selectedBg by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_1F75FF), context.getColor(R.color.color_0D31AF))
+            .setSolidColor(context.getColor(R.color.color_1475E1), context.getColor(R.color.color_003CD7))
             .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
-            .setRadius(5.dp.toFloat())
+            .setRadius(20.dp.toFloat())
             .setWidth(80.dp)
-            .setHeight(36.dp)
+            .setHeight(40.dp)
     }
     private val defaultBg by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_26354D))
-            .setRadius(5.dp.toFloat())
+            .setSolidColor(context.getColor(R.color.transparent))
+            .setRadius(20.dp.toFloat())
             .setWidth(80.dp)
-            .setHeight(36.dp)
+            .setHeight(40.dp)
     }
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val textView = AppCompatTextView(parent.context)
         textView.textSize = 14f
         textView.gravity = Gravity.CENTER
-        val lp = LinearLayout.LayoutParams(-2, -2)
-        lp.leftMargin = 8.dp
-        lp.topMargin = 7.dp
+        val lp = LinearLayout.LayoutParams(-2, 40.dp)
+        5.dp.let { lp.setMargins(4.dp, it, 0, it) }
         textView.layoutParams = lp
         return BaseViewHolder(textView)
     }
@@ -56,12 +56,14 @@ class BetAmountAdapter(private val onItemClick: (EndCardBet)-> Unit): BaseQuickA
             text = "${context.getText(R.string.P318)} $showCurrencySign${item.betMoney}"
             changeStyle(selectedItem == item, this)
             setOnClickListener {
-                if (selectedItem != item) {
-                    onItemClick.invoke(item)
-                    val lastPosition = getItemPosition(selectedItem)
-                    selectedItem = item
-                    notifyItemChanged(lastPosition, lastPosition)
-                    changeStyle(true, this)
+                fragment.showClearTip {
+                    if (selectedItem != item) {
+                        onItemClick.invoke(item)
+                        val lastPosition = getItemPosition(selectedItem)
+                        selectedItem = item
+                        notifyItemChanged(lastPosition, lastPosition)
+                        changeStyle(true, this)
+                    }
                 }
             }
         }

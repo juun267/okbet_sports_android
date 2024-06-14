@@ -64,7 +64,7 @@ open class MarqueeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()//更新資料
     }
 
-    class MarqueeVH(private val textView: TextView, itemView: View): RecyclerView.ViewHolder(itemView)
+    class MarqueeVH(val textView: TextView, itemView: View): RecyclerView.ViewHolder(itemView)
 
 
 }

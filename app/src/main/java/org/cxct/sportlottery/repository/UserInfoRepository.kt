@@ -37,6 +37,8 @@ object UserInfoRepository {
 
     fun userId() = userInfo.value?.userId ?: -1
 
+    fun userName() = userInfo.value?.userName ?: -1
+
     fun nickName() = userInfo.value?.nickName ?: ""
 
     fun isGlifeAccount(): Boolean {
@@ -261,7 +263,8 @@ object UserInfoRepository {
             lastName = userInfoData.lastName,
             birthday = userInfoData.birthday,
             discountByGameTypeList = userInfoData.discountByGameTypeList,
-            rejectRemark = userInfoData.rejectRemark
+            rejectRemark = userInfoData.rejectRemark,
+            levelCode = userInfoData.levelCode,
         )
 
     suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {

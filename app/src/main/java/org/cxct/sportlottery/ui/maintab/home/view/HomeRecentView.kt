@@ -6,9 +6,13 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.showPromptDialog
 import org.cxct.sportlottery.databinding.ViewHomeRecentBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
 import splitties.systemservices.layoutInflater
@@ -22,7 +26,11 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
         setOnItemClickListener{ _, _, position ->
             val item = data[position]
             if (item.recordType != 0) {
-                item.gameBean?.let { fragment.getMainTabActivity().enterHomeGame(it) }
+                if (item.gameBean?.firmType==Constants.FIRM_TYPE_SBTY&&!StaticData.sbSportOpened()){
+                    fragment.getMainTabActivity().showPromptDialog(message = context.getString(R.string.shaba_no_open)){}
+                }else{
+                    item.gameBean?.let { fragment.getMainTabActivity().enterThirdGame(it) }
+                }
                 return@setOnItemClickListener
             }
 

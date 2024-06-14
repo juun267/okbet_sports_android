@@ -14,6 +14,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
+import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -31,6 +32,9 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.game.perya.MiniGameListFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.profileCenter.vip.MyVipDetailActivity
+import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
@@ -99,6 +103,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             bindVerifyStatus(userInfo = it)
         }
         ConfigRepository.config.observe(this){
+            menuVip.isVisible = StaticData.vipOpened()
             binding.menuPerya.isVisible = StaticData.miniGameOpened()
         }
     }
@@ -179,6 +184,17 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             )
         }.apply {
             setVisibilityByMarketSwitch()
+        }
+        menuVip.setItem(
+            cxt.getIconSelector(R.drawable.ic_left_menu_vip_sel, R.drawable.ic_left_menu_vip_sel),
+            R.string.P371
+        ){
+            loginedRun(requireContext(),true){
+                close()
+                startActivity(VipBenefitsActivity::class.java)
+            }
+        }.apply {
+            isVisible = StaticData.vipOpened()
         }
         menuNews.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_news_sel, R.drawable.ic_left_menu_news_nor),

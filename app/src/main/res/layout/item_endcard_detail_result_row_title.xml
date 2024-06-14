@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="38dp"
-    android:background="@color/color_202839">
+    android:background="@color/color_2F4553">
 
     <TextView
         android:id="@+id/tvQuarter"
@@ -11,13 +11,13 @@
         android:layout_weight="115"
         android:gravity="center"
         android:text="@string/P312"
-        android:textColor="@color/color_BEC7DC"
+        android:textColor="@color/color_8EAEC5"
         android:textSize="@dimen/textSize14sp" />
 
     <View
         android:layout_width="@dimen/margin_0.5"
         android:layout_height="match_parent"
-        android:background="@color/color_1A2334" />
+        android:background="@color/color_0C121E" />
 
     <TextView
         android:id="@+id/tvResult"
@@ -26,13 +26,13 @@
         android:layout_weight="80"
         android:gravity="center"
         android:text="@string/B003"
-        android:textColor="@color/color_BEC7DC"
+        android:textColor="@color/color_8EAEC5"
         android:textSize="@dimen/textSize14sp" />
 
     <View
         android:layout_width="@dimen/margin_0.5"
         android:layout_height="match_parent"
-        android:background="@color/color_1A2334" />
+        android:background="@color/color_0C121E" />
 
     <TextView
         android:id="@+id/tvWinAmount"
@@ -41,6 +41,6 @@
         android:layout_weight="170"
         android:gravity="center"
         android:text="@string/P314"
-        android:textColor="@color/color_BEC7DC"
+        android:textColor="@color/color_8EAEC5"
         android:textSize="@dimen/textSize14sp" />
 </LinearLayout>

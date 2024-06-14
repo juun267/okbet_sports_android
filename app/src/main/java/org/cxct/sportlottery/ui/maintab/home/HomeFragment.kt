@@ -15,6 +15,7 @@ import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.Row
@@ -103,6 +104,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         initIndicate()
         binding.ivService.setOnTouchListener(SuckEdgeTouch())
         binding.ivService.setServiceClick(childFragmentManager)
+        viewModel.getHallOkSport()
     }
 
     override fun onBindViewStatus(view: View) {
@@ -139,10 +141,14 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
             homeMenuAdapter.notifyDataSetChanged()
             homeMenuAdapter.checkMaintain()
         }
+        OKGamesRepository.okPlayEvent.observe(this){
+            (fragmentHelper2.currentFragment() as? SportVenueFragment<*,*>)?.setOKPlay()
+        }
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
-        attach(this@HomeFragment, getMainTabActivity(), getMainTabActivity().viewModel)
+        setMenuClick { getMainTabActivity().showMainLeftMenu(fragmentHelper2.currentFragment()?.javaClass as Class<BaseFragment<*,*>>? ) }
+        attach(this@HomeFragment)
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true,Gravity.RIGHT))
             getMainTabActivity().showMainRightMenu()

@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewMode
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.ui.profileCenter.vip.VipViewModel
 import org.cxct.sportlottery.ui.redeem.RedeemViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
@@ -89,6 +90,7 @@ object AppViewModel {
         viewModel { SportLeftMenuViewModel(get()) }
         viewModel { RedeemViewModel(get()) }
         viewModel { EndCardVM(get()) }
+        viewModel { VipViewModel(get()) }
     }
 
     private val repoModule = module {
@@ -101,7 +103,6 @@ object AppViewModel {
         single { AvatarRepository }
         single { FeedbackRepository }
         single { HostRepository }
-        single { WithdrawRepository }
         single { FavoriteRepository }
         single { SelfLimitRepository }
         single { GamePlayNameRepository }

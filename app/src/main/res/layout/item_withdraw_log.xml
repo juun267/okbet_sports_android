@@ -61,7 +61,7 @@
             android:textColor="@color/color_535D76"
             android:textSize="@dimen/textSize14sp"
             android:textFontWeight="700"
-            tools:text="1,000,000.00" />
+            tools:text="1,000,000" />
 
         <TextView
             android:id="@+id/tv_receive_amount"
@@ -71,7 +71,7 @@
             android:textColor="@color/color_535D76"
             android:textSize="@dimen/textSize14sp"
             android:textFontWeight="700"
-            tools:text="1,000,000.00" />
+            tools:text="1,000,000" />
     </LinearLayout>
 
     <TextView

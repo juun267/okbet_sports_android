@@ -41,7 +41,7 @@ abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(cl
         onNetworkException()
 
         viewModel.isLogin.observe(this) {
-            if (it == true) {
+            if (LoginRepository.isLogined()) {
                 viewModel.getFavorite()
             } else {
                 viewModel.clearFavorite()
@@ -242,7 +242,7 @@ abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(cl
                 if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName ||
                     this.javaClass.simpleName == ThirdGameActivity::class.java.simpleName
                 ) return@observe
-                viewModel.doCleanToken()
+                viewModel.clearAll()
                 showTokenPromptDialog(msg) {
                     viewModel.doLogoutCleanUser {
                         run {
@@ -268,10 +268,11 @@ abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(cl
 
             else -> {
                 if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName
-                    || this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) {
+                    || !LoginRepository.isLogined()) {
                     return
                 }
-                viewModel.doCleanToken()
+
+                viewModel.clearAll()
                 showTokenPromptDialog(result.msg) {
                     viewModel.doLogoutCleanUser {
                         if (isErrorTokenToMainActivity()) {
@@ -279,6 +280,7 @@ abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(cl
                         }
                     }
                 }
+
             }
         }
     }

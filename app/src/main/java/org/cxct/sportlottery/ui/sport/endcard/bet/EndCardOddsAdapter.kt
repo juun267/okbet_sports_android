@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.net.sport.data.EndCardBet
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.sport.endcard.EndCardBetManager
 import org.cxct.sportlottery.util.AppFont
@@ -29,7 +30,7 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
 
     private val defaultBg by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_1E2535))
+            .setSolidColor(context.getColor(R.color.color_071724))
             .setRadius(8.dp.toFloat())
             .setWidth(88.dp)
             .setHeight(44.dp)
@@ -37,7 +38,7 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
 
     private val disableBg by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_353B4E))
+            .setSolidColor(context.getColor(R.color.color_142635))
             .setRadius(8.dp.toFloat())
             .setWidth(88.dp)
             .setHeight(44.dp)
@@ -45,7 +46,16 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
 
     private val selectedBg by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_025BE8))
+            .setSolidColor(context.getColor(R.color.color_1475E1))
+            .setRadius(8.dp.toFloat())
+            .setWidth(88.dp)
+            .setHeight(44.dp)
+    }
+    private val beforeBetBg by lazy {
+        ShapeDrawable()
+            .setSolidColor(context.getColor(R.color.color_071724))
+            .setStrokeColor(context.getColor(R.color.color_52718B))
+            .setStrokeSize(1.dp)
             .setRadius(8.dp.toFloat())
             .setWidth(88.dp)
             .setHeight(44.dp)
@@ -74,7 +84,7 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
         val user = AppCompatTextView(cxt)
         user.id = userId
         user.textSize = 12f
-        user.setTextColor(cxt.getColor(R.color.color_BEC7DC))
+        user.setTextColor(cxt.getColor(R.color.color_FFFFFF))
         user.gravity = Gravity.CENTER
         user.maxLines = 1
         user.ellipsize = TextUtils.TruncateAt.END
@@ -99,10 +109,22 @@ class EndCardOddsAdapter(private val itemClick: (String) -> Boolean)
 
         when {
             betted -> {
-                userText.text = UserInfoRepository.nickName()
-                itemView.setBackgroundResource(R.drawable.bg_selected_endodd)
+                val userInfo = UserInfoRepository.userInfo?.value
+                userText.text = if (userInfo?.nickName.isNullOrEmpty()) {
+                    userInfo?.userName
+                } else {
+                    userInfo?.nickName
+                }
+                oddText.setTextColor(context.getColor(R.color.color_1CD219))
+                oddText.paint.isFakeBoldText=true
+                userText.setTextColor(context.getColor(R.color.color_FFFFFF))
+                itemView.background = beforeBetBg
             }
-            !noUserBet -> itemView.background = disableBg
+            !noUserBet -> {
+                oddText.setTextColor(context.getColor(R.color.color_728B9D))
+                userText.setTextColor(context.getColor(R.color.color_728B9D))
+                itemView.background = disableBg
+            }
             EndCardBetManager.containOdd(item) -> itemView.background = selectedBg
             else -> itemView.background = defaultBg
         }

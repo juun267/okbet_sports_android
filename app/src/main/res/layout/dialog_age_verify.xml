@@ -10,6 +10,7 @@
           android:orientation="vertical"
           android:gravity="center_horizontal"
           android:layout_marginHorizontal="@dimen/margin_15"
+          android:paddingBottom="@dimen/margin_30"
           android:background="@drawable/bg_age_verify">
           <ImageView
               android:id="@+id/iv_logo"
@@ -37,6 +38,21 @@
               android:text="@string/A002"
               android:textColor="@color/color_6D7693"
               android:textSize="@dimen/textSize14sp"/>
+
+          <androidx.appcompat.widget.AppCompatTextView
+              android:id="@+id/cbAgree"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/margin_30"
+              android:layout_marginTop="@dimen/margin_12"
+              android:drawableLeft="@drawable/selector_login_checked"
+              android:textColorLink="@color/color_025BE8"
+              android:gravity="center_horizontal"
+              android:drawablePadding="@dimen/margin_5"
+              android:lineSpacingExtra="3dp"
+              android:text="@string/dialog_age_verify_hint"
+              android:textColor="@color/color_0D2245"
+              android:textSize="@dimen/textSize12sp"/>
           <TextView
               android:id="@+id/btn_confirm"
               android:layout_width="match_parent"

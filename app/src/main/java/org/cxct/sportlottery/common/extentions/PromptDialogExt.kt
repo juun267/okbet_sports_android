@@ -4,7 +4,9 @@ import android.text.Spanned
 import androidx.fragment.app.FragmentActivity
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.commonCheckDialog
+import org.cxct.sportlottery.util.toJson
 
 
 private var mTokenPromptDialog: CustomAlertDialog? = null
@@ -12,16 +14,14 @@ private var mTokenPromptDialog: CustomAlertDialog? = null
 fun FragmentActivity.showTokenPromptDialog(errorMessage: String?, positiveClickListener: () -> Unit?) {
     //解决errorMessage 为空的 Parameter specified as non-null is null: method fe.m.h, parameter errorMessage
     if (errorMessage.isNullOrEmpty()) return
-    runWithCatch{
         //防止跳出多個 error dialog
-        if (mTokenPromptDialog != null)
-            return
+        if (mTokenPromptDialog != null) return
 
         mTokenPromptDialog = CustomAlertDialog().apply {
             setTextColor(R.color.color_E44438_e44438)
             setTitle(this@showTokenPromptDialog.getString(R.string.prompt))
             setMessage(errorMessage)
-            setPositiveButtonText(getString(R.string.btn_confirm))
+            setPositiveButtonText(this@showTokenPromptDialog.getString(R.string.btn_confirm))
             setNegativeButtonText(null)
             setCanceledOnTouchOutside(false)
             isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
@@ -34,7 +34,6 @@ fun FragmentActivity.showTokenPromptDialog(errorMessage: String?, positiveClickL
         if (!isDestroyed){
             mTokenPromptDialog?.show(supportFragmentManager, null)
         }
-    }
 }
 
 fun FragmentActivity.showPromptDialog(

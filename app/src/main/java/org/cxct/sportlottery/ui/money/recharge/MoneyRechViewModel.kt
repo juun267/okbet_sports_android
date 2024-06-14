@@ -13,10 +13,12 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.message.AnnouncementRepository
 import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.common.MoneyType
+import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
@@ -150,8 +152,7 @@ class MoneyRechViewModel(
 
     //獲取充值的基礎配置
     fun getRechCfg() {
-        Log.e(">>>", "getRechCfg")
-        WithdrawRepository.moneyRechCfgResult.value?.rechCfg?.let {
+        MoneyRepository.moneyRechCfgResult.value?.rechCfg?.let {
             _rechargeConfigs.value = it
             filterBankList(it.rechTypes,it.rechCfgs)
         }

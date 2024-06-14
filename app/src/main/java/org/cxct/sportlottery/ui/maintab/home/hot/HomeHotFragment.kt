@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.lifecycle.lifecycleScope
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
@@ -104,28 +105,34 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         okGamesView.setUp(this@HomeHotFragment)
         hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType, this@HomeHotFragment)
         okLiveView.setUp(this@HomeHotFragment)
-        providerView.setup(this@HomeHotFragment) {
-            if (it.gameEntryTypeEnum == GameEntryType.MINIGAMES) {
-                getHomeFragment().jumpToPerya()
-                return@setup
-            }
-
-            if (it.gameEntryTypeEnum == GameEntryType.OKGAMES) {
-                getMainTabActivity().jumpToOKGames()
-                providerView.postDelayed(500) {
-                    (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(
-                        it
-                    )
+        providerView.setup(this@HomeHotFragment){
+            LogUtil.toJson(it)
+            when(it.gameEntryTypeEnum){
+                GameEntryType.OKGAMES->{
+                    getMainTabActivity().jumpToOKGames()
+                    providerView.postDelayed(500){
+                        (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(it)
+                    }
                 }
-            } else {
-                getMainTabActivity().jumpToOkLive()
-                providerView.postDelayed(500) {
-                    (getMainTabActivity().getCurrentFragment() as? OKLiveFragment)?.showByProvider(
-                        it
-                    )
+                GameEntryType.OKLIVE->{
+                    getMainTabActivity().jumpToOKGames()
+                    providerView.postDelayed(500){
+                        (getMainTabActivity().getCurrentFragment() as? OKGamesFragment)?.showByProvider(it)
+                    }
+                }
+                GameEntryType.OKSPORT->{
+                    setupOKPlay { okPlayBean ->
+                        if (okPlayBean==null){
+                            getMainTabActivity().showPromptDialog(message = getString(R.string.shaba_no_open)){}
+                        }else{
+                            getMainTabActivity()?.enterThirdGame(okPlayBean)
+                        }
+                    }
+                }
+                GameEntryType.MINIGAMES->{
+                    getHomeFragment().jumpToPerya()
                 }
             }
-
         }
         promotionView.setup(this@HomeHotFragment)
         newsView.setup(this@HomeHotFragment)
@@ -190,11 +197,8 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
                 dialogQueueManager.enqueue(it)
             }
 
-            RegisterSuccessDialog.buildRegisterSuccessDialog(
-                PRIORITY_REGISTER_SUCCESS,
-                fmProvider
-            ) {
-                getMainTabActivity().checkRechargeKYCVerify()
+            RegisterSuccessDialog.buildRegisterSuccessDialog(PRIORITY_REGISTER_SUCCESS, fmProvider) {
+                getMainTabActivity().jumpToDeposit()
             }?.let {
                 dialogQueueManager.enqueue(it)
             }

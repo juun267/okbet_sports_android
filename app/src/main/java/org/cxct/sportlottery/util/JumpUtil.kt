@@ -8,6 +8,7 @@ import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.common.GameType
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
+import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
 import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
@@ -59,6 +61,12 @@ object JumpUtil {
                         putExtra(WebActivity.TAG, tag)
                     }
                 )
+            }
+            path == "mobile/user/vipCenter"
+                    || path == "vipCenter"->{
+                loginedRun(context,true){
+                    (context as AppCompatActivity).startActivity(VipBenefitsActivity::class.java)
+                }
             }
             path == "mobile/personal/activity_v2"
                     || path == "promo"->{
@@ -138,8 +146,7 @@ object JumpUtil {
      * gameType: OK_GAMES、OK_LIVE、OK_BINGO、OK_SPORT
      */
     //跳轉第三方遊戲網頁
-    fun toThirdGameWeb(context: Context, href: String, firmType: String, gameType: String) {
-
+    fun toThirdGameWeb(context: Context, href: String, firmType: String, okGameBean: OKGameBean?, guestLogin: Boolean = false) {
 //        if ("CQ9"== thirdGameCategoryCode) {  // CQ9 有兼容问题特殊处理，用外部浏览器打开
 //            runWithCatch {
 //                val i = Intent(Intent.ACTION_VIEW, Uri.parse(href))
@@ -155,8 +162,9 @@ object JumpUtil {
             if (URLUtil.isValidUrl(href)) {
                 val intent = Intent(context, ThirdGameActivity::class.java)
                 intent.putExtra(WebActivity.KEY_URL, href)
-                intent.putExtra(WebActivity.FIRM_CODE, firmType)
-                intent.putExtra(WebActivity.GAME_CATEGORY_CODE, gameType)
+                intent.putExtra(WebActivity.FIRM_TYPE, firmType)
+                intent.putExtra(WebActivity.GAME_BEAN, okGameBean)
+                intent.putExtra(WebActivity.GUESTLOGIN, guestLogin)
                 context.startActivity(intent)
             } else {
                 throw Exception(href) //20191022 記錄問題：當網址無效時，代表他回傳的 url 是錯誤訊息

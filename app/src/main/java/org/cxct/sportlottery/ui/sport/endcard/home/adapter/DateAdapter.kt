@@ -27,13 +27,13 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
     private var currentItem: Pair<String, List<MatchOdd>>? = null
     private lateinit var today: String
 
-    private val selectedColor by lazy { context.getColor(R.color.color_6AA4FF) }
-    private val unSelectedColor by lazy { context.getColor(R.color.color_6D7693) }
+    private val selectedColor by lazy { context.getColor(R.color.color_FFFFFF) }
+    private val unSelectedColor by lazy { context.getColor(R.color.color_638095) }
     private val weekId = View.generateViewId()
     private val dateId = View.generateViewId()
     private val selectedDrawable by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_353B4E))
+            .setSolidColor(context.getColor(R.color.color_2F4553))
             .setRadius(8.dp.toFloat())
     }
 
@@ -84,7 +84,7 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
         date.typeface = AppFont.regular
         date.gravity = Gravity.CENTER_HORIZONTAL
         date.id = dateId
-        date.textSize = 14f
+        date.textSize = 13f
         date.setTextColor(Color.WHITE)
         val dateLP = FrameLayout.LayoutParams(-1, -2)
         dateLP.bottomMargin = 3.dp
@@ -131,7 +131,7 @@ class DateAdapter(private val onItemClick: (leagueOdd: LeagueOdd, List<MatchOdd>
 //            week.typeface = AppFont.helvetica
             itemView.background = null
 //            date.typeface = AppFont.helvetica
-            date.setTextColor(date.resources.getColor(R.color.color_BEC7DC))
+            date.setTextColor(date.resources.getColor(R.color.color_B1BAD3))
         }
     }
 }

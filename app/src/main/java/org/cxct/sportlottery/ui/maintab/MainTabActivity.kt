@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
@@ -23,7 +24,9 @@ import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -70,7 +73,7 @@ import kotlin.system.exitProcess
 
 class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBinding>(MainTabViewModel::class) {
 
-    val gamesViewModel by viewModel<OKGamesViewModel>()
+    private val gamesViewModel by viewModel<OKGamesViewModel>()
     private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
@@ -125,15 +128,17 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         initDrawerLayout()
         initMenu()
         tabHelper = MainTabInflate(this, binding.linTab, ::onTabClick)
-        navToPosition(INDEX_HOME)
+        backMainHome()
         initBottomNavigation()
         initObserve()
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
         viewModel.getSportMenuFilter()
-
+        viewModel.getGameCollectNum()
+        viewModel.getThirdGames()
         PreLoader.startPreload()
+        jumpGameAfterLogin()
     }
 
     private fun onTabClick(tabName: Int): Boolean {
@@ -149,6 +154,11 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
                     showMainLeftMenu(currentFragment.javaClass as Class<BaseFragment<*,*>>?)
                 }
                 false
+            }
+
+            R.string.bottom_nav_home -> {
+                navToPosition(INDEX_HOME)
+                return true
             }
 
             R.string.main_tab_sport -> { // 体育
@@ -264,31 +274,6 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             }
         }
 
-        viewModel.isRechargeShowVerifyDialog.observe(this) {
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                VerifyIdentityDialog().show(supportFragmentManager, null)
-            } else {
-                loading()
-                viewModel.checkRechargeSystem()
-            }
-        }
-
-        viewModel.rechargeSystemOperation.observe(this) {
-            hideLoading()
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                startActivity(Intent(this, MoneyRechargeActivity::class.java))
-                return@observe
-            }
-
-            showPromptDialog(
-                getString(R.string.prompt),
-                getString(R.string.message_recharge_maintain)
-            ) {}
-
-        }
-
         gamesViewModel.enterThirdGameResult.observe(this) {
             enterThirdGame(it.second, it.first)
         }
@@ -310,6 +295,15 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
                     enterThirdGame(thirdGameResult, firmType)
                 }
                 trialDialog.show()
+            }
+        }
+        gamesViewModel.guestLoginGameResult.observe(this) {
+            hideLoading()
+            if (it == null) {
+                //不支持访客
+                startLogin()
+            } else {
+                enterThirdGame(it.second, it.first)
             }
         }
     }
@@ -353,6 +347,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     private fun initDrawerLayout() {
 //        binding.drawerLayout.setScrimColor(Color.TRANSPARENT)
 
+        binding.rightMenu.setOnClickListener {  }
         binding.drawerLayout.addDrawerListener(object : SimpleDrawerListener() {
             override fun onDrawerOpened(drawerView: View) {
                 if (drawerView.tag == "LEFT") {
@@ -369,7 +364,8 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     }
 
 
-    private fun showMainLeftMenu(contentFragment: Class<BaseFragment<*,*>>?) {
+    fun showMainLeftMenu(contentFragment: Class<BaseFragment<*,*>>?) {
+        onMenuEvent(MenuEvent(true))
         fragmentHelper2.show(MainLeftFragment::class.java, Bundle()) { fragment, _ ->
             fragment.openWithFragment(contentFragment)
         }
@@ -384,6 +380,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     private val fragmentHelperRight by lazy { FragmentHelper2(supportFragmentManager, R.id.right_menu) }
 
     fun showSportLeftMenu() {
+        onMenuEvent(MenuEvent(true))
         fragmentHelper2.show(SportLeftMenuFragment::class.java, Bundle()) { fragment, instance ->
             if(!instance){
                 fragment.reloadData()
@@ -571,7 +568,8 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
     fun backMainHome() {
         navToPosition(INDEX_HOME)
-        tabHelper.clearSelected()
+        tabHelper.selectedHome()
+//        tabHelper.clearSelected()
     }
 
     fun jumpToOKGames() {
@@ -690,26 +688,22 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     fun getCurrentFragment():Fragment  = fragmentHelper.getCurrentFragment()
 
 
-    fun checkRechargeKYCVerify() {
-        ToGcashDialog.showByClick{
-            viewModel.checkRechargeKYCVerify()
-        }
-    }
-
     fun enterThirdGame(result: EnterThirdGameResult, firmType: String) {
-
         hideLoading()
+        if (result.okGameBean==null){
+            return
+        }
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> {
-                JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.thirdGameCategoryCode ?: "")
-                if (isThirdTransferOpen()) gamesViewModel.transfer(firmType)
+                JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.okGameBean, result.guestLogin)
+                if (LoginRepository.isLogined()&&!OKGamesRepository.isSingleWalletType(firmType) && isThirdTransferOpen()) gamesViewModel.transfer(firmType)
             }
 
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
                 getString(R.string.prompt), result.errorMsg ?: ""
             ) {}
 
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> startRegister()
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> LoginOKActivity.startRegist(this)
 
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error), result.errorMsg ?: ""
@@ -720,36 +714,29 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         }
         if (result.resultType != EnterThirdGameResult.ResultType.NONE) gamesViewModel.clearThirdGame()
     }
-
-    fun enterHomeGame(gameData: OKGameBean) {
-        if(LoginRepository.isLogined()) {
-            gamesViewModel.homeOkGamesEnterThirdGame(gameData, this)
-            gamesViewModel.homeOkGameAddRecentPlay(gameData)
-        } else {
-            //请求试玩路线
-            loading()
-            gamesViewModel.requestEnterThirdGameNoLogin(gameData)
-        }
-    }
-
-    fun enterThirdGame(gameData: OKGameBean) {
+    fun enterThirdGame(gameData: OKGameBean, addRecent: Boolean = true) {
         if(LoginRepository.isLogined()) {
             gamesViewModel.requestEnterThirdGame(gameData, this)
+            LogUtil.toJson(gameData)
+            //有些是手动构造的OKGameBean，需要排除
+            //&& (gameData.gameEntryType == GameEntryType.OKGAMES || gameData.gameEntryType==GameEntryType.OKLIVE)
+            if (gameData.id > 0){
+                OKGamesRepository.addRecentPlayGame(gameData.id.toString())
+            }
+            RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         } else {
             //请求试玩路线
             loading()
             gamesViewModel.requestEnterThirdGameNoLogin(gameData)
         }
-
     }
-
-    fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String, gameEntryTagName: String) {
-        if (LoginRepository.isLogined()) {
-            gamesViewModel.requestEnterThirdGame(firmType, gameCode, firmType, gameEntryTagName, this)
-        } else {
-            loading()
-            gamesViewModel.requestEnterThirdGameNoLogin(firmType, gameCode, firmType, gameEntryTagName)
+    fun collectGame(gameData: OKGameBean,gameEntryType: String = GameEntryType.OKGAMES): Boolean {
+        return loginedRun(binding.root.context) { gamesViewModel.collectGame(gameData,gameEntryType) }
+    }
+    private fun jumpGameAfterLogin(){
+        if (LoginRepository.isLogined()&&OKGamesRepository.enterGameAfterLogin !=null){
+            enterThirdGame(OKGamesRepository.enterGameAfterLogin!!)
         }
+        OKGamesRepository.enterGameAfterLogin=null
     }
-
 }

@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.chat.adapter.vh
 
-import android.content.res.ColorStateList
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
@@ -10,6 +9,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.UserVipType.setLevelTagIcon
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.ItemChatMessageUserBinding as ICMUB
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatMessageResult
@@ -23,6 +23,7 @@ class UserVH(parent: ViewGroup,
 
     fun bind(adapter: ChatMessageListAdapter3, data: ChatMessageResult) = data.run {
         binding.tvName.text = nickName
+        binding.ivVipLevel.setLevelTagIcon(data.userLevelCode)
         val checkedContent = adapter.checkContent(content, userType)
         val stringBuilder = SpannableStringBuilder()
         val context = binding.tvName.context

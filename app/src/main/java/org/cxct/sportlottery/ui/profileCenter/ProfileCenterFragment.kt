@@ -16,34 +16,31 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
+import org.cxct.sportlottery.common.enums.UserVipType.setLevelTagIcon
 import org.cxct.sportlottery.common.extentions.clickDelay
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentProfileCenterBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
-import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.money.withdraw.BankActivity
 import org.cxct.sportlottery.ui.money.withdraw.WithdrawActivity
-import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
-import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
+import org.cxct.sportlottery.ui.profileCenter.vip.VipViewModel
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.redeem.RedeemActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
@@ -63,9 +60,7 @@ import java.io.FileNotFoundException
 class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfileCenterBinding>() {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
-
-    //簡訊驗證彈窗
-    private var customSecurityDialog: CustomSecurityDialog? = null
+    private val vipViewModel: VipViewModel by viewModel()
     private var noticeCount: Int = 0
     private var isGuest: Boolean? = null
 
@@ -97,27 +92,29 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         //默认显示代理入口
         binding.btnAffiliate.isVisible = (sConfigData?.frontEntranceStatus != "0")
         //   btn_affiliate.setVisibilityByCreditSystem()
-        mVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
-            if (it.isNewVersion) {
-                //下载更新要做判断 当前有没有新版本
-                binding.updateVersion.setOnClickListener {
-                    //外部下載
-                    JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
-                    // startActivity(Intent(requireActivity(), VersionUpdateActivity::class.java))
-                }
-                binding.ivVersionNew.visibility = View.VISIBLE
-                return@observe
+        mVersionUpdateViewModel.appMinVersionState.observe(viewLifecycleOwner) {
+            binding.ivVersionNew.isVisible = it.isShowUpdateDialog
+            binding.btnVersionNow.isEnabled = it.isShowUpdateDialog
+            binding.btnVersionNow.setOnClickListener {
+                //外部下載
+                JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
             }
-
-            binding.updateVersion.setOnClickListener { }
-            binding.ivVersionNew.visibility = View.GONE
         }
-
+        mVersionUpdateViewModel.checkAppMinVersion()
         val version = " V${BuildConfig.VERSION_NAME}"
         binding.tvCurrentVersion.text = version
         binding.tvVersionCode.text = getString(R.string.current_version) + version
         binding.tvWithdrawTitle.setTitleLetterSpacing2F()
         binding.tvDepositTitle.setTitleLetterSpacing2F()
+        if (StaticData.vipOpened()){
+            binding.userVipView.visible()
+            binding.userVipView.setup(this,vipViewModel)
+            binding.userVipView.setOnClickListener {
+                startActivity(VipBenefitsActivity::class.java)
+            }
+        }else{
+            binding.userVipView.gone()
+        }
     }
 
     fun initToolBar() {
@@ -194,17 +191,13 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     private fun setupRechargeButton() {
         binding.btnRecharge.clickDelay{
-            //Glife用户
-            (activity as MainTabActivity).checkRechargeKYCVerify()
+            (requireActivity() as BaseActivity<*,*>).jumpToDeposit()
         }
     }
 
     private fun setupWithdrawButton() {
         binding.btnWithdraw.clickDelay {
-            //Glife用户
-            ToGcashDialog.showByClick{
-                viewModel.checkWithdrawKYCVerify()
-            }
+            requireActivity().jumpToWithdraw()
         }
     }
 
@@ -326,6 +319,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     private fun getUserInfo() {
         viewModel.getUserInfo()
+        vipViewModel.getUserVip()
     }
 
     private fun initObserve() {
@@ -339,185 +333,6 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             updateUI(it)
         }
 
-
-        viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
-            val operation = it.getContentIfNotHandled()
-            if (operation == false) {
-                showPromptDialog(
-                    getString(R.string.prompt),
-                    getString(R.string.message_withdraw_maintain)
-                ) {}
-            }
-        }
-
-        viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
-            hideLoading()
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    startActivity(Intent(requireActivity(), MoneyRechargeActivity::class.java))
-                } else {
-                    showPromptDialog(
-                        getString(R.string.prompt),
-                        getString(R.string.message_recharge_maintain)
-                    ) {}
-                }
-            }
-        }
-
-        viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
-
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_setting_withdraw_password),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(
-                            requireActivity(), SettingPasswordActivity::class.java
-                        ).apply {
-                            putExtra(
-                                PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD
-                            )
-                        })
-                    }
-                } else {
-                    viewModel.checkProfileInfoComplete()
-                }
-            }
-        }
-        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
-            }
-        }
-        viewModel.needToCompleteProfileInfo.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_complete_profile_info),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(requireActivity(), ProfileActivity::class.java))
-                    }
-                } else {
-                    viewModel.checkBankCardPermissions()
-                }
-            }
-        }
-
-        viewModel.needToBindBankCard.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { messageId ->
-                if (messageId != -1) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(messageId),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(requireActivity(), BankActivity::class.java))
-                    }
-                } else {
-                    startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
-                }
-            }
-        }
-
-
-        viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    customSecurityDialog = CustomSecurityDialog().apply {
-                        getSecurityCodeClickListener {
-                            this.showSmeTimer300()
-                            this@ProfileCenterFragment.viewModel.sendTwoFactor()
-                        }
-                        positiveClickListener =
-                            CustomSecurityDialog.PositiveClickListener { number ->
-                                this@ProfileCenterFragment.viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
-                            }
-                    }
-                    customSecurityDialog?.show(childFragmentManager, null)
-                }
-            }
-        }
-
-        viewModel.errorMessageDialog.observe(viewLifecycleOwner) {
-            val errorMsg = it ?: getString(R.string.unknown_error)
-            CustomAlertDialog().apply {
-                setMessage(errorMsg)
-                setNegativeButtonText(null)
-                setCanceledOnTouchOutside(false)
-                setCancelable(false)
-            }.show(childFragmentManager, null)
-        }
-
-        viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
-            if (it == true) customSecurityDialog?.dismiss()
-        }
-
-        viewModel.twoFactorResult.observe(viewLifecycleOwner) {
-            //傳送驗證碼成功後才能解鎖提交按鈕
-            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
-            sConfigData?.hasGetTwoFactorResult = true
-        }
-
-        //使用者沒有電話號碼
-        viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (!b) phoneNumCheckDialog(requireContext(), childFragmentManager)
-            }
-        }
-
-        viewModel.settingNeedToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_setting_withdraw_password),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(
-                            Intent(
-                                requireActivity(),
-                                SettingPasswordActivity::class.java
-                            ).apply {
-                                putExtra(
-                                    PWD_PAGE,
-                                    SettingPasswordActivity.PwdPage.BANK_PWD
-                                )
-                            })
-                    }
-                } else if (!b) {
-                    startActivity(Intent(requireActivity(), BankActivity::class.java))
-                }
-            }
-        }
-
-        viewModel.settingNeedToCompleteProfileInfo.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_complete_profile_info),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(requireActivity(), ProfileActivity::class.java))
-                    }
-                } else if (!b) {
-                    startActivity(Intent(requireActivity(), BankActivity::class.java))
-                }
-            }
-        }
-
         viewModel.editIconUrlResult.observe(viewLifecycleOwner) {
             val iconUrlResult = it?.getContentIfNotHandled()
             if (iconUrlResult?.success == true)
@@ -528,12 +343,6 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(title = "", msg) {} }
         }
-
-        viewModel.intoWithdraw.observe(viewLifecycleOwner) { it ->
-            it.getContentIfNotHandled()?.let {
-                startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
-            }
-        }
         InfoCenterRepository.totalUnreadMsgCount.observe(viewLifecycleOwner) {
             updateNoticeCount(it)
         }
@@ -543,15 +352,6 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             updateUserIdentity(it?.testFlag)
         }
 
-
-        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
-            }
-        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -560,7 +360,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             .load(userInfo?.iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
             .into(ivHead1) //載入頭像
-
+        ivVipLevel.setLevelTagIcon(userInfo?.levelCode)
         tvUserNickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
             userInfo?.userName
         } else {
@@ -624,10 +424,6 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             (if (noticeCount > 0 && isGuest == false) View.VISIBLE else View.GONE)
     }
 
-    //实名验证
-    private fun showKYCVerifyDialog() {
-        VerifyIdentityDialog().show(childFragmentManager, null)
-    }
     private fun bindVerifyStatus(userInfo: UserInfo?) {
         binding.tvKycStatus.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()

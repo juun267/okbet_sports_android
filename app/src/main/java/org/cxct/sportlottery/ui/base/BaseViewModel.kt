@@ -95,7 +95,8 @@ abstract class BaseViewModel(
             HttpError.BALANCE_IS_LOW.code,
             HttpError.UNAUTHORIZED.code,
             HttpError.KICK_OUT_USER.code,
-            HttpError.MAINTENANCE.code
+            HttpError.MAINTENANCE.code,
+            HttpError.LOGIN_IN_OTHER_PLACE.code
         )
         errorResult?.let {
             if (errorList.contains(it.code)) {

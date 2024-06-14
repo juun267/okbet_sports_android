@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource"
+    android:background="@drawable/bg_white_radius_12_stroke_e0e3ee">
+
+    <TextView
+        android:id="@+id/tvOKSport"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/margin_50"
+        android:gravity="center"
+        android:minWidth="122dp"
+        android:button="@null"
+        android:paddingHorizontal="12dp"
+        android:textColor="@color/color_025BE8"
+        android:textSize="@dimen/textSize16sp"
+        android:text="OKSport"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_0.5"
+        android:background="@color/color_025BE8"
+        android:layout_marginHorizontal="@dimen/margin_12"/>
+    <TextView
+        android:id="@+id/tvOKPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/margin_50"
+        android:gravity="center"
+        android:minWidth="122dp"
+        android:button="@null"
+        android:paddingHorizontal="12dp"
+        android:textColor="@color/color_6D7693"
+        android:textSize="@dimen/textSize16sp"
+        android:text="OKPlay"/>
+
+</LinearLayout>

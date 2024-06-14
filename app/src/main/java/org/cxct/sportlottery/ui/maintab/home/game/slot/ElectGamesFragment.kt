@@ -12,9 +12,11 @@ import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.onConfirm
 import org.cxct.sportlottery.databinding.FragmentGamevenueBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.net.games.data.OKGamesHall
@@ -24,7 +26,10 @@ import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.game.GameVenueFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.GameCollectManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
+import org.cxct.sportlottery.util.loginedRun
 import splitties.views.rightPadding
 
 open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, FragmentGamevenueBinding>() {
@@ -32,7 +37,11 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
     private val tabAdapter = ElectTabAdapter() {
         gameAdapter2.findFirmPosition(it.id)?.let { rightManager.scrollToPositionWithOffset(it, 0) }
     }
-    val gameAdapter2 = ElectGameAdapter()
+    val gameAdapter2 = ElectGameAdapter(onFavoriate = { view, gameBean ->
+        if (collectGame(gameBean)) {
+            view.animDuang(1.3f)
+        }
+    })
     val rightManager by lazy { GridLayoutManager(requireContext(),2) }
 
     private fun applySearch(context: Context): EditText {
@@ -158,6 +167,19 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
 //            hideLoadingView()
             setData(it)
         }
+        GameCollectManager.collectStatus.observe(viewLifecycleOwner) { result ->
+            gameAdapter2.data.forEachIndexed { index, item ->
+                (item as? OKGameBean)?.let {
+                    if (it.id == result.first) {
+                        it.markCollect = result.second
+                        gameAdapter2.notifyItemChanged(index, it)
+                    }
+                }
+            }
+        }
+        GameCollectManager.gameCollectNum.observe(viewLifecycleOwner) {
+            gameAdapter2.notifyDataSetChanged()
+        }
     }
 
     private var lastOKGamesHall: OKGamesHall? = null
@@ -172,5 +194,8 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
         gameAdapter2.setupData(categoryList)
         tabAdapter.setNewInstance(categoryList)
         return true
+    }
+    open fun collectGame(gameData: OKGameBean): Boolean {
+        return loginedRun(binding.root.context) { viewModel.collectGame(gameData) }
     }
 }

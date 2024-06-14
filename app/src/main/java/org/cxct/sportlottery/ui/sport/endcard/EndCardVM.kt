@@ -9,6 +9,7 @@ import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.sport.SportRepository
 import org.cxct.sportlottery.net.sport.data.EndCardBet
+import org.cxct.sportlottery.net.sport.data.SportCouponItem
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.list.BetListRequest
@@ -27,6 +28,7 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
     val addBetResult = SingleLiveEvent<Receipt>()
     val addFaildResult = SingleLiveEvent<String>()
     val lgpcoflDetail = SingleLiveEvent<Array<EndCardBet>?>()
+    val winningList = SingleLiveEvent<List<String>?>()
 
     private var betListRequesting = false
     val unSettledResult = SingleLiveEvent<BetListResult?>()
@@ -132,6 +134,12 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
     fun getLGPCOFLDetail(matchId: String) {
         callApi({ SportRepository.getLGPCOFLDetail(matchId) }) {
             lgpcoflDetail.value = it.getData()
+        }
+    }
+
+    fun getWinningList() {
+        callApi({ SportRepository.getWinningList() }) {
+            winningList.value = it.getData()
         }
     }
 

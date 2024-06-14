@@ -33,7 +33,7 @@ class BetInfoListData(
         }
 
     var realAmount:Double = 0.0 //計算出來的實際下注金額
-    var amountError: Boolean = false
+    var amountError: Boolean = true
     var pointMarked: Boolean = false //紅色標記, 紀錄是否能串關
     var subscribeChannelType: ChannelType = ChannelType.EVENT //給投注單訂閱頻道使用
     var playCateMenuCode: String? = null //HallChannel訂閱需要

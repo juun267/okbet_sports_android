@@ -69,8 +69,7 @@
         android:paddingBottom="@dimen/margin_3"
         android:layout_marginTop="@dimen/margin_14"
         android:layout_marginBottom="12dp"
-        android:layout_below="@+id/linearLayout"
-        android:layout_above="@+id/tv_no_data">
+        android:layout_below="@+id/linearLayout">
 
         <LinearLayout
             android:id="@+id/rech_log_column"
@@ -119,7 +118,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:ellipsize="end"
                     android:text="@string/N647"
                     android:textColor="@color/color_414655"
@@ -132,7 +131,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:ellipsize="end"
                     android:text="@string/N646"
                     android:textColor="@color/color_414655"
@@ -153,7 +152,7 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/margin_1"
             android:layout_marginBottom="@dimen/margin_7"
             app:layout_constraintTop_toBottomOf="@id/rech_log_column"
@@ -187,32 +186,5 @@
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
     </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/tv_no_data"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/color_191919_FCFCFC"
-        android:gravity="center"
-        android:layout_marginBottom="12dp"
-        android:text="@string/no_data"
-        android:textColor="@color/color_909090_666666"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="@dimen/textSize12sp"
-        android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/iv_scroll_to_top"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_alignParentBottom="true"
-        android:padding="14dp"
-        android:background="@drawable/bg_circle_gray6_alpha50"
-        android:src="@drawable/ic_scroll_to_top"
-        android:visibility="gone"/>
 
 </RelativeLayout>

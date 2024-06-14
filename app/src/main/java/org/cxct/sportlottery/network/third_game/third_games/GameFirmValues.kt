@@ -18,5 +18,7 @@ data class GameFirmValues(
     val enableDemo: Int?, //试玩状态，0： 不支持1：支持关闭 2：支持开启
     val sort: Double?, //排序
     val open: Int?, //平台开关状态,0-关闭，1-开启
-    val platformId: Long? //平台ID
+    val platformId: Long?, //平台ID
+    val walletType: Int?, //钱包类型 0多钱包,1 单钱包
+    val guestOpen:Int?  //访客支持状态 0： 不支持 2：支持开启
 )

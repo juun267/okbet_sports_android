@@ -8,6 +8,7 @@ import org.cxct.sportlottery.databinding.ViewItemRechargeLogBinding
 import org.cxct.sportlottery.network.money.list.Row
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setRecordStatus
 
 class RechargeLogAdapter: BindingAdapter<Row, ViewItemRechargeLogBinding>() {
@@ -16,7 +17,7 @@ class RechargeLogAdapter: BindingAdapter<Row, ViewItemRechargeLogBinding>() {
 
         rechLogDate.text = item.rechDateStr
         rechLogTime.text = item.rechTimeStr
-        rechLogAmount.text = item.displayMoney
+        rechLogAmount.text = TextUtil.formatMoney(item.rechMoney,0)
         rechLogState.setRecordStatus(item.status)
         setupStateTextColor(rechLogState, item)
         rechLogType.text = when (item.rechType) {

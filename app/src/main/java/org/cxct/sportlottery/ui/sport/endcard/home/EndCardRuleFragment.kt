@@ -18,7 +18,7 @@ class EndCardRuleFragment: BaseFragment<EndCardVM, FragmentEndcardRuleBinding>()
         binding.linBack.setOnClickListener {
             (activity as EndCardActivity).removeFragment(this)
         }
-        binding.okWebView.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.color_1A202E))
+        binding.okWebView.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.color_1A2C38))
         val url = appendParams(Constants.getEndCardRuleUrl())
         Timber.d(url)
         if (url != null) {

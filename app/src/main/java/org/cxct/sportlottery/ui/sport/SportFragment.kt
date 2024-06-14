@@ -13,6 +13,7 @@ import org.cxct.sportlottery.common.extentions.toBinding
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
 import org.cxct.sportlottery.databinding.HomeCateTabBinding
 import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
@@ -105,13 +106,25 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
 
     fun initToolBar() = binding.homeToolbar.run {
         background = null
-        attach(this@SportFragment, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
+        attach(this@SportFragment, moneyViewEnable = false, onlyShowSeach = true)
+        setMenuClick{ getMainTabActivity().showSportLeftMenu() }
         searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         betlistIcon.setOnClickListener {
             loginedRun(it.context) {
                 startActivity(BetRecordActivity::class.java)
             }
         }
+        onPlaySelectListener = {
+            when(it){
+                0-> {}
+                1-> {
+                    OKGamesRepository.okPlayEvent.value?.let { it1 ->
+                        getMainTabActivity().enterThirdGame(it1)
+                    }
+                }
+            }
+        }
+        setupOKPlay()
     }
 
     private fun initTabLayout() = binding.tabLayout.run {
@@ -352,14 +365,6 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
     }
 
     private fun initObserve() = viewModel.run {
-
-        //使用者沒有電話號碼
-        showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (!b) phoneNumCheckDialog(requireContext(), childFragmentManager)
-            }
-        }
-
         sportMenuResult.observe(viewLifecycleOwner) {
             //这里的回调数据有可能来自其他页面的请求
             if (isAdded) {
@@ -375,6 +380,9 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
             if (favorMatchs == it) { return@observe }
             favorMatchs = it
             favoriteDelayRunable.doOnDelay(1300)
+        }
+        OKGamesRepository.okPlayEvent.observe(viewLifecycleOwner){
+            binding.homeToolbar.setupOKPlay()
         }
     }
 

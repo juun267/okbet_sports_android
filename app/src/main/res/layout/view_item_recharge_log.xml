@@ -7,7 +7,8 @@
     android:background="@color/color_1D1F2D_FFFFFF"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="4dp"
+    android:paddingVertical="4dp"
+    android:paddingHorizontal="2dp"
     tools:context="org.cxct.sportlottery.ui.finance.RechargeLogAdapter">
 
     <LinearLayout

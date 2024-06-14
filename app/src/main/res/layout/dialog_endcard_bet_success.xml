@@ -6,15 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="16dp"
-    app:cardBackgroundColor="@color/color_1A202E">
+    app:cardBackgroundColor="@color/color_1B2E39">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal">
         <ImageView
-            android:layout_width="@dimen/margin_68"
-            android:layout_height="@dimen/margin_68"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_marginTop="54dp"
             android:src="@drawable/ic_success_green"/>
         <TextView
@@ -32,12 +32,11 @@
             android:orientation="vertical"
             android:layout_marginHorizontal="8dp"
             android:paddingHorizontal="@dimen/margin_12"
-            android:paddingVertical="@dimen/margin_6"
             android:layout_marginTop="@dimen/margin_20"
             android:background="@drawable/bg_darkblue_radius_12">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_40"
+                android:layout_height="@dimen/margin_44"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -46,8 +45,8 @@
                     android:ellipsize="end"
                     android:lines="1"
                     android:text="@string/P316"
-                    android:textColor="@color/color_BEC7DC"
-                    android:textSize="@dimen/textSize12sp" />
+                    android:textColor="@color/color_8EAEC5"
+                    android:textSize="12sp" />
 
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
@@ -79,7 +78,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_0.5"
-                android:background="@color/color_0E131F"/>
+                android:background="@color/color_0C121E"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_40"
@@ -89,8 +88,8 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textColor="@color/color_BEC7DC"
+                    android:textSize="12sp"
+                    android:textColor="@color/color_8EAEC5"
                     android:text="@string/P317"/>
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
@@ -134,7 +133,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_0.5"
-                android:background="@color/color_0E131F"/>
+                android:background="@color/color_0C121E"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_40"
@@ -144,8 +143,8 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textColor="@color/color_BEC7DC"
+                    android:textSize="12sp"
+                    android:textColor="@color/color_8EAEC5"
                     android:text="@string/I039"/>
                 <TextView
                     android:id="@+id/tvBettingTime"
@@ -163,7 +162,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_0.5"
-                android:background="@color/color_0E131F"/>
+                android:background="@color/color_0C121E"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_40"
@@ -173,8 +172,8 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textColor="@color/color_BEC7DC"
+                    android:textSize="12sp"
+                    android:textColor="@color/color_8EAEC5"
                     android:text="Bet"/>
                 <TextView
                     android:id="@+id/tvBet"
@@ -192,7 +191,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_0.5"
-                android:background="@color/color_0E131F"/>
+                android:background="@color/color_0C121E"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_40"
@@ -202,8 +201,8 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textColor="@color/color_BEC7DC"
+                    android:textSize="12sp"
+                    android:textColor="@color/color_8EAEC5"
                     android:text="@string/LT042"/>
                 <TextView
                     android:id="@+id/tvBetAmount"
@@ -221,7 +220,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_0.5"
-                android:background="@color/color_0E131F"/>
+                android:background="@color/color_0C121E"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_40"
@@ -231,8 +230,8 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textColor="@color/color_BEC7DC"
+                    android:textSize="12sp"
+                    android:textColor="@color/color_8EAEC5"
                     android:text="@string/N142"/>
                 <TextView
                     android:id="@+id/tvOrderNumber"
@@ -256,7 +255,7 @@
             android:layout_marginHorizontal="@dimen/margin_12"
             android:layout_marginTop="@dimen/margin_24"
             android:layout_marginBottom="@dimen/margin_28"
-            android:background="@drawable/selector_button_default"
+            android:background="@drawable/selector_button_default_darkblue"
             android:textSize="@dimen/textSize18sp"
             android:textColor="@color/color_FFFFFF"
             android:text="@string/P324"/>

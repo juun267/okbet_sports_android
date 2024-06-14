@@ -120,6 +120,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="@dimen/margin_20"
         android:background="@drawable/ic_submit"
+        android:foreground="@drawable/fg_ripple"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"

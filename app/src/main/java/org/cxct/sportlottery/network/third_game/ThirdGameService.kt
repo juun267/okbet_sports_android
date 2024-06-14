@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryRequest
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OtherBetHistoryDetailResult
+import org.cxct.sportlottery.repository.LOGIN_SRC
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -56,7 +57,7 @@ interface ThirdGameService {
     suspend fun thirdLogin(
         @Path("firmType") firmType: String?,
         @Query("gameCode") gameCode: String?,
-        @Query("loginSrc") loginSrc: Int = 2, //登录来源（0：WEB, 1：MOBILE_BROWSER, 2：ANDROID, 3：IOS）
+        @Query("loginSrc") loginSrc: Long = LOGIN_SRC, //登录来源（0：WEB, 1：MOBILE_BROWSER, 2：ANDROID, 3：IOS）
     ): Response<NetResult>
 
     /**

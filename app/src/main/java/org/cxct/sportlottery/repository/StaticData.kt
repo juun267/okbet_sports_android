@@ -9,10 +9,6 @@ import org.cxct.sportlottery.repository.ImageType.DIALOG_PROMOTION
 import org.cxct.sportlottery.util.KvUtils
 
 const val FLAG_OPEN = "1"
-const val FLAG_CLOSE = "0"
-const val FLAG_LIVE = "1"
-const val FLAG_NO_LIVE = "0"
-const val FLAG_IS_NEED_UPDATE_PAY_PW = 1 //尚未設置過資金密碼的 flag，需要更新資金密碼
 const val FLAG_NICKNAME_IS_SET = 1 //已經設置過暱稱
 const val FLAG_CREDIT_OPEN = 1
 
@@ -161,6 +157,12 @@ class StaticData {
 
         fun isNeedOTPBank() = 1 == sConfigData?.isNeedOTPBank
 
+        //沙巴体育是否开启
+        fun sbSportOpened():Boolean {
+            return sConfigData?.sbSportSwitch == 1
+        }
+        //是否显示vip相关页面
+        fun vipOpened():Boolean= sConfigData?.vipSwitch == 1
     }
 
 }

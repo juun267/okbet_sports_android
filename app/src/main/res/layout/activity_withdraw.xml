@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,27 +11,17 @@
         layout="@layout/view_base_tool_bar_no_drawer"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/withdraw_container"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <org.cxct.sportlottery.ui.money.withdraw.view.AnnouncementView
+        android:id="@+id/announcement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolBar"/>
+
+    <FrameLayout
+        android:id="@+id/flContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolBar"
-        app:navGraph="@navigation/withdraw_navigation"
-        tools:layout="@layout/fragment_withdraw">
+        app:layout_constraintTop_toBottomOf="@id/announcement"/>
 
-    </androidx.fragment.app.FragmentContainerView>
-
-    <!--根據需求先隱藏，確定不用可刪-->
-    <!--20220406 只有宣傳頁、主頁需顯示-->
-    <!--<org.cxct.sportlottery.ui.common.floatingbtn.ServiceFloatingButton
-        android:visibility="gone"
-        android:id="@+id/btn_floating_service"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginBottom="14dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        app:layout_constraintBottom_toBottomOf="parent" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

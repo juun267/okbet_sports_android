@@ -13,6 +13,7 @@ import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -86,7 +87,8 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBindi
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
-        attach(this@OKGamesFragment, mainTabActivity(), mainTabActivity().viewModel)
+        attach(this@OKGamesFragment)
+        setMenuClick{ mainTabActivity().showMainLeftMenu(this@OKGamesFragment.javaClass) }
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
             mainTabActivity().showMainRightMenu()
@@ -189,11 +191,14 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBindi
     private fun showFavorites(tab: OKGameTab) {
         retagRequest()
         changePartGamesLabel(tab)
-        showPartGameList(viewModel.collectList.value?.second, 0)
+        showPartGameList(GameCollectManager.collectGameList.value, 0)
     }
 
     fun enterGame(okGameBean: OKGameBean) {
         mainTabActivity().enterThirdGame(okGameBean)
+        if (LoginRepository.isLogined()) {
+            viewModel.updateRecentPlay()
+        }
     }
 
     fun backGameAll() {

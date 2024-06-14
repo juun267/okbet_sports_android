@@ -191,13 +191,4 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         WinsDialog.newInstance(adapter.getItem(position) as RecordNewEvent).show((context as AppCompatActivity).supportFragmentManager)
     }
-
-    private fun enterGame(recordNewEvent: RecordNewEvent) {
-        val activity = fragment.activity as MainTabActivity? ?: return
-        val firmType = "${recordNewEvent.firmType}"
-        val gameCode = "${recordNewEvent.gameCode}"
-        val gameEntryTagName = "${recordNewEvent.gameEntryType}"
-        activity.requestEnterThirdGame(firmType, gameCode, firmType, gameEntryTagName)
-    }
-
 }

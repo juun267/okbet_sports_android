@@ -62,7 +62,9 @@ android {
         }
 
     }
-
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     signingConfigs {
         release {
             storeFile file("key.jks")
@@ -100,6 +102,7 @@ android {
 
     productFlavors {
         forqa {
+            resValue "string", "app_name", "OKBET-qa"
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
             buildConfigField "String", "AF_APPKEY", "\"PFhWPPwiFS8BaLpFHDE3Rn\""
             applicationId "com.happysport.sl.test"
@@ -134,13 +137,13 @@ android {
             manifestPlaceholders = [CHANNEL    : "vivo",
                                     INVITE_CODE: "vivo888"]
         }
-//
-//        inmobi {
-//            manifestPlaceholders = [CHANNEL    : "inmobi",
-//                                    INVITE_CODE: "inmobi"]
-//        }
+        apkpure {
+            manifestPlaceholders = [CHANNEL    : "apkpure",
+                                    INVITE_CODE: "apkpureokbet"]
+        }
         //okbet预发环境 app-phuat.abaoooiap.com
         phuat {
+            resValue "string", "app_name", "OKBET-uat"
             buildConfigField "String", "CHANNEL_NAME", "\"yfp2\""
         }
 

@@ -66,12 +66,6 @@ class OKGamesViewModel(
         get() = _providerresult
     private val _providerresult = MutableLiveData<OKGamesHall>()
 
-    //游戏收藏结果
-    val collectOkGamesResult: LiveData<Pair<Int, OKGameBean>>
-        get() = _collectOkGamesResult
-    private val _collectOkGamesResult = MutableLiveData<Pair<Int, OKGameBean>>()
-
-
     //jackpot数据
     val jackpotData: LiveData<String>
         get() = _jackpotData
@@ -82,19 +76,10 @@ class OKGamesViewModel(
         get() = _gameHall
     private val _gameHall = MutableLiveData<OKGamesHall>()
 
-    //收藏游戏列表
-    val collectList: LiveData<Pair<Boolean, List<OKGameBean>>> // 是否是通过服务端拉取-收藏列表
-        get() = _collectList
-    private val _collectList = MutableLiveData<Pair<Boolean, List<OKGameBean>>>()
-
     //最近游戏列表
     val recentPlay: LiveData<List<OKGameBean>>
         get() = _recentPlay
     private val _recentPlay = MutableLiveData<List<OKGameBean>>()
-
-    val newRecentPlay: LiveData<OKGameBean>
-        get() = _newRecentPlay
-    private val _newRecentPlay = MutableLiveData<OKGameBean>()
 
     /**
      * 全部的赛事，map 类型
@@ -123,7 +108,8 @@ class OKGamesViewModel(
             val data = it.getData() ?: return@callApi
 
             _gameHall.postValue(data)
-            _collectList.postValue(Pair(true, data.collectList ?: listOf()))
+
+            GameCollectManager.setUpGameCollect(data.collectList?.toMutableList()?: mutableListOf())
 
             data.categoryList?.forEach {
                 it.gameList?.forEach {
@@ -180,33 +166,10 @@ class OKGamesViewModel(
                 ToastUtil.showToast(MultiLanguagesApplication.appContext, it.msg)
                 return@callApi
             }
-
             gameData.markCollect = !gameData.markCollect
-            _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
-
-            val markedGames = _collectList.value?.second?.toMutableList() ?: mutableListOf()
-            if (gameData.markCollect) {
-                markedGames.add(0, gameData)
-                _collectList.postValue(Pair(false, markedGames))
-                return@callApi
-            }
-            _collectList.postValue(Pair(false, markedGames.filter { it.id != gameData.id }.toList()))
+            GameCollectManager.addCollectNum(gameData.id,gameData.markCollect)
+            GameCollectManager.updateCollect(gameData,gameEntryType)
         }
-
-
-    /**
-     * 进入OKgame游戏
-     */
-    fun requestEnterThirdGame(gameData: OKGameBean, baseActivity: BaseActivity<*,*>) {
-        RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
-        requestEnterThirdGame(
-            "${gameData.firmType}",
-            "${gameData.gameCode}",
-            "${gameData.gameCode}",
-            "${gameData.gameType}",
-            baseActivity
-        )
-    }
 
     /**
      * 获取最近游戏
@@ -215,7 +178,7 @@ class OKGamesViewModel(
         if (!LoginRepository.isLogined()) {  // 没登录不显示最近玩的游戏
             return
         }
-        val ids = LoginRepository.getRecentPlayGameIds()
+        val ids = OKGamesRepository.getRecentPlayGameIds()
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
@@ -229,17 +192,15 @@ class OKGamesViewModel(
     /**
      * 记录最近游戏
      */
-    fun addRecentPlay(okGameBean: OKGameBean) {
-        val ids = LoginRepository.addRecentPlayGame(okGameBean.id.toString())
+    fun updateRecentPlay() {
+        val ids = OKGamesRepository.getRecentPlayGameIds()
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
                 recentList.add(it.copy())
             }
         }
-
         recentList.reverse()
-        _newRecentPlay.value = okGameBean
         _recentPlay.postValue(recentList)
     }
 
@@ -314,7 +275,7 @@ class OKGamesViewModel(
             val data = it.getData() ?: return@callApi
 
             _gameHall.postValue(data)
-            _collectList.postValue(Pair(true, data.collectList ?: listOf()))
+            GameCollectManager.setUpLiveCollect(data.collectList?.toMutableList()?: mutableListOf())
 
             data.categoryList?.forEach {
                 it.gameList?.forEach {

@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.post
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.*
@@ -38,7 +39,6 @@ const val KEY_ODDS_TYPE = "oddsType"
 const val KEY_USER_ID = "user_id"
 const val KEY_USER_LEVEL_ID = "user_Level_Id"
 
-private const val KEY_GAME_RECENT_PLAY = "recentPlay"
 
 object LoginRepository {
     private val sharedPref: SharedPreferences by lazy {
@@ -296,22 +296,14 @@ object LoginRepository {
         return OneBoSportApi.indexService.checkToken()
     }
 
-    suspend fun logoutAPI(): Response<NetResult> {
-        val emptyList = mutableListOf<String>()
-        MultiLanguagesApplication.saveSearchHistory(emptyList)
-        return OneBoSportApi.indexService.logout(LogoutRequest()).apply {
-            clear()
+    fun logoutAPI() {
+        token?.let {
+            GlobalScope.launch(Dispatchers.IO) { runWithCatch { OneBoSportApi.indexService.logout(it) } }
         }
     }
 
      fun hasToken():Boolean{
         return !sharedPref.getString(KEY_TOKEN, null).isNullOrEmpty()
-    }
-
-    suspend fun logout() {
-        val emptyList = mutableListOf<String>()
-        MultiLanguagesApplication.saveSearchHistory(emptyList)
-        clear()
     }
 
     private fun updateLoginData(loginData: LoginData?) {
@@ -328,7 +320,7 @@ object LoginRepository {
         }
     }
 
-    suspend fun clear() {
+    fun clear() {
         with(sharedPref.edit()) {
             remove(KEY_TOKEN)
             remove(KEY_ODDS_TYPE)
@@ -351,14 +343,11 @@ object LoginRepository {
         }
     }
 
-    @WorkerThread
-    private suspend fun clearUserInfo() {
-        withContext(Dispatchers.IO) {
-            MultiLanguagesApplication.getInstance()?.saveUserInfo(null)
-            GameConfigManager.maxBetMoney = 9999999
-            GameConfigManager.maxCpBetMoney = 9999
-            GameConfigManager.maxParlayBetMoney = 9999
-        }
+    private  fun clearUserInfo() {
+        MultiLanguagesApplication.getInstance().saveUserInfo(null)
+        GameConfigManager.maxBetMoney = 9999999
+        GameConfigManager.maxCpBetMoney = 9999
+        GameConfigManager.maxParlayBetMoney = 9999
     }
 
     private fun transform(loginData: LoginData): UserInfo =
@@ -378,22 +367,4 @@ object LoginRepository {
             vipType = loginData.vipType,
             discountByGameTypeList = loginData.discountByGameTypeList,
         )
-
-    fun addRecentPlayGame(gameId: String): LinkedHashSet<String> {
-        val recentGameIds = KvUtils.decodeStringSet(KEY_GAME_RECENT_PLAY)
-        recentGameIds.add(gameId)
-        if (recentGameIds.size > 12) {
-            recentGameIds.remove(recentGameIds.first())
-        }
-        KvUtils.encodeSet(KEY_GAME_RECENT_PLAY, recentGameIds)
-        return recentGameIds
-    }
-
-    fun getRecentPlayGameIds(): LinkedHashSet<String> {
-        return KvUtils.decodeStringSet(KEY_GAME_RECENT_PLAY)
-    }
-
-    private fun clearRecentPlayGame() {
-        KvUtils.removeKey(KEY_GAME_RECENT_PLAY)
-    }
 }

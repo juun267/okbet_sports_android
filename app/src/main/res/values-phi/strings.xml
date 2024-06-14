@@ -52,7 +52,7 @@
     <string name="confirm_password">Kumpirmahin ang password</string>
     <string name="hint_confirm_password">Kumpirmahin ang password</string>
     <string name="error_confirm_password">Ang dalawang password na nilagay ay hindi tugma</string>
-    <string name="withdrawal_pwd">Withdrawal password</string>
+    <string name="withdrawal_pwd">Withdraw Password</string>
     <string name="hint_withdrawal_pwd">Password ay 4 na numero</string>
     <string name="phone_number">Mobile number</string>
     <string name="hint_phone_number">Pakilagay ang tamang numero ng telepono</string>
@@ -208,8 +208,8 @@
     <string name="third_party">3rd party</string>
     <string name="N643">Maaring pumunta sa Glife applet para mag-recharge</string>
     <string name="N644">Maaring pumunta sa Glife applet para mag-withdraw ng pera</string>
-    <string name="N618">Mã giao dịch phụ</string>
-    <string name="N653">nakapending na babayarin</string>
+    <string name="N619">Sub-order transaction no.</string>
+    <string name="N653">Pending</string>
     <string name="money_recycle_succeed">Matagumpay na nabawi ang quota</string>
     <string name="news_center">Message Center</string>
     <string name="help_center">Help center</string>
@@ -226,7 +226,7 @@
     <string name="take_a_picture">Kumuha ng litrato</string>
     <string name="save_avatar_success">Matagumpay na na-upload ang avatar</string>
     <string name="change_nickname">Baguhin ang palayaw</string>
-    <string name="withdrawal_password">Withdrawal password</string>
+    <string name="J570">withdraw password</string>
     <string name="current_login_password">Kasalukuyang login password</string>
     <string name="current_withdrawal_password">Kasalukuyang withdrawal password</string>
     <string name="hint_current_login_password">Paki lagay ang password</string>
@@ -400,7 +400,7 @@
     <string name="withdraw_setting">Withdraw Setting</string>
     <string name="select_bank">Pumili ng bangko</string>
     <string name="withdraw_amount">Withdraw</string>
-    <string name="withdraw_password">Withdrawal password</string>
+    <string name="J475">Withdrawal password</string>
     <string name="total_withdrawal">Kabuuang Pag-withdraw</string>
     <string name="withdraw_all">Kunin lahat</string>
     <string name="withdraw_handling_fee_hint">Rate ng bayad: %1$s%% Mga bayarin na babayaran: (%2$s)：%3$s</string>
@@ -839,7 +839,7 @@
          \n4. Hindi ako estudyante ng anumang paaralan, kolehiyo o unibersidad sa Pilipinas.
          \n5. Naiintindihan ko na kung ang impormasyong ibinigay ko ay napatunayang mali, ang OKbet ay may panghuling karapatan na parusahan ang aking account ayon sa mga tuntunin at kundisyon nito.
     </string>
-    <string name="dialog_age_verify_hint">Tinatanggap at sumasang-ayon ako sa OKbet</string>
+    <string name="dialog_age_verify_hint">Sumasang-ayon ako sa OKBET</string>
     <string name="dialog_age_verify_confirm">Ako ay higit sa 21 taong gulang</string>
     <string name="dialog_age_verify_exit">Umalis</string>
     <string name="dialog_age_verify_hint_and_terms_conditions">I agree to the OKBET Terms &amp; Conditions</string>
@@ -1050,7 +1050,7 @@
     <string name="str_if_accept_odds_changes_des1">1. Tanggapin ang anumang pagbabago sa odds - kapag pinili mo ang opsyong ito, bubuo kami ng bet slip para sa iyo ayon sa pinakabagong odds.</string>
     <string name="str_if_accept_odds_changes_des2">2. Tanggapin ang pinakamahusay na pagbabago ng odds - kapag pinili mo ang opsyong ito, kung ang pinakabagong logro ay mas mahusay kaysa sa odds na iyong pinili, bubuo kami ng bet slip. Kung ang pinakabagong mga logro ay mas mababa kaysa sa iyong mga napiling odds, hindi kami bubuo ng slip ng taya at ipaalala sa iyo ang pagbabago ng odds.</string>
     <string name="str_if_accept_odds_changes_des3">3. Huwag tumanggap ng mga pagbabago sa odds--kapag pinili mo ang opsyong ito: kung ang pinakabagong odds ay iba sa iyong napiling odds, hindi kami gagawa ng slip ng taya at ipaalala sa iyo ang mga pagbabago sa odds.</string>
-    <string name="str_ok_i_got_it">Okay, alam ko na</string>
+    <string name="str_ok_i_got_it">Ok, I see</string>
     <string name="str_return_last_step">Bumalik</string>
     <string name="P065">Taya sa iba</string>
     <string name="str_press_again_to_exit_the_program">Pindutin muli upang lumabas sa programa</string>
@@ -1110,14 +1110,14 @@
     <string name="pls_enter_correct_email">Pakilagay ang tamang email</string>
     <string name="next">Susunod</string>
     <string name="hint_phone_format">Ang mobile number format ay 11 numero at nagsisimula sa 09</string>
-    <string name="username">Account ng miyembro</string>
+    <string name="username">Username</string>
     <string name="kyc_unverifing">Nag veverify</string>
     <string name="J801">Manalo at malaki</string>
     <string name="J802">Manalo at maliit</string>
     <string name="J803">Manalo at Parehong koponan upang makapuntos - Oo</string>
     <string name="J804">Panalo at Parehong koponan upang makapuntos - Hindi</string>
     <string name="recharge_state_success">Tagumpay</string>
-
+    <string name="recharge_state_failed">Failed</string>
 
     <string name="N846">Pangunahing impormasyon</string>
     <string name="J055">Tunay na pangalan</string>
@@ -1556,7 +1556,7 @@
     <string name="P302">Basketball Kard Game</string>
     <string name="P303">I-view ang mga kard</string>
     <string name="P304">Game Card</string>
-    <string name="P305">Mga Detalye ng Kard</string>
+    <string name="P305">Card Details</string>
     <string name="P306">Itataya mo ang %s sa mga pagpipilian %s sa puntos sa itaas. Magkakabisa ang bawat pagpipilian sa puntos kapag ang unang quarter, ikalawang quarter, ikatlong quarter, at full-time na mga puntos ay nabunot. Mayroong apat na pagkakataong manalo, at ang bonus ay Maaaring ipagsama, at maaari kang makakuha ng hanggang sa %s na mga reward.</string>
     <string name="P307">Pangalan:</string>
     <string name="P308">Default ay nickname ng user</string>
@@ -1603,6 +1603,126 @@
     <string name="birthofdate">Birthday</string>
     <string name="P445">Araw-araw na bonus</string>
     <string name="P446">Bonus sa Unang Deposit</string>
+    <string name="P338">Tuklasin ang Higit pang Eksklusibong Laban Sa OKPlay</string>
+    <string name="shaba_no_open">Ang OKPlay ay hindi bukas</string>
+    <string name="P340">Tutorial</string>
+    <string name="P349">1st Quarter</string>
+    <string name="P350">2nd Quarter</string>
+    <string name="P351">3rd Quarter</string>
+    <string name="P352">FT (Full Time Score)</string>
+    <string name="P348">Ang mga posibleng panalo na makukuha mo sa bawat quarter ay:</string>
+    <string name="P353">Tandaan: Kung ang lahat ng mga iskor ng quarter ay nagtatapos sa kung ano ang iyong taya, nangangahulugan ito na sila ay isalansan, at maaari mong mapanalunan ang lahat ng mga panalo para sa bawat quarter.</string>
+    <string name="P354"></string>
+    <string name="prex_note">Tandaan:</string>
+    <string name="P355">Pumili ka ng iskor na hindi mo pa natataya. Maki-clear ang mga iskor kapag umalis ka sa page na ito.</string>
+    <string name="P356">Alam ko na, hindi ko na ipapaalala sa iyo</string>
+    <string name="P357">Tumaya ngayon</string>
+    <string name="P358">Confirm to leave</string>
+    <string name="P359">I-click ang napiling iskor para tanggalin</string>
+    <string name="P360">%s tao ang tumitingin sa card</string>
+    <string name="P361">Nabenta ang %s na kopya</string>
+    <string name="P447">Para sa seguridad ng iyong account at mga pondo, kinakailangan mong kumpletuhin ang mga sumusunod</string>
+    <string name="P448">I-set up</string>
+    <string name="P242">KYC Verify</string>
+    <string name="D038">Nakumpleto</string>
+    <string name="N645">Mag-set muna ng log in password</string>
+    <string name="P362">Halaga ng paglago</string>
+    <string name="P363">I-upgrade ang bonus</string>
+    <string name="P364">Lingguhang turnover bonus</string>
+    <string name="P365">Birthday bonus</string>
+    <string name="P366">Eksklusibong bonus</string>
+    <string name="P367">mag-upgrade sa susunod na level</string>
+    <string name="P368">Mga naka-activate na benepisyo</string>
+    <string name="P369">Walang mga benepisyo sa kasalukuyang antas.Mangyaring ipagpatuloy ang pagtaya upang makakuha ng mga puntos sa paglago upang ma-upgrade ang iyong antas</string>
+    <string name="P370">Mga benepisyong hindi na-activate</string>
+    <string name="P371">Mga pribilehiyo ng VIP</string>
+    <string name="P372">Mga detalye ng VIP</string>
+    <string name="P373">Tumanggap</string>
+    <string name="P374">Natanggap</string>
+    <string name="P375">Naka-pending</string>
+    <string name="P376">Hindi eligible</string>
+    <string name="P377">Nag-expire na</string>
+    <string name="P378">Nag-failed ang operasyon, mangyaring makipag-ugnayan sa customer service</string>
+    <string name="P379">Rate ng paglilipat ng halaga ng paglago ng VIP</string>
+    <string name="P380">Ang pagpaparami ng halaga ng paglago na nakuha ng bawat level ng VIP sa mga nakatalagang laro</string>
+    <string name="P381">Kaugnay ng pag-upgrade</string>
+    <string name="P382">Birthday</string>
+    <string name="P383">Kumpletuhin ang impormasyon at makakuha ng birthday gift money</string>
+    <string name="P384">Hindi na mababago muli ang birthday. Sigurado ka bang i-save ito?</string>
+    <string name="P385">Matagumpay na nai-save ang birthday xxxx/xx/xx</string>
+    <string name="P386">Kasalukuyang lebel</string>
+    <string name="P387">Iba pang mga laro</string>
+    <string name="P388">Ang bonus sa promosyon ay maaaring makuha sa loob ng 30 araw pagkatapos ng pag-upgrade. Isang beses lang ma-claim ang bawat level. Maaari itong bawiin pagkatapos matugunan ang katumbas na withdrawal turnover multiple.</string>
+    <string name="P389">Ang birthday gift ay kailangang i-set muna sa personal na impormasyon at irehistro sa loob ng 60 araw. Ang kaukulang halaga ay ipapamahagi ayon sa antas ng kaarawan. Ito ay maaaring kolektahin sa loob ng 30 araw kung ang mga kaukulang kinakailangan ay natutugunan.
+        \nMaaaring gawin ang withdrawal sa isang multiple ng withdrawal turnover</string>
+    <string name="P390">Ang lingguhang pulang sobre ay bukas para sa koleksyon mula Lunes hanggang Biyernes, at ang kabuuang epektibong turnover mula noong nakaraang Lunes hanggang noong nakaraang Linggo ay dapat matugunan ang pangangailangan upang maging karapat-dapat para sa resibo (demand turnover at issuance
+    \nAng halaga ay tinutukoy ayon sa antas noong nakaraang Linggo), at ang pag-withdraw ay maaaring gawin kung ang katumbas na withdrawal turnover multiple ay natutugunan.</string>
+    <string name="P391">Ang eksklusibong pulang sobre ay kailangang manu-manong ilapat ng user. Pagkatapos ng pagsusuri, awtomatiko itong ililipat sa wallet nang walang karagdagang abiso. Ang bawat antas ay maaari lamang matanggap nang isang beses upang matugunan ang kaukulang daloy ng pag-alis.
+    \nMaaari kang mag-withdraw ng pera ng maraming turnover</string>
+    <string name="P392">1. Kalkulahin ang halaga ng paglago na nakuha sa nakaraang araw sa isang nakapirming oras bawat araw
+    \n2. Ang halaga ng paglago ay kinakalkula sa pamamagitan ng pagpaparami ng epektibong halaga ng pagtaya ng laro sa turnover multiple
+    \n3. Ang bagong halaga ng paglago na nakuha araw-araw ay idadagdag sa orihinal na halaga ng paglago. Kung ang kabuuan ay mas malaki kaysa sa kinakailangan para sa susunod na antas, ang antas ay awtomatikong ipo-promote.
+    \n4. Ang katumbas na halaga ng paglago ng demand ay ibabawas mula sa antas ng promosyon, at isang antas lamang ang maaaring i-promote nang hindi hihigit sa bawat araw.
+    \n5. Ang platform ay may karapatang baguhin, suspindihin, kanselahin, atbp. ang kaganapan nang walang espesyal na abiso, at inilalaan ang karapatan sa pinal na interpretasyon ng event.</string>
+    <string name="P393">Naabot ang maximum level</string>
+    <string name="P394">Mga detalye ng relegation</string>
+    <string name="P395">Relegation experience</string>
+    <string name="P396">Ang halaga ng kita ay maaaring kumpletuhin ang relegation</string>
+    <string name="P397">Congratulations sa pagkumpleto ng relegation task</string>
+    <string name="P398">Panuntunan sa relegation</string>
+    <string name="P399">Simula sa ika-1 ng susunod na buwan pagkatapos ng \"pagbabago sa VIP level\" ng isang miyembro, dapat kumpletuhin ng mga miyembro ang wastong mga kinakailangan sa pagtaya ng kaukulang antas bago sila makapagpatuloy sa pagpapanatili ng kanilang level sa loob ng 30 araw.</string>
+    <string name="P400">Kapag nag-failed ang relegation, ang VIP level ay ibababa sa dating level at ang isang bahagi ng growth value ay pananatilihin.</string>
+    <string name="P401">Tanging ang halaga ng kita ng VIP na nakuha sa loob ng 30 araw ang susuriin para sa relegation. Ire-reset ang oras ng pagtatasa para sa relegation kapag nag-a-upgrade.</string>
+    <string name="P402">Nakatuon na serbisyo sa customer</string>
+    <string name="P403">Ang iyong eksklusibong customer service ay magagamit 24/7 upang sagutin ang iyong mga tanong at matugunan ang lahat ng makatwirang pangangailangan.</string>
+    <string name="P404">Mabilis na pag-withdraw</string>
+    <string name="P405">Magbukas ng VIP exclusive withdrawal channel at ayusin ang mga kahilingan sa withdrawal ayon sa VIP level para matiyak ang iyong karanasan sa paglalaro</string>
+    <string name="P406">Kaugnay sa relegation</string>
+    <string name="P407">Mag-apply</string>
+    <string name="P409">Uri ng laro</string>
+    <string name="P410">Growth value multiple</string>
+    <string name="P411">3 minuto</string>
+    <string name="P412">Ang platform ay may karapatang baguhin, suspindihin, kanselahin, atbp. ang kaganapan nang walang espesyal na abiso, at inilalaan ang karapatan sa pinal na interpretasyon ng event.</string>
+    <string name="P413">Ang valid bet na 1 puntos sa ay maaaring makakuha ng X puntos ng halaga ng paglago</string>
+    <string name="P414">OK Sports</string>
+    <string name="P415">Na-achieve na</string>
+    <string name="P416">Natitirang Taya</string>
+    <string name="P417">Ang aking VIP</string>
+    <string name="P418">Na-upgrade ka na sa VIP</string>
+    <string name="P419">Hindi na kailangang panatilihin ang kasalukuyang lebel</string>
+    <string name="P420">Mga detalye ng growth value</string>
+    <string name="P421">Ipakita ang data para sa nakaraang 30 araw</string>
+    <string name="P422">Pagtaya sa Laro</string>
+    <string name="P423">I-upgrade ang pag-deduct</string>
+    <string name="P424">Mga paglabag sa pag-deduct</string>
+    <string name="P425">Nadagdagang platform</string>
+    <string name="P426">Nag-failed ang relegation</string>
+    <string name="P427">Sistema ng lebel</string>
+    <string name="P428">Mga kondisyon sa pag-upgrade</string>
+    <string name="P429">Mga kundisyon ng relegation</string>
+    <string name="P430">Walang relegation na kailangan</string>
+    <string name="P431">Paano makuha ang growth value</string>
+    <string name="P432">Listahan ng mga benepisyo</string>
+    <string name="P433">Mag-upgrade para makakuha ng mga reward</string>
+    <string name="P434">Sa iyong kaarawan, maaari mong matanggap ang regalo sa kaarawan na inihanda namin nang mabuti para sa iyo.</string>
+    <string name="P435">Kumpletuhin ang mga itinalagang taya bawat linggo para matanggap ang iyong lingguhang red packet</string>
+    <string name="P436">Malaking eksklusibong red packet ang naghihintay sa iyo na mangolekta</string>
+    <string name="P437">7x24 na oras na customer service upang maglingkod sa iyo</string>
+    <string name="P438">Eksklusibong VIP channel, matatanggap ang pagbabayad sa ilang segundo</string>
+    <string name="P439">Pinakamataas</string>
+    <string name="P440">Kakalkulahin buwan-buwan ang relegation</string>
+    <string name="P441">Susunod na lebel</string>
+    <string name="P442">Relegation</string>
+    <string name="P443">Ang halaga ng paglago ay binabayaran sa 15:50 araw-araw</string>
+    <string name="A017">Pahiwatig</string>
+    <string name="P450">Kasalukuyang piniling petsa</string>
+    <string name="P451">Walang pagbabagong papayagan pagkatapos ng kumpirmasyon.</string>
+    <string name="LT002">Bumalik</string>
+    <string name="P453">Matagumpay ang aplikasyon</string>
+    <string name="P454">Matagumpay na natanggap</string>
+    <string name="J533">Successfully set</string>
+    <string name="M311">Termino at Kundisyon</string>
+
     <string name="P452">Perya</string>
 </resources>
 

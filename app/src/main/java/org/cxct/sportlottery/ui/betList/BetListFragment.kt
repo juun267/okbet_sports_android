@@ -29,11 +29,11 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.common.enums.ChannelType
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.holder.MAX_BET_VALUE
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -525,12 +525,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
         val betList = getCurrentBetList()
         val parlayList = getCurrentParlayList()
         //僅判斷對應tab裡的amountError
-        Timber.d("amountError3:${currentBetType}")
         if (currentBetType == SINGLE || currentBetType == BASKETBALL_ENDING_CARD) {
-            betList.forEach {
-                Timber.d("balanceError3:${it.amountError}")
+            betList.getOrNull(0)?.let {
                 if (it.amountError) {
-                    Timber.d("balanceError4:${it.amountError}")
                     binding.btnBet.amountCanBet = false
                     return
                 }
@@ -718,31 +715,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
             betListRefactorAdapter?.userLogin = it
 //            betSingleListAdapter?.userLogin = it
             betParlayListRefactorAdapter?.userLogin = it
-        }
-
-        viewModel.isRechargeShowVerifyDialog.observe(this.viewLifecycleOwner){
-//            this.hideLoading()
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    VerifyIdentityDialog().show(childFragmentManager, null)
-                }else
-                    viewModel.checkRechargeSystem()
-            }
-        }
-
-        viewModel.rechargeSystemOperation.observe(this.viewLifecycleOwner) {
-            this.hideLoading()
-            val b = it.getContentIfNotHandled() ?: return@observe
-            if (b) {
-                requireContext().startActivity(Intent(context, MoneyRechargeActivity::class.java))
-                return@observe
-            }
-
-            showPromptDialog(
-                requireActivity().getString(R.string.prompt),
-                requireActivity().getString(R.string.message_recharge_maintain)
-            ) {}
-
         }
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
@@ -956,7 +928,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
             //2023/12/19 与H5对比后，发现maxBetMoney 是固定的7个9
 //            maxBetMoney = betListFilter[0].betInfo?.maxBetMoneyString.toString()
             //最小投注金额
-            minBetMoney = betListFilter[0].betInfo?.minBetMoneyString.toString()
+            betListFilter.getOrNull(0)?.let {
+                minBetMoney = if (it.matchType==MatchType.OUTRIGHT) it.betInfo?.minCpBetMoneyString.toString() else it.betInfo?.minBetMoneyString.toString()
+            }
         }
         val totalBetAmount: Double = when (currentBetType) {
             //单关
@@ -976,7 +950,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
                 parlayList.sumOf { it.betAmount * it.num }
             }
         }
-
         if (totalBetAmount < 0) {
             Timber.w("totalBetAmount isEmpty")
             return
@@ -994,12 +967,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
             val dialog= BetBalanceDialog(requireContext())
             dialog.showDialog{
                 //跳转充值
-                ToGcashDialog.showByClick{
-                    loading()
-                    viewModel.checkRechargeKYCVerify()
-                }
+
             }
-//            ToastUtil.showToast(requireContext(), R.string.bet_info_bet_balance_insufficient)
         }
         val overMax = {
             setBetLoadingVisibility(false)
@@ -1034,7 +1003,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
                 addBetList()
             }
         } else {
-            //单关或篮球末位比分
+            //单关或篮球末位比分，冠军
             //金额校验规则
             //1.投注额大于当前余额，提示余额不足
             //2.投注额大于最大限额，提示超出最大投注额

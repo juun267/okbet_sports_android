@@ -20,9 +20,12 @@ import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.GameCollectManager.showCollectAmount
+import org.cxct.sportlottery.util.setMargins
 
-class ElectGameAdapter: BaseNodeAdapter() {
+class ElectGameAdapter(val onFavoriate: (View, OKGameBean) -> Unit): BaseNodeAdapter() {
 
     private val MORE_LIMIT = 12
     private val groupIndex = mutableMapOf<Int, Int>()
@@ -30,7 +33,7 @@ class ElectGameAdapter: BaseNodeAdapter() {
 
     init {
         addFullSpanNodeProvider(GroupTitleProvider(this))
-        addNodeProvider(ElectGameProvider(this))
+        addNodeProvider(ElectGameProvider(this,onFavoriate))
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -85,6 +88,7 @@ private class GroupTitleProvider(val adapter: ElectGameAdapter, override val ite
 }
 
 private class ElectGameProvider(val adapter: ElectGameAdapter,
+                                val onFavoriate: (View, OKGameBean) -> Unit,
                                 override val itemViewType: Int = 2,
                                 override val layoutId: Int = 0) : BaseNodeProvider() {
 
@@ -96,21 +100,26 @@ private class ElectGameProvider(val adapter: ElectGameAdapter,
 
     private val dp4 = 4.dp
     private val dp8 = 8.dp
+
     override fun convert(helper: BaseViewHolder, item: BaseNode): Unit = (helper.itemView.tag as ItemElecGameBinding).run {
 
         val bean = item as OKGameBean
         val childPosition = item.parentNode.childNode?.indexOf(item) ?: return@run
         val bottomMargin = if (adapter.getItemOrNull(adapter.data.size - 2)  == item|| adapter.data.last() == item) 16.dp else dp8
         if (childPosition % 2 == 0){
-            setMargins(root, 0, 0, dp4, bottomMargin)
+            root.setMargins(0, 0, dp4, bottomMargin)
         }else{
-            setMargins(root, dp4, 0, 0, bottomMargin)
+            root.setMargins(dp4, 0, 0, bottomMargin)
         }
 
         linMaintenance.gone()
         cvJackpot.gone()
         ivCover.load(bean.imgGame, R.drawable.ic_okgames_nodata)
-
+        tvCollect.showCollectAmount(bean.id)
+        ivFav.isSelected = bean.markCollect
+        ivFav.setOnClickListener {
+            onFavoriate.invoke(it,bean)
+        }
         if (bean.isShowMore) {
             blurviewMore.visible()
             blurviewMore
@@ -134,6 +143,15 @@ private class ElectGameProvider(val adapter: ElectGameAdapter,
             tvJackPot.text = "$showCurrencySign ${TextUtil.formatMoney(bean.jackpotAmount)}"
         }else{
             cvJackpot.gone()
+        }
+    }
+    override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) = (helper.itemView.tag as ItemElecGameBinding).run {
+        super.convert(helper, item, payloads)
+        payloads.forEach {
+            (it as? OKGameBean)?.let {
+                tvCollect.showCollectAmount(it.id)
+                ivFav.isSelected = it.markCollect
+            }
         }
     }
     private fun setMargins(btn: View, left: Int, top: Int, right: Int, bottom: Int) {

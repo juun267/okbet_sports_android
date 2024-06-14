@@ -47,5 +47,6 @@ data class LoginData(
     val phone: String?,         // 账号长时间未登陆需要验证手机号时会返回
     val email: String?,
     val firstPhoneGiveMoney: Boolean?,// 注册绑定手机送金额
-    val discountByGameTypeList: List<UserGameTypeDiscount>?
+    val discountByGameTypeList: List<UserGameTypeDiscount>?,
+    val levelCode: String?=null,
 ) : Parcelable

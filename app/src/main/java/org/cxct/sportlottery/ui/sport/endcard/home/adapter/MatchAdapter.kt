@@ -1,10 +1,13 @@
 package org.cxct.sportlottery.ui.sport.endcard.home.adapter
 
 import android.graphics.Color
+import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.math.MathUtils
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -19,11 +22,11 @@ import org.cxct.sportlottery.databinding.ItemEndcardMatchBinding
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.util.AppFont
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import splitties.systemservices.layoutInflater
+import kotlin.random.Random
 
 class MatchAdapter(showOdd: (MatchOdd) -> Unit): BaseNodeAdapter() {
 
@@ -68,7 +71,7 @@ private class EndCardLeagueNameProvider(
         textView.textSize = 14f
         textView.typeface = AppFont.helvetica
         textView.includeFontPadding = false
-        textView.setBackgroundColor(parent.context.getColor(R.color.color_1A202E))
+        textView.setBackgroundColor(parent.context.getColor(R.color.color_213643))
         textView.setPadding(4.dp, 0, 0, 0)
 
         val lp = LinearLayout.LayoutParams(-1, 44.dp)
@@ -91,7 +94,7 @@ private class EndCardMatchProvider(
 
     private val viewcardBg by lazy {
         ShapeDrawable()
-            .setSolidColor(context.getColor(R.color.color_353B4E))
+            .setSolidColor(context.getColor(R.color.color_355D73))
             .setRadius(8.dp.toFloat())
             .setWidth(100.dp)
             .setHeight(36.dp)
@@ -129,6 +132,8 @@ private class EndCardMatchProvider(
 
         with(binding) {
             val league = (item.parentNode as LeagueOdd).league
+            val topViewMargin = if(item.parentNode.childNode?.first() == item) 0 else 12.dp
+            viewTop.setMargins(topViewMargin,0,topViewMargin,0)
             matchInfo.categoryIcon = if (league.icon.isEmptyStr()) league.categoryIcon else league.icon
             tvView.setOnClickListener { showOdd(matchOdd) }
             tvHomeName.text = matchInfo.homeName
@@ -145,6 +150,22 @@ private class EndCardMatchProvider(
                 tvView.background = viewcardBg
                 tvNum.gone()
             }
+            //2. 热度说明：NBA及PBA赛事11-30中随机值；其他联赛1-15中随机值（可由前端做）
+            val hotCount=if(matchInfo.shortName?.contains("NBA") == true||
+                matchInfo.shortName?.contains("PBA") == true||
+                matchInfo.leagueName?.contains("NBA") == true||
+                matchInfo.leagueName?.contains("PBA") == true) {
+                   Random.nextInt(11, 30)
+               }else{
+                   Random.nextInt(1,15)
+               }.toString()
+            tvHotCount.text = Spanny(String.format(context.getString(R.string.P360),hotCount))
+                .findAndSpan(hotCount){ ForegroundColorSpan(ContextCompat.getColor(context,R.color.color_1CD219)) }
+
+            val betCount = matchInfo.betCount.toString()
+            tvBetCount.text = Spanny(String.format(context.getString(R.string.P361),betCount))
+                .findAndSpan(betCount){ ForegroundColorSpan(ContextCompat.getColor(context,R.color.color_1CD219)) }
+
         }
     }
 

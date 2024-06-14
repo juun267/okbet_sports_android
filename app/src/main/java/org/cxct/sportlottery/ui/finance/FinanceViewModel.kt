@@ -34,12 +34,6 @@ class FinanceViewModel(
     val recordType: LiveData<String>
         get() = _recordType
 
-    val withdrawLogDetail: LiveData<Event<org.cxct.sportlottery.network.withdraw.list.Row>>
-        get() = _withdrawLogDetail
-
-    val rechargeLogDetail: LiveData<Event<Row>>
-        get() = _rechargeLogDetail
-
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
 
@@ -52,11 +46,6 @@ class FinanceViewModel(
     private val _userSportBillListResult = MutableLiveData<SportBillResult>()
 
     private val _recordType = MutableLiveData<String>()
-
-    private val _withdrawLogDetail =
-        MutableLiveData<Event<org.cxct.sportlottery.network.withdraw.list.Row>>()
-
-    private val _rechargeLogDetail = MutableLiveData<Event<Row>>()
 
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
     private var page = 1
@@ -383,14 +372,6 @@ class FinanceViewModel(
             hideLoading()
         }
 
-    }
-
-    fun setLogDetail(row: Event<Row>) {
-        _rechargeLogDetail.postValue(row)
-    }
-
-    fun setWithdrawLogDetail(row: Event<org.cxct.sportlottery.network.withdraw.list.Row>) {
-        _withdrawLogDetail.postValue(row)
     }
 
     fun getQueryByBettingStationId(bettingStationId: Int?){

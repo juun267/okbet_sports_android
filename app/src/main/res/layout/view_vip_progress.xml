@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:parentTag="LinearLayout">
+
+    <TextView
+        android:id="@+id/tvProgress"
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="2dp"
+        android:paddingTop="@dimen/margin_1"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:background="@drawable/bg_vip_progress"
+        android:gravity="center_horizontal"
+        android:textColor="@color/color_FFFFFF"
+        android:lines="1"
+        android:textStyle="bold"
+        android:textSize="@dimen/textSize10sp"
+        android:text="0%"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_marginHorizontal="20dp"
+        android:progressDrawable="@drawable/progress_vip"
+        android:indeterminateDrawable="@drawable/circle_yellow"
+        android:progress="0"/>
+
+    <ImageView
+        android:id="@+id/ivThumb"
+        android:layout_width="@dimen/margin_10"
+        android:layout_height="@dimen/margin_10"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="-7dp"
+        android:background="@drawable/circle_yellow"/>
+</merge>

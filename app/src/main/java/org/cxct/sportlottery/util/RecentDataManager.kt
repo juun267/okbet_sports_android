@@ -25,7 +25,7 @@ object RecentDataManager {
         //如果记录有同类型的数据，则移除，并且把新数据加入第一个
         recentList.removeAll { it == record }
         recentList.add(0,record)
-        LogUtil.toJson(record)
+//        LogUtil.toJson(record)
         KvUtils.put(RECENT_RECORD,recentList.toJson())
         recentEvent.postValue(recentList)
     }

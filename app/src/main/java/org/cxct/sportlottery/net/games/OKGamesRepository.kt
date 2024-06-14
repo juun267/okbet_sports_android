@@ -9,10 +9,20 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
+import org.cxct.sportlottery.util.SingleLiveEvent
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.GameCollectManager
+import org.cxct.sportlottery.util.KvUtils
+import org.cxct.sportlottery.util.LogUtil
 
 object OKGamesRepository {
 
     val okGamesApi by lazy { RetrofitHolder.createApiService(OKGamesApi::class.java) }
+    val okPlayEvent = SingleLiveEvent<OKGameBean?>()
+    val gameFiremEvent = SingleLiveEvent<List<GameFirmValues>>()
+    var enterGameAfterLogin: OKGameBean? = null
+    private const val KEY_GAME_RECENT_PLAY = "recentPlay"
 
     private fun paramDevice(gameEntryType: String = GameEntryType.OKGAMES): JsonObject {
         val params = JsonObject()
@@ -116,5 +126,51 @@ object OKGamesRepository {
         params.addProperty("gameEntryType", GameEntryType.MINIGAMES)
 
         return okGamesApi.getOKGamesList(params)
+    }
+
+    suspend fun getHallOKSport(): ApiResult<OKGameBean> {
+        return okGamesApi.getHallOKSport().apply { okPlayEvent.postValue(getData())}
+    }
+
+
+    suspend fun getGameCollectNum(): ApiResult<MutableMap<String,String>> {
+        return okGamesApi.getGameCollectNum(sConfigData?.platformId?.toInt() ?: 1).apply {
+            getData()?.let {
+                GameCollectManager.gameCollectNum.postValue(it)
+            }
+        }
+    }
+    suspend fun guestLogin(firmType: String, gameCode: String): ApiResult<String> {
+        return okGamesApi.guestLogin(firmType,firmType,gameCode)
+    }
+    open fun isSingleWalletType(firmType: String?): Boolean{
+        if (firmType==null){
+            return false
+        }
+        return gameFiremEvent.value?.firstOrNull{it.firmType == firmType }?.walletType == 1
+    }
+    open fun isGuestOpen(firmType: String?): Boolean{
+        if (firmType==null){
+            return false
+        }
+        return gameFiremEvent.value?.firstOrNull{it.firmType == firmType }?.guestOpen == 2
+    }
+
+    fun addRecentPlayGame(gameId: String): LinkedHashSet<String> {
+        val recentGameIds = KvUtils.decodeStringSet(KEY_GAME_RECENT_PLAY)
+        recentGameIds.add(gameId)
+        if (recentGameIds.size > 12) {
+            recentGameIds.remove(recentGameIds.first())
+        }
+        KvUtils.encodeSet(KEY_GAME_RECENT_PLAY, recentGameIds)
+        return recentGameIds
+    }
+
+    fun getRecentPlayGameIds(): LinkedHashSet<String> {
+        return KvUtils.decodeStringSet(KEY_GAME_RECENT_PLAY)
+    }
+
+    private fun clearRecentPlayGame() {
+        KvUtils.removeKey(KEY_GAME_RECENT_PLAY)
     }
 }

@@ -13,14 +13,13 @@
         android:layout_marginTop="120dp"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_okbet_logo_empty"
-        app:tint="@color/color_283042"
+        android:src="@drawable/ic_okbet_logo_empty_dark"
         android:adjustViewBounds="true"/>
 
 
     <TextView
         android:textSize="14sp"
-        android:textColor="@color/color_283042"
+        android:textColor="@color/color_2F4553"
         android:text="@string/N883"
         android:layout_marginTop="@dimen/margin_8"
         android:layout_width="wrap_content"

@@ -15,6 +15,7 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.GameCollectManager.showCollectAmount
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setTextColorGradient
 
@@ -131,7 +132,7 @@ class RecyclerGamePageAdapter:
         setPotView(binding,item)
         when(item.size){
             1-> {
-                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1)
+                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1, tvCollect1)
                 cardGame2.gone()
                 cardGame3.gone()
                 cardGame4.gone()
@@ -140,8 +141,8 @@ class RecyclerGamePageAdapter:
             }
 
             2-> {
-                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1)
-                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
+                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1, tvCollect1)
+                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3, tvCollect3)
                 cardGame2.gone()
                 cardGame4.gone()
                 cardGame5.gone()
@@ -149,40 +150,40 @@ class RecyclerGamePageAdapter:
             }
 
             3-> {
-                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1)
-                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
-                bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
+                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1, tvCollect1)
+                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3, tvCollect3)
+                bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5, tvCollect5)
                 cardGame2.gone()
                 cardGame4.gone()
                 cardGame6.gone()
             }
 
             4-> {
-                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1)
-                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
-                bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
-                bindItem(item[3], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2)
+                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1, tvCollect1)
+                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3, tvCollect3)
+                bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5, tvCollect5)
+                bindItem(item[3], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2, tvCollect2)
                 cardGame4.gone()
                 cardGame6.gone()
             }
 
             5-> {
-                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1)
-                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
-                bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
-                bindItem(item[3], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2)
-                bindItem(item[4], cardGame4, ivCover4, tvName4, tvFirmName4, ivFav4, tvCover4)
+                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1, tvCollect1)
+                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3, tvCollect3)
+                bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5, tvCollect5)
+                bindItem(item[3], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2, tvCollect2)
+                bindItem(item[4], cardGame4, ivCover4, tvName4, tvFirmName4, ivFav4, tvCover4, tvCollect4)
                 cardGame6.gone()
             }
 
             6-> {
                 val isMoreItem = position == dataCount() - 1 && isMoreThan18
-                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1)
-                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3)
-                bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5)
-                bindItem(item[3], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2)
-                bindItem(item[4], cardGame4, ivCover4, tvName4, tvFirmName4, ivFav4, tvCover4)
-                bindItem(item[5], cardGame6, ivCover6, tvName6, tvFirmName6, ivFav6, tvCover6, isMoreItem)
+                bindItem(item[0], cardGame1, ivCover1, tvName1, tvFirmName1, ivFav1, tvCover1, tvCollect1)
+                bindItem(item[1], cardGame3, ivCover3, tvName3, tvFirmName3, ivFav3, tvCover3, tvCollect3)
+                bindItem(item[2], cardGame5, ivCover5, tvName5, tvFirmName5, ivFav5, tvCover5, tvCollect5)
+                bindItem(item[3], cardGame2, ivCover2, tvName2, tvFirmName2, ivFav2, tvCover2, tvCollect2)
+                bindItem(item[4], cardGame4, ivCover4, tvName4, tvFirmName4, ivFav4, tvCover4, tvCollect4)
+                bindItem(item[5], cardGame6, ivCover6, tvName6, tvFirmName6, ivFav6, tvCover6, tvCollect6, isMoreItem)
                 if(isMoreItem) {
                     blurCard6.visible()
                     blurCard6.setupWith(binding.root)
@@ -207,6 +208,7 @@ class RecyclerGamePageAdapter:
                          tvFirmName: TextView,
                          ivFav: ImageView,
                          tvCover: View,
+                         tvCollect: TextView,
                          moreItem: Boolean = false) {
 
         cardGame.visible()
@@ -222,6 +224,7 @@ class RecyclerGamePageAdapter:
             onFavoriteClick(item)
         }
         tvCover.isVisible = !moreItem && item.isMaintain()
+        tvCollect.showCollectAmount(item.id)
     }
 
 

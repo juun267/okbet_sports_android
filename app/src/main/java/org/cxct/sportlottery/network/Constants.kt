@@ -3,10 +3,14 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import com.google.gson.JsonObject
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.VipRedenpApplyResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
@@ -237,6 +241,11 @@ object Constants {
     //篮球末位比分规则页面
     fun getEndCardRuleUrl() = "${getH5BaseUrl()}mobile/newBkEnd/rules"
 
+    fun getOKSportUrl(gameName: String) = "${getH5BaseUrl()}mobile/oksport/play/$gameName"
+
+    //VIP等级说明页面
+    fun getVipRuleUrl(context: Context) = "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}vip-details"
+
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
     /**
@@ -247,9 +256,14 @@ object Constants {
             return url
         }
         val url = pingHostAndPath(getH5BaseUrl(),url)
-        return url + (if (url.contains("?")) "&" else "?") + "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}&lang=${
-            getSelectLanguage(MultiLanguagesApplication.appContext).key
-        }&token=${URLEncoder.encode(LoginRepository.token, "utf-8")}"
+        return url +
+                (if (url.contains("?")) "&" else "?") +
+                "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}" +
+                "&from=android" +
+                "&version=${BuildConfig.VERSION_NAME}" +
+                "&lang=${getSelectLanguage(MultiLanguagesApplication.appContext).key}" +
+                "&token=${URLEncoder.encode(LoginRepository.token, "utf-8")}" +
+                "&platform=${MultiLanguagesApplication.appContext.getString(R.string.app_name)}"
     }
 
     /**
@@ -285,6 +299,7 @@ object Constants {
     const val MATCH_BET_LIST = "/api/front/match/bet/list"
     const val MATCH_BET_ADD_LGPCOFL = "/api/front/match/bet/addLGPCOFL"
     const val MATCH_LGPCOFL_DETAIL = "/api/front/match/odds/LGPCOFLDetail" // 新篮球末位比分详情
+    const val WINNINGNEWS_LIST = "/api/front/match/odds/winningNews/list"
 
     //index
     const val INDEX_SEND_LOGIN_DEVICE_SMS = "/api/front/index/sendLoginDeviceSms"
@@ -424,6 +439,16 @@ object Constants {
     const val LOGIN_CHECK_NEED_CODE = "/api/front/index/checkUserNeedCode"   // loginV3登陆前检查是否需要校验短信验证码
     const val LOGIN = "/api/front/index/loginV4"   // 用户登陆  2023.10.24
     const val WHEEL_ACTIVITY_INFO = "/api/front/wheelActivity/info"
+    //VIP特權
+    const val VIP_USER = "/api/front/activity/vip/user"
+    //VIP特權详情
+    const val VIP_DETAIL = "/api/front/activity/vip/detail"
+    //领取VIP特权奖项
+    const val VIP_REWARD = "/api/front/activity/vip/award"
+    //專屬紅包申請
+    const val VIP_UNIREDENP_APPLY = "/api/front/activity/vip/uniredenp/apply"
+
+    const val SETBIRTHDAY = "/api/front/user/setBirthday"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image#url_ignore" //上传图片,url_ignore避免域名被动态替换
@@ -503,7 +528,6 @@ object Constants {
     const val WORKS_QUERYALL = "/api/front/works/queryAll"//获取所有工作性质列表
     const val USER_QUERYUSERINFODETAILS = "/api/front/user/queryUserInfoDetails"//完善用户信息详情查询
     const val USER_COMPLETEUSERDETAILS = "/api/front/user/CompleteUserDetails"//完善用户信息详情
-
     //注销账户
     const val CANCEL_ACCOUNT = "/api/front/user/remove"
 
@@ -564,6 +588,11 @@ object Constants {
     const val GET_CONFIG_BY_NAME = "/api/agent/game/config/getConfigByName/{name}"
 
     const val GET_GAMEFIRMS = "/api/front/gameEntryGames/getGameFirms"
+    //三方游戏收藏数量
+    const val GET_GAME_COLLECT_NUM = "/api/front/gameEntryGames/getGameCollectNum"
+    //三方游戏收藏数量
+    const val GUEST_LOGIN = "/api/front/thirdapi/guestLogin/{firmType}"
+
     //chat
     const val ROOM_QUERY_LIST =
         "/api/chat/front/room/queryList" //------------------------------- 查询所有开放的房间
@@ -586,4 +615,8 @@ object Constants {
     const val CHAT_CHECK_TOKEN =
         "/api/chat/front/user/checktoken" //----------------------------- 验证token 是否过期。如果不过期返回token信息，过期返回success: false
     const val CHAT_GET_STICKER="/api/chat/front/emoticons/queryList"
+
+    const val GET_HALL_OKSPORT="/api/front/gameEntryGames/getHallOkSport"
+
+    const val FIRM_TYPE_SBTY="SBTY"
 }

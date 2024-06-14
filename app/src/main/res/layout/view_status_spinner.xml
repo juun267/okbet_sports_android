@@ -15,9 +15,10 @@
         android:ellipsize="end"
         android:gravity="center"
         android:singleLine="true"
+        android:paddingHorizontal="@dimen/margin_28"
         android:textColor="@color/color_79839F_6C7BA8"
         android:textSize="@dimen/textSize14sp"
-       app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="@string/all_order_status" />
 
@@ -25,7 +26,8 @@
         android:id="@+id/iv_arrow"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:layout_marginHorizontal="8dp"
+        android:layout_marginStart="-20dp"
+        android:layout_marginEnd="8dp"
         android:src="@drawable/ic_arrow_gray"
         app:layout_constraintBottom_toBottomOf="@id/tv_name"
         app:layout_constraintStart_toEndOf="@id/tv_name"

@@ -79,13 +79,6 @@ class ProfileModel(
 
     }
 
-    //確認是否需要驗證手機
-    fun checkNeedToShowSecurityDialog() {
-        viewModelScope.launch {
-            withdrawRepository.checkNeedToShowSecurityDialog()
-        }
-    }
-
     fun getUserInfo() {
         viewModelScope.launch {
             runWithCatch { UserInfoRepository.getUserInfo() }

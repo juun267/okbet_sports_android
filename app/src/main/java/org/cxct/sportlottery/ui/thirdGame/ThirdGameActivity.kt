@@ -1,21 +1,21 @@
 package org.cxct.sportlottery.ui.thirdGame
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.view.View
 import android.webkit.WebView
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.ScreenAdapter
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityThirdGameBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
-import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.UserInfoRepository
@@ -23,20 +23,13 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.WebActivity
-import org.cxct.sportlottery.ui.common.WebActivity.Companion.FIRM_CODE
-import org.cxct.sportlottery.ui.common.WebActivity.Companion.GAME_CATEGORY_CODE
+import org.cxct.sportlottery.ui.common.WebActivity.Companion.FIRM_TYPE
+import org.cxct.sportlottery.ui.common.WebActivity.Companion.GAME_BEAN
+import org.cxct.sportlottery.ui.common.WebActivity.Companion.GUESTLOGIN
 import org.cxct.sportlottery.ui.common.WebActivityImp
-import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.money.withdraw.BankActivity
-import org.cxct.sportlottery.ui.money.withdraw.WithdrawActivity
-import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.isThirdTransferOpen
-import org.cxct.sportlottery.util.startLogin
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
 open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBinding>() {
@@ -47,14 +40,13 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
 
     private var mUserInfo: UserInfo? = null
 
-    //簡訊驗證彈窗
-    private var customSecurityDialog: CustomSecurityDialog? = null
-
-    private val firmCode by lazy { intent.getStringExtra(FIRM_CODE) }
-    private val gameType by lazy { intent.getStringExtra(GAME_CATEGORY_CODE) }
+    private val firmType by lazy { intent.getStringExtra(FIRM_TYPE) }
+    private val okGameBean by lazy { intent.getParcelableExtra(GAME_BEAN) as? OKGameBean }
+    private val guestLogin by lazy { intent.getBooleanExtra(GUESTLOGIN, false) }
     private val mUrl: String by lazy { intent?.getStringExtra(WebActivity.KEY_URL) ?: "about:blank" }
 
     private val webActivityImp by lazy { WebActivityImp(this,this::overrideUrlLoading) }
+    private val depositURL = sConfigData?.gameUserDepositURL
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -66,11 +58,14 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         if (enable) {
 
             10.dp.let { binding.toolBar.setPadding(it, 0, it, 0) }
-            val dp28 = 28.dp
-            changeViewWH(binding.toolBar, -1, 40.dp)
-            changeViewWH(binding.ivBack, dp28, dp28)
-            changeViewWH(binding.ivDeposit, dp28, dp28)
-            changeViewWH(binding.ivLogo, 68.dp, dp28)
+            val childHeight = 28.dp
+            val toolBarHeight = 40.dp
+            changeViewWH(binding.toolBar, -1, toolBarHeight)
+            changeViewWH(binding.ivBack, childHeight, childHeight)
+            changeViewWH(binding.ivDeposit, childHeight, childHeight)
+            changeViewWH(binding.ivLogo, -2, childHeight)
+            changeViewWH(binding.tvLogin,-2, childHeight)
+            changeViewWH(binding.tvRegist,-2, childHeight)
 
             ImmersionBar.with(this)
                 .hideBar(BarHide.FLAG_SHOW_BAR)
@@ -79,13 +74,15 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
                 .fitsSystemWindows(true)
                 .init()
         } else {
-
             33.dp.let { binding.toolBar.setPadding(it, 0, it, 0) }
-            val dp20 = 20.dp
-            changeViewWH(binding.toolBar, -1, 28.dp)
-            changeViewWH(binding.ivBack, dp20, dp20)
-            changeViewWH(binding.ivDeposit, dp20, dp20)
-            changeViewWH(binding.ivLogo, 48.dp, dp20)
+            val childHeight = if(guestLogin) 28.dp else 20.dp
+            val toolBarHeight = if(guestLogin) 40.dp else 28.dp
+            changeViewWH(binding.toolBar, -1, toolBarHeight)
+            changeViewWH(binding.ivBack, childHeight, childHeight)
+            changeViewWH(binding.ivDeposit, childHeight, childHeight)
+            changeViewWH(binding.ivLogo, -2, childHeight)
+            changeViewWH(binding.tvLogin, -2, childHeight)
+            changeViewWH(binding.tvRegist,-2, childHeight)
 
             ImmersionBar.with(this)
                 .hideBar(BarHide.FLAG_HIDE_BAR)
@@ -105,6 +102,9 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         density = resources.displayMetrics.density
         setStatuEnable(ORIENTATION_PORTRAIT ==resources.configuration.orientation)
         ivBack.setOnClickListener { finish() }
+        ivDeposit.isVisible = !guestLogin
+        tvLogin.isVisible = guestLogin
+        tvRegist.isVisible = guestLogin
         webActivityImp.setCookie(mUrl)
         webActivityImp.setupWebView(webView)
         webView.loadUrl(mUrl)
@@ -112,7 +112,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         initObserve()
         postRefreshToken() // 避免用户长期在三方游戏中导致token过期
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
-            if (it.maintain == 1 && firmCode == it.firmType /*&& gameType == it.gameType*/) {
+            if (it.maintain == 1 && firmType == it.firmType /*&& gameType == it.gameType*/) {
 //                motionMenu.gone()
                 showErrorPromptDialog(getString(R.string.error), getString(R.string.hint_game_maintenance)) {
                     finish()
@@ -120,11 +120,17 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
             }
         }
     }
-     fun overrideUrlLoading(view: WebView, url: String): Boolean {
+
+     private fun overrideUrlLoading(view: WebView, url: String): Boolean {
         if (url.isEmptyStr()) {
             view.loadUrl(url)
             return false
         }
+
+         if (!depositURL.isNullOrEmpty() && url.endsWith(depositURL, true)) {
+             ToGcashDialog.showByClick { jumpToDeposit() }
+             return true
+         }
 
         val requestUrl = url.replace("https", "http", true)
         val host = Constants.getBaseUrl().replace("https", "http", true)
@@ -149,16 +155,27 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         super.onDestroy()
         releaseRefreshToken()
         binding.webView.destroy()
-        if (isThirdTransferOpen()) {
+        if (!OKGamesRepository.isSingleWalletType(firmType)&&isThirdTransferOpen()) {
             LoginRepository.allTransferOut()
         }
     }
 
-    private fun setupMenu() {
-        binding.ivDeposit.setOnClickListener {
-            if (checkLogin()) {
-                ToGcashDialog.showByClick { viewModel.checkRechargeKYCVerify() }
+    private fun setupMenu() =binding.run{
+        ivDeposit.setOnClickListener {
+            //需要判断用户未登录的情况
+            if (LoginRepository.isLogined()){
+                jumpToDeposit()
+            }else{
+                startLogin()
             }
+        }
+        tvLogin.clickDelay {
+            OKGamesRepository.enterGameAfterLogin= okGameBean
+            startLogin()
+        }
+        tvRegist.clickDelay {
+            OKGamesRepository.enterGameAfterLogin= okGameBean
+            LoginOKActivity.startRegist(this@ThirdGameActivity)
         }
 //        binding.motionMenu.setOnMenuListener(object : MotionFloatingMenu.OnMenuListener {
 //            override fun onHome() {
@@ -201,167 +218,6 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         viewModel.userInfo.observe(this) {
             mUserInfo = it
         }
-
-        viewModel.withdrawSystemOperation.observe(this) {
-            val operation = it.getContentIfNotHandled()
-            if (operation == false) {
-                showPromptDialog(getString(R.string.prompt),
-                    getString(R.string.message_withdraw_maintain)) {}
-            }
-        }
-
-        viewModel.rechargeSystemOperation.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    startActivity(Intent(this, MoneyRechargeActivity::class.java))
-                } else {
-                    showPromptDialog(getString(R.string.prompt),
-                        getString(R.string.message_recharge_maintain)) {}
-                }
-            }
-        }
-
-        viewModel.needToUpdateWithdrawPassword.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting),
-                        getString(R.string.please_setting_withdraw_password),
-                        getString(R.string.go_to_setting),
-                        true) {
-                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply {
-                            putExtra(
-                                SettingPasswordActivity.PWD_PAGE,
-                                SettingPasswordActivity.PwdPage.BANK_PWD)
-                        })
-                    }
-                } else {
-                    viewModel.checkProfileInfoComplete()
-                }
-            }
-        }
-
-        viewModel.needToCompleteProfileInfo.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting),
-                        getString(R.string.please_complete_profile_info),
-                        getString(R.string.go_to_setting),
-                        true) {
-                        startActivity(Intent(this, ProfileActivity::class.java))
-                    }
-                } else {
-                    viewModel.checkBankCardPermissions()
-                }
-            }
-        }
-
-        viewModel.needToBindBankCard.observe(this) {
-            it.getContentIfNotHandled()?.let { messageId ->
-                if (messageId != -1) {
-                    showPromptDialog(getString(R.string.withdraw_setting),
-                        getString(messageId),
-                        getString(R.string.go_to_setting),
-                        true) {
-                        startActivity(Intent(this, BankActivity::class.java))
-                    }
-                } else {
-                    startActivity(Intent(this, WithdrawActivity::class.java))
-                }
-            }
-        }
-
-        viewModel.settingNeedToUpdateWithdrawPassword.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting),
-                        getString(R.string.please_setting_withdraw_password),
-                        getString(R.string.go_to_setting),
-                        true) {
-                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply {
-                            putExtra(
-                                SettingPasswordActivity.PWD_PAGE,
-                                SettingPasswordActivity.PwdPage.BANK_PWD)
-                        })
-                    }
-                } else if (!b) {
-                    startActivity(Intent(this, BankActivity::class.java))
-                }
-            }
-        }
-
-        viewModel.settingNeedToCompleteProfileInfo.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting),
-                        getString(R.string.please_complete_profile_info),
-                        getString(R.string.go_to_setting),
-                        true) {
-                        startActivity(Intent(this, ProfileActivity::class.java))
-                    }
-                } else if (!b) {
-                    startActivity(Intent(this, BankActivity::class.java))
-                }
-            }
-        }
-
-        viewModel.needToSendTwoFactor.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                        customSecurityDialog = CustomSecurityDialog().apply {
-                            getSecurityCodeClickListener {
-                                this.showSmeTimer300()
-                                this@ThirdGameActivity.viewModel.sendTwoFactor()
-                            }
-                            positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
-                                this@ThirdGameActivity.viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
-                            }
-                        }
-                        customSecurityDialog?.show(supportFragmentManager, null)
-
-                }
-            }
-        }
-
-        //確認收到簡訊驗證碼
-        viewModel.twoFactorResult.observe(this) {
-            //傳送驗證碼成功後才能解鎖提交按鈕
-            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
-            sConfigData?.hasGetTwoFactorResult = true
-        }
-
-        //簡訊驗證成功
-        viewModel.twoFactorSuccess.observe(this) {
-            if (it == true)
-                customSecurityDialog?.dismiss()
-        }
-
-        viewModel.intoWithdraw.observe(this) {
-            it.getContentIfNotHandled()?.let {
-                startActivity(Intent(this, WithdrawActivity::class.java))
-            }
-        }
-
-        viewModel.isWithdrawShowVerifyDialog.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
-            }
-        }
-
-        viewModel.isRechargeShowVerifyDialog.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkRechargeSystem()
-            }
-        }
-    }
-
-    private fun showKYCVerifyDialog() {
-        VerifyIdentityDialog().show(supportFragmentManager, null)
     }
 
     private val refreshTokenDuring = 5 * 60_000L

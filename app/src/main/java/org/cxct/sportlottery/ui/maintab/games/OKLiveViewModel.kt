@@ -4,14 +4,17 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toIntS
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.net.live.OKLiveRepository
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.GameCollectManager
 import org.cxct.sportlottery.util.ToastUtil
 
 class OKLiveViewModel(
@@ -24,30 +27,15 @@ class OKLiveViewModel(
         get() = _providerresult
     private val _providerresult = MutableLiveData<OKGamesHall>()
 
-    //游戏收藏结果
-    val collectOkGamesResult: LiveData<Pair<Int, OKGameBean>>
-        get() = _collectOkGamesResult
-    private val _collectOkGamesResult = MutableLiveData<Pair<Int, OKGameBean>>()
-
-
     //游戏大厅数据
     val gameHall: LiveData<OKGamesHall>
         get() = _gameHall
     private val _gameHall = MutableLiveData<OKGamesHall>()
 
-    //收藏游戏列表
-    val collectList: LiveData<Pair<Boolean, List<OKGameBean>>> // 是否是通过服务端拉取-收藏列表
-        get() = _collectList
-    private val _collectList = MutableLiveData<Pair<Boolean, List<OKGameBean>>>()
-
     //最近游戏列表
     val recentPlay: LiveData<List<OKGameBean>>
         get() = _recentPlay
     private val _recentPlay = MutableLiveData<List<OKGameBean>>()
-
-    val newRecentPlay: LiveData<OKGameBean>
-        get() = _newRecentPlay
-    private val _newRecentPlay = MutableLiveData<OKGameBean>()
 
     /**
      * 全部的赛事，map 类型
@@ -75,7 +63,7 @@ class OKLiveViewModel(
             val data = it.getData() ?: return@callApi
 
             _gameHall.postValue(data)
-            _collectList.postValue(Pair(true, data.collectList ?: listOf()))
+            GameCollectManager.setUpLiveCollect(data.collectList?.toMutableList()?: mutableListOf())
 
             data.categoryList?.forEach {
                 it.gameList?.forEach {
@@ -122,16 +110,8 @@ class OKLiveViewModel(
             }
 
             gameData.markCollect = !gameData.markCollect
-            _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
-
-            val markedGames = _collectList.value?.second?.toMutableList() ?: mutableListOf()
-            if (gameData.markCollect) {
-                markedGames.add(0, gameData)
-                _collectList.value = Pair(false, markedGames)
-                return@callApi
-            }
-
-            _collectList.value = Pair(false, markedGames.filter { it.id != gameData.id }.toList())
+            GameCollectManager.addCollectNum(gameData.id,gameData.markCollect)
+            GameCollectManager.updateCollect(gameData,GameEntryType.OKLIVE)
         }
 
     /**
@@ -141,7 +121,7 @@ class OKLiveViewModel(
         if (!LoginRepository.isLogined()) {  // 没登录不显示最近玩的游戏
             return
         }
-        val ids = LoginRepository.getRecentPlayGameIds()
+        val ids = OKGamesRepository.getRecentPlayGameIds()
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
@@ -155,17 +135,15 @@ class OKLiveViewModel(
     /**
      * 记录最近游戏
      */
-    fun addRecentPlay(okGameBean: OKGameBean) {
-        val ids = LoginRepository.addRecentPlayGame(okGameBean.id.toString())
+    fun updateRecentPlay() {
+        val ids = OKGamesRepository.getRecentPlayGameIds()
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
                 recentList.add(it.copy())
             }
         }
-
         recentList.reverse()
-        _newRecentPlay.value = okGameBean
         _recentPlay.postValue(recentList)
     }
 

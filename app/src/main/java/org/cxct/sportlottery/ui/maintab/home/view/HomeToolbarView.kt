@@ -24,18 +24,27 @@ import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.sport.list.OKPlaySelectPop
+import org.cxct.sportlottery.ui.sport.list.TodayMenuPop
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.StreamerTextView
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import splitties.views.padding
+import splitties.dimensions.dp
 
 class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : FrameLayout(context, attrs, defStyle) {
@@ -45,6 +54,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         addChildView()
     }
 
+    private lateinit var ivMenu: ImageView
     private lateinit var ivLogo: ImageView
     private lateinit var searchView: View
     lateinit var searchIcon: View
@@ -59,22 +69,30 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private lateinit var tvLogin: TextView
     private lateinit var tvRegist: TextView
 
-    private lateinit var fragment: LifecycleOwner
+    private lateinit var fragment: BaseFragment<*,*>
     private lateinit var logoEvent: View.OnClickListener
     private lateinit var viewModel: BaseSocketViewModel
     private var userModelEnable = true
     private var onlyShowSeach = true
-    private var mailsIcon = R.drawable.icon_mails
-    private var mailsIcon1 = R.drawable.icon_mails1
+    private var linOKPlay: LinearLayout?=null
+    var onPlaySelectListener: ((position:Int) -> Unit)?=null
+    private val okPlaySelectPop by lazy { OKPlaySelectPop(context){ position ->
+        onPlaySelectListener?.invoke(position)
+    }
+    }
 
     private fun addChildView() {
 
+        val dp36 = 36.dp
+        val dp6 = 6.dp
+        ivMenu = AppCompatImageView(context)
+        ivMenu.setImageResource(R.drawable.ic_home_titlebar_menu)
+        ivMenu.setPadding(dp6, dp6, dp6, dp6)
+        addView(ivMenu, LayoutParams(dp36, dp36).apply { leftMargin = dp6 })
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
-        addView(ivLogo, LayoutParams(-2, 36.dp).apply {
-            leftMargin = 6.dp
-        })
+        addView(ivLogo, LayoutParams(-2, 33.dp).apply { leftMargin = 40.dp })
 
         addSearchView()
         addUserView()
@@ -228,7 +246,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private var mailsNum = 0
     private fun updateMailsIcon() {
         if (::ivMails.isInitialized) {
-            ivMails.setImageResource(if (mailsNum > 0) mailsIcon1 else mailsIcon)
+            ivMails.setImageResource(if (mailsNum > 0) R.drawable.icon_mails1 else R.drawable.icon_mails)
         }
     }
 
@@ -258,7 +276,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             userMoneyView.visible()
             bindMoneyText(LoginRepository.userMoney())
             btnDeposit.setOnClickListener {
-                ToGcashDialog.showByClick { viewModel.checkRechargeKYCVerify() }
+                (fragment.requireActivity() as BaseActivity<*,*>).jumpToDeposit()
             }
         } else {
             searchView.visible()
@@ -268,23 +286,20 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     fun attach(
-        lifecycleOwner: LifecycleOwner,
-        mainTabActivity: MainTabActivity,
-        viewModel: BaseSocketViewModel,
+        fragment: BaseFragment<*,*>,
         moneyViewEnable: Boolean = true,
         onlyShowSeach: Boolean = false,
-    ) = attach(lifecycleOwner, { mainTabActivity.backMainHome() }, viewModel, moneyViewEnable, onlyShowSeach)
+    ) = attach(fragment, { (fragment.requireActivity() as MainTabActivity).backMainHome() }, moneyViewEnable, onlyShowSeach)
 
     fun attach(
-        lifecycleOwner: LifecycleOwner,
+        fragment: BaseFragment<*,*>,
         logoEvent: OnClickListener,
-        viewModel: BaseSocketViewModel,
         moneyViewEnable: Boolean = true,
         onlyShowSeach: Boolean = false,
     ) {
-        this.fragment = lifecycleOwner
+        this.fragment = fragment
         this.logoEvent = logoEvent
-        this.viewModel = viewModel
+        this.viewModel = fragment.viewModel as BaseSocketViewModel
         this.userModelEnable = moneyViewEnable
         this.onlyShowSeach = onlyShowSeach
 
@@ -322,5 +337,45 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         })
         viewModel.getMoneyAndTransferOut()
     }
+    fun setupOKPlay(){
+        setupOKPlay{ okPlayBean->
+            if (okPlayBean!=null){
+                linOKPlay = LinearLayout(context).apply {
+                    gravity = Gravity.CENTER_VERTICAL
+                    val tvName = AppCompatTextView(context).apply {
+                        typeface = Typeface.DEFAULT_BOLD
+                        setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f)
+                        setTextColor(resources.getColor(R.color.color_313F56))
+                        addView(this, LayoutParams(-2, -2))
+                        text = "OKSport"
+                    }
+                    val ivArrow = ImageView(context).apply {
+                        setImageResource(R.drawable.ic_arrow_down_triangle)
+                        val ivParams = LayoutParams(16.dp, 16.dp)
+                        ivParams.leftMargin = 4.dp
+                        addView(this, ivParams)
+                    }
+                    setOnClickListener {
+                        okPlaySelectPop.apply {
+                            this.tvName = tvName
+                            this.ivArrow = ivArrow
+                        }
+                        okPlaySelectPop.showAsDropDown(this,(width-122.dp)/2,5.dp)
+                    }
+                    linOKPlay?.setPadding(5.dp,5.dp,5.dp,5.dp)
+                }
+                addView(linOKPlay, LayoutParams(-2, -2, Gravity.RIGHT or Gravity.BOTTOM).apply {
+                    rightMargin = 120.dp
+                })
+            }else{
+                if (linOKPlay!=null){
+                    removeView(linOKPlay)
+                    linOKPlay = null
+                }
+            }
+        }
+    }
+
+    fun setMenuClick(click: OnClickListener) = ivMenu.setOnClickListener(click)
 
 }

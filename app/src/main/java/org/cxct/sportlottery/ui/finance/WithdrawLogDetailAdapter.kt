@@ -1,31 +1,35 @@
 package org.cxct.sportlottery.ui.finance
 
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.databinding.ItemWithdrawLogDetailBinding
 import org.cxct.sportlottery.network.withdraw.list.Row
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.finance.df.OrderState
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.copyText
 
 
-class WithdrawLogDetailAdapter(data: List<Row>?) :
-    BaseQuickAdapter<Row, BaseViewHolder>(R.layout.item_withdraw_log_detail,
-        data?.toMutableList()) {
+class WithdrawLogDetailAdapter: BindingAdapter<Row, ItemWithdrawLogDetailBinding>() {
 
-    override fun convert(helper: BaseViewHolder, item: Row) {
-        helper.setText(R.id.wd_log_detail_trans_num_subtitle,
-            "${context.getString(R.string.N618)}${helper.layoutPosition + 1}：")
-        helper.setText(R.id.wd_log_detail_amount_subtitle,
-            "${context.getString(R.string.text_account_history_amount)}：")
-        helper.setText(R.id.wd_log_detail_trans_num, item.orderNo)
-        item.actualMoney?.let { nonNullDisplayMoney ->
-            helper.setText(R.id.wd_log_detail_amount,
-                "${sConfigData?.systemCurrencySign} $nonNullDisplayMoney")
+    override fun onBinding(position: Int, binding: ItemWithdrawLogDetailBinding, item: Row): Unit = binding.run {
+
+        wdLogDetailTransNumSubtitle.text = "${context.getString(R.string.N619)}${position + 1}："
+        wdLogDetailAmountSubtitle.text =
+            "${context.getString(R.string.text_account_history_amount)}："
+        wdLogDetailTransNum.text = item.orderNo
+        tvCopy.setOnClickListener {
+            item.orderNo?.let {
+                it1 -> context.copyText(it1)
+                ToastUtil.showToastInCenter(context, context.getString(R.string.text_money_copy_success))
+            }
         }
-        helper.getView<TextView>(R.id.wd_log_detail_status).apply {
+        wdLogDetailAmount.text =
+            "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(item.actualMoney ?: 0, 0)}"
+        wdLogDetailStatus.apply {
             //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
             when (item.orderState) {
                 OrderState.PROCESSING.code -> {

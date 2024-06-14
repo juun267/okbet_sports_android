@@ -1,13 +1,16 @@
 package org.cxct.sportlottery.view.dialog
 
-import android.os.Bundle
-import android.view.*
+import android.view.View
 import androidx.fragment.app.FragmentManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.databinding.DialogAgeVerifyBinding
+import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.KvUtils
+import org.cxct.sportlottery.util.makeLinks
 import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
 import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
 
@@ -39,13 +42,41 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
         }
     }
 
-    override fun onInitView() {
-        binding.btnConfirm.setOnClickListener {
+    override fun onInitView()=binding.run {
+        (sConfigData?.ageVerificationChecked==1).let {
+            updateCheckStatus(it)
+        }
+        cbAgree.text = getString(R.string.dialog_age_verify_hint)+" "+getString(R.string.M311)
+        cbAgree.makeLinks(
+            Pair(
+                getString(R.string.dialog_age_verify_hint),
+                View.OnClickListener {
+                    updateCheckStatus(!cbAgree.isSelected)
+                }),
+            linkColor = requireContext().getColor(R.color.color_0D2245)
+        )
+        cbAgree.makeLinks(
+            Pair(
+                getString(R.string.M311),
+                View.OnClickListener {
+                    JumpUtil.toInternalWeb(
+                        requireContext(),
+                        Constants.getAgreementRuleUrl(requireContext()),
+                        resources.getString(R.string.login_terms_conditions)
+                    )
+                }),
+            linkColor = requireContext().getColor(R.color.color_025BE8)
+        )
+        btnConfirm.setOnClickListener {
             dismiss()
         }
-        binding.btnExit.setOnClickListener {
+        btnExit.setOnClickListener {
             dismiss()
         }
+    }
+    private fun updateCheckStatus(isChecked: Boolean)=binding.run{
+        cbAgree.isSelected = isChecked
+        btnConfirm.isEnabled = isChecked
     }
 
 }

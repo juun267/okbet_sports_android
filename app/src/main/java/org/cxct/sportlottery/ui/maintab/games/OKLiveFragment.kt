@@ -77,7 +77,8 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
-        attach(this@OKLiveFragment, mainTabActivity(), mainTabActivity().viewModel)
+        attach(this@OKLiveFragment)
+        setMenuClick{ mainTabActivity().showMainLeftMenu(this@OKLiveFragment.javaClass) }
         tvUserMoney.setOnClickListener {
             EventBusUtil.post(MenuEvent(true, Gravity.RIGHT))
             mainTabActivity().showMainRightMenu()
@@ -162,13 +163,13 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
     private fun showFavorites(tab: OKGameTab) {
         retagRequest()
         changePartGamesLabel(tab)
-        showPartGameList(viewModel.collectList.value?.second, 0)
+        showPartGameList(GameCollectManager.collectGameList.value, 0)
     }
 
     fun enterGame(bean: OKGameBean) {
         mainTabActivity().enterThirdGame(bean)
         if (LoginRepository.isLogined()) {
-            viewModel.addRecentPlay(bean)
+            viewModel.updateRecentPlay()
         }
     }
 
