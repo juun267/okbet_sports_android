@@ -715,9 +715,9 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         if (result.resultType != EnterThirdGameResult.ResultType.NONE) gamesViewModel.clearThirdGame()
     }
     fun enterThirdGame(gameData: OKGameBean, addRecent: Boolean = true) {
+        LogUtil.toJson(gameData)
         if(LoginRepository.isLogined()) {
             gamesViewModel.requestEnterThirdGame(gameData, this)
-            LogUtil.toJson(gameData)
             //有些是手动构造的OKGameBean，需要排除
             //&& (gameData.gameEntryType == GameEntryType.OKGAMES || gameData.gameEntryType==GameEntryType.OKLIVE)
             if (gameData.id > 0){

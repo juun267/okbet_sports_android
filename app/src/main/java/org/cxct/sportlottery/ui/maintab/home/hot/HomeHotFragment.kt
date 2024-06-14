@@ -53,7 +53,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     }
 
     private fun enterGame(okGameBean: OKGameBean) {
-        okgameViewModel.requestEnterThirdGame(okGameBean, getMainTabActivity())
+        getMainTabActivity().enterThirdGame(okGameBean)
     }
     fun getMainTabActivity() = activity as MainTabActivity
     private fun getHomeFragment() = parentFragment as HomeFragment
