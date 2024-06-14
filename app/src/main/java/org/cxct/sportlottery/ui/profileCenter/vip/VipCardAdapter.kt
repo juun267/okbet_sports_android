@@ -17,6 +17,7 @@ import org.cxct.sportlottery.databinding.ItemVipCardBinding
 import org.cxct.sportlottery.net.user.data.RewardInfo
 import org.cxct.sportlottery.net.user.data.UserVip
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.TextUtil
 
 class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
 
@@ -67,7 +68,7 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
         if (total > 0) {
             progressText.text = "$progress/"
                 .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
-                .addSpan("$total pts", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))
+                .addSpan("${TextUtil.formatMoneyNoDecimal(total)} pts", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))
         } else {
             progressText.text = "$progress/"
                 .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
