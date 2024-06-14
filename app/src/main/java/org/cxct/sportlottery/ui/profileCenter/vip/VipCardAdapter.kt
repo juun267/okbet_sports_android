@@ -12,6 +12,7 @@ import org.cxct.sportlottery.common.adapter.BindingVH
 import org.cxct.sportlottery.common.enums.UserVipType
 import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.show
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.databinding.ItemVipCardBinding
 import org.cxct.sportlottery.net.user.data.RewardInfo
 import org.cxct.sportlottery.net.user.data.UserVip
@@ -62,9 +63,16 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
     }
 
     private fun setProgress(progress: String, max: String, progressText: TextView) {
-        progressText.text = "$progress/"
-            .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
-            .addSpan("$max", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))
-
+        val total = max.toIntS(-1)
+        if (total > 0) {
+            progressText.text = "$progress/"
+                .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
+                .addSpan("$total pts", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))
+        } else {
+            progressText.text = "$progress/"
+                .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
+                .addSpan("$max", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))
+        }
     }
+
 }
