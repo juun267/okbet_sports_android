@@ -271,7 +271,7 @@
             android:name=".ui.profileCenter.vip.MyVipDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profileCenter.share.ShareActivity"
+            android:name=".ui.profileCenter.invite.InviteActivity"
             android:screenOrientation="portrait" />
         <provider
             android:name="androidx.core.content.FileProvider"

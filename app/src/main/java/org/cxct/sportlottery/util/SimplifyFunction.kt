@@ -499,7 +499,7 @@ fun updateDefaultHandicapType() {
  * @param image 壓縮對象
  * @param sizeLimit 欲壓縮後大小(kb)
  */
-private fun compressImageToFile(image: Bitmap, sizeLimit: Int): File? {
+ fun compressImageToFile(image: Bitmap, sizeLimit: Int): File? {
     val baos = ByteArrayOutputStream()
     image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
     var options = 90
