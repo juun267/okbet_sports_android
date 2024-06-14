@@ -174,6 +174,12 @@
                 android:text="@string/J093"
                 android:layout_marginStart="12dp"/>
 
+            <TextView
+                android:id="@+id/tvBettingStation"
+                style="@style/text_style_responsible"
+                android:text="@string/P457"
+                android:layout_marginStart="12dp"/>
+
         </com.zhy.view.flowlayout.FlowLayout>
 
         <TextView

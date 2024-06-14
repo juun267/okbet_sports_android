@@ -66,12 +66,6 @@
                 android:layout_marginBottom="@dimen/margin_12"
                 android:layout_marginHorizontal="@dimen/margin_12"/>
 
-            <org.cxct.sportlottery.ui.maintab.home.view.HomeBettingStationView
-                android:id="@+id/bettingStationView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_12"/>
-
             <org.cxct.sportlottery.ui.maintab.home.view.HomeBottomView
                 android:id="@+id/bottomView"
                 android:layout_width="match_parent"
