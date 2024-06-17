@@ -66,7 +66,7 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
     private fun setProgress(progress: String, max: String, progressText: TextView) {
         val total = max.toIntS(-1)
         if (total > 0) {
-            progressText.text = "$progress/"
+            progressText.text = "${TextUtil.formatMoneyNoDecimal(progress.toIntS(0))}/"
                 .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
                 .addSpan("${TextUtil.formatMoneyNoDecimal(total)} pts", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))
         } else {

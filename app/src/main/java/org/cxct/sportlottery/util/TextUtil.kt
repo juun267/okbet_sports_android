@@ -98,7 +98,7 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatMoneyNoDecimal(int: Int): String {
-        return doNumberFormat(int, "###,###,###,##")
+        return doNumberFormat(int, "###,###,###,###")
     }
 
     fun formatMoneyNoDecimal(double: Double): String {
