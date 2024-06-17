@@ -31,6 +31,7 @@ import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -169,7 +170,7 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
         val item = adapter.getItemOrNull(position) ?: return
         val okGameBean = item as OKGameBean
         if (!okGameBean.isMaintain() && StaticData.miniGameOpened()) {
-            viewModel.requestEnterThirdGame(item, requireActivity() as BaseActivity<*, *>)
+            (requireActivity() as MainTabActivity).enterThirdGame(item)
         }
     }
 
