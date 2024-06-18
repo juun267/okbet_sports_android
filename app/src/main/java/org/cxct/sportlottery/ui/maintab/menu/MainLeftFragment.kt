@@ -30,6 +30,7 @@ import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.invite.InviteActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.vip.MyVipDetailActivity
 import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
@@ -160,6 +161,14 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
         }.apply {
             setVisibilityByMarketSwitch()
         }
+        menuInvite.setItem(
+            cxt.getIconSelector(R.drawable.ic_left_menu_invite_sel, R.drawable.ic_left_menu_invite_nor),
+            R.string.B005
+        ){
+            close()
+            startActivity(InviteActivity::class.java)
+        }
+
         menuAffiliate.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),
             R.string.B015

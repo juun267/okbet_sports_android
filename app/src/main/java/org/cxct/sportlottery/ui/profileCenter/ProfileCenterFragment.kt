@@ -298,17 +298,13 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         }
         //关于我们
         btnAboutUs.setOnClickListener {
-//            startActivity(
-//                Intent(
-//                    requireActivity(),
-//                    org.cxct.sportlottery.ui.aboutMe.AboutMeActivity::class.java
-//                )
-//            )
-            startActivity(Intent(requireContext(),InviteActivity::class.java))
+            startActivity(
+                Intent(
+                    requireActivity(),
+                    org.cxct.sportlottery.ui.aboutMe.AboutMeActivity::class.java
+                )
+            )
         }
-
-        //资产检测
-
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
