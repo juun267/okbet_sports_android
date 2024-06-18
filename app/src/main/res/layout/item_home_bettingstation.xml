@@ -95,7 +95,6 @@
             android:layout_height="wrap_content"
             android:minHeight="@dimen/margin_36"
             android:paddingVertical="@dimen/margin_10"
-            android:gravity="center_vertical"
             android:layout_marginHorizontal="@dimen/margin_10">
             <TextView
                 android:id="@+id/tvLocationTitle"
@@ -110,13 +109,12 @@
                 android:id="@+id/tvLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="1"
                 android:lineHeight="@dimen/margin_16"
                 android:layout_marginLeft="@dimen/margin_4"
                 android:textStyle="bold"
                 android:textColor="@color/color_3C4858"
                 android:textSize="@dimen/textSize12sp"
-                tools:text="09167313767" />
+                tools:text="0916731376" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/linView"
