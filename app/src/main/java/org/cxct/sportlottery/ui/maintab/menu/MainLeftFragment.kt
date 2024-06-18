@@ -163,10 +163,12 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
         }
         menuInvite.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_invite_sel, R.drawable.ic_left_menu_invite_nor),
-            R.string.B005
+            R.string.referral_friends
         ){
-            close()
-            startActivity(InviteActivity::class.java)
+            loginedRun(requireContext(),true){
+                close()
+                startActivity(InviteActivity::class.java)
+            }
         }
 
         menuAffiliate.setItem(
