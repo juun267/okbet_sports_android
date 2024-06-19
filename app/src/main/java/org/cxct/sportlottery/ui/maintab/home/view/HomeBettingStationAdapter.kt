@@ -19,7 +19,7 @@ class HomeBettingStationAdapter : BindingAdapter<BettingStation, ItemHomeBetting
         item: BettingStation,
     ) = vb.run {
         tvName.text = item.name
-        tvMobileTitle.text = "${context.getString(R.string.mobile)}:"
+        tvMobileTitle.text = "${context.getString(R.string.N498)}:"
         tvMobile.text = item.telephone
         tvTimeTitle.text = "${context.getString(R.string.P460)}:"
         tvTime.text = "(${item.officeStartTime}-${item.officeEndTime})"

@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_home_call"
                 android:drawablePadding="@dimen/margin_6"
-                android:text="@string/mobile"
+                android:text="@string/N498"
                 android:textColor="@color/color_3C4858"
                 android:textSize="@dimen/textSize12sp" />
 
