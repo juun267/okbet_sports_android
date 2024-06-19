@@ -45,7 +45,7 @@
                   android:layout_marginTop="@dimen/margin_6"
                   android:textSize="@dimen/textSize12sp"
                   android:textColor="@color/color_3C4858"
-                  android:text="Grander Gaming, More Service Offering, and Expanded Location!"/>
+                  android:text="@string/P459"/>
               <ImageView
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"

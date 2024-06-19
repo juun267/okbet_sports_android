@@ -73,7 +73,7 @@
                 android:drawablePadding="@dimen/margin_6"
                 android:textColor="@color/color_3C4858"
                 android:textSize="@dimen/textSize12sp"
-                android:text="Opening Hour: " />
+                android:text="@string/P460" />
             <TextView
                 android:id="@+id/tvTime"
                 android:layout_width="match_parent"
@@ -130,7 +130,7 @@
               android:drawablePadding="@dimen/margin_3"
               android:textSize="@dimen/textSize12sp"
               android:textColor="@color/color_FFFFFF"
-              android:text="View Map"/>
+              android:text="@string/P461"/>
         </LinearLayout>
     </LinearLayout>
 
