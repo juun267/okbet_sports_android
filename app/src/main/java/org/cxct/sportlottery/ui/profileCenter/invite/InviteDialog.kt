@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.invite
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.os.Bundle
 import android.view.View
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
@@ -13,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.databinding.DialogInviteBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.util.*
@@ -23,12 +25,19 @@ class InviteDialog: BaseDialog<ProfileModel,DialogInviteBinding>() {
     init {
         setStyle(R.style.FullScreen)
     }
-    private val content = "share to facebook https://www.okbet.com/"
-    override fun onInitView() {
-        runWithCatch {
-            createQRCodeBitmap(content)?.let {
-                binding.ivQRCode.setImageBitmap(it)
+    companion object{
+        fun newInstance(inviteCode: String) = InviteDialog().apply {
+            arguments = Bundle().apply { putString("inviteCode", inviteCode) }
+        }
+    }
+    private val inviteUrl by lazy { "${Constants.getH5BaseUrl()}?inviteCode=${arguments?.getString("inviteCode")}" }
+    private val content by lazy { "You're the next millionaire $inviteUrl" }
 
+    override fun onInitView() {
+        Constants.INVITE_USER_DETAIL
+        runWithCatch {
+            createQRCodeBitmap(inviteUrl)?.let {
+                binding.ivQRCode.setImageBitmap(it)
             }
         }
        initClick()

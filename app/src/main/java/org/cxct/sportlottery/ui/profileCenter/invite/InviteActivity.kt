@@ -23,12 +23,16 @@ class InviteActivity : BaseActivity<ProfileModel, ActivityInviteBinding>(){
         }
         binding.okWebView.addJavascriptInterface(JsBridge(),"app")
         Constants.appendParams(Constants.getInviteUrl())?.let {  binding.okWebView.loadUrl(it) }
+        viewModel.inviteUserDetail()
     }
+
     inner class JsBridge {
         @JavascriptInterface
         fun openShareNative() {
+            val inviteCode = viewModel.inviteUserDetailEvent.value
+            if (inviteCode.isNullOrEmpty()) return
             post {
-                InviteDialog().show(supportFragmentManager)
+                InviteDialog.newInstance(inviteCode).show(supportFragmentManager)
             }
         }
     }
