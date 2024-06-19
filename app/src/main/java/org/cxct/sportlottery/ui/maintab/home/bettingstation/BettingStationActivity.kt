@@ -5,6 +5,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityBettingstationBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.Spanny
 
 class BettingStationActivity: BaseActivity<MainHomeViewModel,ActivityBettingstationBinding>() {
@@ -16,5 +17,6 @@ class BettingStationActivity: BaseActivity<MainHomeViewModel,ActivityBettingstat
         binding.customToolBar.setOnBackPressListener { finish() }
         binding.bettingStationView.setup(this,viewModel)
         binding.bottomView.bindServiceClick(supportFragmentManager)
+        binding.bottomView.binding.endView.setPadding(0,0,0,15.dp)
     }
 }

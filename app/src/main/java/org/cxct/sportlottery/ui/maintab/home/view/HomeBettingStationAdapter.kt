@@ -22,7 +22,7 @@ class HomeBettingStationAdapter : BindingAdapter<BettingStation, ItemHomeBetting
         tvMobileTitle.text = "${context.getString(R.string.mobile)}:"
         tvMobile.text = item.telephone
         tvTimeTitle.text = "${context.getString(R.string.P460)}:"
-        tvTime.text = "(${item.officeStartTime}~${item.officeEndTime})"
+        tvTime.text = "(${item.officeStartTime}-${item.officeEndTime})"
         tvLocationTitle.text = "${context.getString(R.string.P458)}:"
         tvLocation.text = item.addr
     }

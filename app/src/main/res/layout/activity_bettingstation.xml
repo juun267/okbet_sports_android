@@ -61,7 +61,7 @@
           <org.cxct.sportlottery.ui.maintab.home.view.HomeBottomView
               android:id="@+id/bottomView"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content" />
+              android:layout_height="wrap_content"/>
       </LinearLayout>
   </androidx.core.widget.NestedScrollView>
 
