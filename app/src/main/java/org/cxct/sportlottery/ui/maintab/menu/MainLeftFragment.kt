@@ -31,8 +31,6 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.invite.InviteActivity
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
-import org.cxct.sportlottery.ui.profileCenter.vip.MyVipDetailActivity
 import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
@@ -163,7 +161,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
         }
         menuInvite.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_invite_sel, R.drawable.ic_left_menu_invite_nor),
-            R.string.referral_friends
+            R.string.P462
         ){
             loginedRun(requireContext(),true){
                 close()

@@ -49,7 +49,7 @@ object ShareUtil {
         sharingIntent.setType("text/plain")
         sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
         sharingIntent.setPackage("com.facebook.katana")
-        activity.startActivity(Intent.createChooser(sharingIntent, "Share via"))
+        activity.startActivity(Intent.createChooser(sharingIntent, null))
     }
     fun shareMessenger(activity: Activity, content: String){
 //        if (!MessageDialog.canShow(ShareLinkContent::class.java)) {
@@ -83,8 +83,7 @@ object ShareUtil {
         sharingIntent.setType("text/plain")
         sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
         sharingIntent.setPackage("com.facebook.orca")
-        activity.startActivity(Intent.createChooser(sharingIntent, "Share via"))
-
+        activity.startActivity(Intent.createChooser(sharingIntent, null))
     }
     fun shareInstagram(activity: Activity, content: String){
         runWithCatch({
@@ -103,7 +102,7 @@ object ShareUtil {
         val sharingIntent = Intent(Intent.ACTION_SEND)
         sharingIntent.setType("text/plain")
         sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
-        context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
+        context.startActivity(Intent.createChooser(sharingIntent, null))
     }
     fun shareViber(context: Context, content: String){
         runWithCatch({
