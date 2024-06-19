@@ -271,7 +271,16 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
     private fun setupAuthLogin() {
         binding.btnGoogle.setOnClickListener {
 //            if (binding.cbPrivacy.isChecked) {
-                googleLogin()
+//                googleLogin()
+            loading()
+            AuthManager.authFacebook(this@LoginOKActivity,
+                successCallback = {
+                ToastUtil.showToast(this,it)
+             },
+               failCallback = {
+                   ToastUtil.showToast(this,it)
+             },
+            )
 //            }
 
         }
