@@ -225,8 +225,7 @@
                         android:adjustViewBounds="true"
                         android:maxWidth="110dp"
                         android:maxHeight="110dp"
-                        android:scaleType="fitCenter"
-                        tools:src="@drawable/ic_close_gray_blue" />
+                        android:scaleType="fitCenter"/>
                 </LinearLayout>
 
 
