@@ -100,7 +100,9 @@ object TextUtil : DecimalFormatUtil() {
     fun formatMoneyNoDecimal(int: Int): String {
         return doNumberFormat(int, "###,###,###,###")
     }
-
+    fun formatMoneyNoDecimal(long: Long): String {
+        return doNumberFormat(long, "###,###,###,###,###,###,###,###")
+    }
     fun formatMoneyNoDecimal(double: Double): String {
         return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##")
     }
