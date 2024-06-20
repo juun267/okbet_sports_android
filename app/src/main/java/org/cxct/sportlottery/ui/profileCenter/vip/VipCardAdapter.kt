@@ -17,6 +17,7 @@ import org.cxct.sportlottery.databinding.ItemVipCardBinding
 import org.cxct.sportlottery.net.user.data.RewardInfo
 import org.cxct.sportlottery.net.user.data.UserVip
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 
 class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
@@ -39,7 +40,7 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
             binding.tvCurrent.show()
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 12.dp
             vipProgressView.setProgress2(userVip.getExpPercent())
-            setProgress(userVip.exp.toString(), item.upgradeExp.toString(), binding.tvPercent)
+            tvPercent.setProgress(userVip.exp, item.upgradeExp)
         }else{
             binding.tvCurrent.hide()
             (binding.card.layoutParams as MarginLayoutParams).leftMargin = 10.dp
@@ -47,14 +48,14 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
             val userLevelIndex = userVip.rewardInfo.indexOfFirst { it.levelCode == userVip.levelCode }
             if (userLevelIndex>currentLevelIndex){
                 vipProgressView.setProgress2(100.0)
-                setProgress(item.upgradeExp.toString(), item.upgradeExp.toString(), binding.tvPercent)
+                tvPercent.setProgress(item.upgradeExp, item.upgradeExp,)
             }else{
                 vipProgressView.setProgress2(0.0)
-                setProgress("0", item.upgradeExp.toString(), binding.tvPercent)
+                tvPercent.setProgress(0, item.upgradeExp)
             }
         }
         if (position == (userVip.rewardInfo.size-1)){
-            setProgress(if (isCurrentLevel) userVip.exp.toString() else "0", context.getString(R.string.max), binding.tvPercent)
+            tvPercent.setProgress(if (isCurrentLevel) userVip.exp else 0, -1)
         }
         tvDescribe.text = context.getString(R.string.P443)
         card.setBackgroundResource(UserVipType.getVipCard(position))
@@ -63,16 +64,15 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
         tvNextLevel.text = getItemOrNull(position+1)?.levelName?:context.getString(R.string.max)
     }
 
-    private fun setProgress(progress: String, max: String, progressText: TextView) {
-        val total = max.toIntS(-1)
-        if (total > 0) {
-            progressText.text = "${TextUtil.formatMoneyNoDecimal(progress.toIntS(0))}/"
-                .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
-                .addSpan("${TextUtil.formatMoneyNoDecimal(total)} pts", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))
+    private fun TextView.setProgress(progress: Long, max: Long) {
+        if (max > 0) {
+            text = "${TextUtil.formatMoneyNoDecimal(progress)}/"
+                .setSpan(ColorSpan(context.getColor(R.color.color_0D2245)))
+                .addSpan("${TextUtil.formatMoneyNoDecimal(max)} pts", ColorSpan(context.getColor(R.color.color_6D7693)))
         } else {
-            progressText.text = "${TextUtil.formatMoneyNoDecimal(progress.toIntS(0))}/"
-                .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
-                .addSpan("$max", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))
+            text = "${TextUtil.formatMoneyNoDecimal(progress)}/"
+                .setSpan(ColorSpan(context.getColor(R.color.color_0D2245)))
+                .addSpan("${context.getString(R.string.max)}", ColorSpan(context.getColor(R.color.color_6D7693)))
         }
     }
 
