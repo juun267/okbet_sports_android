@@ -111,7 +111,6 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         promotionView.setup(this@HomeHotFragment)
         newsView.setup(this@HomeHotFragment)
         winsRankView.setUp(this@HomeHotFragment, { viewModel.getBetRecord() }, { viewModel.getWinRecord() })
-        bettingStationView.setup(this@HomeHotFragment)
         initObservable()
 
         viewModel.getSystemNotice()

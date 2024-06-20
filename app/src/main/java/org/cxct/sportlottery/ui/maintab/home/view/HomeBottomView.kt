@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewHomeBottomBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.maintab.home.bettingstation.BettingStationActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import splitties.systemservices.layoutInflater
@@ -47,6 +50,10 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
             Constants.getDutyRuleUrl(context),
             R.string.responsible
         )
+        tvBettingStation.clickDelay{
+            if (AppManager.currentActivity() is BettingStationActivity) return@clickDelay
+            context.startActivity(Intent(context,BettingStationActivity::class.java))
+        }
         jumpToWebView(
             findViewById(R.id.textView16),
             Constants.getDutyRuleUrl(context),

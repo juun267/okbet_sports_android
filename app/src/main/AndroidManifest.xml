@@ -267,6 +267,9 @@
         <activity
             android:name=".ui.profileCenter.vip.MyVipDetailActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.maintab.home.bettingstation.BettingStationActivity"
+            android:screenOrientation="portrait" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

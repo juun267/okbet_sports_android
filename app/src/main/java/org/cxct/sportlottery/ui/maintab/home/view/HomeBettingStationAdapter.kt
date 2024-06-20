@@ -6,13 +6,11 @@ import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.ScreenUtil
 
 class HomeBettingStationAdapter : BindingAdapter<BettingStation, ItemHomeBettingstationBinding>() {
 
     init {
-        addChildClickViewIds(R.id.ivLocation)
+        addChildClickViewIds(R.id.linView)
     }
 
     override fun onBinding(
@@ -20,10 +18,12 @@ class HomeBettingStationAdapter : BindingAdapter<BettingStation, ItemHomeBetting
         vb: ItemHomeBettingstationBinding,
         item: BettingStation,
     ) = vb.run {
-        ivCover.load(sConfigData?.resServerHost + item.stationImage,R.drawable.img_banner01)
         tvName.text = item.name
-        tvAddress.text = item.addr
+        tvMobileTitle.text = "${context.getString(R.string.N498)}:"
         tvMobile.text = item.telephone
-
+        tvTimeTitle.text = "${context.getString(R.string.P460)}:"
+        tvTime.text = "(${item.officeStartTime}-${item.officeEndTime})"
+        tvLocationTitle.text = "${context.getString(R.string.P458)}:"
+        tvLocation.text = item.addr
     }
 }
