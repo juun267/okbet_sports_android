@@ -70,7 +70,7 @@ class VipCardAdapter: BindingAdapter<RewardInfo, ItemVipCardBinding>() {
                 .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
                 .addSpan("${TextUtil.formatMoneyNoDecimal(total)} pts", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))
         } else {
-            progressText.text = "$progress/"
+            progressText.text = "${TextUtil.formatMoneyNoDecimal(progress.toIntS(0))}/"
                 .setSpan(ColorSpan(progressText.context.getColor(R.color.color_0D2245)))
                 .addSpan("$max", ColorSpan(progressText.context.getColor(R.color.color_6D7693)))
         }
