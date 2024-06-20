@@ -16,6 +16,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
+import org.cxct.sportlottery.ui.profileCenter.invite.InviteActivity
 import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
 import org.cxct.sportlottery.ui.promotion.LuckyWheelActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
@@ -65,6 +66,12 @@ object JumpUtil {
                     || path == "vipCenter"->{
                 loginedRun(context,true){
                     (context as AppCompatActivity).startActivity(VipBenefitsActivity::class.java)
+                }
+            }
+            path == "mobile/InviteFriends"
+                    || path == "vipCenter"->{
+                loginedRun(context,true){
+                    (context as AppCompatActivity).startActivity(InviteActivity::class.java)
                 }
             }
             path == "mobile/personal/activity_v2"
