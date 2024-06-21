@@ -34,9 +34,11 @@
                   android:src="@drawable/bg_home_bettingstation_top"/>
               <TextView
                   android:id="@+id/tvTitle"
-                  android:layout_width="wrap_content"
+                  android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="@dimen/margin_20"
+                  android:layout_marginHorizontal="62dp"
+                  android:gravity="center"
                   android:textSize="@dimen/textSize30sp"
                   android:textColor="@color/color_3C4858"
                   android:textStyle="bold"
