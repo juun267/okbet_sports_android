@@ -31,10 +31,9 @@ class InviteDialog: BaseDialog<ProfileModel,DialogInviteBinding>() {
         }
     }
     private val inviteUrl by lazy { "${Constants.getH5BaseUrl()}?inviteCode=${arguments?.getString("inviteCode")}" }
-    private val content by lazy { "You're the next millionaire $inviteUrl" }
+    private val content by lazy { "Enjoy a bigger bonus of up to 15%. Join us, and let's WIN TOGETHER! $inviteUrl" }
 
     override fun onInitView() {
-        Constants.INVITE_USER_DETAIL
         runWithCatch {
             createQRCodeBitmap(inviteUrl)?.let {
                 binding.ivQRCode.setImageBitmap(it)
