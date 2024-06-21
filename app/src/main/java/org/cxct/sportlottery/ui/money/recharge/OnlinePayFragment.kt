@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.hide
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.common.extentions.visible
@@ -129,6 +131,18 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
     private fun initButton() =binding.run{
         btnSubmit.setOnClickListener {
 
+            var email: String? = null
+            var payer = ""
+            if (needPayerField()) {
+                payer = etRechargeOnlinePayer.getText()
+                email = etRechargeOnlineEmail.getText()
+            }
+
+            if (email.isEmptyStr()) {
+                ToastUtil.showToast(context(), getString(R.string.J558))
+                return@setOnClickListener
+            }
+
             val bankCode = when (cvPayBank.visibility) {
                 View.GONE -> ""
                 else -> mSelectRechCfgs?.banks?.get(bankPosition)?.value
@@ -140,10 +154,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
                 ""
             }
 
-            val payer = if (needPayerField()) etRechargeOnlinePayer.getText() else ""
             val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
-            viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer,activityType)
+            viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer, activityType, email)
         }
+
         mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
 
         llPayGap.setOnClickListener {
@@ -182,7 +196,13 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         llRemark.visibility = if (mSelectRechCfgs?.remark.isNullOrEmpty()) View.GONE else View.VISIBLE
         tvHint.text = mSelectRechCfgs?.remark
         binding.etRechargeOnlineAmount.setHint(getAmountLimitHint())
-        etRechargeOnlinePayer.visibility = if (needPayerField()) View.VISIBLE else View.GONE
+        if (needPayerField()) {
+            etRechargeOnlinePayer.show()
+            etRechargeOnlineEmail.show()
+        } else {
+            etRechargeOnlinePayer.hide()
+            etRechargeOnlineEmail.hide()
+        }
 
         cvPayBank.visibility = if (mSelectRechCfgs?.banks != null) View.VISIBLE else View.GONE
         tvPayGapSubtitle.text =
@@ -212,71 +232,82 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
     }
 
     private fun setupTextChangeEvent()=binding.run {
-        viewModel.apply {
-            //充值金額
-            binding.etRechargeOnlineAmount.afterTextChanged {
-                if (it.startsWith("0") && it.length > 1) {
-                    binding.etRechargeOnlineAmount.setText(etRechargeOnlineAmount.getText()
-                        .replace("0", ""))
-                    etRechargeOnlineAmount.setCursor()
-                    return@afterTextChanged
-                }
+        //充值金額
+        etRechargeOnlineAmount.afterTextChanged {
+            if (it.startsWith("0") && it.length > 1) {
+                etRechargeOnlineAmount.setText(etRechargeOnlineAmount.getText().replace("0", ""))
+                etRechargeOnlineAmount.setCursor()
+                return@afterTextChanged
+            }
 
-                if (etRechargeOnlineAmount.getText().length > 9) {
-                    etRechargeOnlineAmount.setText(etRechargeOnlineAmount.getText()
-                        .substring(0, 9))
-                    etRechargeOnlineAmount.setCursor()
-                    return@afterTextChanged
-                }
-                dailyConfigAdapter.getSelectedItem()?.let { dailyConfig->
-                    updateFirstDepositExtraMoney(dailyConfig,it.toIntS(0))
-                }
-                checkRcgOnlineAmount(it, mSelectRechCfgs)
-                if (it.isEmpty() || it.isBlank()) {
-                    if (includeQuickMoney.root.isVisible) (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(
-                        -1)
-                    if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
-                        tvFeeAmount.text =
-                            String.format(getString(R.string.hint_feeback_amount),
-                                sConfigData?.systemCurrencySign,
-                                "0.00")
-                    } else {
-                        tvFeeAmount.text = String.format(getString(R.string.hint_fee_amount),
+            if (etRechargeOnlineAmount.getText().length > 9) {
+                etRechargeOnlineAmount.setText(etRechargeOnlineAmount.getText()
+                    .substring(0, 9))
+                etRechargeOnlineAmount.setCursor()
+                return@afterTextChanged
+            }
+            dailyConfigAdapter.getSelectedItem()?.let { dailyConfig->
+                updateFirstDepositExtraMoney(dailyConfig,it.toIntS(0))
+            }
+            viewModel.checkRcgOnlineAmount(it, mSelectRechCfgs)
+            if (it.isEmpty() || it.isBlank()) {
+                if (includeQuickMoney.root.isVisible) (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(
+                    -1)
+                if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
+                    tvFeeAmount.text =
+                        String.format(getString(R.string.hint_feeback_amount),
                             sConfigData?.systemCurrencySign,
                             "0.00")
-                    }
                 } else {
-                    //返利/手續費金額
-                    if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
-                        tvFeeAmount.text =
-                            String.format(getString(R.string.hint_feeback_amount),sConfigData?.systemCurrencySign,
-                                ArithUtil.toMoneyFormat((it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
-
-                            )
-                    } else {
-                        tvFeeAmount.text = String.format(getString(R.string.hint_fee_amount),
-                            sConfigData?.systemCurrencySign,
-                            ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0).times(mSelectRechCfgs?.rebateFee?:0.0))))
-                    }
-                    if(mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
-                        tvFeeRate.text =
-                            String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
-                        tvFeeAmount.text = String.format(getString(R.string.hint_fee_amount),
-                            sConfigData?.systemCurrencySign,
-                            "0.00")
-                        tvFeeRate.gone()
-                        tvFeeAmount.gone()
-                    }else{
-                        tvFeeRate.show()
-                        tvFeeAmount.show()
-                    }
+                    tvFeeAmount.text = String.format(getString(R.string.hint_fee_amount),
+                        sConfigData?.systemCurrencySign,
+                        "0.00")
                 }
+            } else {
+                //返利/手續費金額
+                if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
+                    tvFeeAmount.text =
+                        String.format(getString(R.string.hint_feeback_amount),sConfigData?.systemCurrencySign,
+                            ArithUtil.toMoneyFormat((it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
 
+                        )
+                } else {
+                    tvFeeAmount.text = String.format(getString(R.string.hint_fee_amount),
+                        sConfigData?.systemCurrencySign,
+                        ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0).times(mSelectRechCfgs?.rebateFee?:0.0))))
+                }
+                if(mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
+                    tvFeeRate.text =
+                        String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
+                    tvFeeAmount.text = String.format(getString(R.string.hint_fee_amount),
+                        sConfigData?.systemCurrencySign,
+                        "0.00")
+                    tvFeeRate.gone()
+                    tvFeeAmount.gone()
+                }else{
+                    tvFeeRate.show()
+                    tvFeeAmount.show()
+                }
             }
 
-            etRechargeOnlinePayer.afterTextChanged {
-                checkRcgNormalOnlineAccount(it)
+        }
+
+        etRechargeOnlinePayer.afterTextChanged {
+            viewModel.checkRcgNormalOnlineAccount(it)
+        }
+
+        etRechargeOnlineEmail.afterTextChanged {
+            if (it.isEmptyStr()) {
+                etRechargeOnlineEmail.setError(getString(R.string.error_input_empty))
+                return@afterTextChanged
             }
+
+            if (!VerifyConstUtil.verifyMail(it)) {
+                etRechargeOnlineEmail.setError(getString(R.string.error_e_mail))
+                return@afterTextChanged
+            }
+
+            etRechargeOnlineEmail.setError(null)
         }
     }
 
