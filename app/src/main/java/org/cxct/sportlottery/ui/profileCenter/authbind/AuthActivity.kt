@@ -47,7 +47,6 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
     private fun initObserve() {
         viewModel.userInfo.observe(this) {
             it?.let {
-                LogUtil.d("userInfo: googleBind="+it.googleBind+",facebookBind="+it.facebookBind)
                 binding.tvCheckGoogle.setChecked(it.googleBind)
                 binding.tvCheckFacebook.setChecked(it.facebookBind)
             }
