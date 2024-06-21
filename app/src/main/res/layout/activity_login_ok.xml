@@ -339,15 +339,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/btn_google"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/margin_45"
                         android:layout_gravity="center"
-                        android:paddingHorizontal="@dimen/margin_20"
                         android:gravity="center">
 
                         <ImageView
@@ -365,14 +364,28 @@
                             android:text="@string/google" />
                     </LinearLayout>
 
-
-                    <ImageView
+                    <LinearLayout
                         android:id="@+id/btn_facebook"
-                        android:layout_width="33dp"
-                        android:layout_height="33dp"
-                        android:visibility="gone"
-                        android:layout_marginLeft="@dimen/margin_45"
-                        android:src="@drawable/ic_facebook" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/margin_45"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/margin_20"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_facebook" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_10"
+                            android:textSize="@dimen/sp_14"
+                            android:textStyle="bold"
+                            android:textColor="@color/color_0D2245"
+                            android:text="@string/facebook" />
+                    </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>

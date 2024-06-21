@@ -263,34 +263,17 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         AuthManager.authGoogle(this@LoginOKActivity)
     }
 
-    override fun onPause() {
-        super.onPause()
-//        hideLoading()
-    }
-
     private fun setupAuthLogin() {
         binding.btnGoogle.setOnClickListener {
-//            if (binding.cbPrivacy.isChecked) {
-//                googleLogin()
-            loading()
-            AuthManager.authFacebook(this@LoginOKActivity,
-                successCallback = {
-                ToastUtil.showToast(this,it)
-             },
-               failCallback = {
-                   ToastUtil.showToast(this,it)
-             },
-            )
-//            }
-
+            googleLogin()
         }
-
         binding.btnFacebook.setOnClickListener {
-//            AuthManager.authFacebook(this@LoginOKActivity, { token ->
-//                viewModel.loginFacebook(token)
-//            }, { errorMsg ->
-//                showErrorDialog(errorMsg)
-//            })
+            AuthManager.authFacebook(this@LoginOKActivity, { token ->
+                viewModel.loginFacebook(token)
+            }, { errorMsg ->
+                hideLoading()
+                showErrorDialog(errorMsg)
+            })
         }
     }
 
