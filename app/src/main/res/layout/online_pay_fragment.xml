@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             app:cvTitleTextStyle="normal"
             app:cvEms="20"
+            app:cvMarginBottom="0dp"
             app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvHint="@string/edt_hint_payer"
             app:cvInputType="text"

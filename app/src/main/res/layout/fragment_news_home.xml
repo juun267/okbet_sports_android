@@ -57,7 +57,7 @@
             </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
             <include
-                android:id="@+id/includeNews"
+                android:id="@+id/include_News"
                 layout="@layout/include_home_news"/>
             <TextView
                 android:id="@+id/tvShowMore"

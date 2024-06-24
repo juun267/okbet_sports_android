@@ -143,6 +143,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
                 return@setOnClickListener
             }
 
+            if (!VerifyConstUtil.verifyMail(email!!)) {
+                ToastUtil.showToast(context(), getString(R.string.error_e_mail))
+                return@setOnClickListener
+            }
+
             val bankCode = when (cvPayBank.visibility) {
                 View.GONE -> ""
                 else -> mSelectRechCfgs?.banks?.get(bankPosition)?.value
