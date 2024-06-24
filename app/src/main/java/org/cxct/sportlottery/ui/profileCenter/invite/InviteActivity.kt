@@ -8,6 +8,7 @@ import org.cxct.sportlottery.databinding.ActivityInviteBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
+import org.cxct.sportlottery.util.LogUtil
 
 class InviteActivity : BaseActivity<ProfileModel, ActivityInviteBinding>(){
 
@@ -22,7 +23,10 @@ class InviteActivity : BaseActivity<ProfileModel, ActivityInviteBinding>(){
             }
         }
         binding.okWebView.addJavascriptInterface(JsBridge(),"app")
-        Constants.appendParams(Constants.getInviteUrl())?.let {  binding.okWebView.loadUrl(it) }
+        Constants.appendParams(Constants.getInviteUrl())?.let {
+            LogUtil.d("getInviteUrl=$it")
+            binding.okWebView.loadUrl(it)
+        }
         viewModel.inviteUserDetail()
     }
 
