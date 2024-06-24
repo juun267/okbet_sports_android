@@ -21,65 +21,68 @@ object ShareUtil {
             shareError(activity)
             return
         }
-        val content = ShareLinkContent.Builder()
-            .setContentUrl(Uri.parse(url))
-            .setQuote(content)
-            .build()
-        ShareDialog(activity).apply {
-            registerCallback(CallbackManager.Factory.create(),
-               object: FacebookCallback1<Sharer.Result> {
-                   override fun onCancel() {
-                   }
-
-                   override fun onError(error: FacebookException) {
-                       LogUtil.e("onError:"+error.message)
-                       ToastUtil.showToast(activity,error.message)
-                   }
-
-                   override fun onSuccess(result: Sharer.Result) {
-                       LogUtil.d("onSuccess:"+result.postId)
-                   }
-               })
-        }.show(content)
-//        val sharingIntent = Intent(Intent.ACTION_SEND)
-//        sharingIntent.setType("text/plain")
-//        sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
-//        sharingIntent.setPackage("com.facebook.katana")
-//        activity.startActivity(Intent.createChooser(sharingIntent, null))
+//        val content = ShareLinkContent.Builder()
+//            .setContentUrl(Uri.parse(url))
+//            .setQuote(content)
+//            .build()
+//        ShareDialog(activity).apply {
+//            registerCallback(CallbackManager.Factory.create(),
+//               object: FacebookCallback1<Sharer.Result> {
+//                   override fun onCancel() {
+//                   }
+//
+//                   override fun onError(error: FacebookException) {
+//                       LogUtil.e("onError:"+error.message)
+//                       ToastUtil.showToast(activity,error.message)
+//                   }
+//
+//                   override fun onSuccess(result: Sharer.Result) {
+//                       LogUtil.d("onSuccess:"+result.postId)
+//                   }
+//               })
+//        }.show(content)
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.setType("text/plain")
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
+        sharingIntent.setPackage("com.facebook.katana")
+        activity.startActivity(Intent.createChooser(sharingIntent, null))
     }
     fun shareMessenger(activity: Activity, content: String, url: String){
         if (!MessageDialog.canShow(ShareLinkContent::class.java)) {
             shareError(activity)
             return
         }
-        val content = ShareLinkContent.Builder()
-            .setContentUrl(Uri.parse(url))
-            .setQuote(content)
-            .setPageId("104843916055222")
-            .build()
-        MessageDialog(activity).apply {
-            registerCallback(CallbackManager.Factory.create(),
-                object: FacebookCallback1<Sharer.Result> {
-                    override fun onCancel() {
-                    }
-
-                    override fun onError(error: FacebookException) {
-                        LogUtil.e("onError:"+error.message)
-                        ToastUtil.showToast(activity,error.message)
-                    }
-
-                    override fun onSuccess(result: Sharer.Result) {
-                        LogUtil.d("onSuccess:"+result.postId)
-                    }
-                })
-
-        }.show(content)
-
-//        val sharingIntent = Intent(Intent.ACTION_SEND)
-//        sharingIntent.setType("text/plain")
-//        sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
-//        sharingIntent.setPackage("com.facebook.orca")
-//        activity.startActivity(Intent.createChooser(sharingIntent, null))
+//        val content = ShareLinkContent.Builder()
+//            .setContentUrl(Uri.parse(url))
+//            .setQuote(content)
+//            .setPageId("104843916055222")
+//            .build()
+//        MessageDialog(activity).apply {
+//            registerCallback(CallbackManager.Factory.create(),
+//                object: FacebookCallback1<Sharer.Result> {
+//                    override fun onCancel() {
+//                    }
+//
+//                    override fun onError(error: FacebookException) {
+//                        LogUtil.e("onError:"+error.message)
+//                        ToastUtil.showToast(activity,error.message)
+//                    }
+//
+//                    override fun onSuccess(result: Sharer.Result) {
+//                        LogUtil.d("onSuccess:"+result.postId)
+//                    }
+//                })
+//
+//        }.show(content)
+        runWithCatch({
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.setType("text/plain")
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
+        sharingIntent.setPackage("com.facebook.orca")
+        activity.startActivity(Intent.createChooser(sharingIntent, null))
+        },{
+            shareError(activity)
+        })
     }
     fun shareInstagram(activity: Activity, content: String){
         runWithCatch({

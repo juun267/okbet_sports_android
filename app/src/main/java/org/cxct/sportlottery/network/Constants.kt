@@ -248,7 +248,7 @@ object Constants {
 
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
-    fun getInviteUrl() = "${getH5BaseUrl()}mobile/InviteFriends"
+    fun getInviteUrl() = "${getH5BaseUrl()}mobile/inviteFriends"
 
     /**
      * 给h5地址加上统一参数

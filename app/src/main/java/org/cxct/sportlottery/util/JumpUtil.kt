@@ -68,7 +68,7 @@ object JumpUtil {
                     (context as AppCompatActivity).startActivity(VipBenefitsActivity::class.java)
                 }
             }
-            path == "mobile/InviteFriends"
+            path == "mobile/inviteFriends"
                     || path == "vipCenter"->{
                 loginedRun(context,true){
                     (context as AppCompatActivity).startActivity(InviteActivity::class.java)

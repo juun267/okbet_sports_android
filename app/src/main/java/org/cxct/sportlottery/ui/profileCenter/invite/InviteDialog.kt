@@ -30,7 +30,7 @@ class InviteDialog: BaseDialog<ProfileModel,DialogInviteBinding>() {
             arguments = Bundle().apply { putString("inviteCode", inviteCode) }
         }
     }
-    private val inviteUrl by lazy { "${Constants.getH5BaseUrl()}?inviteCode=${arguments?.getString("inviteCode")}" }
+    private val inviteUrl by lazy { "https://www.okbet.com/?inviteCode=${arguments?.getString("inviteCode")}" }
     private val quote = "Enjoy a bigger bonus of up to 15%. Join us, and let's WIN TOGETHER!"
     private val content by lazy { "$quote $inviteUrl" }
 
@@ -47,10 +47,10 @@ class InviteDialog: BaseDialog<ProfileModel,DialogInviteBinding>() {
             dismiss()
         }
         tvFacebook.setOnClickListener {
-            ShareUtil.shareFacebook(requireActivity(),quote,inviteUrl)
+            ShareUtil.shareFacebook(requireActivity(),content,inviteUrl)
         }
         tvMessenger.setOnClickListener {
-            ShareUtil.shareMessenger(requireActivity(),quote,inviteUrl)
+            ShareUtil.shareMessenger(requireActivity(),content,inviteUrl)
         }
         tvInstagram.setOnClickListener {
             ShareUtil.shareInstagram(requireActivity(),content)
