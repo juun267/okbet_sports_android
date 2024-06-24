@@ -121,20 +121,19 @@ class SportLeagueAdapter2(
         var isNeedRefreshPlayCate = false
 
         val cateMenuCode = oddsChangeEvent.channel?.split(context.getString(R.string.splash_no_trans))?.getOrNull(6)
-
         isNeedRefresh = when {
 
             (cateMenuCode == PlayCate.EPS.value) -> {
                 SocketUpdateUtil.updateMatchOdds(
                     mutableMapOf(Pair(PlayCate.EPS.value, matchOdd.oddsEps?.eps?.toMutableList() ?: mutableListOf())),
-                    oddsChangeEvent.odds)
+                    oddsChangeEvent.odds,oddsChangeEvent.updateMode)
             }
 
 
             (QuickPlayCate.values().map { it.value }.contains(cateMenuCode)) -> {
                 SocketUpdateUtil.updateMatchOdds(
                     matchOdd.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat_1()
-                        ?: mutableMapOf(), oddsChangeEvent.odds)
+                        ?: mutableMapOf(), oddsChangeEvent.odds,oddsChangeEvent.updateMode)
             }
 
             else -> {
@@ -143,7 +142,7 @@ class SportLeagueAdapter2(
                 }
                 SocketUpdateUtil.updateMatchOdds(
                     matchOdd.oddsMap as MutableMap<String, MutableList<Odd?>?>? ?: mutableMapOf(),
-                    oddsChangeEvent.odds
+                    oddsChangeEvent.odds,oddsChangeEvent.updateMode
                 )
             }
         }

@@ -28,6 +28,8 @@ data class OddsChangeEvent(
     val gameType: String? = null,
     @Json(name = "playCateNum")
     val playCateNum: Int? = null,
+    @Json(name = "updateMode")
+    val updateMode: Int? = null,
 ) : ServiceEventType, ServiceChannel {
     override var channel: String? = null
 

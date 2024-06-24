@@ -374,7 +374,9 @@ object SocketUpdateUtil {
                             PlayCate.EPS.value,
                             matchOdd.oddsEps?.eps?.toMutableList() ?: mutableListOf<Odd?>()
                         )
-                    ), oddsChangeEvent.odds
+                    ),
+                    oddsChangeEvent.odds,
+                    oddsChangeEvent.updateMode
                 )
             }
 
@@ -385,7 +387,8 @@ object SocketUpdateUtil {
                         if (oddsMap.containsKey(key)) {
                             updated = updateMatchOdds(
                                 mutableMapOf(Pair(key, oddsMap[key] as MutableList<Odd?>?)),
-                                mutableMapOf(Pair(key, value))
+                                mutableMapOf(Pair(key, value)),
+                                oddsChangeEvent.updateMode
                             )
                         } else {
                             oddsMap[key] = value?.toMutableList()
@@ -399,7 +402,9 @@ object SocketUpdateUtil {
             (QuickPlayCate.values().map { it.value }.contains(cateMenuCode)) -> {
                 updateMatchOdds(
                     matchOdd.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat_1()
-                        ?: mutableMapOf(), oddsChangeEvent.odds
+                        ?: mutableMapOf(),
+                    oddsChangeEvent.odds,
+                    oddsChangeEvent.updateMode
                 )
             }
 
@@ -407,7 +412,7 @@ object SocketUpdateUtil {
                 if (matchOdd.oddsMap == null) {
                     matchOdd.oddsMap = mutableMapOf()
                 }
-                updateMatchOdds(matchOdd.oddsMap as MutableMap<String, MutableList<Odd?>?>? ?: mutableMapOf(), oddsChangeEvent.odds)
+                updateMatchOdds(matchOdd.oddsMap as MutableMap<String, MutableList<Odd?>?>? ?: mutableMapOf(), oddsChangeEvent.odds,oddsChangeEvent.updateMode)
             }
         }
 
@@ -452,6 +457,7 @@ object SocketUpdateUtil {
     fun updateMatchOdds(
         oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
+        updateMode: Int?
     ): Boolean {
         return when (oddsMap.isNullOrEmpty()) {
             true -> {
@@ -459,7 +465,7 @@ object SocketUpdateUtil {
             }
 
             false -> {
-                refreshMatchOdds(oddsMap, oddsMapSocket)
+                refreshMatchOdds(oddsMap, oddsMapSocket, updateMode)
             }
         }
     }
@@ -477,6 +483,7 @@ object SocketUpdateUtil {
     private fun refreshMatchOdds(
         oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
+        updateMode: Int?
     ): Boolean {
         var isNeedRefresh = false
 
@@ -564,7 +571,16 @@ object SocketUpdateUtil {
                 }
             }
         }
-
+        //全量更新，在上面新增和修改后，再删除存在oddsMap中而不存在于oddsMapSocket中的玩法
+        if (updateMode==2&&!oddsMapSocket.isNullOrEmpty()){
+            val diffKeys = oddsMap.keys.subtract(oddsMapSocket.keys).toList()
+            if (diffKeys.isNotEmpty()){
+                diffKeys.forEach {
+                    oddsMap.remove(it)
+                }
+                isNeedRefresh = true
+            }
+        }
         return isNeedRefresh
     }
 
