@@ -31,7 +31,8 @@ class InviteDialog: BaseDialog<ProfileModel,DialogInviteBinding>() {
         }
     }
     private val inviteUrl by lazy { "${Constants.getH5BaseUrl()}?inviteCode=${arguments?.getString("inviteCode")}" }
-    private val content by lazy { "Enjoy a bigger bonus of up to 15%. Join us, and let's WIN TOGETHER! $inviteUrl" }
+    private val quote = "Enjoy a bigger bonus of up to 15%. Join us, and let's WIN TOGETHER!"
+    private val content by lazy { "$quote $inviteUrl" }
 
     override fun onInitView() {
         runWithCatch {
@@ -46,10 +47,10 @@ class InviteDialog: BaseDialog<ProfileModel,DialogInviteBinding>() {
             dismiss()
         }
         tvFacebook.setOnClickListener {
-            ShareUtil.shareFacebook(requireActivity(),content)
+            ShareUtil.shareFacebook(requireActivity(),quote,inviteUrl)
         }
         tvMessenger.setOnClickListener {
-            ShareUtil.shareMessenger(requireActivity(),content)
+            ShareUtil.shareMessenger(requireActivity(),quote,inviteUrl)
         }
         tvInstagram.setOnClickListener {
             ShareUtil.shareInstagram(requireActivity(),content)
@@ -58,7 +59,7 @@ class InviteDialog: BaseDialog<ProfileModel,DialogInviteBinding>() {
             ShareUtil.shareViber(requireActivity(),content)
         }
         tvCopyLink.setOnClickListener {
-            requireContext().copyText(content)
+            requireContext().copyText(inviteUrl)
             ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
         }
         tvSave.setOnClickListener {

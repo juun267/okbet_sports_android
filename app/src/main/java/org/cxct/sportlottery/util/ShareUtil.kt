@@ -10,80 +10,76 @@ import com.facebook.share.Sharer
 import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.widget.MessageDialog
 import com.facebook.share.widget.ShareDialog
-import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import com.facebook.FacebookCallback as FacebookCallback1
 
 
 object ShareUtil {
-    const val hostUrl = "https://www.okbet.com"
-    fun shareFacebook(activity: Activity, content: String){
-//        if (!ShareDialog.canShow(ShareLinkContent::class.java)) {
-//            ToastUtil.showToast(activity,"cant share facebook ")
-//            return
-//        }
-//        val content = ShareLinkContent.Builder()
-//            .setContentUrl(Uri.parse(hostUrl))
-//            .setQuote(content)
-//            .build()
-//        ShareDialog(activity).apply {
-//            registerCallback(CallbackManager.Factory.create(),
-//               object: FacebookCallback1<Sharer.Result> {
-//                   override fun onCancel() {
-//                       LogUtil.d("onCancel")
-//                   }
-//
-//                   override fun onError(error: FacebookException) {
-//                       LogUtil.d("onError:"+error.message)
-//                       ToastUtil.showToast(activity, error.message)
-//                   }
-//
-//                   override fun onSuccess(result: Sharer.Result) {
-//                       LogUtil.d("onSuccess:"+result.postId)
-//                   }
-//               })
-//
-//        }.show(content)
-        val sharingIntent = Intent(Intent.ACTION_SEND)
-        sharingIntent.setType("text/plain")
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
-        sharingIntent.setPackage("com.facebook.katana")
-        activity.startActivity(Intent.createChooser(sharingIntent, null))
-    }
-    fun shareMessenger(activity: Activity, content: String){
-//        if (!MessageDialog.canShow(ShareLinkContent::class.java)) {
-//            ToastUtil.showToast(activity,"cant share Messenger ")
-//            return
-//        }
-//        val content = ShareLinkContent.Builder()
-//            .setContentUrl(Uri.parse("https://www.google.com"))
-//            .setPageId("104843916055222")
-//            .build()
-//        MessageDialog(activity).apply {
-//            registerCallback(CallbackManager.Factory.create(),
-//                object: FacebookCallback1<Sharer.Result> {
-//                    override fun onCancel() {
-//                        LogUtil.d("onCancel")
-//                    }
-//
-//                    override fun onError(error: FacebookException) {
-//                        LogUtil.d("onError:"+error.message)
-//                        ToastUtil.showToast(activity, error.message)
-//                    }
-//
-//                    override fun onSuccess(result: Sharer.Result) {
-//                        LogUtil.d("onSuccess:"+result.postId)
-//                    }
-//                })
-//
-//        }.show(content)
+    fun shareFacebook(activity: Activity, content: String, url: String){
+        if (!ShareDialog.canShow(ShareLinkContent::class.java)) {
+            shareError(activity)
+            return
+        }
+        val content = ShareLinkContent.Builder()
+            .setContentUrl(Uri.parse(url))
+            .setQuote(content)
+            .build()
+        ShareDialog(activity).apply {
+            registerCallback(CallbackManager.Factory.create(),
+               object: FacebookCallback1<Sharer.Result> {
+                   override fun onCancel() {
+                   }
 
-        val sharingIntent = Intent(Intent.ACTION_SEND)
-        sharingIntent.setType("text/plain")
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
-        sharingIntent.setPackage("com.facebook.orca")
-        activity.startActivity(Intent.createChooser(sharingIntent, null))
+                   override fun onError(error: FacebookException) {
+                       LogUtil.e("onError:"+error.message)
+                       ToastUtil.showToast(activity,error.message)
+                   }
+
+                   override fun onSuccess(result: Sharer.Result) {
+                       LogUtil.d("onSuccess:"+result.postId)
+                   }
+               })
+        }.show(content)
+//        val sharingIntent = Intent(Intent.ACTION_SEND)
+//        sharingIntent.setType("text/plain")
+//        sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
+//        sharingIntent.setPackage("com.facebook.katana")
+//        activity.startActivity(Intent.createChooser(sharingIntent, null))
+    }
+    fun shareMessenger(activity: Activity, content: String, url: String){
+        if (!MessageDialog.canShow(ShareLinkContent::class.java)) {
+            shareError(activity)
+            return
+        }
+        val content = ShareLinkContent.Builder()
+            .setContentUrl(Uri.parse(url))
+            .setQuote(content)
+            .setPageId("104843916055222")
+            .build()
+        MessageDialog(activity).apply {
+            registerCallback(CallbackManager.Factory.create(),
+                object: FacebookCallback1<Sharer.Result> {
+                    override fun onCancel() {
+                    }
+
+                    override fun onError(error: FacebookException) {
+                        LogUtil.e("onError:"+error.message)
+                        ToastUtil.showToast(activity,error.message)
+                    }
+
+                    override fun onSuccess(result: Sharer.Result) {
+                        LogUtil.d("onSuccess:"+result.postId)
+                    }
+                })
+
+        }.show(content)
+
+//        val sharingIntent = Intent(Intent.ACTION_SEND)
+//        sharingIntent.setType("text/plain")
+//        sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
+//        sharingIntent.setPackage("com.facebook.orca")
+//        activity.startActivity(Intent.createChooser(sharingIntent, null))
     }
     fun shareInstagram(activity: Activity, content: String){
         runWithCatch({
@@ -95,34 +91,39 @@ object ShareUtil {
             sharingIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             activity.startActivity(sharingIntent)
         },{
-            ToastUtil.showToast(activity, it.message)
+            shareError(activity)
         })
     }
     fun shareBySystem(context: Context, content: String){
-        val sharingIntent = Intent(Intent.ACTION_SEND)
-        sharingIntent.setType("text/plain")
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
-        context.startActivity(Intent.createChooser(sharingIntent, null))
+        runWithCatch({
+            val sharingIntent = Intent(Intent.ACTION_SEND)
+            sharingIntent.setType("text/plain")
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
+            context.startActivity(Intent.createChooser(sharingIntent, null))
+        },{
+            shareError(context)
+        })
     }
     fun shareViber(context: Context, content: String){
         runWithCatch({
-            JumpUtil.toExternalWeb(context,"viber://forward?text=$content")
-        },{
-            ToastUtil.showToast(context,it.message)
+            val sharingIntent = Intent(Intent.ACTION_VIEW, Uri.parse("viber://forward?text=$content"))
+            sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(sharingIntent)},{
+            shareError(context)
         })
     }
     fun sendSMS(context: Context,content: String){
-        runWithCatch(
+        runWithCatch({
+               val sharingIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"))
+                sharingIntent.putExtra( "sms_body", content)
+                context.startActivity(sharingIntent) },
             {
-                context.startActivity(Intent(Intent.ACTION_VIEW).apply {
-                    data =  Uri.parse( "smsto:" )
-                    putExtra( "sms_body", content)
-                })
-            },
-            {
-                ToastUtil.showToast(context,it.message)
+                shareError(context)
             }
         )
+    }
+    private fun shareError(context: Context){
+        ToastUtil.showToast(context,context.getString(R.string.unknown_error))
     }
 
 }
