@@ -12,6 +12,7 @@ import com.facebook.share.widget.MessageDialog
 import com.facebook.share.widget.ShareDialog
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import java.net.URLEncoder
 import com.facebook.FacebookCallback as FacebookCallback1
 
 
@@ -109,7 +110,7 @@ object ShareUtil {
     }
     fun shareViber(context: Context, content: String){
         runWithCatch({
-            val sharingIntent = Intent(Intent.ACTION_VIEW, Uri.parse("viber://forward?text=$content"))
+            val sharingIntent = Intent(Intent.ACTION_VIEW, Uri.parse("viber://forward?text=${URLEncoder.encode(content,"utf-8")}"))
             sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(sharingIntent)},{
             shareError(context)
