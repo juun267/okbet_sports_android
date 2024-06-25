@@ -654,6 +654,7 @@ object SocketUpdateUtil {
 
         val newOddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
         newOddsDetailDataList.addAll(oddsDetailDataList)
+
         matchOddsChangeEvent.odds = matchOddsChangeEvent.odds.replaceNameMap(oddsDetailDataList?.firstOrNull()?.matchInfo)
         //有新賠率盤口
         matchOddsChangeEvent.odds?.forEach { (key, value) ->

@@ -23,6 +23,8 @@ data class MatchOddsChangeEvent(
     val isLongTermEvent: Int?,
     @Json(name = "odds")
     var odds: Map<String, Odds>?, // key -> GameBetType ; value -> Odds
+    @Json(name = "updateMode")
+    val updateMode: Int? = null, //2 为全量更新需要替换本地全部玩法
 ) : ServiceEventType
 
 /**
