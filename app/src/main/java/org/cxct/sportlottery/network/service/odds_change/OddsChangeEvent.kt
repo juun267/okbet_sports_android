@@ -29,7 +29,7 @@ data class OddsChangeEvent(
     @Json(name = "playCateNum")
     val playCateNum: Int? = null,
     @Json(name = "updateMode")
-    val updateMode: Int? = null,
+    val updateMode: Int? = null, //2 为全量更新需要替换本地全部玩法
 ) : ServiceEventType, ServiceChannel {
     override var channel: String? = null
 
