@@ -30,7 +30,7 @@ class InviteDialog: BaseDialog<ProfileModel,DialogInviteBinding>() {
             arguments = Bundle().apply { putString("inviteCode", inviteCode) }
         }
     }
-    private val inviteUrl by lazy { "https://www.okbet.com/?inviteCode=${arguments?.getString("inviteCode")}" }
+    private val inviteUrl by lazy { "${Constants.getH5BaseUrl()}?inviteCode=${arguments?.getString("inviteCode")}" }
     private val quote = "Enjoy a bigger bonus of up to 15%. Join us, and let's WIN TOGETHER!"
     private val content by lazy { "$quote $inviteUrl" }
 

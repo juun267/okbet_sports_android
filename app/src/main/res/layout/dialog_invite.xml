@@ -16,7 +16,7 @@
         android:background="@drawable/bg_invite_qrcode">
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_30"
+            android:layout_height="@dimen/margin_40"
             android:src="@drawable/ic_okbet_logo_white"/>
         <TextView
             android:layout_width="wrap_content"
@@ -30,6 +30,7 @@
             android:id="@+id/ivQRCode"
             android:layout_width="200dp"
             android:layout_height="200dp"
+            android:elevation="@dimen/margin_10"
             android:padding="@dimen/margin_20"
             android:layout_margin="@dimen/margin_20"
             android:background="@drawable/bg_white_radius_12"/>

@@ -92,7 +92,6 @@ object ShareUtil {
             sharingIntent.putExtra("com.instagram.platform.extra.APPLICATION_ID", activity.getString(R.string.facebook_app_id))
             sharingIntent.setType("text/plain")
             sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
-            sharingIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             activity.startActivity(sharingIntent)
         },{
             shareError(activity)
