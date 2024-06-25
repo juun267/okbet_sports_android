@@ -86,9 +86,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
             binding.etRechargeOnlineAmount.setError(it)
         }
 
-        viewModel.rechargeOnlineAccountMsg.observe(viewLifecycleOwner) {
-            binding.etRechargeOnlinePayer.setError(it)
-        }
+//        viewModel.rechargeOnlineAccountMsg.observe(viewLifecycleOwner) {
+//            binding.etRechargeOnlinePayer.setError(it)
+//        }
 
         //在線充值成功
         viewModel.onlinePayResult.observe(this.viewLifecycleOwner) {
