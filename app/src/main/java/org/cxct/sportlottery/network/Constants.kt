@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import cn.jpush.android.api.JPushInterface
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -71,6 +72,7 @@ object Constants {
     fun getInviteCode(): String {
         return getMetaDataDefValue(MultiLanguagesApplication.appContext, "INVITE_CODE", "")
     }
+    val deviceSn by lazy { JPushInterface.getRegistrationID(MultiLanguagesApplication.getInstance()) }
 
     /**
      * 获取MetaData信息

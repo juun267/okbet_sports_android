@@ -237,7 +237,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                     }else{
                         var inviteCode = binding.eetRecommendCode.text.toString()
                         //新的注册接口
-                        val deviceSn = JPushInterface.getRegistrationID(this@LoginOKActivity)
                         val deviceId = Settings.Secure.getString(
                             applicationContext.contentResolver,
                             Settings.Secure.ANDROID_ID
@@ -246,7 +245,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                         val loginRequest = LoginRequest(
                             account = it.userName?:"",
                             loginSrc = LOGIN_SRC,
-                            deviceSn = deviceSn,
                             appVersion = appVersion,
                             loginEnvInfo = deviceId,
                             inviteCode = inviteCode,

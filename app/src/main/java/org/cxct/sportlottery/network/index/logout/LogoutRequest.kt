@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.network.index.logout
 
+import cn.jpush.android.api.JPushInterface
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @KeepMembers
@@ -21,7 +23,7 @@ data class LogoutRequest(
     val testFlag: Int? = null,
     val permission: String? = null,
     val platformName: String? = null,
-    val deviceSn: String? = null,
+    val deviceSn: String = JPushInterface.getRegistrationID(MultiLanguagesApplication.getInstance()),
     val iconUrl: String? = null,
     val innerAdmin: Int? = null
 )
