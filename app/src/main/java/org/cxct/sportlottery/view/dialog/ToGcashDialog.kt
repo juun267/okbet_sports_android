@@ -14,7 +14,6 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.KvUtils
-import org.cxct.sportlottery.util.KvUtils.GLIFE_TIP_FLAG
 import splitties.bundle.put
 
 /**
@@ -26,6 +25,18 @@ class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
         setStyle(R.style.FullScreen)
     }
     companion object{
+
+        //glife用户存取款提示弹窗点击了  不再提示标记
+        private const val GLIFE_TIP_FLAG = "glife_tip_flag"
+
+        private fun markGLife(isChecked: Boolean) {
+            KvUtils.put(GLIFE_TIP_FLAG, isChecked)
+        }
+
+        private fun isCheckedGLife(): Boolean {
+            return KvUtils.decodeBooleanTure(GLIFE_TIP_FLAG, false)
+        }
+
         /**
          * 登录后才需要显示，加全局状态值区分
          */
@@ -43,8 +54,8 @@ class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
          */
         fun showByLogin(){
             if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount()) {
-                if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_TIP_FLAG, false)&&needShow) {
-                    needShow=false
+                if (!isCheckedGLife() && needShow) {
+                    needShow = false
                     newInstance().show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToGcashDialog.javaClass.name)
                 }
             }
@@ -62,11 +73,12 @@ class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
     private var mPositiveClickListener: OnPositiveListener? = null
     private var mNegativeClickListener: OnNegativeListener? = null
 
+
     override fun onInitView() {
         isCancelable = false
         binding.btnGlifeCancel.setOnClickListener {
             if (visibleNoReminder) {
-                KvUtils.put(GLIFE_TIP_FLAG, binding.cbNoReminder.isChecked)
+                markGLife(binding.cbNoReminder.isChecked)
             }
             dismiss()
         }
@@ -74,7 +86,7 @@ class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
         binding.btnGlifeOpen.text = requireContext().getString(R.string.LT028)+" "+requireContext().getString(R.string.online_gcash)
         binding.btnGlifeOpen.setOnClickListener {
             if (visibleNoReminder) {
-                KvUtils.put(GLIFE_TIP_FLAG, binding.cbNoReminder.isChecked)
+                markGLife(binding.cbNoReminder.isChecked)
             }
             val uri = Uri.parse("https://miniprogram.gcash.com/s01/SBMk5e")
             val intent = Intent(Intent.ACTION_VIEW, uri)

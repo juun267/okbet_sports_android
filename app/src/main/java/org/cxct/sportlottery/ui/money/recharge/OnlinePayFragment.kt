@@ -144,7 +144,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
             }
 
             if (!VerifyConstUtil.verifyMail(email!!)) {
-                ToastUtil.showToast(context(), getString(R.string.error_e_mail))
+                ToastUtil.showToast(context(), getString(R.string.N889))
                 return@setOnClickListener
             }
 
@@ -308,7 +308,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
             }
 
             if (!VerifyConstUtil.verifyMail(it)) {
-                etRechargeOnlineEmail.setError(getString(R.string.error_e_mail))
+                etRechargeOnlineEmail.setError(getString(R.string.N889))
                 return@afterTextChanged
             }
 
