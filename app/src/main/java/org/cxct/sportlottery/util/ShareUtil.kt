@@ -127,7 +127,7 @@ object ShareUtil {
         )
     }
     private fun shareError(context: Context){
-        ToastUtil.showToast(context,context.getString(R.string.unknown_error))
+        ToastUtil.showToast(context,context.getString(R.string.P467))
     }
 
 }
