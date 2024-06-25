@@ -26,7 +26,6 @@ import org.cxct.sportlottery.network.service.odds_change.transferOddsChangeEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.SocketUpdateUtil.replaceNameMap
 import timber.log.Timber
 import java.math.BigDecimal
 import java.sql.Timestamp

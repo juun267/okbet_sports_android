@@ -74,7 +74,7 @@ class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
         playCates.forEach { playCate->
             val newOdds = oddsChangeEvent.odds[playCate]
             //若为全量更新模式，则要清楚本地所有玩法数据，然后再重新组装数据
-            if (oddsChangeEvent.updateMode == 2){
+            if (oddsChangeEvent.isReplaceAll()){
                 matchOdd.oddIdsMap.clear()
             }
             if (!newOdds.isNullOrEmpty()) {

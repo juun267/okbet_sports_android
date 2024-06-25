@@ -717,8 +717,10 @@ object BetInfoRepository {
 
     fun updateMatchOdd(changeEvent: Any) {
         val newList: MutableList<Odd> = mutableListOf()
+        var isReplaceAll = false
         when (changeEvent) {
             is OddsChangeEvent -> {
+                isReplaceAll = changeEvent.isReplaceAll()
                 changeEvent.odds.toMap().forEach { map ->
                     val value = map.value
                     value?.forEach { odd ->
@@ -730,6 +732,7 @@ object BetInfoRepository {
             }
 
             is MatchOddsChangeEvent -> {
+                isReplaceAll = changeEvent.isReplaceAll()
                 for ((_, value) in changeEvent.odds ?: mapOf()) {
                     value.odds?.toList()?.forEach { odd ->
                         odd?.let { o ->
@@ -739,52 +742,52 @@ object BetInfoRepository {
                 }
             }
         }
+
         betInfoList.value?.peekContent()?.toArray()?.forEach {it as BetInfoListData
-            updateItem(it.matchOdd, newList)
+            updateItem(it.matchOdd, newList, isReplaceAll)
         }
         notifyBetInfoChanged()
 
     }
 
-    private fun updateItem(
-        oldItem: MatchOdd, newList: List<Odd>
-    ) {
-        newList.firstOrNull { it.id == oldItem.oddsId }?.let {
-                //若賠率關閉則賠率不做高亮變化
-                it.status.let { status -> oldItem.status = status }
-                //賠率為啟用狀態時才去判斷是否有賠率變化
-                var currentOddsType =
-                    MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
-                if (it.odds == it.malayOdds) currentOddsType = OddsType.EU
-                if (oldItem.status == BetStatus.ACTIVATED.code) {
-                    oldItem.oddState = getOddState(
-                        getOdds(
-                            oldItem, currentOddsType
-                        ), it
-                    )
+    private fun updateItem(oldItem: MatchOdd, newList: List<Odd>, isReplaceAll: Boolean) {
 
-                    if (oldItem.oddState != OddState.SAME.state) oldItem.oddsHasChanged =
-                        true
-                }
-
-                oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
-
-                if (oldItem.status == BetStatus.ACTIVATED.code) {
-                    it.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
-                    it.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
-                    it.indoOdds.let { indoOdds -> oldItem.indoOdds = indoOdds ?: 0.0 }
-                    it.malayOdds.let { malayOdds ->
-                        oldItem.malayOdds = malayOdds ?: 0.0
-                    }
-                    it.spread.let { spread -> oldItem.spread = spread ?: "" }
-                }
-
-                //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
-                if (oldItem.oddState != OddState.SAME.state && oldItem.status == BetStatus.ACTIVATED.code) {
-//                    oldItem.betAddError = null
-                }
-
+        val newOdds = newList.firstOrNull { it.id == oldItem.oddsId }
+        if (newOdds == null) {
+            if (isReplaceAll) { // 如果为全量更新模式，则将之前选中的质为不可用状态
+                oldItem.status = BetStatus.ACTIVATED.code
             }
+            return
+        }
+
+        //若賠率關閉則賠率不做高亮變化
+        oldItem.status = newOdds.status
+        //賠率為啟用狀態時才去判斷是否有賠率變化
+
+        var currentOddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
+        if (newOdds.odds == newOdds.malayOdds) currentOddsType = OddsType.EU
+        if (oldItem.status == BetStatus.ACTIVATED.code) {
+            oldItem.oddState = getOddState(getOdds(oldItem, currentOddsType), newOdds)
+            if (oldItem.oddState != OddState.SAME.state) {
+                oldItem.oddsHasChanged = true
+            }
+        }
+
+        oldItem.spreadState = getSpreadState(oldItem.spread, newOdds.spread ?: "")
+
+        if (oldItem.status == BetStatus.ACTIVATED.code) {
+            oldItem.odds = newOdds.odds ?: 0.0
+            oldItem.hkOdds = newOdds.hkOdds ?: 0.0
+            oldItem.indoOdds = newOdds.indoOdds ?: 0.0
+            oldItem.malayOdds = newOdds.malayOdds ?: 0.0
+            oldItem.spread = newOdds.spread ?: ""
+        }
+
+        //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
+//        if (oldItem.oddState != OddState.SAME.state && oldItem.status == BetStatus.ACTIVATED.code) {
+//                    oldItem.betAddError = null
+//        }
+
     }
 
     private fun getOddState(

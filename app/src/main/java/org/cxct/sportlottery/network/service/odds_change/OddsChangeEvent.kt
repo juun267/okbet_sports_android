@@ -33,6 +33,8 @@ data class OddsChangeEvent(
 ) : ServiceEventType, ServiceChannel {
     override var channel: String? = null
 
+    fun isReplaceAll() = 2 == updateMode
+
     /**
      * 從oddsList重組資料結構至Map<String, MutableList<Odd?>?>
      * 配置玩法類別是否為僅有歐洲盤(是否支援切換盤口)
