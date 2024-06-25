@@ -281,27 +281,30 @@ class MoneyRechViewModel(
 
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val rechCfgId = (mSelectRechCfgs?.id ?: "").toString()
-            val queryMap = hashMapOf(
-                "x-session-token" to (LoginRepository.token ?: ""),
-                "rechCfgId" to rechCfgId,
-                "bankCode" to (bankCode ?: ""),
-                "depositMoney" to depositMoney,
-                "clientType" to "2",
-            ).apply {
-                activityType?.let { put("activityType",it.toString()) }
-                if (!payer.isNullOrEmpty())
-                    put("payer", payer)
-                if (!email.isNullOrEmpty()) {
-                    put("email", email)
-                }
-                AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
-                    put("appsFlyerId", it)
-                    put("appsFlyerKey", BuildConfig.AF_APPKEY)
-                    put("appsFlyerPkgName",BuildConfig.APPLICATION_ID)
-                }
-            }
             val params = JsonObject()
-            queryMap.forEach { params.addProperty(it.key,it.value) }
+            params.addProperty("x-session-token", LoginRepository.token ?: "")
+            params.addProperty("rechCfgId", rechCfgId)
+            params.addProperty("bankCode", bankCode ?: "")
+            params.addProperty("depositMoney", depositMoney)
+            params.addProperty("clientType", "2")
+            params.addProperty("rechCfgId", rechCfgId)
+            activityType?.let { params.addProperty("activityType",it.toString()) }
+            if (!payer.isNullOrEmpty()) {
+                params.addProperty("payer", payer)
+            }
+            if (!email.isNullOrEmpty()) {
+                params.addProperty("email", email)
+                params.addProperty("isEmail", true)
+            }
+            AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
+                params.addProperty("appsFlyerId", it)
+                params.addProperty("appsFlyerKey", BuildConfig.AF_APPKEY)
+                params.addProperty("appsFlyerPkgName",BuildConfig.APPLICATION_ID)
+            }
+
+            val queryMap = HashMap<String, String>()
+            params.entrySet().forEach { queryMap[it.key] = it.value.toString() }
+
             callApi({org.cxct.sportlottery.net.money.MoneyRepository.rechCheckStauts(params)}){
                 if (it.succeeded()){
                     url += toUrlParamsFormat(queryMap)
