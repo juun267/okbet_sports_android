@@ -133,19 +133,21 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
 
             var email: String? = null
             var payer = ""
-            if (needPayerField()) {
+            if (etRechargeOnlinePayer.isVisible) {
                 payer = etRechargeOnlinePayer.getText()
+            }
+
+            if (etRechargeOnlineEmail.isVisible) {
                 email = etRechargeOnlineEmail.getText()
-            }
+                if (email.isEmptyStr()) {
+                    ToastUtil.showToast(context(), getString(R.string.J558))
+                    return@setOnClickListener
+                }
 
-            if (email.isEmptyStr()) {
-                ToastUtil.showToast(context(), getString(R.string.J558))
-                return@setOnClickListener
-            }
-
-            if (!VerifyConstUtil.verifyMail(email!!)) {
-                ToastUtil.showToast(context(), getString(R.string.N889))
-                return@setOnClickListener
+                if (!VerifyConstUtil.verifyMail(email!!)) {
+                    ToastUtil.showToast(context(), getString(R.string.N889))
+                    return@setOnClickListener
+                }
             }
 
             val bankCode = when (cvPayBank.visibility) {
