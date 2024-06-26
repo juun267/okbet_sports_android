@@ -89,7 +89,6 @@ object ShareUtil {
         runWithCatch({
             val sharingIntent = Intent(Intent.ACTION_SEND)
             sharingIntent.setPackage("com.instagram.android")
-            sharingIntent.putExtra("com.instagram.platform.extra.APPLICATION_ID", activity.getString(R.string.facebook_app_id))
             sharingIntent.setType("text/plain")
             sharingIntent.putExtra(Intent.EXTRA_TEXT, content)
             activity.startActivity(sharingIntent)
