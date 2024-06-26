@@ -141,6 +141,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
                 email = etRechargeOnlineEmail.getText()
                 if (email.isEmptyStr()) {
                     ToastUtil.showToast(context(), getString(R.string.J558))
+                    etRechargeOnlineEmail.setError(getString(R.string.error_input_empty))
                     return@setOnClickListener
                 }
 
