@@ -19,7 +19,7 @@ object QueryUtil {
      * @param map : 要轉換的 map 參數
      * @return : query string
      */
-    fun mapToQueryString(map: Map<String, String>): String? {
+    private fun mapToQueryString(map: Map<String, String>): String? {
         var string = StringBuilder()
         try {
             stringLoop@ for ((key, value) in map) {

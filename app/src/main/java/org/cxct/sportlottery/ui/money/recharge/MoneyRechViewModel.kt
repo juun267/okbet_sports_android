@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.money.recharge
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,7 +12,6 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
 import org.cxct.sportlottery.common.extentions.callApi
-import org.cxct.sportlottery.net.message.AnnouncementRepository
 import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
@@ -281,30 +279,29 @@ class MoneyRechViewModel(
 
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val rechCfgId = (mSelectRechCfgs?.id ?: "").toString()
+            val queryMap = hashMapOf(
+                "x-session-token" to (LoginRepository.token ?: ""),
+                "rechCfgId" to rechCfgId,
+                "bankCode" to (bankCode ?: ""),
+                "depositMoney" to depositMoney,
+                "clientType" to "2",
+            ).apply {
+                activityType?.let { put("activityType",it.toString()) }
+                if (!payer.isNullOrEmpty()) {
+                    put("payer", payer)
+                }
+                if (!email.isNullOrEmpty()) {
+                    put("email", email)
+                    put("isEmail", "true")
+                }
+                AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
+                    put("appsFlyerId", it)
+                    put("appsFlyerKey", BuildConfig.AF_APPKEY)
+                    put("appsFlyerPkgName",BuildConfig.APPLICATION_ID)
+                }
+            }
             val params = JsonObject()
-            params.addProperty("x-session-token", LoginRepository.token ?: "")
-            params.addProperty("rechCfgId", rechCfgId)
-            params.addProperty("bankCode", bankCode ?: "")
-            params.addProperty("depositMoney", depositMoney)
-            params.addProperty("clientType", "2")
-            params.addProperty("rechCfgId", rechCfgId)
-            activityType?.let { params.addProperty("activityType",it.toString()) }
-            if (!payer.isNullOrEmpty()) {
-                params.addProperty("payer", payer)
-            }
-            if (!email.isNullOrEmpty()) {
-                params.addProperty("email", email)
-                params.addProperty("isEmail", true)
-            }
-            AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
-                params.addProperty("appsFlyerId", it)
-                params.addProperty("appsFlyerKey", BuildConfig.AF_APPKEY)
-                params.addProperty("appsFlyerPkgName",BuildConfig.APPLICATION_ID)
-            }
-
-            val queryMap = HashMap<String, String>()
-            params.entrySet().forEach { queryMap[it.key] = it.value.toString() }
-
+            queryMap.forEach { params.addProperty(it.key,it.value) }
             callApi({org.cxct.sportlottery.net.money.MoneyRepository.rechCheckStauts(params)}){
                 if (it.succeeded()){
                     url += toUrlParamsFormat(queryMap)
@@ -330,7 +327,6 @@ class MoneyRechViewModel(
         checkRcgOnlineAccount(depositMoney, mSelectRechCfgs)
         if (onlineCryptoPayInput()) {
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
-            val rechCfgId = (mSelectRechCfgs?.id ?: "").toString()
             val queryMap = hashMapOf(
                 "x-session-token" to (LoginRepository.token ?: ""),
                 "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
