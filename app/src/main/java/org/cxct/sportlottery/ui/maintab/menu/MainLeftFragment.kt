@@ -14,7 +14,6 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -100,7 +99,8 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             bindVerifyStatus(userInfo = it)
         }
         ConfigRepository.config.observe(this){
-            menuVip.isVisible = StaticData.vipOpened()
+            binding.menuVip.isVisible = StaticData.vipOpened()
+            binding.menuInvite.isVisible = StaticData?.inviteUserOpened()
         }
     }
     // 新增菜单在这里修改
@@ -167,6 +167,8 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
                 close()
                 startActivity(InviteActivity::class.java)
             }
+        }.apply {
+            isVisible = StaticData.inviteUserOpened()
         }
 
         menuAffiliate.setItem(
