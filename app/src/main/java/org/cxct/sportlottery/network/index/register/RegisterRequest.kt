@@ -1,15 +1,14 @@
 package org.cxct.sportlottery.network.index.register
 
-import cn.jpush.android.api.JPushInterface
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.network.Constants
 
 @KeepMembers
 data class RegisterRequest(
     val userName: String,
     val password: String, //密码，md5(明文)，校验格式：32位md5值
     val loginSrc: Long, //登录来源（0：WEB, 1：MOBILE_BROWSER, 2：ANDROID, 3：IOS）
-    val deviceSn: String = JPushInterface.getRegistrationID(MultiLanguagesApplication.getInstance()), //设备号（手机app登录必传）
+    val deviceSn: String = Constants.deviceSn, //设备号（手机app登录必传）
     var fullName: String? = null,
     var email: String? = null,
     var address: String? = null,
