@@ -17,6 +17,7 @@ object KvUtils {
     const val KEY_ENDCARD_GUIDE = "endcardGuide"
     const val KEY_ENDCARD_CLEAR = "EndCardClear"
     const val KEY_ENDCARD_DELETE_GUIDE = "endcardDeleteGuide"
+    const val KEY_NOTIFICATION_PERMISSION = "notificationPermission"
     private val mv: MMKV by lazy {
         MMKV.initialize(MultiLanguagesApplication.appContext)
         if (BuildConfig.DEBUG) {
