@@ -144,6 +144,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <org.cxct.sportlottery.view.MainMenuItemView
+            android:id="@+id/menuInvite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <org.cxct.sportlottery.view.MainMenuItemView
             android:id="@+id/menuAffiliate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
