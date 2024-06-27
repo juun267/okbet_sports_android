@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_191919_FCFCFC"
-    android:orientation="vertical"
-    tools:context=".ui2.infoCenter.InfoCenterAdapter">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/ll_title"
