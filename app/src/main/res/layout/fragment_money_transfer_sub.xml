@@ -8,7 +8,7 @@
     tools:context=".ui.profileCenter.money_transfer.transfer.MoneyTransferSubFragment">
 
     <include
-        android:id="@+id/layout_balance"
+        android:id="@+id/layoutBalance"
         layout="@layout/view_account_balance_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/layout_balance">
+        app:layout_constraintTop_toBottomOf="@+id/layoutBalance">
 
         <LinearLayout
             android:id="@+id/ll_out"
