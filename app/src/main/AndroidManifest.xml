@@ -353,9 +353,6 @@
                 <category android:name="${JPUSH_PKGNAME}" />
             </intent-filter>
         </receiver>
-        <provider android:authorities="com.facebook.app.FacebookContentProvider{FACEBOOK_APP_ID}"
-            android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="${JPUSH_CHANNEL}" />

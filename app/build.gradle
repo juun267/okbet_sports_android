@@ -40,9 +40,7 @@ android {
                                 INVITE_CODE            : "",
                                 JPUSH_PKGNAME          : applicationId,
                                 JPUSH_APPKEY           : "6ce6dade62a7563b526bf021",
-                                JPUSH_CHANNEL          : "developer-default",
-                                FACEBOOK_APP_ID        : "1255737765443031",
-        ]
+                                JPUSH_CHANNEL          : "developer-default"]
 //        resValue "string", "facebook_app_id", "2339087372931297"
 //        resValue "string", "facebook_client_token", "45b5e13714025f8083e5d9ae9300fd0f"
         resValue "string", "facebook_app_id", "1645138406011685"
