@@ -4,15 +4,12 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import cn.jpush.android.api.JPushInterface
 import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.*
 import org.cxct.sportlottery.net.user.UserRepository
-import org.cxct.sportlottery.network.NetResult
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.Odd
@@ -110,7 +107,7 @@ abstract class BaseSocketViewModel(
         get() = BetInfoRepository.betParlaySuccess
 
     private val deviceId by lazy {
-        JPushInterface.getRegistrationID(androidContext)
+        Constants.deviceSn
     }
 
     fun doLogoutAPI() {

@@ -3,14 +3,10 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import com.google.gson.JsonObject
+import cn.jpush.android.api.JPushInterface
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.common.extentions.runWithCatch
-import org.cxct.sportlottery.net.ApiResult
-import org.cxct.sportlottery.net.user.UserRepository
-import org.cxct.sportlottery.net.user.data.VipRedenpApplyResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
@@ -71,6 +67,7 @@ object Constants {
     fun getInviteCode(): String {
         return getMetaDataDefValue(MultiLanguagesApplication.appContext, "INVITE_CODE", "")
     }
+    val deviceSn by lazy { JPushInterface.getRegistrationID(MultiLanguagesApplication.getInstance()) }
 
     /**
      * 获取MetaData信息

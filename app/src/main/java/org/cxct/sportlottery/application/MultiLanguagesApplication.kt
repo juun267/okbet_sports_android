@@ -18,11 +18,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
-//import com.didichuxing.doraemonkit.DoKit
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import me.jessyan.autosize.AutoSize
-import me.jessyan.autosize.AutoSizeConfig
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.NetWorkEvent

@@ -2,8 +2,6 @@ package org.cxct.sportlottery.repository
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
-import android.os.Handler
 import android.os.Looper
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
@@ -19,7 +17,6 @@ import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.*
 import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
-import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.user.UserSwitchResult
@@ -267,29 +264,7 @@ object LoginRepository {
 
 
     suspend fun loginForGuest(): Response<LoginResult> {
-        return OneBoSportApi.indexService.loginForGuest(LoginForGuestRequest(deviceSn = getDeviceName()))
-    }
-
-    private fun getDeviceName(): String {
-        val manufacturer: String = Build.MANUFACTURER
-        val model: String = Build.MODEL
-        return if (model.startsWith(manufacturer)) {
-            capitalize(model)
-        } else {
-            capitalize(manufacturer) + " " + model
-        }
-    }
-
-    private fun capitalize(s: String?): String {
-        if (s.isNullOrEmpty()) {
-            return ""
-        }
-        val first = s[0]
-        return if (Character.isUpperCase(first)) {
-            s
-        } else {
-            Character.toUpperCase(first).toString() + s.substring(1)
-        }
+        return OneBoSportApi.indexService.loginForGuest(LoginForGuestRequest())
     }
 
     suspend fun checkIsUserAlive(): Response<NetResult> {

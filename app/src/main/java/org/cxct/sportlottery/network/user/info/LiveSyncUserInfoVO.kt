@@ -4,6 +4,7 @@ package org.cxct.sportlottery.network.user.info
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.repository.LOGIN_SRC
 
 @JsonClass(generateAdapter = true)
 @KeepMembers
@@ -25,5 +26,5 @@ data class LiveSyncUserInfoVO(
     @Json(name = "testFlag")
     val testFlag: Int?,
     @Json(name = "loginSrc")
-    val loginSrc: Int = 2,
+    val loginSrc: Long = LOGIN_SRC,
 ) : java.io.Serializable
