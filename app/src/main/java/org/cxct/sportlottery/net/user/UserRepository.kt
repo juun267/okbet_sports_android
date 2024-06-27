@@ -211,4 +211,8 @@ object UserRepository {
         params.addProperty("birthday", birthday)
         return userApi.setBirthday(params)
     }
+    suspend fun inviteUserDetail(): ApiResult<InviteUserDetail> {
+        return userApi.inviteUserDetail()
+    }
+
 }

@@ -248,6 +248,8 @@ object Constants {
 
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
+    fun getInviteUrl() = "${getH5BaseUrl()}mobile/inviteFriends"
+
     /**
      * 给h5地址加上统一参数
      */
@@ -449,6 +451,8 @@ object Constants {
     const val VIP_UNIREDENP_APPLY = "/api/front/activity/vip/uniredenp/apply"
 
     const val SETBIRTHDAY = "/api/front/user/setBirthday"
+
+    const val INVITE_USER_DETAIL = "/api/front/activity/inviteUserDetail"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image#url_ignore" //上传图片,url_ignore避免域名被动态替换
