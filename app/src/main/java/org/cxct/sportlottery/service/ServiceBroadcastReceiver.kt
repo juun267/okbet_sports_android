@@ -46,9 +46,6 @@ object ServiceBroadcastReceiver {
     val orderSettlement: LiveData<FrontWsEvent.BetSettlementEvent?>
         get() = _orderSettlement
 
-    val producerUp: LiveData<FrontWsEvent.ProducerUpEvent?>
-        get() = _producerUp
-
     val userMoney: LiveData<Double?>
         get() = _userMoney
 
@@ -93,7 +90,6 @@ object ServiceBroadcastReceiver {
     private val _notice = MutableLiveData<FrontWsEvent.NoticeEvent?>()
     private val _orderSettlement = MutableLiveData<FrontWsEvent.BetSettlementEvent?>()
     private val _pingPong = MutableLiveData<FrontWsEvent.PingPongEvent?>()
-    private val _producerUp = MutableLiveData<FrontWsEvent.ProducerUpEvent?>()
     private val _userMoney = MutableLiveData<Double?>()
     private val _lockMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<Event<FrontWsEvent.UserNoticeEvent>>()
@@ -143,9 +139,6 @@ object ServiceBroadcastReceiver {
             }
             EventType.GLOBAL_STOP -> {
                 _globalStop.postValue(event.globalStopEvent)
-            }
-            EventType.PRODUCER_UP -> {
-                _producerUp.postValue(event.producerUpEvent)
             }
             //公共频道(这个通道会通知主站平台维护)
             EventType.SYS_MAINTENANCE -> {

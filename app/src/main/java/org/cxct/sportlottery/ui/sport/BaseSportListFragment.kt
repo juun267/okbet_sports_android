@@ -116,12 +116,6 @@ abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewMod
         viewModel.favorMatchList.observe(viewLifecycleOwner) { onFavorite(it) }
         viewModel.oddsType.observe(viewLifecycleOwner) { onOddTypeChanged(it) }
         viewModel.betInfoList.observe(viewLifecycleOwner) { onBetInfoChanged(it.peekContent()) }
-        receiver.producerUp.observe(viewLifecycleOwner) { //開啟允許投注
-            if (it == null) {
-                return@observe
-            }
-            resubscribeChannel()
-        }
         receiver.refreshInForeground.observe(viewLifecycleOwner){
             onReload()
         }

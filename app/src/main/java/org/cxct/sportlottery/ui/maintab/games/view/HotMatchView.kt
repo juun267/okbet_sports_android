@@ -248,23 +248,12 @@ class HotMatchView(
 
 
         receiver.globalStop.observe(viewLifecycleOwner) {
-            it?.let { globalStopEvent ->
-                adapter?.data?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(
-                            recommend, globalStopEvent
-                        )
-                    ) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
+            val globalStopEvent = it ?: return@observe
+            val hotMatchAdapter = adapter ?: return@observe
+            hotMatchAdapter.data.forEachIndexed { index, recommend ->
+                if (SocketUpdateUtil.updateOddStatus(recommend, globalStopEvent)) {
+                    hotMatchAdapter.notifyItemChanged(index, recommend)
                 }
-            }
-        }
-
-        receiver.producerUp.observe(viewLifecycleOwner) {
-            it?.let {
-                //先解除全部賽事訂閱
-                unSubscribeChannelHall(fragment)
-                firstVisibleRange()
             }
         }
 

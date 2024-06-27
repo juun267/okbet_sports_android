@@ -175,52 +175,38 @@ class HomeHotMatchView(
         }
 
         receiver.matchClock.observe(viewLifecycleOwner) {
-            it?.let { matchClockEvent ->
-                val targetList = adapter?.data
-                targetList?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateMatchClock(
-                            recommend, matchClockEvent
-                        )
-                    ) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
-                }
+            val matchClockEvent = it ?: return@observe
+            val targetList = adapter?.data ?: return@observe
 
+            targetList.forEachIndexed { index, recommend ->
+                if (SocketUpdateUtil.updateMatchClock(recommend, matchClockEvent)) {
+                    adapter?.notifyItemChanged(index, recommend)
+                }
             }
         }
 
-        receiver.matchOddsLock.collectWith(fragment.lifecycleScope) {
-            it?.let { matchOddsLockEvent ->
-                val targetList = adapter?.data
+        receiver.matchOddsLock.collectWith(fragment.lifecycleScope) { matchOddsLockEvent->
+            val targetList = adapter?.data ?: return@collectWith
 
-                targetList?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
+            targetList.forEachIndexed { index, recommend ->
+                if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)) {
+                    adapter?.notifyItemChanged(index, recommend)
                 }
-
             }
+
         }
 
 
         receiver.globalStop.observe(viewLifecycleOwner) {
-            it?.let { globalStopEvent ->
-                adapter?.data?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(
-                            recommend, globalStopEvent
-                        )
-                    ) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
-                }
+            val globalStopEvent = it ?: return@observe
+            val hotMatchAdapter = adapter ?: return@observe
+            if (hotMatchAdapter.data.isEmpty()) {
+                return@observe
             }
-        }
-
-        receiver.producerUp.observe(viewLifecycleOwner) {
-            it?.let {
-                //先解除全部賽事訂閱
-                unSubscribeChannelHall(fragment)
-                firstVisibleRange()
+            hotMatchAdapter.data.forEachIndexed { index, recommend ->
+                if (SocketUpdateUtil.updateOddStatus(recommend, globalStopEvent)) {
+                    hotMatchAdapter.notifyItemChanged(index, recommend)
+                }
             }
         }
 

@@ -860,36 +860,19 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
             }
         }
 
-        receiver.matchOddsLock.collectWith(lifecycleScope){
-            it?.let { matchOddsLockEvent ->
-                viewModel.updateLockMatchOdd(matchOddsLockEvent)
-            }
-        }
-
+        receiver.matchOddsLock.collectWith(lifecycleScope) { viewModel.updateLockMatchOdd(it) }
         receiver.globalStop.observe(this.viewLifecycleOwner) {
-            it?.let { globalStopEvent ->
-                val betRefactorList = betListRefactorAdapter?.betList
-                betRefactorList?.forEach { listData ->
-                    if (globalStopEvent.producerId == null || listData.matchOdd.producerId.toString() == it.producerId.toString()) {
-                        listData.matchOdd.status = BetStatus.LOCKED.code
-                    }
+            val globalStopEvent = it ?: return@observe
+            val betRefactorList = betListRefactorAdapter?.betList ?: return@observe
+            betRefactorList.forEach { listData ->
+                if (globalStopEvent.producerId == null || listData.matchOdd.producerId == it.producerId.value) {
+                    listData.matchOdd.status = BetStatus.LOCKED.code
                 }
-                betListRefactorAdapter?.betList = betRefactorList
-                betParlayListRefactorAdapter?.betList = betRefactorList
             }
+            betListRefactorAdapter?.betList = betRefactorList
+            betParlayListRefactorAdapter?.betList = betRefactorList
         }
 
-        receiver.producerUp.observe(this.viewLifecycleOwner) {
-            it?.let {
-                betListRefactorAdapter?.betList.let { list ->
-                    betListPageUnSubScribeEvent()
-                    list?.let { listNotNull ->
-                        unsubscribeChannel(listNotNull)
-                        subscribeChannel(listNotNull)
-                    }
-                }
-            }
-        }
     }
 
     private fun getCurrentBetList(): MutableList<BetInfoListData> {

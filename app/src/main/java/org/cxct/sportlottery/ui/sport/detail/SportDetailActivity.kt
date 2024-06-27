@@ -876,15 +876,6 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             }
         }
 
-        receiver.producerUp.observe(this) {
-            it?.let {
-                unSubscribeChannelEventAll()
-                matchInfo?.let {
-                    subscribeChannelEvent(it.id,it.gameType)
-                }
-            }
-        }
-
         receiver.closePlayCate.observe(this) { event ->
             val oddsDataList = oddsAdapter.oddsDetailDataList
             val closeEvent = event?.getContentIfNotHandled() ?: return@observe

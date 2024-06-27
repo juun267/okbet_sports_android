@@ -229,7 +229,7 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
             sportLeagueAdapter2.data.forEachIndexed { index, baseNode ->
                 if (baseNode.isMatchOdd() && SocketUpdateUtil.updateOddStatus(baseNode as MatchOdd, event)) {
                     //暫時不處理 防止過多更新
-                    sportLeagueAdapter2.notifyItemChanged(index, baseNode)
+                    sportLeagueAdapter2.notifyItemChanged(index, SportMatchEvent.GlobalStop)
                 }
             }
         }
