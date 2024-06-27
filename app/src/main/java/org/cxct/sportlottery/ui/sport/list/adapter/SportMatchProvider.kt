@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 
@@ -72,6 +73,10 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
                     updateMatchStatus(binding, matchOdd)
                 }
 
+                is SportMatchEvent.GlobalStop -> {
+                    resetOddsButton(binding, matchOdd)
+                }
+
                 else -> {
                 }
             }
@@ -94,6 +99,10 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
         binding.updateMatchInfo(matchInfo, adapter.matchType)
         matchInfo?.let { binding.setupMatchTimeAndStatus(it, adapter.matchType) }
         binding.updateCollse(matchInfo)
+        binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
+    }
+
+    private fun resetOddsButton(binding: SportMatchVH , matchOdd: MatchOdd) {
         binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
     }
 

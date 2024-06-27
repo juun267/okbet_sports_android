@@ -809,29 +809,28 @@ object SocketUpdateUtil {
 
     fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: FrontWsEvent.GlobalStopEvent): Boolean {
         var isNeedRefresh = false
+        val producerId = globalStopEvent.producerId?.value
+        val noneProducerId = producerId == null
 
         matchOdd.oddsMap?.values?.forEach { odds ->
-            odds?.filter { odd ->
-                globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString()
-            }?.forEach { odd ->
-                if (odd?.status != BetStatus.DEACTIVATED.code) {
-                    odd?.status = BetStatus.DEACTIVATED.code
+            odds?.forEach { odd ->
+                if ((noneProducerId || producerId == odd.producerId) && odd.status != BetStatus.LOCKED.code) {
+                    odd.status = BetStatus.LOCKED.code
                     isNeedRefresh = true
                 }
             }
         }
 
-        matchOdd.oddsEps?.eps?.filter { odd -> globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString() }
-            ?.forEach { odd ->
-                if (odd?.status != BetStatus.DEACTIVATED.code) {
-                    odd?.status = BetStatus.DEACTIVATED.code
-                    isNeedRefresh = true
-                }
+        matchOdd.oddsEps?.eps?.forEach { odd ->
+            if ((noneProducerId || producerId == odd.producerId) && odd.status != BetStatus.LOCKED.code) {
+                odd.status = BetStatus.LOCKED.code
+                isNeedRefresh = true
             }
-
-        if (isNeedRefresh) {
-            matchOdd.updateOddStatus()
         }
+
+//        if (isNeedRefresh) {
+//            matchOdd.updateOddStatus()
+//        }
 
         return isNeedRefresh
     }
@@ -840,19 +839,24 @@ object SocketUpdateUtil {
         oddsDetailListData: OddsDetailListData, globalStopEvent: FrontWsEvent.GlobalStopEvent
     ): Boolean {
         var isNeedRefresh = false
+        val producerId = globalStopEvent.producerId?.value
+        val oddArrayList = if (producerId == null) {
+            oddsDetailListData.oddArrayList
+        } else {
+            oddsDetailListData.oddArrayList.filter { odd -> producerId == odd?.producerId }.toMutableList()
+        }
 
-        oddsDetailListData.oddArrayList.filter { odd ->
-            globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString()
-        }.forEach { odd ->
-            if (odd?.status != BetStatus.DEACTIVATED.code) {
-                odd?.status = BetStatus.DEACTIVATED.code
+        oddArrayList.forEach { odd ->
+            if (odd?.status != BetStatus.LOCKED.code) {
+                odd?.status = BetStatus.LOCKED.code
                 isNeedRefresh = true
             }
         }
 
-        if (isNeedRefresh) {
-            oddsDetailListData.updateOddStatus()
-        }
+
+//        if (isNeedRefresh) {
+//            oddsDetailListData.updateOddStatus()
+//        }
 
         return isNeedRefresh
     }
