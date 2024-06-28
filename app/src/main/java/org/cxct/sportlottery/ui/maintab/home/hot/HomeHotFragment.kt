@@ -1,9 +1,9 @@
 package org.cxct.sportlottery.ui.maintab.home.hot
 
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
+import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
@@ -12,12 +12,12 @@ import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
-import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
@@ -32,7 +32,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
 
-    private val PRIORITY_SYSTEM_NOTICE = 90
+    private val  PRIORITY_SYSTEM_NOTICE = 90
     private val PRIORITY_DIALOG_HOME = 100
     private val PRIORITY_BIND_PHONE = 200
     private val PRIORITY_REGISTER_SUCCESS = 300
@@ -193,6 +193,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     }
 
     private fun initObservable() {
+        DataResourceChange.observe(viewLifecycleOwner) { loadRecommend() }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             showDialogs()
         }
@@ -220,6 +221,10 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     private fun refreshHotMatch() {
         binding.hotMatchView.onResume(this@HomeHotFragment)
         binding.hotEsportView.onResume(this@HomeHotFragment)
+        loadRecommend()
+    }
+
+    private fun loadRecommend() {
         viewModel.getRecommend()
         viewModel.getRecommend(GameType.ES)
     }

@@ -38,6 +38,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.common.enums.ChannelType
+import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
+import org.cxct.sportlottery.service.dispatcher.DataResourceChange
+import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.adapter.DetailTopFragmentStateAdapter
@@ -323,7 +326,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         binding.liveViewToolBar.setupToolBarListener(liveToolBarListener)
     }
 
-     fun initBottomNavigation() {
+     private fun initBottomNavigation() {
         binding.parlayFloatWindow.setBetText(getString(R.string.F001))
         binding.parlayFloatWindow.onViewClick = {
             showBetListPage()
@@ -433,7 +436,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
     }
 
 
-     fun updateBetListCount(num: Int) {
+     private fun updateBetListCount(num: Int) {
         setUpBetBarVisible()
         binding.parlayFloatWindow.updateCount(num.toString())
         Timber.e("num: $num")
@@ -773,6 +776,11 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             }
         }
 
+        DataResourceChange.observe(this) {
+            viewModel.removeBetInfoAll()
+            binding.ivRefresh.performClick()
+        }
+
     }
 
     private fun showLive() {
@@ -867,8 +875,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             }
         }
 
-        receiver.globalStop.observe(this) {
-            val globalStopEvent = it ?: return@observe
+        GlobalStopDispatcher.observe(this) { globalStopEvent->
             oddsAdapter.oddsDetailDataList.forEachIndexed { index, oddsDetailListData ->
                 if (SocketUpdateUtil.updateOddStatus(oddsDetailListData, globalStopEvent) && oddsDetailListData.isExpand) {
                     oddsAdapter.notifyItemChanged(index)
@@ -876,9 +883,9 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             }
         }
 
-        receiver.closePlayCate.observe(this) { event ->
+        ClosePlayCateDispatcher.observe(this) { event ->
             val oddsDataList = oddsAdapter.oddsDetailDataList
-            val closeEvent = event?.getContentIfNotHandled() ?: return@observe
+            val closeEvent = event.getContentIfNotHandled() ?: return@observe
             if (matchInfo?.gameType != closeEvent.gameType) return@observe
             //java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
             if (oddsDataList.size==0){
@@ -891,9 +898,9 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
                 oddsAdapter.notifyItemChanged(index)
             }
         }
-        receiver.refreshInForeground.observe(this){
-            getData()
-        }
+
+        receiver.refreshInForeground.observe(this) { getData() }
+
     }
 
     /**
@@ -910,7 +917,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         }
     }
 
-    open fun getBetListPageVisible(): Boolean {
+    private fun getBetListPageVisible(): Boolean {
         return betListFragment?.isVisible ?: false
     }
 

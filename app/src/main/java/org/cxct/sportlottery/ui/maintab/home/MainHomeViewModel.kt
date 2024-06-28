@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -157,9 +158,17 @@ open class MainHomeViewModel(
         get() = _newsCategory
     private val _newsCategory = MutableLiveData<List<NewsCategory>>()
 
+    private var loadingGameTypes = mutableMapOf<GameType?, Long>()
+
     //region 宣傳頁用
-    fun getRecommend(gameType: GameType?=null) {
-        viewModelScope.launch {
+    fun getRecommend(gameType: GameType? = null) = launch {
+        val timeStep = loadingGameTypes[gameType] ?: 0
+        if (System.currentTimeMillis() - timeStep < 15_000) { //拦截15秒内还未响应的相同请求
+            return@launch
+        }
+
+        loadingGameTypes[gameType] = System.currentTimeMillis()
+        launch {
             val resultRecommend = doNetwork(androidContext) {
                 val currentTimeMillis = System.currentTimeMillis()
                 val calendar = Calendar.getInstance()
@@ -215,6 +224,8 @@ open class MainHomeViewModel(
                 notifyFavorite(FavoriteType.MATCH)
             }
         }
+
+        loadingGameTypes.remove(gameType)
     }
 
     /**

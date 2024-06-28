@@ -1,11 +1,13 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerGameListAdapter
@@ -31,7 +33,6 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
         initSportObserve()
         //初始化热门赛事
         initHotMatchView()
-        viewModel.getRecommend()
         observerGameMaintain()
     }
 
@@ -88,6 +89,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
     }
 
     private fun initObserve() = okGamesFragment().viewModel.run {
+        DataResourceChange.observe(viewLifecycleOwner) { getRecommend() }
         gameHall.observe(viewLifecycleOwner) {
             categoryList = it.categoryList?.filter {category->
                 !category.gameList.isNullOrEmpty()

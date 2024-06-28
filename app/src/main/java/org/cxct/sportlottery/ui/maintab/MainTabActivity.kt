@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.coroutines.GlobalScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.gone
@@ -33,6 +34,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.betList.BetListFragment
@@ -228,6 +230,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     }
 
     private fun initObserve() {
+        DataResourceChange.observe(this) { closeBetFragment() }
         ConfigRepository.onNewConfig(this) {
             if (GamePlayNameRepository.resourceList==null) {
                 GamePlayNameRepository.getIndexResourceJson()

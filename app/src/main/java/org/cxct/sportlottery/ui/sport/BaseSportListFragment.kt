@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
@@ -29,6 +30,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.common.enums.ChannelType
+import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -116,9 +118,8 @@ abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewMod
         viewModel.favorMatchList.observe(viewLifecycleOwner) { onFavorite(it) }
         viewModel.oddsType.observe(viewLifecycleOwner) { onOddTypeChanged(it) }
         viewModel.betInfoList.observe(viewLifecycleOwner) { onBetInfoChanged(it.peekContent()) }
-        receiver.refreshInForeground.observe(viewLifecycleOwner){
-            onReload()
-        }
+        receiver.refreshInForeground.observe(viewLifecycleOwner) { onReload() }
+        DataResourceChange.observerDataSourceChang(lifecycleScope) { onReload() }
     }
 
     protected open fun observerMenuData() {

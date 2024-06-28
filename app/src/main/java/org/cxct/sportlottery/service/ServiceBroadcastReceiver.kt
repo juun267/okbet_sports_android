@@ -13,10 +13,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.post
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -24,27 +21,27 @@ import org.cxct.sportlottery.network.service.match_odds_change.transferMatchOdds
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.transferOddsChangeEvent
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
+import org.cxct.sportlottery.service.dispatcher.DataResourceChange
+import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
+import org.cxct.sportlottery.service.dispatcher.NoticeDispatcher
+import org.cxct.sportlottery.service.dispatcher.OrderSettlementDispatcher
+import org.cxct.sportlottery.service.dispatcher.SportMaintainDispatcher
+import org.cxct.sportlottery.service.dispatcher.SysMaintenanceDispatcher
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.math.BigDecimal
-import java.sql.Timestamp
 
 object ServiceBroadcastReceiver {
 
     private val betInfoRepository: BetInfoRepository = BetInfoRepository
-
-    val globalStop: LiveData<FrontWsEvent.GlobalStopEvent?>
-        get() = _globalStop
 
     val matchClock: LiveData<FrontWsEvent.MatchClockEvent?>
         get() = _matchClock
 
     val notice: LiveData<FrontWsEvent.NoticeEvent?>
         get() = _notice
-
-    val orderSettlement: LiveData<FrontWsEvent.BetSettlementEvent?>
-        get() = _orderSettlement
 
     val userMoney: LiveData<Double?>
         get() = _userMoney
@@ -54,9 +51,6 @@ object ServiceBroadcastReceiver {
 
     val userNotice: LiveData<Event<FrontWsEvent.UserNoticeEvent>>
         get() = _userNotice
-
-    val sysMaintenance: LiveData<FrontWsEvent.SysMaintainEvent?>
-        get() = _sysMaintenance
 
     val serviceConnectStatus: LiveData<ServiceConnectStatus>
         get() = _serviceConnectStatus
@@ -72,42 +66,47 @@ object ServiceBroadcastReceiver {
     val userMaxBetMoneyChange: LiveData<FrontWsEvent.UserLevelConfigChangeEvent?>
         get() = _userMaxBetMoneyChange
 
-    val dataSourceChange: LiveData<Boolean?>
-        get() = _dataSourceChange
-
     val userInfoChange: LiveData<Boolean?>
         get() = _userInfoChange
-
-    val closePlayCate: LiveData<Event<FrontWsEvent.ClosePlayCateEvent?>>
-        get() = _closePlayCate
 
     //在后台超过一段时间后，返回前台刷新赛事列表
     val refreshInForeground: LiveData<Event<Long>>
         get() = _refreshInForeground
 
-    private val _globalStop = MutableLiveData<FrontWsEvent.GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<FrontWsEvent.MatchClockEvent?>()
     private val _notice = MutableLiveData<FrontWsEvent.NoticeEvent?>()
-    private val _orderSettlement = MutableLiveData<FrontWsEvent.BetSettlementEvent?>()
     private val _pingPong = MutableLiveData<FrontWsEvent.PingPongEvent?>()
     private val _userMoney = MutableLiveData<Double?>()
     private val _lockMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<Event<FrontWsEvent.UserNoticeEvent>>()
-    private val _sysMaintenance = SingleLiveEvent<FrontWsEvent.SysMaintainEvent?>()
     private val _serviceConnectStatus = SingleLiveEvent<ServiceConnectStatus>()
     private val _leagueChange = MutableLiveData<FrontWsEvent.LeagueChangeEvent?>()
     private val _userDiscountChange = MutableLiveData<FrontWsEvent.UserDiscountChangeEvent?>()
     private val _userMaxBetMoneyChange = MutableLiveData<FrontWsEvent.UserLevelConfigChangeEvent?>()
-    private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
-    private val _closePlayCate = MutableLiveData<Event<FrontWsEvent.ClosePlayCateEvent?>>()
     private val _refreshInForeground = MutableLiveData<Event<Long>>()
 
-    val sportMaintenance: LiveData<FrontWsEvent.SportMaintainEvent> = MutableLiveData()
     val jackpotChange: LiveData<String?> = MutableLiveData()
-    val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
 
     val thirdGamesMaintain = MutableSharedFlow<FrontWsEvent.GameFirmMaintainEvent>(extraBufferCapacity= 3)
+
+    private val eventDispatchers: Map<String, EventDispatcher<*>>
+
+    init {
+        val dispatchers = mutableMapOf<String, EventDispatcher<*>>()
+        registerDispatcher { dispatchers[it.eventType()] = it }
+        eventDispatchers = dispatchers.toMutableMap()
+    }
+
+    private fun registerDispatcher(register: (EventDispatcher<*>) -> Unit) {
+        register.invoke(DataResourceChange)
+        register.invoke(NoticeDispatcher)
+        register.invoke(GlobalStopDispatcher)
+        register.invoke(OrderSettlementDispatcher)
+        register.invoke(SportMaintainDispatcher)
+        register.invoke(SysMaintenanceDispatcher)
+        register.invoke(ClosePlayCateDispatcher)
+    }
 
     fun onConnectStatus(connectStatus: ServiceConnectStatus) {
         _serviceConnectStatus.postValue(connectStatus)
@@ -134,28 +133,9 @@ object ServiceBroadcastReceiver {
 
     private suspend fun handleEvent(event: FrontWsEvent.Event, channelStr: String,gameType: String? = null) {
         when (val eventType = event.eventType) {
-            EventType.NOTICE -> {
-                _notice.postValue(event.noticeEvent)
-            }
-            EventType.GLOBAL_STOP -> {
-                _globalStop.postValue(event.globalStopEvent)
-            }
-            //公共频道(这个通道会通知主站平台维护)
-            EventType.SYS_MAINTENANCE -> {
-                val sysMaintainEvent = event.sysMaintainEvent
-                _sysMaintenance.postValue(sysMaintainEvent)
-                (onSystemStatusChange as MutableLiveData<Boolean>).postValue(sysMaintainEvent.status == 1)
-            }
             EventType.RECORD_RESULT_JACKPOT_OK_GAMES->{
                 val data = event.recordResultJackpotOkGamesEvent
                 (jackpotChange as MutableLiveData<String?>).postValue(data?.amount)
-            }
-            //公共频道
-            EventType.DATA_SOURCE_CHANGE -> {
-                _dataSourceChange.postValue(true)
-            }
-            EventType.CLOSE_PLAY_CATE -> {
-                _closePlayCate.postValue(Event(event.closePlayCateEvent))
             }
             //用户私人频道
             EventType.USER_MONEY -> {
@@ -257,18 +237,12 @@ object ServiceBroadcastReceiver {
                 }
                 BetInfoRepository.updateMatchOdd(data)
             }
-            //体育服务开关
-            EventType.SPORT_MAINTAIN_STATUS -> {
-                (sportMaintenance as MutableLiveData<FrontWsEvent.SportMaintainEvent>)
-                    .postValue(event.sportMaintainEvent)
-            }
-
-            EventType.ORDER_SETTLEMENT -> {
-                _orderSettlement.postValue(event.betSettlementEvent)
-            }
 
             else -> {
-                Timber.i("Receive UnKnown EventType : $eventType")
+
+                if ((eventDispatchers[eventType]?.handleEvent(eventType, event, gameType) != true)) {
+                    Timber.i("Receive UnKnown EventType : $eventType")
+                }
             }
         }
     }

@@ -12,7 +12,6 @@ import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
@@ -29,7 +28,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.common.enums.ChannelType
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.holder.MAX_BET_VALUE
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
@@ -39,7 +38,6 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.OkPopupWindow
 import org.cxct.sportlottery.view.dialog.BetBalanceDialog
-import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.cxct.sportlottery.view.dialog.BasketballDelBetTipDialog
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import timber.log.Timber
@@ -861,11 +859,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
         }
 
         receiver.matchOddsLock.collectWith(lifecycleScope) { viewModel.updateLockMatchOdd(it) }
-        receiver.globalStop.observe(this.viewLifecycleOwner) {
-            val globalStopEvent = it ?: return@observe
+        GlobalStopDispatcher.observe(this.viewLifecycleOwner) { globalStopEvent->
             val betRefactorList = betListRefactorAdapter?.betList ?: return@observe
             betRefactorList.forEach { listData ->
-                if (globalStopEvent.producerId == null || listData.matchOdd.producerId == it.producerId.value) {
+                if (globalStopEvent.producerId == null || listData.matchOdd.producerId == globalStopEvent.producerId.value) {
                     listData.matchOdd.status = BetStatus.LOCKED.code
                 }
             }

@@ -27,6 +27,8 @@ import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
+import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
 import org.cxct.sportlottery.ui.base.*
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
@@ -196,9 +198,7 @@ class HomeHotMatchView(
 
         }
 
-
-        receiver.globalStop.observe(viewLifecycleOwner) {
-            val globalStopEvent = it ?: return@observe
+        GlobalStopDispatcher.observe(viewLifecycleOwner) { globalStopEvent->
             val hotMatchAdapter = adapter ?: return@observe
             if (hotMatchAdapter.data.isEmpty()) {
                 return@observe
@@ -210,8 +210,8 @@ class HomeHotMatchView(
             }
         }
 
-        receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
-            val it = event?.getContentIfNotHandled() ?: return@observe
+        ClosePlayCateDispatcher.observe(viewLifecycleOwner) { event ->
+            val it = event.getContentIfNotHandled() ?: return@observe
             adapter?.data?.forEachIndexed { index, recommend ->
                 if (recommend.gameType == it.gameType) {
                     recommend.oddsMap?.forEach { map ->
