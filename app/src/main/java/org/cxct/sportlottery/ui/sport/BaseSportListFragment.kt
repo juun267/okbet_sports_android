@@ -119,7 +119,7 @@ abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewMod
         viewModel.oddsType.observe(viewLifecycleOwner) { onOddTypeChanged(it) }
         viewModel.betInfoList.observe(viewLifecycleOwner) { onBetInfoChanged(it.peekContent()) }
         receiver.refreshInForeground.observe(viewLifecycleOwner) { onReload() }
-        DataResourceChange.observerDataSourceChang(lifecycleScope) { onReload() }
+        DataResourceChange.observe(viewLifecycleOwner) { onReload() }
     }
 
     protected open fun observerMenuData() {
