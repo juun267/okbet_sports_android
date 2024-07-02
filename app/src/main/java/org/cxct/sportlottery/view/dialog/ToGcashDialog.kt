@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogToGcashBinding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.glifeUserWithdrawEnable
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -61,7 +62,8 @@ class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
             }
         }
         fun showByClick(next: () -> Unit){
-            if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount()) {
+
+            if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount() && !glifeUserWithdrawEnable()) {
                 newInstance(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToGcashDialog.javaClass.name)
                 return
             }

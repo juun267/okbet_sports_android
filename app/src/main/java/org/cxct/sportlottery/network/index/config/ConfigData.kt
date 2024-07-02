@@ -166,8 +166,8 @@ data class ConfigData(
     val ageVerificationChecked:Int=1,//是否默认勾选21岁 0-关闭 1-打开
     val gameUserDepositURL: String? = null,//三方游戏内充值跳转链接
     val inviteUserStatus: Int=0,//是否开邀请好友活动 1-开启 0-关闭
+    val glifeMemberRechargeAndWithdrawal: Int = 0, // glife用户可以在平台直接充值
 ) {
-    var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
 }
 
