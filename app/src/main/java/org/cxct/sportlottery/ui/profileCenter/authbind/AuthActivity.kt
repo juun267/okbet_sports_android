@@ -4,6 +4,8 @@ import android.content.Intent
 import android.widget.TextView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.clickDelay
+import org.cxct.sportlottery.common.extentions.hideLoading
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.databinding.ActivityAuthBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -90,12 +92,14 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
         AuthManager.facebookCallback(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
         AuthManager.googleCallback(requestCode, resultCode, data) { success, msg ->
-            msg?.let {
-                if (success) {
-                    viewModel.bindGoogle(it)
+            if (success) {
+                if (msg.isEmptyStr()) {
+                    hideLoading()
                 } else {
-                    showErrorPromptDialog(it) {}
+                    viewModel.bindGoogle(msg!!)
                 }
+            } else {
+                hideLoading()
             }
         }
     }
