@@ -41,6 +41,7 @@ import org.cxct.sportlottery.common.enums.ChannelType
 import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
 import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
+import org.cxct.sportlottery.service.dispatcher.ProducerUpDispatcher
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.adapter.DetailTopFragmentStateAdapter
@@ -128,7 +129,6 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
     //进来后默认切到指定tab
     private val tabCode by lazy { intent.getStringExtra("tabCode") }
     private val matchId by lazy { intent.getStringExtra("matchId") }
-    private var isFlowing = false
     private lateinit var topBarFragmentList: List<Fragment>
     private lateinit var sportToolBarTopFragment: SportToolBarTopFragment
     private lateinit var sportChartFragment: SportChartFragment
@@ -245,8 +245,9 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         ivFavorite.isSelected = matchInfo?.isFavorite ?: false
         binding.ivRefresh.setOnClickListener {
             it.isEnabled = false
-            removeObserver()  // 订阅之前移除之前的订阅
-            initObserve() // 之前的逻辑，重新订阅
+            getData()
+//            removeObserver()  // 订阅之前移除之前的订阅
+//            initObserve() // 之前的逻辑，重新订阅
             it.rotationAnimation(it.rotation + 720f, 1000) { it.isEnabled = true}
         }
 
@@ -422,7 +423,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
 
     }
 
-     fun showBetListPage() {
+     private fun showBetListPage() {
         betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
             override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>, isMultiBet: Boolean) {
                 showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
@@ -461,7 +462,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
 
     override var startTime: Long = 0
     override var timer: Timer = Timer()
-    var isGamePause = false
+    private var isGamePause = false
 
     override var timerHandler: Handler = Handler(Looper.getMainLooper()) {
         var timeMillis = startTime * 1000L
@@ -776,11 +777,6 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             }
         }
 
-        DataResourceChange.observe(this) {
-            viewModel.removeBetInfoAll()
-            binding.ivRefresh.performClick()
-        }
-
     }
 
     private fun showLive() {
@@ -899,6 +895,17 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             }
         }
 
+        ProducerUpDispatcher.observe(this) {
+            unSubscribeChannelEventAll()
+            matchInfo?.let {
+                subscribeChannelEvent(it.id,it.gameType)
+            }
+        }
+
+        DataResourceChange.observe(this) {
+            viewModel.removeBetInfoAll()
+            binding.ivRefresh.performClick()
+        }
         receiver.refreshInForeground.observe(this) { getData() }
 
     }

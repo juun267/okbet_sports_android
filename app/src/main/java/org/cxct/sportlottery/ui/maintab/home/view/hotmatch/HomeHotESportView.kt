@@ -29,6 +29,7 @@ import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
 import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
+import org.cxct.sportlottery.service.dispatcher.ProducerUpDispatcher
 import org.cxct.sportlottery.ui.base.*
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
@@ -240,6 +241,12 @@ class HomeHotESportView(
                 }
             }
 
+        }
+
+        ProducerUpDispatcher.observe(viewLifecycleOwner) {
+            //先解除全部賽事訂閱
+            unSubscribeChannelHall(fragment)
+            firstVisibleRange()
         }
     }
 

@@ -26,6 +26,7 @@ import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
 import org.cxct.sportlottery.service.dispatcher.NoticeDispatcher
 import org.cxct.sportlottery.service.dispatcher.OrderSettlementDispatcher
+import org.cxct.sportlottery.service.dispatcher.ProducerUpDispatcher
 import org.cxct.sportlottery.service.dispatcher.SportMaintainDispatcher
 import org.cxct.sportlottery.service.dispatcher.SysMaintenanceDispatcher
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -106,6 +107,7 @@ object ServiceBroadcastReceiver {
         register.invoke(SportMaintainDispatcher)
         register.invoke(SysMaintenanceDispatcher)
         register.invoke(ClosePlayCateDispatcher)
+        register.invoke(ProducerUpDispatcher)
     }
 
     fun onConnectStatus(connectStatus: ServiceConnectStatus) {

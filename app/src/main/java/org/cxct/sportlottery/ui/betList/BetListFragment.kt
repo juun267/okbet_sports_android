@@ -29,6 +29,7 @@ import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.common.enums.ChannelType
 import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
+import org.cxct.sportlottery.service.dispatcher.ProducerUpDispatcher
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.holder.MAX_BET_VALUE
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
@@ -868,6 +869,16 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
             }
             betListRefactorAdapter?.betList = betRefactorList
             betParlayListRefactorAdapter?.betList = betRefactorList
+        }
+
+        ProducerUpDispatcher.observe(viewLifecycleOwner) {
+            betListRefactorAdapter?.betList.let { list ->
+                betListPageUnSubScribeEvent()
+                list?.let { listNotNull ->
+                    unsubscribeChannel(listNotNull)
+                    subscribeChannel(listNotNull)
+                }
+            }
         }
 
     }
