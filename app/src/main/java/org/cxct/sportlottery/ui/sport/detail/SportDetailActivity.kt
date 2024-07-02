@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.SpannableStringBuilder
 import android.view.ViewGroup
 import android.webkit.*
 import android.widget.ImageView
@@ -907,6 +908,13 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             binding.ivRefresh.performClick()
         }
         receiver.refreshInForeground.observe(this) { getData() }
+        DataResourceChange.observe(this) {
+            showErrorPromptDialog(
+                title = getString(R.string.prompt),
+                message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
+                hasCancel = false
+            ) { }
+        }
 
     }
 

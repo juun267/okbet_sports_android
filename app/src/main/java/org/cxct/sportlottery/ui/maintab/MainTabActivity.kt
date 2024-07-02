@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -308,6 +309,14 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             } else {
                 enterThirdGame(it.second, it.first)
             }
+        }
+
+        DataResourceChange.observe(this) {
+            showErrorPromptDialog(
+                title = getString(R.string.prompt),
+                message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
+                hasCancel = false
+            ) { }
         }
     }
 
