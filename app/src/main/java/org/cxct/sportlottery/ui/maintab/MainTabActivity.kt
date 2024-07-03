@@ -311,9 +311,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             }
         }
 
-        DataResourceChange.observe(this) {
-            it.getContentIfNotHandled()?.let { showDataSourceChangedDialog() }
-        }
+        DataResourceChange.observe(this) { showDataSourceChangedDialog(it) }
     }
 
 

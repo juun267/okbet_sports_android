@@ -1074,7 +1074,11 @@ fun FragmentActivity.jumpToWithdraw(){
     }
 }
 
-fun FragmentActivity.showDataSourceChangedDialog() {
+fun FragmentActivity.showDataSourceChangedDialog(event: Event<Boolean>) {
+    if (AppManager.currentActivity() != this || event.getContentIfNotHandled() == null) {
+        return
+    }
+
     showErrorPromptDialog(
         title = getString(R.string.prompt),
         message = SpannableStringBuilder().append(getString(R.string.message_source_change)),

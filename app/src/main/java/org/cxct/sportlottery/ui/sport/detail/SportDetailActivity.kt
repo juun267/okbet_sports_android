@@ -903,9 +903,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         DataResourceChange.observe(this) {
             viewModel.removeBetInfoAll()
             binding.ivRefresh.performClick()
-            DataResourceChange.observe(this) {
-                it.getContentIfNotHandled()?.let { showDataSourceChangedDialog() }
-            }
+            showDataSourceChangedDialog(it)
         }
 
     }
