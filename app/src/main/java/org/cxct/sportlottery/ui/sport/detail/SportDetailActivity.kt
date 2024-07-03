@@ -247,8 +247,6 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         binding.ivRefresh.setOnClickListener {
             it.isEnabled = false
             getData()
-//            removeObserver()  // 订阅之前移除之前的订阅
-//            initObserve() // 之前的逻辑，重新订阅
             it.rotationAnimation(it.rotation + 720f, 1000) { it.isEnabled = true}
         }
 
@@ -903,12 +901,10 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             }
         }
 
+        receiver.refreshInForeground.observe(this) { getData() }
         DataResourceChange.observe(this) {
             viewModel.removeBetInfoAll()
             binding.ivRefresh.performClick()
-        }
-        receiver.refreshInForeground.observe(this) { getData() }
-        DataResourceChange.observe(this) {
             showErrorPromptDialog(
                 title = getString(R.string.prompt),
                 message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
