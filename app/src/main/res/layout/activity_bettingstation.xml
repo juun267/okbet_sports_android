@@ -27,11 +27,18 @@
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:gravity="center_horizontal">
+              <ImageView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:adjustViewBounds="true"
+                  android:src="@drawable/bg_home_bettingstation_top"/>
               <TextView
                   android:id="@+id/tvTitle"
-                  android:layout_width="wrap_content"
+                  android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:layout_marginTop="@dimen/margin_30"
+                  android:layout_marginTop="@dimen/margin_20"
+                  android:layout_marginHorizontal="62dp"
+                  android:gravity="center"
                   android:textSize="@dimen/textSize30sp"
                   android:textColor="@color/color_3C4858"
                   android:textStyle="bold"
@@ -46,18 +53,13 @@
                   android:textSize="@dimen/textSize12sp"
                   android:textColor="@color/color_3C4858"
                   android:text="@string/P459"/>
-              <ImageView
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="@dimen/margin_15"
-                  android:adjustViewBounds="true"
-                  android:src="@drawable/bg_home_bettingstation_top"/>
+
           </LinearLayout>
           <org.cxct.sportlottery.ui.maintab.home.view.HomeBettingStationView
               android:id="@+id/bettingStationView"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginTop="-35dp"/>
+              android:layout_marginTop="20dp"/>
           <org.cxct.sportlottery.ui.maintab.home.view.HomeBottomView
               android:id="@+id/bottomView"
               android:layout_width="match_parent"

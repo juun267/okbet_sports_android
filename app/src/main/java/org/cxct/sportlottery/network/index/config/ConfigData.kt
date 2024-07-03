@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.index.config
 
 import androidx.annotation.Keep
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.repository.StaticData
 
 @JsonClass(generateAdapter = true)
 @Keep
@@ -161,9 +162,10 @@ data class ConfigData(
     val sbSportSwitch:Int=0,//沙巴体育开关 0-关，1-开
     val servicePhoneNationNumber: String?=null, //客服专线国家码
     val servicePhoneNumber: String?=null, //客服专线
-    val vipSwitch:Int=0,//是否开启用户VIP功能 1-开启 2-关闭
+    val vipSwitch: Int=0,//是否开启用户VIP功能 1-开启 2-关闭
     val ageVerificationChecked:Int=1,//是否默认勾选21岁 0-关闭 1-打开
     val gameUserDepositURL: String? = null,//三方游戏内充值跳转链接
+    val inviteUserStatus: Int=0,//是否开邀请好友活动 1-开启 0-关闭
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

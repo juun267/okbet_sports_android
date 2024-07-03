@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_RECORD
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
+import org.cxct.sportlottery.network.Constants.INVITE_USER_DETAIL
 import org.cxct.sportlottery.network.Constants.LOGIN
 import org.cxct.sportlottery.network.Constants.LOGIN_CHECK_NEED_CODE
 import org.cxct.sportlottery.network.Constants.REVERIFY
@@ -111,5 +112,8 @@ interface UserApiService {
 
     @POST(SETBIRTHDAY)
     suspend fun setBirthday(@Body params : JsonObject): ApiResult<String>
+
+    @GET(INVITE_USER_DETAIL)
+    suspend fun inviteUserDetail(): ApiResult<InviteUserDetail>
 
 }

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.promotion
 
 import android.content.Context
 import android.content.Intent
-import androidx.core.os.postDelayed
 import androidx.core.view.postDelayed
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.ActivityType
@@ -38,8 +37,8 @@ class PromotionDetailActivity :
             onBackPressed()
         }
         activityData?.let {
-            setPromotion(activityData!!)
-            LogUtil.toJson(activityData)
+            setPromotion(it)
+            LogUtil.toJson(it)
             if (!it.activityId.isNullOrEmpty()){
                 viewModel.activityDetailH5(it.activityId)
             }else if(it.activityType==ActivityType.FIRST_DEPOSIT_BONUS||it.activityType==ActivityType.DAILY_BONUS){
@@ -49,7 +48,7 @@ class PromotionDetailActivity :
             }
         }
         viewModel.activityDetail.observe(this) {
-             setActivity(it)
+            it?.let { it1 -> setActivity(it1) }
         }
         viewModel.activityApply.observe(this) {
             when(viewModel.activityDetail.value?.activityType){

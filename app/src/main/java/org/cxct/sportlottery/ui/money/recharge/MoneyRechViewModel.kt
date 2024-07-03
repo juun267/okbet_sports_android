@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.money.recharge
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,7 +12,6 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
 import org.cxct.sportlottery.common.extentions.callApi
-import org.cxct.sportlottery.net.message.AnnouncementRepository
 import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
@@ -271,7 +269,8 @@ class MoneyRechViewModel(
         depositMoney: String,
         bankCode: String?,
         payer: String?,
-        activityType:Int?
+        activityType:Int?,
+        email: String?
     ) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
@@ -288,8 +287,13 @@ class MoneyRechViewModel(
                 "clientType" to "2",
             ).apply {
                 activityType?.let { put("activityType",it.toString()) }
-                if (!payer.isNullOrEmpty())
+                if (!payer.isNullOrEmpty()) {
                     put("payer", payer)
+                }
+                if (!email.isNullOrEmpty()) {
+                    put("email", email)
+                    put("isEmail", "true")
+                }
                 AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
                     put("appsFlyerId", it)
                     put("appsFlyerKey", BuildConfig.AF_APPKEY)
@@ -323,7 +327,6 @@ class MoneyRechViewModel(
         checkRcgOnlineAccount(depositMoney, mSelectRechCfgs)
         if (onlineCryptoPayInput()) {
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
-            val rechCfgId = (mSelectRechCfgs?.id ?: "").toString()
             val queryMap = hashMapOf(
                 "x-session-token" to (LoginRepository.token ?: ""),
                 "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),

@@ -3,14 +3,10 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import com.google.gson.JsonObject
+import cn.jpush.android.api.JPushInterface
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.common.extentions.runWithCatch
-import org.cxct.sportlottery.net.ApiResult
-import org.cxct.sportlottery.net.user.UserRepository
-import org.cxct.sportlottery.net.user.data.VipRedenpApplyResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
@@ -71,6 +67,7 @@ object Constants {
     fun getInviteCode(): String {
         return getMetaDataDefValue(MultiLanguagesApplication.appContext, "INVITE_CODE", "")
     }
+    val deviceSn by lazy { JPushInterface.getRegistrationID(MultiLanguagesApplication.getInstance()) }
 
     /**
      * 获取MetaData信息
@@ -247,6 +244,8 @@ object Constants {
     fun getVipRuleUrl(context: Context) = "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}vip-details"
 
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
+
+    fun getInviteUrl() = "${getH5BaseUrl()}mobile/inviteFriends"
 
     /**
      * 给h5地址加上统一参数
@@ -449,6 +448,8 @@ object Constants {
     const val VIP_UNIREDENP_APPLY = "/api/front/activity/vip/uniredenp/apply"
 
     const val SETBIRTHDAY = "/api/front/user/setBirthday"
+
+    const val INVITE_USER_DETAIL = "/api/front/activity/inviteUserDetail"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image#url_ignore" //上传图片,url_ignore避免域名被动态替换

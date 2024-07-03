@@ -24,10 +24,23 @@
             android:layout_height="wrap_content"
             app:cvTitleTextStyle="normal"
             app:cvEms="20"
+            app:cvMarginBottom="0dp"
             app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvHint="@string/edt_hint_payer"
             app:cvInputType="text"
             app:cvTitle="@string/title_payer" />
+
+        <!-- 邮箱 -->
+        <org.cxct.sportlottery.view.LoginEditText
+            android:id="@+id/et_recharge_online_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cvTitleTextStyle="normal"
+            app:cvEms="50"
+            app:cvTextColor="@color/color_9BB3D9_535D76"
+            app:cvHint="@string/J558"
+            app:cvInputType="text"
+            app:cvTitle="@string/e_mail" />
 
 
         <!-- 充值金額 -->

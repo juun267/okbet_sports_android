@@ -9,14 +9,12 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 object KvUtils {
 
 
-    //glife用户存取款提示弹窗点击了  不再提示标记
-    const val GLIFE_TIP_FLAG = "glife_tip_flag"
-
     //是否处于市场审核中,上架市场，隐藏功能的开关
     const val MARKET_SWITCH = "marketSwitch"
     const val KEY_ENDCARD_GUIDE = "endcardGuide"
     const val KEY_ENDCARD_CLEAR = "EndCardClear"
     const val KEY_ENDCARD_DELETE_GUIDE = "endcardDeleteGuide"
+    const val KEY_NOTIFICATION_PERMISSION = "notificationPermission"
     private val mv: MMKV by lazy {
         MMKV.initialize(MultiLanguagesApplication.appContext)
         if (BuildConfig.DEBUG) {

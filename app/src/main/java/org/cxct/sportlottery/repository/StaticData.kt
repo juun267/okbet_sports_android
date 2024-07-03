@@ -158,6 +158,9 @@ class StaticData {
         }
         //是否显示vip相关页面
         fun vipOpened():Boolean= sConfigData?.vipSwitch == 1
+
+        //是否显示邀请好友入口
+        fun inviteUserOpened():Boolean= sConfigData?.inviteUserStatus == 1
     }
 
 }
