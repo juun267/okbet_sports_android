@@ -54,7 +54,7 @@ class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
          * 根据条件判断是否需要显示
          */
         fun showByLogin(){
-            if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount()) {
+            if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount() && !glifeUserWithdrawEnable()) {
                 if (!isCheckedGLife() && needShow) {
                     needShow = false
                     newInstance().show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToGcashDialog.javaClass.name)
