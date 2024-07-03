@@ -52,7 +52,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel,FragmentBankListBinding>
                         ToastUtil.showToast(context, R.string.set_phone_no)
                         return@BankCardListAdapter
                     }
-                    DeleteBankCardDialog.newInstance(phoneNo!!).show(childFragmentManager)
+                    DeleteBankCardDialog.newInstance(phoneNo!!, it.id.toString()).show(childFragmentManager)
                 }
 
             )

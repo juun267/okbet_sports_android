@@ -26,9 +26,10 @@ import splitties.bundle.put
 class DeleteBankCardDialog: BaseDialog<WithdrawViewModel,DialogDeleteBankcardBinding>(), VerifyCallback {
 
     companion object{
-        fun newInstance(phoneNo: String)=DeleteBankCardDialog().apply {
+        fun newInstance(phoneNo: String, bankcardId: String)=DeleteBankCardDialog().apply {
             arguments = Bundle().apply {
                 put("phoneNo",phoneNo)
+                put("bankcardId", bankcardId)
             }
         }
     }
@@ -36,6 +37,7 @@ class DeleteBankCardDialog: BaseDialog<WithdrawViewModel,DialogDeleteBankcardBin
         marginHorizontal=20.dp
     }
     private val phoneNo by lazy { requireArguments().getString("phoneNo")!! }
+    private val bankcardId by lazy { requireArguments().getString("bankcardId")!! }
     private var countDownGoing = false
 
     override fun onInitView() {
@@ -142,7 +144,7 @@ class DeleteBankCardDialog: BaseDialog<WithdrawViewModel,DialogDeleteBankcardBin
             dismiss()
             (requireParentFragment() as? BankListFragment)?.apply {
                 loading()
-                viewModel.deleteBankCard(it.id.toString(), pwd, code)
+                viewModel.deleteBankCard(bankcardId, pwd, code)
             }
         }
     }
