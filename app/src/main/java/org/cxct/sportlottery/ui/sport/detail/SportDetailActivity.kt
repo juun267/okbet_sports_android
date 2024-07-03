@@ -7,9 +7,7 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.SpannableStringBuilder
 import android.view.ViewGroup
-import android.webkit.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -905,11 +903,9 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         DataResourceChange.observe(this) {
             viewModel.removeBetInfoAll()
             binding.ivRefresh.performClick()
-            showErrorPromptDialog(
-                title = getString(R.string.prompt),
-                message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
-                hasCancel = false
-            ) { }
+            DataResourceChange.observe(this) {
+                it.getContentIfNotHandled()?.let { showDataSourceChangedDialog() }
+            }
         }
 
     }

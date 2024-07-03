@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.text.Html
+import android.text.SpannableStringBuilder
 import android.text.method.HideReturnsTransformationMethod
 import android.view.Gravity
 import android.view.View
@@ -1071,4 +1072,12 @@ fun FragmentActivity.jumpToWithdraw(){
     ToGcashDialog.showByClick{
         startActivity(WithdrawActivity::class.java)
     }
+}
+
+fun FragmentActivity.showDataSourceChangedDialog() {
+    showErrorPromptDialog(
+        title = getString(R.string.prompt),
+        message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
+        hasCancel = false
+    ) { }
 }

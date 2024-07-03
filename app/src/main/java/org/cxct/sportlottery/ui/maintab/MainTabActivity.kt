@@ -312,11 +312,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         }
 
         DataResourceChange.observe(this) {
-            showErrorPromptDialog(
-                title = getString(R.string.prompt),
-                message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
-                hasCancel = false
-            ) { }
+            it.getContentIfNotHandled()?.let { showDataSourceChangedDialog() }
         }
     }
 
