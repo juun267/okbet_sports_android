@@ -82,6 +82,8 @@ var sConfigData: ConfigData? = null
 val showCurrencySign: String?
     get() = getLoginCurrency() ?: sConfigData?.systemCurrencySign ?: ""
 
+fun glifeUserWithdrawEnable() = sConfigData?.glifeMemberRechargeAndWithdrawal == 1
+
 private fun getLoginCurrency(): String? =
     MultiLanguagesApplication.mInstance.userInfo.value?.currencySign
 
