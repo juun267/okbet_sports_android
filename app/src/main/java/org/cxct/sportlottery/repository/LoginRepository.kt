@@ -2,6 +2,7 @@ package org.cxct.sportlottery.repository
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Looper
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
@@ -214,36 +215,15 @@ object LoginRepository {
     }
 
     suspend fun bindGoogle(token: String): Response<AuthBindResult> {
-        val loginResponse = OneBoSportApi.indexService.bindGoogle(LoginTokenRequest(token))
-
-        if (loginResponse.isSuccessful) {
-            loginResponse.body()?.let {
-                MultiLanguagesApplication.getInstance()?.userInfo()?.let {
-                    it.googleBind = true
-                    MultiLanguagesApplication.getInstance()?.saveUserInfo(it)
-                }
-            }
-        }
-        return loginResponse
+        return OneBoSportApi.indexService.bindGoogle(LoginTokenRequest(token))
     }
 
     suspend fun bindFaceBook(token: String): Response<AuthBindResult> {
-        val loginResponse = OneBoSportApi.indexService.bindFacebook(LoginTokenRequest(token))
-
-        if (loginResponse.isSuccessful) {
-            loginResponse.body()?.let {
-                MultiLanguagesApplication.getInstance()?.userInfo()?.let {
-                    it.facebookBind = true
-                    MultiLanguagesApplication.getInstance()?.saveUserInfo(it)
-                }
-            }
-        }
-        return loginResponse
+        return OneBoSportApi.indexService.bindFacebook(LoginTokenRequest(token))
     }
 
-    suspend fun regPlatformUser(token: String,loginRequest: LoginRequest): Response<LoginResult> {
-        val loginResponse = OneBoSportApi.indexService.regPlatformUser(token,loginRequest)
-        return loginResponse
+    suspend fun regPlatformUser(token: String, loginRequest: LoginRequest): Response<LoginResult> {
+        return OneBoSportApi.indexService.regPlatformUser(token, loginRequest)
     }
     suspend fun setUpLoginData(loginData: LoginData?) {
         updateLoginData(loginData)

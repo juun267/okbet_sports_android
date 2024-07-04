@@ -260,25 +260,17 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         AuthManager.authGoogle(this@LoginOKActivity)
     }
 
-    override fun onPause() {
-        super.onPause()
-//        hideLoading()
-    }
-
     private fun setupAuthLogin() {
         binding.btnGoogle.setOnClickListener {
-//            if (binding.cbPrivacy.isChecked) {
-                googleLogin()
-//            }
-
+            googleLogin()
         }
-
         binding.btnFacebook.setOnClickListener {
-//            AuthManager.authFacebook(this@LoginOKActivity, { token ->
-//                viewModel.loginFacebook(token)
-//            }, { errorMsg ->
-//                showErrorDialog(errorMsg)
-//            })
+            AuthManager.authFacebook(this@LoginOKActivity, { token ->
+                viewModel.loginFacebook(token)
+            }, { errorMsg ->
+                hideLoading()
+                showErrorDialog(errorMsg)
+            })
         }
     }
 
@@ -296,6 +288,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                    layoutPrivacy.ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_nor)
                }
                btnGoogle.setBtnEnable(layoutPrivacy.ivPrivacy.isSelected)
+               btnFacebook.setBtnEnable(layoutPrivacy.ivPrivacy.isSelected)
                viewModel.agreeChecked = layoutPrivacy.ivPrivacy.isSelected
            }
 
@@ -328,8 +321,10 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
            layoutPrivacyNew.cbPrivacy.isChecked = false
            viewModel.agreeChecked = false
            btnGoogle.setBtnEnable(false)
+           btnFacebook.setBtnEnable(false)
            layoutPrivacyNew.cbPrivacy.setOnCheckedChangeListener { compoundButton, b ->
                btnGoogle.setBtnEnable(b)
+               btnFacebook.setBtnEnable(b)
                viewModel.agreeChecked = b
            }
            layoutPrivacyNew.tvPrivacyLine1.makeLinks(

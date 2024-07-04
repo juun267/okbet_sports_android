@@ -173,6 +173,16 @@ class LoginViewModel(
             it?.let { launch { dealWithLoginResult(it) } }
         }
     }
+    fun loginFacebook(token: String) {
+        loading()
+        doRequest({
+            LoginRepository.facebookLogin(token,
+                inviteCode = Constants.getInviteCode())
+        }) {
+            hideLoading()
+            it?.let { launch { dealWithLoginResult(it) } }
+        }
+    }
 
     fun regPlatformUser(token: String,loginRequest: LoginRequest) {
         AFInAppEventUtil.logEvent("regPlatformUser","account",loginRequest.account)
@@ -284,16 +294,6 @@ class LoginViewModel(
 //            LoginRepository.clear()
                 block()
             }
-        }
-    }
-
-    fun loginFacebook(token: String) {
-        loading()
-        doRequest({
-            LoginRepository.facebookLogin(token,
-                inviteCode = Constants.getInviteCode())
-        }) {
-            it?.let { launch { dealWithLoginResult(it) } }
         }
     }
 
