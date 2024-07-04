@@ -1813,4 +1813,5 @@
     <string name="N498">手机</string>
     <string name="P462">邀请好友</string>
     <string name="P467">未安装此应用，请安装后再使用。</string>
+    <string name="P472">Facebook登录暂时无法使用，请使用手机号码注册/登陆</string>
 </resources>
