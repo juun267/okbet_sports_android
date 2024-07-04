@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
+import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
@@ -218,6 +219,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         btnFundDetail.setVisibilityByMarketSwitch()
         btnHelpCenter.setVisibilityByMarketSwitch()
         btnPromotion.setVisibilityByMarketSwitch()
+        btnInviteFriend.isVisible = StaticData.inviteUserOpened()
         btnOtherBetRecord.setVisibilityByMarketSwitch()
         btnAffiliate.setVisibilityByMarketSwitch()
         btnAboutUs.setVisibilityByMarketSwitch()
@@ -243,6 +245,9 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         //優惠活動
         btnPromotion.setOnClickListener {
             startActivity(PromotionListActivity::class.java)
+        }
+        btnInviteFriend.setOnClickListener {
+            startActivity(InviteActivity::class.java)
         }
         //代理加盟
         btnAffiliate.setOnClickListener {
@@ -326,6 +331,8 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
         viewModel.userInfo.observe(viewLifecycleOwner) {
             updateUI(it)
+            //是否测试用户（0-正常用户，1-游客，2-内部测试）
+            updateUserIdentity(it?.testFlag)
         }
 
         viewModel.editIconUrlResult.observe(viewLifecycleOwner) {
@@ -341,12 +348,9 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         InfoCenterRepository.totalUnreadMsgCount.observe(viewLifecycleOwner) {
             updateNoticeCount(it)
         }
-
-        viewModel.userInfo.observe(viewLifecycleOwner) {
-            //是否测试用户（0-正常用户，1-游客，2-内部测试）
-            updateUserIdentity(it?.testFlag)
+        ConfigRepository.config.observe(this){
+            btnInviteFriend.isVisible = StaticData.inviteUserOpened()
         }
-
     }
 
     @SuppressLint("SetTextI18n")
