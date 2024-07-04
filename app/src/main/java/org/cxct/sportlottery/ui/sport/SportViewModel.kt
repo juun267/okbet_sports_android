@@ -232,7 +232,7 @@ class SportViewModel(
             result?.success?.let { success ->
                 val list: ArrayList<OddsDetailListData> = ArrayList()
                 if (success) {
-//                    result.oddsDetailData?.matchOdd?.sortOddsMap()
+                    result.oddsDetailData?.matchOdd?.sortOddsMap()
                     result.oddsDetailData?.matchOdd?.setupIsOnlyEUType()
                     result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                         BetInfoRepository.betInfoList.value?.peekContent()?.let { list ->

@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.youth.banner.util.LogUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toIntS
@@ -36,6 +37,7 @@ import org.cxct.sportlottery.ui.sport.endscore.EndScoreItemDecoration
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.view.IndicatorView
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import java.util.*
@@ -580,9 +582,9 @@ class OddsDetailVH (
     private fun initSingleRCV(recyclerView: RecyclerView, spanCount: Int, oddsDetail: OddsDetailListData): TypeSingleAdapter {
         lateinit var adapter: TypeSingleAdapter
         oddsDetail.sortOddForSingle()
-//        if (oddsDetail.gameType== PlayCate.CORNER_HDP.value){
-//            LogUtil.toJson(oddsDetail.oddArrayList?.map { it?.name+","+it?.spread+","+it?.odds+","+it?.marketSort +","+it?.rowSort })
-//        }
+        if (oddsDetail.gameType== PlayCate.HDP_INCL_OT.value){
+            LogUtil.toJson(oddsDetail.oddArrayList?.map { it?.name+","+it?.spread+","+it?.odds+","+it?.marketSort +","+it?.rowSort })
+        }
         if (recyclerView.adapter == null) {
             adapter = TypeSingleAdapter(oddsDetail, oddsAdapter.onOddClickListener, oddsAdapter.oddsType)
             recyclerView.adapter = adapter
