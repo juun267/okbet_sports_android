@@ -48,7 +48,7 @@ object AuthManager {
                 }
 
                 override fun onCancel() {
-
+                    failCallback.invoke(null)
                 }
             })
         LoginManager.getInstance()

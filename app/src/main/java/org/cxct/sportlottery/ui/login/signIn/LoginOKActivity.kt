@@ -56,13 +56,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         private const val SELF_LIMIT = 1130
         const val LOGIN_TYPE_CODE = 0
         const val LOGIN_TYPE_PWD = 1
-        const val LOGIN_TYPE_GOOGLE = 2
-
-        fun googleLoging(context: Context) {
-            val intent = Intent(context, LoginOKActivity::class.java)
-            intent.putExtra("login_type", LOGIN_TYPE_GOOGLE)
-            context.startActivity(intent)
-        }
 
         fun startRegist(context: Context) {
             val intent = Intent(context, LoginOKActivity::class.java)
@@ -72,6 +65,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
     }
 
     private var countDownGoing = false
+    private val loginType by lazy { intent.getIntExtra("login_type", LOGIN_TYPE_PWD) }
 
     override fun onInitView() {
         ImmersionBar.with(this)
@@ -96,12 +90,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         EventBusUtil.targetLifecycle(this)
         binding.includeSubtitle.tvSubTitle1.isVisible = false
         binding.includeSubtitle.tvSubTitle2.isVisible = false
-        val loginType = intent.getIntExtra("login_type", LOGIN_TYPE_PWD)
-        if (loginType == LOGIN_TYPE_GOOGLE) {
-            googleLogin()
-        }else{
-            switchLoginType(loginType)
-        }
+        switchLoginType(loginType)
     }
 
     private fun initOnClick()=binding.run {
@@ -258,21 +247,15 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         }
     }
 
-    private fun googleLogin() {
-        loading()
-        AuthManager.authGoogle(this@LoginOKActivity)
-    }
-
     private fun setupAuthLogin() {
-        binding.btnGoogle.setOnClickListener {
-            googleLogin()
+        binding.btnGoogle.clickDelay {
+            AuthManager.authGoogle(this@LoginOKActivity)
         }
-        binding.btnFacebook.setOnClickListener {
+        binding.btnFacebook.clickDelay {
             AuthManager.authFacebook(this@LoginOKActivity, { token ->
                 viewModel.loginFacebook(token)
             }, { errorMsg ->
-                hideLoading()
-                showErrorDialog(errorMsg)
+                if (!errorMsg.isNullOrEmpty()) showErrorDialog(getString(R.string.P472))
             })
         }
     }
