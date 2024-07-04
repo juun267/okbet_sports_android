@@ -133,13 +133,13 @@ open class MainHomeViewModel(
     val activityCategroyList = SingleLiveEvent<Pair<String?, List<ActivityCategory>?>>()
     val activityList = SingleLiveEvent<Pair<String?, List<ActivityImageList>?>>()
 
-    val activityDetail: LiveData<ActivityImageList>
+    val activityDetail: LiveData<ActivityImageList?>
         get() = _activityDetail
-    private val _activityDetail = MutableLiveData<ActivityImageList>()
+    private val _activityDetail = MutableLiveData<ActivityImageList?>()
 
-    val activityApply: LiveData<String>
+    val activityApply: LiveData<String?>
         get() = _activityApply
-    private val _activityApply = MutableLiveData<String>()
+    private val _activityApply = MutableLiveData<String?>()
 
     val rewardRecord: LiveData<PageData<RewardRecord>>
         get() = _rewardRecord
