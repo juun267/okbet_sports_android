@@ -60,7 +60,7 @@ data class Odd(
     val playCode: String? = null,
 
     @Json(name = "rowSort")
-    val rowSort: Int? = null
+    var rowSort: Int? = null
 
 ) : OddStateParams, Parcelable, BaseNode() {
 

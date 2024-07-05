@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.youth.banner.util.LogUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toIntS
@@ -582,9 +581,9 @@ class OddsDetailVH (
     private fun initSingleRCV(recyclerView: RecyclerView, spanCount: Int, oddsDetail: OddsDetailListData): TypeSingleAdapter {
         lateinit var adapter: TypeSingleAdapter
         oddsDetail.sortOddForSingle()
-        if (oddsDetail.gameType== PlayCate.HDP_INCL_OT.value){
-            LogUtil.toJson(oddsDetail.oddArrayList?.map { it?.name+","+it?.spread+","+it?.odds+","+it?.marketSort +","+it?.rowSort })
-        }
+//        if (oddsDetail.gameType== PlayCate.OU.value){
+//            LogUtil.toJson(oddsDetail.oddArrayList?.map { "${it?.name}, spread=${it?.spread}, odds=${it?.odds}, status=${it?.status}, marketSort=${it?.marketSort}, rowSort=${it?.rowSort}" })
+//        }
         if (recyclerView.adapter == null) {
             adapter = TypeSingleAdapter(oddsDetail, oddsAdapter.onOddClickListener, oddsAdapter.oddsType)
             recyclerView.adapter = adapter
