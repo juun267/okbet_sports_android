@@ -13,7 +13,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
-import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
@@ -349,7 +348,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             updateNoticeCount(it)
         }
         ConfigRepository.config.observe(this){
-            btnInviteFriend.isVisible = StaticData.inviteUserOpened()
+            binding.btnInviteFriend.isVisible = StaticData.inviteUserOpened()
         }
     }
 
