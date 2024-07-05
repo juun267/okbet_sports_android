@@ -20,6 +20,8 @@ import org.cxct.sportlottery.network.sport.CategoryItem
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
+import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
@@ -221,21 +223,21 @@ open class ESportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, 
             }
         }
 
-        receiver.globalStop.observe(this@ESportListFragment.viewLifecycleOwner) { event->
-            if (event == null || sportLeagueAdapter2.getCount() < 1) {
+        GlobalStopDispatcher.observe(this@ESportListFragment.viewLifecycleOwner) { event->
+            if (sportLeagueAdapter2.getCount() < 1) {
                 return@observe
             }
 
             sportLeagueAdapter2.data.forEachIndexed { index, baseNode ->
                 if (baseNode.isMatchOdd() && SocketUpdateUtil.updateOddStatus(baseNode as MatchOdd, event)) {
                     //暫時不處理 防止過多更新
-                    sportLeagueAdapter2.notifyItemChanged(index, baseNode)
+                    sportLeagueAdapter2.notifyItemChanged(index, SportMatchEvent.GlobalStop)
                 }
             }
         }
 
-        receiver.closePlayCate.observe(this@ESportListFragment.viewLifecycleOwner) { event ->
-            val closeEvent = event?.peekContent() ?: return@observe
+        ClosePlayCateDispatcher.observe(this@ESportListFragment.viewLifecycleOwner) { event ->
+            val closeEvent = event.peekContent()
             if (gameType == closeEvent.gameType) {
                 sportLeagueAdapter2.closePlayCate(closeEvent)
             }

@@ -28,8 +28,12 @@ data class OddsChangeEvent(
     val gameType: String? = null,
     @Json(name = "playCateNum")
     val playCateNum: Int? = null,
+    @Json(name = "updateMode")
+    val updateMode: Int? = null, //2 为全量更新需要替换本地全部玩法
 ) : ServiceEventType, ServiceChannel {
     override var channel: String? = null
+
+    fun isReplaceAll() = 2 == updateMode
 
     /**
      * 從oddsList重組資料結構至Map<String, MutableList<Odd?>?>

@@ -1,26 +1,23 @@
 package org.cxct.sportlottery.ui.base
 
 import android.app.ActivityManager
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.SpannableStringBuilder
 import android.widget.Toast
 import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hideLoading
-import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.common.extentions.showPromptDialog
 import org.cxct.sportlottery.common.extentions.showTokenPromptDialog
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.dispatcher.OrderSettlementDispatcher
+import org.cxct.sportlottery.service.dispatcher.SysMaintenanceDispatcher
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.splash.LaunchActivity
@@ -47,13 +44,11 @@ abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(cl
                 viewModel.clearFavorite()
             }
         }
-        receiver.sysMaintenance.observe(this) {
-            if ((it?.status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
-                if(this.javaClass.simpleName != MaintenanceActivity::class.java.simpleName){
-                    startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    })
-                }
+        SysMaintenanceDispatcher.observe(this) {
+            if(it && this.javaClass.simpleName != MaintenanceActivity::class.java.simpleName){
+                startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                })
             }
         }
 
@@ -93,22 +88,12 @@ abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(cl
             viewModel.updateLockMoney(it)
         }
 
-        receiver.orderSettlement.observe(this) {
+        OrderSettlementDispatcher.observe(this) {
             viewModel.getSettlementNotification(it)
         }
 
         receiver.userDiscountChange.observe(this) {
             viewModel.updateDiscount(it?.discountByGameTypeListList)
-        }
-
-        receiver.dataSourceChange.observe(this) {
-            dataSourceChangeEven?.let {
-                showErrorPromptDialog(
-                    title = getString(R.string.prompt),
-                    message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
-                    hasCancel = false
-                ) { it.invoke() }
-            }
         }
 
         receiver.userInfoChange.observe(this) {
@@ -129,18 +114,6 @@ abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(cl
                     it?.userLevelConfigListList?.firstOrNull()?.maxCpBetMoney ?: 99999
             }
         }
-    }
-
-    private var dataSourceChangeEven: (() -> Unit)? = null
-
-    /**
-     * 设置有新赛事数据监听回调。
-     *  重点!!!
-     *  页面加载完成后再调用该方法就行设置回调，
-     *  不然由于LiveData粘性事件的原因，在页面初始化的时候就有可能弹窗
-      */
-    fun setDataSourceChangeEvent(dataSourceChangeEven: () -> Unit) {
-        this.dataSourceChangeEven = dataSourceChangeEven
     }
 
     fun subscribeSportChannelHall() {

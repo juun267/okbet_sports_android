@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.sport.common
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.common.GameType
@@ -78,7 +77,7 @@ class OddButtonPagerAdapter2(val context: Context,
             .refactorPlayCode(matchInfo?.gameType)
             .sortOdds()
             .mappingCSList(matchOdd)
-            .filterOddsStatus()
+//            .filterOddsStatus()
             .splitPlayCate()
             .setupNameMap(matchOdd.matchInfo?.gameType)
             .replaceNameMap(matchOdd.matchInfo)
@@ -86,20 +85,38 @@ class OddButtonPagerAdapter2(val context: Context,
             .sortPlayCate()
 
         val nonNullValues = odds.filterValues { !it.isNullOrEmpty() }
-        val gameList = nonNullValues.plus(nonNullValues.filter { it.value?.getOrNull(0) == null })
+        val gameList: MutableList<String> = nonNullValues.plus(nonNullValues.filter { it.value?.getOrNull(0) == null })
             .map { it.key }.take(sizeCount(matchInfo?.gameType)).toMutableList()
-        data = gameList.withIndex().groupBy {
-            it.index / 1
-        }.map {
-            it.value.map { it.value }
-        }.map {
-            it.map { playCate: String ->
-                if (playCate.contains("EmptyData"))
-                    Pair(playCate, listOf())
-                else
-                    Pair(playCate, odds[playCate]?.filterNotNull() ?: listOf())
+
+        val dataList = mutableListOf<List<Pair<String, List<Odd>>>>()
+        gameList.forEach { playCate: String ->
+            if (playCate.contains("EmptyData")) {
+                dataList.add(listOf(Pair(playCate, listOf())))
+            } else {
+                dataList.add(listOf(Pair(playCate, odds[playCate]?.filterNotNull() ?: listOf())))
             }
         }
+
+        data = dataList.toList()
+
+//        data = gameList.withIndex().groupBy {
+//            it.index
+//        }.map {
+//            it.value.map { it.value }
+//        }.map {
+//            it.map { playCate: String ->
+//                if (playCate.contains("EmptyData")) {
+//                    Log.e("For Test", "========>>>> globalStop   EEEE 1111 ${matchOdd.matchInfo?.homeName} ${value.size}")
+//                    Pair(playCate, listOf())
+//                } else {
+//                    Log.e("For Test", "========>>>> globalStop   EEEE 2222 ${matchOdd.matchInfo?.homeName} ${value.size}")
+//                    Pair(playCate, odds[playCate]?.filterNotNull() ?: listOf())
+//                }
+//
+//            }
+//        }
+//
+
     }
 
 

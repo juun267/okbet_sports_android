@@ -10,4 +10,6 @@ sealed class SportMatchEvent {
 
     object MatchStatuChanged : SportMatchEvent()
 
+    object GlobalStop: SportMatchEvent()
+
 }

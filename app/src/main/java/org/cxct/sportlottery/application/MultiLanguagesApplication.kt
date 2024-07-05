@@ -29,7 +29,7 @@ import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.dispatcher.SysMaintenanceDispatcher
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.util.*
@@ -270,7 +270,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     open fun setupSystemStatusChange(owner: LifecycleOwner) {
-        ServiceBroadcastReceiver.onSystemStatusChange.observe(owner) {
+        SysMaintenanceDispatcher.observe(owner) {
             if (it) {
                 if (AppManager.currentActivity() !is MaintenanceActivity) {
                     startActivity(Intent(this, MaintenanceActivity::class.java).apply {

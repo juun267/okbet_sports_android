@@ -374,7 +374,9 @@ object SocketUpdateUtil {
                             PlayCate.EPS.value,
                             matchOdd.oddsEps?.eps?.toMutableList() ?: mutableListOf<Odd?>()
                         )
-                    ), oddsChangeEvent.odds
+                    ),
+                    oddsChangeEvent.odds,
+                    oddsChangeEvent.updateMode
                 )
             }
 
@@ -385,7 +387,8 @@ object SocketUpdateUtil {
                         if (oddsMap.containsKey(key)) {
                             updated = updateMatchOdds(
                                 mutableMapOf(Pair(key, oddsMap[key] as MutableList<Odd?>?)),
-                                mutableMapOf(Pair(key, value))
+                                mutableMapOf(Pair(key, value)),
+                                oddsChangeEvent.updateMode
                             )
                         } else {
                             oddsMap[key] = value?.toMutableList()
@@ -399,7 +402,9 @@ object SocketUpdateUtil {
             (QuickPlayCate.values().map { it.value }.contains(cateMenuCode)) -> {
                 updateMatchOdds(
                     matchOdd.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat_1()
-                        ?: mutableMapOf(), oddsChangeEvent.odds
+                        ?: mutableMapOf(),
+                    oddsChangeEvent.odds,
+                    oddsChangeEvent.updateMode
                 )
             }
 
@@ -407,7 +412,7 @@ object SocketUpdateUtil {
                 if (matchOdd.oddsMap == null) {
                     matchOdd.oddsMap = mutableMapOf()
                 }
-                updateMatchOdds(matchOdd.oddsMap as MutableMap<String, MutableList<Odd?>?>? ?: mutableMapOf(), oddsChangeEvent.odds)
+                updateMatchOdds(matchOdd.oddsMap as MutableMap<String, MutableList<Odd?>?>? ?: mutableMapOf(), oddsChangeEvent.odds,oddsChangeEvent.updateMode)
             }
         }
 
@@ -452,6 +457,7 @@ object SocketUpdateUtil {
     fun updateMatchOdds(
         oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
+        updateMode: Int?
     ): Boolean {
         return when (oddsMap.isNullOrEmpty()) {
             true -> {
@@ -459,7 +465,7 @@ object SocketUpdateUtil {
             }
 
             false -> {
-                refreshMatchOdds(oddsMap, oddsMapSocket)
+                refreshMatchOdds(oddsMap, oddsMapSocket, updateMode)
             }
         }
     }
@@ -477,6 +483,7 @@ object SocketUpdateUtil {
     private fun refreshMatchOdds(
         oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
+        updateMode: Int?
     ): Boolean {
         var isNeedRefresh = false
 
@@ -564,7 +571,16 @@ object SocketUpdateUtil {
                 }
             }
         }
-
+        //全量更新，在上面新增和修改后，再删除存在oddsMap中而不存在于oddsMapSocket中的玩法
+        if (updateMode==2&&!oddsMapSocket.isNullOrEmpty()){
+            val diffKeys = oddsMap.keys.subtract(oddsMapSocket.keys).toList()
+            if (diffKeys.isNotEmpty()){
+                diffKeys.forEach {
+                    oddsMap.remove(it)
+                }
+                isNeedRefresh = true
+            }
+        }
         return isNeedRefresh
     }
 
@@ -629,6 +645,8 @@ object SocketUpdateUtil {
         matchOddsChangeEvent: MatchOddsChangeEvent,
         playCate: org.cxct.sportlottery.network.myfavorite.PlayCate?
     ): ArrayList<OddsDetailListData>? {
+        var newOddsMap = matchOddsChangeEvent.odds ?: return null
+
         //若有新玩法的話需要重新setData
         var addedNewOdds = false
         //若有舊玩法被移除的話
@@ -638,12 +656,20 @@ object SocketUpdateUtil {
 
         val newOddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
         newOddsDetailDataList.addAll(oddsDetailDataList)
-        matchOddsChangeEvent.odds = matchOddsChangeEvent.odds.replaceNameMap(oddsDetailDataList?.firstOrNull()?.matchInfo)
-        //有新賠率盤口
-        matchOddsChangeEvent.odds?.forEach { (key, value) ->
-            oddsDetailDataList.filter { it.gameType == key }.forEach {
-                val dataOddsList = it.oddArrayList
-                val socketOddsList = value.odds
+
+        newOddsMap = newOddsMap.replaceNameMap(oddsDetailDataList.firstOrNull()?.matchInfo)
+        matchOddsChangeEvent.odds = newOddsMap
+        val oldDetailDataList = oddsDetailDataList.iterator()
+        while (oldDetailDataList.hasNext()) {
+            val oldListData = oldDetailDataList.next()
+            val newOddsData = newOddsMap[oldListData.gameType]
+            if (newOddsData == null) {
+                if (matchOddsChangeEvent.isReplaceAll()) {
+                    newOddsDetailDataList.remove(oldListData)
+                }
+            } else {
+                val dataOddsList = oldListData.oddArrayList
+                val socketOddsList = newOddsData.odds
 
                 //賠率id list
                 val dataGroupByList = dataOddsList.map { odd -> odd?.id }
@@ -660,12 +686,42 @@ object SocketUpdateUtil {
                             socketOddNotNull.id == newOddId
                         } ?: false
                     }?.let { newOdd ->
-                        it.oddArrayList.add(newOdd)
+                        dataOddsList.add(newOdd)
                         addedNewOdds = true
                     }
                 }
             }
         }
+
+//        //有新賠率盤口
+//        matchOddsChangeEvent.odds?.forEach { (key, value) ->
+//            oddsDetailDataList.filter { it.gameType == key }.forEach {
+//                val dataOddsList = it.oddArrayList
+//                val socketOddsList = value.odds
+//
+//                //賠率id list
+//                val dataGroupByList = dataOddsList.map { odd -> odd?.id }
+//                val socketGroupByList = socketOddsList?.map { odd -> odd?.id } ?: listOf()
+//
+//                //新的Odd
+//                val newOddsId = socketGroupByList.filter { socketId ->
+//                    !dataGroupByList.contains(socketId)
+//                }
+//
+//                newOddsId.forEach { newOddId ->
+//                    socketOddsList?.find { socketOdd ->
+//                        socketOdd?.let { socketOddNotNull ->
+//                            socketOddNotNull.id == newOddId
+//                        } ?: false
+//                    }?.let { newOdd ->
+//                        it.oddArrayList.add(newOdd)
+//                        addedNewOdds = true
+//                    }
+//                }
+//            }
+//        }
+
+
         matchOddsChangeEvent.odds?.filter { socketOddsMap ->
             socketOddsMap.value.odds?.all { it?.status == 2 } ?: false
         }?.forEach { lostOddsMap ->
@@ -753,29 +809,28 @@ object SocketUpdateUtil {
 
     fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: FrontWsEvent.GlobalStopEvent): Boolean {
         var isNeedRefresh = false
+        val producerId = globalStopEvent.producerId?.value
+        val noneProducerId = producerId == null
 
         matchOdd.oddsMap?.values?.forEach { odds ->
-            odds?.filter { odd ->
-                globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString()
-            }?.forEach { odd ->
-                if (odd?.status != BetStatus.DEACTIVATED.code) {
-                    odd?.status = BetStatus.DEACTIVATED.code
+            odds?.forEach { odd ->
+                if ((noneProducerId || producerId == odd.producerId) && odd.status != BetStatus.LOCKED.code) {
+                    odd.status = BetStatus.LOCKED.code
                     isNeedRefresh = true
                 }
             }
         }
 
-        matchOdd.oddsEps?.eps?.filter { odd -> globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString() }
-            ?.forEach { odd ->
-                if (odd?.status != BetStatus.DEACTIVATED.code) {
-                    odd?.status = BetStatus.DEACTIVATED.code
-                    isNeedRefresh = true
-                }
+        matchOdd.oddsEps?.eps?.forEach { odd ->
+            if ((noneProducerId || producerId == odd.producerId) && odd.status != BetStatus.LOCKED.code) {
+                odd.status = BetStatus.LOCKED.code
+                isNeedRefresh = true
             }
-
-        if (isNeedRefresh) {
-            matchOdd.updateOddStatus()
         }
+
+//        if (isNeedRefresh) {
+//            matchOdd.updateOddStatus()
+//        }
 
         return isNeedRefresh
     }
@@ -784,19 +839,24 @@ object SocketUpdateUtil {
         oddsDetailListData: OddsDetailListData, globalStopEvent: FrontWsEvent.GlobalStopEvent
     ): Boolean {
         var isNeedRefresh = false
+        val producerId = globalStopEvent.producerId?.value
+        val oddArrayList = if (producerId == null) {
+            oddsDetailListData.oddArrayList
+        } else {
+            oddsDetailListData.oddArrayList.filter { odd -> producerId == odd?.producerId }.toMutableList()
+        }
 
-        oddsDetailListData.oddArrayList.filter { odd ->
-            globalStopEvent.producerId == null || globalStopEvent.producerId.toString() == odd?.producerId.toString()
-        }.forEach { odd ->
-            if (odd?.status != BetStatus.DEACTIVATED.code) {
-                odd?.status = BetStatus.DEACTIVATED.code
+        oddArrayList.forEach { odd ->
+            if (odd?.status != BetStatus.LOCKED.code) {
+                odd?.status = BetStatus.LOCKED.code
                 isNeedRefresh = true
             }
         }
 
-        if (isNeedRefresh) {
-            oddsDetailListData.updateOddStatus()
-        }
+
+//        if (isNeedRefresh) {
+//            oddsDetailListData.updateOddStatus()
+//        }
 
         return isNeedRefresh
     }
@@ -891,9 +951,9 @@ object SocketUpdateUtil {
      * 配置{H}, {C}翻譯取代文字
      * 新增{E} -> 附加訊息(extInfo)
      */
-    fun Map<String, Odds>?.replaceNameMap(matchInfo: org.cxct.sportlottery.network.odds.MatchInfo?): Map<String, Odds>? {
-        val newMap = this?.toMutableMap()
-        newMap?.forEach { (playCateCode, value) ->
+    private fun Map<String, Odds>.replaceNameMap(matchInfo: org.cxct.sportlottery.network.odds.MatchInfo?): Map<String, Odds> {
+        val newMap = this
+        newMap.forEach { (playCateCode, value) ->
             value.nameMap?.toMap()?.forEach { (playCode, translateName) ->
 
 //                value.extInfoReplaced = translateName?.contains("{E}") == true
@@ -918,7 +978,7 @@ object SocketUpdateUtil {
             value.odds.replaceNameMap(matchInfo)
         }
 
-        return newMap?.toMap()
+        return newMap.toMap()
     }
 
     /**

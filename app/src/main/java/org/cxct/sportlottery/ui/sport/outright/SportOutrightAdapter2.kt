@@ -87,7 +87,10 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
         var isNeedRefresh = false
 
         var oddsMap = matchOdd.oddsMap
-        if (oddsMap.isNullOrEmpty()) {
+        if (oddsChangeEvent.updateMode == 2){
+            matchOdd.oddsMap = oddsChangeEvent.odds
+            isNeedRefresh = true
+        }else if (oddsMap.isNullOrEmpty()) {
             if(oddsMap == null){
                 oddsMap = mutableMapOf()
                 matchOdd.oddsMap = oddsMap
@@ -115,7 +118,7 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
                         oddsMap[key] = value
                         nodeReplaceChildData(matchOdd.categoryOddsMap[key]!!, value)
                     } else {
-                        isNeedRefresh = updateMatchOdds(key, matchOdd, oddList, value)
+                        isNeedRefresh = updateMatchOdds(key, matchOdd, oddList, value, oddsChangeEvent.updateMode)
                     }
                 } else { // 一级节点下面增加二级节点
                     // 返回的数据有不属于该联赛玩法的赔率，不进行新增显示
@@ -150,7 +153,7 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
         return isNeedRefresh
     }
 
-    private fun updateMatchOdds(playCate: String, matchOdd: MatchOdd, oddsMap: MutableList<Odd>, oddsMapSocket: List<Odd>): Boolean {
+    private fun updateMatchOdds(playCate: String, matchOdd: MatchOdd, oddsMap: MutableList<Odd>, oddsMapSocket: List<Odd>, updateMode: Int?): Boolean {
 
         if (oddsMap.isEmpty()) {
             nodeReplaceChildData(matchOdd.categoryOddsMap[playCate]!!, oddsMapSocket!!)

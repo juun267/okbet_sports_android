@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.sport.Menu
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
@@ -384,6 +385,8 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
         OKGamesRepository.okPlayEvent.observe(viewLifecycleOwner){
             binding.homeToolbar.setupOKPlay()
         }
+
+        DataResourceChange.observe(viewLifecycleOwner) { getMenuData(true) }
     }
 
     private fun updateFavoriteItem(favoriteLeagues: List<Item>) {

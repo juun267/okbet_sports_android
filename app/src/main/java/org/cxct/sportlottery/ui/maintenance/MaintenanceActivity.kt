@@ -16,10 +16,6 @@ import org.cxct.sportlottery.util.JumpUtil
 
 class MaintenanceActivity : BaseActivity<MaintenanceViewModel, ActivityMaintenanceBinding>() {
 
-    enum class MaintainType(val value: Int) {
-        NORMAL(0), FIXING(1)
-    }
-
     override fun onInitView() {
         ImmersionBar.with(this)
             .statusBarDarkFont(true)
