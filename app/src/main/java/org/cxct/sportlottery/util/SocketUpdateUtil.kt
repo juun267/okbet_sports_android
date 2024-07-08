@@ -655,7 +655,9 @@ object SocketUpdateUtil {
         var updateOldOdds = false
 
         val newOddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
-        newOddsDetailDataList.addAll(oddsDetailDataList)
+        if (oddsDetailDataList.isNotEmpty()) {
+            newOddsDetailDataList.addAll(oddsDetailDataList)
+        }
 
         newOddsMap = newOddsMap.replaceNameMap(oddsDetailDataList.firstOrNull()?.matchInfo)
         matchOddsChangeEvent.odds = newOddsMap

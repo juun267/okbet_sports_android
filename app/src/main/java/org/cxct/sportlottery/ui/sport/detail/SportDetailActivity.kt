@@ -62,6 +62,8 @@ import java.util.*
 class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSportBinding>(SportViewModel::class),
     TimerManager {
 
+
+
     companion object {
         fun startActivity(
             context: Context,
@@ -847,7 +849,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         }
 
         MatchOddsRepository.observerMatchOdds(this) {
-            val oddsDetailListDataList = oddsAdapter.oddsDetailDataList ?: return@observerMatchOdds
+            val oddsDetailListDataList = oddsAdapter.oddsDetailDataList
             if (oddsDetailListDataList.isEmpty()) {
                 return@observerMatchOdds
             }
