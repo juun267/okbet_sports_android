@@ -1,267 +1,115 @@
-package org.cxct.sportlottery.view;
+package org.cxct.sportlottery.view
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
+import android.content.Context
+import android.util.AttributeSet
+import android.view.MotionEvent
+import android.view.View
+import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer
+import org.cxct.sportlottery.view.OKVideoPlayer.OnOkListener
+import com.shuyu.gsyvideoplayer.player.PlayerFactory
+import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
+import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
+import com.shuyu.gsyvideoplayer.GSYVideoManager
+import org.cxct.sportlottery.R
 
-import com.shuyu.gsyvideoplayer.GSYVideoManager;
-import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack;
-import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
-
-import org.cxct.sportlottery.R;
-
-public class OKVideoPlayer extends GSYVideoPlayer {
-    public interface OnOkListener {
-        void onStartPrepared();
-        void onPrepared();
-        void onError();
+class OKVideoPlayer : GSYVideoPlayer {
+    interface OnOkListener {
+        fun onStartPrepared()
+        fun onPrepared()
+        fun onError()
     }
 
-    public OnOkListener onOkListener;
+    var onOkListener: OnOkListener? = null
 
-    public void setOnOkListener(OnOkListener onOkListener) {
-        this.onOkListener = onOkListener;
+    constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag) {}
+    constructor(context: Context?) : super(context) {}
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {}
+
+    override fun init(context: Context) {
+        super.init(context)
+        PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
+        mIsTouchWiget = true
     }
 
-    public OKVideoPlayer(Context context, Boolean fullFlag) {
-        super(context, fullFlag);
+    override fun getLayoutId(): Int {
+        return R.layout.view_video_ok
     }
 
-    public OKVideoPlayer(Context context) {
-        super(context);
-    }
-
-    public OKVideoPlayer(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    @Override
-    protected void init(Context context) {
-        super.init(context);
-        mIsTouchWiget = true;
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.view_video_ok;
-    }
-
-    @Override
-    public void startPlayLogic() {
-        prepareVideo();
-        setVideoAllCallBack(new VideoAllCallBack() {
-            @Override
-            public void onStartPrepared(String url, Object... objects) {
-                GSYVideoManager.instance().setNeedMute(true);
+    override fun startPlayLogic() {
+        prepareVideo()
+        setVideoAllCallBack(object : VideoAllCallBack {
+            override fun onStartPrepared(url: String, vararg objects: Any) {
+                GSYVideoManager.instance().isNeedMute = true
                 if (onOkListener != null) {
-                    onOkListener.onStartPrepared();
+                    onOkListener!!.onStartPrepared()
                 }
             }
 
-            @Override
-            public void onPrepared(String url, Object... objects) {
-                GSYVideoManager.instance().setNeedMute(true);
+            override fun onPrepared(url: String, vararg objects: Any) {
+                GSYVideoManager.instance().isNeedMute = true
                 if (onOkListener != null) {
-                    onOkListener.onPrepared();
+                    onOkListener!!.onPrepared()
                 }
             }
 
-            @Override
-            public void onClickStartIcon(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onClickStartError(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onClickStop(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onClickStopFullscreen(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onClickResume(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onClickResumeFullscreen(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onClickSeekbar(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onClickSeekbarFullscreen(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onAutoComplete(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onComplete(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onEnterFullscreen(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onQuitFullscreen(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onQuitSmallWidget(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onEnterSmallWidget(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onTouchScreenSeekVolume(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onTouchScreenSeekPosition(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onTouchScreenSeekLight(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onPlayError(String url, Object... objects) {
+            override fun onClickStartIcon(url: String, vararg objects: Any) {}
+            override fun onClickStartError(url: String, vararg objects: Any) {}
+            override fun onClickStop(url: String, vararg objects: Any) {}
+            override fun onClickStopFullscreen(url: String, vararg objects: Any) {}
+            override fun onClickResume(url: String, vararg objects: Any) {}
+            override fun onClickResumeFullscreen(url: String, vararg objects: Any) {}
+            override fun onClickSeekbar(url: String, vararg objects: Any) {}
+            override fun onClickSeekbarFullscreen(url: String, vararg objects: Any) {}
+            override fun onAutoComplete(url: String, vararg objects: Any) {}
+            override fun onComplete(url: String, vararg objects: Any) {}
+            override fun onEnterFullscreen(url: String, vararg objects: Any) {}
+            override fun onQuitFullscreen(url: String, vararg objects: Any) {}
+            override fun onQuitSmallWidget(url: String, vararg objects: Any) {}
+            override fun onEnterSmallWidget(url: String, vararg objects: Any) {}
+            override fun onTouchScreenSeekVolume(url: String, vararg objects: Any) {}
+            override fun onTouchScreenSeekPosition(url: String, vararg objects: Any) {}
+            override fun onTouchScreenSeekLight(url: String, vararg objects: Any) {}
+            override fun onPlayError(url: String, vararg objects: Any) {
                 if (onOkListener != null) {
-                    onOkListener.onError();
+                    onOkListener!!.onError()
                 }
             }
 
-            @Override
-            public void onClickStartThumb(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onClickBlank(String url, Object... objects) {
-
-            }
-
-            @Override
-            public void onClickBlankFullscreen(String url, Object... objects) {
-
-            }
-        });
+            override fun onClickStartThumb(url: String, vararg objects: Any) {}
+            override fun onClickBlank(url: String, vararg objects: Any) {}
+            override fun onClickBlankFullscreen(url: String, vararg objects: Any) {}
+        })
     }
 
-    @Override
-    public void onVideoSizeChanged() {
-        super.onVideoSizeChanged();
+    override fun onVideoSizeChanged() {
+        super.onVideoSizeChanged()
     }
 
-    @Override
-    protected void showWifiDialog() {
-
+    override fun showWifiDialog() {}
+    override fun showProgressDialog(
+        deltaX: Float,
+        seekTime: String,
+        seekTimePosition: Long,
+        totalTime: String,
+        totalTimeDuration: Long
+    ) {
     }
 
-    @Override
-    protected void showProgressDialog(float deltaX, String seekTime, long seekTimePosition, String totalTime, long totalTimeDuration) {
-
-    }
-
-    @Override
-    protected void dismissProgressDialog() {
-
-    }
-
-    @Override
-    protected void showVolumeDialog(float deltaY, int volumePercent) {
-
-    }
-
-    @Override
-    protected void dismissVolumeDialog() {
-
-    }
-
-    @Override
-    protected void showBrightnessDialog(float percent) {
-
-    }
-
-    @Override
-    protected void dismissBrightnessDialog() {
-
-    }
-
-    @Override
-    protected void onClickUiToggle(MotionEvent e) {
-
-    }
-
-    @Override
-    protected void hideAllWidget() {
-
-    }
-
-    @Override
-    protected void changeUiToNormal() {
-
-    }
-
-    @Override
-    protected void changeUiToPreparingShow() {
-
-    }
-
-    @Override
-    protected void changeUiToPlayingShow() {
-
-    }
-
-    @Override
-    protected void changeUiToPauseShow() {
-
-    }
-
-    @Override
-    protected void changeUiToError() {
-
-    }
-
-    @Override
-    protected void changeUiToCompleteShow() {
-
-    }
-
-    @Override
-    protected void changeUiToPlayingBufferingShow() {
-
-    }
-
-    public void showTranBar(Boolean show) {
-        findViewById(R.id.rl_tran_cover).setVisibility(show ? View.VISIBLE : View.GONE);
+    override fun dismissProgressDialog() {}
+    override fun showVolumeDialog(deltaY: Float, volumePercent: Int) {}
+    override fun dismissVolumeDialog() {}
+    override fun showBrightnessDialog(percent: Float) {}
+    override fun dismissBrightnessDialog() {}
+    override fun onClickUiToggle(e: MotionEvent) {}
+    override fun hideAllWidget() {}
+    override fun changeUiToNormal() {}
+    override fun changeUiToPreparingShow() {}
+    override fun changeUiToPlayingShow() {}
+    override fun changeUiToPauseShow() {}
+    override fun changeUiToError() {}
+    override fun changeUiToCompleteShow() {}
+    override fun changeUiToPlayingBufferingShow() {}
+    fun showTranBar(show: Boolean) {
+        findViewById<View>(R.id.rl_tran_cover).visibility = if (show) VISIBLE else GONE
     }
 }

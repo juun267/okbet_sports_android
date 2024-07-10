@@ -150,6 +150,25 @@
                 android:paddingHorizontal="12dp"/>
 
             <org.cxct.sportlottery.view.MainMenuItemView
+                android:id="@+id/menuAmbassador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAmbassador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:paddingHorizontal="20dp"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="4"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_ambassador"
+                tools:visibility="visible" />
+
+            <org.cxct.sportlottery.view.MainMenuItemView
                 android:id="@+id/menuSupport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
