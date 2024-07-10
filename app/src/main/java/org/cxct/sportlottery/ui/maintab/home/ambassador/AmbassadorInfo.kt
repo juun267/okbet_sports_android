@@ -13,7 +13,6 @@ data class Ambassador(
     @DrawableRes val topBanner: Int,
     @DrawableRes val infoPic: Int,
     val videoUrl: String,
-    @DrawableRes val videoCover: Int,
     @StringRes val infoDetail: Int,
     @StringRes val summary: Int,
     val bottomBanner: List<Int>,
@@ -25,7 +24,6 @@ val ambassadorList by lazy { mapOf(
         infoPic = R.drawable.ambassador_info_zeinab,
 //        videoUrl = "https://upload-test.cxsport.net/video/ZEINAB-30S-DDAY-WIDE-4-with-chargen-060724.mp4",
         videoUrl = "https://upload.sportsadm.com/video/ZEINAB-30S-DDAY-WIDE-4-with-chargen-060724.mp4",
-        videoCover = R.drawable.ambassador_video_zeinab,
         infoDetail = R.string.P473,
         summary = R.string.P4731,
         bottomBanner = listOf(
@@ -40,7 +38,6 @@ val ambassadorList by lazy { mapOf(
         infoPic = R.drawable.ambassador_info_matteo,
 //        videoUrl = "https://upload-test.cxsport.net/video/Matteo-x-OKBet.mp4",
         videoUrl = "https://upload.sportsadm.com/video/Matteo-x-OKBet.mp4",
-        videoCover = R.drawable.ambassador_video_matteo,
         infoDetail = R.string.P486,
         summary = R.string.P4861,
         bottomBanner = listOf(

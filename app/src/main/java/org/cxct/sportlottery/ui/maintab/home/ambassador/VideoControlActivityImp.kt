@@ -12,7 +12,6 @@ import com.shuyu.gsyvideoplayer.player.PlayerFactory
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.LogUtil
-import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
 import java.lang.NullPointerException
 
 /**
@@ -29,7 +28,7 @@ import java.lang.NullPointerException
      * 选择普通模式
      */
     fun initVideo() {
-        PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
+//        PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
         //外部辅助的旋转，帮助全屏
         orientationUtils = OrientationUtils(this, gSYVideoPlayer, orientationOption)
         //初始化不打开外部的旋转

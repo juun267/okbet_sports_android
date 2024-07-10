@@ -83,17 +83,14 @@ text, Text1, Text2, Text3, Testing Text"/>
                      app:cardBackgroundColor="@color/white"
                      app:cardCornerRadius="@dimen/margin_16"
                      app:cardElevation="0dp">
-                     <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
-                         android:id="@+id/player"
+                     <org.cxct.sportlottery.view.webView.OkWebView
+                         android:id="@+id/okWebView"
                          android:layout_width="match_parent"
                          android:layout_height="190dp"/>
                  </androidx.cardview.widget.CardView>
 
               </LinearLayout>
-          <org.cxct.sportlottery.view.webView.OkWebView
-              android:id="@+id/okWebView"
-              android:layout_width="match_parent"
-              android:layout_height="190dp"/>
+
               <TextView
                   android:id="@+id/tvDesp"
                   android:layout_width="wrap_content"

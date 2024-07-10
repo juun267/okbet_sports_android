@@ -5,9 +5,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer
-import org.cxct.sportlottery.view.OKVideoPlayer.OnOkListener
-import com.shuyu.gsyvideoplayer.player.PlayerFactory
-import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import org.cxct.sportlottery.R
@@ -27,7 +24,6 @@ class OKVideoPlayer : GSYVideoPlayer {
 
     override fun init(context: Context) {
         super.init(context)
-        PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
         mIsTouchWiget = true
     }
 
