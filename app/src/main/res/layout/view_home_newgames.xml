@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:orientation="vertical"
     tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
 
     <LinearLayout
-        android:id="@+id/linearTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginVertical="8dp">
+        android:paddingLeft="12dp"
+        android:paddingTop="8dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="8dp">
 
         <TextView
-            android:id="@+id/tvName"
+            android:id="@+id/tvHotTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:paddingLeft="4dp"
+            android:text="New Game"
+            android:textColor="@color/color_313F56"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tvHotMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:paddingLeft="4dp"
-            android:text="@string/N704"
-            android:textColor="@color/color_313F56"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvMore"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:drawablePadding="@dimen/margin_4"
             android:drawableRight="@drawable/ic_home_more"
+            android:drawablePadding="@dimen/margin_4"
             android:gravity="center"
             android:text="@string/N702"
             android:textColor="@color/color_6D7693"
-            android:textSize="14sp" />
-
+            android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerGames"
+        android:id="@+id/rcv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:clipToPadding="false"
         android:nestedScrollingEnabled="false"
         android:orientation="horizontal"
-        tools:itemCount="3"
+        android:paddingLeft="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_home_okgame"/>
-
-</merge>
+        tools:itemCount="3"
+        tools:listitem="@layout/item_home_hot_match" />
+</LinearLayout>
