@@ -651,7 +651,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         viewModel.oddsDetailResult.observe(this) {
             val result = it?.getContentIfNotHandled() ?: return@observe
             if (!result.success) {
-                showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                showErrorPromptDialog(getString(R.string.prompt), result.msg) { finish() }
                 return@observe
             }
 

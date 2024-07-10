@@ -801,28 +801,23 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
 
         //投注結果
         viewModel.betAddResult.observe(this.viewLifecycleOwner) {
-            it.getContentIfNotHandled().let { result ->
-                showReceipt = result != null
-                if (result != null) {
-                    if (result.success) {
-                        setBetLoadingVisibility(false)
-                        viewModel.betInfoList.removeObservers(this.viewLifecycleOwner)
-                        betResultListener?.onBetResult(
-                            result.receipt, betParlayList ?: listOf(), true
-                        )
-                        refreshAllAmount()
-                        showOddChangeWarn = false
-                        binding.btnBet.isOddsChanged = false
-                    } else {
-                        binding.btnBet.postDelayed({
-                            setBetLoadingVisibility(false)
-                        }, 800)
-                        SingleToast.showSingleToastNoImage(
-                            requireContext(),
-                            result.msg
-                        )
-                    }
-                }
+            val result = it.getContentIfNotHandled()
+            showReceipt = result != null
+            if (result == null) {
+                return@observe
+            }
+
+            if (result.success) {
+                setBetLoadingVisibility(false)
+                viewModel.betInfoList.removeObservers(this.viewLifecycleOwner)
+                betResultListener?.onBetResult(result.receipt, betParlayList ?: listOf(), true)
+                refreshAllAmount()
+                showOddChangeWarn = false
+                binding.btnBet.isOddsChanged = false
+            } else {
+                binding.btnBet.postDelayed({ setBetLoadingVisibility(false) }, 800)
+                val msg = if (result.msg.isEmptyStr()) getString(R.string.F042) else result.msg
+                SingleToast.showSingleToastNoImage(context(), msg)
             }
         }
 
@@ -1021,16 +1016,12 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
     /**
      * 是否顯示 betLoading
      */
-    private fun setBetLoadingVisibility(
-        isVisible: Boolean, keepShowingBetLoading: Boolean = false
-    ) {
-        binding.apply {
-            blockTouchView.isVisible = isVisible
-            if (keepShowingBetLoading) {
-                betLoadingView.isVisible = true
-            } else {
-                betLoadingView.isVisible = isVisible
-            }
+    private fun setBetLoadingVisibility(isVisible: Boolean, keepShowingBetLoading: Boolean = false) {
+        binding.blockTouchView.isVisible = isVisible
+        if (keepShowingBetLoading) {
+            binding.betLoadingView.isVisible = true
+        } else {
+            binding.betLoadingView.isVisible = isVisible
         }
     }
 
