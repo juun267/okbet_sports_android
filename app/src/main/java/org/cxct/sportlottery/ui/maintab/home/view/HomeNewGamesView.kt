@@ -43,7 +43,6 @@ class HomeNewGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
         recyclerGames.setLinearLayoutManager(RecyclerView.HORIZONTAL)
         recyclerGames.addItemDecoration(MarginDecoration(5.dp))
         LeftLinearSnapHelper().attachToRecyclerView(recyclerGames)
-        gameAdapter.imgWH = 108.dp
         recyclerGames.adapter = gameAdapter
     }
 

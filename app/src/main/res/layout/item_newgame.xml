@@ -49,14 +49,6 @@
                 android:padding="4dp"
                 android:src="@drawable/selector_game_fav" />
 
-            <eightbitlab.com.blurview.BlurView
-                android:id="@+id/blurBottom"
-                android:layout_width="match_parent"
-                android:layout_height="26dp"
-                android:layout_gravity="bottom"
-                android:background="#40000000"
-                android:visibility="gone"/>
-
             <TextView
                 android:id="@+id/tvPot"
                 android:layout_width="match_parent"
@@ -74,7 +66,7 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="4dp"
             android:layout_marginTop="6dp"
@@ -82,7 +74,7 @@
             android:singleLine="true"
             android:textColor="@color/color_414655"
             android:textFontWeight="700"
-            android:textSize="14sp"
+            android:textSize="13sp"
             tools:text="Game Name" />
 
         <TextView

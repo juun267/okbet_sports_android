@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.youth.banner.itemdecoration.MarginDecoration
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ViewHomeOkgameBinding
@@ -24,7 +25,7 @@ class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
 
     private val binding = ViewHomeOkgameBinding.inflate(layoutInflater,this)
     private lateinit var fragment: BaseSocketFragment<*, *>
-    private val gameAdapter = GameListAdapter(::onGameClick, ::onFavorite, true)
+    private val gameAdapter = GameListAdapter(::onGameClick, ::onFavorite, false)
 
     init {
         gone()
@@ -34,6 +35,7 @@ class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
     private fun initView() = binding.run {
         tvMore.gone()
         orientation = VERTICAL
+        tvName.setText(R.string.N704)
         recyclerGames.layoutManager = GridLayoutManager(context, 3)
         recyclerGames.addItemDecoration(MarginDecoration(10.dp))
         recyclerGames.adapter = gameAdapter

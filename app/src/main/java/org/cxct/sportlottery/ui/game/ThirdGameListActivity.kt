@@ -1,16 +1,13 @@
 package org.cxct.sportlottery.ui.game
 
 import android.graphics.Color
-import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.youth.banner.itemdecoration.MarginDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
-import org.cxct.sportlottery.common.extentions.postDelayed
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.databinding.ActivityNewgameListBinding
 import org.cxct.sportlottery.net.games.OKGamesRepository
@@ -31,6 +28,7 @@ import org.cxct.sportlottery.util.RefreshHelper.LoadMore
 import org.cxct.sportlottery.util.isThirdTransferOpen
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.util.startLogin
+import org.cxct.sportlottery.view.EmptyView
 import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
@@ -42,7 +40,7 @@ class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListB
 
     override fun onInitView() = binding.run {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
-        customToolBar.titleText = "New Game"
+        customToolBar.titleText = getString(R.string.P487)
         customToolBar.setOnBackPressListener { finish() }
         initRecyclerView()
         initRefresh()
@@ -51,6 +49,7 @@ class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListB
     private fun initRecyclerView() = binding.run {
         recyclerView.layoutManager = GridLayoutManager(this@ThirdGameListActivity, 3)
         recyclerView.addItemDecoration(GridItemDecoration(10.dp, 12.dp, Color.TRANSPARENT, true))
+        adapter.enableDefaultEmptyView(this@ThirdGameListActivity)
         recyclerView.adapter = adapter
     }
 
