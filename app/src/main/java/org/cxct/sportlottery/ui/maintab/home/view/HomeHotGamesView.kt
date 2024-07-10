@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GameCollectManager
+import org.cxct.sportlottery.util.RCVDecoration
 import splitties.systemservices.layoutInflater
 
 class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
@@ -34,14 +35,15 @@ class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
         tvMore.gone()
         orientation = VERTICAL
         recyclerGames.layoutManager = GridLayoutManager(context, 3)
+        recyclerGames.addItemDecoration(MarginDecoration(10.dp))
         recyclerGames.adapter = gameAdapter
     }
 
     fun <T : MainHomeViewModel> setUp(fragment: BaseSocketFragment<T, *>) {
         this.fragment = fragment
         gameAdapter.bindLifecycleOwner(fragment)
-        fragment.viewModel.getHomeOKGamesList()
-        fragment.viewModel.homeOKGamesList.observe(fragment.viewLifecycleOwner) {
+        fragment.viewModel.getHotGameList()
+        fragment.viewModel.hotGameList.observe(fragment.viewLifecycleOwner) {
             fragment.hideLoading()
             gameAdapter.setList(it)
             this@HomeHotGamesView.isVisible = gameAdapter.dataCount() > 0

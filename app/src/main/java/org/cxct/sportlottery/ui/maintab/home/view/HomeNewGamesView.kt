@@ -43,6 +43,7 @@ class HomeNewGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
         recyclerGames.setLinearLayoutManager(RecyclerView.HORIZONTAL)
         recyclerGames.addItemDecoration(MarginDecoration(5.dp))
         LeftLinearSnapHelper().attachToRecyclerView(recyclerGames)
+        gameAdapter.imgWH = 108.dp
         recyclerGames.adapter = gameAdapter
     }
 
@@ -50,8 +51,8 @@ class HomeNewGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
         this.fragment = fragment
         gameAdapter.bindLifecycleOwner(fragment)
         //请求games数据
-        fragment.viewModel.getHomeOKGamesList()
-        fragment.viewModel.homeOKGamesList.observe(fragment.viewLifecycleOwner) {
+        fragment.viewModel.getNewGameList()
+        fragment.viewModel.newGameList.observe(fragment.viewLifecycleOwner) {
             fragment.hideLoading()
             //缓存这一页数据到map
             gameAdapter.setList(it)

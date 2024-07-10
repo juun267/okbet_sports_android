@@ -95,8 +95,8 @@ class OKGamesViewModel(
             GameCollectManager.setUpGameCollect(data.collectList?.toMutableList()?: mutableListOf())
 
             data.categoryList?.forEach {
-                it.gameList?.forEach {
-                    allGamesMap[it.id] = it
+                it.gameList.forEach { game ->
+                    allGamesMap[game.id] = game
                 }
             }
 

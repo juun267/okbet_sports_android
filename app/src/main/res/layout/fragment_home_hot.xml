@@ -32,7 +32,8 @@
             <org.cxct.sportlottery.ui.maintab.home.view.HomeHotGamesView
                 android:id="@+id/hotGameView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"/>
 
             <org.cxct.sportlottery.ui.maintab.home.view.hotmatch.HomeHotMatchView
                 android:id="@+id/hotMatchView"
