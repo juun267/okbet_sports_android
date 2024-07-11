@@ -719,8 +719,9 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             gamesViewModel.requestEnterThirdGameNoLogin(gameData)
         }
     }
-    fun collectGame(gameData: OKGameBean,gameEntryType: String = GameEntryType.OKGAMES): Boolean {
-        return loginedRun(binding.root.context) { gamesViewModel.collectGame(gameData,gameEntryType) }
+    fun collectGame(gameData: OKGameBean, gameEntryType: String? = null): Boolean {
+        val gameType = gameEntryType ?: (gameData.gameType?: GameEntryType.OKGAMES)
+        return loginedRun(binding.root.context) { gamesViewModel.collectGame(gameData, gameType) }
     }
     private fun jumpGameAfterLogin(){
         if (LoginRepository.isLogined()&&OKGamesRepository.enterGameAfterLogin !=null){
