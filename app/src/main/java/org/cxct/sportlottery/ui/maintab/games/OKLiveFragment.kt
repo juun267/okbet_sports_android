@@ -111,6 +111,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
         onSearchTextChanged = { searchKey ->
             requireActivity().hideSoftKeyboard()
             if (!searchKey.isEmptyStr()) {
+                backGameAll()
                 changePartGamesLabel(GameTab.TAB_SEARCH, searchKey)
                 startLoad {
                     viewModel.searchGames(
@@ -236,6 +237,7 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
     fun search(key: String){
         if (isAdded){
             binding.topView.binding.edtSearchGames.setText(key)
+            backGameAll()
             changePartGamesLabel(GameTab.TAB_SEARCH, key)
             startLoad {
                 viewModel.searchGames(
