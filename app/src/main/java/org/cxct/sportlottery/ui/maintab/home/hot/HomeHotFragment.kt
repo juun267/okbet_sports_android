@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.hot
 
+
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
@@ -43,16 +44,12 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
      private val mOddsChangeListener by lazy {
         ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
             binding.hotMatchView.updateOddChange(oddsChangeEvent)
-            binding.hotEsportView.updateOddChange(oddsChangeEvent)
         }
     }
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
             if (hotMatchView.isVisible) {
                 hotMatchView.resubscribe()
-            }
-            if (hotEsportView.isVisible) {
-                hotEsportView.resubscribe()
             }
         }
 
@@ -79,9 +76,8 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         bottomView.bindServiceClick(childFragmentManager)
         recentView.setup(this@HomeHotFragment)
         hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@HomeHotFragment)
-        okGamesView.setUp(this@HomeHotFragment)
-        hotEsportView.onCreate(viewModel.hotESportMatch, viewModel.oddsType,this@HomeHotFragment)
-        okLiveView.setUp(this@HomeHotFragment)
+        newGamesView.setUp(this@HomeHotFragment)
+        hotGameView.setUp(this@HomeHotFragment)
         providerView.setup(this@HomeHotFragment){
             LogUtil.toJson(it)
             when(it.gameEntryTypeEnum){
@@ -201,12 +197,10 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         setupSportStatusChange(this){
             if (it){
                 binding.hotMatchView.setVisible()
-                binding.hotEsportView.setVisible()
                 receiver.addOddsChangeListener(this, mOddsChangeListener)
                 refreshHotMatch()
             }else{
                 binding.hotMatchView.gone()
-                binding.hotEsportView.gone()
             }
         }
 
@@ -245,10 +239,6 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             viewModel.getRecommend()
         }
 
-        binding.hotEsportView.setVisible()
-        if(binding.hotEsportView.isVisible && isVisibleToUser()) { //判断当前fragment是否可见
-            viewModel.getRecommend(GameType.ES)
-        }
     }
 
     override fun onVisibleExceptFirst() {

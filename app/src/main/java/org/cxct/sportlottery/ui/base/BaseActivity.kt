@@ -57,7 +57,6 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>(clazz: KClass<
         onInitView()
         onInitData()
 //        ServiceFloatingButton.targetActivity(this)
-        Log.e("For Test", "=======>>> BaseActivity ${this.javaClass.name}")
     }
     protected abstract fun onInitView()
 

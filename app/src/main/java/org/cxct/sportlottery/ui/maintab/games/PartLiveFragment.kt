@@ -80,12 +80,12 @@ class PartLiveFragment : BaseFragment<OKLiveViewModel,FragmentPartOkgamesBinding
     }
 
     private fun initObserve() = mOkLiveFragment().viewModel.run {
-        GameCollectManager.collectStatus.observe(viewLifecycleOwner) { result ->
+        GameCollectManager.observerGameCollect(viewLifecycleOwner) { result ->
             gameChildAdapter.data.forEachIndexed { index, okGameBean ->
                 if (okGameBean.id == result.first) {
                     okGameBean.markCollect = result.second
                     gameChildAdapter.notifyItemChanged(index, okGameBean)
-                    return@observe
+                    return@observerGameCollect
                 }
             }
         }

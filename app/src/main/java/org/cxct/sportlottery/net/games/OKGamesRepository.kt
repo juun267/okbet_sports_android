@@ -119,6 +119,21 @@ object OKGamesRepository {
         return okGamesApi.getOKGamesList(params)
     }
 
+    suspend fun getHotGameList(page: Int, pageSize: Int): ApiResult<List<OKGameBean>> {
+        val params = paramDevice()
+        params.addProperty("page", page)
+        params.addProperty("pageSize", pageSize)
+        return okGamesApi.getOKGamesList(params)
+    }
+
+    suspend fun getNewGameList(page: Int, pageSize: Int): ApiResult<List<OKGameBean>> {
+        val params = paramDevice()
+        params.addProperty("page", page)
+        params.addProperty("pageSize", pageSize)
+        params.addProperty("isNew", true)
+        return okGamesApi.getOKGamesList(params)
+    }
+
     suspend fun getHallOKSport(): ApiResult<OKGameBean> {
         return okGamesApi.getHallOKSport().apply { okPlayEvent.postValue(getData())}
     }
