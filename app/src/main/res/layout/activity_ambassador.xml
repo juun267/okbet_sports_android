@@ -45,8 +45,8 @@
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_marginTop="-75dp"
-                      android:paddingTop="30dp"
-                      android:paddingBottom="38dp"
+                      android:paddingTop="40dp"
+                      android:paddingBottom="20dp"
                       android:paddingHorizontal="@dimen/margin_20"
                       android:background="@drawable/bg_white_radius_16_bottom"
                       android:orientation="vertical">

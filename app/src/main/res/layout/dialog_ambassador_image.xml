@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
-    android:orientation="vertical"
-    android:background="@color/transparent_black_80">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/btn_close"

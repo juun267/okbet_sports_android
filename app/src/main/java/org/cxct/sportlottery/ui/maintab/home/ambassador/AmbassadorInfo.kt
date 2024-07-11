@@ -30,7 +30,9 @@ val ambassadorList by lazy { mapOf(
             R.drawable.ambassador_banner_zeinab_detail_2,
             R.drawable.ambassador_banner_zeinab_detail_3,
             R.drawable.ambassador_banner_zeinab_detail_4,
-            R.drawable.ambassador_banner_zeinab_detail_5)
+            R.drawable.ambassador_banner_zeinab_detail_5,
+            R.drawable.ambassador_banner_zeinab_detail_6,
+            R.drawable.ambassador_banner_zeinab_detail_7,)
     ),
     "Matteo" to Ambassador(
         topBanner = R.drawable.ambassador_banner_matteo,
@@ -43,7 +45,8 @@ val ambassadorList by lazy { mapOf(
             R.drawable.ambassador_banner_matteo_detail_2,
             R.drawable.ambassador_banner_matteo_detail_3,
             R.drawable.ambassador_banner_matteo_detail_4,
-            R.drawable.ambassador_banner_matteo_detail_5)
+            R.drawable.ambassador_banner_matteo_detail_5,
+            R.drawable.ambassador_banner_matteo_detail_6,)
     )
 )
 }
