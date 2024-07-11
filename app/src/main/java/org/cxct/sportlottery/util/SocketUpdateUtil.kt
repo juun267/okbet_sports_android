@@ -774,6 +774,7 @@ object SocketUpdateUtil {
                     if(updateMatchOdds(oddsDetailListData, matchOddsChangeEvent)){
                         updateOldOdds = true
                     }
+                oddsDetailListData.oddArrayList.sortWith(compareBy({ it?.marketSort }, { it?.rowSort }))
             }
             setupPinList(playCate)
         }
@@ -1067,7 +1068,14 @@ object SocketUpdateUtil {
                     odd?.extInfo = oddSocket.extInfo
                     isNeedRefresh = true
                 }
-
+                if (odd?.marketSort != oddSocket.marketSort) {
+                    odd?.marketSort = oddSocket.marketSort
+                    isNeedRefresh = true
+                }
+                if (odd?.rowSort != oddSocket.rowSort) {
+                    odd?.rowSort = oddSocket.rowSort
+                    isNeedRefresh = true
+                }
                 if (oddsDetailListData.rowSort != odds.rowSort) {
                     oddsDetailListData.rowSort = odds.rowSort
                     isNeedRefresh = true

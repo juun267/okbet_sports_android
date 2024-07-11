@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.index.logout
 
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.network.Constants
 
 @KeepMembers
 data class LogoutRequest(
@@ -21,7 +22,7 @@ data class LogoutRequest(
     val testFlag: Int? = null,
     val permission: String? = null,
     val platformName: String? = null,
-    val deviceSn: String? = null,
+    val deviceSn: String = Constants.deviceSn,
     val iconUrl: String? = null,
     val innerAdmin: Int? = null
 )

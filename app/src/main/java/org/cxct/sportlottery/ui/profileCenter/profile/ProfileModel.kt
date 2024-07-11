@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.AreaAllResult
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.SingleLiveEvent
 
 class ProfileModel(
     androidContext: Application
@@ -58,6 +60,8 @@ class ProfileModel(
         get() = _userDetail
 
     var areaData: AreaAllResult? = null
+
+    val inviteUserDetailEvent = SingleLiveEvent<String>()
 
     fun uploadImage(uploadImgRequest: UploadImgRequest) {
         viewModelScope.launch {
@@ -209,5 +213,18 @@ class ProfileModel(
                 }
             }
         }
+    }
+
+    /**
+     * 获取用户邀请信息
+     */
+    fun inviteUserDetail() {
+       callApi({UserRepository.inviteUserDetail()}){
+           if (it.succeeded()){
+               inviteUserDetailEvent.postValue(it.getData()?.myInviteCode)
+           }else{
+               toast(it.msg)
+           }
+       }
     }
 }

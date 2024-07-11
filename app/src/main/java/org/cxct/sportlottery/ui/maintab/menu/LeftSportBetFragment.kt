@@ -18,7 +18,9 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.user.UserInfo
+import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
@@ -27,6 +29,7 @@ import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerInPlayAdapter
 import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerLeftMatchesAdapter
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.invite.InviteActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -82,6 +85,9 @@ class LeftSportBetFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLef
             inPlayAdapter.setList(it)
             binding.tvInplay.isVisible = !it.isNullOrEmpty()
         }
+        ConfigRepository.config.observe(this) {
+            binding.menuInvite.isVisible = StaticData?.inviteUserOpened()
+        }
     }
     private fun initInplayList()=binding.rvInPlay.run{
         layoutManager = GridLayoutManager(requireContext(),2)
@@ -119,6 +125,17 @@ class LeftSportBetFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLef
             startActivity(PromotionListActivity::class.java)
         }.apply {
             setVisibilityByMarketSwitch()
+        }
+        menuInvite.setItem(
+            requireContext().getIconSelector(R.drawable.ic_left_menu_invite_sel, R.drawable.ic_left_menu_invite_nor),
+            R.string.P462
+        ){
+            loginedRun(requireContext(),true){
+                close()
+                startActivity(InviteActivity::class.java)
+            }
+        }.apply {
+            isVisible = StaticData.inviteUserOpened()
         }
         menuAffiliate.setItem(
             requireContext().getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),

@@ -34,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
    <include
-       android:id="@+id/include_subtitle"
+       android:id="@+id/includeSubtitle"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        layout="@layout/include_login_subtitle"
@@ -48,7 +48,7 @@
         android:overScrollMode="never"
         android:scrollbars="none"
         android:fadingEdge="none"
-        app:layout_constraintTop_toBottomOf="@id/include_subtitle"
+        app:layout_constraintTop_toBottomOf="@id/includeSubtitle"
         app:layout_constraintBottom_toTopOf="@id/bottom_liences">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -339,41 +339,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:id="@+id/btn_google"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/margin_45"
-                        android:layout_gravity="center"
-                        android:paddingHorizontal="@dimen/margin_20"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/ic_google" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_10"
-                            android:textSize="@dimen/sp_14"
-                            android:textStyle="bold"
-                            android:textColor="@color/color_0D2245"
-                            android:text="@string/google" />
-                    </LinearLayout>
-
-
+                    android:layout_marginVertical="@dimen/margin_16"
+                    android:gravity="center"
+                    android:orientation="horizontal">
                     <ImageView
                         android:id="@+id/btn_facebook"
-                        android:layout_width="33dp"
-                        android:layout_height="33dp"
-                        android:visibility="gone"
-                        android:layout_marginLeft="@dimen/margin_45"
+                        android:layout_width="@dimen/margin_40"
+                        android:layout_height="@dimen/margin_40"
+                        android:layout_marginRight="56dp"
                         android:src="@drawable/ic_facebook" />
-
+                    <ImageView
+                        android:id="@+id/btn_google"
+                        android:layout_width="@dimen/margin_40"
+                        android:layout_height="@dimen/margin_40"
+                        android:src="@drawable/ic_google" />
                 </LinearLayout>
             </LinearLayout>
             <include layout="@layout/layout_login_privacy"

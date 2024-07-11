@@ -143,12 +143,12 @@
         android:background="@drawable/bg_circle_gray6_alpha50"
         android:padding="14dp"
         android:src="@drawable/ic_scroll_to_top"
-        app:layout_constraintBottom_toTopOf="@+id/layout_total"
+        app:layout_constraintBottom_toTopOf="@+id/layoutTotal"
         app:layout_constraintStart_toStartOf="parent" />
 
 
     <include
-        android:id="@+id/layout_total"
+        android:id="@+id/layoutTotal"
         layout="@layout/view_total_record"
         android:layout_width="match_parent"
         android:layout_height="48dp"

@@ -40,12 +40,12 @@ android {
                                 INVITE_CODE            : "",
                                 JPUSH_PKGNAME          : applicationId,
                                 JPUSH_APPKEY           : "6ce6dade62a7563b526bf021",
-                                JPUSH_CHANNEL          : "developer-default",]
+                                JPUSH_CHANNEL          : "developer-default"]
 //        resValue "string", "facebook_app_id", "2339087372931297"
 //        resValue "string", "facebook_client_token", "45b5e13714025f8083e5d9ae9300fd0f"
-        resValue "string", "facebook_app_id", "1645138406011685"
-        resValue "string", "facebook_client_token", "51a226d0bcb7d728ad24998c6c2150fa"
-        resValue "string", "fb_login_protocol_scheme", "fb2339087372931297"
+        resValue "string", "facebook_app_id", "1255737765443031"
+        resValue "string", "facebook_client_token", "c2c6e40237ac088100af12fd9f95a03f"
+        resValue "string", "fb_login_protocol_scheme", "fb1255737765443031"
         resValue "string", "server_client_id", "1037678190731-qqog3vk9ndm5ovjsk7rpm4nqf5cbm071.apps.googleusercontent.com"
         resConfigs "xxhdpi"   //三方库只保留指定语言类型的资源 与 xxhdpi的图片资源
         //防止谷歌商店 删除包内的多语言等资源
@@ -333,6 +333,8 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:latest.release'
     //https://developers.google.com/identity/sign-in/android/sign-in?hl=zh-cn
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation 'com.facebook.android:facebook-share:latest.release'
+
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 //    implementation "com.alibaba:fastjson:1.2.73"

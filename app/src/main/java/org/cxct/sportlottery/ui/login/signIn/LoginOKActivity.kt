@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import cn.jpush.android.api.JPushInterface
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,13 +55,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         private const val SELF_LIMIT = 1130
         const val LOGIN_TYPE_CODE = 0
         const val LOGIN_TYPE_PWD = 1
-        const val LOGIN_TYPE_GOOGLE = 2
-
-        fun googleLoging(context: Context) {
-            val intent = Intent(context, LoginOKActivity::class.java)
-            intent.putExtra("login_type", LOGIN_TYPE_GOOGLE)
-            context.startActivity(intent)
-        }
 
         fun startRegist(context: Context) {
             val intent = Intent(context, LoginOKActivity::class.java)
@@ -72,6 +64,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
     }
 
     private var countDownGoing = false
+    private val loginType by lazy { intent.getIntExtra("login_type", LOGIN_TYPE_PWD) }
 
     override fun onInitView() {
         ImmersionBar.with(this)
@@ -96,12 +89,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         EventBusUtil.targetLifecycle(this)
         binding.includeSubtitle.tvSubTitle1.isVisible = false
         binding.includeSubtitle.tvSubTitle2.isVisible = false
-        val loginType = intent.getIntExtra("login_type", LOGIN_TYPE_PWD)
-        if (loginType == LOGIN_TYPE_GOOGLE) {
-            googleLogin()
-        }else{
-            switchLoginType(loginType)
-        }
+        switchLoginType(loginType)
     }
 
     private fun initOnClick()=binding.run {
@@ -237,7 +225,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                     }else{
                         var inviteCode = binding.eetRecommendCode.text.toString()
                         //新的注册接口
-                        val deviceSn = JPushInterface.getRegistrationID(this@LoginOKActivity)
                         val deviceId = Settings.Secure.getString(
                             applicationContext.contentResolver,
                             Settings.Secure.ANDROID_ID
@@ -246,7 +233,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                         val loginRequest = LoginRequest(
                             account = it.userName?:"",
                             loginSrc = LOGIN_SRC,
-                            deviceSn = deviceSn,
                             appVersion = appVersion,
                             loginEnvInfo = deviceId,
                             inviteCode = inviteCode,
@@ -258,30 +244,16 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         }
     }
 
-    private fun googleLogin() {
-        loading()
-        AuthManager.authGoogle(this@LoginOKActivity)
-    }
-
-    override fun onPause() {
-        super.onPause()
-//        hideLoading()
-    }
-
     private fun setupAuthLogin() {
-        binding.btnGoogle.setOnClickListener {
-//            if (binding.cbPrivacy.isChecked) {
-                googleLogin()
-//            }
-
+        binding.btnGoogle.clickDelay {
+            AuthManager.authGoogle(this@LoginOKActivity)
         }
-
-        binding.btnFacebook.setOnClickListener {
-//            AuthManager.authFacebook(this@LoginOKActivity, { token ->
-//                viewModel.loginFacebook(token)
-//            }, { errorMsg ->
-//                showErrorDialog(errorMsg)
-//            })
+        binding.btnFacebook.clickDelay {
+            AuthManager.authFacebook(this@LoginOKActivity, { token ->
+                viewModel.loginFacebook(token)
+            }, { errorMsg ->
+                if (!errorMsg.isNullOrEmpty()) showErrorDialog(getString(R.string.P472))
+            })
         }
     }
 
@@ -299,6 +271,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                    layoutPrivacy.ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_nor)
                }
                btnGoogle.setBtnEnable(layoutPrivacy.ivPrivacy.isSelected)
+               btnFacebook.setBtnEnable(layoutPrivacy.ivPrivacy.isSelected)
                viewModel.agreeChecked = layoutPrivacy.ivPrivacy.isSelected
            }
 
@@ -331,8 +304,10 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
            layoutPrivacyNew.cbPrivacy.isChecked = false
            viewModel.agreeChecked = false
            btnGoogle.setBtnEnable(false)
+           btnFacebook.setBtnEnable(false)
            layoutPrivacyNew.cbPrivacy.setOnCheckedChangeListener { compoundButton, b ->
                btnGoogle.setBtnEnable(b)
+               btnFacebook.setBtnEnable(b)
                viewModel.agreeChecked = b
            }
            layoutPrivacyNew.tvPrivacyLine1.makeLinks(

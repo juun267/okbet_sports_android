@@ -576,7 +576,55 @@
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
                     </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/btnInviteFriend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
+                        android:gravity="center"
+                        android:minHeight="@dimen/margin_50"
+                        android:orientation="horizontal">
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="10dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_user_invite" />
+
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="14dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_weight="1"
+                                android:text="@string/P462"
+                                android:textColor="@color/color_6C7BA8"
+                                android:textSize="@dimen/textSize14sp" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:contentDescription="@null"
+                                android:src="@drawable/icon_arrow07" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/margin_0.5"
+                                android:layout_alignParentBottom="true"
+                                android:background="@color/color_E3E8EE" />
+                        </RelativeLayout>
+                    </LinearLayout>
                     <LinearLayout
                         android:id="@+id/btnRedeem"
                         android:layout_width="match_parent"

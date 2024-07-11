@@ -7,6 +7,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:925435291935:android:70bcde443f716de662282a",
+        "android_client_info": {
+          "package_name": "com.happysport.sl.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925435291935-935q3m30eu4932u21ast6rr0nm1td777.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU6h1a5wCLxnIYFESTlYgSAX0wSmwGqrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925435291935-935q3m30eu4932u21ast6rr0nm1td777.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "925435291935-17k4qgefvqtfqsitnjthnpol9m8aisoj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ekxinum.okbet",
+                "app_store_id": "1609173057"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:925435291935:android:cee3e64435b691f562282a",
         "android_client_info": {
           "package_name": "com.okbet.ph"
@@ -29,6 +66,51 @@
             {
               "client_id": "925435291935-935q3m30eu4932u21ast6rr0nm1td777.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "925435291935-17k4qgefvqtfqsitnjthnpol9m8aisoj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ekxinum.okbet",
+                "app_store_id": "1609173057"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925435291935:android:ec1c98b48cee8d1162282a",
+        "android_client_info": {
+          "package_name": "come.game.okgames"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925435291935-935q3m30eu4932u21ast6rr0nm1td777.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU6h1a5wCLxnIYFESTlYgSAX0wSmwGqrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925435291935-935q3m30eu4932u21ast6rr0nm1td777.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "925435291935-17k4qgefvqtfqsitnjthnpol9m8aisoj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ekxinum.okbet",
+                "app_store_id": "1609173057"
+              }
             }
           ]
         }

@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.maintab
 
+import android.Manifest
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -14,12 +16,10 @@ import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.gyf.immersionbar.ImmersionBar
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.coroutines.GlobalScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.GameEntryType
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.startActivity
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.NetWorkEvent
@@ -28,7 +28,6 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -51,10 +50,9 @@ import org.cxct.sportlottery.ui.maintab.home.PreLoader
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
+import org.cxct.sportlottery.ui.maintab.menu.ScannerActivity
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
@@ -142,6 +140,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         viewModel.getThirdGames()
         PreLoader.startPreload()
         jumpGameAfterLogin()
+        checkNotificationOpen()
     }
 
     private fun onTabClick(tabName: Int): Boolean {
@@ -550,7 +549,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
         betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
             override fun onBetResult(
-                betResultData: Receipt?, betParlayList: List<ParlayOdd>, isMultiBet: Boolean
+                betResultData: Receipt?, betParlayList: List<ParlayOdd>, isMultiBet: Boolean,
             ) {
                 showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
             }
@@ -728,5 +727,20 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             enterThirdGame(OKGamesRepository.enterGameAfterLogin!!)
         }
         OKGamesRepository.enterGameAfterLogin=null
+    }
+    private fun checkNotificationOpen() {
+        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        // 检测该应用是否有通知权限
+        if (!manager.areNotificationsEnabled()&&KvUtils.decodeBooleanTure(KvUtils.KEY_NOTIFICATION_PERMISSION,true)) {
+            KvUtils.put(KvUtils.KEY_NOTIFICATION_PERMISSION,false)
+            RxPermissions(this).request(Manifest.permission.POST_NOTIFICATIONS)
+                .subscribe { granted ->
+                    if (granted) {
+                        // All requested permissions are granted
+                    } else {
+                        // At least one permission is denied
+                    }
+                }
+        }
     }
 }

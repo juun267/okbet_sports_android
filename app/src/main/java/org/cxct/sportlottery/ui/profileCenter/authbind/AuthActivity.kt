@@ -3,10 +3,14 @@ package org.cxct.sportlottery.ui.profileCenter.authbind
 import android.content.Intent
 import android.widget.TextView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
+import org.cxct.sportlottery.common.extentions.hideLoading
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.databinding.ActivityAuthBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.AuthManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setServiceClick
 import org.cxct.sportlottery.util.setStartDrawable
 
@@ -17,7 +21,6 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        binding.toolBar.titleText = getString(R.string.auth_login)
         initButton()
         setupServiceButton()
         initObserve()
@@ -28,10 +31,10 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
         toolBar.setOnBackPressListener {
             finish()
         }
-        tvCheckGoogle.setOnClickListener {
+        tvCheckGoogle.clickDelay() {
             AuthManager.authGoogle(this@AuthActivity)
         }
-        tvCheckFacebook.setOnClickListener {
+        tvCheckFacebook.clickDelay {
             AuthManager.authFacebook(this@AuthActivity, { token ->
                 viewModel.bindFacebook(token)
             }, { errorMsg ->
@@ -51,21 +54,17 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
             }
         }
         viewModel.bindGoogleResult.observe(this) {
-            it.peekContent().let {
-                if (it.success) {
-                    viewModel.getUserInfo()
-                } else {
-                    showErrorPromptDialog(it.msg) {}
-                }
+            if (it.success) {
+                viewModel.getUserInfo()
+            } else {
+                showErrorPromptDialog(it.msg) {}
             }
         }
         viewModel.bindFacebookResult.observe(this) {
-            it.peekContent().let {
-                if (it.success) {
-                    viewModel.getUserInfo()
-                } else {
-                    showErrorPromptDialog(it.msg) {}
-                }
+            if (it.success) {
+                viewModel.getUserInfo()
+            } else {
+                showErrorPromptDialog(it.msg) {}
             }
         }
     }
@@ -75,15 +74,13 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
         if (checked) {
             text = getString(R.string.linked)
             setBackgroundResource(R.drawable.button_radius_8_bet_button)
-            setStartDrawable(R.drawable.ic_checked_white)
             isEnabled = false
             setTextColor(getColor(R.color.color_FFFFFF))
         } else {
             text = getString(R.string.link)
-            setBackgroundResource(R.drawable.bg_stroke_radius_8_gray)
-            setStartDrawable(0)
+            setBackgroundResource(R.drawable.bg_blue_radius_8_stroke_1)
             isEnabled = true
-            setTextColor(getColor(R.color.color_535D76))
+            setTextColor(getColor(R.color.color_025BE8))
         }
     }
 
@@ -95,12 +92,14 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
         AuthManager.facebookCallback(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
         AuthManager.googleCallback(requestCode, resultCode, data) { success, msg ->
-            msg?.let {
-                if (success) {
-                    viewModel.bindGoogle(it)
+            if (success) {
+                if (msg.isEmptyStr()) {
+                    hideLoading()
                 } else {
-                    showErrorPromptDialog(it) {}
+                    viewModel.bindGoogle(msg!!)
                 }
+            } else {
+                hideLoading()
             }
         }
     }

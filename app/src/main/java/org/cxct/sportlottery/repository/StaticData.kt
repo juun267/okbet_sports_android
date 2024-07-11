@@ -82,6 +82,8 @@ var sConfigData: ConfigData? = null
 val showCurrencySign: String?
     get() = getLoginCurrency() ?: sConfigData?.systemCurrencySign ?: ""
 
+fun glifeUserWithdrawEnable() = sConfigData?.glifeMemberRechargeAndWithdrawal == 1
+
 private fun getLoginCurrency(): String? =
     MultiLanguagesApplication.mInstance.userInfo.value?.currencySign
 
@@ -158,6 +160,9 @@ class StaticData {
         }
         //是否显示vip相关页面
         fun vipOpened():Boolean= sConfigData?.vipSwitch == 1
+
+        //是否显示邀请好友入口
+        fun inviteUserOpened():Boolean= sConfigData?.inviteUserStatus == 1
     }
 
 }
