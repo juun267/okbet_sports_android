@@ -214,7 +214,6 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     //hot match
     private fun refreshHotMatch() {
         binding.hotMatchView.onResume(this@HomeHotFragment)
-        binding.hotEsportView.onResume(this@HomeHotFragment)
         loadRecommend()
     }
 
