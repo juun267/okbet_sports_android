@@ -27,7 +27,10 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.ui.maintab.home.ambassador.AmbassadorActivity
+import org.cxct.sportlottery.ui.maintab.home.ambassador.AmbassadorInfo
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
+import org.cxct.sportlottery.ui.maintab.menu.adapter.AmbassadorAdapter
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.invite.InviteActivity
 import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
@@ -83,6 +86,23 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             BetInfoRepository.clear()
             selectLanguage(adapter.getItem(position) as LanguageManager.Language)
         }
+    }
+    private fun initAmbassadorList() {
+        if (binding.rvAmbassador.adapter != null) {
+            return
+        }
+        val ambassadorAdapter = AmbassadorAdapter().apply {
+            setList(AmbassadorInfo.ambassadorList.keys)
+            setOnItemClickListener { adapter, _, position ->
+//                this.selectPos = position
+                startActivity(Intent(requireActivity(),AmbassadorActivity::class.java).apply {
+                    putExtra(AmbassadorActivity.KEY_AMBASSADOR,AmbassadorInfo.ambassadorList[getItem(position)])
+                })
+            }
+        }
+        binding.rvAmbassador.layoutManager = GridLayoutManager(context, 4)
+        binding.rvAmbassador.addItemDecoration(GridItemDecoration(10.dp, 8.dp, Color.TRANSPARENT,false))
+        binding.rvAmbassador.adapter = ambassadorAdapter
     }
 
     private fun selectLanguage(select: LanguageManager.Language) {
@@ -201,6 +221,22 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             reSelected(menuNews)
             close()
             getMainTabActivity().jumpToNews()
+        }
+        menuAmbassador.setItem(
+            cxt.getIconSelector(R.drawable.ic_left_menu_ambassador_sel, R.drawable.ic_left_menu_ambassador_nor),
+            R.string.P471
+        ) {
+            initAmbassadorList()
+            val selected = rvAmbassador.isGone
+            menuAmbassador.isSelected = selected
+            menuAmbassador.isEnabled = false
+            menuAmbassador.showBottomLine(!selected)
+            rvAmbassador.isVisible = selected
+            menuAmbassador.ivArrow()
+                .animate()
+                .rotation(if (selected) 90f else 0f)
+                .withEndAction { menuAmbassador.isEnabled = true }
+                .start()
         }
 
         menuSupport.setItem(

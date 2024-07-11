@@ -196,7 +196,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             GSYVideoManager.instance().isNeedMute = !ivLiveSound.isSelected
         }
         playerView.showTranBar(true)
-        playerView.setOnOkListener(object : OKVideoPlayer.OnOkListener {
+        playerView.onOkListener = object : OKVideoPlayer.OnOkListener {
             override fun onStartPrepared() {
 
             }
@@ -213,7 +213,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
             override fun onError() {
             }
-        })
+        }
         playerView.setUp(streamUrl, true, "")
         playerView.startPlayLogic()
     }

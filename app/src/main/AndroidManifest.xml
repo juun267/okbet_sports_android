@@ -279,6 +279,9 @@
         <activity
             android:name=".ui.game.ThirdGameListActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.maintab.home.ambassador.AmbassadorActivity"
+            android:screenOrientation="portrait" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

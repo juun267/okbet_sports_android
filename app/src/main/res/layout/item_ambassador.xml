@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_name"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:gravity="center"
+    android:background="@drawable/selector_lightblue_radius_4"
+    android:textColor="@color/color_6D7693"
+    android:textSize="@dimen/textSize14sp"
+    tools:text="@string/odd_type_eu" />
