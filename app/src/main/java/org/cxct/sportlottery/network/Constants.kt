@@ -288,7 +288,7 @@ object Constants {
     }
 
     fun getHostListUrl(serverUrl: String?): String {
-        return "https://${BuildConfig.CHANNEL_NAME}.$serverUrl/api/front/domainconfig/appdomainV2/${APP_NAME}/${BuildConfig.CHANNEL_NAME}.json"
+        return "https://${BuildConfig.CHANNEL_NAME}.$serverUrl/api/front/domainconfig/appdomainV2/${APP_NAME}/${BuildConfig.CHANNEL_NAME}.json?appType=${BuildConfig.APP_TYPE}"
     }
 
     //bet

@@ -35,6 +35,7 @@ android {
         buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
         buildConfigField "String", "AF_APPKEY", "\"G7q8UBYftYQfKAxnortTSN\""
         buildConfigField 'Boolean', 'MOCK', 'false'
+        buildConfigField 'Integer', 'APP_TYPE', '0' //域名是否限制IP，1为不限制，0为限制
         manifestPlaceholders = [CHANNEL                : "default",
                                 NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
                                 INVITE_CODE            : "",
@@ -122,6 +123,7 @@ android {
                                     INVITE_CODE: "huawei8"]
         }
         xiaomi {
+            buildConfigField 'Integer', 'APP_TYPE', '1'
             manifestPlaceholders = [CHANNEL    : "xiaomi",
                                     INVITE_CODE: "xiaomi8"]
         }

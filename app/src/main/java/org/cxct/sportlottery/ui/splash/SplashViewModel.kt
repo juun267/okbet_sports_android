@@ -120,7 +120,7 @@ class SplashViewModel(
         Timber.i("==> getHost")
         Constants.SERVER_URL_LIST.forEach {
             try {
-                val url = Constants.getHostListUrl(it)
+                var url = Constants.getHostListUrl(it)
                 Timber.i("==> sendGetHostRequest: $url")
                 val response = OneBoSportApi.hostService.getHost(url)
                 val result = response.body()
