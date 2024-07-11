@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_FFFFFF">
+    android:background="@color/color_F9FAFD">
 
     <org.cxct.sportlottery.ui.maintab.home.view.HomeToolbarView
         android:id="@+id/homeToolbar"
