@@ -1,25 +1,14 @@
 package org.cxct.sportlottery.ui.maintab.home.ambassador
 
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.shuyu.gsyvideoplayer.GSYVideoManager
-import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
-import com.shuyu.gsyvideoplayer.player.PlayerFactory
-import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
-import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer
-import kotlinx.android.synthetic.main.activity_ambassador.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.databinding.ActivityAmbassadorBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
@@ -44,7 +33,8 @@ class AmbassadorActivity : BaseActivity<MainHomeViewModel, ActivityAmbassadorBin
         binding.ivInfo.setImageResource(data.infoPic)
         binding.tvInfo.text = getString(data.infoDetail)
         binding.tvDesp.text = getString(data.summary)
-        okWebView.loadUrl(data.videoUrl)
+        binding.okWebView.bindLifecycleOwner(this)
+        binding.okWebView.loadUrl(data.videoUrl)
         initBottomBanner(data.bottomBanner)
     }
     private fun initBottomBanner(imageResList: List<Int>)=binding.run{
