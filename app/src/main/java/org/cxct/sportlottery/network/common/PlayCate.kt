@@ -419,12 +419,16 @@ enum class PlayCate(val value: String) {
     FBT_OU_MAP_3("FBT-O/U-MAP-3"),
     FS_LD_CS_OFL("FS-LD-CS-OFL"),
     CS_2_MAP("CS-2-MAP"),
+    CS_3_MAP("CS-3-MAP"),
     TT_DRAGONS_OE_MAP_1("TT-Dragons-O/E-MAP-1"),
     TT_DRAGONS_OE_MAP_2("TT-Dragons-O/E-MAP-2"),
     TT_DRAGONS_OE_MAP_3("TT-Dragons-O/E-MAP-3"),
     TT_TURRETS_OE_MAP_1("TT-Turrets-O/E-MAP-1"),
     TT_TURRETS_OE_MAP_2("TT-Turrets-O/E-MAP-2"),
     TT_TURRETS_OE_MAP_3("TT-Turrets-O/E-MAP-3"),
+    TT_INHIBITORS_OE_MAP_1("TT-Inhibitors-O/E-MAP-1"),
+    TT_INHIBITORS_OE_MAP_2("TT-Inhibitors-O/E-MAP-2"),
+    TT_INHIBITORS_OE_MAP_3("TT-Inhibitors-O/E-MAP-3"),
     NO_DATA("NO_DATA");
 
     companion object {
@@ -559,6 +563,17 @@ enum class PlayCate(val value: String) {
                 ROUND_UFC.value,
                 MOV_UFC.value,
                 OU_2ST.value,
+                CS_2_MAP.value,
+                CS_3_MAP.value,
+                TT_DRAGONS_OE_MAP_1.value,
+                TT_DRAGONS_OE_MAP_2.value,
+                TT_DRAGONS_OE_MAP_3.value,
+                TT_TURRETS_OE_MAP_1.value,
+                TT_TURRETS_OE_MAP_2.value,
+                TT_TURRETS_OE_MAP_3.value,
+                TT_INHIBITORS_OE_MAP_1.value,
+                TT_INHIBITORS_OE_MAP_2.value,
+                TT_INHIBITORS_OE_MAP_3.value
                 -> false
                 SINGLE_1ST.value,
                 SINGLE_2ST.value
