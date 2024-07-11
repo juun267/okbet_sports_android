@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.ambassador
 
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,6 +51,9 @@ class AmbassadorActivity : BaseActivity<MainHomeViewModel, ActivityAmbassadorBin
         banner.setLinearLayoutManager(RecyclerView.HORIZONTAL)
         banner.addItemDecoration(SpaceItemDecoration(this@AmbassadorActivity, R.dimen.margin_14))
         bannerAdapter.setList(imageResList)
+        bannerAdapter.setOnItemClickListener{ adapter, view, position ->
+            AmbassadorImageDialog.newInstance(ArrayList(imageResList),position).show(supportFragmentManager)
+        }
         banner.adapter = bannerAdapter
         banner.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
@@ -63,10 +67,12 @@ class AmbassadorActivity : BaseActivity<MainHomeViewModel, ActivityAmbassadorBin
         })
         ivLeftArrow.setArrowIconEnabled(false)
         ivLeftArrow.setOnClickListener {
-            banner.smoothScrollToPosition(0)
+            val targetPosition = (banner.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()-1
+            banner.smoothScrollToPosition(targetPosition)
         }
         ivRightArrow.setOnClickListener {
-            banner.smoothScrollToPosition(imageResList.size-1)
+            val targetPosition = (banner.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()+1
+            banner.smoothScrollToPosition(targetPosition)
         }
     }
     private fun ImageView.setArrowIconEnabled(enabled: Boolean){
