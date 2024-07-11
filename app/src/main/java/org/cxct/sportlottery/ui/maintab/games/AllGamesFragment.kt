@@ -121,7 +121,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
                 binding.gameViewCollect.gone()
             }
         }
-        GameCollectManager.collectStatus.observe(viewLifecycleOwner) { result ->
+        GameCollectManager.observerGameCollect(viewLifecycleOwner) { result ->
             //更新列表
             gameListAdapter.data.forEachIndexed {index,it->
                 it.gameList?.forEach {

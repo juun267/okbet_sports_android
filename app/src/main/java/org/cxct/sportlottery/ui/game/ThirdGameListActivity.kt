@@ -8,7 +8,9 @@ import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
+import org.cxct.sportlottery.common.extentions.postDelayed
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ActivityNewgameListBinding
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -28,14 +30,14 @@ import org.cxct.sportlottery.util.RefreshHelper.LoadMore
 import org.cxct.sportlottery.util.isThirdTransferOpen
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.util.startLogin
-import org.cxct.sportlottery.view.EmptyView
 import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
 class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListBinding>() {
 
     private val adapter = GameListAdapter(::enterThirdGame, ::onFavorite)
-    private val refreshHelper by lazy { RefreshHelper.of(binding.recyclerView, this@ThirdGameListActivity) }
+    private val refreshHelper by lazy { RefreshHelper.of(binding.recyclerView, this@ThirdGameListActivity, false) }
+    private val loadingHolder by lazy { Gloading.wrapView(refreshHelper.getWrappedView()) }
     private val pageSize = 30
 
     override fun onInitView() = binding.run {
@@ -54,10 +56,9 @@ class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListB
     }
 
     private fun initRefresh() {
+        loadingHolder.withRetry { reload() }
         refreshHelper.setPageSize(pageSize)
-        refreshHelper.setRefreshListener {
-            loadData(1, pageSize)
-        }
+//        refreshHelper.setRefreshListener { loadData(1, pageSize) }
         refreshHelper.setLoadMoreListener(object : LoadMore {
             override fun onLoadMore(pageIndex: Int, pageSize: Int) {
                 loadData(pageIndex, pageSize)
@@ -66,13 +67,18 @@ class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListB
         })
     }
 
+    private fun reload() {
+        loadData(1, pageSize)
+    }
+
     private fun loadData(pageIndex: Int, pageSize: Int) {
         viewModel.getNewGameList(pageIndex, pageSize)
     }
 
     override fun onInitData() {
         initObserver()
-        refreshHelper.startRefresh()
+        loadingHolder.go()
+//        refreshHelper.startRefresh()
     }
 
     private fun initObserver() {
@@ -87,6 +93,16 @@ class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListB
                     refreshHelper.finishRefreshWithNoMoreData()
                 } else {
                     refreshHelper.finishLoadMore()
+                }
+            }
+
+            postDelayed(2000) {
+                if (loadingHolder.isLoading) {
+                    if (adapter.dataCount() > 0) {
+                        loadingHolder.showLoadSuccess()
+                    } else {
+                        loadingHolder.showEmpty()
+                    }
                 }
             }
         }
@@ -125,12 +141,12 @@ class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListB
             }
         }
 
-        GameCollectManager.collectStatus.observe(this) {
+        GameCollectManager.observerGameCollect(this) {
             adapter.data.forEachIndexed { index, item ->
                 if (item.id == it.first) {
                     item.markCollect = it.second
                     adapter.notifyItemChanged(index, it)
-                    return@observe
+                    return@observerGameCollect
                 }
             }
         }
@@ -164,7 +180,9 @@ class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListB
     }
 
     private fun onFavorite(view: View, okGameBean: OKGameBean) {
-        if (loginedRun(binding.root.context) { viewModel.collectGame(okGameBean) }) {
+        if (loginedRun(binding.root.context) {
+            viewModel.collectGame(okGameBean, okGameBean.gameType ?: GameEntryType.OKGAMES)
+        }) {
             view.animDuang(1.3f)
         }
 
@@ -186,7 +204,4 @@ class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListB
         }
     }
 
-    fun collectGame(gameData: OKGameBean,gameEntryType: String = gameData.gameEntryType ?: GameEntryType.OKGAMES): Boolean {
-        return loginedRun(binding.root.context) { viewModel.collectGame(gameData,gameEntryType) }
-    }
 }

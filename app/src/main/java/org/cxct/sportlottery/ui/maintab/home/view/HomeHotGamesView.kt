@@ -35,7 +35,7 @@ class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
     private fun initView() = binding.run {
         tvMore.gone()
         orientation = VERTICAL
-        tvName.setText(R.string.N704)
+        tvName.setText(R.string.P489)
         recyclerGames.layoutManager = GridLayoutManager(context, 3)
         recyclerGames.addItemDecoration(MarginDecoration(10.dp))
         recyclerGames.adapter = gameAdapter
@@ -51,12 +51,12 @@ class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
             this@HomeHotGamesView.isVisible = gameAdapter.dataCount() > 0
         }
 
-        GameCollectManager.collectStatus.observe(fragment.viewLifecycleOwner) {
+        GameCollectManager.observerGameCollect(fragment.viewLifecycleOwner) {
             gameAdapter.data.forEachIndexed { index, item ->
                 if (item.id == it.first) {
                     item.markCollect = it.second
                     gameAdapter.notifyItemChanged(index, it)
-                    return@observe
+                    return@observerGameCollect
                 }
             }
         }

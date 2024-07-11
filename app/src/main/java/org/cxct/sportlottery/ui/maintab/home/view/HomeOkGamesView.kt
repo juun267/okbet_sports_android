@@ -62,12 +62,12 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : LinearLayout(cont
             gameAdapter.setList(it)
             this@HomeOkGamesView.isVisible = gameAdapter.dataCount() > 0
         }
-        GameCollectManager.collectStatus.observe(fragment.viewLifecycleOwner) {
+        GameCollectManager.observerGameCollect(fragment.viewLifecycleOwner) {
             gameAdapter.data.forEachIndexed { index, item ->
                 if (item.id == it.first) {
                     item.markCollect = it.second
                     gameAdapter.notifyItemChanged(index, it)
-                    return@observe
+                    return@observerGameCollect
                 }
             }
         }
