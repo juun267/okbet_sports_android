@@ -431,10 +431,12 @@ enum class PlayCate(val value: String) {
     TT_INHIBITORS_OE_MAP_1("TT-Inhibitors-O/E-MAP-1"),
     TT_INHIBITORS_OE_MAP_2("TT-Inhibitors-O/E-MAP-2"),
     TT_INHIBITORS_OE_MAP_3("TT-Inhibitors-O/E-MAP-3"),
-    TT_TYRANT_OE_MAP_1("TT-TYRANT-O/E-MAP-1"),
-    TT_TYRANT_OE_MAP_2("TT-TYRANT-O/E-MAP-2"),
-    TT_TYRANT_OE_MAP_3("TT-TYRANT-O/E-MAP-3"),
-
+    TT_TYRANT_OE_MAP_1("TT-Tyrant-O/E-MAP-1"),
+    TT_TYRANT_OE_MAP_2("TT-Tyrant-O/E-MAP-2"),
+    TT_TYRANT_OE_MAP_3("TT-Tyrant-O/E-MAP-3"),
+    TT_OVERLORDS_OE_MAP_1("TT-Overlords-O/E-MAP-1"),
+    TT_OVERLORDS_OE_MAP_2("TT-Overlords-O/E-MAP-2"),
+    TT_OVERLORDS_OE_MAP_3("TT-Overlords-O/E-MAP-3"),
     NO_DATA("NO_DATA");
 
     companion object {
@@ -626,6 +628,9 @@ enum class PlayCate(val value: String) {
                 TT_TYRANT_OE_MAP_1.value,
                 TT_TYRANT_OE_MAP_2.value,
                 TT_TYRANT_OE_MAP_3.value,
+                TT_OVERLORDS_OE_MAP_1.value,
+                TT_OVERLORDS_OE_MAP_2.value,
+                TT_OVERLORDS_OE_MAP_3.value
                 -> false
                 SINGLE_1ST.value,
                 SINGLE_2ST.value
