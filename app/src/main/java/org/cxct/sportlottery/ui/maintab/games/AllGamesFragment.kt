@@ -34,6 +34,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
         //初始化热门赛事
         initHotMatchView()
         observerGameMaintain()
+        viewModel.getRecommend()
     }
 
     private fun observerGameMaintain() {
