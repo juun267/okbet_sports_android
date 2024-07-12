@@ -18,7 +18,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GameCollectManager
-import org.cxct.sportlottery.util.RCVDecoration
 import splitties.systemservices.layoutInflater
 
 class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
@@ -35,9 +34,10 @@ class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
     private fun initView() = binding.run {
         tvMore.gone()
         orientation = VERTICAL
+        (linearTitle.layoutParams as MarginLayoutParams).bottomMargin = 0
         tvName.setText(R.string.P489)
         recyclerGames.layoutManager = GridLayoutManager(context, 3)
-        recyclerGames.addItemDecoration(MarginDecoration(10.dp))
+        recyclerGames.addItemDecoration(MarginDecoration(6.dp))
         recyclerGames.adapter = gameAdapter
     }
 

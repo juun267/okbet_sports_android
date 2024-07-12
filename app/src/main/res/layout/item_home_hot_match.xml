@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="340dp"
-    android:layout_height="182dp"
+    android:layout_width="282dp"
+    android:layout_height="138dp"
     android:orientation="vertical"
-    android:layout_marginRight="8dp"
+    android:layout_marginRight="10dp"
     android:background="@drawable/bg_trans_home_hot_match" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginHorizontal="12dp" >
+        android:layout_height="32dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="8dp" >
 
         <ImageView
             android:id="@+id/ivHomeIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:padding="5dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:padding="4dp"
             android:background="@drawable/bg_home_team_logo"
             tools:src="@drawable/ic_team_default" />
 
         <ImageView
             android:id="@+id/ivAwayIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:padding="5dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:padding="4dp"
             android:background="@drawable/bg_home_team_logo"
             android:layout_marginLeft="2dp"
             tools:src="@drawable/ic_team_default" />
@@ -43,7 +43,7 @@
                 android:includeFontPadding="false"
                 android:lines="1"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="---"/>
 
@@ -64,8 +64,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:layout_marginBottom="@dimen/margin_6"
-        android:layout_marginHorizontal="@dimen/margin_12">
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="-2dp">
 
         <TextView
             android:id="@+id/tvGameType"
@@ -74,14 +74,14 @@
             android:lines="1"
             tools:text="Football"
             android:textColor="@color/white"
-            android:textSize="@dimen/textSize14sp"
+            android:textSize="12sp"
             android:textStyle="bold"/>
 
         <View
             android:layout_width="1dp"
-            android:layout_height="12dp"
+            android:layout_height="8dp"
             android:background="@color/transparent_white_30"
-            android:layout_marginHorizontal="8dp"/>
+            android:layout_marginHorizontal="4dp"/>
 
         <TextView
             android:id="@+id/tvLeagueName"
@@ -91,15 +91,15 @@
             android:maxLines="1"
             tools:text="Siêu giải Trung Quốc"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginHorizontal="@dimen/margin_12"
-        android:layout_marginTop="@dimen/margin_6">
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="4dp">
 
         <TextView
             android:id="@+id/tv_home_name"
@@ -112,7 +112,7 @@
             android:lines="1"
             android:textColor="@color/color_313F56"
             android:textStyle="bold"
-            android:textSize="@dimen/textSize14sp"
+            android:textSize="12sp"
             tools:text="Chelsea"/>
 
         <TextView
@@ -123,7 +123,7 @@
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/inter_bold"
             android:textColor="@color/color_313F56"
-            android:textSize="@dimen/textSize16sp"
+            android:textSize="14sp"
             tools:text="1" />
     </LinearLayout>
 
@@ -131,8 +131,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginHorizontal="@dimen/margin_12"
-        android:layout_marginBottom="@dimen/margin_6">
+        android:layout_marginHorizontal="12dp">
 
         <TextView
             android:id="@+id/tv_away_name"
@@ -145,7 +144,7 @@
             android:layout_marginRight="@dimen/margin_16"
             android:textColor="@color/color_313F56"
             android:textStyle="bold"
-            android:textSize="@dimen/textSize14sp"
+            android:textSize="12sp"
             tools:text="Chelsea"/>
 
         <TextView
@@ -156,33 +155,33 @@
             android:fontFamily="@font/inter_bold"
             android:includeFontPadding="false"
             android:textColor="@color/color_313F56"
-            android:textSize="@dimen/textSize16sp"
+            android:textSize="14sp"
             tools:text="1"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_12"
-        android:layout_marginTop="6dp">
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="4dp">
 
         <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHomeHotButton
             android:id="@+id/oddBtn1"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="26dp"
             android:layout_weight="1" />
 
         <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHomeHotButton
             android:id="@+id/oddBtn2"
             android:layout_width="0dp"
             android:layout_marginLeft="8dp"
-            android:layout_height="36dp"
+            android:layout_height="26dp"
             android:layout_weight="1" />
 
         <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHomeHotButton
             android:id="@+id/oddBtn3"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="26dp"
             android:layout_marginLeft="8dp"
             android:layout_weight="1" />
     </LinearLayout>
