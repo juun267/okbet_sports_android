@@ -41,6 +41,7 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
 //        binding.okLiveGameView.initOkLiveGames(this)
         initRecommendLiveGame()
         observerGameMaintain()
+        viewModel.getRecommend()
     }
 
     private fun observerGameMaintain() {
