@@ -204,13 +204,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         llRemark.visibility = if (mSelectRechCfgs?.remark.isNullOrEmpty()) View.GONE else View.VISIBLE
         tvHint.text = mSelectRechCfgs?.remark
         binding.etRechargeOnlineAmount.setHint(getAmountLimitHint())
-        if (needPayerField()) {
-            etRechargeOnlinePayer.show()
-            etRechargeOnlineEmail.show()
-        } else {
-            etRechargeOnlinePayer.hide()
-            etRechargeOnlineEmail.hide()
-        }
+        etRechargeOnlinePayer.isVisible = mSelectRechCfgs?.isAccount==1
+        etRechargeOnlineEmail.isVisible = mSelectRechCfgs?.isEmail ==1
 
         cvPayBank.visibility = if (mSelectRechCfgs?.banks != null) View.VISIBLE else View.GONE
         tvPayGapSubtitle.text =
@@ -493,12 +488,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         binding.etRechargeOnlineAmount.setText("")
         viewModel.clearnRechargeStatus()
     }
-
-    private fun needPayerField(): Boolean = when (mMoneyPayWay?.onlineType) {
-        OnlineType.DRAGON_PAY.type -> true
-        else -> false
-    }
-
 
     //联系客服
     private fun setupServiceButton() {
