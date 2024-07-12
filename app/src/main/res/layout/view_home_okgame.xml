@@ -25,8 +25,8 @@
             android:paddingLeft="4dp"
             android:fontFamily="@font/helvetica_bold"
             android:text="@string/P487"
-            android:textColor="@color/color_313F56"
-            android:textSize="16sp"
+            android:textColor="@color/color_0D2245"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView

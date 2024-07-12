@@ -25,7 +25,8 @@
             android:layout_weight="1"
             android:paddingLeft="4dp"
             android:text="@string/N880"
-            android:textColor="@color/color_313F56"
+            android:fontFamily="@font/helvetica_bold"
+            android:textColor="@color/color_0D2245"
             android:textSize="18sp"
             android:textStyle="bold" />
 

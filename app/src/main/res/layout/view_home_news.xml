@@ -18,9 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_4"
-            android:textSize="16sp"
+            android:fontFamily="@font/helvetica_bold"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/color_313F56"
+            android:textColor="@color/color_0D2245"
             android:text="@string/N909" />
     </LinearLayout>
 
