@@ -27,7 +27,7 @@
             android:paddingLeft="4dp"
             android:text="@string/N881"
             android:fontFamily="@font/helvetica_bold"
-            android:textColor="@color/color_313F56"
+            android:textColor="@color/color_0D2245"
             android:textStyle="bold" />
 
 
