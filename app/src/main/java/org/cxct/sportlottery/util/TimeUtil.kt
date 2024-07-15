@@ -421,11 +421,11 @@ object TimeUtil {
      */
     fun dateToStringFormatYMD(
         date: Date?,
-        format: String = YMD_FORMAT
     ): String? {
         try {
             if (date == null) return null
-            val newFormatter = SimpleDateFormat(format, Locale.getDefault())
+            val   newDateFormatPattern: String = YMD_FORMAT
+            val newFormatter = SimpleDateFormat(newDateFormatPattern, Locale.getDefault())
             return newFormatter.format(date)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -453,7 +453,6 @@ object TimeUtil {
      */
     fun dateToStringFormatHMS(
         date: Date?,
-
     ): String? {
         val timeZoneGTM = try {
             val gtm = SimpleDateFormat("Z").format(Date().time).toInt().div(100)

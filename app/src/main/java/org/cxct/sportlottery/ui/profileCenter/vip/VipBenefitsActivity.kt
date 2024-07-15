@@ -268,7 +268,7 @@ class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding
         dateTimePicker?.show()
     }
     fun setBirthday(date: Date){
-        TimeUtil.dateToFormat(date)?.let {
+        TimeUtil.dateToFormat(date,TimeUtil.YMD_FORMAT_2)?.let {
             loading()
             viewModel.setBirthday(it)
         }
