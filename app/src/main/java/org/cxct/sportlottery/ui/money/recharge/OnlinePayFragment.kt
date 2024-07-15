@@ -135,6 +135,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
             var payer = ""
             if (etRechargeOnlinePayer.isVisible) {
                 payer = etRechargeOnlinePayer.getText()
+                if (payer.isEmptyStr()) {
+                    ToastUtil.showToast(context(), getString(R.string.edt_hint_payer))
+                    etRechargeOnlinePayer.setError(getString(R.string.error_input_empty))
+                    return@setOnClickListener
+                }
             }
 
             if (etRechargeOnlineEmail.isVisible) {
@@ -296,6 +301,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         }
 
         etRechargeOnlinePayer.afterTextChanged {
+            if (it.isEmptyStr()) {
+                etRechargeOnlinePayer.setError(getString(R.string.error_input_empty))
+                return@afterTextChanged
+            }
+            etRechargeOnlinePayer.setError(null)
             viewModel.checkRcgNormalOnlineAccount(it)
         }
 
