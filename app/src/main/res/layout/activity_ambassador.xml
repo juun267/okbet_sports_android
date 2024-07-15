@@ -84,10 +84,18 @@ text, Text1, Text2, Text3, Testing Text"/>
                      app:cardBackgroundColor="@color/white"
                      app:cardCornerRadius="@dimen/margin_16"
                      app:cardElevation="0dp">
-                     <org.cxct.sportlottery.view.webView.OkWebView
-                         android:id="@+id/okWebView"
+                     <androidx.constraintlayout.widget.ConstraintLayout
                          android:layout_width="match_parent"
-                         android:layout_height="190dp"/>
+                         android:layout_height="wrap_content">
+                         <org.cxct.sportlottery.view.webView.OkWebView
+                             android:id="@+id/okWebView"
+                             android:layout_width="match_parent"
+                             android:layout_height="0dp"
+                             app:layout_constraintLeft_toLeftOf="parent"
+                             app:layout_constraintRight_toRightOf="parent"
+                             app:layout_constraintTop_toTopOf="parent"
+                             app:layout_constraintDimensionRatio="16:9"/>
+                     </androidx.constraintlayout.widget.ConstraintLayout>
                  </androidx.cardview.widget.CardView>
 
               </LinearLayout>
