@@ -88,7 +88,7 @@ class HotMatchView(
             )
         )
         itemAnimator?.changeDuration = 0
-        PagerSnapHelper().attachToRecyclerView(this)
+//        PagerSnapHelper().attachToRecyclerView(this)
 
         //滚动监听   显示/隐藏 左右两个滑动按钮
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
