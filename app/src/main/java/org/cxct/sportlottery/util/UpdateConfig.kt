@@ -33,7 +33,7 @@ object UpdateConfig {
 
     }
     fun download(context: Context,appMinVersionState: AppMinVersionState){
-        val apkDir = context.cacheDir.absolutePath+File.separator+BuildConfig.VERSION_NAME
+        val apkDir = context.cacheDir.absolutePath+File.separator+appMinVersionState.version
         val apkFilePath = apkDir+File.separator+DownloadUtil.getNameFromUrl(Constants.getAppDownloadUrl())
         Timber.d("apkFilePath $apkFilePath")
         if (FileUtil.isFileExist(File(apkFilePath))){
