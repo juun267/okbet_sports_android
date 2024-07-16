@@ -10,6 +10,7 @@ plugins {
     id('com.google.gms.google-services')
     id('com.google.firebase.crashlytics')
     id('com.google.protobuf')
+    id('com.huawei.agconnect')
 }
 
 android {
@@ -342,6 +343,11 @@ dependencies {
 //    implementation "com.alibaba:fastjson:1.2.73"
 
     implementation 'cn.jiguang.sdk:jpush:5.4.0'
+    //若不集成厂商通道，可直接跳过以下依赖
+    // 极光厂商插件版本与接入 JPush 版本保持一致，下同
+    // 接入华为厂商
+    implementation 'com.huawei.hms:push:6.5.0.300'
+    implementation 'cn.jiguang.sdk.plugin:huawei:5.4.0'
     // 接入 FCM 厂商
     implementation 'com.google.firebase:firebase-messaging:23.0.5'
     implementation 'cn.jiguang.sdk.plugin:fcm:5.4.0'
