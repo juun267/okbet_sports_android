@@ -294,10 +294,7 @@ class MoneyRechViewModel(
                 if (!payer.isNullOrEmpty()) {
                     put("payer", payer)
                 }
-                if (email.isNullOrEmpty()) {
-                    put("isEmail", "false")
-                }else{
-                    put("isEmail", "true")
+                if (!email.isNullOrEmpty()) {
                     put("email", email)
                 }
                 AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
