@@ -157,7 +157,6 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
         yesterday.add(Calendar.YEAR, -100)
         val tomorrow = Calendar.getInstance()
         tomorrow.add(Calendar.YEAR, -21)
-        tomorrow.add(Calendar.DAY_OF_MONTH, -1)
         dateTimePicker = DateTimePickerOptions(this).getBuilder { date, _ ->
             TimeUtil.dateToStringFormatYMD(date)?.let {
                 binding.tvBirthday.setText(it)
