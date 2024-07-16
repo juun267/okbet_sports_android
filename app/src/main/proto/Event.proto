@@ -73,15 +73,18 @@ message MtsPlayOddsEvent {
 
 message OddsMarginConfig {
     string id = 1;
-    string eventId = 2;
+    string matchId = 2;
     string playCateCode = 3;
-    string playCode = 4;
-    string oddsId = 5;
-    int32 margin = 6;
-    string oddsType = 7;
-    string spread = 8;
-    int32 priority = 9;
+    string playCode1 = 4;
+    string playCode2 = 5;
+    string groupId = 6;
+    int32 margin1 = 7;
+    int32 margin2 = 8;
+    int32 configType = 9;
+    string oddsType = 10;
+    int32 pairOdds = 11;
 }
+
 
 /**
 * ODDS_MARGIN_CHANGED， MTS风控后台专用，不涉及前端
@@ -153,6 +156,7 @@ message DataSourceChangeEvent {
 message GlobalStopEvent {
     // probably be null
     google.protobuf.Int32Value producerId = 1;
+    string oddsIdPrefix = 2;
 }
 
 /**
@@ -187,6 +191,9 @@ message MatchClockEvent {
     int32 remainingTimeInPeriod = 8;
     int32 stopped = 9;
     string gameType = 10;
+    int32 matchTimeMinute = 11;
+    int32 remainingTimeInPeriodMinute = 12;
+    int32 showTimeStyle = 13;
 }
 
 message PlayCateTypeVO {
@@ -239,6 +246,7 @@ message MatchOddsChangeEvent {
     repeated OddsDetailVO oddsList = 5;
     string gameType = 6;
     string eventType = 7;
+    int32 updateMode=8;
 }
 
 /**
@@ -381,6 +389,7 @@ message OddsChangeEvent {
     //仅冠军有效
     map<string, StringMap> dynamicMarkets = 8;
     int32 playCateNum = 10;
+    int32 updateMode=11;
 }
 
 /**
@@ -592,12 +601,23 @@ message GameFirmMaintainEvent {
     string firmCode = 2;
     string firmType = 3;
     int32 maintain = 4;
-    int64 PushType = 5;
+    int32 PushType = 5;
     string gameType = 6;
 }
 
 message JackpotEvent {
     string amount = 1;
+}
+
+message JackpotMiniEvent {
+    string amount = 1;
+}
+
+message WheelSpinResultEvent {
+    string nickname  = 1;
+    string time = 2;
+    string prizeName = 3;
+    string price = 4;
 }
 
 message Event {
@@ -643,6 +663,8 @@ message Event {
         GameFirmMaintainEvent gameFirmMaintainEvent=36;
         JackpotEvent recordResultJackpotOkGamesEvent = 37;
         SportMaintainEvent sportMaintainEvent = 38;
+        WheelSpinResultEvent wheelSpinResultEvent = 39;
+        JackpotMiniEvent recordResultJackPoolOkMiniGamesEvent = 40;
     }
 }
 

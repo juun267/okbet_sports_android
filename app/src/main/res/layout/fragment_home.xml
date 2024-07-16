@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_FFFFFF">
+    android:background="@color/color_F9FAFD">
 
     <org.cxct.sportlottery.ui.maintab.home.view.HomeToolbarView
         android:id="@+id/homeToolbar"
@@ -121,7 +121,7 @@
         <org.cxct.sportlottery.view.HIndicator
             android:id="@+id/hIndicator"
             android:layout_width="@dimen/margin_24"
-            android:layout_height="@dimen/margin_6"
+            android:layout_height="@dimen/margin_4"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:layout_gravity="center_horizontal"

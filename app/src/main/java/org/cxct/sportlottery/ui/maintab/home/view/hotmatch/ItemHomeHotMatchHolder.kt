@@ -34,7 +34,6 @@ class ItemHomeHotMatchHolder(
         this.data = data
         update(oddsType)
         setupMatchScore(data)
-        val matchId = data.id
 
     }
 

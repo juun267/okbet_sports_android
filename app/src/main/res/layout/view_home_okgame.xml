@@ -16,16 +16,17 @@
         android:layout_marginHorizontal="12dp"
         android:layout_marginVertical="8dp">
 
-
         <TextView
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:paddingLeft="4dp"
-            android:text="@string/N704"
-            android:textColor="@color/color_313F56"
-            android:textSize="16sp"
+            android:fontFamily="@font/helvetica_bold"
+            android:text="@string/P487"
+            android:textColor="@color/color_0D2245"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -46,10 +47,12 @@
         android:id="@+id/recyclerGames"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:paddingStart="10dp"
+        android:clipToPadding="false"
         android:nestedScrollingEnabled="false"
         android:orientation="horizontal"
         tools:itemCount="3"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_home_okgame"/>
+
 </merge>

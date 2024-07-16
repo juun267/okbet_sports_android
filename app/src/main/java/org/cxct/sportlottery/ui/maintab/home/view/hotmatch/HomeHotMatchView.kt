@@ -27,6 +27,9 @@ import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
+import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
+import org.cxct.sportlottery.service.dispatcher.ProducerUpDispatcher
 import org.cxct.sportlottery.ui.base.*
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
@@ -175,57 +178,41 @@ class HomeHotMatchView(
         }
 
         receiver.matchClock.observe(viewLifecycleOwner) {
-            it?.let { matchClockEvent ->
-                val targetList = adapter?.data
-                targetList?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateMatchClock(
-                            recommend, matchClockEvent
-                        )
-                    ) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
-                }
+            val matchClockEvent = it ?: return@observe
+            val targetList = adapter?.data ?: return@observe
 
-            }
-        }
-
-        receiver.matchOddsLock.collectWith(fragment.lifecycleScope) {
-            it?.let { matchOddsLockEvent ->
-                val targetList = adapter?.data
-
-                targetList?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
-                }
-
-            }
-        }
-
-
-        receiver.globalStop.observe(viewLifecycleOwner) {
-            it?.let { globalStopEvent ->
-                adapter?.data?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(
-                            recommend, globalStopEvent
-                        )
-                    ) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
+            targetList.forEachIndexed { index, recommend ->
+                if (SocketUpdateUtil.updateMatchClock(recommend, matchClockEvent)) {
+                    adapter?.notifyItemChanged(index, recommend)
                 }
             }
         }
 
-        receiver.producerUp.observe(viewLifecycleOwner) {
-            it?.let {
-                //先解除全部賽事訂閱
-                unSubscribeChannelHall(fragment)
-                firstVisibleRange()
+        receiver.matchOddsLock.collectWith(fragment.lifecycleScope) { matchOddsLockEvent->
+            val targetList = adapter?.data ?: return@collectWith
+
+            targetList.forEachIndexed { index, recommend ->
+                if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)) {
+                    adapter?.notifyItemChanged(index, recommend)
+                }
+            }
+
+        }
+
+        GlobalStopDispatcher.observe(viewLifecycleOwner) { globalStopEvent->
+            val hotMatchAdapter = adapter ?: return@observe
+            if (hotMatchAdapter.data.isEmpty()) {
+                return@observe
+            }
+            hotMatchAdapter.data.forEachIndexed { index, recommend ->
+                if (SocketUpdateUtil.updateOddStatus(recommend, globalStopEvent)) {
+                    hotMatchAdapter.notifyItemChanged(index, recommend)
+                }
             }
         }
 
-        receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
-            val it = event?.getContentIfNotHandled() ?: return@observe
+        ClosePlayCateDispatcher.observe(viewLifecycleOwner) { event ->
+            val it = event.getContentIfNotHandled() ?: return@observe
             adapter?.data?.forEachIndexed { index, recommend ->
                 if (recommend.gameType == it.gameType) {
                     recommend.oddsMap?.forEach { map ->
@@ -238,6 +225,12 @@ class HomeHotMatchView(
                     }
                 }
             }
+        }
+
+        ProducerUpDispatcher.observe(viewLifecycleOwner) {
+            //先解除全部賽事訂閱
+            unSubscribeChannelHall(fragment)
+            firstVisibleRange()
         }
     }
 

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -157,9 +158,17 @@ open class MainHomeViewModel(
         get() = _newsCategory
     private val _newsCategory = MutableLiveData<List<NewsCategory>>()
 
+    private var loadingGameTypes = mutableMapOf<GameType?, Long>()
+
     //region 宣傳頁用
-    fun getRecommend(gameType: GameType?=null) {
-        viewModelScope.launch {
+    fun getRecommend(gameType: GameType? = null) = launch {
+        val timeStep = loadingGameTypes[gameType] ?: 0
+        if (System.currentTimeMillis() - timeStep < 15_000) { //拦截15秒内还未响应的相同请求
+            return@launch
+        }
+
+        loadingGameTypes[gameType] = System.currentTimeMillis()
+        launch {
             val resultRecommend = doNetwork(androidContext) {
                 val currentTimeMillis = System.currentTimeMillis()
                 val calendar = Calendar.getInstance()
@@ -215,6 +224,8 @@ open class MainHomeViewModel(
                 notifyFavorite(FavoriteType.MATCH)
             }
         }
+
+        loadingGameTypes.remove(gameType)
     }
 
     /**
@@ -226,6 +237,11 @@ open class MainHomeViewModel(
         }
     }
 
+    val newGameList by lazy { MutableLiveData<List<OKGameBean>?>() }
+    fun getNewGameList(pageIndex: Int = 1, pageSize: Int = 30)
+    = callApi({ OKGamesRepository.getNewGameList(pageIndex, pageSize) }) {
+        newGameList.value = it.getData()
+    }
 
     fun getHomeOKGamesList(
     ) = callApi({
@@ -273,25 +289,11 @@ open class MainHomeViewModel(
         }
     }
 
-
-
-    val homeLiveGamesList300: LiveData< List<OKGameBean>>
-        get() = _homeLiveGamesList300
-    private val _homeLiveGamesList300 = MutableLiveData< List<OKGameBean>>()
-    fun getHomeLiveGamesList300(
-    ) = callApi({
-        OKGamesRepository.getHomeOKGamesList(
-            GameEntryType.OKLIVE,
-            1,  300
-        )
-    }) {
-        if (it.getData() == null) {
-            //hide loading
-            _homeLiveGamesList300.value = arrayListOf()
-        } else {
-            _homeLiveGamesList300.value=it.getData()
-        }
+    val hotGameList = MutableLiveData<List<OKGameBean>?>()
+    fun getHotGameList() = callApi({ OKGamesRepository.getHotGameList(1, 60) }) {
+        hotGameList.value = it.getData()
     }
+
 
     //region 宣傳頁推薦賽事資料處理
     /**
@@ -369,11 +371,11 @@ open class MainHomeViewModel(
             val result= doNetwork(androidContext) {
                OneBoSportApi.thirdGameService.thirdNoLogin(okGameBean.firmType, okGameBean.gameCode)
             }
-            if (result!=null&&result.success&&result.msg.isNotEmpty()){
+            if (result !=null && result.success && result.msg.isNotEmpty()){
                 //获得了试玩路径
                 val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, result.msg, null, okGameBean)
                 _enterTrialPlayGameResult.postValue(Pair(okGameBean.firmType, thirdGameResult))
-            }else{
+            } else {
                 requestGuestEnterGame(okGameBean)
             }
         }

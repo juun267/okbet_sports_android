@@ -8,6 +8,10 @@ import android.webkit.CookieSyncManager
 import android.webkit.WebStorage
 import android.webkit.WebView
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
+import org.cxct.sportlottery.common.extentions.doOnDestory
+import org.cxct.sportlottery.common.extentions.doOnPause
+import org.cxct.sportlottery.common.extentions.doOnResume
 import org.cxct.sportlottery.util.ToastUtil
 
 open class OkWebView  : WebView {
@@ -67,6 +71,12 @@ open class OkWebView  : WebView {
             super.setOverScrollMode(mode)
         } catch (e: Throwable) {
              e.printStackTrace()
+        }
+    }
+    fun bindLifecycleOwner(lifecycleOwner: LifecycleOwner){
+        lifecycleOwner.doOnDestory {
+            this.destroy()
+            clearCache(false)
         }
     }
 }

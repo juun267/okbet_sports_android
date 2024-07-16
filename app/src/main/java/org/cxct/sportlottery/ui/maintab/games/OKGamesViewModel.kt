@@ -95,8 +95,8 @@ class OKGamesViewModel(
             GameCollectManager.setUpGameCollect(data.collectList?.toMutableList()?: mutableListOf())
 
             data.categoryList?.forEach {
-                it.gameList?.forEach {
-                    allGamesMap[it.id] = it
+                it.gameList.forEach { game ->
+                    allGamesMap[game.id] = game
                 }
             }
 
@@ -230,13 +230,13 @@ class OKGamesViewModel(
             var task2: Deferred<ApiResult<List<OKGameBean>>>? =null
             task1 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKGAMES) }
             task2 = asyncApi { OKGamesRepository.getOKLiveList(1, 12, GameEntryType.OKLIVE) }
-            val result1 = task1?.await()
-            val result2 = task2?.await()
+            val result1 = task1.await()
+            val result2 = task2.await()
             val newList = mutableListOf<OKGameBean>()
-            result1?.getData()?.let {
+            result1.getData()?.let {
                 newList.addAll(it)
             }
-            result2?.getData()?.let {
+            result2.getData()?.let {
                 newList.addAll(it)
             }
             sportFooterGames.postValue(newList)
@@ -271,6 +271,10 @@ class OKGamesViewModel(
                 _providerresult.postValue(data)
             }
         }
+    }
+
+    fun loadNewGames() {
+
     }
 
 }

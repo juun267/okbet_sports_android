@@ -14,19 +14,23 @@ import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.GameCollectManager
 import org.cxct.sportlottery.util.KvUtils
-import org.cxct.sportlottery.util.LogUtil
 
 object OKGamesRepository {
 
-    val okGamesApi by lazy { RetrofitHolder.createApiService(OKGamesApi::class.java) }
+    private val okGamesApi by lazy { RetrofitHolder.createApiService(OKGamesApi::class.java) }
     val okPlayEvent = SingleLiveEvent<OKGameBean?>()
     val gameFiremEvent = SingleLiveEvent<List<GameFirmValues>>()
     var enterGameAfterLogin: OKGameBean? = null
     private const val KEY_GAME_RECENT_PLAY = "recentPlay"
 
-    private fun paramDevice(gameEntryType: String = GameEntryType.OKGAMES): JsonObject {
+    private fun paramDevice(): JsonObject {
         val params = JsonObject()
         params.addProperty("device", 2)
+        return params
+    }
+
+    private fun paramGame(gameEntryType: String = GameEntryType.OKGAMES): JsonObject {
+        val params = paramDevice()
         params.addProperty("gameEntryType", gameEntryType)
         return params
     }
@@ -39,7 +43,7 @@ object OKGamesRepository {
     }
 
     suspend fun okGamesHall(): ApiResult<OKGamesHall> {
-        return okGamesApi.getOKGamesHall(paramDevice())
+        return okGamesApi.getOKGamesHall(paramGame())
     }
     suspend fun getGameFirms(): ApiResult<List<OKGamesFirm>> {
         return okGamesApi.getGameFirms()
@@ -75,7 +79,7 @@ object OKGamesRepository {
         gameEntryType: String = GameEntryType.OKGAMES
     ): ApiResult<List<OKGameBean>> {
 
-        val params = paramDevice()
+        val params = paramGame()
         params.addProperty("page", page)
         params.addProperty("pageSize", pageSize)
         params.addProperty("gameEntryType",  gameEntryType)
@@ -100,7 +104,7 @@ object OKGamesRepository {
         pageSize: Int
     ): ApiResult<List<OKGameBean>> {
 
-        val params = paramDevice()
+        val params = paramGame()
         params.addProperty("page", page)
         params.addProperty("pageSize", pageSize)
         //首页推荐 1启用,2禁用
@@ -110,12 +114,27 @@ object OKGamesRepository {
     }
 
     suspend fun getOKLiveList(page: Int, pageSize: Int, gameEntryType: String): ApiResult<List<OKGameBean>> {
-        val params = paramDevice()
+        val params = paramGame()
         params.addProperty("page", page)
         params.addProperty("pageSize", pageSize)
         params.addProperty("enableHome", 1)
         params.addProperty("gameEntryType", gameEntryType)
 
+        return okGamesApi.getOKGamesList(params)
+    }
+
+    suspend fun getHotGameList(page: Int, pageSize: Int): ApiResult<List<OKGameBean>> {
+        val params = paramDevice()
+        params.addProperty("page", page)
+        params.addProperty("pageSize", pageSize)
+        return okGamesApi.getOKGamesList(params)
+    }
+
+    suspend fun getNewGameList(page: Int, pageSize: Int): ApiResult<List<OKGameBean>> {
+        val params = paramGame()
+        params.addProperty("page", page)
+        params.addProperty("pageSize", pageSize)
+        params.addProperty("isNew", true)
         return okGamesApi.getOKGamesList(params)
     }
 

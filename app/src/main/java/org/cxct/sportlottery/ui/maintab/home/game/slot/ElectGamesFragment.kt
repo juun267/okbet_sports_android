@@ -167,7 +167,7 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
 //            hideLoadingView()
             setData(it)
         }
-        GameCollectManager.collectStatus.observe(viewLifecycleOwner) { result ->
+        GameCollectManager.observerGameCollect(viewLifecycleOwner) { result ->
             gameAdapter2.data.forEachIndexed { index, item ->
                 (item as? OKGameBean)?.let {
                     if (it.id == result.first) {

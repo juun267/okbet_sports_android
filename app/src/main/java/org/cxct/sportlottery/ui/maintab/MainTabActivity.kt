@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.gyf.immersionbar.ImmersionBar
 import com.tbruyelle.rxpermissions2.RxPermissions
+import kotlinx.coroutines.GlobalScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
@@ -32,6 +34,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.betList.BetListFragment
@@ -227,6 +230,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     }
 
     private fun initObserve() {
+        DataResourceChange.observe(this) { closeBetFragment() }
         ConfigRepository.onNewConfig(this) {
             if (GamePlayNameRepository.resourceList==null) {
                 GamePlayNameRepository.getIndexResourceJson()
@@ -305,6 +309,8 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
                 enterThirdGame(it.second, it.first)
             }
         }
+
+        DataResourceChange.observe(this) { showDataSourceChangedDialog(it) }
     }
 
 
@@ -713,8 +719,9 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             gamesViewModel.requestEnterThirdGameNoLogin(gameData)
         }
     }
-    fun collectGame(gameData: OKGameBean,gameEntryType: String = GameEntryType.OKGAMES): Boolean {
-        return loginedRun(binding.root.context) { gamesViewModel.collectGame(gameData,gameEntryType) }
+    fun collectGame(gameData: OKGameBean, gameEntryType: String? = null): Boolean {
+        val gameType = gameEntryType ?: (gameData.gameType?: GameEntryType.OKGAMES)
+        return loginedRun(binding.root.context) { gamesViewModel.collectGame(gameData, gameType) }
     }
     private fun jumpGameAfterLogin(){
         if (LoginRepository.isLogined()&&OKGamesRepository.enterGameAfterLogin !=null){

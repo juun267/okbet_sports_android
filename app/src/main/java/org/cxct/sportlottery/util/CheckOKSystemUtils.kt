@@ -8,6 +8,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.showPromptDialogNoCancel
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.dispatcher.SportMaintainDispatcher
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 
@@ -46,19 +47,17 @@ private fun updateSportStatus(status:Int?){
  * 监听体育服务广播
  */
 fun setupSportStatusChange(lifecycleOwner: LifecycleOwner, block: (isOpen:Boolean) -> Unit){
-    ServiceBroadcastReceiver.sportMaintenance.observe(lifecycleOwner){
-        it?.let {
-            //更新体育开关字段
-            updateSportStatus(it.status)
-            block(getSportEnterIsClose())
-        }
+    SportMaintainDispatcher.observe(lifecycleOwner){
+        //更新体育开关字段
+        updateSportStatus(it.status)
+        block(getSportEnterIsClose())
     }
 
 }
 
 
 fun BaseActivity<*,*>.bindSportMaintenance() {
-    ServiceBroadcastReceiver.sportMaintenance.observe(this){
+    SportMaintainDispatcher.observe(this){
         if (it.status == 1) {
             showPromptDialogNoCancel(message = getString(R.string.N969)) { finish() }
         }

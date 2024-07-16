@@ -82,9 +82,11 @@ class ElectTabAdapter(private val onSelected:(OKGamesCategory) -> Unit)
         holder.setGone(dividerId, isSelected || position + 1 == currentPosition || isLast)
         if (isSelected) {
             holder.itemView.setBackgroundResource(R.drawable.bg_sportvenue_type)
+            nameText.typeface = AppFont.helvetica_bold
             nameText.setTextColor(selColor)
         } else {
             holder.itemView.background = null
+            nameText.typeface = AppFont.helvetica
             nameText.setTextColor(norColor)
         }
 

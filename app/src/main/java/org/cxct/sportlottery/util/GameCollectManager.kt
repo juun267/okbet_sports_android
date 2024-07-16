@@ -1,9 +1,14 @@
 package org.cxct.sportlottery.util
 
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.common.enums.GameEntryType
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.net.games.data.OKGameBean
 
@@ -13,7 +18,11 @@ object GameCollectManager {
     //当前用户的收藏记录
     val collectGameList = MutableLiveData<MutableList<OKGameBean>>()
     val collectLiveList = MutableLiveData<MutableList<OKGameBean>>()
-    val collectStatus = MutableLiveData<Pair<Int,Boolean>>()
+    private val collectStatus = MutableSharedFlow<Pair<Int,Boolean>>()
+
+    fun observerGameCollect(lifecycleOwner: LifecycleOwner, block: (Pair<Int,Boolean>)-> Unit) {
+        collectStatus.collectWith(lifecycleOwner.lifecycleScope, block)
+    }
 
     fun TextView.showCollectAmount(gameEntryId: Int){
         val amount = gameCollectNum.value?.getOrDefault(gameEntryId.toString(),"0").toIntS(0)
@@ -54,6 +63,8 @@ object GameCollectManager {
             list.removeIf { okgameBean.id == it.id }
         }
         event.postValue(list)
-        collectStatus.postValue(Pair(okgameBean.id, okgameBean.markCollect))
+        MainScope().launch {
+            collectStatus.emit(Pair(okgameBean.id, okgameBean.markCollect))
+        }
     }
 }

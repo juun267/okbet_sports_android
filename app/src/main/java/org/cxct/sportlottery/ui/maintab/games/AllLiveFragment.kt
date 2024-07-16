@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.*
@@ -8,6 +9,7 @@ import org.cxct.sportlottery.databinding.FragmentAllOkliveBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerLiveListAdapter
@@ -38,8 +40,8 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
         initHotMatchView()
 //        binding.okLiveGameView.initOkLiveGames(this)
         initRecommendLiveGame()
-        viewModel.getRecommend()
         observerGameMaintain()
+        viewModel.getRecommend()
     }
 
     private fun observerGameMaintain() {
@@ -95,6 +97,7 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
     }
 
     private fun initObserve() = okLiveFragment().viewModel.run {
+        DataResourceChange.observe(viewLifecycleOwner) { getRecommend() }
         gameHall.observe(viewLifecycleOwner) {
             categoryList = it.categoryList?.filter {category->
                 !category.gameList.isNullOrEmpty()
@@ -132,7 +135,7 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
             }
         }
 
-        GameCollectManager.collectStatus.observe(viewLifecycleOwner) { result ->
+        GameCollectManager.observerGameCollect(viewLifecycleOwner) { result ->
             //更新列表
             gameListAdapter.data.forEachIndexed {index,it->
                 it.gameList?.forEach {

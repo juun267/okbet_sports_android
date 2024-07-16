@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
@@ -15,6 +16,7 @@ import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.game.ThirdGameListActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.GameCollectManager
@@ -60,12 +62,12 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : LinearLayout(cont
             gameAdapter.setList(it)
             this@HomeOkGamesView.isVisible = gameAdapter.dataCount() > 0
         }
-        GameCollectManager.collectStatus.observe(fragment.viewLifecycleOwner) {
+        GameCollectManager.observerGameCollect(fragment.viewLifecycleOwner) {
             gameAdapter.data.forEachIndexed { index, item ->
                 if (item.id == it.first) {
                     item.markCollect = it.second
                     gameAdapter.notifyItemChanged(index, it)
-                    return@observe
+                    return@observerGameCollect
                 }
             }
         }
@@ -74,7 +76,8 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : LinearLayout(cont
         }
         binding.tvMore.onClick {
             if(StaticData.okGameOpened()){
-               (fragment.activity as MainTabActivity).jumpToOKGames()
+                context.startActivity(Intent(context, ThirdGameListActivity::class.java))
+//               (fragment.activity as MainTabActivity).jumpToOKGames()
             }else{
                 ToastUtil.showToast(context,context.getString(R.string.N700))
             }

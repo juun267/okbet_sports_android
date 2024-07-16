@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
-import android.webkit.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -38,6 +37,10 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.common.enums.ChannelType
+import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
+import org.cxct.sportlottery.service.dispatcher.DataResourceChange
+import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
+import org.cxct.sportlottery.service.dispatcher.ProducerUpDispatcher
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.adapter.DetailTopFragmentStateAdapter
@@ -58,6 +61,8 @@ import java.util.*
 
 class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSportBinding>(SportViewModel::class),
     TimerManager {
+
+
 
     companion object {
         fun startActivity(
@@ -125,7 +130,6 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
     //进来后默认切到指定tab
     private val tabCode by lazy { intent.getStringExtra("tabCode") }
     private val matchId by lazy { intent.getStringExtra("matchId") }
-    private var isFlowing = false
     private lateinit var topBarFragmentList: List<Fragment>
     private lateinit var sportToolBarTopFragment: SportToolBarTopFragment
     private lateinit var sportChartFragment: SportChartFragment
@@ -242,8 +246,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         ivFavorite.isSelected = matchInfo?.isFavorite ?: false
         binding.ivRefresh.setOnClickListener {
             it.isEnabled = false
-            removeObserver()  // 订阅之前移除之前的订阅
-            initObserve() // 之前的逻辑，重新订阅
+            getData()
             it.rotationAnimation(it.rotation + 720f, 1000) { it.isEnabled = true}
         }
 
@@ -323,7 +326,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         binding.liveViewToolBar.setupToolBarListener(liveToolBarListener)
     }
 
-     fun initBottomNavigation() {
+     private fun initBottomNavigation() {
         binding.parlayFloatWindow.setBetText(getString(R.string.F001))
         binding.parlayFloatWindow.onViewClick = {
             showBetListPage()
@@ -419,7 +422,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
 
     }
 
-     fun showBetListPage() {
+     private fun showBetListPage() {
         betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
             override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>, isMultiBet: Boolean) {
                 showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
@@ -433,7 +436,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
     }
 
 
-     fun updateBetListCount(num: Int) {
+     private fun updateBetListCount(num: Int) {
         setUpBetBarVisible()
         binding.parlayFloatWindow.updateCount(num.toString())
         Timber.e("num: $num")
@@ -458,7 +461,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
 
     override var startTime: Long = 0
     override var timer: Timer = Timer()
-    var isGamePause = false
+    private var isGamePause = false
 
     override var timerHandler: Handler = Handler(Looper.getMainLooper()) {
         var timeMillis = startTime * 1000L
@@ -648,7 +651,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         viewModel.oddsDetailResult.observe(this) {
             val result = it?.getContentIfNotHandled() ?: return@observe
             if (!result.success) {
-                showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                showErrorPromptDialog(getString(R.string.prompt), result.msg) { finish() }
                 return@observe
             }
 
@@ -846,7 +849,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         }
 
         MatchOddsRepository.observerMatchOdds(this) {
-            val oddsDetailListDataList = oddsAdapter.oddsDetailDataList ?: return@observerMatchOdds
+            val oddsDetailListDataList = oddsAdapter.oddsDetailDataList
             if (oddsDetailListDataList.isEmpty()) {
                 return@observerMatchOdds
             }
@@ -867,8 +870,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             }
         }
 
-        receiver.globalStop.observe(this) {
-            val globalStopEvent = it ?: return@observe
+        GlobalStopDispatcher.observe(this) { globalStopEvent->
             oddsAdapter.oddsDetailDataList.forEachIndexed { index, oddsDetailListData ->
                 if (SocketUpdateUtil.updateOddStatus(oddsDetailListData, globalStopEvent) && oddsDetailListData.isExpand) {
                     oddsAdapter.notifyItemChanged(index)
@@ -876,18 +878,9 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             }
         }
 
-        receiver.producerUp.observe(this) {
-            it?.let {
-                unSubscribeChannelEventAll()
-                matchInfo?.let {
-                    subscribeChannelEvent(it.id,it.gameType)
-                }
-            }
-        }
-
-        receiver.closePlayCate.observe(this) { event ->
+        ClosePlayCateDispatcher.observe(this) { event ->
             val oddsDataList = oddsAdapter.oddsDetailDataList
-            val closeEvent = event?.getContentIfNotHandled() ?: return@observe
+            val closeEvent = event.getContentIfNotHandled() ?: return@observe
             if (matchInfo?.gameType != closeEvent.gameType) return@observe
             //java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
             if (oddsDataList.size==0){
@@ -900,9 +893,21 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
                 oddsAdapter.notifyItemChanged(index)
             }
         }
-        receiver.refreshInForeground.observe(this){
-            getData()
+
+        ProducerUpDispatcher.observe(this) {
+            unSubscribeChannelEventAll()
+            matchInfo?.let {
+                subscribeChannelEvent(it.id,it.gameType)
+            }
         }
+
+        receiver.refreshInForeground.observe(this) { getData() }
+        DataResourceChange.observe(this) {
+            viewModel.removeBetInfoAll()
+            binding.ivRefresh.performClick()
+            showDataSourceChangedDialog(it)
+        }
+
     }
 
     /**
@@ -919,7 +924,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         }
     }
 
-    open fun getBetListPageVisible(): Boolean {
+    private fun getBetListPageVisible(): Boolean {
         return betListFragment?.isVisible ?: false
     }
 

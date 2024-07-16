@@ -23,6 +23,9 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
+import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
+import org.cxct.sportlottery.service.dispatcher.ProducerUpDispatcher
 import org.cxct.sportlottery.ui.base.*
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.HotMatchAdapter
@@ -233,56 +236,49 @@ class HotMatchView(
         }
         receiver.addOddsChangeListener(viewLifecycleOwner, mOddsChangeListener)
 
-        receiver.matchOddsLock.collectWith(fragment.lifecycleScope) {
-            it?.let { matchOddsLockEvent ->
-                val targetList = adapter?.data
+        receiver.matchOddsLock.collectWith(fragment.lifecycleScope) { matchOddsLockEvent->
+            val hotMatchAdapter = adapter ?: return@collectWith
+            val targetList = hotMatchAdapter.data
 
-                targetList?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
+            targetList.forEachIndexed { index, recommend ->
+                if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)) {
+                    hotMatchAdapter.notifyItemChanged(index, recommend)
                 }
-
             }
+
         }
 
-
-        receiver.globalStop.observe(viewLifecycleOwner) {
-            it?.let { globalStopEvent ->
-                adapter?.data?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(
-                            recommend, globalStopEvent
-                        )
-                    ) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
+        GlobalStopDispatcher.observe(viewLifecycleOwner) { globalStopEvent->
+            val hotMatchAdapter = adapter ?: return@observe
+            hotMatchAdapter.data.forEachIndexed { index, recommend ->
+                if (SocketUpdateUtil.updateOddStatus(recommend, globalStopEvent)) {
+                    hotMatchAdapter.notifyItemChanged(index, recommend)
                 }
             }
         }
 
-        receiver.producerUp.observe(viewLifecycleOwner) {
-            it?.let {
-                //先解除全部賽事訂閱
-                unSubscribeChannelHall(fragment)
-                firstVisibleRange()
-            }
-        }
-
-        receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
-            val it = event?.getContentIfNotHandled() ?: return@observe
-            adapter?.data?.forEachIndexed { index, recommend ->
+        ClosePlayCateDispatcher.observe(viewLifecycleOwner) { event ->
+            val it = event.getContentIfNotHandled() ?: return@observe
+            val hotMatchAdapter = adapter ?: return@observe
+            hotMatchAdapter.data.forEachIndexed { index, recommend ->
                 if (recommend.gameType == it.gameType) {
                     recommend.oddsMap?.forEach { map ->
                         if (map.key == it.playCateCode) {
                             map.value?.forEach { odd ->
                                 odd.status = BetStatus.DEACTIVATED.code
                             }
-                            adapter?.notifyItemChanged(index, recommend)
+                            hotMatchAdapter.notifyItemChanged(index, recommend)
                         }
                     }
                 }
             }
 
+        }
+
+        ProducerUpDispatcher.observe(viewLifecycleOwner) {
+            //先解除全部賽事訂閱
+            unSubscribeChannelHall(fragment)
+            firstVisibleRange()
         }
     }
 
