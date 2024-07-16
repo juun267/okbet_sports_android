@@ -38,7 +38,7 @@
             app:cvTitleTextStyle="normal"
             app:cvEms="50"
             app:cvTextColor="@color/color_9BB3D9_535D76"
-            app:cvHint="@string/J558"
+            app:cvHint="@string/P466"
             app:cvInputType="text"
             app:cvTitle="@string/e_mail" />
 
