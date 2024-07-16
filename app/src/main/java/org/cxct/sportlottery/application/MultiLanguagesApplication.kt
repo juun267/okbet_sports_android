@@ -18,6 +18,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
+import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import me.jessyan.autosize.AutoSize
@@ -160,6 +161,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     private fun initJpush() {
+        FirebaseApp.initializeApp(this)
         JPushInterface.setDebugMode(BuildConfig.DEBUG)
         JPushInterface.init(this)
     }

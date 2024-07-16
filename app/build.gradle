@@ -341,11 +341,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 //    implementation "com.alibaba:fastjson:1.2.73"
 
-    implementation 'cn.jiguang.sdk:jcore:4.0.0'
-    implementation 'cn.jiguang.sdk:jpush:4.8.5'
+    implementation 'cn.jiguang.sdk:jpush:5.4.0'
     // 接入 FCM 厂商
     implementation 'com.google.firebase:firebase-messaging:23.0.5'
-    implementation 'cn.jiguang.sdk.plugin:fcm:4.8.5'
+    implementation 'cn.jiguang.sdk.plugin:fcm:5.4.0'
 
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
     implementation 'com.github.xuexiangjys:XUpdate:2.1.4'
