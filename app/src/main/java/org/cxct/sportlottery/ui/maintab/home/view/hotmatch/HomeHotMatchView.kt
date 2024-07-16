@@ -74,7 +74,7 @@ class HomeHotMatchView(
         layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
         addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_trans)))
         itemAnimator?.changeDuration = 0
-        PagerSnapHelper().attachToRecyclerView(this)
+//        PagerSnapHelper().attachToRecyclerView(this)
         binding.recyclerHotGame.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
