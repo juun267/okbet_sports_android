@@ -238,18 +238,6 @@
   },
   {
     "titleNameMap": {
-      "zh": "DragonPay",
-      "en": "DragonPay",
-      "phi": "DragonPay",
-      "vi": "DragonPay"
-    },
-    "subtitle": "DragonPay",
-    "image": "ic_gragon_pay",
-    "rechType": "onlinePayment",
-    "onlineType": "211"
-  },
-  {
-    "titleNameMap": {
       "zh": "GrabPay",
       "en": "GrabPay",
       "phi": "GrabPay",
@@ -271,6 +259,30 @@
     "image": "ic_pay_maya",
     "rechType": "onlinePayment",
     "onlineType": "206"
+  },
+  {
+    "titleNameMap": {
+      "zh": "Online Banking",
+      "en": "Online Banking",
+      "phi": "Online Banking",
+      "vi": "Online Banking"
+    },
+    "subtitle": "菲律賓在線網銀",
+    "image": "ic_internet_bank",
+    "rechType": "onlinePayment",
+    "onlineType": "203"
+  },
+  {
+    "titleNameMap": {
+      "zh": "DragonPay",
+      "en": "DragonPay",
+      "phi": "DragonPay",
+      "vi": "DragonPay"
+    },
+    "subtitle": "DragonPay",
+    "image": "ic_gragon_pay",
+    "rechType": "onlinePayment",
+    "onlineType": "211"
   },
   {
     "titleNameMap": {
@@ -331,18 +343,6 @@
     "image": "ic_fortunepay",
     "rechType": "onlinePayment",
     "onlineType": "212"
-  },
-  {
-    "titleNameMap": {
-      "zh": "Online Banking",
-      "en": "Online Banking",
-      "phi": "Online Banking",
-      "vi": "Online Banking"
-    },
-    "subtitle": "菲律賓在線網銀",
-    "image": "ic_internet_bank",
-    "rechType": "onlinePayment",
-    "onlineType": "203"
   },
   {
     "titleNameMap": {
