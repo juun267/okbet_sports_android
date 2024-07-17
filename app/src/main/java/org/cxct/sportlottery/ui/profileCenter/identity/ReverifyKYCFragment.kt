@@ -27,7 +27,7 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
 
     private var updatedSelfPictureURL: String? = null
     private var updatedProofPictureURL: String? = null
-    private var updatedIdbackPictureURL: String? = null
+    private var updatedIDBackPictureURL: String? = null
     override fun onInitView(view: View) = binding.run {
         tvSubmit.setOnClickListener { submit() }
         val selectPic: View.OnClickListener = View.OnClickListener { v -> selectPictrue(v) }
@@ -64,28 +64,28 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
         imgUpdated.observe(viewLifecycleOwner) {
             hideLoading()
 
-            val imgData = it.second
-            if (imgData?.path.isEmptyStr()) {
+            val imgData = it.second?.path
+            if (imgData.isEmptyStr()) {
                 ToastUtil.showToast(context(), R.string.upload_fail)
                 return@observe
             }
 
             if (it.first == binding.llSelf.tag) {
-                updatedSelfPictureURL = imgData!!.path
+                updatedSelfPictureURL = imgData
                 checkSubmitEnable()
                 binding.ivSelf.load(it.first)
                 return@observe
             }
 
             if (it.first == binding.llProof.tag) {
-                updatedProofPictureURL = imgData!!.path
+                updatedProofPictureURL = imgData
                 checkSubmitEnable()
                 binding.ivProof.load(it.first)
                 return@observe
             }
 
             if (it.first == binding.llIdBack.tag) {
-                updatedIdbackPictureURL = imgData!!.path
+                updatedIDBackPictureURL = imgData
                 checkSubmitEnable()
                 binding.ivIdBack.load(it.first)
                 return@observe
@@ -108,7 +108,7 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
     private fun checkSubmitEnable() {
         val proofEnable = binding.llProof.isGone || !updatedProofPictureURL.isEmptyStr()
         val selfEnable = binding.llSelf.isGone || !updatedSelfPictureURL.isEmptyStr()
-        val idBackEnable = binding.llIdBack.isGone || !updatedSelfPictureURL.isEmptyStr()
+        val idBackEnable = binding.llIdBack.isGone || !updatedIDBackPictureURL.isEmptyStr()
         binding.tvSubmit.setBtnEnable(proofEnable && selfEnable && idBackEnable)
     }
 
@@ -132,7 +132,7 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
 
     private fun submit() {
         loading()
-        viewModel.updateReverifyInfo(updatedSelfPictureURL, updatedProofPictureURL)
+        viewModel.updateReverifyInfo(updatedSelfPictureURL, updatedProofPictureURL, updatedIDBackPictureURL)
     }
 
     private fun uploadImage(file: File) {
