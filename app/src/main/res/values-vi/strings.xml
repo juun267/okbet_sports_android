@@ -189,7 +189,7 @@
     <string name="upload_media_reset">重拍</string>
     <string name="upload_fail">上传失败</string>
     <string name="upload_success">Tải lên thành công</string>
-    <string name="upload_dialog_content">Vui lòng chụp ảnh hoặc chọn ảnh từ album.</string>
+    <string name="upload_dialog_content">Vui lòng tải lên ID hợp lệ có thể được chứng minh danh tính của bạn.</string>
     <string name="upload_dialog_gallery">Album</string>
     <string name="upload_dialog_camera">Chụp hình</string>
     <string name="section">Hiệp</string>
@@ -1760,5 +1760,6 @@
     <string name="P467">Chưa cài đặt ứng dụng, hãy cài đặt trước</string>
     <string name="P472">Hiện không thể sử dụng Facebook đăg nhập, hãy sử dụng số điện thoại để Đăng ký/Đăng nhập</string>
     <string name="P491">Mặt sau căn cước</string>
+    <string name="P492_1">Kích thướng không quá 500KB.</string>
 
 </resources>

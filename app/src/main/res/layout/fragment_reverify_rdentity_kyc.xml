@@ -198,7 +198,7 @@
                 android:drawablePadding="@dimen/margin_4"
                 android:paddingVertical="5dp"
                 android:paddingStart="14dp"
-                android:text="@string/kyc_size_2_mb"
+                android:text="@string/P492_1"
                 android:textColor="@color/color_E23434"
                 android:textSize="@dimen/textSize14sp"
                 android:visibility="visible"

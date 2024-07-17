@@ -1732,6 +1732,7 @@
     <string name="P467">Hindi naka-install ang app na ito, paki-install ito bago ito gamitin</string>
     <string name="P472">Pansamantalang hindi available ang pag-log in sa Facebook, mangyaring gamitin ang iyong mobile number para magparehistro/mag-login</string>
     <string name="P491">Likod ng ID</string>
+    <string name="P492_1">ang laki ng file ay dapat na mas mababa sa 500KB.</string>
 
 </resources>
 
