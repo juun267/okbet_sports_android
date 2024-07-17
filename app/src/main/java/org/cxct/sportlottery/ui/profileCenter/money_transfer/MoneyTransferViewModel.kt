@@ -150,7 +150,7 @@ class MoneyTransferViewModel(
         var gameFirmList = result.t?.gameFirmMap?.entries?.toList()
 
         if (!gameFirmList.isNullOrEmpty()) {
-
+            thirdGameMap.clear()
             gameFirmList = gameFirmList.sortedBy { it.value.sort }
             gameFirmList.forEach {
                 val value = it.value
