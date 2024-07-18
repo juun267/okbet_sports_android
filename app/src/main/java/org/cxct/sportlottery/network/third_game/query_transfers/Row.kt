@@ -43,4 +43,7 @@ data class Row(
     val userId: Int?,
     @Json(name = "userName")
     val userName: String?
-): Parcelable
+): Parcelable{
+    var firmNameIn: String? = null
+    var firmNameOut: String? = null
+}

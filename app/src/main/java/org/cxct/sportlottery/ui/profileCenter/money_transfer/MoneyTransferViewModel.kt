@@ -353,6 +353,10 @@ class MoneyTransferViewModel(
                 }
                 result.rows?.let {
                     recordDataList.addAll(it)
+                    it.forEach { row ->
+                        row.firmNameIn = thirdGameMap[row.firmTypeIn] ?: row.firmTypeIn
+                        row.firmNameOut = thirdGameMap[row.firmTypeOut] ?: row.firmTypeOut
+                    }
                 }
                 isLastPage = (recordDataList.size >= (result.total ?: 0))
                 _queryTransfersResult.value = result
