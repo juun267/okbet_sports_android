@@ -150,16 +150,16 @@ class MoneyTransferViewModel(
         var gameFirmList = result.t?.gameFirmMap?.entries?.toList()
 
         if (!gameFirmList.isNullOrEmpty()) {
-
+            thirdGameMap.clear()
             gameFirmList = gameFirmList.sortedBy { it.value.sort }
             gameFirmList.forEach {
                 val value = it.value
                 if (!thirdGameMap.containsKey(value.firmType)){
-                    thirdGameMap[value.firmType] = value.firmShowName
+                    thirdGameMap[value.firmType] = value.firmName
                     if (value.open == 1) {
                         resultList.add(GameData(null, null, null).apply {
                             code = it.key
-                            showName = value.firmShowName ?: it.key
+                            showName = value.firmName ?: it.key
                         })
                     }
                 }

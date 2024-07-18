@@ -11,10 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOtherBetRecordBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.setMoneyColor
-import org.cxct.sportlottery.util.setProfitFormat
+import org.cxct.sportlottery.util.*
 import java.util.*
 
 /**
@@ -70,9 +67,13 @@ class OtherBetRecordFragment : BaseFragment<OtherBetRecordViewModel,FragmentOthe
     override fun onInitView(view: View) {
         initView()
         initOnclick()
-        initObserver()
         viewModel.getThirdGames()
         viewModel.queryFirstOrders()
+    }
+
+    override fun onBindViewStatus(view: View) {
+        super.onBindViewStatus(view)
+        initObserver()
     }
 
     private fun initView()=binding.run {
