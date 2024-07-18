@@ -11,7 +11,6 @@ import org.cxct.sportlottery.databinding.FragmentCredentialsBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
-import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.getCompressFile
 import org.cxct.sportlottery.util.setTitleLetterSpacing
@@ -48,7 +47,7 @@ class CredentialsFragment : BaseFragment<ProfileCenterViewModel,FragmentCredenti
                     throw FileNotFoundException()
             } catch (e: Exception) {
                 e.printStackTrace()
-                ToastUtil.showToastInCenter(activity, LocalUtils.getString(R.string.error_reading_file))
+                ToastUtil.showToastInCenter(activity, getString(R.string.error_reading_file))
             }
         }
 
@@ -80,7 +79,7 @@ class CredentialsFragment : BaseFragment<ProfileCenterViewModel,FragmentCredenti
                     throw FileNotFoundException()
             } catch (e: Exception) {
                 e.printStackTrace()
-                ToastUtil.showToastInCenter(activity, LocalUtils.getString(R.string.error_reading_file))
+                ToastUtil.showToastInCenter(activity, getString(R.string.error_reading_file))
             }
         }
 
@@ -102,7 +101,7 @@ class CredentialsFragment : BaseFragment<ProfileCenterViewModel,FragmentCredenti
     }
 
     override fun onInitView(view: View) {
-        (activity as VerifyIdentityActivity).setToolBar(LocalUtils.getString(R.string.identity))
+        (activity as VerifyIdentityActivity).setToolBar(getString(R.string.identity))
         initObserve()
         setupButton()
         setupUploadView()
@@ -120,7 +119,7 @@ class CredentialsFragment : BaseFragment<ProfileCenterViewModel,FragmentCredenti
             it.getContentIfNotHandled()?.let { result ->
                 if (!result.success) {
                     hideLoading()
-                    showErrorPromptDialog(LocalUtils.getString(R.string.prompt), result.msg) {}
+                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 }
             }
         }
@@ -150,15 +149,15 @@ class CredentialsFragment : BaseFragment<ProfileCenterViewModel,FragmentCredenti
                 hideLoading()
                 if (result.success) {
                     showPromptDialog(
-                        title = LocalUtils.getString(R.string.prompt),
-                        message = LocalUtils.getString(R.string.upload_success),
+                        title = getString(R.string.prompt),
+                        message = getString(R.string.upload_success),
                         success = true
                     ) {
                         activity?.onBackPressed()
 
                     }
                 } else {
-                    showErrorPromptDialog(LocalUtils.getString(R.string.prompt), result.msg) {}
+                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 }
             }
         }
@@ -168,10 +167,10 @@ class CredentialsFragment : BaseFragment<ProfileCenterViewModel,FragmentCredenti
         btnSubmit.setOnClickListener {
             when {
                 docFile == null -> {
-                    showErrorPromptDialog(LocalUtils.getString(R.string.prompt), LocalUtils.getString(R.string.upload_fail)) {}
+                    showErrorPromptDialog(getString(R.string.prompt), getString(R.string.upload_fail)) {}
                 }
                 photoFile == null -> {
-                    showErrorPromptDialog(LocalUtils.getString(R.string.prompt), LocalUtils.getString(R.string.upload_fail)) {}
+                    showErrorPromptDialog(getString(R.string.prompt), getString(R.string.upload_fail)) {}
                 }
                 else -> {
                     loading()
@@ -196,9 +195,9 @@ class CredentialsFragment : BaseFragment<ProfileCenterViewModel,FragmentCredenti
         activity?.let { activityNotNull ->
             viewIdentityDoc.apply {
                 imgUploaded(false)
-                binding.tvUploadTitle.text = LocalUtils.getString(R.string.upload_title)
+                binding.tvUploadTitle.text = getString(R.string.upload_title)
                 binding.tvUploadTips.visibility = View.GONE
-                binding.tvUpload.text = LocalUtils.getString(R.string.upload_content)
+                binding.tvUpload.text = getString(R.string.upload_content)
                 uploadListener = UploadImageView.UploadListener {
                     val dialog = PicSelectorDialog()
                     dialog.mSelectListener = mSelectDocMediaListener
@@ -208,9 +207,9 @@ class CredentialsFragment : BaseFragment<ProfileCenterViewModel,FragmentCredenti
 
             viewIdentityPhoto.apply {
                 imgUploaded(false)
-                binding.tvUploadTitle.text = LocalUtils.getString(R.string.upload_photo_title)
+                binding.tvUploadTitle.text = getString(R.string.upload_photo_title)
                 binding.tvUploadTips.visibility = View.GONE
-                binding.tvUpload.text = LocalUtils.getString(R.string.upload_photo_content)
+                binding.tvUpload.text = getString(R.string.upload_photo_content)
                 uploadListener = UploadImageView.UploadListener {
                     val dialog = PicSelectorDialog()
                     dialog.mSelectListener = mSelectPhotoMediaListener

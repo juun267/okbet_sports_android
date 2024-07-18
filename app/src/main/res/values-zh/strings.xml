@@ -1824,4 +1824,6 @@
     <string name="P488">介绍</string>
 
     <string name="P466">请输入您的邮箱</string>
+    <string name="P491">证件背面</string>
+    <string name="P492_1">文件需小于500KB.</string>
 </resources>

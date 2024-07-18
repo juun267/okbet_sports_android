@@ -95,10 +95,11 @@ object UserRepository {
 
     suspend fun getVerifyConfig():ApiResult<VerifyConfig> = userApi.getVerifyConfig()
 
-    suspend fun uploadReviewPhoto(selfiePicture: String?, wealthProof: String?): ApiResult<String>{
+    suspend fun uploadReviewPhoto(selfiePicture: String?, wealthProof: String?, backOfID: String?): ApiResult<String>{
         val params = mutableMapOf<String, String>()
         selfiePicture?.let { params["selfiePicture"] = it}
         wealthProof?.let { params["wealthProof"] = it}
+        backOfID?.let { params["backOfID"] = it }
         return userApi.uploadReviewPhoto(params.toMap())
     }
 

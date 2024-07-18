@@ -27,11 +27,13 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
 
     private var updatedSelfPictureURL: String? = null
     private var updatedProofPictureURL: String? = null
+    private var updatedIDBackPictureURL: String? = null
     override fun onInitView(view: View) = binding.run {
         tvSubmit.setOnClickListener { submit() }
         val selectPic: View.OnClickListener = View.OnClickListener { v -> selectPictrue(v) }
         llSelf.setOnClickListener(selectPic)
         llProof.setOnClickListener(selectPic)
+        llIdBack.setOnClickListener(selectPic)
     }
 
     override fun onBindViewStatus(view: View) {
@@ -48,9 +50,11 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
 
     fun initObserver() = viewModel.run {
         verifyConfig.observe(viewLifecycleOwner) {
-            if (it.succeeded()) {
-                setSelfEnable(it.getData()?.requiredSelfiePicture.toString()?.isStatusOpen())
-                setProofEnable(it.getData()?.requiredWealthProof.toString()?.isStatusOpen())
+            val verifyConfig = it.getData()
+            if (it.succeeded() && verifyConfig != null) {
+                setSelfEnable(verifyConfig.selfiePictureRequired())
+                setProofEnable(verifyConfig.wealthProofRequired())
+                setIdBackEnable(verifyConfig.idbackRequired())
                 loadingHolder.showLoadSuccess()
             } else {
                 loadingHolder.showLoadFailed()
@@ -60,23 +64,30 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
         imgUpdated.observe(viewLifecycleOwner) {
             hideLoading()
 
-            val imgData = it.second
-            if (imgData?.path.isEmptyStr()) {
+            val imgData = it.second?.path
+            if (imgData.isEmptyStr()) {
                 ToastUtil.showToast(context(), R.string.upload_fail)
                 return@observe
             }
 
             if (it.first == binding.llSelf.tag) {
-                updatedSelfPictureURL = imgData!!.path
-                binding.tvSubmit.setBtnEnable(binding.llProof.isGone || !updatedProofPictureURL.isEmptyStr())
+                updatedSelfPictureURL = imgData
+                checkSubmitEnable()
                 binding.ivSelf.load(it.first)
                 return@observe
             }
 
             if (it.first == binding.llProof.tag) {
-                updatedProofPictureURL = imgData!!.path
-                binding.tvSubmit.setBtnEnable(binding.llSelf.isGone || !updatedSelfPictureURL.isEmptyStr())
+                updatedProofPictureURL = imgData
+                checkSubmitEnable()
                 binding.ivProof.load(it.first)
+                return@observe
+            }
+
+            if (it.first == binding.llIdBack.tag) {
+                updatedIDBackPictureURL = imgData
+                checkSubmitEnable()
+                binding.ivIdBack.load(it.first)
                 return@observe
             }
 
@@ -94,6 +105,13 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
 
     }
 
+    private fun checkSubmitEnable() {
+        val proofEnable = binding.llProof.isGone || !updatedProofPictureURL.isEmptyStr()
+        val selfEnable = binding.llSelf.isGone || !updatedSelfPictureURL.isEmptyStr()
+        val idBackEnable = binding.llIdBack.isGone || !updatedIDBackPictureURL.isEmptyStr()
+        binding.tvSubmit.setBtnEnable(proofEnable && selfEnable && idBackEnable)
+    }
+
     private fun setSelfEnable(enable: Boolean) = binding.run{
         tvSelf.isVisible = enable
         vSelf.isVisible = enable
@@ -106,23 +124,29 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
         llProof.isVisible = enable
     }
 
-    fun submit() {
-        loading()
-        viewModel.updateReverifyInfo(updatedSelfPictureURL, updatedProofPictureURL)
+    private fun setIdBackEnable(enable: Boolean) = binding.run {
+        tvIdBack.isVisible = enable
+        vIdBack.isVisible = enable
+        llIdBack.isVisible = enable
     }
 
-    fun uploadImage(file: File) {
+    private fun submit() {
+        loading()
+        viewModel.updateReverifyInfo(updatedSelfPictureURL, updatedProofPictureURL, updatedIDBackPictureURL)
+    }
+
+    private fun uploadImage(file: File) {
         loading()
         viewModel.uploadImage(file)
     }
 
     private fun selectPictrue(view: View) {
         val dialog = PicSelectorDialog()
-        dialog.mSelectListener = getSelcetPitrueCallback(view)
+        dialog.mSelectListener = getSelcetPictrueCallback(view)
         dialog.show(childFragmentManager, VerifyKYCFragment::class.java.simpleName)
     }
 
-    private fun getSelcetPitrueCallback(view: View): OnResultCallbackListener<LocalMedia> {
+    private fun getSelcetPictrueCallback(view: View): OnResultCallbackListener<LocalMedia> {
         return object : OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: ArrayList<LocalMedia>?) {
                 if (activity == null) {
