@@ -84,7 +84,7 @@ class OtherBetRecordViewModel(
                 }
 
                 thirdGameList.sortedBy { it.sort }.forEach {
-                    resultList.add(StatusSheetData(it.firmType, it.firmShowName))
+                    resultList.add(StatusSheetData(it.firmType, it.firmName))
                 }
 
                 _thirdGamesResult.value = resultList.distinct()
