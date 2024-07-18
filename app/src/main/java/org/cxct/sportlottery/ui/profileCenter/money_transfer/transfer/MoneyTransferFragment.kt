@@ -22,11 +22,15 @@ class MoneyTransferFragment : BaseFragment<MoneyTransferViewModel,FragmentMoneyT
     }
 
     override fun onInitView(view: View) {
-        viewModel.setToolbarName(getString(R.string.account_transfer))
         viewModel.showTitleBar(true)
         initView()
         initOnclick()
         initObserver()
+    }
+
+    override fun onBindViewStatus(view: View) {
+        super.onBindViewStatus(view)
+        viewModel.setToolbarName(getString(R.string.account_transfer))
     }
 
     private fun initView()=binding.run {
