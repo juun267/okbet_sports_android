@@ -181,7 +181,7 @@
                     android:id="@+id/tb_birthday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintText="@string/hint_birth_date"
+                    app:hintText="@string/format_birth"
                     app:isResponsiveIconColor="false"
                     app:labelText="@string/J902"
                     app:labelTextStyle="normal"
