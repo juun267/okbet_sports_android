@@ -80,8 +80,10 @@ object UpdateConfig {
     }
     //提示APP更新對話框
     fun showAppDownloadDialog() {
-        val activity = AppManager.currentActivity() as FragmentActivity
-        appDownloadDialog?.show(activity.supportFragmentManager)
+        val activity = AppManager.currentActivity()
+        if (activity is FragmentActivity) {
+            appDownloadDialog?.show(activity.supportFragmentManager)
+        }
     }
     fun runShowUpdateDialog(activity: Class<out Activity>,runnable: ()->Unit){
         if (appDownloadDialog==null){
