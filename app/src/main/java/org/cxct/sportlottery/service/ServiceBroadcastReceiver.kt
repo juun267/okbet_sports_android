@@ -126,7 +126,7 @@ object ServiceBroadcastReceiver {
                     }
                 }
 
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 Timber.e("JSONException WS格式出問題 $messageStr")
                 e.printStackTrace()
             }
