@@ -16,6 +16,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
+import cn.jiguang.jmlinksdk.api.JMLinkAPI
+import cn.jiguang.jmlinksdk.api.JMLinkResponseObj
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
 import kotlinx.coroutines.GlobalScope
@@ -162,6 +164,20 @@ class MultiLanguagesApplication : Application() {
     private fun initJpush() {
         JPushInterface.setDebugMode(BuildConfig.DEBUG)
         JPushInterface.init(this)
+        JMLinkAPI.getInstance().setDebugMode(BuildConfig.DEBUG)
+        JMLinkAPI.getInstance().init(this)
+        JMLinkAPI.getInstance().register {
+            when(it.type){
+                //安装类型
+                JMLinkResponseObj.Type.Installation->{
+
+                }
+                //打开类型
+                JMLinkResponseObj.Type.Open->{
+
+                }
+            }
+        }
     }
 
     private fun setNightMode(switch:Boolean=false) {
