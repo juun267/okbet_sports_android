@@ -49,4 +49,8 @@ data class RechCfg(
     var open: Int?,
     @Json(name = "frontDeskRemark")
     val frontDeskRemark: String?,
+    @Json(name = "isAccount")
+    val isAccount: Int,//是否需要账号
+    @Json(name = "isEmail")
+    val isEmail: Int,//是否需要邮箱
 )

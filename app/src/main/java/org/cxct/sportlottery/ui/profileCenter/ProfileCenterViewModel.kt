@@ -286,8 +286,8 @@ class ProfileCenterViewModel(
 
     }
 
-    fun updateReverifyInfo(selfImgUrl: String?, proofImgUrl: String?) {
-        callApi({ UserRepository.uploadReviewPhoto(selfImgUrl, proofImgUrl) }) { uploadReview .value = it }
+    fun updateReverifyInfo(selfImgUrl: String?, proofImgUrl: String?, backOfID: String?) {
+        callApi({ UserRepository.uploadReviewPhoto(selfImgUrl, proofImgUrl, backOfID) }) { uploadReview .value = it }
     }
 
     fun startOCR(photo: File, idType: Int, id: Int) = viewModelScope.launch {

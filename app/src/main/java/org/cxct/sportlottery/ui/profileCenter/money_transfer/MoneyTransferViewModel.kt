@@ -150,16 +150,16 @@ class MoneyTransferViewModel(
         var gameFirmList = result.t?.gameFirmMap?.entries?.toList()
 
         if (!gameFirmList.isNullOrEmpty()) {
-
+            thirdGameMap.clear()
             gameFirmList = gameFirmList.sortedBy { it.value.sort }
             gameFirmList.forEach {
                 val value = it.value
                 if (!thirdGameMap.containsKey(value.firmType)){
-                    thirdGameMap[value.firmType] = value.firmShowName
+                    thirdGameMap[value.firmType] = value.firmName
                     if (value.open == 1) {
                         resultList.add(GameData(null, null, null).apply {
                             code = it.key
-                            showName = value.firmShowName ?: it.key
+                            showName = value.firmName ?: it.key
                         })
                     }
                 }
@@ -353,6 +353,10 @@ class MoneyTransferViewModel(
                 }
                 result.rows?.let {
                     recordDataList.addAll(it)
+                    it.forEach { row ->
+                        row.firmNameIn = thirdGameMap[row.firmTypeIn] ?: row.firmTypeIn
+                        row.firmNameOut = thirdGameMap[row.firmTypeOut] ?: row.firmTypeOut
+                    }
                 }
                 isLastPage = (recordDataList.size >= (result.total ?: 0))
                 _queryTransfersResult.value = result

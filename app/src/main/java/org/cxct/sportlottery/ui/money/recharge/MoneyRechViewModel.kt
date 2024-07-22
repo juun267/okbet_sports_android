@@ -7,16 +7,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.appsflyer.AppsFlyerLib
 import com.google.gson.JsonObject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.common.MoneyType
-import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
@@ -33,7 +37,7 @@ import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.QueryUtil.toUrlParamsFormat
 
 class MoneyRechViewModel(
-    androidContext: Application
+    androidContext: Application,
 ) : BaseSocketViewModel(
     androidContext
 ) {
@@ -202,7 +206,7 @@ class MoneyRechViewModel(
     fun rechargeSubmit(
         moneyAddRequest: MoneyAddRequest,
         rechType: String?,
-        rechConfig: RechCfg?
+        rechConfig: RechCfg?,
     ) {
         checkAll(moneyAddRequest, rechType, rechConfig)
         if (checkTransferPayInput()) {
@@ -214,7 +218,7 @@ class MoneyRechViewModel(
     fun rechargeCryptoSubmit(
         moneyAddRequest: MoneyAddRequest,
         rechType: String?,
-        rechConfig: RechCfg?
+        rechConfig: RechCfg?,
     ) {
         checkAll(moneyAddRequest, rechType, rechConfig)
         if (checkTransferPayCryptoInput()) {
@@ -292,7 +296,6 @@ class MoneyRechViewModel(
                 }
                 if (!email.isNullOrEmpty()) {
                     put("email", email)
-                    put("isEmail", "true")
                 }
                 AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
                     put("appsFlyerId", it)
@@ -363,7 +366,7 @@ class MoneyRechViewModel(
     private fun checkAll(
         moneyAddRequest: MoneyAddRequest,
         rechType: String?,
-        rechConfig: RechCfg?
+        rechConfig: RechCfg?,
     ) {
         when (rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
@@ -512,7 +515,7 @@ class MoneyRechViewModel(
     //在線充值 虛擬幣充值個數認證
     private fun checkRcgOnlineAccount(
         rechargeAmount: String,
-        rechConfig: RechCfg?
+        rechConfig: RechCfg?,
     ) {
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
