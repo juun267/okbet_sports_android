@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.splash
 import android.app.Activity
 import android.content.Intent
 import android.view.View
-import cn.jiguang.jmlinksdk.api.JMLinkAPI
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.BuildConfig
@@ -52,7 +51,6 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>(),
         initObserve()
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
         checkLocalHost()
-        initJMLink()
     }
 
     private fun setupVersion() {
@@ -62,10 +60,6 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>(),
     private fun checkLocalHost() {
         enterTime=System.currentTimeMillis()
         viewModel.checkLocalHost()
-    }
-    private fun initJMLink(){
-        val uri = intent.data
-        JMLinkAPI.getInstance().routerV2(uri)
     }
 
     private fun getSplashTime():Long{
