@@ -194,6 +194,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
     }
 
     private fun setupWithdrawButton() {
+        binding.btnWithdraw.isVisible = !Constants.channelSwitch
         binding.btnWithdraw.clickDelay {
             requireActivity().jumpToWithdraw()
         }
