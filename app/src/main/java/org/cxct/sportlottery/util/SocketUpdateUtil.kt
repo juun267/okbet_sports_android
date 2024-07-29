@@ -494,11 +494,11 @@ object SocketUpdateUtil {
                     oddsMap.forEach { oddTypeMap ->
                         val oddsSocket = oddsMapEntrySocket.value
                         val odds = oddTypeMap.value
-
                         oddsSocket?.forEach { oddSocket ->
-                            when (odds?.map { it?.id }?.contains(oddSocket?.id)) {
+                            val oddOld = odds?.firstOrNull { it?.id==oddSocket?.id }
+                            when (isNeedUpdateOdd(oddSocket, oddOld)) {
                                 true -> {
-                                    val odd = odds.find { odd ->
+                                    val odd = odds?.find { odd ->
                                         odd?.id == oddSocket?.id
                                     }
 
@@ -553,7 +553,7 @@ object SocketUpdateUtil {
                                 }
 
                                 false -> {
-                                    if (oddTypeMap.key == oddsMapEntrySocket.key && oddSocket != null) odds.add(
+                                    if (oddTypeMap.key == oddsMapEntrySocket.key && oddSocket != null) odds?.add(
                                         oddSocket
                                     )
 
@@ -1027,7 +1027,7 @@ object SocketUpdateUtil {
             val oddSocket = odds?.odds?.find { oddSocket ->
                 oddSocket?.id == odd?.id
             }
-
+            if (isNeedUpdateOdd(oddSocket,odd)){
             oddSocket?.let {
                 odd?.odds?.let { oddValue ->
                     oddSocket.odds?.let { oddSocketValue ->
@@ -1080,6 +1080,7 @@ object SocketUpdateUtil {
                     oddsDetailListData.rowSort = odds.rowSort
                     isNeedRefresh = true
                 }
+            }
             }
         }
         return isNeedRefresh
@@ -1189,5 +1190,14 @@ object SocketUpdateUtil {
                 else -> odd.status
             }
         }
+    }
+    /**
+     * 判断是否需要更新本地赔率
+     * 新消息过来的version>旧的version才替换更新，为了保持兼容性为空或为0也更新，涉及ODDS_CHANGE，MATCH_ODDS_CHANGE
+     */
+    fun isNeedUpdateOdd(socketOdd: Odd?,oldOdd: Odd?) :Boolean{
+        if (socketOdd==null) return false
+        if (oldOdd==null) return true
+        return socketOdd?.version > oldOdd.version || socketOdd.version==0
     }
 }
