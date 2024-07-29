@@ -23,6 +23,8 @@ object Constants {
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     var currentFilename: String? = null //當前選擇的apk name
     var isVersonControl: Boolean = false //是否审核中版本，通过ftp配置来判断
+    var channelSwitch: Boolean = false //渠道包的开关配置，需要隐藏一些功能配合审核
+
     private var mBaseUrl = ""
         set(value) {
             field = value

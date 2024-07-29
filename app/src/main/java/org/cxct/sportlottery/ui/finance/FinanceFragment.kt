@@ -11,6 +11,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.databinding.FragmentFinanceBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -98,7 +99,9 @@ class FinanceFragment : BaseFragment<FinanceViewModel, FragmentFinanceBinding>()
 
         if (sConfigData?.creditSystem != FLAG_CREDIT_OPEN) {
             dataList.add(recharge)
-            dataList.add(withdrawal)
+            if(!Constants.channelSwitch){
+                dataList.add(withdrawal)
+            }
         }
 
         dataList.add(conversion)
