@@ -550,6 +550,11 @@ object SocketUpdateUtil {
 
                                         isNeedRefresh = true
                                     }
+                                    if (odd?.version != oddSocket?.version) {
+                                        odd?.version = oddSocket?.version?:0
+
+                                        isNeedRefresh = true
+                                    }
                                 }
 
                                 false -> {
@@ -1074,6 +1079,10 @@ object SocketUpdateUtil {
                 }
                 if (odd?.rowSort != oddSocket.rowSort) {
                     odd?.rowSort = oddSocket.rowSort
+                    isNeedRefresh = true
+                }
+                if (odd?.version != oddSocket.version) {
+                    odd?.version = oddSocket.version
                     isNeedRefresh = true
                 }
                 if (oddsDetailListData.rowSort != odds.rowSort) {

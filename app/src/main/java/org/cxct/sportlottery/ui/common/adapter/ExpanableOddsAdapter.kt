@@ -98,6 +98,9 @@ abstract class ExpanableOddsAdapter<T: MatchOdd>: BaseNodeAdapter() {
         if (oldOdds.extInfo != newOdds.extInfo) {
             oldOdds.extInfo = newOdds?.extInfo
         }
+        if (oldOdds.version != newOdds.version) {
+            oldOdds.version = newOdds?.version
+        }
     }
 
     // 可见区域的MatchOdd
