@@ -135,10 +135,3 @@
 #protobuf
 -keepclassmembers public class * extends com.google.protobuf.** {*;}
 -keep class androidx.lifecycle.LiveData { *; }
-
--dontwarn cn.magicwindow.**
--keep class cn.magicwindow.** {*;}
-
--dontwarn cn.jiguang.**
--keep class cn.jiguang.** { *; }
-
