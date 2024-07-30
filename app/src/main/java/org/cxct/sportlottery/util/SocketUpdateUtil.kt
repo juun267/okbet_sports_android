@@ -489,19 +489,15 @@ object SocketUpdateUtil {
 
         oddsMapSocket?.forEach { oddsMapEntrySocket ->
             //全null : 有玩法沒賠率資料
-            when (oddsMap.keys.contains(oddsMapEntrySocket.key) && oddsMap[oddsMapEntrySocket.key]?.all { it == null } == false) {
-                true -> {
+            if (oddsMap.keys.contains(oddsMapEntrySocket.key) && oddsMap[oddsMapEntrySocket.key]?.all { it == null } == false) {
                     oddsMap.forEach { oddTypeMap ->
                         val oddsSocket = oddsMapEntrySocket.value
                         val odds = oddTypeMap.value
                         oddsSocket?.forEach { oddSocket ->
                             val oddOld = odds?.firstOrNull { it?.id==oddSocket?.id }
-                            when (isNeedUpdateOdd(oddSocket, oddOld)) {
-                                true -> {
-                                    val odd = odds?.find { odd ->
-                                        odd?.id == oddSocket?.id
-                                    }
-
+                            if (isNeedUpdateOdd(oddSocket, oddOld)){
+                            if (oddOld!=null) {
+                                    val odd = oddOld
                                     odd?.odds?.let { oddValue ->
                                         oddSocket?.odds?.let { oddSocketValue ->
                                             when {
@@ -555,26 +551,21 @@ object SocketUpdateUtil {
 
                                         isNeedRefresh = true
                                     }
-                                }
-
-                                false -> {
+                                }else {
                                     if (oddTypeMap.key == oddsMapEntrySocket.key && oddSocket != null) odds?.add(
                                         oddSocket
                                     )
 
                                     isNeedRefresh = true
                                 }
-                            }
                         }
                     }
-                }
-
-                false -> {
+                    }
+            } else {
                     oddsMap[oddsMapEntrySocket.key] = oddsMapEntrySocket.value?.toMutableList()
 
                     isNeedRefresh = true
                 }
-            }
         }
         //全量更新，在上面新增和修改后，再删除存在oddsMap中而不存在于oddsMapSocket中的玩法
         if (updateMode==2&&!oddsMapSocket.isNullOrEmpty()){
@@ -1207,9 +1198,6 @@ object SocketUpdateUtil {
     fun isNeedUpdateOdd(socketOdd: Odd?,oldOdd: Odd?) :Boolean{
         if (socketOdd==null) return false
         if (oldOdd==null) return true
-        if (socketOdd.playCode=="1X2-H"){
-            LogUtil.d(socketOdd.id+","+socketOdd.playCode+",socketOdd="+socketOdd?.version+",oldOdd="+oldOdd.version)
-        }
-        return socketOdd?.version > oldOdd.version || socketOdd.version==0L
+        return socketOdd.version > oldOdd.version || socketOdd.version==0L
     }
 }
