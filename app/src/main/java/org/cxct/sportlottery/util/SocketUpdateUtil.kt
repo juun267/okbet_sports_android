@@ -1207,6 +1207,9 @@ object SocketUpdateUtil {
     fun isNeedUpdateOdd(socketOdd: Odd?,oldOdd: Odd?) :Boolean{
         if (socketOdd==null) return false
         if (oldOdd==null) return true
-        return socketOdd?.version > oldOdd.version || socketOdd.version==0
+        if (socketOdd.playCode=="1X2-H"){
+            LogUtil.d(socketOdd.id+","+socketOdd.playCode+",socketOdd="+socketOdd?.version+",oldOdd="+oldOdd.version)
+        }
+        return socketOdd?.version > oldOdd.version || socketOdd.version==0L
     }
 }

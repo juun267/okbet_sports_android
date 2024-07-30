@@ -44,6 +44,7 @@ data class MatchOdd(
     var gameType: String,
     var homeScore: Int,
     var awayScore: Int,
+    var version: Long,//用于比较新旧赔率
     override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
     override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
     override val matchInfo: org.cxct.sportlottery.network.odds.MatchInfo?,

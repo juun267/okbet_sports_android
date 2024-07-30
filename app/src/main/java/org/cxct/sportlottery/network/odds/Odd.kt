@@ -63,7 +63,7 @@ data class Odd(
     var rowSort: Int? = null,
 
     @Json(name = "version")
-    var version: Int = 0
+    var version: Long
 
 ) : OddStateParams, Parcelable, BaseNode() {
 

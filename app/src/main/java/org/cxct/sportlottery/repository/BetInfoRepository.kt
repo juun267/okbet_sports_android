@@ -759,10 +759,15 @@ object BetInfoRepository {
             }
             return
         }
-
+        //用于比较新旧赔率，参考isNeedUpdateOdd方法
+        val isNeedUpdate = newOdds?.version > oldItem.version || newOdds.version==0L
+         if (!isNeedUpdate){
+             return
+         }
         //若賠率關閉則賠率不做高亮變化
         oldItem.status = newOdds.status
         //賠率為啟用狀態時才去判斷是否有賠率變化
+        oldItem.version = newOdds.version
 
         var currentOddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
         if (newOdds.odds == newOdds.malayOdds) currentOddsType = OddsType.EU

@@ -69,7 +69,7 @@ fun FrontWsEvent.OddsDetailVO.transferOdds(gameType: String): Odds {
                 getPlayCateSupportOddsTypeSwitch(gameType, getPlayCateMappingCode(oddsDetailVO.playCateCode))
             ),
             nameMap = getPlayCateMap(gameType, getPlayCateMappingCode(oddsDetailVO.playCateCode)),
-            rowSort = oddsDetailVO.rowSort
+            rowSort = oddsDetailVO.rowSort,
         )
     }
 }
@@ -111,7 +111,8 @@ fun List<FrontWsEvent.NullableOddsWithPlayNameVO>.transferOddList(
                         ),
                         extInfoMap = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.extInfoMapMap,
                         extInfo = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.extInfo,
-                        playCode = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.playCode
+                        playCode = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.playCode,
+                        version = nullableOddsWithPlayNameVO.oddsWithPlayNameVO.version
                     ).apply {
                         supportOddsTypeSwitch?.let {
                             isOnlyEUType = !it
