@@ -540,10 +540,12 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     }
 
     fun showBetListPage() {
-        val ft = supportFragmentManager.beginTransaction()
         betListFragment?.let {
             if (it.isAdded) {
-                ft.remove(it)
+                supportFragmentManager.beginTransaction().apply {
+                    remove(it)
+                    commitNowAllowingStateLoss()
+                }
             }
         }
 
@@ -556,7 +558,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         })
 
 
-        ft.add(R.id.fl_bet_list, betListFragment!!).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().add(R.id.fl_bet_list, betListFragment!!).addToBackStack(null).commit()
     }
 
 

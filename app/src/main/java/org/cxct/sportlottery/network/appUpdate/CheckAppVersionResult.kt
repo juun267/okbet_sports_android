@@ -26,4 +26,6 @@ data class CheckAppVersionResult(
     val storeURL1: String?,
     @Json(name = "control_version")
     val controlVersion: String?,
+    @Json(name = "channelSwitch")
+    val channelSwitch: Map<String,String>?,
 ) : Parcelable

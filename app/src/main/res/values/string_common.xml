@@ -28,6 +28,7 @@
     <string name="icon_check_circle_mark">\ue601</string>
     <string name="icon_lock">\uE62D</string>
     <string name="icon_warning">\ue8b2</string>
+    <string name="format_birth">YYYY-MM-DD</string>
     <!--    <string name="total_num">总数：</string>-->
     <!--    <string name="total_money">总金额：</string>-->
 </resources>

@@ -80,6 +80,7 @@ class VersionUpdateViewModel(
                     serverUrlStatusMap[serverUrl] = true //標記該伺服器已檢查過
                     //当前版本是否处于控制
                     Constants.isVersonControl = result?.controlVersion?.split(",")?.contains(BuildConfig.VERSION_NAME) == true
+                    Constants.channelSwitch = result?.channelSwitch?.get(BuildConfig.FLAVOR)?.split(",")?.contains(BuildConfig.VERSION_NAME) == true
 //                    SPUtil.saveMarketSwitch(isVersonControl == true)
                     //已有獲取的最新版本資訊
                     if (appVersionChecked) {

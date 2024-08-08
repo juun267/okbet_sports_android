@@ -142,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                app:hintText="@string/hint_birth_date"
+                app:hintText="@string/format_birth"
                 app:isResponsiveIconColor="false"
                 app:subLabelText="@string/J902"
                 app:labelTextStyle="normal"

@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.observe
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
 import com.google.firebase.FirebaseApp

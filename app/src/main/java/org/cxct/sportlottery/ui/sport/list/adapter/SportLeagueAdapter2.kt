@@ -227,7 +227,7 @@ class SportLeagueAdapter2(
                         if (odd.isSelected != isSelected) {
                             odd.isSelected = isSelected
                             notifyMatchItemChanged(index, SportMatchEvent.OddSelected)
-                            return@forEachIndexed
+//                            return@forEachIndexed
                         }
                     }
                 }
