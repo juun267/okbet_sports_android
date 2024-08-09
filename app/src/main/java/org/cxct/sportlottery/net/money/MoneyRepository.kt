@@ -5,9 +5,7 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.money.api.MoneyApiService
 import org.cxct.sportlottery.net.money.data.DailyConfig
-import org.cxct.sportlottery.net.user.data.ActivityImageList
-import org.cxct.sportlottery.net.user.data.SendCodeRespnose
-import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.net.money.data.FirstDepositDetail
 
 object MoneyRepository {
 
@@ -18,5 +16,8 @@ object MoneyRepository {
     }
     suspend fun rechDailyConfig(): ApiResult<List<DailyConfig>> {
         return moneyApi.rechDailyConfig()
+    }
+    suspend fun firstDepositDetail(): ApiResult<FirstDepositDetail> {
+        return moneyApi.firstDepositDetail()
     }
 }

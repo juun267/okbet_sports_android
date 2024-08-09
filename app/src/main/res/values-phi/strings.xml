@@ -1742,6 +1742,25 @@
     <string name="P466">Pakilagay ang iyong Email</string>
     <string name="P491">Likod ng ID</string>
     <string name="P492_1">ang laki ng file ay dapat na mas mababa sa 500KB.</string>
-
+    <string name="A001">Sandali lng!</string>
+    <string name="A002_1">Kumpletuhin ang Iyong Unang Deposito At Makakuha ng Cash Back na ₱100</string>
+    <string name="A003">Kanselahin</string>
+    <string name="A004">Ipagpatuloy</string>
+    <string name="A005">Kumuha ng unang Deposito na reward</string>
+    <string name="A006_1">Unang recharge reward na halaga ₱120</string>
+    <string name="A007">Kundisyon ng Pagtanggap:</string>
+    <string name="A008">Nakumpleto ang Unang recharge</string>
+    <string name="A009">Turnover > 1000</string>
+    <string name="A010">Bukas Log-In</string>
+    <string name="A011">Kumpletuhin ang unang deposito, maabot ang turnover na 1,000 yuan at mag-log in sa susunod na araw upang makatanggap</string>
+    <string name="A012">Kunin ngayon</string>
+    <string name="A013">Hint</string>
+    <string name="A014">Ang Iyong Huling Recharge ay Hindi Nagtagumpay. Makukuha Mo Lang Ang Halaga ng Bonus Kung Matagumpay Mong Mag-recharge Sa Unang pagkakataon.</string>
+    <string name="A015">Deposito</string>
+    <string name="A016">Unang Deposito</string>
+    <string name="A017_1">Dagdag na Bonus na %s</string>
+    <string name="A018">Kumuha ng %s Cash Back Bukas</string>
+    <string name="A019">Deposito</string>
+    <string name="A020">Mga Detalye</string>
 </resources>
 

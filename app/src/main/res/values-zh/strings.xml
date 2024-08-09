@@ -1826,4 +1826,24 @@
     <string name="P466">请输入您的邮箱</string>
     <string name="P491">证件背面</string>
     <string name="P492_1">文件需小于500KB.</string>
+    <string name="A001">等一下!</string>
+    <string name="A002_1">完成首次存款並獲得 100 比索現金回饋</string>
+    <string name="A003">取消</string>
+    <string name="A004">继续</string>
+    <string name="A005">获得首次存款獎金</string>
+    <string name="A006_1">首次充值奖金金额 ₱120</string>
+    <string name="A007">接收条件：</string>
+    <string name="A008">首次充值完成</string>
+    <string name="A009">营业额> 1000</string>
+    <string name="A010">明天登录</string>
+    <string name="A011">完成首次存款，达到1000元营业额，次日登录即可领取</string>
+    <string name="A012">立即获取</string>
+    <string name="A013">提示</string>
+    <string name="A014">您上次充值未成功。您只有首次充值成功才能获得奖金金额。</string>
+    <string name="A015">存款</string>
+    <string name="A016">首次存款</string>
+    <string name="A017_1">额外 %s 奖金</string>
+    <string name="A018">明天可获得 %s 现金返还</string>
+    <string name="A019">存款</string>
+    <string name="A020">详细</string>
 </resources>

@@ -412,7 +412,8 @@ object Constants {
     const val USER_BILL_LIST = "/api/front/sportBill/query"
     const val RECH_CHECK_STATUS = "/api/front/userrech/v2/onlinepayAndroidAndIos"//充值前检查参数状态
     const val RECH_DAILY_CONFIG = "/api/front/userrech/v2/dailyConfig"
-
+    //用户首充活动的参与情况
+    const val FIRST_DEPOSIT_DETAIL = "/api/front/activity/FirstDepositDetail"
 
     //user
     const val USER_INFO = "/api/front/user/info"
@@ -446,9 +447,9 @@ object Constants {
     const val VIP_REWARD = "/api/front/activity/vip/award"
     //專屬紅包申請
     const val VIP_UNIREDENP_APPLY = "/api/front/activity/vip/uniredenp/apply"
-
+    //VIP设置生日
     const val SETBIRTHDAY = "/api/front/user/setBirthday"
-
+    //邀请好友详情
     const val INVITE_USER_DETAIL = "/api/front/activity/inviteUserDetail"
 
     //upload image

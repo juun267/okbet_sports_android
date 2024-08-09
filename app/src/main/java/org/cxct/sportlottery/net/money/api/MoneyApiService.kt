@@ -3,6 +3,7 @@ package org.cxct.sportlottery.net.money.api
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.money.data.DailyConfig
+import org.cxct.sportlottery.net.money.data.FirstDepositDetail
 import org.cxct.sportlottery.network.Constants
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -16,4 +17,7 @@ interface MoneyApiService {
 
     @GET(Constants.RECH_DAILY_CONFIG)
     suspend fun rechDailyConfig(): ApiResult<List<DailyConfig>>
+
+    @POST(Constants.FIRST_DEPOSIT_DETAIL)
+    suspend fun firstDepositDetail(): ApiResult<FirstDepositDetail>
 }

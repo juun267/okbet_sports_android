@@ -15,15 +15,13 @@ import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.Row
-import org.cxct.sportlottery.repository.ConfigRepository
-import org.cxct.sportlottery.repository.ImageType
-import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.StaticData.Companion.okGameOpened
 import org.cxct.sportlottery.repository.StaticData.Companion.okLiveOpened
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -38,6 +36,7 @@ import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.dialog.HomeFirstDepositDialog
 import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
 import timber.log.Timber
 
@@ -106,6 +105,9 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         initObservable()
         viewModel.getConfigData()
         viewModel.getAnnouncement()
+        if (LoginRepository.isLogined()){
+            viewModel.getFirstDepositDetail()
+        }
     }
 
     private fun initObservable() {
@@ -137,6 +139,12 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         }
         OKGamesRepository.okPlayEvent.observe(this){
             (fragmentHelper2.currentFragment() as? SportVenueFragment<*,*>)?.setOKPlay()
+        }
+        viewModel.firstDepositDetailEvent.observe(this){
+            //限时首充和首充活动
+            if (it.getDepositState() in 1..2){
+                HomeFirstDepositDialog.newInstance(it).show(childFragmentManager)
+            }
         }
     }
 

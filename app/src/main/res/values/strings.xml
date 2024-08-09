@@ -1900,4 +1900,24 @@
     <string name="P466">Please enter your Email</string>
     <string name="P491">Back of ID</string>
     <string name="P492_1">The file size should be under 500KB.</string>
+    <string name="A001">Hold Up There!</string>
+    <string name="A002_1">Complete Your First Deposit And Get A Cash Back Of ₱100</string>
+    <string name="A003">Cancel</string>
+    <string name="A004">Continue</string>
+    <string name="A005">Get First Deposit Reward</string>
+    <string name="A006_1">First Charge Reward Amount ₱120</string>
+    <string name="A007">Receiving Condition:</string>
+    <string name="A008">First Charge Completed</string>
+    <string name="A009">Turnover > 1000</string>
+    <string name="A010">Tomorrow Log-In</string>
+    <string name="A011">Complete the first deposit, reach a turnover of 1,000 yuan and log in the next day to receive</string>
+    <string name="A012">Get It Right Now</string>
+    <string name="A013">Hint</string>
+    <string name="A014">Your Last Recharge Was Not Successful. You Can Only Get The Bonus Amount If You Successfully Recharge For The First Time.</string>
+    <string name="A015">Deposit</string>
+    <string name="A016">First Deposit</string>
+    <string name="A017_1">Extra Bonus Of %s</string>
+    <string name="A018">Get %s Cash Back Tomorrow</string>
+    <string name="A019">Deposit</string>
+    <string name="A020">Details</string>
 </resources>

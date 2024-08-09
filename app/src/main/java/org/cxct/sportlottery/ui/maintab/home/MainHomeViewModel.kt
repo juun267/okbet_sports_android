@@ -1,13 +1,10 @@
 package org.cxct.sportlottery.ui.maintab.home
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
@@ -21,6 +18,7 @@ import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.net.money.data.DailyConfig
+import org.cxct.sportlottery.net.money.data.FirstDepositDetail
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsCategory
 import org.cxct.sportlottery.net.news.data.NewsDetail
@@ -39,7 +37,6 @@ import org.cxct.sportlottery.network.common.NewsType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.news.News
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
-import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.repository.*
@@ -157,6 +154,8 @@ open class MainHomeViewModel(
     val newsCategory: LiveData<List<NewsCategory>>
         get() = _newsCategory
     private val _newsCategory = MutableLiveData<List<NewsCategory>>()
+
+    val firstDepositDetailEvent = SingleLiveEvent<FirstDepositDetail>()
 
     private var loadingGameTypes = mutableMapOf<GameType?, Long>()
 
@@ -684,6 +683,11 @@ open class MainHomeViewModel(
     fun getHallOkSport() {
         if (sConfigData?.sbSportSwitch==1) {
             callApi({ OKGamesRepository.getHallOKSport() }) {}
+        }
+    }
+    fun getFirstDepositDetail() {
+        callApi({ org.cxct.sportlottery.net.money.MoneyRepository.firstDepositDetail() }) {
+            it.getData()?.let { firstDepositDetailEvent.postValue(it) }
         }
     }
 }
