@@ -3,14 +3,16 @@ package org.cxct.sportlottery.ui.money.recharge
 import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.common.extentions.visible
@@ -22,23 +24,24 @@ import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.money.recharge.dialog.RechargePromotionsDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 /**
  * @app_destination 在线支付
  */
 @SuppressLint("SetTextI18n")
-class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBinding>() {
+class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBinding>()
+    , RechargePromotionsDialog.OnSelectListener {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
 
     private var mSelectRechCfgs: RechCfg? = null //選擇的入款帳號
 
-    private val mBankList: MutableList<BtsRvAdapter.SelectBank> by lazy {
-        mutableListOf()
-    }
+    private val mBankList = mutableListOf<BtsRvAdapter.SelectBank>()
 
     private var rechCfgsList: List<RechCfg> = mutableListOf()
 
@@ -58,11 +61,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
 
     private val dialogBinding by lazy {
         val contentView: ViewGroup? = activity?.window?.decorView?.findViewById(android.R.id.content)
-        DialogBottomSheetIconAndTickBinding.inflate(layoutInflater,contentView,false) }
-
-    private val dailyConfigAdapter = DailyConfigAdapter{
-        updateDailyConfigSelect()
+        DialogBottomSheetIconAndTickBinding.inflate(layoutInflater,contentView,false)
     }
+
+    private val dailyConfigAdapter = DailyConfigAdapter { updateDailyConfigSelect() }
 
     override fun onStart() {
         super.onStart()
@@ -80,6 +82,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         setupServiceButton()
         setupQuickMoney()
     }
+
     private fun initObserve() {
         //充值金額訊息
         viewModel.rechargeOnlineAmountMsg.observe(viewLifecycleOwner) {
@@ -102,6 +105,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
                 showPromptDialog(getString(R.string.prompt), tipString) {}
             }
         }
+
         viewModel.rechCheckMsg.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let {
                 mSelectRechCfgs?.let {
@@ -112,6 +116,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
             }
         }
         viewModel.dailyConfigEvent.observe(this){
+            RechargePromotionsDialog.show(this@OnlinePayFragment, it.toMutableList() as ArrayList)
             initFirstDeposit(it)
         }
     }
@@ -122,13 +127,21 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
 
         setupTextChangeEvent()
         setupFocusEvent()
-
+        initViewMorePromotions()
         btnSubmit.setTitleLetterSpacing()
 
         tvRemark.text = "・${getString(R.string.credit_bet_remark)}："
     }
 
-    private fun initButton() =binding.run{
+    private fun initViewMorePromotions() {
+        val icRight = ContextCompat.getDrawable(context(), R.drawable.ic_right)!!
+        DrawableCompat.setTint(icRight.mutate(), context().getColor(R.color.color_025BE8))
+        val tvViewMore = binding.linFirstDeposit.tvViewMore
+        tvViewMore.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, icRight, null)
+        tvViewMore.setOnClickListener { RechargePromotionsDialog.show(this, dailyConfigAdapter.data as ArrayList<DailyConfig>) }
+    }
+
+    private fun initButton() = binding.run {
         btnSubmit.setOnClickListener {
 
             var email: String? = null
@@ -173,12 +186,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
 
         mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
 
-        llPayGap.setOnClickListener {
-            payGapBottomSheet.show()
-        }
-        cvPayBank.setOnClickListener {
-            bankBottomSheet.show()
-        }
+        llPayGap.setOnClickListener { payGapBottomSheet.show() }
+        cvPayBank.setOnClickListener { bankBottomSheet.show() }
     }
 
     fun setArguments(moneyPayWay: MoneyPayWayData?): OnlinePayFragment {
@@ -213,10 +222,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         etRechargeOnlineEmail.isVisible = mSelectRechCfgs?.isEmail ==1
 
         cvPayBank.visibility = if (mSelectRechCfgs?.banks != null) View.VISIBLE else View.GONE
-        tvPayGapSubtitle.text =
-            if (mSelectRechCfgs?.banks != null) getString(R.string.title_pay_channel) else getString(R.string.M132)
-        dialogBinding.tvGameTypeTitle.text =
-            if (mSelectRechCfgs?.banks != null) getString(R.string.title_choose_pay_channel) else getString(R.string.M132)
+        tvPayGapSubtitle.text = if (mSelectRechCfgs?.banks != null) getString(R.string.title_pay_channel) else getString(R.string.M132)
+        dialogBinding.tvGameTypeTitle.text = if (mSelectRechCfgs?.banks != null) getString(R.string.title_choose_pay_channel) else getString(R.string.M132)
 
         //反利、手續費
         setupRebateFee()
@@ -239,7 +246,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         }
     }
 
-    private fun setupTextChangeEvent()=binding.run {
+    private fun setupTextChangeEvent() = binding.run {
+
         //充值金額
         etRechargeOnlineAmount.afterTextChanged {
             if (it.startsWith("0") && it.length > 1) {
@@ -254,48 +262,51 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
                 etRechargeOnlineAmount.setCursor()
                 return@afterTextChanged
             }
+
             dailyConfigAdapter.getSelectedItem()?.let { dailyConfig->
                 updateFirstDepositExtraMoney(dailyConfig,it.toIntS(0))
             }
             viewModel.checkRcgOnlineAmount(it, mSelectRechCfgs)
             if (it.isEmpty() || it.isBlank()) {
-                if (includeQuickMoney.root.isVisible) (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(
-                    -1)
+                if (includeQuickMoney.root.isVisible) {
+                    (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(-1)
+                }
                 if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
-                    tvFeeAmount.text =
-                        String.format(getString(R.string.hint_feeback_amount),
-                            sConfigData?.systemCurrencySign,
-                            "0.00")
+                    tvFeeAmount.text = String.format(
+                        getString(R.string.hint_feeback_amount),
+                        sConfigData?.systemCurrencySign,
+                        "0.00")
                 } else {
-                    tvFeeAmount.text = String.format(getString(R.string.hint_fee_amount),
+                    tvFeeAmount.text = String.format(
+                        getString(R.string.hint_fee_amount),
                         sConfigData?.systemCurrencySign,
                         "0.00")
                 }
-            } else {
-                //返利/手續費金額
-                if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
-                    tvFeeAmount.text =
-                        String.format(getString(R.string.hint_feeback_amount),sConfigData?.systemCurrencySign,
-                            ArithUtil.toMoneyFormat((it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
+                return@afterTextChanged
+            }
 
-                        )
-                } else {
-                    tvFeeAmount.text = String.format(getString(R.string.hint_fee_amount),
-                        sConfigData?.systemCurrencySign,
-                        ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0).times(mSelectRechCfgs?.rebateFee?:0.0))))
-                }
-                if(mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
-                    tvFeeRate.text =
-                        String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
-                    tvFeeAmount.text = String.format(getString(R.string.hint_fee_amount),
-                        sConfigData?.systemCurrencySign,
-                        "0.00")
-                    tvFeeRate.gone()
-                    tvFeeAmount.gone()
-                }else{
-                    tvFeeRate.show()
-                    tvFeeAmount.show()
-                }
+            //返利/手續費金額
+            if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
+                tvFeeAmount.text = String.format(
+                    getString(R.string.hint_feeback_amount),sConfigData?.systemCurrencySign,
+                    ArithUtil.toMoneyFormat((it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
+                )
+            } else {
+                tvFeeAmount.text = String.format(
+                    getString(R.string.hint_fee_amount),
+                    sConfigData?.systemCurrencySign,
+                    ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0).times(mSelectRechCfgs?.rebateFee?:0.0)))
+                )
+            }
+
+            if (mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
+                tvFeeRate.text = String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
+                tvFeeAmount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign, "0.00")
+                tvFeeRate.gone()
+                tvFeeAmount.gone()
+            } else {
+                tvFeeRate.show()
+                tvFeeAmount.show()
             }
 
         }
@@ -324,7 +335,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         }
     }
 
-    private fun setupFocusEvent()=binding.run {
+    private fun setupFocusEvent() = binding.run {
         etRechargeOnlineAmount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
             if (!hasFocus) {
                 val amountStr = etRechargeOnlineAmount.getText()
@@ -332,10 +343,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
                     updateFirstDepositExtraMoney(it,amountStr.toIntS(0))
                 }
                 viewModel.checkRcgOnlineAmount(amountStr, mSelectRechCfgs)
-            }else if (includeQuickMoney.root.isVisible) {
+            } else if (includeQuickMoney.root.isVisible) {
                 (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(-1)
             }
         }
+
         etRechargeOnlinePayer.setEditTextOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 viewModel.checkRcgNormalOnlineAccount(etRechargeOnlinePayer.getText())
@@ -351,22 +363,24 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         )
     }
 
-    private fun setupRebateFee() =binding.run{
+    private fun setupRebateFee() = binding.run {
         val rebateFee = mSelectRechCfgs?.rebateFee
         when{
-            rebateFee == null || rebateFee == 0.0->{
+            rebateFee == null || rebateFee == 0.0-> {
                 tvFeeRate.gone()
                 tvFeeAmount.gone()
                 tvFeeRate.text = String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
                 tvFeeAmount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign, "0.00")
             }
-            rebateFee > 0.0->{
+
+            rebateFee > 0.0-> {
                 tvFeeRate.visible()
                 tvFeeAmount.visible()
                 tvFeeRate.text = String.format(getString(R.string.hint_feeback_rate), ArithUtil.toOddFormat(abs(rebateFee).times(100))) + "%"
                 tvFeeAmount.text = String.format(getString(R.string.hint_feeback_amount), sConfigData?.systemCurrencySign, TextUtil.formatMoney(ArithUtil.toOddFormat(0.0.times(100)).toDouble()))
             }
-            else ->{
+
+            else -> {
                 tvFeeRate.visible()
                 tvFeeAmount.visible()
                 tvFeeRate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.toOddFormat(abs(rebateFee).times(100))) + "%"
@@ -375,65 +389,52 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         }
     }
 
-    private fun setPayGapBottomSheet() {
-        try {
-            val contentView: ViewGroup? =
-                activity?.window?.decorView?.findViewById(android.R.id.content)
+    private fun setPayGapBottomSheet() = runWithCatch {
 
-            val dialogBinding = DialogBottomSheetIconAndTickBinding.inflate(layoutInflater,contentView,false)
-            payGapBottomSheet = BottomSheetDialog(this.requireContext())
-            payGapBottomSheet.apply {
-                setContentView(dialogBinding.root)
-                payGapAdapter = BtsRvAdapter(
-                    payRoadSpannerList,
-                    BtsRvAdapter.BankAdapterListener { _, position ->
-                        getPayGap(position)
-                        resetEvent()
-                        payGapBottomSheet.dismiss()
-                    })
-                dialogBinding.rvBankItem.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
-                dialogBinding.rvBankItem.adapter = payGapAdapter
-
-                if (mMoneyPayWay?.onlineType == OnlineType.WY.type)
-                    dialogBinding.tvGameTypeTitle.text=String.format(resources.getString(R.string.title_choose_pay_channel))
-                else
-                    dialogBinding.tvGameTypeTitle.text=String.format(resources.getString(R.string.M132))
-
-                dialogBinding.btnClose.setOnClickListener {
-                    this.dismiss()
-                }
+        val contentView: ViewGroup? = activity?.window?.decorView?.findViewById(android.R.id.content)
+        val dialogBinding = DialogBottomSheetIconAndTickBinding.inflate(layoutInflater, contentView,false)
+        payGapBottomSheet = BottomSheetDialog(this.requireContext())
+        payGapBottomSheet.setContentView(dialogBinding.root)
+        payGapAdapter = BtsRvAdapter(
+            payRoadSpannerList,
+            BtsRvAdapter.BankAdapterListener { _, position ->
+                getPayGap(position)
+                resetEvent()
+                payGapBottomSheet.dismiss()
             }
-            getPayGap(0)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        )
+
+        dialogBinding.rvBankItem.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+        dialogBinding.rvBankItem.adapter = payGapAdapter
+
+        if (mMoneyPayWay?.onlineType == OnlineType.WY.type) {
+            dialogBinding.tvGameTypeTitle.text=String.format(resources.getString(R.string.title_choose_pay_channel))
+        } else {
+            dialogBinding.tvGameTypeTitle.text=String.format(resources.getString(R.string.M132))
         }
+
+        dialogBinding.btnClose.setOnClickListener { payGapBottomSheet.dismiss() }
+        getPayGap(0)
     }
 
-    private fun setPayBankBottomSheet(view: View) {
-        try {
+    private fun setPayBankBottomSheet(view: View) = runWithCatch {
 
-            bankBottomSheet = BottomSheetDialog(this.requireContext())
-            bankBottomSheet.apply {
-                setContentView(dialogBinding.root)
-                bankCardAdapter = BtsRvAdapter(
-                    mBankList,
-                    BtsRvAdapter.BankAdapterListener { it, position ->
-                        binding.ivBankIcon.setImageResource(it.bankIcon ?: 0)
-                        binding.txvPayBank.text = it.bankName.toString()
-                        bankPosition = position
-                        resetEvent()
-                        dismiss()
-                    })
-                dialogBinding.rvBankItem.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
-                dialogBinding.rvBankItem.adapter = bankCardAdapter
-                dialogBinding.tvGameTypeTitle.text=String.format(resources.getString(R.string.title_choose_pay_bank))
-                dialogBinding.btnClose.setOnClickListener {
-                    this.dismiss()
-                }
-            }
+        bankBottomSheet = BottomSheetDialog(this.requireContext())
+        bankBottomSheet.setContentView(dialogBinding.root)
+        bankCardAdapter = BtsRvAdapter(mBankList,
+            BtsRvAdapter.BankAdapterListener { it, position ->
+                binding.ivBankIcon.setImageResource(it.bankIcon ?: 0)
+                binding.txvPayBank.text = it.bankName.toString()
+                bankPosition = position
+                resetEvent()
+                bankBottomSheet.dismiss()
+        })
 
-        } catch (e: Exception) {
-            e.printStackTrace()
+        dialogBinding.rvBankItem.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+        dialogBinding.rvBankItem.adapter = bankCardAdapter
+        dialogBinding.tvGameTypeTitle.text=String.format(resources.getString(R.string.title_choose_pay_bank))
+        dialogBinding.btnClose.setOnClickListener {
+            bankBottomSheet.dismiss()
         }
 
     }
@@ -445,51 +446,34 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
             it.rechType == mMoneyPayWay?.rechType && it.onlineType == mMoneyPayWay?.onlineType && it.pcMobile != 1
         } ?: mutableListOf()
 
-        //產生對應 spinner 選單
-        var count = 1
         payRoadSpannerList = mutableListOf()
-
-        if (rechCfgsList.size > 1)
-            rechCfgsList.forEach { it ->
-                val selectBank =
-                    BtsRvAdapter.SelectBank(
-                        "${viewModel.getOnlinePayTypeName(it.onlineType)} ${count++}",
-                        typeIcon
-                    )
-                payRoadSpannerList.add(selectBank)
-            }
-        else
-            rechCfgsList.forEach { it ->
-                val selectBank =
-                    BtsRvAdapter.SelectBank(
-                        "${viewModel.getOnlinePayTypeName(it.onlineType)} $count",
-                        typeIcon
-                    )
-                payRoadSpannerList.add(selectBank)
-            }
+        rechCfgsList.forEachIndexed { index, rechCfg ->
+            val selectBank = BtsRvAdapter.SelectBank(
+                "${viewModel.getOnlinePayTypeName(rechCfg.onlineType)} ${index + 1}",
+                typeIcon
+            )
+            payRoadSpannerList.add(selectBank)
+        }
 
         viewModel.getDailyConfig()
     }
 
-    private fun getPayGap(position: Int) {
-        //default 選擇第一個不為 null 的入款帳號資料
-        try {
-            if (payRoadSpannerList.size > 0) {
-                mSelectRechCfgs = rechCfgsList[position]
-                refreshSelectRechCfgs()
-
-                if (mSelectRechCfgs?.banks != null) {
-                    refreshPayBank(mSelectRechCfgs)
-                }
-
-                binding.ivGapIcon.setImageResource(payRoadSpannerList[position].bankIcon ?: 0)
-                binding.txvPayGap.text = payRoadSpannerList[position].bankName
-                clearFocus()
-            } else
-                mSelectRechCfgs = null
-        } catch (e: Exception) {
-            e.printStackTrace()
+    private fun getPayGap(position: Int)  = runWithCatch {
+        if (payRoadSpannerList.size <= 0) {
+            mSelectRechCfgs = null
+            return@runWithCatch
         }
+
+        //default 選擇第一個不為 null 的入款帳號資料
+        mSelectRechCfgs = rechCfgsList[position]
+        refreshSelectRechCfgs()
+        if (mSelectRechCfgs?.banks != null) {
+            refreshPayBank(mSelectRechCfgs)
+        }
+        binding.ivGapIcon.setImageResource(payRoadSpannerList[position].bankIcon ?: 0)
+        binding.txvPayGap.text = payRoadSpannerList[position].bankName
+        clearFocus()
+
     }
 
     //重置畫面事件
@@ -507,62 +491,60 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
     /**
      * 设置快捷金额
      */
-    private fun setupQuickMoney() =binding.run{
+    private fun setupQuickMoney() = binding.run{
         if (sConfigData?.selectedDepositAmountSettingList.isNullOrEmpty()) {
             includeQuickMoney.root.isVisible = false
             etRechargeOnlineAmount.showLine(true)
             etRechargeOnlineAmount.setMarginBottom(10.dp)
-        } else {
-            includeQuickMoney.root.isVisible = true
-            etRechargeOnlineAmount.showLine(false)
-            etRechargeOnlineAmount.setMarginBottom(0.dp)
-            if (binding.includeQuickMoney.rvQuickMoney.adapter == null) {
-                binding.includeQuickMoney.rvQuickMoney.layoutManager = GridLayoutManager(requireContext(), 3)
-                binding.includeQuickMoney.rvQuickMoney.addItemDecoration(GridItemDecoration(0.dp,
-                    0.dp,
-                    requireContext().getColor(R.color.color_FFFFFF),
-                    false))
-                binding.includeQuickMoney.rvQuickMoney.adapter = QuickMoneyAdapter().apply {
-                    setList(sConfigData?.selectedDepositAmountSettingList)
-                    setOnItemClickListener { adapter, view, position ->
-                        (adapter as QuickMoneyAdapter).selectItem(position)
-                        adapter.data[position].toString().let {
-                            etRechargeOnlineAmount.setText(it)
-                            etRechargeOnlineAmount.clearFocus()
-                        }
-                    }
-                }
-            } else {
-                (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setList(sConfigData?.selectedDepositAmountSettingList)
+            return@run
+        }
+
+        includeQuickMoney.root.isVisible = true
+        etRechargeOnlineAmount.showLine(false)
+        etRechargeOnlineAmount.setMarginBottom(0.dp)
+
+        val rvQuickMoney = includeQuickMoney.rvQuickMoney
+        if (rvQuickMoney.adapter != null) {
+            (rvQuickMoney.adapter as QuickMoneyAdapter).setList(sConfigData?.selectedDepositAmountSettingList)
+            return@run
+        }
+
+        rvQuickMoney.layoutManager = GridLayoutManager(requireContext(), 3)
+        rvQuickMoney.addItemDecoration(GridItemDecoration(0.dp, 0.dp, context().getColor(R.color.color_FFFFFF),false))
+        rvQuickMoney.adapter = QuickMoneyAdapter().apply {
+            setList(sConfigData?.selectedDepositAmountSettingList)
+            setOnItemClickListener { adapter, _, position ->
+                (adapter as QuickMoneyAdapter).selectItem(position)
+                val item = adapter.data[position].toString()
+                etRechargeOnlineAmount.setText(item)
+                etRechargeOnlineAmount.clearFocus()
             }
         }
     }
+
     private fun hideFirstDesposit(){
         binding.linFirstDeposit.linNoChoose.performClick()
         binding.linFirstDeposit.root.gone()
         binding.linReceiveExtra.gone()
     }
-    private fun initFirstDeposit(list: List<DailyConfig>) =binding.linFirstDeposit.run{
+
+    private fun initFirstDeposit(list: List<DailyConfig>) = binding.linFirstDeposit.run {
         val availableList = list.filter { it.first==1 }
         binding.linFirstDeposit.root.isVisible = availableList.isNotEmpty()
-        linNoChoose.isSelected = true
         rvFirstDeposit.adapter = dailyConfigAdapter
         dailyConfigAdapter.setList(availableList)
-        linNoChoose.setOnClickListener {
-            dailyConfigAdapter.clearSelected()
-            updateDailyConfigSelect()
-        }
 //        tvRewardTC.setOnClickListener {
 //            FirstDepositNoticeDialog(dailyConfig.content).show(childFragmentManager,null)
 //        }
     }
+
     private fun updateDailyConfigSelect(){
         val dailyConfig = dailyConfigAdapter.getSelectedItem()
-        if (dailyConfig==null){
+        if (dailyConfig == null) {
             binding.linFirstDeposit.linNoChoose.isSelected = true
             binding.linReceiveExtra.isVisible = false
             (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0)
-        }else{
+        } else {
             binding.linFirstDeposit.linNoChoose.isSelected = false
             binding.linReceiveExtra.isVisible = true
             (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(dailyConfig.additional)
@@ -571,14 +553,19 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
 
     }
     private fun updateFirstDepositExtraMoney(dailyConfig: DailyConfig, rechargeMoney: Int){
-        if (dailyConfig!=null && dailyConfig.first==1){
-            val additional = dailyConfig.additional
-            val capped = dailyConfig.capped
-            if (additional>0){
-                val additionalMoney = rechargeMoney*additional/100
-                val extraMoney = if(additionalMoney>capped) capped else  additionalMoney
-                binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(extraMoney,0)}"
-            }
+        if (dailyConfig.first != 1) {
+            return
         }
+        val additional = dailyConfig.additional
+        val capped = dailyConfig.capped
+        if (additional > 0) {
+            val additionalMoney = rechargeMoney*additional/100
+            val extraMoney = if(additionalMoney>capped) capped else  additionalMoney
+            binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(extraMoney,0)}"
+        }
+    }
+
+    override fun onSelected(dailyConfig: DailyConfig) {
+        dailyConfigAdapter.changeSelect(dailyConfig)
     }
 }

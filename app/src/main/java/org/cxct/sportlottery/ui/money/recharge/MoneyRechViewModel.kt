@@ -141,7 +141,7 @@ class MoneyRechViewModel(
         get() = _rechCheckMsg
     private var _rechCheckMsg = MutableLiveData<Event<String>>()
 
-    var dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
+    val dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
 
     //更新使用者資料
     fun getUserInfo() {

@@ -8,6 +8,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +36,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.money.recharge.dialog.RechargePromotionsDialog
 import org.cxct.sportlottery.view.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*
@@ -51,7 +53,8 @@ import kotlin.math.abs
 /**
  * @app_destination 存款-转账支付  //存款时间格式需要修改
  */
-class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragmentBinding>() {
+class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragmentBinding>()
+    , RechargePromotionsDialog.OnSelectListener {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
 
@@ -161,7 +164,16 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         updateMoneyRange()
         getBankType(0)
         refreshFieldTitle()
+        initViewMorePromotions()
         binding.tvCurrencyType.text = "${sConfigData?.systemCurrencySign}"
+    }
+
+    private fun initViewMorePromotions() {
+        val icRight = ContextCompat.getDrawable(context(), R.drawable.ic_right)!!
+        DrawableCompat.setTint(icRight.mutate(), context().getColor(R.color.color_025BE8))
+        val tvViewMore = binding.linFirstDeposit.tvViewMore
+        tvViewMore.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, icRight, null)
+        tvViewMore.setOnClickListener { RechargePromotionsDialog.show(this, dailyConfigAdapter.data as ArrayList<DailyConfig>) }
     }
 
     private fun refreshFieldTitle() {
@@ -901,5 +913,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         }
     }
 
+    override fun onSelected(dailyConfig: DailyConfig) {
+        dailyConfigAdapter.changeSelect(dailyConfig)
+    }
 
 }

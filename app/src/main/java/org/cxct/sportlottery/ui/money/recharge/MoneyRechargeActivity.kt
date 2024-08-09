@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.money.recharge
 
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
@@ -14,7 +12,7 @@ import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
+import org.cxct.sportlottery.ui.money.recharge.dialog.GiveUpDepositDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
@@ -54,9 +52,16 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun initToolbar() {
         binding.toolBar.titleText = getString(R.string.J285)
-        binding.toolBar.setOnBackPressListener {
-            finish()
-        }
+        binding.toolBar.setOnBackPressListener { onBackBefore() }
+    }
+
+    override fun onBackPressed() {
+        onBackBefore()
+    }
+
+    private fun onBackBefore() {
+        super.onBackPressed()
+//        GiveUpDepositDialog.show(supportFragmentManager, "999")
     }
 
     private fun initData() {
@@ -232,22 +237,16 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
     }
 
     private fun switchFragment(changeToFragment: Fragment?, tag: String) {
-
         if (changeToFragment == null) return
 
         val ft = supportFragmentManager.beginTransaction()
-
-        ft.replace(
-            R.id.fl_pay_type_container,
-            changeToFragment,
-            tag
-        )
+        ft.replace(R.id.fl_pay_type_container, changeToFragment, tag)
         mCurrentFragment = changeToFragment
         ft.commitAllowingStateLoss()
     }
 
     private fun initRecyclerView()=binding.rvPayType.run {
-        bankTypeAdapter.setOnItemClickListener { adapter, view, position ->
+        bankTypeAdapter.setOnItemClickListener { _, _, position ->
             bankTypeAdapter.setSelectedPosition(position)
             val itemData = bankTypeAdapter.getItem(position)
             switchFragment(getPayFragment(itemData), itemData.rechType)
@@ -256,15 +255,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
         }
         layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 4)
         adapter = bankTypeAdapter
-        if (itemDecorationCount == 0) {
-            addItemDecoration(
-                GridSpacingItemDecoration(
-                    4,
-                    10.dp,
-                    false
-                )
-            )
-        }
+        addItemDecoration(GridSpacingItemDecoration(4, 10.dp, false))
     }
 
     /**
