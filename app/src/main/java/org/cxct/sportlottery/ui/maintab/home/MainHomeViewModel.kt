@@ -54,6 +54,12 @@ open class MainHomeViewModel(
     androidContext
 ) {
 
+    companion object {
+
+        val firstDepositDetailEvent = SingleLiveEvent<FirstDepositDetail>()
+
+    }
+
     private val _publicityRecommend = MutableLiveData<Event<List<Recommend>>>()
     val publicityRecommend: LiveData<Event<List<Recommend>>>
         get() = _publicityRecommend
@@ -154,8 +160,6 @@ open class MainHomeViewModel(
     val newsCategory: LiveData<List<NewsCategory>>
         get() = _newsCategory
     private val _newsCategory = MutableLiveData<List<NewsCategory>>()
-
-    val firstDepositDetailEvent = SingleLiveEvent<FirstDepositDetail>()
 
     private var loadingGameTypes = mutableMapOf<GameType?, Long>()
 

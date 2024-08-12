@@ -36,5 +36,12 @@ data class FirstDepositDetail(
             else -> 0
         }
 
+    fun isLimitedFirstDeposit() = expireTime > 0
+
+    // 首充活动开启
+    fun firstDeposit(): Boolean {
+        return expireTime > 0 || isFirstDeposit != null
+    }
+
 
 }

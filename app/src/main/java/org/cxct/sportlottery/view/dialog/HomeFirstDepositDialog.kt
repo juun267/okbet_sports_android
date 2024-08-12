@@ -39,7 +39,7 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
 
     override fun onInitView()=binding.run {
         //判断是否限时
-        if (firstDepositDetail.getDepositState()==1){
+        if (firstDepositDetail.isLimitedFirstDeposit()){
             ivBackground.setImageResource(R.drawable.bg_dialog_home_first_deposit_1)
             linCountingTime.visible()
             flFirstDeposit.visible()

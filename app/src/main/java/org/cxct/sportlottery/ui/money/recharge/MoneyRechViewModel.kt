@@ -446,24 +446,24 @@ class MoneyRechViewModel(
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeOnlineAmountMsg.value = when {
             rechargeAmount.isEmpty() -> {
-                LocalUtils.getString(R.string.error_input_empty)
+                androidContext.getString(R.string.error_input_empty)
             }
             rechargeAmount.toLongOrNull() == null || rechargeAmount.toLong().equals(0) -> {
-                LocalUtils.getString(R.string.error_recharge_amount_format)
+                androidContext.getString(R.string.error_recharge_amount_format)
             }
             VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
             )  == -1 -> {
-                LocalUtils.getString(R.string.error_amount_limit_less)
+                androidContext.getString(R.string.error_amount_limit_less)
             }
             VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
             ) == 1 -> {
-                LocalUtils.getString(R.string.error_amount_limit_exceeded)
+                androidContext.getString(R.string.error_amount_limit_exceeded)
             }
             else -> ""
         }

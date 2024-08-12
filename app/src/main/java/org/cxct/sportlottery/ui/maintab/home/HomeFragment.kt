@@ -142,7 +142,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         }
         viewModel.firstDepositDetailEvent.observe(this){
             //限时首充和首充活动
-            if (it.getDepositState() in 1..2){
+            if (it.firstDeposit()){
                 HomeFirstDepositDialog.newInstance(it).show(childFragmentManager)
             }
         }
