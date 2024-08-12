@@ -56,7 +56,7 @@ open class MainHomeViewModel(
 
     companion object {
 
-        val firstDepositDetailEvent = SingleLiveEvent<FirstDepositDetail>()
+        val depositDetailEvent = SingleLiveEvent<FirstDepositDetail>()
 
     }
 
@@ -122,7 +122,7 @@ open class MainHomeViewModel(
     val homeOKLiveList: LiveData< List<OKGameBean>>
         get() = _homeOKLiveList
     private val _homeOKLiveList = MutableLiveData< List<OKGameBean>>()
-
+    val firstDepositDetailEvent = depositDetailEvent
 
     private val _recordBetHttp = MutableLiveData<List<RecordNewEvent>>()
     private val _recordWinHttp = MutableLiveData<List<RecordNewEvent>>()

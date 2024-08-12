@@ -62,7 +62,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
     }
 
     private fun onBackBefore() {
-        val firstDepositDetail = MainHomeViewModel.firstDepositDetailEvent.value
+        val firstDepositDetail = MainHomeViewModel.depositDetailEvent.value
         if (firstDepositDetail == null) {
             super.onBackPressed()
             return
