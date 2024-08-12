@@ -15,6 +15,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.callApiOther
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.money.data.DailyConfig
@@ -142,14 +143,11 @@ class MoneyRechViewModel(
     private var _rechCheckMsg = MutableLiveData<Event<String>>()
 
     val dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
+    var uniPaid: Boolean = false
 
     //更新使用者資料
     fun getUserInfo() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                UserInfoRepository.getUserInfo()
-            }
-        }
+        doRequest({ UserInfoRepository.getUserInfo() }) { }
     }
 
     //獲取充值的基礎配置
@@ -725,9 +723,11 @@ class MoneyRechViewModel(
             else -> ""
         }
     }
+
     fun getDailyConfig(){
-        callApi({org.cxct.sportlottery.net.money.MoneyRepository.rechDailyConfig()}){
+        callApiOther({org.cxct.sportlottery.net.money.MoneyRepository.rechDailyConfig()}){
             if (it.succeeded()){
+                uniPaid = it.other?.paid == true
                 it.getData()?.let {
                     dailyConfigEvent.postValue(it)
                 }

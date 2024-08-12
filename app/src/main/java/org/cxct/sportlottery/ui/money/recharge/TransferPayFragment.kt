@@ -73,15 +73,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
     private lateinit var dateTimePicker: TimePickerView
     private lateinit var dateTimePickerHMS: TimePickerView
 
-    var depositDate = Date()
-    var depositDate2 = Date()
-    var mCalendar: Calendar =Calendar.getInstance()
+    private var depositDate = Date()
+    private var depositDate2 = Date()
+    private var mCalendar: Calendar =Calendar.getInstance()
     private val dailyConfigAdapter = DailyConfigAdapter{
         updateDailyConfigSelect()
     }
-    private val dialogBinding by lazy {
-        val contentView: ViewGroup? = activity?.window?.decorView?.findViewById(android.R.id.content)
-        DialogBottomSheetIconAndTickBinding.inflate(layoutInflater,contentView,false) }
 
     fun setArguments(moneyPayWay: MoneyPayWayData?): TransferPayFragment {
         mMoneyPayWay = moneyPayWay
@@ -102,13 +99,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         btnSubmit.setTitleLetterSpacing()
         btnSubmit.setOnClickListener {
             val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
-            createMoneyAddRequest(activityType)?.let {
-                viewModel.rechargeSubmit(
-                    it,
-                    mMoneyPayWay?.rechType,
-                    mSelectRechCfgs
-                )
-            }
+            val request = createMoneyAddRequest(activityType) ?: return@setOnClickListener
+            viewModel.rechargeSubmit(
+                request,
+                mMoneyPayWay?.rechType,
+                mSelectRechCfgs
+            )
         }
         mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
 
@@ -916,5 +912,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
     override fun onSelected(dailyConfig: DailyConfig) {
         dailyConfigAdapter.changeSelect(dailyConfig)
     }
+
+    fun getSelectedDailyConfig() = dailyConfigAdapter.getSelectedItem()
 
 }

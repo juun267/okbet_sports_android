@@ -13,7 +13,6 @@ import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.money.recharge.dialog.GiveUpDepositDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
@@ -54,36 +53,29 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun initToolbar() {
         binding.toolBar.titleText = getString(R.string.J285)
-        binding.toolBar.setOnBackPressListener { onBackBefore() }
+        binding.toolBar.setOnBackPressListener { doOnBackPress() }
     }
 
     override fun onBackPressed() {
-        onBackBefore()
+        doOnBackPress()
     }
 
-    private fun onBackBefore() {
-        val firstDepositDetail = MainHomeViewModel.depositDetailEvent.value
-        if (firstDepositDetail == null) {
-            super.onBackPressed()
-            return
-        }
+    private fun doOnBackPress() {
 
-        val firstDeposit = firstDepositDetail.isFirstDeposit
-        val timeLimitFirstDeposit= firstDepositDetail.activityConfigDailyTimeLimit
-        val depositActivity = if (firstDeposit != null && firstDeposit.enable) {
-            firstDeposit
-        } else if (timeLimitFirstDeposit != null && timeLimitFirstDeposit.enable) {
-            timeLimitFirstDeposit
+        val dailyConfig = if (mCurrentFragment is OnlinePayFragment) {
+            (mCurrentFragment as OnlinePayFragment).getSelectedDailyConfig()
+        } else if (mCurrentFragment is TransferPayFragment) {
+            (mCurrentFragment as TransferPayFragment).getSelectedDailyConfig()
         } else {
             null
         }
 
-        if (depositActivity == null) {
+        if (dailyConfig == null) {
             super.onBackPressed()
             return
         }
 
-        GiveUpDepositDialog.show(supportFragmentManager, depositActivity.limit.toString())
+        GiveUpDepositDialog.show(supportFragmentManager, dailyConfig.capped.toString())
     }
 
     private fun initData() {

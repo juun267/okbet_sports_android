@@ -2,8 +2,10 @@ package org.cxct.sportlottery.net.money.api
 
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.OtherApiResult
 import org.cxct.sportlottery.net.money.data.DailyConfig
 import org.cxct.sportlottery.net.money.data.FirstDepositDetail
+import org.cxct.sportlottery.net.money.data.UniPaid
 import org.cxct.sportlottery.network.Constants
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -16,7 +18,7 @@ interface MoneyApiService {
     suspend fun rechCheckStauts(@Body params: JsonObject): ApiResult<String>
 
     @GET(Constants.RECH_DAILY_CONFIG)
-    suspend fun rechDailyConfig(): ApiResult<List<DailyConfig>>
+    suspend fun rechDailyConfig(): OtherApiResult<List<DailyConfig>, UniPaid>
 
     @POST(Constants.FIRST_DEPOSIT_DETAIL)
     suspend fun firstDepositDetail(): ApiResult<FirstDepositDetail>

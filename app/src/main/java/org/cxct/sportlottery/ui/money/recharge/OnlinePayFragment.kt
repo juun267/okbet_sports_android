@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.money.recharge.dialog.DepositHintDialog
 import org.cxct.sportlottery.ui.money.recharge.dialog.RechargePromotionsDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -35,7 +36,7 @@ import kotlin.math.abs
  */
 @SuppressLint("SetTextI18n")
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBinding>()
-    , RechargePromotionsDialog.OnSelectListener {
+    , RechargePromotionsDialog.OnSelectListener, DepositHintDialog.ConfirmListener {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
 
@@ -143,6 +144,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
 
     private fun initButton() = binding.run {
         btnSubmit.setOnClickListener {
+            val flag = btnSubmit.tag
+            btnSubmit.tag = null
 
             var email: String? = null
             var payer = ""
@@ -180,8 +183,14 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
                 ""
             }
 
-            val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
-            viewModel.rechargeNormalOnlinePay(context(), mSelectRechCfgs, depositMoney, bankCode, payer, activityType, email)
+            btnSubmit.tag = 1
+            if (flag == null) {
+                DepositHintDialog.show(this@OnlinePayFragment)
+            } else {
+                val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
+                viewModel.rechargeNormalOnlinePay(context(), mSelectRechCfgs, depositMoney, bankCode, payer, activityType, email)
+            }
+
         }
 
         mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
@@ -567,5 +576,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
 
     override fun onSelected(dailyConfig: DailyConfig) {
         dailyConfigAdapter.changeSelect(dailyConfig)
+    }
+
+    fun getSelectedDailyConfig() = dailyConfigAdapter.getSelectedItem()
+
+    override fun onContinue() {
+        binding.btnSubmit.performClick()
     }
 }
