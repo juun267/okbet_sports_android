@@ -43,11 +43,11 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
         fun newInstance() = AgeVerifyDialog()
 
         fun buildAgeVerifyDialog(priority: Int, fm: () -> FragmentManager): PriorityDialog? {
-//            if (!isAgeVerifyNeedShow) {
-//                return null
-//            }
-//
-//            isAgeVerifyNeedShow = false
+            if (!isAgeVerifyNeedShow) {
+                return null
+            }
+
+            isAgeVerifyNeedShow = false
             return object : BasePriorityDialog<AgeVerifyDialog>() {
                 override fun getFragmentManager() = fm.invoke()
                 override fun priority() = priority
