@@ -413,7 +413,9 @@ object Constants {
     const val RECH_CHECK_STATUS = "/api/front/userrech/v2/onlinepayAndroidAndIos"//充值前检查参数状态
     const val RECH_DAILY_CONFIG = "/api/front/userrech/v2/dailyConfig"
     //用户首充活动的参与情况
-    const val FIRST_DEPOSIT_DETAIL = "/api/front/activity/FirstDepositDetail"
+    const val FIRST_DEPOSIT_DETAIL = "/api/front/activity/firstDepositDetail"
+    //领取新用户首充隔日奖励
+    const val GET_FIRST_DEPOSIT_AFTER_DAY = "/api/front/activity/getFirstDepositAfterDay"
 
     //user
     const val USER_INFO = "/api/front/user/info"

@@ -10,8 +10,10 @@ import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
+import org.cxct.sportlottery.net.money.MoneyRepository
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -23,10 +25,7 @@ import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.view.dialog.AgeVerifyDialog
-import org.cxct.sportlottery.view.dialog.AnnouncementsDialog
-import org.cxct.sportlottery.view.dialog.PopImageDialog
-import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import org.cxct.sportlottery.view.dialog.*
 import org.cxct.sportlottery.view.dialog.queue.DialogQueueManager
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -38,6 +37,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     private val PRIORITY_BIND_PHONE = 200
     private val PRIORITY_REGISTER_SUCCESS = 300
     private val PRIORITY_AGE_VERIFY = 400
+    private val PRIORITY_DEPOSIt_VERIFY = 350
 
      fun getMainTabActivity() = activity as MainTabActivity
      private fun getHomeFragment() = parentFragment as HomeFragment
@@ -52,8 +52,8 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
                 hotMatchView.resubscribe()
             }
         }
-
         ToGcashDialog.showByLogin()
+        viewModel.getFirstDepositDetail()
     }
 
 
@@ -147,6 +147,8 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         if (isShowed) {
             return
         }
+        //如果首充活动还没返回数据就等到结果出来再一起限时
+        if (viewModel.gotConfig.value?.peekContent()==null || viewModel.gotFirstDepositDetail.value==null) return
 
         isShowed = true
         val fmProvider = ::getParentFragmentManager
@@ -164,13 +166,12 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             }?.let {
                 dialogQueueManager.enqueue(it)
             }
-
+            showFirstDepositDetail()
         }
 
         AgeVerifyDialog.buildAgeVerifyDialog(PRIORITY_AGE_VERIFY, fmProvider)?.let {
             dialogQueueManager.enqueue(it)
         }
-
         showAnnouncementsDialog()
 
         dialogQueueManager.showNext()
@@ -184,6 +185,30 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             AnnouncementsDialog.buildAnnouncementsDialog(notice, PRIORITY_SYSTEM_NOTICE, ::getParentFragmentManager)?.let { dialog ->
                 announcementsShowed = true
                 dialogQueueManager.enqueue(dialog)
+            }
+        }
+    }
+    private fun showFirstDepositDetail(){
+        MoneyRepository._firstDepositDetail.value?.let {
+            when (it.userStatus) {
+                //限时首充和首充活动
+                in 0..1 -> {
+                    HomeFirstDepositDialog.buildDialog(PRIORITY_DEPOSIt_VERIFY,{ childFragmentManager },it)?.let {
+                        dialogQueueManager.enqueue(it)
+                    }
+                }
+                //次日活动弹窗
+                in 2..3 -> {
+                    it.getCurrentDepositConfig()?.let { it1 ->
+                        FirstDepositRewardDialog.buildDialog(PRIORITY_DEPOSIt_VERIFY,{ childFragmentManager },
+                            it1,it.validBetMoney)?.let {
+                            dialogQueueManager.enqueue(it)
+                        }
+                    }
+                }
+                else -> {
+
+                }
             }
         }
     }
@@ -208,6 +233,9 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             if (isShowed) {
                 showAnnouncementsDialog()
             }
+        }
+        viewModel.gotFirstDepositDetail.observe(this){
+            showDialogs()
         }
     }
 

@@ -20,4 +20,8 @@ interface MoneyApiService {
 
     @POST(Constants.FIRST_DEPOSIT_DETAIL)
     suspend fun firstDepositDetail(): ApiResult<FirstDepositDetail>
+
+    @POST(Constants.GET_FIRST_DEPOSIT_AFTER_DAY)
+    suspend fun getFirstDepositAfterDay(): ApiResult<Boolean>
+
 }

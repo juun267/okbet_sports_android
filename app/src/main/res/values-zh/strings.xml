@@ -1831,12 +1831,12 @@
     <string name="A003">取消</string>
     <string name="A004">继续</string>
     <string name="A005">获得首次存款獎金</string>
-    <string name="A006_1">首次充值奖金金额 ₱120</string>
+    <string name="A006_1">首次充值奖金金额</string>
     <string name="A007">接收条件：</string>
     <string name="A008">首次充值完成</string>
-    <string name="A009">营业额> 1000</string>
+    <string name="A009">营业额> %s</string>
     <string name="A010">明天登录</string>
-    <string name="A011">完成首次存款，达到1000元营业额，次日登录即可领取</string>
+    <string name="A011">完成首次存款，达到%s营业额，次日登录即可领取</string>
     <string name="A012">立即获取</string>
     <string name="A013">提示</string>
     <string name="A014">您上次充值未成功。您只有首次充值成功才能获得奖金金额。</string>

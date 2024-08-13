@@ -1,15 +1,17 @@
 package org.cxct.sportlottery.view.dialog
 
 import android.os.Bundle
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.DialogHomeFirstDepositBinding
 import org.cxct.sportlottery.net.money.data.FirstDepositDetail
-import org.cxct.sportlottery.net.money.data.IsFirstDeposit
+import org.cxct.sportlottery.net.money.data.FirstDepositConfig
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseDialog
@@ -17,8 +19,9 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.CountDownUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.jumpToDeposit
+import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
+import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
 import splitties.bundle.put
-import java.sql.Time
 
 /**
  * 首页首充活动弹窗
@@ -31,6 +34,13 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
         fun newInstance(firstDepositDetail: FirstDepositDetail) = HomeFirstDepositDialog().apply{
             arguments = Bundle().apply { put(FIRST_DEPOSIT_DETAIL,firstDepositDetail) }
         }
+        fun buildDialog(priority: Int, fm: () -> FragmentManager,firstDepositDetail: FirstDepositDetail): PriorityDialog? {
+            return object : BasePriorityDialog<HomeFirstDepositDialog>() {
+                override fun getFragmentManager() = fm.invoke()
+                override fun priority() = priority
+                override fun createDialog() = newInstance(firstDepositDetail)
+            }
+        }
     }
     private val firstDepositDetail by lazy { requireArguments().getParcelable<FirstDepositDetail>(FIRST_DEPOSIT_DETAIL)!! }
     init {
@@ -39,17 +49,21 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
 
     override fun onInitView()=binding.run {
         //判断是否限时
-        if (firstDepositDetail.getDepositState()==1){
+        if (firstDepositDetail.userStatus==0){
             ivBackground.setImageResource(R.drawable.bg_dialog_home_first_deposit_1)
             linCountingTime.visible()
             flFirstDeposit.visible()
             flDepositTomorrow.visible()
             tvFirstDepositLimit.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigDailyTimeLimit?.limit}"
             tvFirstDeposit.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.isFirstDeposit?.limit}"
-            tvDepositLimitTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterDay?.limit}"
+            tvDepositLimitTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterLimitDay?.limit}"
             tvDepositTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterDay?.limit}"
-            firstDepositDetail.activityConfigDailyTimeLimit?.let { setUpPercent(it) }
-            startCount(firstDepositDetail.expireTime)
+            binding.tvExtraBonus.text = String.format(getString(R.string.A017_1), "${firstDepositDetail.activityConfigDailyTimeLimit?.percent}%")
+            binding.tvTomorrowBack.text = String.format(getString(R.string.A018), "${firstDepositDetail.activityConfigAfterLimitDay?.percent}%")
+            val countSecond = (firstDepositDetail.expireTime - System.currentTimeMillis())/1000
+            if (countSecond>0){
+                startCount(countSecond.toInt())
+            }
         }else{
             ivBackground.setImageResource(R.drawable.bg_dialog_home_first_deposit)
             linCountingTime.gone()
@@ -57,22 +71,20 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
             flDepositTomorrow.gone()
             tvFirstDepositLimit.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.isFirstDeposit?.limit}"
             tvDepositLimitTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterDay?.limit}"
-            firstDepositDetail.isFirstDeposit?.let { setUpPercent(it) }
+            firstDepositDetail.activityConfigDailyTimeLimit
+            binding.tvExtraBonus.text = String.format(getString(R.string.A017_1), "${firstDepositDetail.isFirstDeposit?.percent}%")
+            binding.tvTomorrowBack.text = String.format(getString(R.string.A018), "${firstDepositDetail.activityConfigAfterDay?.percent}%")
         }
         ivClose.setOnClickListener { dismiss() }
-        tvDeposit.setOnClickListener { (requireActivity() as BaseActivity<*,*>).jumpToDeposit() }
+        tvDeposit.clickDelay { (requireActivity() as BaseActivity<*,*>).jumpToDeposit() }
         tvDetail.setOnClickListener {  }
 
-    }
-    private fun setUpPercent(isFirstDeposit: IsFirstDeposit){
-        binding.tvExtraBonus.text = String.format(getString(R.string.A017_1), "${isFirstDeposit.flowRatio}%")
-        binding.tvTomorrowBack.text = String.format(getString(R.string.A018), "${isFirstDeposit.percent}%")
     }
     private fun startCount(expireTime: Int){
         GlobalScope.launch(lifecycleScope.coroutineContext) {
             CountDownUtil.countDown(
                 this,
-                expireTime,
+                expireTime/1000,
                 { updateCountingView(expireTime)},
                 { updateCountingView(it)},
                 { dismiss() }

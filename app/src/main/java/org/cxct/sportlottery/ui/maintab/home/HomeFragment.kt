@@ -105,9 +105,6 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         initObservable()
         viewModel.getConfigData()
         viewModel.getAnnouncement()
-        if (LoginRepository.isLogined()){
-            viewModel.getFirstDepositDetail()
-        }
     }
 
     private fun initObservable() {
@@ -140,12 +137,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         OKGamesRepository.okPlayEvent.observe(this){
             (fragmentHelper2.currentFragment() as? SportVenueFragment<*,*>)?.setOKPlay()
         }
-        viewModel.firstDepositDetailEvent.observe(this){
-            //限时首充和首充活动
-            if (it.getDepositState() in 1..2){
-                HomeFirstDepositDialog.newInstance(it).show(childFragmentManager)
-            }
-        }
+
     }
 
     private fun initToolBar() = binding.homeToolbar.run {

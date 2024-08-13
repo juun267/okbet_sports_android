@@ -147,7 +147,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/margin_5"
                 android:paddingHorizontal="22dp"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/margin_10"
@@ -166,20 +165,18 @@
                       android:textSize="@dimen/margin_30"
                       android:textStyle="bold"
                       android:textColor="@color/color_FF8A00"
-                      android:fontFamily="@font/inter_bold"
                       android:text="P450"/>
                   <FrameLayout
                       android:id="@+id/flFirstDeposit"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:layout_marginTop="-5dp">
+                      android:layout_marginTop="-10dp">
                       <TextView
                           android:id="@+id/tvFirstDeposit"
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
                           android:textSize="@dimen/margin_20"
                           android:textColor="@color/color_6D7693"
-                          android:fontFamily="@font/inter_bold"
                           android:text="P450"/>
                       <ImageView
                           android:layout_width="wrap_content"
@@ -206,20 +203,18 @@
                         android:textSize="@dimen/margin_30"
                         android:textStyle="bold"
                         android:textColor="@color/color_FF8A00"
-                        android:fontFamily="@font/inter_bold"
                         android:text="P450"/>
                     <FrameLayout
                         android:id="@+id/flDepositTomorrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="-5dp">
+                        android:layout_marginTop="-10dp">
                         <TextView
                             android:id="@+id/tvDepositTomorrow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/margin_20"
                             android:textColor="@color/color_6D7693"
-                            android:fontFamily="@font/inter_bold"
                             android:text="P450"/>
                         <ImageView
                             android:layout_width="wrap_content"

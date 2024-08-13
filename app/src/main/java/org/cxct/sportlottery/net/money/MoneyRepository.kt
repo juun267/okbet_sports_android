@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.net.money
 
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
@@ -11,6 +12,8 @@ object MoneyRepository {
 
     val moneyApi by lazy { RetrofitHolder.createApiService(MoneyApiService::class.java) }
 
+    val _firstDepositDetail = MutableLiveData<FirstDepositDetail?>()
+
     suspend fun rechCheckStauts(params: JsonObject): ApiResult<String> {
         return moneyApi.rechCheckStauts(params)
     }
@@ -18,6 +21,9 @@ object MoneyRepository {
         return moneyApi.rechDailyConfig()
     }
     suspend fun firstDepositDetail(): ApiResult<FirstDepositDetail> {
-        return moneyApi.firstDepositDetail()
+        return moneyApi.firstDepositDetail().apply { _firstDepositDetail.postValue(getData()) }
+    }
+    suspend fun getFirstDepositAfterDay(): ApiResult<Boolean> {
+        return moneyApi.getFirstDepositAfterDay()
     }
 }

@@ -11,6 +11,7 @@ import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.common.extentions.toast
+import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.PageData
 import org.cxct.sportlottery.net.PageInfo
 import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
@@ -155,7 +156,9 @@ open class MainHomeViewModel(
         get() = _newsCategory
     private val _newsCategory = MutableLiveData<List<NewsCategory>>()
 
-    val firstDepositDetailEvent = SingleLiveEvent<FirstDepositDetail>()
+    val gotFirstDepositDetail = SingleLiveEvent<Boolean>()
+
+    val getFirstDepositAfterDay = SingleLiveEvent<ApiResult<Boolean>>()
 
     private var loadingGameTypes = mutableMapOf<GameType?, Long>()
 
@@ -686,8 +689,17 @@ open class MainHomeViewModel(
         }
     }
     fun getFirstDepositDetail() {
-        callApi({ org.cxct.sportlottery.net.money.MoneyRepository.firstDepositDetail() }) {
-            it.getData()?.let { firstDepositDetailEvent.postValue(it) }
+        if (LoginRepository.isLogined()){
+            callApi({ org.cxct.sportlottery.net.money.MoneyRepository.firstDepositDetail() }) {
+                it.getData()?.let { gotFirstDepositDetail.postValue(true) }
+            }
+        }else{
+            gotFirstDepositDetail.postValue(true)
+        }
+    }
+    fun getFirstDepositAfterDay() {
+        callApi({ org.cxct.sportlottery.net.money.MoneyRepository.getFirstDepositAfterDay() }) {
+            getFirstDepositAfterDay.postValue(it)
         }
     }
 }

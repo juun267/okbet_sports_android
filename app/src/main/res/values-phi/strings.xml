@@ -1747,12 +1747,12 @@
     <string name="A003">Kanselahin</string>
     <string name="A004">Ipagpatuloy</string>
     <string name="A005">Kumuha ng unang Deposito na reward</string>
-    <string name="A006_1">Unang recharge reward na halaga ₱120</string>
+    <string name="A006_1">Unang recharge reward na halaga</string>
     <string name="A007">Kundisyon ng Pagtanggap:</string>
     <string name="A008">Nakumpleto ang Unang recharge</string>
-    <string name="A009">Turnover > 1000</string>
+    <string name="A009">Turnover > %s</string>
     <string name="A010">Bukas Log-In</string>
-    <string name="A011">Kumpletuhin ang unang deposito, maabot ang turnover na 1,000 yuan at mag-log in sa susunod na araw upang makatanggap</string>
+    <string name="A011">Kumpletuhin ang unang deposito, maabot ang turnover na %s at mag-log in sa susunod na araw upang makatanggap</string>
     <string name="A012">Kunin ngayon</string>
     <string name="A013">Hint</string>
     <string name="A014">Ang Iyong Huling Recharge ay Hindi Nagtagumpay. Makukuha Mo Lang Ang Halaga ng Bonus Kung Matagumpay Mong Mag-recharge Sa Unang pagkakataon.</string>
