@@ -88,6 +88,11 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel,CryptoPayFragmentBindi
         initTimePickerForHMS()
         setCurrencyBottomSheet()
         setAccountBottomSheet()
+        setUpPayWaysLayout()
+    }
+
+    private fun setUpPayWaysLayout() {
+        (activity as? MoneyRechargeActivity)?.fillPayWaysLayoutTo(binding.content, 0)
     }
 
     private fun initButton()=binding.run {

@@ -1,9 +1,9 @@
 package org.cxct.sportlottery.ui.money.recharge
 
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
@@ -90,10 +90,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun initLiveData() {
 
-        viewModel.transferPayList.observe(this@MoneyRechargeActivity, Observer {
+        viewModel.transferPayList.observe(this) {
             hideLoading()
             gotTransferPay = true
-            transferPayList = it ?: return@Observer
+            transferPayList = it ?: return@observe
             binding.customTabLayout.firstTabVisibility = if (transferPayList.size > 0) {
                 transferPageChange()
                 View.VISIBLE
@@ -103,11 +103,11 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
             }
 
             updateTabLayoutVisibility()
-        })
+        }
 
-        viewModel.onlinePayList.observe(this@MoneyRechargeActivity, Observer {
+        viewModel.onlinePayList.observe(this) {
             gotOnlinePay = true
-            onlinePayList = it ?: return@Observer
+            onlinePayList = it ?: return@observe
             binding.customTabLayout.secondTabVisibility = if (onlinePayList.size > 0) {
                 if (binding.customTabLayout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition) {
                     onlinePageChange()
@@ -118,11 +118,11 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
             }
 
             updateTabLayoutVisibility()
-        })
+        }
 
         //轉帳支付 - 銀行 微信 支付寶...
-        viewModel.transferPayResult.observe(this@MoneyRechargeActivity, Observer {
-            apiResult = it ?: return@Observer
+        viewModel.transferPayResult.observe(this) {
+            apiResult = it ?: return@observe
 
             val payWay = this.getString(R.string.txv_transfer_pay)
 
@@ -140,11 +140,11 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                     (apiResult.result ?: 0).toString(),
                 ).show(supportFragmentManager)
             }
-        })
+        }
 
         //轉帳支付 - 虛擬幣
-        viewModel.cryptoPayResult.observe(this@MoneyRechargeActivity, Observer {
-            cryptoResult = it ?: return@Observer
+        viewModel.cryptoPayResult.observe(this) {
+            cryptoResult = it ?: return@observe
 
             val payWay = this.getString(R.string.txv_crypto_pay)
 
@@ -163,10 +163,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                     (cryptoResult.result ?: 0).toString()
                 ).show(supportFragmentManager)
             }
-        })
+        }
 
         //在線支付 - 提交申請
-        viewModel.onlinePayResult.observe(this@MoneyRechargeActivity, Observer {
+        viewModel.onlinePayResult.observe(this) {
             val payWay = this.getString(R.string.recharge_channel_online)
 
             //顯示成功彈窗
@@ -174,10 +174,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                 payWay,
                 it.toString()
             ).show(supportFragmentManager)
-        })
+        }
 
         //在線支付 - 虛擬幣
-        viewModel.onlinePayCryptoResult.observe(this@MoneyRechargeActivity, Observer {
+        viewModel.onlinePayCryptoResult.observe(this) {
             val payWay = this.getString(R.string.recharge_channel_online)
 
             //顯示成功彈窗
@@ -185,7 +185,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                 payWay,
                 it.toString()
             ).show(supportFragmentManager)
-        })
+        }
     }
 
 
@@ -281,5 +281,17 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
         }
 
         binding.customTabLayout.isVisible = transferPayList.isNotEmpty() && onlinePayList.isNotEmpty()
+    }
+
+    fun fillPayWaysLayoutTo(viewGroup: ViewGroup, index: Int) {
+        val llPayWays = binding.llPayWays
+        val parent = llPayWays.parent
+        if (parent != null) {
+            if (parent == viewGroup) {
+                return
+            }
+            (parent as ViewGroup).removeView(llPayWays)
+        }
+        viewGroup.addView(llPayWays, index)
     }
 }

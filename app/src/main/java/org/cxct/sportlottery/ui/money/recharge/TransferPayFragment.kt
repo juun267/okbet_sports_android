@@ -91,7 +91,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         initObserve()
         setPayBankBottomSheet()
         setupQuickMoney()
+        setUpPayWaysLayout()
         viewModel.getDailyConfig()
+    }
+
+    private fun setUpPayWaysLayout() {
+        (activity as? MoneyRechargeActivity)?.fillPayWaysLayoutTo(binding.content, 0)
     }
 
     private fun initButton() = binding.run {

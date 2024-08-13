@@ -82,6 +82,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         setPayBankBottomSheet(view)
         setupServiceButton()
         setupQuickMoney()
+        setUpPayWaysLayout()
+    }
+
+    private fun setUpPayWaysLayout() {
+        (activity as? MoneyRechargeActivity)?.fillPayWaysLayoutTo(binding.content, 0)
     }
 
     private fun initObserve() {
@@ -108,16 +113,14 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         }
 
         viewModel.rechCheckMsg.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let {
-                mSelectRechCfgs?.let {
-                    it.open = 2
-                    setupMoneyCfgMaintanince(it, binding.btnSubmit, binding.linMaintenance)
-                }
-                showErrorPromptDialog(getString(R.string.prompt), it) {}
-            }
+            val msg = it.getContentIfNotHandled() ?: return@observe
+            showErrorPromptDialog(getString(R.string.prompt), msg) {}
+            val rechCfgs = mSelectRechCfgs ?: return@observe
+            rechCfgs.open = 2
+            setupMoneyCfgMaintanince(rechCfgs, binding.btnSubmit, binding.linMaintenance)
         }
+
         viewModel.dailyConfigEvent.observe(this){
-            RechargePromotionsDialog.show(this@OnlinePayFragment, it.toMutableList() as ArrayList)
             initFirstDeposit(it)
         }
     }
@@ -125,12 +128,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
     private fun initView() = binding.run{
 
         etRechargeOnlineAmount.setHint(getAmountLimitHint())
-
         setupTextChangeEvent()
         setupFocusEvent()
         initViewMorePromotions()
-        btnSubmit.setTitleLetterSpacing()
-
         tvRemark.text = "・${getString(R.string.credit_bet_remark)}："
     }
 

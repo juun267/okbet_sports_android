@@ -51,6 +51,11 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel,OnlineCryptoPayF
         setCurrencyBottomSheet()
         setAccountBottomSheet()
         setupServiceButton()
+        setUpPayWaysLayout()
+    }
+
+    private fun setUpPayWaysLayout() {
+        (activity as? MoneyRechargeActivity)?.fillPayWaysLayoutTo(binding.content, 0)
     }
 
     //幣種選項

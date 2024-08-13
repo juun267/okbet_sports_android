@@ -1,460 +1,466 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_F0F5FA"
-    android:paddingBottom="15dp"
-    tools:context=".ui.money.recharge.TransferPayFragment">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_14"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_bank"
+        <LinearLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/color_FFFFFF"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
+            android:layout_marginTop="@dimen/margin_14"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_pay_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="@string/title_bank"
-                    android:textColor="@color/color_9FADC6_535D76"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textStyle="normal" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:visibility="invisible"
-                    android:background="@color/color_666666_bcbcbc" />
-
-                <ImageView
-                    android:id="@+id/iv_bank_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="12dp"
-                    android:src="@drawable/ic_bank_default" />
-
-                <TextView
-                    android:id="@+id/txv_pay_bank"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="center_vertical|left"
-                    android:textColor="@color/color_CCCCCC_000000"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="45dp"
-                    android:contentDescription="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/icon_arrow_down" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@color/color_FFFFFF"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_bank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingStart="14dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="14dp">
+                app:cardBackgroundColor="@color/color_FFFFFF"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="44dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_pay_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/title_name"
-                        android:textColor="@color/color_9FADC6_A5A9B3"
-                        android:textSize="@dimen/textSize14sp" />
+                        android:layout_marginStart="14dp"
+                        android:text="@string/title_bank"
+                        android:textColor="@color/color_9FADC6_535D76"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textStyle="normal" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/color_666666_bcbcbc"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/iv_bank_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="12dp"
+                        android:src="@drawable/ic_bank_default" />
 
                     <TextView
-                        android:id="@+id/tv_name"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/color_FFFFFF_414655"
-                        android:textSize="@dimen/textSize12sp"
-                        tools:text="使用者姓名" />
-
-                    <Button
-                        android:id="@+id/btn_name_copy"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="12dp"
-                        android:background="@drawable/bg_radius_2_button_dusk_stroke"
-                        android:gravity="center"
-                        android:minWidth="48dp"
-                        android:paddingHorizontal="4dp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:text="@string/btn_copy"
-                        android:textAllCaps="false"
-                        android:textColor="@color/color_025BE8"
-                        android:textSize="@dimen/textSize12sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_account"
-                        android:textColor="@color/color_9FADC6_A5A9B3"
-                        android:textSize="@dimen/textSize14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_account"
-                        android:layout_width="0dp"
-                        android:textStyle="bold"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/color_FFFFFF_414655"
-                        android:textSize="@dimen/textSize12sp"
-                        tools:text="1123456789011111" />
-
-                    <Button
-                        android:id="@+id/btn_account_copy"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="12dp"
-                        android:background="@drawable/bg_radius_2_button_dusk_stroke"
-                        android:gravity="center"
-                        android:minWidth="48dp"
-                        android:paddingHorizontal="4dp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:text="@string/btn_copy"
-                        android:textAllCaps="false"
-                        android:textColor="@color/color_025BE8"
-                        android:textSize="@dimen/textSize12sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    tools:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="@string/title_address"
-                        android:textColor="@color/color_9FADC6_A5A9B3"
-                        android:textSize="@dimen/textSize14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_address"
+                        android:id="@+id/txv_pay_bank"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="9dp"
                         android:layout_weight="1"
-                        android:paddingTop="1dp"
-                        android:textColor="@color/color_FFFFFF_414655"
-                        android:textSize="@dimen/textSize12sp"
-                        tools:text="上海市浦东大道2851号" />
+                        android:background="@null"
+                        android:gravity="center_vertical|left"
+                        android:textColor="@color/color_CCCCCC_000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="45dp"
+                        android:contentDescription="@null"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/icon_arrow_down" />
 
                 </LinearLayout>
 
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@color/color_FFFFFF"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
+
                 <LinearLayout
-                    android:id="@+id/ll_qr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_qr_pay"
-                        android:textColor="@color/color_9FADC6_A5A9B3"
-                        android:textSize="@dimen/textSize14sp" />
+                    android:orientation="vertical"
+                    android:paddingStart="14dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="14dp">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:minHeight="40dp"
-                        android:orientation="vertical">
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-
-                        <LinearLayout
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:text="@string/title_name"
+                            android:textColor="@color/color_9FADC6_A5A9B3"
+                            android:textSize="@dimen/textSize14sp" />
 
-                            <ImageView
-                                android:id="@+id/iv_address"
+                        <TextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            android:textSize="@dimen/textSize12sp"
+                            tools:text="使用者姓名" />
+
+                        <Button
+                            android:id="@+id/btn_name_copy"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/bg_radius_2_button_dusk_stroke"
+                            android:gravity="center"
+                            android:minWidth="48dp"
+                            android:paddingHorizontal="4dp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:text="@string/btn_copy"
+                            android:textAllCaps="false"
+                            android:textColor="@color/color_025BE8"
+                            android:textSize="@dimen/textSize12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_account"
+                            android:textColor="@color/color_9FADC6_A5A9B3"
+                            android:textSize="@dimen/textSize14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_account"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            android:textSize="@dimen/textSize12sp"
+                            android:textStyle="bold"
+                            tools:text="1123456789011111" />
+
+                        <Button
+                            android:id="@+id/btn_account_copy"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/bg_radius_2_button_dusk_stroke"
+                            android:gravity="center"
+                            android:minWidth="48dp"
+                            android:paddingHorizontal="4dp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:text="@string/btn_copy"
+                            android:textAllCaps="false"
+                            android:textColor="@color/color_025BE8"
+                            android:textSize="@dimen/textSize12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        tools:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/title_address"
+                            android:textColor="@color/color_9FADC6_A5A9B3"
+                            android:textSize="@dimen/textSize14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_address"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:paddingTop="1dp"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            android:textSize="@dimen/textSize12sp"
+                            tools:text="上海市浦东大道2851号" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_qr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_qr_pay"
+                            android:textColor="@color/color_9FADC6_A5A9B3"
+                            android:textSize="@dimen/textSize14sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:minHeight="40dp"
+                            android:orientation="vertical">
+
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
-                                android:layout_height="110dp"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="110dp"
-                                android:maxHeight="110dp"
-                                android:scaleType="fitCenter" />
-
-                            <TextView
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/margin_14"
-                                android:text="@string/title_hint_qr_pay"
-                                android:textColor="@color/color_CCCCCC_000000"
-                                android:textSize="@dimen/textSize12sp" />
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/iv_address"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="110dp"
+                                    android:adjustViewBounds="true"
+                                    android:maxWidth="110dp"
+                                    android:maxHeight="110dp"
+                                    android:scaleType="fitCenter" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/margin_14"
+                                    android:text="@string/title_hint_qr_pay"
+                                    android:textColor="@color/color_CCCCCC_000000"
+                                    android:textSize="@dimen/textSize12sp" />
+
+                            </LinearLayout>
+
 
                         </LinearLayout>
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_remark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="2dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/log_detail_reason"
+                            android:textColor="@color/color_A5A9B3"
+                            android:textSize="@dimen/textSize14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_remark"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/title_hint_qr_pay"
+                            android:textColor="@color/color_E23434"
+                            android:textSize="@dimen/textSize12sp"
+                            tools:text="财付通线下充值" />
+
+                        <Button
+                            android:id="@+id/btn_remaks_copy"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/bg_radius_2_button_dusk_stroke"
+                            android:gravity="center"
+                            android:minWidth="48dp"
+                            android:paddingHorizontal="4dp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:text="@string/btn_copy"
+                            android:textAllCaps="false"
+                            android:textColor="@color/color_025BE8"
+                            android:textSize="@dimen/textSize12sp" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_remark"
-                    android:layout_width="match_parent"
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_marginStart="@dimen/margin_14"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_dio"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="2dp"
+                    android:text="@string/dot"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <TextView
+                    android:id="@+id/tv_hint1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_14"
+                    android:text="@string/money_recharge_hint1"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_hit2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:text="@string/dot"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <TextView
+                    android:id="@+id/tv_hint2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_14"
+                    android:text="@string/money_recharge_hint2"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp" />
+            </LinearLayout>
+
+            <!-- 充值金額 -->
+            <org.cxct.sportlottery.view.LoginEditText
+                android:id="@+id/et_recharge_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_FFFFFF"
+                android:paddingLeft="4dp"
+                app:cvHint="@string/edt_hint_deposit_money"
+                app:cvInputType="number"
+                app:cvTextColor="@color/color_0D2245"
+                app:cvTextSize="@dimen/textSize18sp"
+                app:cvTextStyle="bold"
+                app:cvTitle="@string/title_deposit_money"
+                app:cvTitleTextStyle="normal" />
+
+            <include
+                android:id="@+id/includeQuickMoney"
+                layout="@layout/include_quick_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <include
+                android:id="@+id/linFirstDeposit"
+                layout="@layout/view_first_deposit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <!-- 微信 -->
+            <org.cxct.sportlottery.view.LoginEditText
+                android:id="@+id/et_wx_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                app:cvHint="@string/edt_hint_wx_id"
+                app:cvInputType="text"
+                app:cvTextColor="@color/color_9BB3D9_535D76"
+                app:cvTitle="@string/title_wx_id"
+                app:cvTitleTextStyle="normal" />
+
+            <!-- 認證姓名 -->
+            <org.cxct.sportlottery.view.LoginEditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                app:cvHint="@string/edt_hint_check_real_name"
+                app:cvInputType="text"
+                app:cvTextColor="@color/color_9BB3D9_535D76"
+                app:cvTitle="@string/title_real_name"
+                app:cvTitleTextStyle="normal" />
+
+            <!-- 銀行卡號 -->
+            <org.cxct.sportlottery.view.LoginEditText
+                android:id="@+id/et_bank_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                app:cvHint="@string/please_enter_bank_card_rule"
+                app:cvInputType="number"
+                app:cvTextColor="@color/color_9BB3D9_535D76"
+                app:cvTitle="@string/title_bank_account"
+                app:cvTitleTextStyle="normal" />
+
+            <!-- 暱稱 -->
+            <org.cxct.sportlottery.view.LoginEditText
+                android:id="@+id/et_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                app:cvHint="@string/edt_hint_nick_name"
+                app:cvInputType="text"
+                app:cvTextColor="@color/color_9BB3D9_535D76"
+                app:cvTitle="@string/title_nick_name"
+                app:cvTitleTextStyle="normal" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_recharge_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/color_FFFFFF"
+                app:cardElevation="0dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/log_detail_reason"
-                        android:textColor="@color/color_A5A9B3"
-                        android:textSize="@dimen/textSize14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_remark"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/title_hint_qr_pay"
-                        android:textColor="@color/color_E23434"
-                        android:textSize="@dimen/textSize12sp"
-                        tools:text="财付通线下充值" />
-
-                    <Button
-                        android:id="@+id/btn_remaks_copy"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="12dp"
-                        android:background="@drawable/bg_radius_2_button_dusk_stroke"
-                        android:gravity="center"
-                        android:minWidth="48dp"
-                        android:paddingHorizontal="4dp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:text="@string/btn_copy"
-                        android:textAllCaps="false"
-                        android:textColor="@color/color_025BE8"
-                        android:textSize="@dimen/textSize12sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <LinearLayout
-            android:layout_marginStart="@dimen/margin_14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_dio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dot"
-                android:textColor="@color/color_E44438_e44438"
-                android:textSize="@dimen/textSize12sp" />
-
-            <TextView
-                android:id="@+id/tv_hint1"
-                android:layout_marginEnd="@dimen/margin_14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/money_recharge_hint1"
-                android:textColor="@color/color_E44438_e44438"
-                android:textSize="@dimen/textSize12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_hit2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dot"
-                android:layout_marginStart="@dimen/margin_14"
-                android:textColor="@color/color_E44438_e44438"
-                android:textSize="@dimen/textSize12sp" />
-
-            <TextView
-                android:id="@+id/tv_hint2"
-                android:layout_marginEnd="@dimen/margin_14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/money_recharge_hint2"
-                android:textColor="@color/color_E44438_e44438"
-                android:textSize="@dimen/textSize12sp" />
-        </LinearLayout>
-
-        <!-- 充值金額 -->
-        <org.cxct.sportlottery.view.LoginEditText
-            android:id="@+id/et_recharge_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_FFFFFF"
-            android:paddingLeft="4dp"
-            app:cvHint="@string/edt_hint_deposit_money"
-            app:cvInputType="number"
-            app:cvTextColor="@color/color_0D2245"
-            app:cvTextSize ="@dimen/textSize18sp"
-            app:cvTextStyle="bold"
-            app:cvTitleTextStyle="normal"
-            app:cvTitle="@string/title_deposit_money" />
-
-        <include
-            android:id="@+id/includeQuickMoney"
-            layout="@layout/include_quick_money"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:visibility="gone"
-            tools:visibility="visible"/>
-        <include
-            android:id="@+id/linFirstDeposit"
-            layout="@layout/view_first_deposit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            tools:visibility="visible"
-            android:visibility="gone"/>
-
-        <!-- 微信 -->
-        <org.cxct.sportlottery.view.LoginEditText
-            android:id="@+id/et_wx_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            app:cvHint="@string/edt_hint_wx_id"
-            app:cvInputType="text"
-            app:cvTextColor="@color/color_9BB3D9_535D76"
-            app:cvTitleTextStyle="normal"
-            app:cvTitle="@string/title_wx_id" />
-
-        <!-- 認證姓名 -->
-        <org.cxct.sportlottery.view.LoginEditText
-            android:id="@+id/et_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            app:cvHint="@string/edt_hint_check_real_name"
-            app:cvInputType="text"
-            app:cvTextColor="@color/color_9BB3D9_535D76"
-            app:cvTitleTextStyle="normal"
-            app:cvTitle="@string/title_real_name" />
-
-        <!-- 銀行卡號 -->
-        <org.cxct.sportlottery.view.LoginEditText
-            android:id="@+id/et_bank_account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            app:cvHint="@string/please_enter_bank_card_rule"
-            app:cvInputType="number"
-            app:cvTitleTextStyle="normal"
-            app:cvTextColor="@color/color_9BB3D9_535D76"
-            app:cvTitle="@string/title_bank_account" />
-
-        <!-- 暱稱 -->
-        <org.cxct.sportlottery.view.LoginEditText
-            android:id="@+id/et_nickname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            app:cvHint="@string/edt_hint_nick_name"
-            app:cvInputType="text"
-            app:cvTextColor="@color/color_9BB3D9_535D76"
-            app:cvTitleTextStyle="normal"
-            app:cvTitle="@string/title_nick_name" />
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_recharge_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/color_FFFFFF">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="14dp"
                         android:gravity="center_vertical"
@@ -465,11 +471,12 @@
 
                     <LinearLayout
                         android:id="@+id/ll_transfer_time"
-                        android:gravity="center|end"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center|end"
                         android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/txv_transfer_time"
                             android:layout_width="wrap_content"
@@ -483,6 +490,7 @@
                             app:autoSizeMaxTextSize="@dimen/textSize12sp"
                             app:autoSizeMinTextSize="@dimen/textSize8sp"
                             tools:text="2020-13-25" />
+
                         <ImageView
                             android:layout_width="35dp"
                             android:layout_height="45dp"
@@ -490,18 +498,20 @@
                             android:scaleType="centerInside"
                             android:src="@drawable/ic_arrow_gray" />
                     </LinearLayout>
+
                     <View
-                        android:background="@color/color_272F41_E3E8EE"
-                        android:layout_marginVertical="@dimen/margin_12"
                         android:layout_width="1dp"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="@dimen/margin_12"
+                        android:background="@color/color_272F41_E3E8EE" />
+
                     <LinearLayout
                         android:id="@+id/ll_transfer_time2"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/txv_transfer_time2"
@@ -527,285 +537,305 @@
                 </LinearLayout>
 
 
+                <!--<LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-            <!--<LinearLayout
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:autoSizeMaxTextSize="@dimen/textSize13sp"
+                        android:autoSizeMinTextSize="@dimen/textSize6sp"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:text="@string/title_recharge_time"
+                        android:textColor="@color/color_9BB3D9_535D76"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="invisible"
+                        android:background="@color/color_1F1F1F_E2E2E2" />
+
+
+                    <TextView
+                        android:id="@+id/txv_recharge_time"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="start|center_vertical"
+                        android:maxLines="1"
+                        android:textColor="@color/color_BBBBBB_333333"
+                        android:textSize="@dimen/textSize12sp"
+                        app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                        app:autoSizeMinTextSize="@dimen/textSize8sp"
+                        app:autoSizeTextType="uniform"
+                        tools:text="2020-13-25 19:35:35 (GMT+8)" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@null"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_icon_timev_01" />
+
+                </LinearLayout>
+    -->
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cv_recharge_upload_evidence"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@color/color_FFFFFF">
 
                 <TextView
+                    android:id="@+id/tv_upload_evidence"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:autoSizeMaxTextSize="@dimen/textSize13sp"
-                    android:autoSizeMinTextSize="@dimen/textSize6sp"
-                    android:autoSizeTextType="uniform"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:text="@string/title_recharge_time"
-                    android:textColor="@color/color_9BB3D9_535D76"
-                    android:textSize="@dimen/textSize14sp" />
+                    android:layout_height="@dimen/dp_40"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:gravity="center"
+                    android:text="@string/update_voucher"
+                    android:textColor="@color/color_D2E4FF_414655"
+                    android:textSize="@dimen/margin_14"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <View
-                    android:layout_width="1dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:visibility="invisible"
-                    android:background="@color/color_1F1F1F_E2E2E2" />
+                    android:id="@+id/view_upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:background="@color/color_eeeeee"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_upload_evidence" />
 
-
-                <TextView
-                    android:id="@+id/txv_recharge_time"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="start|center_vertical"
-                    android:maxLines="1"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize12sp"
-                    app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                    app:autoSizeMinTextSize="@dimen/textSize8sp"
-                    app:autoSizeTextType="uniform"
-                    tools:text="2020-13-25 19:35:35 (GMT+8)" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
-                    android:contentDescription="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_icon_timev_01" />
-
-            </LinearLayout>
--->
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cv_recharge_upload_evidence"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
-            android:background="@color/color_FFFFFF">
-
-            <TextView
-                android:id="@+id/tv_upload_evidence"
-                android:text="@string/update_voucher"
-                android:gravity="center"
-                android:textSize="@dimen/margin_14"
-                android:textColor="@color/color_D2E4FF_414655"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/margin_14"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_40"/>
-            <View
-                android:id="@+id/view_upload"
-                android:background="@color/color_eeeeee"
-                app:layout_constraintTop_toBottomOf="@+id/tv_upload_evidence"
-                android:layout_marginStart="@dimen/margin_14"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"/>
-            <Button
-                android:id="@+id/bt_check_files"
-                style="?android:attr/borderlessButtonStyle"
-                android:text="@string/select_file1"
-                android:textColor="@color/color_2b2b2b_ffffff"
-                android:textSize="@dimen/textSize14sp"
-                android:layout_marginEnd="@dimen/margin_14"
-                android:layout_marginTop="@dimen/margin_8"
-                android:textAllCaps="false"
-                android:background="@drawable/btn_send_sms"
-                app:layout_constraintTop_toBottomOf="@+id/view_upload"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_width="85dp"
-                android:layout_height="35dp"/>
-            <View
-                android:layout_marginTop="@dimen/margin_8"
-                android:id="@+id/view_upload2"
-                android:background="@color/color_eeeeee"
-                android:layout_marginStart="@dimen/margin_14"
-                app:layout_constraintTop_toBottomOf="@+id/bt_check_files"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"/>
-            <EditText
-                android:id="@+id/tv_hint_upload"
-                app:layout_constraintTop_toBottomOf="@+id/view_upload"
-                app:layout_constraintBottom_toTopOf="@+id/view_upload2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/bt_check_files"
-                android:layout_width="0dp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="@dimen/textSize14sp"
-                android:background="@null"
-                android:hint="@string/no_select_file"
-                android:enabled="false"
-                android:textColor="@color/color_FFFFFF_414655"
-                android:textColorHint="@color/color_C9CFD7"
-                android:layout_marginStart="@dimen/margin_14"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:layout_height="wrap_content"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <TextView
-            android:layout_marginHorizontal="@dimen/margin_14"
-            android:layout_marginVertical="@dimen/margin_10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/optional_tips"
-            android:textColor="@color/color_E44438_e44438"
-            android:textSize="@dimen/textSize12sp"/>
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/color_FFFFFF"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:autoSizeMaxTextSize="@dimen/textSize13sp"
-                    android:autoSizeMinTextSize="@dimen/textSize6sp"
-                    android:autoSizeTextType="uniform"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:text="@string/title_current_money"
-                    android:textColor="@color/color_9BB3D9_535D76"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:visibility="invisible"
-                    android:background="@color/color_1F1F1F_E2E2E2" />
-
-                <TextView
-                    android:id="@+id/txv_wallet_money"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="start|center_vertical"
-                    android:singleLine="true"
-                    android:textColor="@color/color_FFFFFF_414655"
+                <Button
+                    android:id="@+id/bt_check_files"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="85dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginEnd="@dimen/margin_14"
+                    android:background="@drawable/btn_send_sms"
+                    android:text="@string/select_file1"
+                    android:textAllCaps="false"
+                    android:textColor="@color/color_2b2b2b_ffffff"
                     android:textSize="@dimen/textSize14sp"
-                    tools:text="₱ 15,282.42" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_upload" />
 
-            </LinearLayout>
+                <View
+                    android:id="@+id/view_upload2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:background="@color/color_eeeeee"
+                    app:layout_constraintTop_toBottomOf="@+id/bt_check_files" />
 
-
-        </androidx.cardview.widget.CardView>
-
-        <LinearLayout
-            android:id="@+id/ll_fee_rate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:visibility="gone">
+                <EditText
+                    android:id="@+id/tv_hint_upload"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:enabled="false"
+                    android:hint="@string/no_select_file"
+                    android:maxLines="1"
+                    android:textColor="@color/color_FFFFFF_414655"
+                    android:textColorHint="@color/color_C9CFD7"
+                    android:textSize="@dimen/textSize14sp"
+                    app:layout_constraintBottom_toTopOf="@+id/view_upload2"
+                    app:layout_constraintEnd_toStartOf="@+id/bt_check_files"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_upload" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/title_fee_rate"
-                android:layout_marginStart="@dimen/margin_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_E44438_e44438"
-                android:textSize="@dimen/textSize12sp"
-                tools:text="@string/title_fee_rate" />
-
-            <TextView
-                android:id="@+id/tv_fee_rate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_E44438_e44438"
-                android:textSize="@dimen/textSize12sp"
-                tools:text="0.500" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/percent"
+                android:layout_marginHorizontal="@dimen/margin_14"
+                android:layout_marginVertical="@dimen/margin_10"
+                android:text="@string/optional_tips"
                 android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/color_FFFFFF"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:autoSizeMaxTextSize="@dimen/textSize13sp"
+                        android:autoSizeMinTextSize="@dimen/textSize6sp"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:text="@string/title_current_money"
+                        android:textColor="@color/color_9BB3D9_535D76"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/color_1F1F1F_E2E2E2"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:id="@+id/txv_wallet_money"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="start|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/color_FFFFFF_414655"
+                        android:textSize="@dimen/textSize14sp"
+                        tools:text="₱ 15,282.42" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/ll_fee_rate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/title_fee_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="@string/title_fee_rate" />
+
+                <TextView
+                    android:id="@+id/tv_fee_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="0.500" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/percent"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_fee_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/margin_20">
+
+                <TextView
+                    android:id="@+id/title_fee_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="@string/title_fee_amount" />
+
+
+                <TextView
+                    android:id="@id/tv_currency_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="$" />
+
+                <TextView
+                    android:id="@+id/tv_fee_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="12.000" />
+
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_fee_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="@dimen/margin_20">
+    </androidx.core.widget.NestedScrollView>
 
-            <TextView
-                android:layout_marginStart="@dimen/margin_14"
-                android:id="@+id/title_fee_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_E44438_e44438"
-                android:textSize="@dimen/textSize12sp"
-                tools:text="@string/title_fee_amount" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-
-            <TextView
-                android:id="@id/tv_currency_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_E44438_e44438"
-                android:textSize="@dimen/textSize12sp"
-                tools:text="$" />
-
-            <TextView
-                android:id="@+id/tv_fee_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:textColor="@color/color_E44438_e44438"
-                android:textSize="@dimen/textSize12sp"
-                tools:text="12.000" />
-
-
-        </LinearLayout>
         <LinearLayout
             android:id="@+id/linReceiveExtra"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_30"
             android:layout_marginBottom="@dimen/margin_5"
-            android:gravity="center"
             android:background="@drawable/bg_gradient_red_orange"
+            android:gravity="center"
             android:visibility="gone"
             tools:visibility="visible">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/textSize16sp"
+                android:text="@string/P282"
                 android:textColor="@color/color_FFFFFF"
-                android:text="@string/P282" />
+                android:textSize="@dimen/textSize16sp" />
+
             <TextView
                 android:id="@+id/tvExtraAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_6"
+                android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize20sp"
                 android:textStyle="bold"
-                android:textColor="@color/color_FFFFFF"
                 tools:text="₱ 100" />
         </LinearLayout>
+
         <Button
             android:id="@+id/btn_submit"
             style="?android:attr/borderlessButtonStyle"
@@ -815,26 +845,27 @@
             android:layout_marginEnd="@dimen/margin_20"
             android:background="@drawable/ic_submit"
             android:gravity="center"
-            android:textAllCaps="false"
             android:text="@string/btn_submit"
+            android:textAllCaps="false"
             android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold" />
+
         <include
             android:id="@+id/linMaintenance"
             layout="@layout/view_payment_maintenance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            tools:visibility="visible"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <LinearLayout
-            android:layout_marginBottom="@dimen/dp_40"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_20"
+            android:layout_marginBottom="@dimen/dp_40"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -854,7 +885,6 @@
                 android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
-
     </LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>
