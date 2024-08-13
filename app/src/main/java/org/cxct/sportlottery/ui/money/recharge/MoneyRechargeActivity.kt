@@ -1,11 +1,10 @@
 package org.cxct.sportlottery.ui.money.recharge
 
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
@@ -14,7 +13,7 @@ import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
+import org.cxct.sportlottery.ui.money.recharge.dialog.GiveUpDepositDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
@@ -54,9 +53,29 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun initToolbar() {
         binding.toolBar.titleText = getString(R.string.J285)
-        binding.toolBar.setOnBackPressListener {
-            finish()
+        binding.toolBar.setOnBackPressListener { doOnBackPress() }
+    }
+
+    override fun onBackPressed() {
+        doOnBackPress()
+    }
+
+    private fun doOnBackPress() {
+
+        val dailyConfig = if (mCurrentFragment is OnlinePayFragment) {
+            (mCurrentFragment as OnlinePayFragment).getSelectedDailyConfig()
+        } else if (mCurrentFragment is TransferPayFragment) {
+            (mCurrentFragment as TransferPayFragment).getSelectedDailyConfig()
+        } else {
+            null
         }
+
+        if (dailyConfig == null) {
+            super.onBackPressed()
+            return
+        }
+
+        GiveUpDepositDialog.show(supportFragmentManager, dailyConfig.capped.toString())
     }
 
     private fun initData() {
@@ -122,6 +141,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
                 ).show(supportFragmentManager)
             }
         })
+
         //轉帳支付 - 虛擬幣
         viewModel.cryptoPayResult.observe(this@MoneyRechargeActivity, Observer {
             cryptoResult = it ?: return@Observer
@@ -171,13 +191,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun initTabLayout() {
         binding.customTabLayout.setCustomTabSelectedListener { position ->
-            when (position) {
-                RechargeType.TRANSFER_PAY.tabPosition -> {
-                    transferPageChange()
-                }
-                RechargeType.ONLINE_PAY.tabPosition -> {
-                    onlinePageChange()
-                }
+            if (position == RechargeType.TRANSFER_PAY.tabPosition) {
+                transferPageChange()
+            } else if (position == RechargeType.ONLINE_PAY.tabPosition) {
+                onlinePageChange()
             }
         }
 
@@ -204,8 +221,8 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
     }
 
     private fun initView()=binding.run {
-        if ((!transferPayList.isNullOrEmpty() && customTabLayout.selectedTabPosition == RechargeType.TRANSFER_PAY.tabPosition)
-            || (!onlinePayList.isNullOrEmpty() && customTabLayout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition)
+        if ((transferPayList.isNotEmpty() && customTabLayout.selectedTabPosition == RechargeType.TRANSFER_PAY.tabPosition)
+            || (onlinePayList.isNotEmpty() && customTabLayout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition)
         ) {
             blockNoType.visibility = View.VISIBLE
             rvPayType.visibility = View.GONE
@@ -218,36 +235,32 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
     }
 
     private fun getPayFragment(moneyPayWay: MoneyPayWayData): Fragment {
-        return when {
-            moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType == CRYPTO_PAY_INDEX -> {
-                OnlineCryptoPayFragment().setArguments(moneyPayWay)
-            }
-            moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType != CRYPTO_PAY_INDEX -> {
-                OnlinePayFragment().setArguments(moneyPayWay)
-            }
-            moneyPayWay.rechType == "cryptoPay" -> CryptoPayFragment().setArguments(moneyPayWay)
-            else -> TransferPayFragment().setArguments(moneyPayWay)
-
+        if (moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType == CRYPTO_PAY_INDEX) {
+            return OnlineCryptoPayFragment().setArguments(moneyPayWay)
         }
+
+        if (moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType != CRYPTO_PAY_INDEX) {
+            return OnlinePayFragment().setArguments(moneyPayWay)
+        }
+
+        if (moneyPayWay.rechType == "cryptoPay") {
+            return CryptoPayFragment().setArguments(moneyPayWay)
+        }
+
+        return TransferPayFragment().setArguments(moneyPayWay)
     }
 
     private fun switchFragment(changeToFragment: Fragment?, tag: String) {
-
         if (changeToFragment == null) return
 
         val ft = supportFragmentManager.beginTransaction()
-
-        ft.replace(
-            R.id.fl_pay_type_container,
-            changeToFragment,
-            tag
-        )
+        ft.replace(R.id.fl_pay_type_container, changeToFragment, tag)
         mCurrentFragment = changeToFragment
         ft.commitAllowingStateLoss()
     }
 
     private fun initRecyclerView()=binding.rvPayType.run {
-        bankTypeAdapter.setOnItemClickListener { adapter, view, position ->
+        bankTypeAdapter.setOnItemClickListener { _, _, position ->
             bankTypeAdapter.setSelectedPosition(position)
             val itemData = bankTypeAdapter.getItem(position)
             switchFragment(getPayFragment(itemData), itemData.rechType)
@@ -256,23 +269,17 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
         }
         layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 4)
         adapter = bankTypeAdapter
-        if (itemDecorationCount == 0) {
-            addItemDecoration(
-                GridSpacingItemDecoration(
-                    4,
-                    10.dp,
-                    false
-                )
-            )
-        }
+        addItemDecoration(GridSpacingItemDecoration(4, 10.dp, false))
     }
 
     /**
      * 檢查是否需要顯示充值分類Tab
      */
     private fun updateTabLayoutVisibility() {
-        if (gotOnlinePay && gotTransferPay) {
-            binding.customTabLayout.visibility = if (!transferPayList.isNullOrEmpty() && !onlinePayList.isNullOrEmpty()) View.VISIBLE else View.GONE
+        if (!gotOnlinePay || !gotTransferPay) {
+            return
         }
+
+        binding.customTabLayout.isVisible = transferPayList.isNotEmpty() && onlinePayList.isNotEmpty()
     }
 }

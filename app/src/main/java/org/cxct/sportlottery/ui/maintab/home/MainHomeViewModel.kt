@@ -55,6 +55,12 @@ open class MainHomeViewModel(
     androidContext
 ) {
 
+    companion object {
+
+        val depositDetailEvent = SingleLiveEvent<FirstDepositDetail>()
+
+    }
+
     private val _publicityRecommend = MutableLiveData<Event<List<Recommend>>>()
     val publicityRecommend: LiveData<Event<List<Recommend>>>
         get() = _publicityRecommend
@@ -117,7 +123,7 @@ open class MainHomeViewModel(
     val homeOKLiveList: LiveData< List<OKGameBean>>
         get() = _homeOKLiveList
     private val _homeOKLiveList = MutableLiveData< List<OKGameBean>>()
-
+    val firstDepositDetailEvent = depositDetailEvent
 
     private val _recordBetHttp = MutableLiveData<List<RecordNewEvent>>()
     private val _recordWinHttp = MutableLiveData<List<RecordNewEvent>>()

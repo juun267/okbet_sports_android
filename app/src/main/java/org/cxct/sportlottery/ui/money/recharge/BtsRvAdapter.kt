@@ -8,12 +8,9 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemListviewBankCardTickBinding
 
-class BtsRvAdapter(private val dataList: MutableList<SelectBank>,private val clickListener: BankAdapterListener)
-    : BindingAdapter<BtsRvAdapter.SelectBank,ItemListviewBankCardTickBinding>(){
+class BtsRvAdapter(dataList: MutableList<SelectBank>,private val clickListener: BankAdapterListener)
+    : BindingAdapter<BtsRvAdapter.SelectBank,ItemListviewBankCardTickBinding>(dataList){
 
-    init {
-        setList(dataList)
-    }
     private var selectedPosition = 0
 
     override fun onBinding(
@@ -50,8 +47,7 @@ class BtsRvAdapter(private val dataList: MutableList<SelectBank>,private val cli
     data class SelectBank(var bankName: String?, var bankIcon: Int?)
 
     class BankAdapterListener(val listener: (bankCard: SelectBank, position: Int) -> Unit) {
-        fun onClick(bankCard: SelectBank, position: Int) =
-            listener(bankCard, position)
+        fun onClick(bankCard: SelectBank, position: Int) = listener(bankCard, position)
     }
 
 

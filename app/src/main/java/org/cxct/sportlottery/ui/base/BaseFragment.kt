@@ -13,14 +13,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
-import org.cxct.sportlottery.net.flow.IUiView
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass
 
 @SuppressLint("InflateParams")
 // 不需要传入参数了，通过反射获取类型
-abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(private val clazz: KClass<VM>? = null): VisibilityFragment() ,IUiView{
+abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(private val clazz: KClass<VM>? = null): VisibilityFragment() {
 
     private lateinit var _viewModel: VM
     val viewModel: VM
@@ -96,13 +95,13 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(private val cla
 
     private var progressDialog: ProgressDialog? = null
 
-    override fun showLoading() {
+    open fun showLoading() {
         if (progressDialog == null)
             progressDialog = ProgressDialog(requireActivity())
         progressDialog?.show()
     }
 
-    override fun dismissLoading() {
+    open fun dismissLoading() {
         progressDialog?.takeIf { it.isShowing }?.dismiss()
     }
 

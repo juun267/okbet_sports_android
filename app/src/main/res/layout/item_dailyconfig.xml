@@ -4,27 +4,26 @@
     android:id="@+id/linChooseReward"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:paddingLeft="@dimen/margin_12"
-    android:paddingRight="@dimen/margin_6">
+    android:paddingLeft="12dp">
 
     <ImageView
         android:id="@+id/ivRewardCheck"
-        android:layout_width="@dimen/margin_24"
-        android:layout_height="@dimen/margin_24"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
         android:src="@drawable/selector_radio_circle" />
 
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_6"
-        android:background="@drawable/selector_blue_radius_12"
-        android:padding="@dimen/margin_6">
+        android:layout_marginStart="14dp"
+        android:padding="6dp"
+        android:background="@drawable/selector_blue_radius_12">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_bonus">
+            android:layout_width="300dp"
+            android:layout_height="90dp"
+            android:background="@drawable/bg_charger_promotion_item">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -39,8 +38,8 @@
                     android:layout_height="@dimen/margin_24"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:textColor="@color/color_025BE8"
-                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
                     android:textStyle="bold"
                     tools:text="10%"/>
 
@@ -52,7 +51,7 @@
                     android:lines="2"
                     android:gravity="center"
                     android:text="@string/P445"
-                    android:textColor="@color/color_025BE8"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -73,7 +72,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/P278"
-                        android:textColor="#303C55"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/textSize14sp" />
 
                     <TextView
@@ -85,8 +84,8 @@
                         android:layout_weight="1"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:textColor="@color/color_F23C3B"
-                        android:textSize="@dimen/textSize18sp"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -111,8 +110,8 @@
                     android:ellipsize="end"
                     android:lines="2"
                     android:text="@string/P281"
-                    android:textColor="@color/color_6D7693"
-                    android:textSize="@dimen/textSize12sp" />
+                    android:textColor="@color/transparent_white_70"
+                    android:textSize="10sp" />
             </LinearLayout>
 
         </LinearLayout>

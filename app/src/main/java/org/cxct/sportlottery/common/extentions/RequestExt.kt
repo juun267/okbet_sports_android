@@ -8,6 +8,9 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.ApiResult.Companion.netError
+import org.cxct.sportlottery.net.ApiResult.Companion.unknownError
+import org.cxct.sportlottery.net.OtherApiResult
 
 import java.io.IOException
 
@@ -25,9 +28,9 @@ suspend fun <T> safeApi(block: suspend() -> ApiResult<T>): ApiResult<T> {
     } catch (e: Exception) {
         e.printStackTrace()
         if (e is IOException) {
-            return ApiResult.netError()
+            return unknownError(ApiResult())
         }
-        return ApiResult.unknownError()
+        return netError(ApiResult())
     }
 }
 
@@ -50,3 +53,25 @@ fun <T> callApiWithNoCancel(apiCall: suspend() -> ApiResult<T>, block: (ApiResul
 fun <T> ViewModel.callApi(apiCall: suspend() -> ApiResult<T>, block: (ApiResult<T>) -> Unit) = viewModelScope.callApi(apiCall, block)
 
 fun <T> CoroutineScope.asyncApi(block: suspend() -> ApiResult<T>) = async { safeApi { block() } }
+
+suspend fun <T, D> safeOtherApi(block: suspend() -> OtherApiResult<T, D>): OtherApiResult<T, D> {
+
+    return try {
+        block()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        if (e is IOException) {
+            return netError(OtherApiResult())
+        }
+        return unknownError(OtherApiResult())
+    }
+}
+
+fun <T, D> CoroutineScope.callApiOther(apiCall: suspend() -> OtherApiResult<T, D>, block: (OtherApiResult<T, D>) -> Unit) {
+    launch(Dispatchers.IO) {
+        val result = safeOtherApi(apiCall)
+        launch(Dispatchers.Main) { block(result) }
+    }
+}
+
+fun <T, D> ViewModel.callApiOther(apiCall: suspend() -> OtherApiResult<T, D>, block: (OtherApiResult<T, D>) -> Unit) = viewModelScope.callApiOther(apiCall, block)

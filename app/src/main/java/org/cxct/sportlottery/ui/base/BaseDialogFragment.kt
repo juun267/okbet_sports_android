@@ -32,7 +32,7 @@ open class BaseDialogFragment: DialogFragment() {
         onShowListener?.invoke()
     }
 
-    protected fun modifyPrivateField(fieldName: String, newValue: Any) {
+    private fun modifyPrivateField(fieldName: String, newValue: Any) {
         val fieldDismissed = DialogFragment::class.java.getDeclaredField(fieldName)
         fieldDismissed.isAccessible = true
         fieldDismissed.set(this, newValue)

@@ -48,4 +48,11 @@ data class FirstDepositDetail(
           3->  activityConfigAfterLimitDay
           else-> null
       }
+
+    fun isLimitedFirstDeposit() = expireTime > 0
+
+    // 首充活动开启
+    fun firstDeposit(): Boolean {
+        return expireTime > 0 || isFirstDeposit != null
+    }
 }

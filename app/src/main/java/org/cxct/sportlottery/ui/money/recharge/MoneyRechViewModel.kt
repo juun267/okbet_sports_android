@@ -15,6 +15,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.callApiOther
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.money.data.DailyConfig
@@ -141,15 +142,12 @@ class MoneyRechViewModel(
         get() = _rechCheckMsg
     private var _rechCheckMsg = MutableLiveData<Event<String>>()
 
-    var dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
+    val dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
+    var uniPaid: Boolean = false
 
     //更新使用者資料
     fun getUserInfo() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                UserInfoRepository.getUserInfo()
-            }
-        }
+        doRequest({ UserInfoRepository.getUserInfo() }) { }
     }
 
     //獲取充值的基礎配置
@@ -446,24 +444,24 @@ class MoneyRechViewModel(
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeOnlineAmountMsg.value = when {
             rechargeAmount.isEmpty() -> {
-                LocalUtils.getString(R.string.error_input_empty)
+                androidContext.getString(R.string.error_input_empty)
             }
             rechargeAmount.toLongOrNull() == null || rechargeAmount.toLong().equals(0) -> {
-                LocalUtils.getString(R.string.error_recharge_amount_format)
+                androidContext.getString(R.string.error_recharge_amount_format)
             }
             VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
             )  == -1 -> {
-                LocalUtils.getString(R.string.error_amount_limit_less)
+                androidContext.getString(R.string.error_amount_limit_less)
             }
             VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
             ) == 1 -> {
-                LocalUtils.getString(R.string.error_amount_limit_exceeded)
+                androidContext.getString(R.string.error_amount_limit_exceeded)
             }
             else -> ""
         }
@@ -725,9 +723,11 @@ class MoneyRechViewModel(
             else -> ""
         }
     }
+
     fun getDailyConfig(){
-        callApi({org.cxct.sportlottery.net.money.MoneyRepository.rechDailyConfig()}){
+        callApiOther({org.cxct.sportlottery.net.money.MoneyRepository.rechDailyConfig()}){
             if (it.succeeded()){
+                uniPaid = it.other?.paid == true
                 it.getData()?.let {
                     dailyConfigEvent.postValue(it)
                 }

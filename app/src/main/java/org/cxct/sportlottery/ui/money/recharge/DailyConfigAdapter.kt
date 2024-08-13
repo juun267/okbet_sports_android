@@ -45,4 +45,14 @@ class DailyConfigAdapter(val onSelectedItem: (DailyConfig)->Unit): BindingAdapte
         notifyDataSetChanged()
     }
     fun getSelectedItem(): DailyConfig?=data.getOrNull(selectPos)
+
+    fun changeSelect(dailyConfig: DailyConfig) {
+        data.forEachIndexed { index, item ->
+            if (item.activityType == dailyConfig.activityType) {
+                selectPos = index
+                notifyDataSetChanged()
+                return
+            }
+        }
+    }
 }

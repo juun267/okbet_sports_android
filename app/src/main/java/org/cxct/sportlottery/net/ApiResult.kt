@@ -5,21 +5,23 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 
 open class ApiResult<T>(): java.io.Serializable {
 
-    constructor(code: Int = -1, msg: String = "", success: Boolean = false): this() {
+    private constructor(code: Int = -1, msg: String = "", success: Boolean = false): this() {
         this.code = code
         this.msg = msg
         this.success = success
     }
 
     var code: Int = -1
+        protected set
 
     var msg: String = ""
-        private set
+        protected set
         get() {
             return field ?: ""
         }
 
-    private var success: Boolean = false
+    var success: Boolean = false
+        protected set
 
     private val t: T? = null
 
@@ -31,15 +33,22 @@ open class ApiResult<T>(): java.io.Serializable {
     open fun succeeded(): Boolean = success
 
     companion object {
+
         private const val ERROR_CODE_UNKNOWN = -1
         private const val ERROR_CODE_NET = -1000
 
-        fun <T> unknownError(): ApiResult<T> {
-            return ApiResult(ERROR_CODE_UNKNOWN, MultiLanguagesApplication.stringOf(R.string.unknown_error), false)
+        fun <A: ApiResult<*>> unknownError(apiResult: A): A {
+            apiResult.code = ERROR_CODE_UNKNOWN
+            apiResult.msg = MultiLanguagesApplication.stringOf(R.string.unknown_error)
+            apiResult.success = false
+            return apiResult
         }
 
-        fun <T> netError(): ApiResult<T> {
-            return ApiResult(ERROR_CODE_NET, MultiLanguagesApplication.stringOf(R.string.N655), false)
+        fun <A: ApiResult<*>> netError(apiResult: A): A {
+            apiResult.code = ERROR_CODE_NET
+            apiResult.msg = MultiLanguagesApplication.stringOf(R.string.N655)
+            apiResult.success = false
+            return apiResult
         }
     }
 
