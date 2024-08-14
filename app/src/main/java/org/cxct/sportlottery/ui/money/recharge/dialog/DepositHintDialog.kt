@@ -50,9 +50,16 @@ class DepositHintDialog : BaseDialogFragment() {
         tvContinue.background = ShapeDrawable().setSolidColor(cxt.getColor(R.color.color_025BE8)).setRadius(12.dp.toFloat())
         ivClose.setOnClickListener { dismiss() }
         tvContinue.setOnClickListener {
+            dismiss()
             val parent = parentFragment
             if (parent is ConfirmListener) {
                 parent.onContinue()
+                return@setOnClickListener
+            }
+
+            val act = activity
+            if (act is ConfirmListener) {
+                act.onContinue()
             }
         }
 

@@ -36,6 +36,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.money.recharge.dialog.DepositHintDialog
 import org.cxct.sportlottery.ui.money.recharge.dialog.RechargePromotionsDialog
 import org.cxct.sportlottery.view.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
@@ -54,7 +55,7 @@ import kotlin.math.abs
  * @app_destination 存款-转账支付  //存款时间格式需要修改
  */
 class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragmentBinding>()
-    , RechargePromotionsDialog.OnSelectListener {
+    , RechargePromotionsDialog.OnSelectListener, DepositHintDialog.ConfirmListener  {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
 
@@ -103,14 +104,13 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         //提交
         btnSubmit.setTitleLetterSpacing()
         btnSubmit.setOnClickListener {
-            val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
-            val request = createMoneyAddRequest(activityType) ?: return@setOnClickListener
-            viewModel.rechargeSubmit(
-                request,
-                mMoneyPayWay?.rechType,
-                mSelectRechCfgs
-            )
+            if (viewModel.uniPaid) {
+                DepositHintDialog.show(this@TransferPayFragment)
+            } else {
+                submitForm()
+            }
         }
+
         mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
 
         //選取日曆
@@ -923,5 +923,19 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
     }
 
     fun getSelectedDailyConfig() = dailyConfigAdapter.getSelectedItem()
+
+    private fun submitForm() {
+        val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
+        val request = createMoneyAddRequest(activityType) ?: return
+        viewModel.rechargeSubmit(
+            request,
+            mMoneyPayWay?.rechType,
+            mSelectRechCfgs
+        )
+    }
+
+    override fun onContinue() {
+        submitForm()
+    }
 
 }

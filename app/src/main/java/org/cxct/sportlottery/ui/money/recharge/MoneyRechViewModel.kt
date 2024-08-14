@@ -144,6 +144,7 @@ class MoneyRechViewModel(
 
     val dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
     var uniPaid: Boolean = false
+        private set
 
     //更新使用者資料
     fun getUserInfo() {
