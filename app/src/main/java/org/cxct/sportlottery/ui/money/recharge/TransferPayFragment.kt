@@ -914,8 +914,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         }
     }
 
-    override fun onSelected(dailyConfig: DailyConfig) {
-        dailyConfigAdapter.changeSelect(dailyConfig)
+    override fun onSelected(dailyConfig: DailyConfig?) {
+        if (dailyConfig == null) {
+            dailyConfigAdapter.clearSelected()
+        } else {
+            dailyConfigAdapter.changeSelect(dailyConfig)
+        }
     }
 
     fun getSelectedDailyConfig() = dailyConfigAdapter.getSelectedItem()
