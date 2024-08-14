@@ -156,7 +156,7 @@
             android:drawablePadding="@dimen/margin_5"
             android:gravity="center_horizontal"
             android:lineSpacingExtra="3dp"
-            android:text="@string/dialog_age_verify_hint"
+            android:text="I agree to all the above"
             android:textColor="@color/color_0D2245"
             android:textColorLink="@color/color_025BE8"
             android:textSize="@dimen/textSize12sp" />
@@ -169,7 +169,7 @@
             android:layout_marginTop="@dimen/margin_16"
             android:background="@drawable/selector_button_default"
             android:gravity="center"
-            android:text="@string/dialog_age_verify_confirm"
+            android:text="Proceed"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize16sp" />
 
