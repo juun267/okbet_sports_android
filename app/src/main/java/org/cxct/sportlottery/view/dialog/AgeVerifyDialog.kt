@@ -76,32 +76,20 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
             setAllSelect(it)
             updateCheckStatus(it)
         }
-        cbAgree.text = getString(R.string.dialog_age_verify_hint)+" "+getString(R.string.M311)
-        cbAgree.makeLinks(
-            Pair(
-                getString(R.string.dialog_age_verify_hint),
-                View.OnClickListener {
-                    val isSelect = !cbAgree.isSelected
-                    setAllSelect(isSelect)
-                    updateCheckStatus(isSelect)
-                }),
-            linkColor = cxt.getColor(R.color.color_0D2245)
-        )
-        cbAgree.makeLinks(
-            Pair(
-                getString(R.string.M311),
-                View.OnClickListener {
-                    JumpUtil.toInternalWeb(
-                        cxt,
-                        Constants.getAgreementRuleUrl(cxt),
-                        resources.getString(R.string.login_terms_conditions)
-                    )
-                }),
-            linkColor = cxt.getColor(R.color.color_025BE8)
-        )
+
+        cbAgree.movementMethod = ClickableMovementMethod.getInstance()
+        cbAgree.text = "I agree to all the above "
+            .setSpan(HighlightSpan(cxt, R.color.color_0D2245) {
+                val isSelect = !cbAgree.isSelected
+                setAllSelect(isSelect)
+                updateCheckStatus(isSelect)
+            })
+            .addSpan("Terms & Conditions.", listOf(StyleSpan(Typeface.BOLD), HighlightSpan(cxt, R.color.color_025BE8) {
+                JumpUtil.toInternalWeb(cxt, Constants.getAgreementRuleUrl(cxt), cxt.getString(R.string.login_terms_conditions))
+            }))
 
         tv4.movementMethod = ClickableMovementMethod.getInstance()
-        tv4.text = "I have read and agree to OKBet's"
+        tv4.text = "I have read and agree to OKBet's "
             .setSpan(HighlightSpan(cxt, R.color.color_0D2245) {
                 binding.ivCheck4.performClick()
             })
