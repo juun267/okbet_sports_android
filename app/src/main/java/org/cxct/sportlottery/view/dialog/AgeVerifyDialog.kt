@@ -2,11 +2,9 @@ package org.cxct.sportlottery.view.dialog
 
 import android.graphics.Color
 import android.graphics.Typeface
-import android.text.style.ClickableSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.toSpanned
 import androidx.fragment.app.FragmentManager
 import com.drake.spannable.addSpan
 import com.drake.spannable.movement.ClickableMovementMethod
@@ -14,7 +12,6 @@ import com.drake.spannable.replaceSpan
 import com.drake.spannable.setSpan
 import com.drake.spannable.span.ColorSpan
 import com.drake.spannable.span.HighlightSpan
-import kotlinx.android.synthetic.main.view_jacket_pot.tv4
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.ui.base.BaseDialog
@@ -71,7 +68,7 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
         tvTitle.movementMethod = ClickableMovementMethod.getInstance()
         tvTitle.text = "Please read our "
             .setSpan(listOf(ColorSpan(Color.BLACK), StyleSpan(Typeface.BOLD)))
-            .addSpan("Reponsible Gaming", listOf(StyleSpan(Typeface.BOLD), HighlightSpan(cxt, R.color.color_025BE8) {
+            .addSpan("Responsible Gaming", listOf(StyleSpan(Typeface.BOLD), HighlightSpan(cxt, R.color.color_025BE8) {
                 JumpUtil.toInternalWeb(cxt, Constants.getDutyRuleUrl(cxt), cxt.getString(R.string.responsible))
             }))
             .addSpan("\nguidelines carefully:", listOf(ColorSpan(Color.BLACK), StyleSpan(Typeface.BOLD)))
@@ -103,18 +100,16 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
             linkColor = cxt.getColor(R.color.color_025BE8)
         )
 
-        tv4.makeLinks(
-            Pair(
-                "Terms & Conditions",
-                View.OnClickListener {
-                    JumpUtil.toInternalWeb(
-                        cxt,
-                        Constants.getAgreementRuleUrl(cxt),
-                        "Terms & Conditions"
-                    )
-                }),
-            linkColor = cxt.getColor(R.color.color_025BE8)
-        )
+        tv4.movementMethod = ClickableMovementMethod.getInstance()
+        tv4.text = "I have read and agree to OKBet's"
+            .setSpan(HighlightSpan(cxt, R.color.color_0D2245) {
+                binding.ivCheck4.performClick()
+            })
+            .addSpan("Terms & Conditions.",
+                HighlightSpan(cxt, R.color.color_025BE8) {
+                    JumpUtil.toInternalWeb(cxt, Constants.getAgreementRuleUrl(cxt), "Terms & Conditions")
+                }
+            )
 
         btnConfirm.setOnClickListener {
             dismiss()
@@ -123,9 +118,14 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
             dismiss()
         }
 
-        setOnClickListeners(binding.lin1, binding.lin2, binding.lin3, binding.lin4) {
+        setOnClickListeners(binding.lin1, binding.lin2, binding.lin3) {
             val selectView = (it as ViewGroup).getChildAt(0)
             selectView.isSelected = !selectView.isSelected
+            checkSelect()
+        }
+
+        binding.ivCheck4.setOnClickListener {
+            binding.ivCheck4.isSelected = !binding.ivCheck4.isSelected
             checkSelect()
         }
     }
