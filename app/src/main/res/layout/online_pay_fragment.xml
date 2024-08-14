@@ -268,7 +268,7 @@
             android:id="@+id/linReceiveExtra"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_30"
-            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:background="@drawable/bg_gradient_red_orange"
             android:visibility="gone"
@@ -292,11 +292,10 @@
 
         <Button
             android:id="@+id/btn_submit"
-            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:layout_marginStart="@dimen/margin_20"
-            android:layout_marginEnd="@dimen/margin_20"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/ic_submit"
             android:gravity="center"
             android:textAllCaps="false"
