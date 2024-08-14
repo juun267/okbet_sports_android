@@ -2,14 +2,18 @@ package org.cxct.sportlottery.view.dialog
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.text.style.ClickableSpan
 import android.text.style.StyleSpan
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.text.toSpanned
 import androidx.fragment.app.FragmentManager
 import com.drake.spannable.addSpan
+import com.drake.spannable.movement.ClickableMovementMethod
 import com.drake.spannable.replaceSpan
 import com.drake.spannable.setSpan
 import com.drake.spannable.span.ColorSpan
+import com.drake.spannable.span.HighlightSpan
 import kotlinx.android.synthetic.main.view_jacket_pot.tv4
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
@@ -63,9 +67,13 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
             .setSolidColor(Color.WHITE)
             .setRadius(12.dp.toFloat())
         val cxt = binding.root.context
+
+        tvTitle.movementMethod = ClickableMovementMethod.getInstance()
         tvTitle.text = "Please read our "
             .setSpan(listOf(ColorSpan(Color.BLACK), StyleSpan(Typeface.BOLD)))
-            .addSpan("Reponsible Gaming", listOf(ColorSpan(cxt.getColor(R.color.color_025BE8)), StyleSpan(Typeface.BOLD)))
+            .addSpan("Reponsible Gaming", listOf(StyleSpan(Typeface.BOLD), HighlightSpan(cxt, R.color.color_025BE8) {
+                JumpUtil.toInternalWeb(cxt, Constants.getDutyRuleUrl(cxt), cxt.getString(R.string.responsible))
+            }))
             .addSpan("\nguidelines carefully:", listOf(ColorSpan(Color.BLACK), StyleSpan(Typeface.BOLD)))
         (sConfigData?.ageVerificationChecked==1).let {
             setAllSelect(it)
@@ -115,8 +123,9 @@ class AgeVerifyDialog : BaseDialog<BaseViewModel,DialogAgeVerifyBinding>() {
             dismiss()
         }
 
-        setOnClickListeners(binding.ivCheck1, binding.ivCheck2, binding.ivCheck3, binding.ivCheck4) {
-            it.isSelected = !it.isSelected
+        setOnClickListeners(binding.lin1, binding.lin2, binding.lin3, binding.lin4) {
+            val selectView = (it as ViewGroup).getChildAt(0)
+            selectView.isSelected = !selectView.isSelected
             checkSelect()
         }
     }
