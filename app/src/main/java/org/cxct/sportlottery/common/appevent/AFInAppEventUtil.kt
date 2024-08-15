@@ -16,7 +16,7 @@ object AFInAppEventUtil {
     }
 
     fun register(method: String,eventValues: HashMap<String, Any>) {
-        eventValues.put(AFInAppEventParameterName.REGSITRATION_METHOD, method)
+        eventValues.put(AFInAppEventParameterName.REGISTRATION_METHOD, method)
         AppsFlyerLib.getInstance().logEvent(
             MultiLanguagesApplication.getInstance(),
             AFInAppEventType.COMPLETE_REGISTRATION, eventValues)
