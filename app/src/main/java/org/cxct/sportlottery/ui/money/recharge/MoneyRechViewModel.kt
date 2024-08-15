@@ -273,6 +273,7 @@ class MoneyRechViewModel(
         bankCode: String?,
         payer: String?,
         activityType:Int?,
+        type: Int?,
         email: String?
     ) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
@@ -290,6 +291,7 @@ class MoneyRechViewModel(
                 "clientType" to "2",
             ).apply {
                 activityType?.let { put("activityType",it.toString()) }
+                type?.let { put("type",it.toString()) }
                 if (!payer.isNullOrEmpty()) {
                     put("payer", payer)
                 }

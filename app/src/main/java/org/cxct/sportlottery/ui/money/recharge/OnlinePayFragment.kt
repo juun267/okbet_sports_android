@@ -590,9 +590,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         } else {
             ""
         }
-
-        val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
-        viewModel.rechargeNormalOnlinePay(context(), mSelectRechCfgs, depositMoney, bankCode, payer, activityType, email)
+        val dailyConfig = dailyConfigAdapter.getSelectedItem()
+        val activityType = dailyConfig?.activityType
+        val type = dailyConfig?.type
+        viewModel.rechargeNormalOnlinePay(context(), mSelectRechCfgs, depositMoney, bankCode, payer, activityType, type, email)
         return@run true
     }
 }

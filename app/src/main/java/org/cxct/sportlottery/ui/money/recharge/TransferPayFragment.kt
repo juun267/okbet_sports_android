@@ -673,7 +673,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
     }
 
     //創建MoneyAddRequest
-    private fun createMoneyAddRequest(activityType:Int?): MoneyAddRequest? =binding.run{
+    private fun createMoneyAddRequest(activityType:Int?, type: Int?): MoneyAddRequest? =binding.run{
         return when (mMoneyPayWay?.rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 MoneyAddRequest(
@@ -692,7 +692,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
-                    activityType = activityType
+                    activityType = activityType,
+                    type = type
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -714,7 +715,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
-                    activityType = activityType
+                    activityType = activityType,
+                    type = type
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -736,7 +738,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
-                    activityType = activityType
+                    activityType = activityType,
+                    type = type
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -925,8 +928,10 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
     fun getSelectedDailyConfig() = dailyConfigAdapter.getSelectedItem()
 
     private fun submitForm() {
-        val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
-        val request = createMoneyAddRequest(activityType) ?: return
+        val dailyConfig = dailyConfigAdapter.getSelectedItem() ?: return
+        val activityType = dailyConfig.activityType
+        val type = dailyConfig.type
+        val request = createMoneyAddRequest(activityType, type) ?: return
         viewModel.rechargeSubmit(
             request,
             mMoneyPayWay?.rechType,
