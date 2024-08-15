@@ -62,14 +62,15 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun doOnBackPress() {
 
-        val dailyConfig = if (mCurrentFragment is OnlinePayFragment) {
-            (mCurrentFragment as OnlinePayFragment).getSelectedDailyConfig()
-        } else if (mCurrentFragment is TransferPayFragment) {
-            (mCurrentFragment as TransferPayFragment).getSelectedDailyConfig()
-        } else {
-            null
-        }
+//        val dailyConfig = if (mCurrentFragment is OnlinePayFragment) {
+//            (mCurrentFragment as OnlinePayFragment).getSelectedDailyConfig()
+//        } else if (mCurrentFragment is TransferPayFragment) {
+//            (mCurrentFragment as TransferPayFragment).getSelectedDailyConfig()
+//        } else {
+//            viewModel.dailyConfigEvent.value?.firstOrNull()
+//        }
 
+        val dailyConfig = viewModel.dailyConfigEvent.value?.firstOrNull()
         if (dailyConfig == null) {
             super.onBackPressed()
             return
