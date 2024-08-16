@@ -62,4 +62,12 @@ data class Row (
     val userPlayAmount: Double?,
     @Json(name = "cancelledBy")
     val cancelledBy: String?, //备注栏位："mts" (风控) => "因系统审核不成立","own"、"source" (后台) => "因机制审核不成立"
+    @Json(name = "cashoutStatus")
+    var cashoutStatus: Int = 0,//cashout 狀態 0:不可 ,1:可 ,
+    @Json(name = "cashoutMsg")
+    var cashoutMsg: String?=null,//不能cashout 原因
+    @Json(name = "cashoutAmount")
+    var cashoutAmount: String?,//cashout 金额
+    @Json(name = "uniqNo")
+    val uniqNo: String, //新字段，订单号
 ): Parcelable

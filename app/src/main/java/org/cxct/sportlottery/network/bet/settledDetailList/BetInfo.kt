@@ -24,7 +24,9 @@ data class BetInfo(
     @Json(name = "minCpBetMoney")
     val minCpBetMoneyString: String?,
     @Json(name = "maxCpPayout")
-    val maxCpPayoutString: String?
+    val maxCpPayoutString: String?,
+    @Json(name = "cashoutStatus")
+    val cashoutStatus: Int = 0,//cashout 狀態 0:不可 ,1:可
 ) {
     val maxBetMoney get() = maxBetMoneyString?.toBigDecimal()
     val minBetMoney get() = minBetMoneyString?.toBigDecimal()

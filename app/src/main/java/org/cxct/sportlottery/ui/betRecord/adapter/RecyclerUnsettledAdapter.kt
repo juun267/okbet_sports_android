@@ -9,6 +9,7 @@ import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemBetListBinding
+import org.cxct.sportlottery.net.sport.data.CheckCashOutResult
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.betRecord.ParlayType
@@ -33,6 +34,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
     init {
         //打印点击
         addChildClickViewIds(R.id.tvOrderPrint)
+        addChildClickViewIds(R.id.cashoutBtn)
     }
 
     @SuppressLint("SetTextI18n")
@@ -107,8 +109,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
 
             //投注金额
             tvBetTotal.text = " $showCurrencySign ${TextUtil.formatMoney(item.totalAmount,2)}"
-
-
+            cashoutBtn.setCashOutStatus(item.cashoutStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0)}")
             //可赢金额
             when(item.status){
                 //未结单  可赢：xxx
@@ -182,6 +183,41 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 cardAdapter.setList(item.matchOdds)
             }
 
+        }
+    }
+
+    /**
+     * 更新选中状态
+     */
+    fun updateCashOut(list: List<CheckCashOutResult>){
+        data.forEachIndexed { index, row ->
+            list.forEach {
+                if (row.orderNo == it.orderNo){
+                    var needUpdate = false
+                    if (row.cashoutStatus != it.cashoutStatus){
+                        row.cashoutStatus = it.cashoutStatus
+                        needUpdate = true
+                    }
+                    if (row.cashoutAmount != it.cashoutAmount){
+                        row.cashoutStatus = it.cashoutStatus
+                        needUpdate = true
+                    }
+                    if (needUpdate){
+                        notifyItemChanged(index)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 将未选中的按钮恢复正常状态
+     */
+    fun selectedCashOut(uniqNo: String){
+        data.forEachIndexed { index, row ->
+            if (row.cashoutStatus in 1..2 && row.uniqNo!=uniqNo){
+                notifyItemChanged(index)
+            }
         }
     }
 }

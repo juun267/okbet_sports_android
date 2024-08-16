@@ -1770,5 +1770,11 @@
     <string name="P466">Nhập email của bạn</string>
     <string name="P491">Mặt sau căn cước</string>
     <string name="P492_1">Kích thướng không quá 500KB.</string>
-
+    <string name="B71">Đổi ngay</string>
+    <string name="B72">Vui lòng xác nhận đổi ngay</string>
+    <string name="B73">Bán vé cược ngay</string>
+    <string name="B74">Bán vé cược thành công!</string>
+    <string name="B75">Bán vé cược thất bại!</string>
+    <string name="B104">Đang bán vé cược</string>
+    <string name="B105">Đã bán vé cược</string>
 </resources>

@@ -1826,4 +1826,11 @@
     <string name="P466">请输入您的邮箱</string>
     <string name="P491">证件背面</string>
     <string name="P492_1">文件需小于500KB.</string>
+    <string name="B71">即时兑现</string>
+    <string name="B72">请确认即时兑现</string>
+    <string name="B73">即时兑现</string>
+    <string name="B74">即时兑现成功！</string>
+    <string name="B75">即时兑现失败！</string>
+    <string name="B104">兑现中</string>
+    <string name="B105">已兑现</string>
 </resources>
