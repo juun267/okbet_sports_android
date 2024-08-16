@@ -499,7 +499,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
     }
 
     private fun initFirstDeposit(list: List<DailyConfig>) = binding.linFirstDeposit.run {
-        val availableList = list.filter { it.first==1 }
+        val availableList = list.filter { it.first==1 }.take(2)
         binding.linFirstDeposit.root.isVisible = availableList.isNotEmpty()
         rvFirstDeposit.adapter = dailyConfigAdapter
         dailyConfigAdapter.setList(availableList)

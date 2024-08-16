@@ -1742,8 +1742,8 @@
     <string name="P466">Pakilagay ang iyong Email</string>
     <string name="P491">Likod ng ID</string>
     <string name="P492_1">ang laki ng file ay dapat na mas mababa sa 500KB.</string>
-    <string name="A001">Sandali lng!</string>
-    <string name="A002_1">Kumpletuhin ang Iyong Unang Deposito At Makakuha ng Cash Back na ₱100</string>
+    <string name="A001">Tigil muna!</string>
+    <string name="A002_1">Kumpletuhin ang iyong unang deposito at makakuha ng Cash back na</string>
     <string name="A003">Kanselahin</string>
     <string name="A004">Ipagpatuloy</string>
     <string name="A005">Kumuha ng unang Deposito na reward</string>
@@ -1762,5 +1762,6 @@
     <string name="A018">Kumuha ng %s Cash Back Bukas</string>
     <string name="A019">Deposito</string>
     <string name="A020">Mga Detalye</string>
+    <string name="A119">I-view ang mas maraming alok</string>
 </resources>
 

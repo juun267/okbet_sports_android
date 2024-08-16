@@ -1771,7 +1771,7 @@
     <string name="P491">Mặt sau căn cước</string>
     <string name="P492_1">Kích thướng không quá 500KB.</string>
     <string name="A001">Chờ một chút!</string>
-    <string name="A002_1">Hoàn thành nạp lần đầu và nhận lại tiền mặt ₱100</string>
+    <string name="A002_1">Hoàn thành nạp lần đầu và nhận lại tiền mặt</string>
     <string name="A003">Hủy bỏ</string>
     <string name="A004">Tiếp tục</string>
     <string name="A005">Nhận thưởng nạp lần đầu</string>
@@ -1790,4 +1790,5 @@
     <string name="A018">Nhận hoàn tiền %s vào ngày mai</string>
     <string name="A019">Nạp tiền</string>
     <string name="A020">Chi tiết</string>
+    <string name="A119">Xem thêm ưu đãi</string>
 </resources>

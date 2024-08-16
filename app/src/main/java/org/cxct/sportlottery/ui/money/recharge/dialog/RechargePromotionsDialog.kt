@@ -63,7 +63,19 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
     }
 
     override fun onBindViewStatus(view: View) {
-        adapter.setNewInstance(dataList.toMutableList())
+        val list = dataList.toMutableList()
+        list.addAll(dataList)
+        list.addAll(dataList)
+        list.addAll(dataList)
+        list.addAll(dataList)
+        list.addAll(dataList)
+        list.addAll(dataList)
+        list.addAll(dataList)
+        list.addAll(dataList)
+        list.addAll(dataList)
+        list.addAll(dataList)
+        list.addAll(dataList)
+        adapter.setNewInstance(list)
     }
 
     private fun onItemClick(item: DailyConfig) {
