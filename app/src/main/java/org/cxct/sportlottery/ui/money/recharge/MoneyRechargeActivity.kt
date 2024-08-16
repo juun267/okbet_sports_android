@@ -76,7 +76,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
             return
         }
 
-        GiveUpDepositDialog.show(supportFragmentManager, dailyConfig.capped.toString())
+        if (dailyConfig.capped > 0) {
+            GiveUpDepositDialog.show(supportFragmentManager, dailyConfig.capped.toString())
+        }
+
     }
 
     private fun initData() {

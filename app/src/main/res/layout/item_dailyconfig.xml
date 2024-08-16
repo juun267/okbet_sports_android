@@ -61,7 +61,7 @@
                 android:layout_weight="217"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingHorizontal="@dimen/margin_10">
+                android:paddingHorizontal="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -73,14 +73,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/P278"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/textSize14sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tvCapped"
                         tools:text="₱ 1,000"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_5"
+                        android:layout_marginHorizontal="2dp"
                         android:layout_weight="1"
                         android:includeFontPadding="false"
                         android:singleLine="true"
