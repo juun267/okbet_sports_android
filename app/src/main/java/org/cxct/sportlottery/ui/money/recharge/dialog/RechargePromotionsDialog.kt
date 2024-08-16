@@ -42,7 +42,7 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
     }
 
     interface OnSelectListener {
-        fun onSelected(dailyConfig: DailyConfig)
+        fun onSelected(dailyConfig: DailyConfig?)
     }
 
     private val adapter = DailyConfigAdapter(::onItemClick)
@@ -58,6 +58,7 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
         linNoChoose.setOnClickListener {
             changeSelected(true)
             adapter.clearSelected()
+            onSelectChange(null)
         }
     }
 
@@ -67,19 +68,23 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
 
     private fun onItemClick(item: DailyConfig) {
         changeSelected(false)
-        val parent = parentFragment
-        val act = activity
-        if (parent is OnSelectListener) {
-            parent.onSelected(item)
-        } else if (act is OnSelectListener) {
-            act.onSelected(item)
-        }
+        onSelectChange(item)
         dismiss()
     }
 
     private fun changeSelected(select: Boolean) {
         if (binding.ivNoChooseCheck.isSelected != select) {
             binding.ivNoChooseCheck.isSelected = select
+        }
+    }
+
+    private fun onSelectChange(dailyConfig: DailyConfig?) {
+        val parent = parentFragment
+        val act = activity
+        if (parent is OnSelectListener) {
+            parent.onSelected(dailyConfig)
+        } else if (act is OnSelectListener) {
+            act.onSelected(dailyConfig)
         }
     }
 

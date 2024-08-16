@@ -1,258 +1,274 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_F0F5FA"
-    tools:context=".ui.money.recharge.OnlinePayFragment">
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_14"
+            android:background="@color/color_F0F5FA"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <!-- 帳號 -->
+            <org.cxct.sportlottery.view.LoginEditText
+                android:id="@+id/et_recharge_online_payer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvTitleTextStyle="normal"
+                app:cvEms="20"
+                app:cvMarginBottom="0dp"
+                app:cvTextColor="@color/color_9BB3D9_535D76"
+                app:cvHint="@string/edt_hint_payer"
+                app:cvInputType="text"
+                app:cvTitle="@string/title_payer" />
+
+            <!-- 邮箱 -->
+            <org.cxct.sportlottery.view.LoginEditText
+                android:id="@+id/et_recharge_online_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvTitleTextStyle="normal"
+                app:cvEms="50"
+                app:cvTextColor="@color/color_9BB3D9_535D76"
+                app:cvHint="@string/P466"
+                app:cvInputType="text"
+                app:cvTitle="@string/e_mail" />
+
+
+            <!-- 充值金額 -->
+            <org.cxct.sportlottery.view.LoginEditText
+                android:id="@+id/et_recharge_online_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:background="@color/color_FFFFFF"
+                app:cvTextColor="@color/color_0D2245"
+                app:cvTextSize="@dimen/textSize18sp"
+                app:cvTextStyle="bold"
+                app:cvTitleTextStyle="normal"
+                app:cvHint="@string/edt_hint_deposit_money"
+                app:cvInputType="number"
+                app:cvTitle="@string/title_deposit_money" />
+
+            <include
+                android:id="@+id/includeQuickMoney"
+                layout="@layout/include_quick_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+            <include
+                android:id="@+id/linFirstDeposit"
+                layout="@layout/view_first_deposit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                tools:visibility="visible"
+                android:visibility="gone"/>
+
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/color_191919_FCFCFC"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_pay_gap"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_pay_gap_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="@string/M132"
+                        android:textColor="@color/color_9BB3D9_535D76"
+                        android:textSize="@dimen/textSize13sp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:visibility="invisible"
+                        android:background="@color/color_666666_bcbcbc" />
+
+                    <ImageView
+                        android:id="@+id/iv_gap_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="12dp"
+                        android:src="@drawable/ic_bank_default" />
+
+                    <TextView
+                        android:id="@+id/txv_pay_gap"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="9dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/color_BBBBBB_333333"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="45dp"
+                        android:contentDescription="@null"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/icon_arrow_down" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_pay_bank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:cardBackgroundColor="@color/color_191919_FCFCFC"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="@string/title_pay_bank"
+                        android:textColor="@color/color_9BB3D9_535D76"
+                        android:textSize="@dimen/textSize13sp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:visibility="invisible"
+                        android:background="@color/color_666666_bcbcbc" />
+
+                    <ImageView
+                        android:id="@+id/iv_bank_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="12dp"
+                        android:src="@drawable/ic_bank_default" />
+
+                    <TextView
+                        android:id="@+id/txv_pay_bank"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="9dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/color_BBBBBB_333333"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="45dp"
+                        android:contentDescription="@null"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/icon_arrow_down" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_fee_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/margin_12"
+                android:textColor="@color/color_E44438_e44438"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="・手续费:0.500%" />
+
+            <TextView
+                android:id="@+id/tv_fee_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/margin_12"
+                android:textColor="@color/color_E44438_e44438"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="・手续费金额：PHP 12.000" />
+
+            <LinearLayout
+                android:id="@+id/ll_remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_20">
+
+                <!-- class內設定字串-->
+                <TextView
+                    android:id="@+id/tv_remark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_12"
+                    android:textColor="@color/color_E44438_e44438"
+                    tools:text="@string/credit_bet_remark"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <TextView
+                    android:id="@+id/tv_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/money_recharge_hint1"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_14"
-        android:background="@color/color_F0F5FA"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical">
-
-        <!-- 帳號 -->
-        <org.cxct.sportlottery.view.LoginEditText
-            android:id="@+id/et_recharge_online_payer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cvTitleTextStyle="normal"
-            app:cvEms="20"
-            app:cvMarginBottom="0dp"
-            app:cvTextColor="@color/color_9BB3D9_535D76"
-            app:cvHint="@string/edt_hint_payer"
-            app:cvInputType="text"
-            app:cvTitle="@string/title_payer" />
-
-        <!-- 邮箱 -->
-        <org.cxct.sportlottery.view.LoginEditText
-            android:id="@+id/et_recharge_online_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cvTitleTextStyle="normal"
-            app:cvEms="50"
-            app:cvTextColor="@color/color_9BB3D9_535D76"
-            app:cvHint="@string/P466"
-            app:cvInputType="text"
-            app:cvTitle="@string/e_mail" />
-
-
-        <!-- 充值金額 -->
-        <org.cxct.sportlottery.view.LoginEditText
-            android:id="@+id/et_recharge_online_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:background="@color/color_FFFFFF"
-            app:cvTextColor="@color/color_0D2245"
-            app:cvTextSize="@dimen/textSize18sp"
-            app:cvTextStyle="bold"
-            app:cvTitleTextStyle="normal"
-            app:cvHint="@string/edt_hint_deposit_money"
-            app:cvInputType="number"
-            app:cvTitle="@string/title_deposit_money" />
-
-        <include
-            android:id="@+id/includeQuickMoney"
-            layout="@layout/include_quick_money"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:visibility="gone"
-            tools:visibility="visible"/>
-        <include
-            android:id="@+id/linFirstDeposit"
-            layout="@layout/view_first_deposit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            tools:visibility="visible"
-            android:visibility="gone"/>
-
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/color_191919_FCFCFC"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:id="@+id/ll_pay_gap"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_pay_gap_subtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="@string/M132"
-                    android:textColor="@color/color_9BB3D9_535D76"
-                    android:textSize="@dimen/textSize13sp" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:visibility="invisible"
-                    android:background="@color/color_666666_bcbcbc" />
-
-                <ImageView
-                    android:id="@+id/iv_gap_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="12dp"
-                    android:src="@drawable/ic_bank_default" />
-
-                <TextView
-                    android:id="@+id/txv_pay_gap"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="45dp"
-                    android:contentDescription="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/icon_arrow_down" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_pay_bank"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            app:cardBackgroundColor="@color/color_191919_FCFCFC"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="@string/title_pay_bank"
-                    android:textColor="@color/color_9BB3D9_535D76"
-                    android:textSize="@dimen/textSize13sp" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:visibility="invisible"
-                    android:background="@color/color_666666_bcbcbc" />
-
-                <ImageView
-                    android:id="@+id/iv_bank_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="12dp"
-                    android:src="@drawable/ic_bank_default" />
-
-                <TextView
-                    android:id="@+id/txv_pay_bank"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="45dp"
-                    android:contentDescription="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/icon_arrow_down" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/tv_fee_rate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="@dimen/margin_12"
-            android:textColor="@color/color_E44438_e44438"
-            android:textSize="@dimen/textSize12sp"
-            tools:text="・手续费:0.500%" />
-
-        <TextView
-            android:id="@+id/tv_fee_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="@dimen/margin_12"
-            android:textColor="@color/color_E44438_e44438"
-            android:textSize="@dimen/textSize12sp"
-            tools:text="・手续费金额：PHP 12.000" />
-
-        <LinearLayout
-            android:id="@+id/ll_remark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
-            android:layout_marginBottom="@dimen/margin_20">
-
-            <!-- class內設定字串-->
-            <TextView
-                android:id="@+id/tv_remark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_12"
-                android:textColor="@color/color_E44438_e44438"
-                tools:text="@string/credit_bet_remark"
-                android:textSize="@dimen/textSize12sp" />
-
-            <TextView
-                android:id="@+id/tv_hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/money_recharge_hint1"
-                android:textColor="@color/color_E44438_e44438"
-                android:textSize="@dimen/textSize12sp" />
-
-        </LinearLayout>
+        android:orientation="vertical"
+        android:background="@color/white">
 
         <LinearLayout
             android:id="@+id/linReceiveExtra"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_30"
-            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:background="@drawable/bg_gradient_red_orange"
             android:visibility="gone"
@@ -273,13 +289,13 @@
                 android:textColor="@color/color_FFFFFF"
                 tools:text="₱ 100" />
         </LinearLayout>
+
         <Button
             android:id="@+id/btn_submit"
-            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:layout_marginStart="@dimen/margin_20"
-            android:layout_marginEnd="@dimen/margin_20"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/ic_submit"
             android:gravity="center"
             android:textAllCaps="false"
@@ -287,6 +303,7 @@
             android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold" />
+
         <include
             android:id="@+id/linMaintenance"
             layout="@layout/view_payment_maintenance"
@@ -295,6 +312,7 @@
             android:layout_marginTop="20dp"
             tools:visibility="visible"
             android:visibility="gone"/>
+
         <LinearLayout
             android:layout_marginBottom="@dimen/dp_40"
             android:layout_width="wrap_content"
@@ -319,5 +337,7 @@
                 android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
+
     </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

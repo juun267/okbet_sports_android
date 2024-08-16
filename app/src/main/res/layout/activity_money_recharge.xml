@@ -1,148 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/color_F0F5FA"
-    android:orientation="vertical"
-    tools:context=".ui.money.recharge.MoneyRechargeActivity">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <org.cxct.sportlottery.view.CustomTopToolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <org.cxct.sportlottery.ui.money.withdraw.view.AnnouncementView
+        android:id="@+id/announcement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="@dimen/margin_1"
+        android:background="@color/color_FFFFFF">
 
-        <org.cxct.sportlottery.view.CustomTopToolbar
-            android:id="@+id/toolBar"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:background="@color/color_2B2B2B_e2e2e2" />
 
-        <org.cxct.sportlottery.ui.money.withdraw.view.AnnouncementView
-            android:id="@+id/announcement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <FrameLayout
+        <org.cxct.sportlottery.view.CustomTabLayout
+            android:id="@+id/custom_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_1"
-            android:background="@color/color_FFFFFF">
+            android:paddingHorizontal="@dimen/margin_40"
+            app:firstTabText="@string/txv_transfer_pay"
+            app:secondTabText="@string/recharge_channel_online" />
+    </FrameLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_2B2B2B_e2e2e2"
-                android:layout_gravity="bottom" />
+    <LinearLayout
+        android:id="@+id/llPayWays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-            <org.cxct.sportlottery.view.CustomTabLayout
-                android:id="@+id/custom_tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/margin_40"
-                app:firstTabText="@string/txv_transfer_pay"
-                app:secondTabText="@string/recharge_channel_online" />
-        </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_14"
+            android:layout_marginTop="@dimen/margin_10"
+            android:text="@string/payment_method"
+            android:textColor="@color/color_414655"
+            android:textSize="@dimen/textSize14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_1"
+            android:layout_marginStart="@dimen/margin_14"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginEnd="@dimen/margin_14"
+            android:background="@color/color_E3E8EE" />
 
 
-        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_pay_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_14"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="10dp"
+            android:visibility="gone"
+            tools:itemCount="5"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@layout/content_money_pay_type_rv"
+            tools:spanCount="4"
+            tools:visibility="visible" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_pay_type_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_10"
-            app:srlDragRate="0.3"
-            app:srlEnableLoadMore="true"
-            app:srlEnablePureScrollMode="true">
+            android:visibility="gone"
+            tools:visibility="visible" />
 
+        <RelativeLayout
+            android:id="@+id/block_no_type"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/block_tab"
+            tools:visibility="gone">
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/color_141414_F3F4F5"
-                android:overScrollMode="never">
+            <ImageView
+                android:id="@+id/iv_bank_no_type"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/ic_no_bank_type" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_191919_FCFCFC"
-                    android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_bank_no_type"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="当前无该类充值渠道,详情请联系客服"
+                android:textColor="@color/color_909090_666666"
+                android:textSize="@dimen/textSize16sp" />
 
+        </RelativeLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_14"
-                        android:layout_marginTop="@dimen/margin_10"
-                        android:text="@string/payment_method"
-                        android:textColor="@color/color_414655"
-                        android:textSize="@dimen/textSize14sp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/margin_1"
-                        android:layout_marginStart="@dimen/margin_14"
-                        android:layout_marginTop="@dimen/margin_10"
-                        android:layout_marginEnd="@dimen/margin_14"
-                        android:background="@color/color_E3E8EE" />
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_pay_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_14"
-                        android:clipToPadding="false"
-                        android:overScrollMode="never"
-                        android:paddingVertical="10dp"
-                        android:paddingHorizontal="14dp"
-                        android:visibility="gone"
-                        tools:itemCount="5"
-                        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        tools:listitem="@layout/content_money_pay_type_rv"
-                        tools:spanCount="4"
-                        tools:visibility="visible" />
-
-                    <FrameLayout
-                        android:id="@+id/fl_pay_type_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <RelativeLayout
-                        android:id="@+id/block_no_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toBottomOf="@+id/block_tab"
-                        tools:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/iv_bank_no_type"
-                            android:layout_width="150dp"
-                            android:layout_height="100dp"
-                            android:layout_centerInParent="true"
-                            android:layout_marginTop="40dp"
-                            android:src="@drawable/ic_no_bank_type" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/iv_bank_no_type"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="12dp"
-                            android:gravity="center"
-                            android:text="当前无该类充值渠道,详情请联系客服"
-                            android:textColor="@color/color_909090_666666"
-                            android:textSize="@dimen/textSize16sp" />
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-            </ScrollView>
-
-
-        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-    </LinearLayout>
-
-
-</RelativeLayout>
+</LinearLayout>

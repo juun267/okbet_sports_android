@@ -53,8 +53,7 @@ class GiveUpDepositDialog private constructor(): BaseDialogFragment() {
         tvContinue.background = ShapeDrawable().setSolidColor(cxt.getColor(R.color.color_025BE8)).setRadius(12.dp.toFloat())
         tvAmount.text = "$showCurrencySign${arguments?.getString(KEY_AMOUNT)}"
         ivClose.setOnClickListener {
-            DepositHintDialog().show(childFragmentManager, DepositHintDialog::javaClass.name)
-//            dismiss()
+            dismiss()
         }
         tvContinue.setOnClickListener { dismiss() }
         tvCancel.setOnClickListener { activity?.finish() }

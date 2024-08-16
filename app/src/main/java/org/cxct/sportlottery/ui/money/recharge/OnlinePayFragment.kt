@@ -82,6 +82,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         setPayBankBottomSheet(view)
         setupServiceButton()
         setupQuickMoney()
+        setUpPayWaysLayout()
+    }
+
+    private fun setUpPayWaysLayout() {
+        (activity as? MoneyRechargeActivity)?.fillPayWaysLayoutTo(binding.content, 0)
     }
 
     private fun initObserve() {
@@ -108,16 +113,14 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         }
 
         viewModel.rechCheckMsg.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let {
-                mSelectRechCfgs?.let {
-                    it.open = 2
-                    setupMoneyCfgMaintanince(it, binding.btnSubmit, binding.linMaintenance)
-                }
-                showErrorPromptDialog(getString(R.string.prompt), it) {}
-            }
+            val msg = it.getContentIfNotHandled() ?: return@observe
+            showErrorPromptDialog(getString(R.string.prompt), msg) {}
+            val rechCfgs = mSelectRechCfgs ?: return@observe
+            rechCfgs.open = 2
+            setupMoneyCfgMaintanince(rechCfgs, binding.btnSubmit, binding.linMaintenance)
         }
+
         viewModel.dailyConfigEvent.observe(this){
-            RechargePromotionsDialog.show(this@OnlinePayFragment, it.toMutableList() as ArrayList)
             initFirstDeposit(it)
         }
     }
@@ -125,12 +128,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
     private fun initView() = binding.run{
 
         etRechargeOnlineAmount.setHint(getAmountLimitHint())
-
         setupTextChangeEvent()
         setupFocusEvent()
         initViewMorePromotions()
-        btnSubmit.setTitleLetterSpacing()
-
         tvRemark.text = "・${getString(R.string.credit_bet_remark)}："
     }
 
@@ -144,51 +144,12 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
 
     private fun initButton() = binding.run {
         btnSubmit.setOnClickListener {
-            val flag = btnSubmit.tag
-            btnSubmit.tag = null
-
-            var email: String? = null
-            var payer = ""
-            if (etRechargeOnlinePayer.isVisible) {
-                payer = etRechargeOnlinePayer.getText()
-                if (payer.isEmptyStr()) {
-                    ToastUtil.showToast(context(), getString(R.string.edt_hint_payer))
-                    etRechargeOnlinePayer.setError(getString(R.string.error_input_empty))
-                    return@setOnClickListener
+            if (viewModel.uniPaid) {
+                if (submitForm(true)) {
+                    DepositHintDialog.show(this@OnlinePayFragment)
                 }
-            }
-
-            if (etRechargeOnlineEmail.isVisible) {
-                email = etRechargeOnlineEmail.getText()
-                if (email.isEmptyStr()) {
-                    ToastUtil.showToast(context(), getString(R.string.J558))
-                    etRechargeOnlineEmail.setError(getString(R.string.error_input_empty))
-                    return@setOnClickListener
-                }
-
-                if (!VerifyConstUtil.verifyMail(email!!)) {
-                    ToastUtil.showToast(context(), getString(R.string.N889))
-                    return@setOnClickListener
-                }
-            }
-
-            val bankCode = when (cvPayBank.visibility) {
-                View.GONE -> ""
-                else -> mSelectRechCfgs?.banks?.get(bankPosition)?.value
-            }
-
-            val depositMoney = if (binding.etRechargeOnlineAmount.getText().isNotEmpty()) {
-                binding.etRechargeOnlineAmount.getText()
             } else {
-                ""
-            }
-
-            btnSubmit.tag = 1
-            if (flag == null) {
-                DepositHintDialog.show(this@OnlinePayFragment)
-            } else {
-                val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
-                viewModel.rechargeNormalOnlinePay(context(), mSelectRechCfgs, depositMoney, bankCode, payer, activityType, email)
+                submitForm()
             }
 
         }
@@ -574,13 +535,65 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         }
     }
 
-    override fun onSelected(dailyConfig: DailyConfig) {
-        dailyConfigAdapter.changeSelect(dailyConfig)
+    override fun onSelected(dailyConfig: DailyConfig?) {
+        if (dailyConfig == null) {
+            dailyConfigAdapter.clearSelected()
+        } else {
+            dailyConfigAdapter.changeSelect(dailyConfig)
+        }
     }
 
     fun getSelectedDailyConfig() = dailyConfigAdapter.getSelectedItem()
 
     override fun onContinue() {
-        binding.btnSubmit.performClick()
+        submitForm()
+    }
+
+    private fun submitForm(onlyCheck: Boolean = false): Boolean = binding.run {
+        var email: String? = null
+        var payer = ""
+        if (etRechargeOnlinePayer.isVisible) {
+            payer = etRechargeOnlinePayer.getText()
+            if (payer.isEmptyStr()) {
+                ToastUtil.showToast(context(), getString(R.string.edt_hint_payer))
+                etRechargeOnlinePayer.setError(getString(R.string.error_input_empty))
+                return@run false
+            }
+        }
+
+        if (etRechargeOnlineEmail.isVisible) {
+            email = etRechargeOnlineEmail.getText()
+            if (email.isEmptyStr()) {
+                ToastUtil.showToast(context(), getString(R.string.J558))
+                etRechargeOnlineEmail.setError(getString(R.string.error_input_empty))
+                return@run false
+            }
+
+            if (!VerifyConstUtil.verifyMail(email!!)) {
+                ToastUtil.showToast(context(), getString(R.string.N889))
+                return@run false
+            }
+        }
+
+        if (onlyCheck) {
+            return@run true
+        }
+
+        val bankCode = if (cvPayBank.isVisible) {
+            mSelectRechCfgs?.banks?.get(bankPosition)?.value
+        } else {
+            ""
+        }
+
+        val depositMoney = if (binding.etRechargeOnlineAmount.getText().isNotEmpty()) {
+            binding.etRechargeOnlineAmount.getText()
+        } else {
+            ""
+        }
+        val dailyConfig = dailyConfigAdapter.getSelectedItem()
+        val activityType = dailyConfig?.activityType
+        val type = dailyConfig?.type
+        viewModel.rechargeNormalOnlinePay(context(), mSelectRechCfgs, depositMoney, bankCode, payer, activityType, type, email)
+        return@run true
     }
 }

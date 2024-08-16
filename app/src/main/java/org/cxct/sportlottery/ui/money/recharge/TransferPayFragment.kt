@@ -36,6 +36,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.money.recharge.dialog.DepositHintDialog
 import org.cxct.sportlottery.ui.money.recharge.dialog.RechargePromotionsDialog
 import org.cxct.sportlottery.view.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
@@ -54,7 +55,7 @@ import kotlin.math.abs
  * @app_destination 存款-转账支付  //存款时间格式需要修改
  */
 class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragmentBinding>()
-    , RechargePromotionsDialog.OnSelectListener {
+    , RechargePromotionsDialog.OnSelectListener, DepositHintDialog.ConfirmListener  {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
 
@@ -91,21 +92,25 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         initObserve()
         setPayBankBottomSheet()
         setupQuickMoney()
+        setUpPayWaysLayout()
         viewModel.getDailyConfig()
+    }
+
+    private fun setUpPayWaysLayout() {
+        (activity as? MoneyRechargeActivity)?.fillPayWaysLayoutTo(binding.content, 0)
     }
 
     private fun initButton() = binding.run {
         //提交
         btnSubmit.setTitleLetterSpacing()
         btnSubmit.setOnClickListener {
-            val activityType = dailyConfigAdapter.getSelectedItem()?.activityType
-            val request = createMoneyAddRequest(activityType) ?: return@setOnClickListener
-            viewModel.rechargeSubmit(
-                request,
-                mMoneyPayWay?.rechType,
-                mSelectRechCfgs
-            )
+            if (viewModel.uniPaid) {
+                DepositHintDialog.show(this@TransferPayFragment)
+            } else {
+                submitForm()
+            }
         }
+
         mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
 
         //選取日曆
@@ -668,7 +673,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
     }
 
     //創建MoneyAddRequest
-    private fun createMoneyAddRequest(activityType:Int?): MoneyAddRequest? =binding.run{
+    private fun createMoneyAddRequest(activityType:Int?, type: Int?): MoneyAddRequest? =binding.run{
         return when (mMoneyPayWay?.rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 MoneyAddRequest(
@@ -687,7 +692,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
-                    activityType = activityType
+                    activityType = activityType,
+                    type = type
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -709,7 +715,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
-                    activityType = activityType
+                    activityType = activityType,
+                    type = type
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -731,7 +738,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
                     appsFlyerKey = BuildConfig.AF_APPKEY,
                     appsFlyerPkgName = BuildConfig.APPLICATION_ID,
-                    activityType = activityType
+                    activityType = activityType,
+                    type = type
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -909,10 +917,30 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         }
     }
 
-    override fun onSelected(dailyConfig: DailyConfig) {
-        dailyConfigAdapter.changeSelect(dailyConfig)
+    override fun onSelected(dailyConfig: DailyConfig?) {
+        if (dailyConfig == null) {
+            dailyConfigAdapter.clearSelected()
+        } else {
+            dailyConfigAdapter.changeSelect(dailyConfig)
+        }
     }
 
     fun getSelectedDailyConfig() = dailyConfigAdapter.getSelectedItem()
+
+    private fun submitForm() {
+        val dailyConfig = dailyConfigAdapter.getSelectedItem() ?: return
+        val activityType = dailyConfig.activityType
+        val type = dailyConfig.type
+        val request = createMoneyAddRequest(activityType, type) ?: return
+        viewModel.rechargeSubmit(
+            request,
+            mMoneyPayWay?.rechType,
+            mSelectRechCfgs
+        )
+    }
+
+    override fun onContinue() {
+        submitForm()
+    }
 
 }
