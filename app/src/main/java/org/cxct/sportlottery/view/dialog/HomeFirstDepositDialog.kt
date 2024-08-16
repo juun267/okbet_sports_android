@@ -1,9 +1,16 @@
 package org.cxct.sportlottery.view.dialog
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.text.style.TextAppearanceSpan
 import android.util.Log
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
+import kotlinx.android.synthetic.main.view_global_loading.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
@@ -22,6 +29,7 @@ import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
 import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
+import org.w3c.dom.Text
 import splitties.bundle.put
 
 /**
@@ -59,8 +67,8 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
             tvFirstDeposit.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.isFirstDeposit?.limit}"
             tvDepositLimitTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterLimitDay?.limit}"
             tvDepositTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterDay?.limit}"
-            binding.tvExtraBonus.text = String.format(getString(R.string.A017_1), "${firstDepositDetail.activityConfigDailyTimeLimit?.percent}%")
-            binding.tvTomorrowBack.text = String.format(getString(R.string.A018), "${firstDepositDetail.activityConfigAfterLimitDay?.percent}%")
+            binding.tvExtraBonus.setFormatSpanText(getString(R.string.A017_1),"${firstDepositDetail.activityConfigDailyTimeLimit?.percent}%")
+            binding.tvTomorrowBack.setFormatSpanText(getString(R.string.A018),"${firstDepositDetail.activityConfigAfterLimitDay?.percent}%")
             val countSecond = (firstDepositDetail.expireTime - System.currentTimeMillis())/1000
             if (countSecond>0){
                 startCount(countSecond.toInt())
@@ -73,8 +81,8 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
             tvFirstDepositLimit.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.isFirstDeposit?.limit}"
             tvDepositLimitTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterDay?.limit}"
             firstDepositDetail.activityConfigDailyTimeLimit
-            binding.tvExtraBonus.text = String.format(getString(R.string.A017_1), "${firstDepositDetail.isFirstDeposit?.percent}%")
-            binding.tvTomorrowBack.text = String.format(getString(R.string.A018), "${firstDepositDetail.activityConfigAfterDay?.percent}%")
+            binding.tvExtraBonus.setFormatSpanText(getString(R.string.A017_1),"${firstDepositDetail.isFirstDeposit?.percent}%")
+            binding.tvTomorrowBack.setFormatSpanText(getString(R.string.A018),"${firstDepositDetail.activityConfigAfterDay?.percent}%")
         }
         ivClose.setOnClickListener { dismiss() }
         tvDeposit.clickDelay {
@@ -108,6 +116,15 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
         binding.tvNum4.text = timeStr[4].toString()
         binding.tvNum5.text = timeStr[6].toString()
         binding.tvNum6.text = timeStr[7].toString()
+    }
+    private fun TextView.setFormatSpanText(formatText: String,spanText: String){
+        text = Spanny(String.format(formatText, spanText))
+            .findAndSpan(spanText){
+                ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_FF8A00))
+            }
+            .findAndSpan(spanText){
+                StyleSpan(Typeface.BOLD)
+            }
     }
 
 }

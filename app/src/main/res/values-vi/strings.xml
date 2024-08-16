@@ -1780,7 +1780,7 @@
     <string name="A008">Khoản phí đầu tiên đã hoàn thành</string>
     <string name="A009">Doanh thu > %s</string>
     <string name="A010">Ngày mai đăng nhập</string>
-    <string name="A011">Hoàn thành nạp lần đầu, đạt doanh thu %s dân tệ và đăng nhập vào ngày hôm sau để nhận</string>
+    <string name="A011">Hoàn thành nạp lần đầu, đạt doanh thu %s và đăng nhập vào ngày hôm sau để nhận</string>
     <string name="A012">Nhận ngay</string>
     <string name="A013">Gợi ý</string>
     <string name="A014">Lần nạp tiền cuối của bạn không thành công. Bạn chỉ có thể nhận được số tiền thưởng nếu bạn nạp lần đầu thành công</string>

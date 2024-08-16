@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:layout_marginHorizontal="@dimen/margin_12"
-                android:layout_marginTop="@dimen/margin_20">
+                android:layout_marginTop="@dimen/margin_15">
                 <TextView
                     android:id="@+id/tvNum1"
                     android:layout_width="24dp"
@@ -250,7 +250,7 @@
                 android:layout_width="270dp"
                 android:layout_height="@dimen/margin_40"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_14"
                 android:gravity="center"
                 android:background="@drawable/bg_white_radius_20_stoke_gray"
                 android:textColor="@color/color_6D7693"
