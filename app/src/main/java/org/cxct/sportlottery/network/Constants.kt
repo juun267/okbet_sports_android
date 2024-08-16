@@ -246,8 +246,16 @@ object Constants {
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
     fun getInviteUrl() = "${getH5BaseUrl()}mobile/inviteFriends"
-
     /**
+     * 七日签到页面
+     */
+    fun getSevenCheckInUrl(context: Context) = "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}seven-check-in"
+    /**
+     * 首充活动规则条款
+     */
+    fun getFirstDepositRules(context: Context) = "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}v2/first-deposit-rules"
+
+      /**
      * 给h5地址加上统一参数
      */
     fun appendParams(url: String?): String? {

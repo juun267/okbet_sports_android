@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.view.dialog
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.GlobalScope
@@ -11,14 +12,14 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.DialogHomeFirstDepositBinding
 import org.cxct.sportlottery.net.money.data.FirstDepositDetail
-import org.cxct.sportlottery.net.money.data.FirstDepositConfig
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.util.CountDownUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.jumpToDeposit
+import org.cxct.sportlottery.ui.maintab.home.HomeFragment
+import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
 import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
 import splitties.bundle.put
@@ -76,23 +77,31 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
             binding.tvTomorrowBack.text = String.format(getString(R.string.A018), "${firstDepositDetail.activityConfigAfterDay?.percent}%")
         }
         ivClose.setOnClickListener { dismiss() }
-        tvDeposit.clickDelay { (requireActivity() as BaseActivity<*,*>).jumpToDeposit() }
-        tvDetail.setOnClickListener {  }
+        tvDeposit.clickDelay {
+            (requireActivity() as BaseActivity<*,*>).jumpToDeposit()
+            dismiss()
+        }
+        tvDetail.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(),Constants.getFirstDepositRules(requireContext()),getString(R.string.A016))
+        }
 
     }
-    private fun startCount(expireTime: Int){
+    private fun startCount(totalSecond: Int){
         GlobalScope.launch(lifecycleScope.coroutineContext) {
             CountDownUtil.countDown(
                 this,
-                expireTime/1000,
-                { updateCountingView(expireTime)},
+                totalSecond,
+                { updateCountingView(totalSecond)},
                 { updateCountingView(it)},
-                { dismiss() }
+                {
+                    dismiss()
+                    ((requireParentFragment() as HomeFragment).getCurrentFragment() as? HomeHotFragment)?.getFirstDepositDetail()
+                }
             )
         }
     }
     private fun updateCountingView(second: Int){
-       val timeStr = TimeUtil.timeFormat(second*1000.toLong(),TimeUtil.HM_FORMAT_SS)
+        val timeStr = TimeUtil.showCountDownHMS(second.toLong() * 1000)
         binding.tvNum1.text = timeStr[0].toString()
         binding.tvNum2.text = timeStr[1].toString()
         binding.tvNum3.text = timeStr[3].toString()
@@ -100,6 +109,5 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
         binding.tvNum5.text = timeStr[6].toString()
         binding.tvNum6.text = timeStr[7].toString()
     }
-
 
 }

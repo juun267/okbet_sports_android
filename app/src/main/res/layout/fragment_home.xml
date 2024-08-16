@@ -139,12 +139,11 @@
             app:layout_behavior="org.cxct.sportlottery.util.FixScrollingFooterBehavior" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="70dp"
-        android:layout_marginBottom="40dp"
-        android:gravity="right|bottom">
+        android:layout_marginBottom="40dp">
 
         <ImageView
             android:id="@+id/ivService"
@@ -152,8 +151,70 @@
             android:layout_height="56dp"
             android:adjustViewBounds="true"
             android:layout_marginBottom="80dp"
+            android:layout_gravity="right|bottom"
             android:src="@drawable/ic_service_blue" />
+        <FrameLayout
+            android:id="@+id/fbtnFirstDeposit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:layout_marginBottom="120dp"
+            android:visibility="gone"
+            android:layout_gravity="left|bottom">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/ivFirstDeposit"
+                android:layout_width="wrap_content"
+                android:layout_height="75dp"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_float_dailyrewards" />
+            <TextView
+                android:id="@+id/tvFirstDeposit"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:gravity="center"
+                android:drawableLeft="@drawable/ic_peso_stroke_white"
+                android:paddingHorizontal="@dimen/margin_6"
+                android:drawablePadding="@dimen/margin_4"
+                android:background="@drawable/bg_red_radius_22_ff3535"
+                android:layout_gravity="center_horizontal"
+                android:textSize="9dp"
+                android:textColor="@color/color_FFFFFF"
+                android:text="12%"/>
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/fbtnSevenDaysSignIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:layout_marginBottom="30dp"
+            android:visibility="gone"
+            android:layout_gravity="left|bottom">
+
+            <ImageView
+                android:id="@+id/ivSevenDaysSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="75dp"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_float_dailyrewards"/>
+            <TextView
+                android:id="@+id/tvSevenDaysSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_16"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/margin_6"
+                android:drawablePadding="@dimen/margin_4"
+                android:drawableLeft="@drawable/ic_peso_stroke_white"
+                android:background="@drawable/bg_red_radius_22_ff3535"
+                android:layout_gravity="center_horizontal"
+                android:textSize="9dp"
+                android:textColor="@color/color_FFFFFF"
+                android:text="124"/>
+        </FrameLayout>
+    </FrameLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
