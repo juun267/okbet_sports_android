@@ -14,7 +14,7 @@ data class FirstDepositDetail(
     /**
      * 限时首充到期时间
      */
-    val expireTime: Int=0,
+    val expireTime: Long=0,
     /**
      * 普通首充奖励
      */
@@ -33,26 +33,38 @@ data class FirstDepositDetail(
      * 1-能参加普通首充
      * 2-可领取普通隔日奖励
      * 3-可领取限时首充奖励
+     * 4-普通首充等待领取
+     * 5-限时首充等待领取
      */
     val userStatus: Int? ,
     /**
      *  有效投注流水
      */
-    val validBetMoney: Double = 0.0
+    val validBetMoney: Double = 0.0,
+    /**
+     * 首充完成时间
+     */
+    val rechTime: Long = 0,
+    /**
+     * 1是可以参与签到，0是无签到
+     */
+    val isSign: Int = 0,
+    /**
+     * 签到可以领取的奖励
+     */
+     val signReward: Int?,
+    /**
+     * 次日奖励金额
+     */
+    val rewardAmount: Double?
+
 ):Parcelable{
     fun getCurrentDepositConfig():FirstDepositConfig? =
       when(userStatus){
           0->  activityConfigDailyTimeLimit
           1->  isFirstDeposit
-          2->  isFirstDeposit
-          3->  activityConfigAfterLimitDay
+          2,4->  activityConfigAfterDay
+          3,5->  activityConfigAfterLimitDay
           else-> null
       }
-
-    fun isLimitedFirstDeposit() = expireTime > 0
-
-    // 首充活动开启
-    fun firstDeposit(): Boolean {
-        return expireTime > 0 || isFirstDeposit != null
-    }
 }

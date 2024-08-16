@@ -3,19 +3,25 @@ package org.cxct.sportlottery.ui.maintab.home
 import android.content.Intent
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.net.games.OKGamesRepository
-import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.money.data.FirstDepositDetail
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.Row
@@ -25,6 +31,7 @@ import org.cxct.sportlottery.repository.StaticData.Companion.okLiveOpened
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.home.firstdeposit.SevenDaysSignInActivity
 import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragment
@@ -36,8 +43,8 @@ import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.view.dialog.HomeFirstDepositDialog
 import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
+import splitties.fragments.startActivity
 import timber.log.Timber
 
 class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
@@ -239,5 +246,64 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         super.onResume()
         viewModel.getConfigData()
     }
-
+    fun showFirstDepositFloatBtn(firstDepositDetail: FirstDepositDetail){
+        when (firstDepositDetail?.userStatus) {
+            in 0..1 -> {
+                binding.ivFirstDeposit.setImageResource(R.drawable.ic_float_firstcharge)
+                if (firstDepositDetail?.userStatus==0){
+                    binding.tvFirstDeposit.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_clock_white, 0,0, 0)
+                    val countSecond = (firstDepositDetail.expireTime - System.currentTimeMillis())/1000
+                    if (countSecond>0){
+                        startCount(countSecond.toInt())
+                    }
+                }else{
+                    binding.tvFirstDeposit.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_peso_stroke_white, 0,0, 0)
+                    binding.tvFirstDeposit.text = "${firstDepositDetail?.getCurrentDepositConfig()?.limit}"
+                }
+                binding.fbtnFirstDeposit.isVisible = true
+                binding.fbtnFirstDeposit.setOnTouchListener(SuckEdgeTouch())
+                binding.fbtnFirstDeposit.setOnClickListener {
+                    hotFragment.showFirstDepositDetail(true)
+                }
+            }
+            in 2..5 -> {
+                binding.ivFirstDeposit.setImageResource(R.drawable.ic_float_cashback)
+                binding.tvFirstDeposit.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_peso_stroke_white, 0,0, 0)
+                binding.tvFirstDeposit.text = "${firstDepositDetail?.rewardAmount}"
+                fbtnFirstDeposit.isVisible = true
+                binding.fbtnFirstDeposit.setOnTouchListener(SuckEdgeTouch())
+                binding.fbtnFirstDeposit.setOnClickListener {
+                    hotFragment.showFirstDepositDetail(true)
+                }
+            }
+            else -> {
+                fbtnFirstDeposit.isVisible = false
+            }
+        }
+        if (firstDepositDetail?.isSign==1){
+            binding.ivSevenDaysSignIn.setImageResource(R.drawable.ic_float_dailyrewards)
+            binding.tvSevenDaysSignIn.text = "${firstDepositDetail?.signReward}"
+            binding.fbtnSevenDaysSignIn.isVisible = true
+            binding.fbtnSevenDaysSignIn.setOnTouchListener(SuckEdgeTouch())
+            binding.fbtnSevenDaysSignIn.setOnClickListener {
+                startActivity(SevenDaysSignInActivity::class.java)
+            }
+        }else{
+            fbtnSevenDaysSignIn.isVisible = false
+        }
+    }
+    private fun startCount(totalSecond: Int){
+        GlobalScope.launch(lifecycleScope.coroutineContext) {
+            CountDownUtil.countDown(
+                this,
+                totalSecond,
+                { binding.tvFirstDeposit.text = TimeUtil.showCountDownHMS(totalSecond.toLong() * 1000)},
+                { binding.tvFirstDeposit.text = TimeUtil.showCountDownHMS(it.toLong() * 1000)},
+                {
+                    fbtnFirstDeposit.gone()
+                    (getCurrentFragment() as? HomeHotFragment)?.getFirstDepositDetail()
+                }
+            )
+        }
+    }
 }

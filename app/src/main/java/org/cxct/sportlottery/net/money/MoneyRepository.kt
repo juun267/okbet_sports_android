@@ -14,7 +14,6 @@ object MoneyRepository {
 
     val moneyApi by lazy { RetrofitHolder.createApiService(MoneyApiService::class.java) }
 
-    val _firstDepositDetail = MutableLiveData<FirstDepositDetail?>()
 
     suspend fun rechCheckStauts(params: JsonObject): ApiResult<String> {
         return moneyApi.rechCheckStauts(params)
@@ -23,7 +22,7 @@ object MoneyRepository {
         return moneyApi.rechDailyConfig()
     }
     suspend fun firstDepositDetail(): ApiResult<FirstDepositDetail> {
-        return moneyApi.firstDepositDetail().apply { _firstDepositDetail.postValue(getData()) }
+        return moneyApi.firstDepositDetail()
     }
     suspend fun getFirstDepositAfterDay(): ApiResult<Boolean> {
         return moneyApi.getFirstDepositAfterDay()

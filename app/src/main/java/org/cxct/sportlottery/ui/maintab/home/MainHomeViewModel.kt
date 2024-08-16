@@ -123,7 +123,6 @@ open class MainHomeViewModel(
     val homeOKLiveList: LiveData< List<OKGameBean>>
         get() = _homeOKLiveList
     private val _homeOKLiveList = MutableLiveData< List<OKGameBean>>()
-    val firstDepositDetailEvent = depositDetailEvent
 
     private val _recordBetHttp = MutableLiveData<List<RecordNewEvent>>()
     private val _recordWinHttp = MutableLiveData<List<RecordNewEvent>>()
@@ -162,7 +161,8 @@ open class MainHomeViewModel(
         get() = _newsCategory
     private val _newsCategory = MutableLiveData<List<NewsCategory>>()
 
-    val gotFirstDepositDetail = SingleLiveEvent<Boolean>()
+    val showFirstDepositDetail = SingleLiveEvent<Boolean>()
+    val firstDepositDetailEvent = SingleLiveEvent<FirstDepositDetail?>()
 
     val getFirstDepositAfterDay = SingleLiveEvent<ApiResult<Boolean>>()
 
@@ -697,10 +697,13 @@ open class MainHomeViewModel(
     fun getFirstDepositDetail() {
         if (LoginRepository.isLogined()){
             callApi({ org.cxct.sportlottery.net.money.MoneyRepository.firstDepositDetail() }) {
-                it.getData()?.let { gotFirstDepositDetail.postValue(true) }
+                val userStatusChanged = firstDepositDetailEvent.value?.userStatus != it.getData()?.userStatus
+                firstDepositDetailEvent.postValue(it.getData())
+                showFirstDepositDetail.postValue(userStatusChanged)
             }
         }else{
-            gotFirstDepositDetail.postValue(true)
+            firstDepositDetailEvent.postValue(null)
+            showFirstDepositDetail.postValue(false)
         }
     }
     fun getFirstDepositAfterDay() {

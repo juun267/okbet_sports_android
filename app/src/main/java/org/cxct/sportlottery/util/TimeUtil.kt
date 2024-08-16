@@ -474,4 +474,13 @@ object TimeUtil {
         return null
     }
 
+    /**
+     * 用于倒计时显示剩余时间时分秒格式
+     */
+    fun showCountDownHMS(millisUntilFinished: Long):String{
+        val hours = (millisUntilFinished / 1000) / 3600
+        val minutes = (millisUntilFinished / 1000 % 3600) / 60
+        val seconds = (millisUntilFinished / 1000 % 60)
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds)
+    }
 }
