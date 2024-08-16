@@ -1827,7 +1827,7 @@
     <string name="P491">证件背面</string>
     <string name="P492_1">文件需小于500KB.</string>
     <string name="A001">等一下!</string>
-    <string name="A002_1">完成首次存款並獲得 100 比索現金回饋</string>
+    <string name="A002_1">完成首次存款並獲得現金回饋</string>
     <string name="A003">取消</string>
     <string name="A004">继续</string>
     <string name="A005">获得首次存款獎金</string>
@@ -1846,4 +1846,5 @@
     <string name="A018">明天可获得 %s 现金返还</string>
     <string name="A019">存款</string>
     <string name="A020">详细</string>
+    <string name="A119">更多活动</string>
 </resources>

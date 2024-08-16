@@ -878,7 +878,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         binding.linReceiveExtra.gone()
     }
     private fun initFirstDeposit(list: List<DailyConfig>) =binding.linFirstDeposit.run{
-        val availableList = list.filter { it.first==1 }
+        val availableList = list.filter { it.first==1 }.take(2)
         binding.linFirstDeposit.root.isVisible = availableList.isNotEmpty()
         linNoChoose.isSelected = true
         rvFirstDeposit.adapter = dailyConfigAdapter

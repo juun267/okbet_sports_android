@@ -28,7 +28,7 @@
             android:layout_gravity="right|center_vertical"
             android:textColor="@color/color_025BE8"
             android:textSize="14sp"
-            android:text="@string/promotion"/>
+            android:text="@string/A119"/>
 
     </FrameLayout>
 

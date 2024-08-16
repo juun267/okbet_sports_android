@@ -1901,7 +1901,7 @@
     <string name="P491">Back of ID</string>
     <string name="P492_1">The file size should be under 500KB.</string>
     <string name="A001">Hold Up There!</string>
-    <string name="A002_1">Complete Your First Deposit And Get A Cash Back Of ₱100</string>
+    <string name="A002_1">Complete your first deposit and get a cash back of</string>
     <string name="A003">Cancel</string>
     <string name="A004">Continue</string>
     <string name="A005">Get First Deposit Reward</string>
@@ -1920,4 +1920,5 @@
     <string name="A018">Get %s Cash Back Tomorrow</string>
     <string name="A019">Deposit</string>
     <string name="A020">Details</string>
+    <string name="A119">View More Offers</string>
 </resources>
