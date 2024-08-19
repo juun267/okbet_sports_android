@@ -102,7 +102,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         //在線充值成功
         viewModel.onlinePayResult.observe(this.viewLifecycleOwner) {
             resetEvent()
-            hideFirstDesposit()
+//            hideFirstDesposit()
         }
 
         //在線充值首充提示

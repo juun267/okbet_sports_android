@@ -217,7 +217,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         viewModel.transferPayResult.observe(this) {
             if (it.success) {
                 resetEvent()
-                hideFirstDesposit()
+//                hideFirstDesposit()
                 getBankType(0)
             }
         }
@@ -907,6 +907,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         }
 
     }
+
     private fun updateFirstDepositExtraMoney(dailyConfig: DailyConfig, rechargeMoney: Int){
         if (dailyConfig!=null && dailyConfig.first==1){
             val additional = dailyConfig.additional
@@ -931,9 +932,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
     fun getSelectedDailyConfig() = dailyConfigAdapter.getSelectedItem()
 
     private fun submitForm() {
-        val dailyConfig = dailyConfigAdapter.getSelectedItem() ?: return
-        val activityType = dailyConfig.activityType
-        val type = dailyConfig.type
+        val dailyConfig = dailyConfigAdapter.getSelectedItem()
+        val activityType = dailyConfig?.activityType
+        val type = dailyConfig?.type
         val request = createMoneyAddRequest(activityType, type) ?: return
         viewModel.rechargeSubmit(
             request,
