@@ -58,6 +58,9 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
         ivClose.setOnClickListener { dismiss() }
         rcvPromotions.setLinearLayoutManager()
         rcvPromotions.adapter = adapter
+        arguments?.getParcelable<DailyConfig>("DailyConfig")?.let {
+            adapter.changeSelect(it)
+        }
         linNoChoose.setOnClickListener {
             changeSelected(true)
             adapter.clearSelected()
