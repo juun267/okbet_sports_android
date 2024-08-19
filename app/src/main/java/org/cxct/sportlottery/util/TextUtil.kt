@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.content.Context
+import android.icu.text.DecimalFormat
 import org.cxct.sportlottery.R
 import timber.log.Timber
 import java.math.BigDecimal
@@ -51,6 +52,18 @@ object TextUtil : DecimalFormatUtil() {
             Timber.e("$e")
         }
         return null
+    }
+
+
+    // 金额最多保留2为小数
+    fun formatMoney2(any: Any): String {
+        try {
+            return DecimalFormat("###,###,###,###,###,###,###,###.##").format(any)
+        } catch (e: Exception) {
+            Timber.e("$e")
+        }
+
+        return "0.00"
     }
 
     /**

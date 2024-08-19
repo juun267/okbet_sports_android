@@ -52,11 +52,11 @@ data class FirstDepositDetail(
     /**
      * 签到可以领取的奖励
      */
-     val signReward: Int?,
+     val signReward: Float?,
     /**
      * 次日奖励金额
      */
-    val rewardAmount: Int?
+    val rewardAmount: Float?
 
 ):Parcelable{
     fun getCurrentDepositConfig():FirstDepositConfig? =

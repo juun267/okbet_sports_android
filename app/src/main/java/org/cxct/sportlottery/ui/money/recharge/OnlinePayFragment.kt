@@ -494,12 +494,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         }
     }
 
-    private fun hideFirstDesposit(){
-        binding.linFirstDeposit.linNoChoose.performClick()
-        binding.linFirstDeposit.root.gone()
-        binding.linReceiveExtra.gone()
-    }
-
     private fun initFirstDeposit(list: List<DailyConfig>) = binding.linFirstDeposit.run {
         val availableList = list.filter { it.first==1 }.take(2)
         binding.linFirstDeposit.root.isVisible = availableList.isNotEmpty()
@@ -533,17 +527,17 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         if (additional > 0) {
             val additionalMoney = rechargeMoney*additional/100
             val extraMoney = if(additionalMoney>capped) capped else  additionalMoney
-            binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(extraMoney,0)}"
+            binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(extraMoney,2)}"
         }
     }
 
     override fun onSelected(dailyConfig: DailyConfig?) {
         if (dailyConfig == null) {
             dailyConfigAdapter.clearSelected()
-            binding.linReceiveExtra.gone()
         } else {
             dailyConfigAdapter.changeSelect(dailyConfig)
         }
+        updateDailyConfigSelect()
     }
 
     fun getSelectedDailyConfig() = dailyConfigAdapter.getSelectedItem()

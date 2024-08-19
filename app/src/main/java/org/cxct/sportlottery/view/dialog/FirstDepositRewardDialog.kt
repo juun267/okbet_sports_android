@@ -22,7 +22,7 @@ import java.util.*
 /**
  * 次日活动弹窗活动弹窗
  */
-class FirstDepositRewardDialog : BaseDialog<MainHomeViewModel, DialogFirstDepositRewardBinding>() {
+class FirstDepositRewardDialog private constructor(): BaseDialog<MainHomeViewModel, DialogFirstDepositRewardBinding>() {
 
 
     companion object{
@@ -48,7 +48,7 @@ class FirstDepositRewardDialog : BaseDialog<MainHomeViewModel, DialogFirstDeposi
 
     override fun onInitView()=binding.run {
         val firstDepositConfig = firstDepositDetail.getCurrentDepositConfig()!!
-        tvRewardAmount.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.rewardAmount?.toInt()}"
+        tvRewardAmount.text = "${sConfigData?.systemCurrencySign}${TextUtil.formatMoney2(firstDepositDetail.rewardAmount ?: 0)}"
         //活动要求投注流水
         val requiredBetMoney = firstDepositConfig.validBetMoney
         tvCondition2.text = String.format(getString(R.string.A009),requiredBetMoney)

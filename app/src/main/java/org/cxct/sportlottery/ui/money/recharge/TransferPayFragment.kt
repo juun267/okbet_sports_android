@@ -874,25 +874,17 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
             }
         }
     }
-    private fun hideFirstDesposit(){
-        binding.linFirstDeposit.linNoChoose.performClick()
-        binding.linFirstDeposit.root.gone()
-        binding.linReceiveExtra.gone()
-    }
+
     private fun initFirstDeposit(list: List<DailyConfig>) =binding.linFirstDeposit.run{
         val availableList = list.filter { it.first==1 }.take(2)
         binding.linFirstDeposit.root.isVisible = availableList.isNotEmpty()
-        linNoChoose.isSelected = true
         rvFirstDeposit.adapter = dailyConfigAdapter
         dailyConfigAdapter.setList(availableList)
         dailyConfigAdapter.setOnItemClickListener { adapter, view, position ->
 
         }
-        linNoChoose.setOnClickListener {
-            dailyConfigAdapter.clearSelected()
-            updateDailyConfigSelect()
-        }
     }
+
     private fun updateDailyConfigSelect(){
         val dailyConfig = dailyConfigAdapter.getSelectedItem()
         if (dailyConfig==null){
@@ -915,7 +907,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
             if (additional>0){
                 val additionalMoney = rechargeMoney*additional/100
                 val extraMoney = if(additionalMoney>capped) capped else  additionalMoney
-                binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(extraMoney,0)}"
+                binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(extraMoney,2)}"
             }
         }
     }
@@ -923,10 +915,10 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
     override fun onSelected(dailyConfig: DailyConfig?) {
         if (dailyConfig == null) {
             dailyConfigAdapter.clearSelected()
-            binding.linReceiveExtra.gone()
         } else {
             dailyConfigAdapter.changeSelect(dailyConfig)
         }
+        updateDailyConfigSelect()
     }
 
     fun getSelectedDailyConfig() = dailyConfigAdapter.getSelectedItem()

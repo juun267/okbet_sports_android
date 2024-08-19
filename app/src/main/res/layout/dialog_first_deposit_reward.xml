@@ -40,7 +40,7 @@
                 android:text="@string/A005"/>
             <LinearLayout
                 android:id="@+id/linCountingTime"
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_coupon_reward_blue"
                 android:gravity="center_vertical"
@@ -49,10 +49,9 @@
               <TextView
                   android:layout_width="0dp"
                   android:layout_height="wrap_content"
-                  android:layout_weight="171"
+                  android:layout_weight="131"
                   android:lineHeight="@dimen/margin_20"
-                  android:paddingLeft="@dimen/margin_20"
-                  android:paddingRight="@dimen/margin_10"
+                  android:gravity="center"
                   android:text="@string/A006_1"
                   android:textColor="@color/color_FFFFFF"
                   android:textSize="@dimen/textSize14sp"/>
@@ -60,13 +59,16 @@
                     android:id="@+id/tvRewardAmount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="129"
+                    android:layout_weight="169"
                     android:gravity="center"
-                    android:paddingHorizontal="@dimen/margin_10"
                     android:fontFamily="@font/inter_bold"
+                    android:autoSizeMaxTextSize="40sp"
+                    android:autoSizeMinTextSize="28sp"
+                    android:autoSizeTextType="uniform"
+                    android:lines="1"
                     tools:text="140"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="40dp"/>
+                    android:textSize="40sp"/>
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
