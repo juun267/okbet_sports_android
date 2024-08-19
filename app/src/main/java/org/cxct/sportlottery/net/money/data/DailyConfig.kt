@@ -16,4 +16,8 @@ data class DailyConfig(
     val content:String,
     val activityType:Int,
     val type: Int?,
-):Parcelable
+):Parcelable {
+
+    fun isFirstDepositActivity() = activityType == 6
+
+}

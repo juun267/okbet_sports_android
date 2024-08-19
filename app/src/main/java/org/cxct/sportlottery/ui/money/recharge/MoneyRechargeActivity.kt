@@ -75,17 +75,13 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 //            viewModel.dailyConfigEvent.value?.firstOrNull()
 //        }
 
-        val dailyConfig = viewModel.dailyConfigEvent.value?.firstOrNull()
+        val dailyConfig = viewModel.dailyConfigEvent.value?.find { it.isFirstDepositActivity() && it.capped > 0 }
         if (dailyConfig == null) {
             super.onBackPressed()
             return
         }
 
-        if (dailyConfig.capped > 0) {
-            GiveUpDepositDialog.show(supportFragmentManager, dailyConfig.capped.toString())
-        } else {
-            super.onBackPressed()
-        }
+        GiveUpDepositDialog.show(supportFragmentManager, dailyConfig.capped.toString())
 
     }
 
