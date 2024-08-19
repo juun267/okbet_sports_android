@@ -50,7 +50,7 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
 
     private val adapter = DailyConfigAdapter(::onItemClick)
     private val dataList by lazy { requireArguments().getParcelableArrayList<DailyConfig>("dataList")!! }
-
+    private var selectItem: DailyConfig? = null
 
     override fun onInitView() = binding.run {
         marginHorizontal = 12.dp
@@ -58,9 +58,7 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
         ivClose.setOnClickListener { dismiss() }
         rcvPromotions.setLinearLayoutManager()
         rcvPromotions.adapter = adapter
-        arguments?.getParcelable<DailyConfig>("DailyConfig")?.let {
-            adapter.changeSelect(it)
-        }
+        selectItem = arguments?.getParcelable<DailyConfig>("DailyConfig")
         linNoChoose.setOnClickListener {
             changeSelected(true)
             adapter.clearSelected()
@@ -71,6 +69,7 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
     override fun onBindViewStatus(view: View) {
         val list = dataList.toMutableList()
         adapter.setNewInstance(list)
+        selectItem?.let { adapter.changeSelect(it) }
     }
 
     private fun onItemClick(item: DailyConfig) {
