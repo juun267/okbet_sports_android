@@ -49,12 +49,12 @@ class FirstDepositRewardDialog : BaseDialog<MainHomeViewModel, DialogFirstDeposi
     override fun onInitView()=binding.run {
         val firstDepositConfig = firstDepositDetail.getCurrentDepositConfig()!!
         tvRewardAmount.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.rewardAmount?.toInt()}"
-        //活动要求投注流水。乘以流水倍数
-        val requiredBetMoney = firstDepositConfig.validBetMoney*firstDepositConfig.flowRatio
+        //活动要求投注流水
+        val requiredBetMoney = firstDepositConfig.validBetMoney
         tvCondition2.text = String.format(getString(R.string.A009),requiredBetMoney)
         tvDesp.text = String.format(getString(R.string.A011,"${sConfigData?.systemCurrencySign}${TextUtil.formatMoney(requiredBetMoney)}"))
         //用户流水大于活动要求的流水
-        val item2Selected = firstDepositDetail.validBetMoney>requiredBetMoney
+        val item2Selected = firstDepositDetail.validBetMoney >= requiredBetMoney
         if (item2Selected){
             ivState2.setImageResource(R.drawable.ic_state_completed)
         }else{
