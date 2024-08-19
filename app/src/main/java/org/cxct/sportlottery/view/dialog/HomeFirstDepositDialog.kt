@@ -90,7 +90,9 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
             dismiss()
         }
         tvDetail.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(),Constants.getFirstDepositRules(requireContext()),getString(R.string.A016))
+            Constants.appendParams(Constants.getFirstDepositRules(requireContext()))?.let { it1 ->
+                JumpUtil.toInternalWeb(requireContext(), it1,getString(R.string.A016))
+            }
         }
 
     }

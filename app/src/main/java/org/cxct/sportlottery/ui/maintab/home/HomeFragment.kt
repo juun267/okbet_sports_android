@@ -263,7 +263,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
                 binding.fbtnFirstDeposit.isVisible = true
                 binding.fbtnFirstDeposit.setOnTouchListener(SuckEdgeTouch())
                 binding.fbtnFirstDeposit.setOnClickListener {
-                    hotFragment.showFirstDepositDetail(true)
+                    hotFragment.showFirstDepositDetail(childFragmentManager,true)
                 }
             }
             in 2..5 -> {
@@ -273,7 +273,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
                 fbtnFirstDeposit.isVisible = true
                 binding.fbtnFirstDeposit.setOnTouchListener(SuckEdgeTouch())
                 binding.fbtnFirstDeposit.setOnClickListener {
-                    hotFragment.showFirstDepositDetail(true)
+                    hotFragment.showFirstDepositDetail(childFragmentManager,true)
                 }
             }
             else -> {
