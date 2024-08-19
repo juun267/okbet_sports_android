@@ -58,7 +58,7 @@ class FirstDepositRewardDialog : BaseDialog<MainHomeViewModel, DialogFirstDeposi
         if (item2Selected){
             ivState2.setImageResource(R.drawable.ic_state_completed)
         }else{
-            ivState2.setImageResource(R.drawable.ic_state_countdown)
+            ivState2.setImageResource(R.drawable.ic_state_failed)
         }
         //当前是否充值后的第二日
         val item3Selected = isTomorrow(firstDepositDetail.rechTime)
