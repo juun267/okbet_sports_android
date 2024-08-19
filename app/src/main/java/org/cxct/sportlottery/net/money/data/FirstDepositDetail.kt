@@ -56,7 +56,7 @@ data class FirstDepositDetail(
     /**
      * 次日奖励金额
      */
-    val rewardAmount: Double?
+    val rewardAmount: Int?
 
 ):Parcelable{
     fun getCurrentDepositConfig():FirstDepositConfig? =
