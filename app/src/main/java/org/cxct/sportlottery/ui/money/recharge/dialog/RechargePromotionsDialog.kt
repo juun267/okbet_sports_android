@@ -18,26 +18,29 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
 
     companion object {
 
-        private fun newInstance(dataList: ArrayList<DailyConfig>): RechargePromotionsDialog {
+        private fun newInstance(dataList: ArrayList<DailyConfig>, selectedItem: DailyConfig?): RechargePromotionsDialog {
             val instance = RechargePromotionsDialog()
             val bundle = Bundle()
             bundle.putParcelableArrayList("dataList", dataList)
+            bundle.putParcelable("DailyConfig", selectedItem)
             instance.arguments = bundle
             return instance
         }
 
-        fun show(fragment: BaseFragment<MoneyRechViewModel, *>, dataList: ArrayList<DailyConfig>) {
+        fun show(fragment: BaseFragment<MoneyRechViewModel, *>, dataList: ArrayList<DailyConfig>, selectedItem: DailyConfig?) {
             if (fragment !is OnSelectListener) {
                 return
             }
-            newInstance(dataList).show(fragment.childFragmentManager)
+
+            newInstance(dataList, selectedItem).show(fragment.childFragmentManager)
         }
 
-        fun show(activity: BaseActivity<MoneyRechViewModel, *>, dataList: ArrayList<DailyConfig>) {
+        fun show(activity: BaseActivity<MoneyRechViewModel, *>, dataList: ArrayList<DailyConfig>, selectedItem: DailyConfig?) {
             if (activity !is OnSelectListener) {
                 return
             }
-            newInstance(dataList).show(activity.supportFragmentManager)
+
+            newInstance(dataList, selectedItem).show(activity.supportFragmentManager)
         }
     }
 
@@ -55,6 +58,9 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
         ivClose.setOnClickListener { dismiss() }
         rcvPromotions.setLinearLayoutManager()
         rcvPromotions.adapter = adapter
+        arguments?.getParcelable<DailyConfig>("DailyConfig")?.let {
+            adapter.changeSelect(it)
+        }
         linNoChoose.setOnClickListener {
             changeSelected(true)
             adapter.clearSelected()
@@ -64,17 +70,6 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
 
     override fun onBindViewStatus(view: View) {
         val list = dataList.toMutableList()
-        list.addAll(dataList)
-        list.addAll(dataList)
-        list.addAll(dataList)
-        list.addAll(dataList)
-        list.addAll(dataList)
-        list.addAll(dataList)
-        list.addAll(dataList)
-        list.addAll(dataList)
-        list.addAll(dataList)
-        list.addAll(dataList)
-        list.addAll(dataList)
         adapter.setNewInstance(list)
     }
 

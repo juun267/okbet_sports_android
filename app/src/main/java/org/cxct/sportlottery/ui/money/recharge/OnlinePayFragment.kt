@@ -139,7 +139,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         DrawableCompat.setTint(icRight.mutate(), context().getColor(R.color.color_025BE8))
         val tvViewMore = binding.linFirstDeposit.tvViewMore
         tvViewMore.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, icRight, null)
-        tvViewMore.setOnClickListener { RechargePromotionsDialog.show(this, dailyConfigAdapter.data as ArrayList<DailyConfig>) }
+        tvViewMore.setOnClickListener {
+            RechargePromotionsDialog.show(this, dailyConfigAdapter.data as ArrayList<DailyConfig>, dailyConfigAdapter.getSelectedItem())
+        }
     }
 
     private fun initButton() = binding.run {
@@ -538,6 +540,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
     override fun onSelected(dailyConfig: DailyConfig?) {
         if (dailyConfig == null) {
             dailyConfigAdapter.clearSelected()
+            binding.linReceiveExtra.gone()
         } else {
             dailyConfigAdapter.changeSelect(dailyConfig)
         }
