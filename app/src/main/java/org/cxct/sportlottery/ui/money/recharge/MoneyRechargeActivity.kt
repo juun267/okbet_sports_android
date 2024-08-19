@@ -62,6 +62,11 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun doOnBackPress() {
 
+        if (viewModel.hasCharged) {
+            super.onBackPressed()
+            return
+        }
+
 //        val dailyConfig = if (mCurrentFragment is OnlinePayFragment) {
 //            (mCurrentFragment as OnlinePayFragment).getSelectedDailyConfig()
 //        } else if (mCurrentFragment is TransferPayFragment) {

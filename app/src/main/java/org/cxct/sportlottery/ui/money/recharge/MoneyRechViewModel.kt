@@ -145,6 +145,8 @@ class MoneyRechViewModel(
     val dailyConfigEvent = SingleLiveEvent<List<DailyConfig>>()
     var uniPaid: Boolean = false
         private set
+    var hasCharged = false
+        private set
 
     //更新使用者資料
     fun getUserInfo() {
@@ -240,6 +242,7 @@ class MoneyRechViewModel(
                 doNetwork(androidContext) {
                     MoneyRepository.rechargeAdd(moneyAddRequest)
                 }.let {
+                    hasCharged = true
                     it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
                     _transferPayResult.value = it
                     AFInAppEventUtil.deposit(moneyAddRequest?.depositMoney ?: "",
@@ -308,6 +311,7 @@ class MoneyRechViewModel(
             queryMap.forEach { params.addProperty(it.key,it.value) }
             callApi({org.cxct.sportlottery.net.money.MoneyRepository.rechCheckStauts(params)}){
                 if (it.succeeded()){
+                    hasCharged = true
                     url += toUrlParamsFormat(queryMap)
                     toExternalWeb(context, url)
                     AFInAppEventUtil.deposit(depositMoney ?: "",
@@ -730,7 +734,7 @@ class MoneyRechViewModel(
     fun getDailyConfig(){
         callApiOther({org.cxct.sportlottery.net.money.MoneyRepository.rechDailyConfig()}){
             if (it.succeeded()){
-                uniPaid = it.other?.paid == true
+                uniPaid = it.other?.unpaid == true
                 it.getData()?.let {
                     dailyConfigEvent.postValue(it)
                 }
