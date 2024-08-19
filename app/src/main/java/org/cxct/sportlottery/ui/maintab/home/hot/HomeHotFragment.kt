@@ -191,18 +191,18 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             }
         }
     }
-    fun showFirstDepositDetail(showNow: Boolean=false){
+    fun showFirstDepositDetail(fm: FragmentManager, showNow: Boolean=false){
         viewModel.firstDepositDetailEvent.value?.let {
             when (it.userStatus) {
                 //限时首充和首充活动
                 in 0..1 -> {
-                    HomeFirstDepositDialog.buildDialog(PRIORITY_FIRST_DEPOSIT, ::getParentFragmentManager, it)?.let {
+                    HomeFirstDepositDialog.buildDialog(PRIORITY_FIRST_DEPOSIT, { fm }, it)?.let {
                         dialogQueueManager.enqueue(it)
                     }
                 }
                 //次日活动弹窗
                 in 2..5 -> {
-                    FirstDepositRewardDialog.buildDialog(PRIORITY_FIRST_DEPOSIT, ::getParentFragmentManager, it)?.let {
+                    FirstDepositRewardDialog.buildDialog(PRIORITY_FIRST_DEPOSIT, { fm }, it)?.let {
                         dialogQueueManager.enqueue(it)
                     }
                 }
@@ -241,7 +241,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             viewModel.firstDepositDetailEvent.value?.let {
                 getHomeFragment().showFirstDepositFloatBtn(it)
                 if (show){
-                    showFirstDepositDetail()
+                    showFirstDepositDetail(parentFragmentManager)
                 }
             }
         }
