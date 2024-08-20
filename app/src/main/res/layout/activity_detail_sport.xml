@@ -154,28 +154,6 @@
                             app:layout_constraintStart_toEndOf="@id/ivFavorite"
                             app:layout_constraintTop_toTopOf="@+id/ivFavorite" />
 
-                        <LinearLayout
-                            android:id="@+id/linCashOut"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:gravity="center"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/ivLiveStream"
-                            app:layout_constraintTop_toTopOf="parent">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingEnd="5dp"
-                                android:src="@drawable/ic_cashout_yellow" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/B73"
-                                android:textColor="@color/color_0D2245"
-                                android:textSize="12sp" />
-
-                        </LinearLayout>
                         <TextView
                             android:id="@+id/tvAnim"
                             android:layout_width="wrap_content"
