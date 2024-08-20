@@ -10,6 +10,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.money.recharge.DailyConfigAdapter
+import org.cxct.sportlottery.ui.money.recharge.FirstDepositNoticeDialog
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
@@ -48,7 +49,7 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
         fun onSelected(dailyConfig: DailyConfig?)
     }
 
-    private val adapter = DailyConfigAdapter(::onItemClick)
+    private val adapter = DailyConfigAdapter(::onItemClick, ::onTCClick)
     private val dataList by lazy { requireArguments().getParcelableArrayList<DailyConfig>("dataList")!! }
     private var selectItem: DailyConfig? = null
 
@@ -92,6 +93,10 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
         } else if (act is OnSelectListener) {
             act.onSelected(dailyConfig)
         }
+    }
+
+    private fun onTCClick(dailyConfig: DailyConfig) {
+        FirstDepositNoticeDialog.newInstance(dailyConfig.content).show(childFragmentManager)
     }
 
 

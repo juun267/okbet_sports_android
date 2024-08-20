@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -106,6 +105,18 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         binding.ivService.setOnTouchListener(SuckEdgeTouch())
         binding.ivService.setServiceClick(childFragmentManager)
         viewModel.getHallOkSport()
+        initRewardItems()
+    }
+
+    private fun initRewardItems() {
+        binding.fbtnFirstDeposit.setOnTouchListener(SuckEdgeTouch())
+        binding.fbtnFirstDeposit.setOnClickListener {
+            hotFragment.showFirstDepositDetail(childFragmentManager,true)
+        }
+        binding.fbtnFirstDeposit.setOnTouchListener(SuckEdgeTouch())
+        binding.fbtnFirstDeposit.setOnClickListener {
+            hotFragment.showFirstDepositDetail(childFragmentManager,true)
+        }
     }
 
     override fun onBindViewStatus(view: View) {
@@ -262,20 +273,12 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
                     binding.tvFirstDeposit.text = "${firstDepositDetail?.getCurrentDepositConfig()?.limit}"
                 }
                 binding.fbtnFirstDeposit.isVisible = true
-                binding.fbtnFirstDeposit.setOnTouchListener(SuckEdgeTouch())
-                binding.fbtnFirstDeposit.setOnClickListener {
-                    hotFragment.showFirstDepositDetail(childFragmentManager,true)
-                }
             }
             in 2..5 -> {
                 binding.ivFirstDeposit.setImageResource(R.drawable.ic_float_cashback)
                 binding.tvFirstDeposit.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_peso_stroke_white, 0,0, 0)
                 binding.tvFirstDeposit.text = TextUtil.formatMoney2(firstDepositDetail?.rewardAmount ?: 0)
                 fbtnFirstDeposit.isVisible = true
-                binding.fbtnFirstDeposit.setOnTouchListener(SuckEdgeTouch())
-                binding.fbtnFirstDeposit.setOnClickListener {
-                    hotFragment.showFirstDepositDetail(childFragmentManager,true)
-                }
             }
             else -> {
                 fbtnFirstDeposit.isVisible = false
@@ -294,22 +297,21 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         }
     }
 
-    private var timerScope: CoroutineScope? = null
+    private var timerJob: Job? = null
     private fun cancelCountTimer() {
-        timerScope?.cancel()
-        timerScope = null
+        timerJob?.cancel()
+        timerJob = null
     }
     private fun startCount(totalSecond: Int) {
         cancelCountTimer()
-        GlobalScope.launch(lifecycleScope.coroutineContext) {
-            timerScope = this
+        timerJob = GlobalScope.launch(lifecycleScope.coroutineContext) {
             CountDownUtil.countDown(
                 this,
                 totalSecond,
-                { binding.tvFirstDeposit.text = TimeUtil.showCountDownHMS(totalSecond.toLong() * 1000)},
-                { binding.tvFirstDeposit.text = TimeUtil.showCountDownHMS(it.toLong() * 1000)},
+                { binding.tvFirstDeposit.text = TimeUtil.showCountDownHMS(totalSecond.toLong() * 1000) },
+                { binding.tvFirstDeposit.text = TimeUtil.showCountDownHMS(it.toLong() * 1000) },
                 {
-                    timerScope = null
+                    timerJob = null
                     fbtnFirstDeposit.gone()
                     (getCurrentFragment() as? HomeHotFragment)?.getFirstDepositDetail()
                 }

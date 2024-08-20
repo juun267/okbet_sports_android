@@ -65,7 +65,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         DialogBottomSheetIconAndTickBinding.inflate(layoutInflater,contentView,false)
     }
 
-    private val dailyConfigAdapter = DailyConfigAdapter { updateDailyConfigSelect() }
+    private val dailyConfigAdapter = DailyConfigAdapter({ updateDailyConfigSelect() })
 
     override fun onStart() {
         super.onStart()

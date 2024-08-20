@@ -56,7 +56,7 @@ class FirstDepositRewardDialog private constructor(): BaseDialog<MainHomeViewMod
         //活动要求投注流水
         val requiredBetMoney = firstDepositConfig.validBetMoney
         tvCondition2.text = String.format(getString(R.string.A009),requiredBetMoney)
-        tvDesp.text = String.format(getString(R.string.A011,"${sConfigData?.systemCurrencySign}${TextUtil.formatMoney(requiredBetMoney)}"))
+        tvDesp.text = String.format(getString(R.string.A011,"${sConfigData?.systemCurrencySign}${TextUtil.formatMoney2(requiredBetMoney)}"))
         //用户流水大于活动要求的流水
         val item2Selected = firstDepositDetail.validBetMoney >= requiredBetMoney
         if (item2Selected){

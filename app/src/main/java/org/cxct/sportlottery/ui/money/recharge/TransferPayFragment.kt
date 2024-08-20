@@ -77,9 +77,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
     private var depositDate = Date()
     private var depositDate2 = Date()
     private var mCalendar: Calendar =Calendar.getInstance()
-    private val dailyConfigAdapter = DailyConfigAdapter{
-        updateDailyConfigSelect()
-    }
+    private val dailyConfigAdapter = DailyConfigAdapter({ updateDailyConfigSelect() })
 
     fun setArguments(moneyPayWay: MoneyPayWayData?): TransferPayFragment {
         mMoneyPayWay = moneyPayWay
