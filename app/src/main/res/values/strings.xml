@@ -1908,7 +1908,7 @@
     <string name="A006_1">First Charge Reward Amount</string>
     <string name="A007">Receiving Condition:</string>
     <string name="A008">First Charge Completed</string>
-    <string name="A009">Turnover >= %s</string>
+    <string name="A009">Turnover ≥ %s</string>
     <string name="A010">Tomorrow Log-In</string>
     <string name="A011">Complete the first deposit, reach a turnover of %s and log in the next day to receive</string>
     <string name="A012">Get It Right Now</string>

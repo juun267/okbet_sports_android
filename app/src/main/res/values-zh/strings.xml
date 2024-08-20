@@ -1834,7 +1834,7 @@
     <string name="A006_1">首次充值奖金金额</string>
     <string name="A007">接收条件：</string>
     <string name="A008">首次充值完成</string>
-    <string name="A009">有效投注额 >= %s</string>
+    <string name="A009">有效投注额 ≥ %s</string>
     <string name="A010">明天登录</string>
     <string name="A011">完成首次存款，达到%s营业额，次日登录即可领取</string>
     <string name="A012">立即获取</string>

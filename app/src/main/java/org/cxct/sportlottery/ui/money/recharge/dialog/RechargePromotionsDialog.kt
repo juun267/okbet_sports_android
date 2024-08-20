@@ -76,7 +76,6 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
     private fun onItemClick(item: DailyConfig) {
         changeSelected(false)
         onSelectChange(item)
-        dismiss()
     }
 
     private fun changeSelected(select: Boolean) {

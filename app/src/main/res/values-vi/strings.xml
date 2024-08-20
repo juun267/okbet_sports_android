@@ -1778,7 +1778,7 @@
     <string name="A006_1">Tiền thưởng cho khoản phí đầu tiên</string>
     <string name="A007">Điều kiện nhận:</string>
     <string name="A008">Khoản phí đầu tiên đã hoàn thành</string>
-    <string name="A009">Doanh thu >= %s</string>
+    <string name="A009">Doanh thu ≥ %s</string>
     <string name="A010">Ngày mai đăng nhập</string>
     <string name="A011">Hoàn thành nạp lần đầu, đạt doanh thu %s và đăng nhập vào ngày hôm sau để nhận</string>
     <string name="A012">Nhận ngay</string>
