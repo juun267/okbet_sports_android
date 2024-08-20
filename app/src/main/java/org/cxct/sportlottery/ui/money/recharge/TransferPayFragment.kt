@@ -907,7 +907,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
             if (additional>0){
                 val additionalMoney = rechargeMoney.toDouble() * additional/100
                 val extraMoney = if(additionalMoney > capped) capped else  additionalMoney
-                binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(extraMoney,2)}"
+                binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney2(extraMoney)}"
             }
         }
     }
