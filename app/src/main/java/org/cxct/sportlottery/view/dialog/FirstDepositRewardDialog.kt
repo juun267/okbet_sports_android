@@ -95,6 +95,6 @@ class FirstDepositRewardDialog private constructor(): BaseDialog<MainHomeViewMod
         val rechCal = Calendar.getInstance()
         rechCal.timeInMillis = rechTime
         rechCal.add(Calendar.DAY_OF_MONTH,1)
-        return TimeUtil.dateToFormat(rechCal.time,TimeUtil.YMD_FORMAT)==TimeUtil.dateToFormat(Calendar.getInstance().time,TimeUtil.YMD_FORMAT)
+        return TimeUtil.timeFormat(rechCal.timeInMillis,TimeUtil.YMD_FORMAT)==TimeUtil.timeFormat(Calendar.getInstance().timeInMillis,TimeUtil.YMD_FORMAT)
     }
 }

@@ -251,9 +251,9 @@ object Constants {
      */
     fun getSevenCheckInUrl(context: Context) = "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}seven-check-in"
     /**
-     * 首充活动规则条款
+     * 首充活动规则条款(写死英文，没有多语言)
      */
-    fun getFirstDepositRules(context: Context) = "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}v2/first-deposit-rules"
+    fun getFirstDepositRules(context: Context) = "${getH5BaseUrl()}sports-rule/#/us/v2/first-deposit-rules"
 
       /**
      * 给h5地址加上统一参数
