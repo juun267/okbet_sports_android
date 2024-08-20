@@ -85,14 +85,6 @@ class OddsButton2 @JvmOverloads constructor(
             }
         }
 
-    var oddStatus: Int? = null
-        set(value) {
-            if (value != null) {
-                setupOddState(value)
-                field = value
-            }
-        }
-
     init {
         foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
         setBackgroundResource(R.drawable.selector_button_radius_6_odds)
@@ -108,13 +100,15 @@ class OddsButton2 @JvmOverloads constructor(
 
     private fun getBuoyAnimation(fromAlpha: Float, toAlpha: Float): ValueAnimator {
         val alphaAnim = ObjectAnimator.ofFloat(buoyIcon, "alpha", fromAlpha, toAlpha)
-        alphaAnim.repeatCount = 3
+        alphaAnim.repeatCount = 2
+        alphaAnim.duration = 1000
         alphaAnim.repeatMode = ValueAnimator.RESTART
         alphaAnim.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 setupOddState(OddState.SAME.state)
             }
         })
+        alphaAnim.start()
         return alphaAnim
     }
 
@@ -152,8 +146,10 @@ class OddsButton2 @JvmOverloads constructor(
 
     private fun resetBuoyIcon() {
         buoyIcon.clearAnimation()
-        (buoyIcon.tag as ValueAnimator?)?.let { it.cancel() }
+        runningAnim?.let { it.cancel() }
+        runningAnim = null
         buoyIcon.tag = null
+        mOdd?.oddState = OddState.SAME.state
         (buoyIcon.parent as ViewGroup?)?.let {
             it.removeView(buoyIcon)
         }
@@ -173,7 +169,7 @@ class OddsButton2 @JvmOverloads constructor(
                     addRule(ALIGN_PARENT_TOP,TRUE)
                     buoyIcon.layoutParams = this
                 }
-                playAnim(R.drawable.icon_odds_up, getBuoyAnimation(0f, 1f))
+                playAnim(R.drawable.icon_odds_up, 0f, 1f)
             }
             OddState.SMALLER.state -> {
                 oddView.onFall(oddsValueText)
@@ -182,7 +178,7 @@ class OddsButton2 @JvmOverloads constructor(
                     addRule(ALIGN_PARENT_BOTTOM,TRUE)
                     buoyIcon.layoutParams = this
                 }
-                playAnim(R.drawable.icon_odds_down, getBuoyAnimation(0f, 1f))
+                playAnim(R.drawable.icon_odds_down, 0f, 1f)
             }
             else -> {
                 oddView.setOdds(oddsValueText)
@@ -409,7 +405,7 @@ class OddsButton2 @JvmOverloads constructor(
         }
 
         if (odds.oddState in OddState.SAME.state..OddState.SMALLER.state) {
-            oddStatus = odds.oddState
+            setupOddState(odds.oddState)
         }
     }
 
@@ -455,17 +451,21 @@ class OddsButton2 @JvmOverloads constructor(
             else -> "${number}th"
         }
     }
-    private fun playAnim(icon: Int, animation: ValueAnimator) {
-        if (animation == buoyIcon.tag) {
+
+    private var runningAnim: ValueAnimator? = null
+    private fun playAnim(icon: Int, fromAlpha: Float, toAlpha: Float) {
+
+        if (icon == buoyIcon.tag) {
             return
         }
 
         if (buoyIcon.parent == null) {
             addView(buoyIcon)
         }
-        buoyIcon.tag = animation
+
+        buoyIcon.tag = icon
         buoyIcon.setImageResource(icon)
-        animation.start()
+        runningAnim = getBuoyAnimation(fromAlpha, toAlpha)
     }
 
     /**

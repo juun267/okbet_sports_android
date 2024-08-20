@@ -61,6 +61,7 @@ message PlayOddsWithTypeVO {
     int32 parlay = 33;
     int32 producerId = 34;
     string rtScore = 35;
+    int64 version = 36;
 }
 
 /**
@@ -225,6 +226,7 @@ message OddsWithPlayNameVO {
     //仅球员等动态玩法保留该翻译
     map<string, string> nameMap = 14;
     map<string, string> extInfoMap = 15;
+    int64 version = 16;
 }
 
 
@@ -362,6 +364,9 @@ message OddsVO {
     map<string, string> extInfoMap = 18;
     //玩法编码
     string playCode = 19;
+    string group = 20;
+    //版本号（序列号）
+    int64 version = 21;
 }
 
 

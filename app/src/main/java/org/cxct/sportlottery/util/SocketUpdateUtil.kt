@@ -489,19 +489,15 @@ object SocketUpdateUtil {
 
         oddsMapSocket?.forEach { oddsMapEntrySocket ->
             //全null : 有玩法沒賠率資料
-            when (oddsMap.keys.contains(oddsMapEntrySocket.key) && oddsMap[oddsMapEntrySocket.key]?.all { it == null } == false) {
-                true -> {
+            if (oddsMap.keys.contains(oddsMapEntrySocket.key) && oddsMap[oddsMapEntrySocket.key]?.all { it == null } == false) {
                     oddsMap.forEach { oddTypeMap ->
                         val oddsSocket = oddsMapEntrySocket.value
                         val odds = oddTypeMap.value
-
                         oddsSocket?.forEach { oddSocket ->
-                            when (odds?.map { it?.id }?.contains(oddSocket?.id)) {
-                                true -> {
-                                    val odd = odds.find { odd ->
-                                        odd?.id == oddSocket?.id
-                                    }
-
+                            val oddOld = odds?.firstOrNull { it?.id==oddSocket?.id }
+                            if (isNeedUpdateOdd(oddSocket, oddOld)){
+                            if (oddOld!=null) {
+                                    val odd = oddOld
                                     odd?.odds?.let { oddValue ->
                                         oddSocket?.odds?.let { oddSocketValue ->
                                             when {
@@ -550,26 +546,26 @@ object SocketUpdateUtil {
 
                                         isNeedRefresh = true
                                     }
-                                }
+                                    if (odd?.version != oddSocket?.version) {
+                                        odd?.version = oddSocket?.version?:0
 
-                                false -> {
-                                    if (oddTypeMap.key == oddsMapEntrySocket.key && oddSocket != null) odds.add(
+                                        isNeedRefresh = true
+                                    }
+                                }else {
+                                    if (oddTypeMap.key == oddsMapEntrySocket.key && oddSocket != null) odds?.add(
                                         oddSocket
                                     )
 
                                     isNeedRefresh = true
                                 }
-                            }
                         }
                     }
-                }
-
-                false -> {
+                    }
+            } else {
                     oddsMap[oddsMapEntrySocket.key] = oddsMapEntrySocket.value?.toMutableList()
 
                     isNeedRefresh = true
                 }
-            }
         }
         //全量更新，在上面新增和修改后，再删除存在oddsMap中而不存在于oddsMapSocket中的玩法
         if (updateMode==2&&!oddsMapSocket.isNullOrEmpty()){
@@ -1027,7 +1023,7 @@ object SocketUpdateUtil {
             val oddSocket = odds?.odds?.find { oddSocket ->
                 oddSocket?.id == odd?.id
             }
-
+            if (isNeedUpdateOdd(oddSocket,odd)){
             oddSocket?.let {
                 odd?.odds?.let { oddValue ->
                     oddSocket.odds?.let { oddSocketValue ->
@@ -1076,10 +1072,15 @@ object SocketUpdateUtil {
                     odd?.rowSort = oddSocket.rowSort
                     isNeedRefresh = true
                 }
+                if (odd?.version != oddSocket.version) {
+                    odd?.version = oddSocket.version
+                    isNeedRefresh = true
+                }
                 if (oddsDetailListData.rowSort != odds.rowSort) {
                     oddsDetailListData.rowSort = odds.rowSort
                     isNeedRefresh = true
                 }
+            }
             }
         }
         return isNeedRefresh
@@ -1189,5 +1190,14 @@ object SocketUpdateUtil {
                 else -> odd.status
             }
         }
+    }
+    /**
+     * 判断是否需要更新本地赔率
+     * 新消息过来的version>旧的version才替换更新，为了保持兼容性为空或为0也更新，涉及ODDS_CHANGE，MATCH_ODDS_CHANGE
+     */
+    fun isNeedUpdateOdd(socketOdd: Odd?,oldOdd: Odd?) :Boolean{
+        if (socketOdd==null) return false
+        if (oldOdd==null) return true
+        return socketOdd.version > oldOdd.version || socketOdd.version==0L
     }
 }

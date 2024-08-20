@@ -83,7 +83,8 @@ data class OddsChangeEvent(
                 nameMap = nullableOddsVO.oddsVO.nameMapMap,
                 extInfoMap = nullableOddsVO.oddsVO.extInfoMapMap,
                 extInfo = nullableOddsVO.oddsVO.extInfo,
-                playCode = nullableOddsVO.oddsVO.playCode
+                playCode = nullableOddsVO.oddsVO.playCode,
+                version = nullableOddsVO.oddsVO.version
             )
         }
     }

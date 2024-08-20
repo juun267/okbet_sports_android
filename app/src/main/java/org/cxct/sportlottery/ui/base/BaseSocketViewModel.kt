@@ -363,6 +363,7 @@ abstract class BaseSocketViewModel(
                                 producerId = odd.producerId,
                                 spread = odd.spread,
                                 status = odd.status,
+                                version = odd.version,
                             )
                             newList.add(newOdd)
                         }
