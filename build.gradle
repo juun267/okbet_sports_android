@@ -17,6 +17,7 @@ buildscript {
         maven { url "https://jitpack.io" }
         // fcm， 若不集成 FCM 通道，可直接跳过
         maven { url "https://maven.google.com" }
+        maven { url 'https://maven.aliyun.com/repository/public/' }
         gradlePluginPortal()
 
     }
@@ -40,6 +41,7 @@ allprojects {
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url "https://maven.google.com" }
+        maven { url 'https://maven.aliyun.com/repository/public/' }
     }
 
 }
