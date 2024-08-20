@@ -2,6 +2,9 @@ package org.cxct.sportlottery.view.dialog.queue
 
 interface PriorityDialog: Comparable<PriorityDialog> {
 
+    // 在队列里根据ID去重(为空不做是否重复判断)
+    fun getId(): String? = null
+
     fun showDialog()
 
     fun dismissDialog()

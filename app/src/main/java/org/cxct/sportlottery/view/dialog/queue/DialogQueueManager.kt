@@ -17,6 +17,11 @@ class DialogQueueManager(lifecycleOwner: LifecycleOwner) {
     private var currentDialog: PriorityDialog? = null
 
     fun enqueue(dialog: PriorityDialog): DialogQueueManager {
+        dialogQueue.forEach {
+            if (it.getId() != null && it.getId() == dialog.getId()) {
+                return this
+            }
+        }
         dialogQueue.add(dialog)
         return this
     }

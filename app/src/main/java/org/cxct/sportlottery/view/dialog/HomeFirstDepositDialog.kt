@@ -45,6 +45,7 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
         }
         fun buildDialog(priority: Int, fm: () -> FragmentManager,firstDepositDetail: FirstDepositDetail): PriorityDialog? {
             return object : BasePriorityDialog<HomeFirstDepositDialog>() {
+                override fun getId() = "HomeFirstDepositDialog"
                 override fun getFragmentManager() = fm.invoke()
                 override fun priority() = priority
                 override fun createDialog() = newInstance(firstDepositDetail)

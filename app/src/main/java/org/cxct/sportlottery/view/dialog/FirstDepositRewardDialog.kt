@@ -17,7 +17,10 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
 import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
 import splitties.bundle.put
+import java.time.Instant
+import java.time.ZonedDateTime
 import java.util.*
+
 
 /**
  * 次日活动弹窗活动弹窗
@@ -34,6 +37,7 @@ class FirstDepositRewardDialog private constructor(): BaseDialog<MainHomeViewMod
         }
         fun buildDialog(priority: Int, fm: () -> FragmentManager, firstDepositDetail: FirstDepositDetail): PriorityDialog? {
             return object : BasePriorityDialog<FirstDepositRewardDialog>() {
+                override fun getId() = "FirstDepositRewardDialog"
                 override fun getFragmentManager() = fm.invoke()
                 override fun priority() = priority
                 override fun createDialog() = newInstance(firstDepositDetail)
@@ -91,10 +95,12 @@ class FirstDepositRewardDialog private constructor(): BaseDialog<MainHomeViewMod
             }
         }
     }
-    private fun isTomorrow(rechTime: Long): Boolean{
-        val rechCal = Calendar.getInstance()
-        rechCal.timeInMillis = rechTime
-        rechCal.add(Calendar.DAY_OF_MONTH,1)
-        return TimeUtil.timeFormat(rechCal.timeInMillis,TimeUtil.YMD_FORMAT)==TimeUtil.timeFormat(Calendar.getInstance().timeInMillis,TimeUtil.YMD_FORMAT)
+    private fun isTomorrow(serverTime: Long): Boolean{
+        val serverCal = Calendar.getInstance()
+        serverCal.timeInMillis = serverTime
+        serverCal.add(Calendar.DAY_OF_MONTH, 1)
+        val serverDate = TimeUtil.timeFormat(serverCal.timeInMillis, TimeUtil.YMD_FORMAT, timeZone = TimeZone.getTimeZone(TimeUtil.TIMEZONE_DEFAULT))
+        val currentDate = TimeUtil.timeFormat(System.currentTimeMillis(), TimeUtil.YMD_FORMAT, timeZone = TimeZone.getTimeZone(TimeUtil.TIMEZONE_DEFAULT))
+        return serverDate == currentDate
     }
 }
