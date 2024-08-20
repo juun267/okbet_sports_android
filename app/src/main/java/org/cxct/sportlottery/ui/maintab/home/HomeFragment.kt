@@ -269,7 +269,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
             in 2..5 -> {
                 binding.ivFirstDeposit.setImageResource(R.drawable.ic_float_cashback)
                 binding.tvFirstDeposit.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_peso_stroke_white, 0,0, 0)
-                binding.tvFirstDeposit.text = "${firstDepositDetail?.rewardAmount?.toInt()}"
+                binding.tvFirstDeposit.text = TextUtil.formatMoney2("${firstDepositDetail?.rewardAmount}")
                 fbtnFirstDeposit.isVisible = true
                 binding.fbtnFirstDeposit.setOnTouchListener(SuckEdgeTouch())
                 binding.fbtnFirstDeposit.setOnClickListener {
@@ -282,7 +282,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         }
         if (firstDepositDetail?.isSign==1){
             binding.ivSevenDaysSignIn.setImageResource(R.drawable.ic_float_dailyrewards)
-            binding.tvSevenDaysSignIn.text = "${firstDepositDetail?.signReward?.toInt()}"
+            binding.tvSevenDaysSignIn.text = TextUtil.formatMoney2("${firstDepositDetail?.signReward}")
             binding.fbtnSevenDaysSignIn.isVisible = true
             binding.fbtnSevenDaysSignIn.setOnTouchListener(SuckEdgeTouch())
             binding.fbtnSevenDaysSignIn.setOnClickListener {
