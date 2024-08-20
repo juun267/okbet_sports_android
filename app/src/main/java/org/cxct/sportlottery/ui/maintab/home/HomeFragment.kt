@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.maintab.home
 import android.content.Intent
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -11,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -44,7 +45,6 @@ import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
-import splitties.fragments.startActivity
 import timber.log.Timber
 
 class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
@@ -247,6 +247,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         viewModel.getConfigData()
     }
     fun showFirstDepositFloatBtn(firstDepositDetail: FirstDepositDetail){
+        cancelCountTimer()
         when (firstDepositDetail?.userStatus) {
             in 0..1 -> {
                 binding.ivFirstDeposit.setImageResource(R.drawable.ic_float_firstcharge)
@@ -269,7 +270,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
             in 2..5 -> {
                 binding.ivFirstDeposit.setImageResource(R.drawable.ic_float_cashback)
                 binding.tvFirstDeposit.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_peso_stroke_white, 0,0, 0)
-                binding.tvFirstDeposit.text = TextUtil.formatMoney2("${firstDepositDetail?.rewardAmount}")
+                binding.tvFirstDeposit.text = TextUtil.formatMoney2(firstDepositDetail?.rewardAmount ?: 0)
                 fbtnFirstDeposit.isVisible = true
                 binding.fbtnFirstDeposit.setOnTouchListener(SuckEdgeTouch())
                 binding.fbtnFirstDeposit.setOnClickListener {
@@ -282,7 +283,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         }
         if (firstDepositDetail?.isSign==1){
             binding.ivSevenDaysSignIn.setImageResource(R.drawable.ic_float_dailyrewards)
-            binding.tvSevenDaysSignIn.text = TextUtil.formatMoney2("${firstDepositDetail?.signReward}")
+            binding.tvSevenDaysSignIn.text = TextUtil.formatMoney2(firstDepositDetail?.signReward ?: 0)
             binding.fbtnSevenDaysSignIn.isVisible = true
             binding.fbtnSevenDaysSignIn.setOnTouchListener(SuckEdgeTouch())
             binding.fbtnSevenDaysSignIn.setOnClickListener {
@@ -292,14 +293,23 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
             fbtnSevenDaysSignIn.isVisible = false
         }
     }
-    private fun startCount(totalSecond: Int){
+
+    private var timerScope: CoroutineScope? = null
+    private fun cancelCountTimer() {
+        timerScope?.cancel()
+        timerScope = null
+    }
+    private fun startCount(totalSecond: Int) {
+        cancelCountTimer()
         GlobalScope.launch(lifecycleScope.coroutineContext) {
+            timerScope = this
             CountDownUtil.countDown(
                 this,
                 totalSecond,
                 { binding.tvFirstDeposit.text = TimeUtil.showCountDownHMS(totalSecond.toLong() * 1000)},
                 { binding.tvFirstDeposit.text = TimeUtil.showCountDownHMS(it.toLong() * 1000)},
                 {
+                    timerScope = null
                     fbtnFirstDeposit.gone()
                     (getCurrentFragment() as? HomeHotFragment)?.getFirstDepositDetail()
                 }
