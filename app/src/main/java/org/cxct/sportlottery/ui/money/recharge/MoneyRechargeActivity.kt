@@ -62,18 +62,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
 
     private fun doOnBackPress() {
 
-        if (viewModel.hasCharged) {
+        if (viewModel.hasCharged || viewModel.uniPaid) {
             super.onBackPressed()
             return
         }
-
-//        val dailyConfig = if (mCurrentFragment is OnlinePayFragment) {
-//            (mCurrentFragment as OnlinePayFragment).getSelectedDailyConfig()
-//        } else if (mCurrentFragment is TransferPayFragment) {
-//            (mCurrentFragment as TransferPayFragment).getSelectedDailyConfig()
-//        } else {
-//            viewModel.dailyConfigEvent.value?.firstOrNull()
-//        }
 
         val dailyConfig = viewModel.dailyConfigEvent.value?.find { it.isFirstDepositActivity() && it.capped > 0 }
         if (dailyConfig == null) {
