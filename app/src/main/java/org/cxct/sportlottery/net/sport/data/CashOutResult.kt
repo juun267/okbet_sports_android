@@ -8,5 +8,6 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 @KeepMembers
 data class CashOutResult(
     val cashoutAmount: String,
-    val status: Int
+    val status: Int,
+    var uniqNo: String?=null,
 ):Parcelable

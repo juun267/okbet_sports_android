@@ -95,10 +95,10 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                 }
                 R.id.cashoutBtn->{
                     val cashOutButton = view as CashOutButton
-                    if (cashOutButton.status==1){
+                    if (cashOutButton.showStatus==1){
                         cashOutButton.setCashOutStatus(CashOutButton.STATUS_COMFIRMING)
                         mAdapter.selectedCashOut(data.uniqNo)
-                    }else if(cashOutButton.status == CashOutButton.STATUS_COMFIRMING ){
+                    }else if(cashOutButton.showStatus == CashOutButton.STATUS_COMFIRMING ){
                         cashOutButton.setCashOutStatus(CashOutButton.STATUS_BETTING)
                         data.cashoutAmount?.let {
                             loading()
@@ -213,16 +213,20 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                 },500)
             }
         }
-        viewModel.cashOutEvent.observe(this){
+        viewModel.cashOutEvent.observe(this){ result->
             hideLoading()
-            if (it.succeeded()){
+            if (result.succeeded()){
                 toast(getString(R.string.B74))
+                val removePos = mAdapter.data?.indexOfFirst{ it.uniqNo== result.getData()?.uniqNo}
+                mAdapter.removeAt(removePos)
+            }else{
+                toast(getString(R.string.B75))
+                mAdapter.data.clear()
+                mAdapter.notifyDataSetChanged()
                 binding.recyclerUnsettled.postDelayed({
                     pageIndex = 1
                     getUnsettledData()
                 },500)
-            }else{
-                toast(getString(R.string.B75))
             }
         }
         viewModel.checkCashOutStatusEvent.observe(this){

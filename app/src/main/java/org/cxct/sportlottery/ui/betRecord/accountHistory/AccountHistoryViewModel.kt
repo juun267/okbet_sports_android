@@ -136,6 +136,7 @@ class AccountHistoryViewModel(
     }
     fun cashOut(uniqNo: String, cashoutAmount: String){
         callApi({SportRepository.betCashOut(uniqNo,cashoutAmount)}){
+            it.getData()?.uniqNo = uniqNo
             cashOutEvent.postValue(it)
         }
     }

@@ -21,7 +21,7 @@ class CashOutButton @JvmOverloads constructor(
         const val STATUS_BETTING = -2//下注中
     }
     val binding = ViewBtnCashoutBinding.inflate(layoutInflater,this,true)
-    var status = 0
+    var showStatus = 0
     var amountText = ""
 
     /**
@@ -29,11 +29,13 @@ class CashOutButton @JvmOverloads constructor(
      * 自定义状态 -1 确认中 ，-2 下注中
      */
    fun setCashOutStatus(status: Int, amountStr: String?=null){
-       this.status = status
+        if (this.showStatus!=STATUS_COMFIRMING&&this.showStatus!=STATUS_BETTING){
+            this.showStatus = status
+        }
         if (!amountStr.isNullOrEmpty()){
             this.amountText = amountStr
         }
-       when(status){
+       when(showStatus){
            0->{
                gone()
            }
@@ -55,7 +57,7 @@ class CashOutButton @JvmOverloads constructor(
                binding.tvAmount.gone()
                binding.ivLoading.gone()
            }
-           -1->{
+           STATUS_COMFIRMING->{
                binding.linRoot.setBackgroundResource(R.drawable.bg_blue_radius_8)
                binding.icon.setImageResource(R.drawable.ic_cashout_yellow)
                binding.tvName.visible()
@@ -66,7 +68,7 @@ class CashOutButton @JvmOverloads constructor(
                binding.tvAmount.text = amountText
                binding.ivLoading.gone()
            }
-           -2->{
+           STATUS_BETTING->{
                binding.linRoot.setBackgroundResource(R.drawable.bg_blue_radius_8_stroke_1)
                binding.icon.setImageResource(R.drawable.ic_cashout_yellow)
                binding.tvName.visible()

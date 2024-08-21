@@ -109,11 +109,11 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
 
             //投注金额
             tvBetTotal.text = " $showCurrencySign ${TextUtil.formatMoney(item.totalAmount,2)}"
-            cashoutBtn.setCashOutStatus(item.cashoutStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0)}")
             //可赢金额
             when(item.status){
                 //未结单  可赢：xxx
                 0,1->{
+                    cashoutBtn.setCashOutStatus(item.cashoutStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
                     tvBetWin.text = " $showCurrencySign ${TextUtil.formatMoney(item.winnable,2)}"
                     tvBetWin.setColors(R.color.color_ff0000)
                     when(item.parlayType){
