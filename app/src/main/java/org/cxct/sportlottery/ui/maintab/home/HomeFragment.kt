@@ -264,9 +264,9 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
                 cancelCountTimer()
                 binding.ivFirstDeposit.setImageResource(R.drawable.ic_float_firstcharge)
                 if (firstDepositDetail?.userStatus==0){
-                    binding.tvFirstDeposit.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_clock_white, 0,0, 0)
                     val countSecond = (firstDepositDetail.expireTime - System.currentTimeMillis())/1000
-                    if (countSecond > 0){
+                    if (countSecond > 0) {
+                        binding.tvFirstDeposit.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_clock_white, 0,0, 0)
                         startCount(countSecond.toInt(), firstDepositDetail)
                     }
                 }else{
