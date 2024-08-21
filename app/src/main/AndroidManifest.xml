@@ -154,9 +154,16 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/lunchTheme">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="download.demosp.vip" /><!-- UAT环境下载页域名-->
+                <data android:host="app.okbet.com" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

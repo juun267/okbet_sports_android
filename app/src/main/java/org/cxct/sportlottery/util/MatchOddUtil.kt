@@ -55,6 +55,7 @@ object MatchOddUtil {
                             oddsSort = null,
                             quickPlayCateList = null,
                             oddsEps = null,
+                            version = odd.version
                         ).apply {
                             extInfo = odd.extInfo
                             isOnlyEUType = odd.isOnlyEUType

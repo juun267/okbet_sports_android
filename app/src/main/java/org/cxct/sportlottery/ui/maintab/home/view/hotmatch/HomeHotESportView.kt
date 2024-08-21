@@ -191,20 +191,6 @@ class HomeHotESportView(
             }
         }
 
-        receiver.matchClock.observe(viewLifecycleOwner) {
-            it?.let { matchClockEvent ->
-                val targetList = adapter?.data
-                targetList?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateMatchClock(
-                            recommend, matchClockEvent
-                        )
-                    ) {
-                        adapter?.notifyItemChanged(index, recommend)
-                    }
-                }
-
-            }
-        }
 
         receiver.matchOddsLock.collectWith(fragment.lifecycleScope) { matchOddsLockEvent->
             val hotESportAdapter = adapter ?: return@collectWith

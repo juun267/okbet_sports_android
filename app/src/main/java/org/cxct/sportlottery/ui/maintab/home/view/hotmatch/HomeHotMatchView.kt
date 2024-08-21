@@ -177,17 +177,6 @@ class HomeHotMatchView(
             }
         }
 
-        receiver.matchClock.observe(viewLifecycleOwner) {
-            val matchClockEvent = it ?: return@observe
-            val targetList = adapter?.data ?: return@observe
-
-            targetList.forEachIndexed { index, recommend ->
-                if (SocketUpdateUtil.updateMatchClock(recommend, matchClockEvent)) {
-                    adapter?.notifyItemChanged(index, recommend)
-                }
-            }
-        }
-
         receiver.matchOddsLock.collectWith(fragment.lifecycleScope) { matchOddsLockEvent->
             val targetList = adapter?.data ?: return@collectWith
 
