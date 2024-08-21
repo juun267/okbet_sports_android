@@ -109,11 +109,16 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
 
             //投注金额
             tvBetTotal.text = " $showCurrencySign ${TextUtil.formatMoney(item.totalAmount,2)}"
+            if (item.status in 0..1){
+                cashoutBtn.visible()
+                cashoutBtn.setCashOutStatus(item.cashoutStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
+            }else{
+                cashoutBtn.gone()
+            }
             //可赢金额
             when(item.status){
                 //未结单  可赢：xxx
-                0,1->{
-                    cashoutBtn.setCashOutStatus(item.cashoutStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
+                0,1,8->{
                     tvBetWin.text = " $showCurrencySign ${TextUtil.formatMoney(item.winnable,2)}"
                     tvBetWin.setColors(R.color.color_ff0000)
                     when(item.parlayType){
@@ -140,6 +145,16 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                     tvBetWin.text = " $showCurrencySign ${TextUtil.formatMoney(totalMoney,2)}"
                     tvBetWin.setColors(R.color.color_6D7693)
                     tvWinLabel.text="${context.getString(R.string.lose)}："
+                }
+                //已经兑现
+                9->{
+                    tvBetWin.text = " $showCurrencySign ${TextUtil.formatMoney(item.win?:0,2)}"
+                    if ((item.win?:0.0)>0.0){
+                        tvBetWin.setColors(R.color.color_ff0000)
+                    }else{
+                        tvBetWin.setColors(R.color.color_6D7693)
+                    }
+                    tvWinLabel.text=""
                 }
                 //其他  ₱ --
                 else->{

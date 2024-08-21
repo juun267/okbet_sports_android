@@ -216,11 +216,11 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
         viewModel.cashOutEvent.observe(this){ result->
             hideLoading()
             if (result.succeeded()){
-                toast(getString(R.string.B74))
+                showPromptDialog(getString(R.string.prompt),getString(R.string.B74)){}
                 val removePos = mAdapter.data?.indexOfFirst{ it.uniqNo== result.getData()?.uniqNo}
                 mAdapter.removeAt(removePos)
             }else{
-                toast(getString(R.string.B75))
+                showErrorPromptDialog(getString(R.string.prompt),getString(R.string.B75)){}
                 mAdapter.data.clear()
                 mAdapter.notifyDataSetChanged()
                 binding.recyclerUnsettled.postDelayed({
@@ -231,7 +231,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
         }
         viewModel.checkCashOutStatusEvent.observe(this){
             delayCheckCashOutStatus()
-            if (it.isNotEmpty()){
+            if (!it.isNullOrEmpty()){
                 mAdapter.updateCashOut(it)
             }
         }

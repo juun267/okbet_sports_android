@@ -29,16 +29,18 @@ class CashOutButton @JvmOverloads constructor(
      * 自定义状态 -1 确认中 ，-2 下注中
      */
    fun setCashOutStatus(status: Int, amountStr: String?=null){
-        if (this.showStatus!=STATUS_COMFIRMING&&this.showStatus!=STATUS_BETTING){
-            this.showStatus = status
+        if (showStatus!=STATUS_COMFIRMING&&showStatus!=STATUS_BETTING){
+            showStatus = status
         }
         if (!amountStr.isNullOrEmpty()){
             this.amountText = amountStr
         }
+        if(showStatus==0) {
+            return gone()
+        }else{
+            visible()
+        }
        when(showStatus){
-           0->{
-               gone()
-           }
            1->{
                binding.linRoot.setBackgroundResource(R.drawable.bg_blue_radius_8_stroke_1)
                binding.icon.setImageResource(R.drawable.ic_cashout_yellow)
@@ -50,7 +52,7 @@ class CashOutButton @JvmOverloads constructor(
                binding.tvAmount.text = amountText
                binding.ivLoading.gone()
            }
-           3->{
+           2->{
                binding.linRoot.setBackgroundResource(R.drawable.bg_white_radius_8_stroke_e0e3ee)
                binding.icon.setImageResource(R.drawable.ic_lock)
                binding.tvName.gone()
