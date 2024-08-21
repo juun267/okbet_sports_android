@@ -140,7 +140,14 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
                     //输 和
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_gray)
                 }
-
+                8 -> {
+                    //兑现中
+                    tvStatus.setBackgroundResource(R.drawable.bg_bet_status_yellow)
+                }
+                9 -> {
+                    //已兑现
+                    tvStatus.setBackgroundResource(R.drawable.bg_bet_status_green)
+                }
                 else -> {
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_green)
                 }

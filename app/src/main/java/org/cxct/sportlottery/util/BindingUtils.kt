@@ -186,6 +186,8 @@ fun TextView.setBetReceiptStatus(status: Int?, cancelBy: String? = null) {
                 else -> context.getString(R.string.N417)
             }
         }
+        8 -> context.getString(R.string.B104)
+        9 -> context.getString(R.string.B105)
         else -> context.getString(R.string.confirmed)
     }
 }
@@ -204,6 +206,8 @@ fun TextView.setBetReceiptStatus2(status: Int?, cancelBy: String? = null) {
                 else -> context.getString(R.string.P124)
             }
         }
+        8 -> context.getString(R.string.B104)
+        9 -> context.getString(R.string.B105)
         else -> context.getString(R.string.confirmed)
     }
 }

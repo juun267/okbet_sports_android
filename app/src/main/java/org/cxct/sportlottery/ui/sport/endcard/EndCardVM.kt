@@ -111,7 +111,7 @@ class EndCardVM(androidContext: Application): SportListViewModel(androidContext)
         betListRequesting = true
         val betListRequest = BetListRequest(
             championOnly = 0,
-            statusList = listOf(2,3,4,5,6,7), //234567 结算注单
+            statusList = listOf(2,3,4,5,6,7,8,9), //234567 结算注单
             page = page,
             gameType = GameType.BK.key,
             pageSize = pageSize,

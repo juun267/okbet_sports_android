@@ -117,7 +117,7 @@ class AccountHistoryViewModel(
         betListRequesting = true
         val betListRequest = BetListRequest(
             championOnly = 0,
-            statusList = listOf(2,3,4,5,6,7), //234567 结算注单
+            statusList = listOf(2,3,4,5,6,7,8,9), //234567 结算注单,8 兑现中，9 已兑现
             page = page,
             gameType = "",
             pageSize = pageSize,
