@@ -104,9 +104,11 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
                 totalSecond,
                 { updateCountingView(totalSecond)},
                 { updateCountingView(it)},
-                {
+                { onComplete->
                     dismiss()
-                    ((requireParentFragment() as HomeFragment).getCurrentFragment() as? HomeHotFragment)?.getFirstDepositDetail()
+                    if (onComplete) {
+                        ((requireParentFragment() as HomeFragment).getCurrentFragment() as? HomeHotFragment)?.getFirstDepositDetail()
+                    }
                 }
             )
         }

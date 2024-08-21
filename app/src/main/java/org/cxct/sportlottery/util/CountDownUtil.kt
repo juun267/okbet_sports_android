@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.util
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlin.math.abs
@@ -15,7 +13,7 @@ object CountDownUtil {
     // 短信发送成功后记一个时间戳
     fun targSMSTimeStamp() = runOnDelay { SMS_CODE_TIMESTAMP == System.currentTimeMillis() }
 
-    fun smsCountDown(coroutineScope: CoroutineScope, start: () -> Unit, next: (Int) -> Unit, end: () -> Unit) {
+    fun smsCountDown(coroutineScope: CoroutineScope, start: () -> Unit, next: (Int) -> Unit, end: (Boolean) -> Unit) {
         countDown(coroutineScope, REQUEST_CODE_INTERVAL, start, next, end, SMS_CODE_TIMESTAMP)
     }
 
@@ -28,11 +26,11 @@ object CountDownUtil {
                   time: Int,
                   start: () -> Unit,
                   next: (Int) -> Unit,
-                  end: () -> Unit,
+                  end: (Boolean) -> Unit,
                   lastTime: Long = 0) {
 
         if (time <= 0) {
-            end.invoke()
+            end.invoke(true)
             return
         }
 
@@ -51,8 +49,8 @@ object CountDownUtil {
                 }
             }.onStart {
                 start.invoke()
-            }.onCompletion {
-                end.invoke()
+            }.onCompletion { e->
+                end.invoke(e == null)
             }.catch {
             }.collect {
                 next.invoke(it)

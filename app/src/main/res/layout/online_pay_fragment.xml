@@ -23,6 +23,15 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical">
 
+            <include
+                android:id="@+id/linFirstDeposit"
+                layout="@layout/view_first_deposit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                tools:visibility="visible"
+                android:visibility="gone"/>
+
             <!-- 帳號 -->
             <org.cxct.sportlottery.view.LoginEditText
                 android:id="@+id/et_recharge_online_payer"
@@ -72,14 +81,7 @@
                 android:layout_marginBottom="1dp"
                 android:visibility="gone"
                 tools:visibility="visible"/>
-            <include
-                android:id="@+id/linFirstDeposit"
-                layout="@layout/view_first_deposit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                tools:visibility="visible"
-                android:visibility="gone"/>
+
 
 
 

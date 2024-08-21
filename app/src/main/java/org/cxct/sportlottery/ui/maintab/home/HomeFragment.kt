@@ -258,15 +258,16 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         viewModel.getConfigData()
     }
     fun showFirstDepositFloatBtn(firstDepositDetail: FirstDepositDetail){
-        cancelCountTimer()
+
         when (firstDepositDetail?.userStatus) {
             in 0..1 -> {
+                cancelCountTimer()
                 binding.ivFirstDeposit.setImageResource(R.drawable.ic_float_firstcharge)
                 if (firstDepositDetail?.userStatus==0){
                     binding.tvFirstDeposit.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_clock_white, 0,0, 0)
                     val countSecond = (firstDepositDetail.expireTime - System.currentTimeMillis())/1000
-                    if (countSecond>0){
-                        startCount(countSecond.toInt())
+                    if (countSecond > 0){
+                        startCount(countSecond.toInt(), firstDepositDetail)
                     }
                 }else{
                     binding.tvFirstDeposit.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_peso_stroke_white, 0,0, 0)
@@ -302,7 +303,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         timerJob?.cancel()
         timerJob = null
     }
-    private fun startCount(totalSecond: Int) {
+    private fun startCount(totalSecond: Int, firstDepositDetail: FirstDepositDetail) {
         cancelCountTimer()
         timerJob = GlobalScope.launch(lifecycleScope.coroutineContext) {
             CountDownUtil.countDown(
@@ -310,10 +311,13 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
                 totalSecond,
                 { binding.tvFirstDeposit.text = TimeUtil.showCountDownHMS(totalSecond.toLong() * 1000) },
                 { binding.tvFirstDeposit.text = TimeUtil.showCountDownHMS(it.toLong() * 1000) },
-                {
+                { onComplete->
                     timerJob = null
-                    fbtnFirstDeposit.gone()
-                    (getCurrentFragment() as? HomeHotFragment)?.getFirstDepositDetail()
+                    if (onComplete) {
+                        binding.tvFirstDeposit.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_peso_stroke_white, 0,0, 0)
+                        binding.tvFirstDeposit.text = "${firstDepositDetail?.getCurrentDepositConfig()?.limit}"
+                        (getCurrentFragment() as? HomeHotFragment)?.getFirstDepositDetail()
+                    }
                 }
             )
         }

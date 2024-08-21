@@ -19,6 +19,15 @@
             android:layout_marginTop="@dimen/margin_14"
             android:orientation="vertical">
 
+            <include
+                android:id="@+id/linFirstDeposit"
+                layout="@layout/view_first_deposit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_bank"
                 android:layout_width="match_parent"
@@ -387,14 +396,6 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
-            <include
-                android:id="@+id/linFirstDeposit"
-                layout="@layout/view_first_deposit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:visibility="gone"
-                tools:visibility="visible" />
 
             <!-- 微信 -->
             <org.cxct.sportlottery.view.LoginEditText
