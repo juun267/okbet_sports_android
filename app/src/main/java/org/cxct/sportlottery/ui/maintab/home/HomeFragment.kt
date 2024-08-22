@@ -258,10 +258,9 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         viewModel.getConfigData()
     }
     fun showFirstDepositFloatBtn(firstDepositDetail: FirstDepositDetail){
-
+        cancelCountTimer()
         when (firstDepositDetail?.userStatus) {
             in 0..1 -> {
-                cancelCountTimer()
                 binding.ivFirstDeposit.setImageResource(R.drawable.ic_float_firstcharge)
                 if (firstDepositDetail?.userStatus==0){
                     val countSecond = (firstDepositDetail.expireTime - System.currentTimeMillis())/1000
