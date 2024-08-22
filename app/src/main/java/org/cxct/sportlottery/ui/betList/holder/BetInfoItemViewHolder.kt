@@ -484,6 +484,7 @@ class BetInfoItemViewHolder(
             tvPlaceHolderLine.visible()
 //            Timber.d("===> 线显示")
         }
+        ivCashOut.isVisible = adapterBetType==BetListRefactorAdapter.BetRvType.SINGLE && itemData.betInfo?.cashoutStatus==1
 
         //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
         val nameOneLine = { inputStr: String ->
