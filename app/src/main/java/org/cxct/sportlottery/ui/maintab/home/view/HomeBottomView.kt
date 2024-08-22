@@ -76,7 +76,6 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
         initRcvPaymentMethod(mutableListOf(
             R.drawable.icon_bpi_logo,
             R.drawable.icon_ussc_logo,
-            R.drawable.icon_robinsons_logo,
         ), rcvPayment2)
 
         val serviceEmail = sConfigData?.customerServiceEmailAddress
