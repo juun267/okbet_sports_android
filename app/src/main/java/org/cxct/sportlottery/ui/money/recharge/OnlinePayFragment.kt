@@ -499,6 +499,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         binding.linFirstDeposit.root.isVisible = availableList.isNotEmpty()
         rvFirstDeposit.adapter = dailyConfigAdapter
         dailyConfigAdapter.setList(availableList)
+        if (chargeFromActivity) {
+            list.find { it.isFirstDepositActivity() }?.let { onSelected(it) }
+        }
 //        tvRewardTC.setOnClickListener {
 //            FirstDepositNoticeDialog(dailyConfig.content).show(childFragmentManager,null)
 //        }
@@ -509,7 +512,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         if (dailyConfig == null) {
             binding.linFirstDeposit.linNoChoose.isSelected = true
             binding.linReceiveExtra.isVisible = false
-            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0)
+            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0F)
         } else {
             binding.linFirstDeposit.linNoChoose.isSelected = false
             binding.linReceiveExtra.isVisible = true
@@ -539,8 +542,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         }
         updateDailyConfigSelect()
     }
-
-    fun getSelectedDailyConfig() = dailyConfigAdapter.getSelectedItem()
 
     override fun onContinue() {
         submitForm()

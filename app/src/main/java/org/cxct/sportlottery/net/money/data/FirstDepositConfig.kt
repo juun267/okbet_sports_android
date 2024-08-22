@@ -11,7 +11,7 @@ data class FirstDepositConfig(
     val enable: Boolean,
     val flowRatio: Int,//所需流水倍数
     val limit: Int,
-    val percent: Int,
+    val percent: Float,
     val principal: Boolean,
     val rewards: Boolean,
     val type: Int,

@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.DialogFirstDepositRewardBinding
 import org.cxct.sportlottery.net.money.data.FirstDepositDetail
 import org.cxct.sportlottery.repository.sConfigData
@@ -16,6 +18,7 @@ import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.queue.BasePriorityDialog
 import org.cxct.sportlottery.view.dialog.queue.PriorityDialog
+import org.cxct.sportlottery.view.isVisible
 import splitties.bundle.put
 import java.util.*
 
@@ -62,6 +65,9 @@ class FirstDepositRewardDialog private constructor(): BaseDialog<MainHomeViewMod
         }else{
             ivState2.setImageResource(R.drawable.ic_state_failed)
         }
+        if (requiredBetMoney == 0) {
+            layout2.gone()
+        }
         //当前是否充值后的第二日
         val item3Selected = isTomorrow(firstDepositDetail.rechTime)
         if (item3Selected){
@@ -69,7 +75,7 @@ class FirstDepositRewardDialog private constructor(): BaseDialog<MainHomeViewMod
         }else{
             ivState3.setImageResource(R.drawable.ic_state_countdown)
         }
-        tvGet.isEnabled = item2Selected && item3Selected
+        tvGet.isEnabled = item2Selected && item3Selected && layout2.isVisible()
 
         ivClose.setOnClickListener {
             dismiss()

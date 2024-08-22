@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.util
 
 import android.Manifest
-import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -89,7 +88,6 @@ import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.math.RoundingMode
 
 fun AppBarLayout.expand(animate: Boolean) {
     val behavior = (layoutParams as CoordinatorLayout.LayoutParams).behavior
@@ -1030,7 +1028,10 @@ fun View.setMargins(left: Int, top: Int, right: Int, bottom: Int) {
 
 //是否正在请求充值开关
 private var checkRecharge = false
-fun BaseActivity<*, *>.jumpToDeposit(){
+// 首冲活动跳转充值页面
+var chargeFromActivity = false
+fun BaseActivity<*, *>.jumpToDeposit(activityCharge: Boolean = false){
+    chargeFromActivity = activityCharge
     ToGcashDialog.showByClick{
         val isNeedVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value && isKYCVerifyRechargeOpen()
         if (isNeedVerify){

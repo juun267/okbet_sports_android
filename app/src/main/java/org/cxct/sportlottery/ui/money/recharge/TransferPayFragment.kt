@@ -21,7 +21,6 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.databinding.DialogBottomSheetIconAndTickBinding
@@ -878,8 +877,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         binding.linFirstDeposit.root.isVisible = availableList.isNotEmpty()
         rvFirstDeposit.adapter = dailyConfigAdapter
         dailyConfigAdapter.setList(availableList)
-        dailyConfigAdapter.setOnItemClickListener { adapter, view, position ->
-
+        if (chargeFromActivity) {
+            list.find { it.isFirstDepositActivity() }?.let { onSelected(it) }
         }
     }
 
@@ -888,7 +887,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         if (dailyConfig==null){
             binding.linFirstDeposit.linNoChoose.isSelected = true
             binding.linReceiveExtra.isVisible = false
-            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0)
+            (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0F)
         }else{
             binding.linFirstDeposit.linNoChoose.isSelected = false
             binding.linReceiveExtra.isVisible = true

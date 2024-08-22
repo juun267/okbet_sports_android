@@ -68,8 +68,8 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
             tvFirstDeposit.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.isFirstDeposit?.limit}"
             tvDepositLimitTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterLimitDay?.limit}"
             tvDepositTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterDay?.limit}"
-            binding.tvExtraBonus.setFormatSpanText(getString(R.string.A017_1),"${firstDepositDetail.activityConfigDailyTimeLimit?.percent}%")
-            binding.tvTomorrowBack.setFormatSpanText(getString(R.string.A018),"${firstDepositDetail.activityConfigAfterLimitDay?.percent}%")
+            binding.tvExtraBonus.setFormatSpanText(getString(R.string.A017_1),"${TextUtil.formatMoney2(firstDepositDetail.activityConfigDailyTimeLimit?.percent ?: 0)}%")
+            binding.tvTomorrowBack.setFormatSpanText(getString(R.string.A018),"${TextUtil.formatMoney2(firstDepositDetail.activityConfigAfterLimitDay?.percent ?: 0)}%")
             val countSecond = (firstDepositDetail.expireTime - System.currentTimeMillis())/1000
             if (countSecond>0){
                 startCount(countSecond.toInt())
@@ -81,13 +81,12 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
             flDepositTomorrow.gone()
             tvFirstDepositLimit.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.isFirstDeposit?.limit}"
             tvDepositLimitTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterDay?.limit}"
-            firstDepositDetail.activityConfigDailyTimeLimit
-            binding.tvExtraBonus.setFormatSpanText(getString(R.string.A017_1),"${firstDepositDetail.isFirstDeposit?.percent}%")
-            binding.tvTomorrowBack.setFormatSpanText(getString(R.string.A018),"${firstDepositDetail.activityConfigAfterDay?.percent}%")
+            binding.tvExtraBonus.setFormatSpanText(getString(R.string.A017_1),"${TextUtil.formatMoney2(firstDepositDetail.isFirstDeposit?.percent ?: 0)}%")
+            binding.tvTomorrowBack.setFormatSpanText(getString(R.string.A018),"${TextUtil.formatMoney2(firstDepositDetail.activityConfigAfterDay?.percent ?: 0)}%")
         }
         ivClose.setOnClickListener { dismiss() }
         tvDeposit.clickDelay {
-            (requireActivity() as BaseActivity<*,*>).jumpToDeposit()
+            (requireActivity() as BaseActivity<*,*>).jumpToDeposit(true)
             dismiss()
         }
         tvDetail.setOnClickListener {

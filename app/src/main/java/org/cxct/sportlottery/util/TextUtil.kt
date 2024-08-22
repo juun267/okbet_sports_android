@@ -56,7 +56,7 @@ object TextUtil : DecimalFormatUtil() {
 
 
     // 金额最多保留2为小数
-    fun formatMoney2(any: Any): String {
+    fun formatMoney2(any: Number): String {
         try {
             return DecimalFormat("###,###,###,###,###,###,###,###.##").format(any)
         } catch (e: Exception) {

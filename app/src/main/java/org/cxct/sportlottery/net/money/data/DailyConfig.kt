@@ -7,7 +7,7 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 @KeepMembers
 @Parcelize
 data class DailyConfig(
-    val additional: Int,
+    val additional: Float,
     val capped: Int,
     val first: Int,
     val principal: Int,

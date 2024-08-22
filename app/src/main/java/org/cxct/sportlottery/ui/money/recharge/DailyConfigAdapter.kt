@@ -37,7 +37,7 @@ class DailyConfigAdapter(private val onSelectedItem: (DailyConfig) -> Unit,
             else -> context.getString(R.string.P277)
         }
         linChooseReward.isSelected = selectPos ==position
-        tvPercent.text = "${item.additional}%"
+        tvPercent.text = "${TextUtil.formatMoney2(item.additional)}%"
         tvCapped.text = "${sConfigData?.systemCurrencySign}${TextUtil.formatMoney(item.capped,0)}"
         tvRewardDesp.text = when{
             item.rewards==1&&item.principal==0->context.getString(R.string.P279,item.times.toString())

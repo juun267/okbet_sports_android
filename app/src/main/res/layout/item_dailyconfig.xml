@@ -27,27 +27,33 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="83"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tvPercent"
                     android:layout_width="match_parent"
+                    android:layout_marginHorizontal="5dp"
                     android:layout_height="@dimen/margin_24"
                     android:gravity="center"
+                    android:maxLines="1"
                     android:includeFontPadding="false"
                     android:textColor="@color/white"
                     android:textSize="30sp"
+                    android:autoSizeMinTextSize="13sp"
+                    android:autoSizeMaxTextSize="30sp"
+                    android:autoSizeStepGranularity="1sp"
+                    android:autoSizeTextType="uniform"
                     android:textStyle="bold"
-                    tools:text="10%"/>
+                    tools:text="10.5%"/>
 
                 <TextView
                     android:id="@+id/tvType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_2"
                     android:lines="2"
                     android:gravity="center"
                     android:text="@string/P445"
@@ -57,16 +63,17 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="217"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:orientation="vertical"
                 android:paddingHorizontal="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_24"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical" >
 
                     <TextView
                         android:layout_width="wrap_content"

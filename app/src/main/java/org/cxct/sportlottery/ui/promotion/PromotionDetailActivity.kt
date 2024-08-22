@@ -77,7 +77,7 @@ class PromotionDetailActivity :
             binding.tvRewardName.text = getString(R.string.P278)
             binding.tvApply.text = getString(R.string.J285)
             if (dailyConfig?.first == 1) {
-                binding.tvDeposit.text = "${dailyConfig.additional}%"
+                binding.tvDeposit.text = "${TextUtil.formatMoney2(dailyConfig.additional)}%"
                 binding.tvDeposit.setTextColor(getColor(R.color.color_0D2245))
                 binding.tvReward.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(dailyConfig.capped,0)}"
                 binding.tvReward.setTextColor(getColor(R.color.color_0D2245))

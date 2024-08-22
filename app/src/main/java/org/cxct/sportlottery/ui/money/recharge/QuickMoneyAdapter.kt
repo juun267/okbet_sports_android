@@ -9,14 +9,14 @@ import org.cxct.sportlottery.util.TextUtil
 
 class QuickMoneyAdapter : BindingAdapter<Int, ItemQuickMoneyBinding>() {
     private var selectPos: Int? = null
-    private var percent:Int = 0
+    private var percent:Float = 0F
     override fun onBinding(position: Int, binding: ItemQuickMoneyBinding, item: Int) {
         binding.tvName.apply {
             text = TextUtil.formatBetQuota(item)
             isSelected = (selectPos == position)
         }
         binding.tvTips.apply {
-            text = "${percent}%"
+            text = "${TextUtil.formatMoney2(percent)}%"
             isVisible = percent > 0
         }
     }
@@ -25,7 +25,7 @@ class QuickMoneyAdapter : BindingAdapter<Int, ItemQuickMoneyBinding>() {
         selectPos = position
         notifyDataSetChanged()
     }
-    fun setPercent(percent: Int){
+    fun setPercent(percent: Float){
         this.percent = percent
         notifyDataSetChanged()
     }
