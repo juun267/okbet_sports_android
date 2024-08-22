@@ -70,4 +70,7 @@ data class Row (
     var cashoutAmount: String?,//cashout 金额
     @Json(name = "uniqNo")
     val uniqNo: String, //新字段，订单号
-): Parcelable
+): Parcelable{
+    //cashout 操作按钮的状态 1确认中,2下注中,
+   var cashoutOperationStatus: Int=0
+}

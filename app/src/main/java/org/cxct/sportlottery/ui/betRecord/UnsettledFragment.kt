@@ -94,12 +94,11 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                     dialog.show()
                 }
                 R.id.cashoutBtn->{
-                    val cashOutButton = view as CashOutButton
-                    if (cashOutButton.showStatus==1){
-                        cashOutButton.setCashOutStatus(CashOutButton.STATUS_COMFIRMING)
-                        mAdapter.selectedCashOut(data.uniqNo)
-                    }else if(cashOutButton.showStatus == CashOutButton.STATUS_COMFIRMING ){
-                        cashOutButton.setCashOutStatus(CashOutButton.STATUS_BETTING)
+                    if (data.cashoutStatus==1 && data.cashoutOperationStatus==0){
+                        mAdapter.selectedCashOut(data)
+                    }else if(data.cashoutOperationStatus == CashOutButton.STATUS_COMFIRMING ){
+                        data.cashoutOperationStatus =  CashOutButton.STATUS_BETTING
+                        mAdapter.notifyItemChanged(position)
                         data.cashoutAmount?.let {
                             loading()
                             viewModel.cashOut(data.uniqNo, it)

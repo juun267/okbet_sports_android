@@ -111,7 +111,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             tvBetTotal.text = " $showCurrencySign ${TextUtil.formatMoney(item.totalAmount,2)}"
             if (item.status in 0..1){
                 cashoutBtn.visible()
-                cashoutBtn.setCashOutStatus(item.cashoutStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
+                cashoutBtn.setCashOutStatus(item.cashoutStatus, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
             }else{
                 cashoutBtn.gone()
             }
@@ -202,7 +202,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
     }
 
     /**
-     * 更新选中状态
+     * 更新cashout状态
      */
     fun updateCashOut(list: List<CheckCashOutResult>){
         data.forEachIndexed { index, row ->
@@ -226,13 +226,18 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
     }
 
     /**
-     * 将未选中的按钮恢复正常状态
+     * 列表全部数据只能选中一个
      */
-    fun selectedCashOut(uniqNo: String){
+    fun selectedCashOut(selectedItem: Row){
         data.forEachIndexed { index, row ->
-            if (row.cashoutStatus in 1..2 && row.uniqNo!=uniqNo){
+            if (selectedItem == row ){
+                row.cashoutOperationStatus = 1
+                notifyItemChanged(index)
+            }else if(row.cashoutStatus in 1..2 && row.cashoutOperationStatus == 1){
+                row.cashoutOperationStatus = 0
                 notifyItemChanged(index)
             }
         }
+
     }
 }
