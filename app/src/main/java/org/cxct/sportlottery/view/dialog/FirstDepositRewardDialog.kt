@@ -2,6 +2,7 @@ package org.cxct.sportlottery.view.dialog
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isGone
 import androidx.fragment.app.FragmentManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -75,7 +76,7 @@ class FirstDepositRewardDialog private constructor(): BaseDialog<MainHomeViewMod
         }else{
             ivState3.setImageResource(R.drawable.ic_state_countdown)
         }
-        tvGet.isEnabled = item2Selected && item3Selected && layout2.isVisible()
+        tvGet.isEnabled = (layout2.isGone || item2Selected) && item3Selected
 
         ivClose.setOnClickListener {
             dismiss()
