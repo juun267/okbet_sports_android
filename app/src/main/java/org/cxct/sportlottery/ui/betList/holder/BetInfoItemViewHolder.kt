@@ -169,10 +169,7 @@ class BetInfoItemViewHolder(
                 tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
             }else {
                 //更新可贏額
-                var win = itemData.betAmount * getOddsAndSaveRealAmount(
-                    itemData, currentOddsType
-                )
-
+                var win = ArithUtil.mul(itemData.betAmount, getOddsAndSaveRealAmount(itemData, currentOddsType))
                 val strTvCanWin =
                     "${root.context.getString(R.string.bet_win)}：${sConfigData?.systemCurrencySign} ${
                         TextUtil.formatInputMoney(win)

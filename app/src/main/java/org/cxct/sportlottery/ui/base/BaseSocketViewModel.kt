@@ -504,7 +504,6 @@ abstract class BaseSocketViewModel(
                     )
                 )
             } ?: return@launch
-
             val singleBets = result.receipt?.singleBets
             singleBets?.forEach { s ->
                 s.matchOdds?.forEach { m ->
@@ -512,6 +511,9 @@ abstract class BaseSocketViewModel(
                         betInfoListData.matchOdd.oddsId == m.oddsId
                     }?.matchType
 //                    s.oddsType = oddsType
+                }
+                if(betType==0){
+                    s.cashoutStatus =  normalBetList.firstOrNull()?.betInfo?.cashoutStatus
                 }
             }
 

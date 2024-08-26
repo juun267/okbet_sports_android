@@ -191,6 +191,9 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             //注单列表  非详情页
             recyclerBetCard.layoutManager = LinearLayoutManager(context)
             val cardAdapter = RecyclerBetCardAdapter(item,block)
+            cardAdapter.setOnItemClickListener{_, view, position ->
+                setOnItemClick(view, position)
+            }
             recyclerBetCard.adapter = cardAdapter
             if(item.matchOdds.size>2){
                 cardAdapter.setList(item.matchOdds.subList(0,2))

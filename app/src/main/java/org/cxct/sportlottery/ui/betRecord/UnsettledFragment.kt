@@ -64,6 +64,13 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
             }
         })
         mAdapter.setEmptyView(BetEmptyView(requireContext()))
+        mAdapter.setOnItemClickListener{_, view, position ->
+            val data = mAdapter.data[position]
+            if(data.cashoutOperationStatus == CashOutButton.STATUS_COMFIRMING ){
+                data.cashoutOperationStatus =  0
+                mAdapter.notifyItemChanged(position)
+            }
+        }
         mAdapter.setOnItemChildClickListener { _, view, position ->
             val data = mAdapter.data[position]
             when (view.id) {
@@ -104,7 +111,6 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                             viewModel.cashOut(data.uniqNo, it)
                         }
                     }
-
                 }
             }
         }
