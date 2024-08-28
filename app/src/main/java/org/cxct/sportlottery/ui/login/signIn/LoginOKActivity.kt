@@ -50,15 +50,24 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
     private val loginScope = CoroutineScope(Dispatchers.Main)
     private val TAG_SEND_MSG = "TAG_SEND_MSG"
     private val TAG_LOGIN = "TAG_LOGIN"
+    private val TAG_QUESTION = "TAG_QUESTION"
+    private val TAG_ANSWER = "TAG_ANSWER"
 
     companion object {
         private const val SELF_LIMIT = 1130
         const val LOGIN_TYPE_CODE = 0
         const val LOGIN_TYPE_PWD = 1
+        const val LOGIN_TYPE_QUESTION = 2
+        const val LOGIN_TYPE_ANSWER = 3
 
         fun startRegist(context: Context) {
             val intent = Intent(context, LoginOKActivity::class.java)
             intent.putExtra("login_type", LOGIN_TYPE_CODE)
+            context.startActivity(intent)
+        }
+        fun startWithSafeQuestion(context: Context) {
+            val intent = Intent(context, LoginOKActivity::class.java)
+            intent.putExtra("login_type", LOGIN_TYPE_QUESTION)
             context.startActivity(intent)
         }
     }
@@ -117,7 +126,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         binding.eetAccount.excludeInputChar("#")
         binding.eetAccount.checkRegisterListener {
             viewModel.checkAccount(it).let { result ->
-                if (result.isNullOrBlank() && !binding.eetAccount.isFocused) {
+                if (result.isNullOrBlank() && loginType == LOGIN_TYPE_CODE && !binding.eetAccount.isFocused) {
                     viewModel.checkUserExist(it)
                 }
             }
@@ -134,6 +143,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         binding.etAccount.endIconImageButton.setOnClickListener {
             binding.eetAccount.text = null
         }
+        binding.eetUsername1.checkRegisterListener { viewModel.checkUserName(it) }
+        binding.eetQuestion.checkRegisterListener { viewModel.checkQuestion(it) }
+        binding.eetAnswer.checkRegisterListener { viewModel.checkAnswer(it) }
     }
 
     private fun setupPassword() {
@@ -185,15 +197,23 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
     private fun login() {
 
         hideSoftKeyboard()
-        if (viewModel.loginType == LOGIN_TYPE_CODE) {
-            val account = binding.eetAccount.text.toString()
-            val smsCode = binding.eetVerificationCode.text.toString()
-            var inviteCode = binding.eetRecommendCode.text.toString()
-            viewModel.loginOrReg(account, smsCode, inviteCode)
-            return
+        when(viewModel.loginType){
+            LOGIN_TYPE_CODE->{
+                val account = binding.eetAccount.text.toString()
+                val smsCode = binding.eetVerificationCode.text.toString()
+                var inviteCode = binding.eetRecommendCode.text.toString()
+                viewModel.loginOrReg(account, smsCode, inviteCode)
+            }
+            LOGIN_TYPE_PWD->{
+                showCaptchaDialog(TAG_LOGIN)
+            }
+            LOGIN_TYPE_QUESTION->{
+                showCaptchaDialog(TAG_QUESTION)
+            }
+            LOGIN_TYPE_ANSWER->{
+                showCaptchaDialog(TAG_ANSWER)
+            }
         }
-
-        showCaptchaDialog(TAG_LOGIN)
     }
 
     /**
@@ -436,6 +456,15 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                 it?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
             }
         })
+        viewModel.userQuestionEvent.observe(this){
+            hideLoading()
+            if (it.succeeded()){
+                binding.eetQuestion.setText(it.getData()?.safeQuestion)
+                switchLoginType(3)
+            }else{
+                showErrorPromptDialog(it.msg){}
+            }
+        }
     }
 
     private fun updateUiWithResult(loginResult: LoginResult) {
@@ -496,46 +525,75 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         }
     }
 
-    private fun switchLoginType(loginType: Int) {
+    private fun switchLoginType(loginType: Int)=binding.run {
         viewModel.loginType = loginType
         hideSoftKeyboard()
-        (loginType == LOGIN_TYPE_CODE).let {
-            binding.linLoginPwd.isVisible = !it
-            binding.linLoginCode.isVisible = it
-            binding.tvPwdLogin.isVisible = it
-            binding.tvCodeLogin.isVisible = !it
-            binding.tvForgetPassword.isVisible = !it
-            binding.includeSubtitle.tvSubTitle1.isVisible = it
-            binding.includeSubtitle.tvSubTitle2.isVisible = it
-            if (it) {
-                binding.btnLogin.text =
-                    "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
-                (binding.btnLogin.layoutParams as ConstraintLayout.LayoutParams).apply {
-                    this.topMargin = 24.dp
-                    binding.btnLogin.layoutParams = this
+        if (loginType in LOGIN_TYPE_CODE..LOGIN_TYPE_PWD){
+            (loginType == LOGIN_TYPE_CODE).let {
+                binding.linLoginPwd.isVisible = !it
+                binding.linLoginCode.isVisible = it
+                binding.tvPwdLogin.isVisible = it
+                binding.tvCodeLogin.isVisible = !it
+                binding.tvForgetPassword.isVisible = !it
+                binding.includeSubtitle.tvSubTitle1.isVisible = it
+                binding.includeSubtitle.tvSubTitle2.isVisible = it
+                if (it) {
+                    binding.btnLogin.text =
+                        "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
+                    (binding.btnLogin.layoutParams as ConstraintLayout.LayoutParams).apply {
+                        this.topMargin = 24.dp
+                        binding.btnLogin.layoutParams = this
+                    }
+                    if (binding.eetAccount.text.isNullOrBlank()) {
+                        binding.etAccount.setError(null, false)
+                    }
+                    if (binding.eetVerificationCode.text.isNullOrBlank()) {
+                        binding.etVerificationCode.setError(null, false)
+                    }
+                } else {
+                    binding.btnLogin.text = getString(R.string.btn_login)
+                    (binding.btnLogin.layoutParams as ConstraintLayout.LayoutParams).apply {
+                        this.topMargin = 20.dp
+                        binding.btnLogin.layoutParams = this
+                    }
+                    if (binding.eetUsername.text.isNullOrBlank()) {
+                        binding.etUsername.setError(null, false)
+                    }
+                    if (binding.eetPassword.text.isNullOrBlank()) {
+                        binding.etPassword.setError(null, false)
+                    }
                 }
-                if (binding.eetAccount.text.isNullOrBlank()) {
-                    binding.etAccount.setError(null, false)
-                }
-                if (binding.eetVerificationCode.text.isNullOrBlank()) {
-                    binding.etVerificationCode.setError(null, false)
-                }
-            } else {
-                binding.btnLogin.text = getString(R.string.btn_login)
-                (binding.btnLogin.layoutParams as ConstraintLayout.LayoutParams).apply {
-                    this.topMargin = 20.dp
-                    binding.btnLogin.layoutParams = this
-                }
-                if (binding.eetUsername.text.isNullOrBlank()) {
-                    binding.etUsername.setError(null, false)
-                }
-                if (binding.eetPassword.text.isNullOrBlank()) {
-                    binding.etPassword.setError(null, false)
-                }
+                setupRecommendCodeVisible()
+                viewModel.focusChangeCheckAllInputComplete()
             }
-            setupRecommendCodeVisible()
-            viewModel.focusChangeCheckAllInputComplete()
+        }else{
+            binding.linLoginQuestion.isVisible = true
+            binding.linLoginPwd.isVisible = false
+            binding.linLoginCode.isVisible = false
+            binding.tvPwdLogin.isVisible = false
+            binding.tvCodeLogin.isVisible = true
+            binding.tvForgetPassword.isVisible = true
+            binding.includeSubtitle.tvSubTitle1.isVisible = true
+            binding.includeSubtitle.tvSubTitle2.isVisible = true
+            binding.btnLogin.text = getString(R.string.btn_login)
+            (binding.btnLogin.layoutParams as ConstraintLayout.LayoutParams).apply {
+                this.topMargin = 20.dp
+                binding.btnLogin.layoutParams = this
+            }
+            if (binding.eetUsername1.text.isNullOrBlank()) {
+                binding.etUsername1.setError(null, false)
+            }
+            if (loginType== LOGIN_TYPE_QUESTION){
+                binding.etQuestion.isVisible = false
+                binding.etAnswer.isVisible = false
+            }else {
+                binding.etUsername1.isEnabled = false
+                binding.etQuestion.isEnabled = false
+                binding.etQuestion.isVisible = true
+                binding.etAnswer.isVisible = true
+            }
         }
+
     }
 
     private fun setupRecommendCodeVisible() {
@@ -552,6 +610,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
             viewModel.login(account, password, "$identity", validCode) {
                 LoginVerifyActivity.startLoginVerify(this@LoginOKActivity, it)
             }
+        }else if (tag == TAG_QUESTION) {
+            loading()
+            viewModel.getUserQuestion(binding.eetUsername1.text.toString(),identity,validCode)
+        }else if (tag == TAG_ANSWER) {
+            viewModel.loginWithSafeQuestion(binding.eetUsername1.text.toString(),binding.eetAnswer.text.toString(),identity,validCode)
         }
     }
 

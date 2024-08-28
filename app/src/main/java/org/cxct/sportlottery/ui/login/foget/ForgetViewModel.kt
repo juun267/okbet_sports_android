@@ -5,11 +5,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.CheckSafeQuestionResp
+import org.cxct.sportlottery.net.user.data.ForgetPasswordResp
+import org.cxct.sportlottery.net.user.data.SafeQuestion
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.common.CaptchaRequest
 import org.cxct.sportlottery.network.index.forgetPassword.*
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.SingleLiveEvent
+import org.cxct.sportlottery.util.VerifyConstUtil
 
 
 class ForgetViewModel(
@@ -27,6 +38,14 @@ class ForgetViewModel(
     val resetPasswordResult: LiveData<ResetPasswordResult?>
         get() = _resetPasswordResult
     private val _resetPasswordResult = MutableLiveData<ResetPasswordResult?>()
+
+    val userNameMsg: LiveData<Pair<String?, Boolean>>
+        get() = _userNameMsg
+    private val _userNameMsg = MutableLiveData<Pair<String?, Boolean>>()
+
+    val userQuestionEvent = SingleLiveEvent<ApiResult<CheckSafeQuestionResp>>()
+    val checkSafeQuestionEvent = SingleLiveEvent<ApiResult<CheckSafeQuestionResp>>()
+    val updatePasswordResultEvent = SingleLiveEvent<ApiResult<ForgetPasswordResp>>()
 
     fun sendEmail(email: String,  identity: String, validCode: String) {
         val params = mutableMapOf("email" to email).apply {
@@ -104,5 +123,32 @@ class ForgetViewModel(
             _resetPasswordResult.postValue(result)
         }
     }
+
+    /**
+     * 获取用户的密保问题
+     */
+    fun getUserQuestion(userName: String,identity: String, validCode: String){
+        callApi({ UserRepository.getUserSafeQuestion(userName, identity, validCode) }){
+            userQuestionEvent.postValue(it)
+        }
+    }
+    /**
+     * 验证密保问题和答案
+     */
+    fun checkSafeQuest(userName: String, answer: String, identity: String, validCode: String){
+        callApi({ UserRepository.checkSafeQuest(userName, answer, identity, validCode) }){
+            checkSafeQuestionEvent.postValue(it)
+        }
+    }
+
+    /**
+     * 使用密保问题修改密码
+     */
+    fun updatePasswordBySafeQuestion(userName: String, securityCode: String, newPassword: String){
+        callApi({ UserRepository.updatePasswordBySafeQuestion(userName, securityCode, newPassword) }){
+            updatePasswordResultEvent.postValue(it)
+        }
+    }
+
 
 }

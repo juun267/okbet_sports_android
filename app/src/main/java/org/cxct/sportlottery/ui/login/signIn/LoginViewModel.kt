@@ -15,6 +15,7 @@ import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.CheckSafeQuestionResp
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -88,12 +89,22 @@ class LoginViewModel(
         get() = _validateCodeMsg
     private val _validateCodeMsg = MutableLiveData<Pair<String?, Boolean>>()
 
+    val questionMsg: LiveData<Pair<String?, Boolean>>
+        get() = _questionMsg
+    private val _questionMsg = MutableLiveData<Pair<String?, Boolean>>()
+
+    val answerMsg: LiveData<Pair<String?, Boolean>>
+        get() = _answerMsg
+    private val _answerMsg = MutableLiveData<Pair<String?, Boolean>>()
+
     val loginEnable: LiveData<Boolean>
         get() = _loginEnable
     private val _loginEnable = MutableLiveData<Boolean>()
 
     //跳转至完善信息监听
     val registerInfoEvent by lazy { SingleEvent<LoginResult>() }
+
+    val userQuestionEvent = SingleLiveEvent<ApiResult<CheckSafeQuestionResp>>()
 
     var loginType = LOGIN_TYPE_PWD
         set(value) {
@@ -181,6 +192,17 @@ class LoginViewModel(
         }) {
             hideLoading()
             it?.let { launch { dealWithLoginResult(it) } }
+        }
+    }
+    fun loginWithSafeQuestion(account: String, answer: String, identity: String, validCode: String){
+        loading()
+        val loginRequest = LoginRequest(
+            account = account,
+            safeQuestion = answer,
+        ).apply { buildParams(identity,validCode) }
+        callApi({UserRepository.loginBySafeQuestion(loginRequest)}){
+            val loginResult = LoginResult(it.code,it.msg,it.succeeded(), null, rows = it.getData())
+            launch { dealWithLoginResult(loginResult) }
         }
     }
 
@@ -454,6 +476,24 @@ class LoginViewModel(
         focusChangeCheckAllInputComplete()
         return msg
     }
+    fun checkQuestion(question: String): String? {
+        val msg = when {
+            question.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _questionMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+        return msg
+    }
+    fun checkAnswer(answer: String): String? {
+        val msg = when {
+            answer.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _answerMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+        return msg
+    }
 
     fun focusChangeCheckAllInputComplete() {
         _loginEnable.value = checkAllInputComplete()
@@ -467,11 +507,25 @@ class LoginViewModel(
             if (checkInputPair(msgCodeMsg)) {
                 return false
             }
-        } else {
+        } else if(loginType == 1) {
             if (checkInputPair(userNameMsg)) {
                 return false
             }
             if (checkInputPair(passwordMsg)) {
+                return false
+            }
+        }else if(loginType == 2) {
+            if (checkInputPair(userNameMsg)) {
+                return false
+            }
+        }else if(loginType == 3) {
+            if (checkInputPair(userNameMsg)) {
+                return false
+            }
+            if (checkInputPair(questionMsg)) {
+                return false
+            }
+            if (checkInputPair(answerMsg)) {
                 return false
             }
         }
@@ -515,5 +569,14 @@ class LoginViewModel(
      */
     private fun checkNeedCompleteInfo(isComplete: Boolean, isFinished: Boolean): Boolean {
         return isComplete && !isFinished
+    }
+
+    /**
+     * 获取用户的密保问题
+     */
+    fun getUserQuestion(userName: String, identity: String, validCode: String){
+        callApi({ UserRepository.getUserSafeQuestion(userName, identity, validCode) }){
+            userQuestionEvent.postValue(it)
+        }
     }
 }

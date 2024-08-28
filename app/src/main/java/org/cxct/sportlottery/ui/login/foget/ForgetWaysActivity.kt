@@ -8,6 +8,8 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.ActivityForgetWaysBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity.Companion.startRegist
 import org.cxct.sportlottery.util.setServiceClick
 import org.cxct.sportlottery.util.setupSummary
 
@@ -23,6 +25,9 @@ class ForgetWaysActivity:  BaseActivity<ForgetViewModel, ActivityForgetWaysBindi
         binding.bottomLiences.tvLicense.text = Constants.copyRightString
         binding.btnPhoneWays.setOnClickListener { ForgetPasswordActivity.startByPhoneWays(this) }
         binding.btnEmailWays.setOnClickListener { ForgetPasswordActivity.startByEmailWays(this) }
+        binding.btnQuestionWays.setOnClickListener { ForgetPasswordActivity.startByQuestionWays(this) }
+        binding.tvCodeLogin.setOnClickListener { startRegist(this) }
+        binding.tvloginWithSafeQuestion.setOnClickListener { LoginOKActivity.startWithSafeQuestion(this) }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

@@ -1159,6 +1159,7 @@
     <string name="send">发送</string>
     <string name="pls_enter_correct_mobile_email">请输入正确的手机/邮箱</string>
     <string name="pls_enter_correct_mobile_email_username">请输入正确的用户名/手机/电子邮件</string>
+    <string name="pls_enter_correct_username">请输入正确的用户名</string>
     <string name="live_service">联系客服</string>
     <string name="pls_enter_correct_mobile">请输入正确的手机</string>
     <string name="pls_enter_correct_email">请输入正确的邮箱</string>
@@ -1305,7 +1306,7 @@
 
     <string name="N969">体育投注服务暂时维护中！</string>
     <string name="N257">维护中</string>
-    <string name="N960">"新闻详情 "</string>
+    <string name="N960">新闻详情</string>
     <string name="N915">赞助伙伴</string>
 
     <string name="N910">OKBET投注站</string>
@@ -1826,4 +1827,24 @@
     <string name="P466">请输入您的邮箱</string>
     <string name="P491">证件背面</string>
     <string name="P492_1">文件需小于500KB.</string>
+    <string name="B178">通过密保问题找回密码</string>
+    <string name="B179">通过密保问题登录</string>
+    <string name="B180">密保问题</string>
+    <string name="B181">请回答密保问题</string>
+    <string name="B182">请选您的密保问题。</string>
+    <string name="B183">请设置密保问题的答案</string>
+    <string name="B184">回答</string>
+    <string name="B185">你的第一个宠物叫什么名字？</string>
+    <string name="B186">你的第一所学校叫什么名字？</string>
+    <string name="B187">您出生在哪个城市？</string>
+    <string name="B188">你母亲的娘家姓是什么？</string>
+    <string name="B189">你小时候的昵称是什么？</string>
+    <string name="B190">你最喜欢的电影是什么？</string>
+    <string name="B191">您的第一辆车的品牌和型号是什么？</string>
+    <string name="B192">你最喜欢的老师叫什么名字？</string>
+    <string name="B193">你高中时最好的朋友叫什么名字？</string>
+    <string name="B194">你最喜欢的食物是什么？</string>
+    <string name="B199">已配置</string>
+    <string name="B200">请选择…</string>
+
 </resources>

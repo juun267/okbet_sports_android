@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewMo
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewModel
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
+import org.cxct.sportlottery.ui.profileCenter.securityquestion.SettingQuestionViewModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.profileCenter.vip.VipViewModel
 import org.cxct.sportlottery.ui.redeem.RedeemViewModel
@@ -91,6 +92,7 @@ object AppViewModel {
         viewModel { RedeemViewModel(get()) }
         viewModel { EndCardVM(get()) }
         viewModel { VipViewModel(get()) }
+        viewModel { SettingQuestionViewModel(get()) }
     }
 
     private val repoModule = module {

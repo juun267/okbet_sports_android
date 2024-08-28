@@ -1172,6 +1172,7 @@
     <string name="send">Send</string>
     <string name="pls_enter_correct_mobile_email">Please enter the correct mobile/email</string>
     <string name="pls_enter_correct_mobile_email_username">Please enter the correct username/mobile/email</string>
+    <string name="pls_enter_correct_username">Please enter the correct username</string>
     <string name="live_service">Customer Service</string>
     <string name="pls_enter_correct_mobile">Please enter the correct mobile</string>
     <string name="pls_enter_correct_email">Please enter the correct email</string>
@@ -1900,4 +1901,24 @@
     <string name="P466">Please enter your Email</string>
     <string name="P491">Back of ID</string>
     <string name="P492_1">The file size should be under 500KB.</string>
+    <string name="B178">Retrieve Password Via Security Question</string>
+    <string name="B179">Login Via Security Question</string>
+    <string name="B180">Security Question</string>
+    <string name="B181">Please Answer the Security Question</string>
+    <string name="B182">Please select your security question.</string>
+    <string name="B183">Please set up the answer for the security question.</string>
+    <string name="B184">answer</string>
+    <string name="B185">What is the name of your first pet?</string>
+    <string name="B186">What was the name of your first school?</string>
+    <string name="B187">In what city were you born?</string>
+    <string name="B188">What is your mother\'s maiden name?</string>
+    <string name="B189">What was your childhood nickname?</string>
+    <string name="B190">What is your favorite movie?</string>
+    <string name="B191">What was the brand and model of your first car?</string>
+    <string name="B192">What is the name of your favorite teacher?</string>
+    <string name="B193">What is the name of your best friend in high school?</string>
+    <string name="B194">What is your favorite food?</string>
+    <string name="B199">Configured</string>
+    <string name="B200">Please select...</string>
+
 </resources>

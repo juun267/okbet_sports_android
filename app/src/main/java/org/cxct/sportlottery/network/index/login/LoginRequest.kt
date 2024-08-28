@@ -19,7 +19,8 @@ data class LoginRequest(
     val appVersion: String = org.cxct.sportlottery.BuildConfig.VERSION_NAME,
     val loginEnvInfo: String = Settings.Secure.getString(MultiLanguagesApplication.getInstance().contentResolver, Settings.Secure.ANDROID_ID), //登入环境信息
     val securityCode: String? = null, //短信或者邮件验证码
-    val inviteCode: String? = null
+    val inviteCode: String? = null,
+    val safeQuestion: String? = null //密保问题登录的答案
 ): Parcelable,CaptchaRequest{
     override var validCodeIdentity: String? = null
     override var validCode: String? = null

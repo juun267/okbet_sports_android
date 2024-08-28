@@ -398,6 +398,26 @@ fun EditText.checkEmail(textFieldBoxes: FrameLayout, onResult: ((String?) -> Uni
         onResult?.invoke(if (msg == null) email else null)
     }
 }
+fun EditText.checkUserName(textFieldBoxes: FrameLayout?, onResult: ((String?) -> Unit)?) {
+    checkRegisterListener { username->
+        val msg = when {
+            username.isBlank() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyLengthRange(
+                username,
+                4,
+                20
+            ) -> {
+                context.getString(R.string.pls_enter_correct_mobile_email_username)
+            }
+            else -> null
+        }
+        when(textFieldBoxes){
+            is TextFormFieldBoxes-> textFieldBoxes.setError(msg, false)
+            is LoginFormFieldView -> textFieldBoxes.setError(msg, false)
+        }
+        onResult?.invoke(if (msg == null) username else null)
+    }
+}
 
 fun EditText.checkWithdrawPassword(textFieldBoxes: FrameLayout, other: EditText? = null, onResult: ((String?) -> Unit)?) {
     checkRegisterListener { text->

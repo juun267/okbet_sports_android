@@ -42,6 +42,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.JsonObject
 import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.coroutines.Dispatchers
@@ -1084,4 +1085,13 @@ fun FragmentActivity.showDataSourceChangedDialog(event: Event<Boolean>) {
         message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
         hasCancel = false
     ) { }
+}
+fun JsonObject.appendCaptchaParams(identity: String, validCode: String){
+    if (sConfigData?.captchaType ==1){
+        addProperty("ticket", identity)
+        addProperty("randstr", validCode)
+    }else{
+        addProperty("validCodeIdentity", identity)
+        addProperty("validCode", validCode)
+    }
 }

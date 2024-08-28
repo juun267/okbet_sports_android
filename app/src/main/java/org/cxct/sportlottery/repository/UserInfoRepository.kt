@@ -265,6 +265,7 @@ object UserInfoRepository {
             discountByGameTypeList = userInfoData.discountByGameTypeList,
             rejectRemark = userInfoData.rejectRemark,
             levelCode = userInfoData.levelCode,
+            safeQuestionType = userInfoData.safeQuestionType,
         )
 
     suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {
