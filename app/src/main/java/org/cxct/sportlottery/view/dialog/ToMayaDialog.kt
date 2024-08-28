@@ -6,21 +6,21 @@ import android.os.Bundle
 import androidx.core.view.isVisible
 import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.DialogToGcashBinding
+import org.cxct.sportlottery.databinding.DialogToMayaBinding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.repository.glifeUserWithdrawEnable
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.KvUtils
+import org.cxct.sportlottery.util.LogUtil
 import splitties.bundle.put
 
 /**
- * glife 用户点击存取款跳转gcash
+ * glife 用户点击存取款跳转maya
  */
-class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
+class ToMayaDialog : BaseDialog<BaseViewModel, DialogToMayaBinding>() {
 
     init {
         setStyle(R.style.FullScreen)
@@ -28,14 +28,14 @@ class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
     companion object{
 
         //glife用户存取款提示弹窗点击了  不再提示标记
-        private const val GLIFE_TIP_FLAG = "glife_tip_flag"
+        private const val MAYA_TIP_FLAG = "maya_tip_flag"
 
         private fun markGLife(isChecked: Boolean) {
-            KvUtils.put(GLIFE_TIP_FLAG, isChecked)
+            KvUtils.put(MAYA_TIP_FLAG, isChecked)
         }
 
-        private fun isCheckedGLife(): Boolean {
-            return KvUtils.decodeBooleanTure(GLIFE_TIP_FLAG, false)
+        private fun isChecked(): Boolean {
+            return KvUtils.decodeBooleanTure(MAYA_TIP_FLAG, false)
         }
 
         /**
@@ -43,10 +43,10 @@ class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
          */
         var needShow = false
 
-        fun newInstance(visibleNoReminder: Boolean = true): ToGcashDialog{
+        fun newInstance(visibleNoReminder: Boolean = true): ToMayaDialog{
             val args = Bundle()
             args.put("visibleNoReminder",visibleNoReminder)
-            val fragment = ToGcashDialog()
+            val fragment = ToMayaDialog()
             fragment.arguments = args
             return fragment
         }
@@ -54,10 +54,12 @@ class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
          * 根据条件判断是否需要显示
          */
         fun showByLogin(){
-            if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount() && !glifeUserWithdrawEnable()) {
-                if (!isCheckedGLife() && needShow) {
+            LogUtil.d("isMayaAccount 00")
+            if (LoginRepository.isLogined() && UserInfoRepository.isMayaAccount()) {
+                LogUtil.d("isChecked="+isChecked()+",needShow="+needShow)
+                if (!isChecked() && needShow) {
                     needShow = false
-                    newInstance().show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToGcashDialog.javaClass.name)
+                    newInstance().show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToMayaDialog.javaClass.name)
                 }
             }
         }
@@ -70,23 +72,29 @@ class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
 
     override fun onInitView() {
         isCancelable = false
-        binding.btnGlifeCancel.setOnClickListener {
+        setupMaya()
+        binding.btnCancel.setOnClickListener {
             if (visibleNoReminder) {
                 markGLife(binding.cbNoReminder.isChecked)
             }
             dismiss()
         }
         binding.cbNoReminder.isVisible = visibleNoReminder
-        binding.btnGlifeOpen.text = requireContext().getString(R.string.LT028)+" "+requireContext().getString(R.string.online_gcash)
-        binding.btnGlifeOpen.setOnClickListener {
+        binding.btnOpen.text = requireContext().getString(R.string.LT028)+" "+requireContext().getString(R.string.online_maya)
+        binding.btnOpen.setOnClickListener {
             if (visibleNoReminder) {
                 markGLife(binding.cbNoReminder.isChecked)
             }
-            val uri = Uri.parse("https://miniprogram.gcash.com/s01/SBMk5e")
+            val uri = Uri.parse("https://official.paymaya.com/be7m/PayMayaAppLinks")
             val intent = Intent(Intent.ACTION_VIEW, uri)
             UpdateUtils.startActivity(intent)
             dismiss()
         }
+    }
+    fun setupMaya()=binding.run{
+        ivIcon.setImageResource(R.drawable.ic_maya_logo)
+        tvToTitle.text = "Maya member reminder"
+        tvContent.text = "Hello, as you have registered on the PayMaya platform, according to the official requirements, deposits and withdrawals must be completed exclusively through the PayMaya program. Click “Open PayMaya” below to proceed. Thank you!"
     }
 
     fun setPositiveClickListener(positiveClickListener: OnPositiveListener) {

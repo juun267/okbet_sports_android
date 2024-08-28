@@ -44,6 +44,9 @@ object UserInfoRepository {
     fun isGlifeAccount(): Boolean {
         return userInfo.value?.isGlifeAccount() == true
     }
+    fun isMayaAccount(): Boolean {
+        return userInfo.value?.isMayaAccount() == true
+    }
 
     fun getPhoneNo() = userInfo.value?.phone
 
@@ -265,6 +268,7 @@ object UserInfoRepository {
             discountByGameTypeList = userInfoData.discountByGameTypeList,
             rejectRemark = userInfoData.rejectRemark,
             levelCode = userInfoData.levelCode,
+            mayaId = userInfoData.mayaId,
         )
 
     suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {

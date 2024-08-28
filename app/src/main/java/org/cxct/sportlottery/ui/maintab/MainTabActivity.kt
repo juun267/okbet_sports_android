@@ -62,6 +62,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import org.cxct.sportlottery.view.dialog.ToMayaDialog
 import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.floatingbtn.LotteryManager
 import org.cxct.sportlottery.view.transform.TransformInDialog
@@ -111,6 +112,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         fun reStart(context: Context,fromLoginOrReg: Boolean = false) {
             if (fromLoginOrReg){
                 ToGcashDialog.needShow = true
+                ToMayaDialog.needShow = true
                 PopImageDialog.resetImageType()
             }
             val intent = Intent(context, MainTabActivity::class.java)

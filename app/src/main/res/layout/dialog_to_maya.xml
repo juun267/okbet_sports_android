@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_30"
+        android:layout_gravity="center_horizontal"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:elevation="0dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="@dimen/margin_16"
+            app:cardBackgroundColor="@color/color_FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/margin_24"
+            android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvToTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/P113"
+            android:textColor="@color/color_0D2245"
+            android:textSize="@dimen/textSize20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            android:lineHeight="@dimen/textSize17sp"
+            android:text="@string/P114"
+            android:textColor="@color/color_6D7693"
+            android:textSize="@dimen/textSize13sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="33dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_border_gray_round_8"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/color_BEC7DC"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="12dp"
+                android:layout_height="0dp" />
+
+            <TextView
+                android:id="@+id/btnOpen"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_blue_radius_8"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="@string/chat_open"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+        </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="124dp"
+            android:layout_gravity="center_horizontal"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_maya_logo"/>
+    </FrameLayout>
+
+    <CheckBox
+        android:id="@+id/cbNoReminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/transparent"
+        android:button="@null"
+        android:checked="false"
+        android:drawableLeft="@drawable/cb_to_gcash"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:paddingVertical="12dp"
+        android:text="no reminder"
+        android:textColor="@color/text_color_gray_blue"
+        android:textSize="@dimen/textSize14sp" />
+
+</LinearLayout>

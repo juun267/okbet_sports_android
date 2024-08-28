@@ -128,7 +128,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         }
 
          if (!depositURL.isNullOrEmpty() && url.endsWith(depositURL, true)) {
-             ToGcashDialog.showByClick { jumpToDeposit() }
+             jumpToDeposit()
              return true
          }
 

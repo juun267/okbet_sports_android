@@ -85,6 +85,7 @@ import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationM
 import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import org.cxct.sportlottery.view.dialog.ToMayaDialog
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -1031,14 +1032,20 @@ private var checkRecharge = false
 // 首冲活动跳转充值页面
 var chargeFromActivity = false
 fun BaseActivity<*, *>.jumpToDeposit(activityCharge: Boolean = false){
+    if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount() && !glifeUserWithdrawEnable()) {
+        ToGcashDialog.newInstance(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToGcashDialog.javaClass.name)
+        return
+    }
+    if (LoginRepository.isLogined() && UserInfoRepository.isMayaAccount()) {
+        ToMayaDialog.newInstance(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToMayaDialog.javaClass.name)
+        return
+    }
     chargeFromActivity = activityCharge
-    ToGcashDialog.showByClick{
-        val isNeedVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value && isKYCVerifyRechargeOpen()
-        if (isNeedVerify){
-            VerifyIdentityDialog().show(supportFragmentManager, null)
-        }else{
-            if (checkRecharge)
-                return@showByClick
+    val isNeedVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value && isKYCVerifyRechargeOpen()
+    if (isNeedVerify){
+        VerifyIdentityDialog().show(supportFragmentManager, null)
+    }else {
+        if (!checkRecharge) {
             loading()
             viewModel.launch {
                 checkRecharge = true
@@ -1053,7 +1060,7 @@ fun BaseActivity<*, *>.jumpToDeposit(activityCharge: Boolean = false){
                 val rechTypesList = result.rechCfg?.rechTypes //玩家層級擁有的充值方式
                 val rechCfgsList = result.rechCfg?.rechCfgs  //後台有開的充值方式
                 val operation = (rechTypesList?.size ?: 0 > 0) && (rechCfgsList?.size ?: 0 > 0)
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     hideLoading()
                     if (operation) {
                         startActivity(MoneyRechargeActivity::class.java)
@@ -1070,16 +1077,21 @@ fun BaseActivity<*, *>.jumpToDeposit(activityCharge: Boolean = false){
     }
 }
 fun FragmentActivity.jumpToWithdraw(){
-    ToGcashDialog.showByClick{
-        startActivity(WithdrawActivity::class.java)
+    if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount() && !glifeUserWithdrawEnable()) {
+        ToGcashDialog.newInstance(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToGcashDialog.javaClass.name)
+        return
     }
+    if (LoginRepository.isLogined() && UserInfoRepository.isMayaAccount()) {
+        ToMayaDialog.newInstance(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToMayaDialog.javaClass.name)
+        return
+    }
+    startActivity(WithdrawActivity::class.java)
 }
 
 fun FragmentActivity.showDataSourceChangedDialog(event: Event<Boolean>) {
     if (AppManager.currentActivity() != this || event.getContentIfNotHandled() == null) {
         return
     }
-
     showErrorPromptDialog(
         title = getString(R.string.prompt),
         message = SpannableStringBuilder().append(getString(R.string.message_source_change)),

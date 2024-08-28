@@ -49,7 +49,5 @@ data class LoginData(
     val firstPhoneGiveMoney: Boolean?,// 注册绑定手机送金额
     val discountByGameTypeList: List<UserGameTypeDiscount>?,
     val levelCode: String?=null,
-) : Parcelable {
-
-    fun isFromeGlife() = vipType == 1
-}
+    val mayaId: String? = null,
+) : Parcelable

@@ -13,6 +13,7 @@ import org.cxct.sportlottery.databinding.ActivityRegisterInfoBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
@@ -247,7 +248,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel,ActivityRegister
             viewModel.commitUserBasicInfo()
         }
 
-        setOnClickListeners(binding.btnBack, binding.btnSkip) { finishPage() }
+        setOnClickListeners(binding.btnBack, binding.btnSkip) {  MainTabActivity.reStart(this,fromLoginOrReg = true) }
 
         binding.eetPhoneNumber.checkRegisterListener {
             val msg=viewModel.checkPhone(it)

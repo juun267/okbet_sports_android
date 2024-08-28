@@ -58,6 +58,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             }
         }
         ToGcashDialog.showByLogin()
+        ToMayaDialog.showByLogin()
     }
 
 
