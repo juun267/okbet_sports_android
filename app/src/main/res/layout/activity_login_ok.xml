@@ -267,7 +267,7 @@
                         app:hintText="@string/B180"
                         app:iconSignifier="@drawable/ic_icon_okbet_login_password"
                         app:isResponsiveIconColor="false"
-                        app:labelText="@string/login_password"
+                        app:labelText="@string/title_payer"
                         app:labelTextStyle="normal"
                         app:primaryColor="@color/color_AFAFB1">
 
@@ -282,6 +282,7 @@
                             android:textSize="@dimen/textSize14sp" />
 
                     </org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView>
+
                     <org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
                         android:id="@+id/et_answer"
                         android:layout_width="match_parent"

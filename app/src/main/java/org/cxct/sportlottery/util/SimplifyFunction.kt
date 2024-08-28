@@ -1090,8 +1090,10 @@ fun JsonObject.appendCaptchaParams(identity: String, validCode: String){
     if (sConfigData?.captchaType ==1){
         addProperty("ticket", identity)
         addProperty("randstr", validCode)
+        addProperty("checkValidCodeType", true)
     }else{
         addProperty("validCodeIdentity", identity)
         addProperty("validCode", validCode)
+        addProperty("checkValidCodeType", false)
     }
 }
