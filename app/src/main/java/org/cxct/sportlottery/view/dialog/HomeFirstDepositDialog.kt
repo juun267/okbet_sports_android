@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.clickDelay
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.DialogHomeFirstDepositBinding
 import org.cxct.sportlottery.net.money.data.FirstDepositDetail
@@ -62,14 +63,6 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
         if (firstDepositDetail.userStatus==0){
             ivBackground.setImageResource(R.drawable.bg_dialog_home_first_deposit_1)
             linCountingTime.visible()
-            flFirstDeposit.visible()
-            flDepositTomorrow.visible()
-            tvFirstDepositLimit.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigDailyTimeLimit?.limit}"
-            tvFirstDeposit.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.isFirstDeposit?.limit}"
-            tvDepositLimitTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterLimitDay?.limit}"
-            tvDepositTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterDay?.limit}"
-            binding.tvExtraBonus.setFormatSpanText(getString(R.string.A017_1),"${TextUtil.formatMoney2(firstDepositDetail.activityConfigDailyTimeLimit?.percent ?: 0)}%")
-            binding.tvTomorrowBack.setFormatSpanText(getString(R.string.A018),"${TextUtil.formatMoney2(firstDepositDetail.activityConfigAfterLimitDay?.percent ?: 0)}%")
             val countSecond = (firstDepositDetail.expireTime - System.currentTimeMillis())/1000
             if (countSecond>0){
                 startCount(countSecond.toInt())
@@ -77,12 +70,6 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
         }else{
             ivBackground.setImageResource(R.drawable.bg_dialog_home_first_deposit)
             linCountingTime.gone()
-            flFirstDeposit.gone()
-            flDepositTomorrow.gone()
-            tvFirstDepositLimit.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.isFirstDeposit?.limit}"
-            tvDepositLimitTomorrow.text = "${sConfigData?.systemCurrencySign}${firstDepositDetail.activityConfigAfterDay?.limit}"
-            binding.tvExtraBonus.setFormatSpanText(getString(R.string.A017_1),"${TextUtil.formatMoney2(firstDepositDetail.isFirstDeposit?.percent ?: 0)}%")
-            binding.tvTomorrowBack.setFormatSpanText(getString(R.string.A018),"${TextUtil.formatMoney2(firstDepositDetail.activityConfigAfterDay?.percent ?: 0)}%")
         }
         ivClose.setOnClickListener { dismiss() }
         tvDeposit.clickDelay {
@@ -113,13 +100,16 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
         }
     }
     private fun updateCountingView(second: Int){
-        val timeStr = TimeUtil.showCountDownHMS(second.toLong() * 1000)
-        binding.tvNum1.text = timeStr[0].toString()
-        binding.tvNum2.text = timeStr[1].toString()
-        binding.tvNum3.text = timeStr[3].toString()
-        binding.tvNum4.text = timeStr[4].toString()
-        binding.tvNum5.text = timeStr[6].toString()
-        binding.tvNum6.text = timeStr[7].toString()
+        var timeStr = TimeUtil.showCountDownHMS(second.toLong() * 1000)
+        runWithCatch {
+            timeStr= timeStr.substring(timeStr.length-8) //超长度显示，例如：239:53:12
+            binding.tvNum1.text = timeStr[0].toString()
+            binding.tvNum2.text = timeStr[1].toString()
+            binding.tvNum3.text = timeStr[3].toString()
+            binding.tvNum4.text = timeStr[4].toString()
+            binding.tvNum5.text = timeStr[6].toString()
+            binding.tvNum6.text = timeStr[7].toString()
+        }
     }
     private fun TextView.setFormatSpanText(formatText: String,spanText: String){
         text = Spanny(String.format(formatText, spanText))
