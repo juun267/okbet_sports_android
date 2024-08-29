@@ -201,6 +201,7 @@ class LoginViewModel(
             safeQuestion = answer,
         ).apply { buildParams(identity,validCode) }
         callApi({UserRepository.loginBySafeQuestion(loginRequest)}){
+            hideLoading()
             val loginResult = LoginResult(it.code,it.msg,it.succeeded(), null, rows = it.getData())
             launch { dealWithLoginResult(loginResult) }
         }

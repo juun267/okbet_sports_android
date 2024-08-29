@@ -2,29 +2,14 @@ package org.cxct.sportlottery.ui.profileCenter.securityquestion
 
 import android.app.Activity
 import android.content.Intent
-import android.widget.Button
-import androidx.core.view.isVisible
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.view_global_loading.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivitySecurityQuestionBinding
-import org.cxct.sportlottery.databinding.ActivitySettingPasswordBinding
-import org.cxct.sportlottery.databinding.DialogBottomSelectBinding
-import org.cxct.sportlottery.network.NetResult
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
-import org.cxct.sportlottery.ui.profileCenter.modify.ModifyBindInfoActivity
-import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
-import org.cxct.sportlottery.ui.profileCenter.profile.DialogBottomDataAdapter
 import org.cxct.sportlottery.ui.profileCenter.profile.DialogBottomDataEntity
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.view.afterTextChanged
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
-import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
 import org.cxct.sportlottery.view.checkRegisterListener
 
 /**
@@ -33,7 +18,18 @@ import org.cxct.sportlottery.view.checkRegisterListener
 class SettingQuestionActivity : BaseActivity<SettingQuestionViewModel, ActivitySecurityQuestionBinding>() {
 
     private var safeQuestionType = 1
+    private val bottomDialog by lazy { CommonBottomSheetDialog(this){
+        safeQuestionType = it.id
+        binding.eetQuestion.setText(it.name)
+        binding.eetQuestion.layoutParams.let {
+            it.height = 100.dp
+            binding.eetQuestion.layoutParams = it
+        }
+//        binding.eetQuestion.minHeight = 100.dp
+//        binding.eetQuestion.height = 100.dp
+//        LogUtil.d("lineCount="+binding.eetQuestion.lineCount)
 
+    } }
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         initView()
@@ -53,13 +49,12 @@ class SettingQuestionActivity : BaseActivity<SettingQuestionViewModel, ActivityS
         etAnswer.binding.bottomLine.setBackgroundResource(bottomLineColorRes)
         btnConfirm.setBtnEnable(false)
         etCurrentPassword.setTransformationMethodEvent(eetCurrentPassword)
-        etQuestion.setOnClickListener {
+        setOnClickListeners(etQuestion,eetQuestion) {
            val questionList = viewModel.safeQuestionEvent.value
-            if(questionList.isNullOrEmpty()) return@setOnClickListener
-            val items = questionList.map { DialogBottomDataEntity(it.name,false, it.id) }
-             showBottomDialog(items, getString(R.string.B180), null){
-                 safeQuestionType = it.id
-                 eetQuestion.setText(it.name)
+            if(!questionList.isNullOrEmpty()){
+                val items = questionList.map { DialogBottomDataEntity(it.name,false, it.id) }
+                bottomDialog.setupData(items, getString(R.string.B180), binding.eetQuestion.text.toString())
+                bottomDialog.show()
             }
         }
     }
@@ -75,14 +70,15 @@ class SettingQuestionActivity : BaseActivity<SettingQuestionViewModel, ActivityS
             updateButtonStatus()
         }
         binding.eetAnswer.checkRegisterListener {
-            binding.etAnswer.setError(if(it.isNullOrEmpty()) getString(R.string.error_input_empty) else null, false)
+            binding.etAnswer.setError(if(it.trim().isNullOrEmpty()) getString(R.string.error_input_empty) else null, false)
+            VerifyConstUtil.verifyLengthRange(it,1,18)
             updateButtonStatus()
         }
     }
     private fun setupConfirmButton() {
         binding.btnConfirm.setOnClickListener {
             loading()
-            viewModel.setSafeQuestion(safeQuestionType,binding.eetAnswer.text.toString(),binding.eetCurrentPassword.text.toString())
+            viewModel.setSafeQuestion(safeQuestionType,binding.eetAnswer.text.trim().toString(),binding.eetCurrentPassword.text.toString())
         }
         binding.btnConfirm.setTitleLetterSpacing()
     }
@@ -95,7 +91,7 @@ class SettingQuestionActivity : BaseActivity<SettingQuestionViewModel, ActivityS
             hideLoading()
             if (it.succeeded()){
                 viewModel.getUserInfo()
-                showPromptDialog(getString(R.string.prompt),getString(R.string.J533)){
+                showPromptDialog(null,getString(R.string.J533)){
                     finish()
                 }
             }else{
@@ -107,7 +103,7 @@ class SettingQuestionActivity : BaseActivity<SettingQuestionViewModel, ActivityS
     private fun updateButtonStatus()=binding.run {
         btnConfirm.setBtnEnable(!eetCurrentPassword.text.isNullOrEmpty() &&
                 !eetQuestion.text.isNullOrEmpty() &&
-                !eetAnswer.text.isNullOrEmpty())
+                !eetAnswer.text.trim().isNullOrEmpty())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -117,50 +113,4 @@ class SettingQuestionActivity : BaseActivity<SettingQuestionViewModel, ActivityS
         }
     }
 
-    private fun showBottomDialog(
-        list: List<DialogBottomDataEntity>,
-        title: String,
-        currStr: String?,
-        callBack: (item: DialogBottomDataEntity) -> Unit
-    ) {
-        val binding = DialogBottomSelectBinding.inflate(layoutInflater)
-        val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(this) }
-        val adapter = DialogBottomDataAdapter()
-        binding.rvBtmData.adapter = adapter
-        binding.btnBtmCancel.setOnClickListener { bottomSheet.dismiss() }
-
-        bottomSheet.setContentView(binding.root)
-
-        var item: DialogBottomDataEntity? = list.find { it.flag }
-        val listNew: MutableList<DialogBottomDataEntity> = mutableListOf()
-        var trueFlag = false
-        list.forEach {
-            val ne = it.copy()
-            if (ne.name == currStr) {
-                ne.flag = true
-                trueFlag = true
-            }
-            listNew.add(ne)
-        }
-        if (!trueFlag && listNew.isNotEmpty()) {
-            listNew.last().flag = true
-        }
-        binding.tvBtmTitle.text = title
-        adapter.data = listNew
-        adapter.notifyDataSetChanged()
-        binding.rvBtmData.scrollToPosition(0)
-        adapter.setOnItemClickListener { ater, view, position ->
-            adapter.data.forEach {
-                it.flag = false
-            }
-            item = adapter.data[position]
-            item!!.flag = true
-            adapter.notifyDataSetChanged()
-        }
-        binding.btnBtmDone.setOnClickListener {
-            item?.let { it1 -> callBack(it1) }
-            bottomSheet.dismiss()
-        }
-        bottomSheet.show()
-    }
 }

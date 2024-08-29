@@ -301,6 +301,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:maxLines="1"
+                            android:maxLength="18"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp" />
 
