@@ -22,6 +22,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import me.jessyan.autosize.AutoSize
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -112,7 +113,7 @@ class MultiLanguagesApplication : Application() {
         setNightMode()
         LanguageManager.init(this)
         RequestManager.init(mInstance)
-
+        SensorsEventUtil.initSdk(this)
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
             CrashHandler.setup(mInstance) //错误日志收集
