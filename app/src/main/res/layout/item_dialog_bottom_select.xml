@@ -10,9 +10,9 @@
         android:id="@+id/tvDialogBtmItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:gravity="center_vertical"
-        android:paddingHorizontal="14dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="54dp"
         android:text="234234"
         android:textColor="@color/color_535D76"
         android:textSize="14sp" />
