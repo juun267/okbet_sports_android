@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 app:endIcon="@drawable/ic_eye_close"
-                app:hintText="@string/hint_current_login_password"
+                app:hintText="@string/B203"
                 app:isResponsiveIconColor="false"
                 app:labelText="@string/current_login_password"
                 app:labelTextStyle="normal"

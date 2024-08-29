@@ -8,7 +8,6 @@ import org.cxct.sportlottery.databinding.ActivitySecurityQuestionBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.DialogBottomDataEntity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.view.checkRegisterListener
 
@@ -21,15 +20,9 @@ class SettingQuestionActivity : BaseActivity<SettingQuestionViewModel, ActivityS
     private val bottomDialog by lazy { CommonBottomSheetDialog(this){
         safeQuestionType = it.id
         binding.eetQuestion.setText(it.name)
-        binding.eetQuestion.layoutParams.let {
-            it.height = 100.dp
-            binding.eetQuestion.layoutParams = it
-        }
-//        binding.eetQuestion.minHeight = 100.dp
-//        binding.eetQuestion.height = 100.dp
-//        LogUtil.d("lineCount="+binding.eetQuestion.lineCount)
-
+        binding.etQuestion.adjustPanelHeightWrapContet()
     } }
+
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         initView()
@@ -49,7 +42,7 @@ class SettingQuestionActivity : BaseActivity<SettingQuestionViewModel, ActivityS
         etAnswer.binding.bottomLine.setBackgroundResource(bottomLineColorRes)
         btnConfirm.setBtnEnable(false)
         etCurrentPassword.setTransformationMethodEvent(eetCurrentPassword)
-        setOnClickListeners(etQuestion,eetQuestion) {
+        setOnClickListeners(etQuestion,eetQuestion,etQuestion.endIconImageButton) {
            val questionList = viewModel.safeQuestionEvent.value
             if(!questionList.isNullOrEmpty()){
                 val items = questionList.map { DialogBottomDataEntity(it.name,false, it.id) }

@@ -2,6 +2,8 @@ package org.cxct.sportlottery.ui.profileCenter.securityquestion
 
 import android.content.Context
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.DialogBottomSelectBinding
 import org.cxct.sportlottery.ui.profileCenter.profile.DialogBottomDataAdapter
 import org.cxct.sportlottery.ui.profileCenter.profile.DialogBottomDataEntity
@@ -18,6 +20,7 @@ class CommonBottomSheetDialog(context: Context, val callBack: (item: DialogBotto
         binding.rvBtmData.adapter = adapter
         binding.btnBtmCancel.setOnClickListener {dismiss() }
         setContentView(binding.root)
+        binding.btnBtmDone.gone()
         binding.rvBtmData.scrollToPosition(0)
         adapter.setOnItemClickListener { ater, view, position ->
             adapter.data.forEach {
@@ -26,6 +29,7 @@ class CommonBottomSheetDialog(context: Context, val callBack: (item: DialogBotto
             val item = adapter.data[position]
             item!!.flag = true
             adapter.notifyDataSetChanged()
+            binding.btnBtmDone.visible()
         }
         binding.btnBtmDone.setOnClickListener {
             dismiss()

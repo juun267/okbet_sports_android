@@ -525,7 +525,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         }
     }
 
-    private fun switchLoginType(loginType: Int)=binding.run {
+    private fun switchLoginType(loginType: Int) {
         viewModel.loginType = loginType
         hideSoftKeyboard()
         if (loginType in LOGIN_TYPE_CODE..LOGIN_TYPE_PWD){
@@ -583,17 +583,22 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
             if (binding.eetUsername1.text.isNullOrBlank()) {
                 binding.etUsername1.setError(null, false)
             }
+            if (binding.eetQuestion.text.isNullOrBlank()) {
+                binding.etQuestion.setError(null, false)
+            }
+            if (binding.eetAnswer.text.isNullOrBlank()) {
+                binding.etAnswer.setError(null, false)
+            }
             if (loginType== LOGIN_TYPE_QUESTION){
                 binding.etQuestion.isVisible = false
                 binding.etAnswer.isVisible = false
             }else {
-                binding.etUsername1.isEnabled = false
-                binding.etQuestion.isEnabled = false
                 binding.etQuestion.isVisible = true
                 binding.etAnswer.isVisible = true
+                binding.etUsername1.isEnabled = false
+                binding.etQuestion.isEnabled = false
             }
         }
-
     }
 
     private fun setupRecommendCodeVisible() {

@@ -275,9 +275,8 @@
                             android:id="@+id/eet_question"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:lineSpacingExtra="@dimen/margin_5"
                             android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:maxLines="1"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp" />
 

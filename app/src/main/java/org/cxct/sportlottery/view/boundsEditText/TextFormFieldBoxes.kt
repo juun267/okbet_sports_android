@@ -1397,4 +1397,18 @@ class TextFormFieldBoxes : FrameLayout {
             return Color.argb(alpha, red, green, blue)
         }
     }
+
+    /**
+     * 根据输入框内容，动态调整高度，以便于显示完整
+     */
+    fun adjustPanelHeightWrapContet(){
+        panel?.apply {
+            val lp = layoutParams
+            lp.height =ViewGroup.LayoutParams.WRAP_CONTENT
+            layoutParams = lp
+        }
+        editText?.apply {
+            maxLines = lineCount
+        }
+    }
 }

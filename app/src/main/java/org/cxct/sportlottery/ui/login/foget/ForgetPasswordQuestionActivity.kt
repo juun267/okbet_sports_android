@@ -51,6 +51,7 @@ class ForgetPasswordQuestionActivity: BaseActivity<ForgetViewModel, ActivityForg
         etUsername.setError(null,false)
         eetQuestion.setText(question)
         etQuestion.setError(null,false)
+//        etQuestion.adjustPanelHeightWrapContet()
         btnPut.setBtnEnable(false)
         btnPut.setOnClickListener { next() }
         eetAnswer.checkRegisterListener {

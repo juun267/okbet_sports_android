@@ -1920,5 +1920,6 @@
     <string name="B194">What is your favorite food?</string>
     <string name="B199">Configured</string>
     <string name="B200">Please select...</string>
+    <string name="B203">Please enter your login password</string>
 
 </resources>
