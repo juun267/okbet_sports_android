@@ -54,9 +54,7 @@ class ToMayaDialog : BaseDialog<BaseViewModel, DialogToMayaBinding>() {
          * 根据条件判断是否需要显示
          */
         fun showByLogin(){
-            LogUtil.d("isMayaAccount 00")
             if (LoginRepository.isLogined() && UserInfoRepository.isMayaAccount()) {
-                LogUtil.d("isChecked="+isChecked()+",needShow="+needShow)
                 if (!isChecked() && needShow) {
                     needShow = false
                     newInstance().show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToMayaDialog.javaClass.name)

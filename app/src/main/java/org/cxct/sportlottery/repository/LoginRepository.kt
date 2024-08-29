@@ -321,5 +321,6 @@ object LoginRepository {
             verified = loginData.verified,
             vipType = loginData.vipType,
             discountByGameTypeList = loginData.discountByGameTypeList,
+            mayaId = loginData.mayaId
         )
 }
