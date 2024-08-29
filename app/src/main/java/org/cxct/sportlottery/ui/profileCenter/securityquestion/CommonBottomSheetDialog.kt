@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.securityquestion
 
 import android.content.Context
+import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
@@ -44,6 +45,7 @@ class CommonBottomSheetDialog(context: Context, val callBack: (item: DialogBotto
         list.forEach {
             it.flag = currStr!=null && it.name == currStr
         }
+        binding.btnBtmDone.isVisible = !currStr.isNullOrEmpty()
         adapter.setList(list)
         if (!list.isNullOrEmpty()){
             binding.rvBtmData.scrollToPosition(0)
