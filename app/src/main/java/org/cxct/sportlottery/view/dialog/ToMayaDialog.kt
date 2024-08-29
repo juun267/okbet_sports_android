@@ -92,7 +92,7 @@ class ToMayaDialog : BaseDialog<BaseViewModel, DialogToMayaBinding>() {
     fun setupMaya()=binding.run{
         ivIcon.setImageResource(R.drawable.ic_maya_logo)
         tvToTitle.text = "Maya member reminder"
-        tvContent.text = "Hello, as you have registered on the PayMaya platform, according to the official requirements, deposits and withdrawals must be completed exclusively through the PayMaya program. Click “Open PayMaya” below to proceed. Thank you!"
+        tvContent.text = "Hello, as you have registered on the Maya platform, according to the official requirements, deposits and withdrawals must be completed exclusively through the Maya program. Click “Open Maya” below to proceed. Thank you!"
     }
 
     fun setPositiveClickListener(positiveClickListener: OnPositiveListener) {
