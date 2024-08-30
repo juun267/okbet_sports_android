@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.betRecord.ParlayType
 import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.copyToClipboard
@@ -110,8 +111,15 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             //投注金额
             tvBetTotal.text = " $showCurrencySign ${TextUtil.formatMoney(item.totalAmount,2)}"
             if (item.status in 0..1){
+                item.betConfirmTime
                 cashoutBtn.visible()
-                cashoutBtn.setCashOutStatus(item.cashoutStatus, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
+                val leftTime = item.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
+                //赛事确认中的时候，需要将提前结算按钮锁盘，等收到ws后，再更新赛事状态和解锁
+                if (item.status==1 && (leftTime?:0)<=0){
+                    cashoutBtn.setCashOutStatus(item.cashoutStatus, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
+                }else{
+                    cashoutBtn.setCashOutStatus(2, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
+                }
             }else{
                 cashoutBtn.gone()
             }
@@ -203,27 +211,34 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
 
         }
     }
-
     /**
-     * 更新cashout状态
+     * 更新选中状态
      */
     fun updateCashOut(list: List<CheckCashOutResult>){
+        list.forEach {
+            updateItemCashOutByUniqNo(it.uniqNo,it.cashoutStatus,it.cashoutAmount)
+        }
+    }
+
+    /**
+     * 更新item的cashout状态和金额
+     */
+    fun updateItemCashOutByUniqNo(uniqNo: String,cashoutStatus: Int, cashoutAmount: String?){
         data.forEachIndexed { index, row ->
-            list.forEach {
-                if (row.orderNo == it.orderNo){
-                    var needUpdate = false
-                    if (row.cashoutStatus != it.cashoutStatus){
-                        row.cashoutStatus = it.cashoutStatus
-                        needUpdate = true
-                    }
-                    if (row.cashoutAmount != it.cashoutAmount){
-                        row.cashoutStatus = it.cashoutStatus
-                        needUpdate = true
-                    }
-                    if (needUpdate){
-                        notifyItemChanged(index)
-                    }
+            if (row.uniqNo == uniqNo){
+                var needUpdate = false
+                if (row.cashoutStatus != cashoutStatus){
+                    row.cashoutStatus = cashoutStatus
+                    needUpdate = true
                 }
+                if (row.cashoutAmount != cashoutAmount){
+                    row.cashoutAmount =  cashoutAmount
+                    needUpdate = true
+                }
+                if (needUpdate){
+                    notifyItemChanged(index)
+                }
+                return
             }
         }
     }

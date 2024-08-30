@@ -14,14 +14,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.toast
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentUnsettledBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.service.order_settlement.Status
+import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
@@ -218,13 +217,27 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                 },500)
             }
         }
-        viewModel.cashOutEvent.observe(this){ result->
+        viewModel.cashOutEvent.observe(this){
             hideLoading()
-            if (result.succeeded()){
-                showPromptDialog(getString(R.string.prompt),getString(R.string.B74)){}
-                val removePos = mAdapter.data?.indexOfFirst{ it.uniqNo== result.getData()?.uniqNo}
+            val cashOutResult = it.getData()
+            if (it.succeeded() && cashOutResult?.status==1) {
+                //结算成功
+                showPromptDialog(getString(R.string.prompt), getString(R.string.B74)) {}
+                val removePos =
+                    mAdapter.data?.indexOfFirst { it.uniqNo == cashOutResult.uniqNo }
                 mAdapter.removeAt(removePos)
+            }else if(it.succeeded() && cashOutResult?.status==2){
+                //金额不对，结算失败，更新显示金额
+                showErrorPromptDialog(getString(R.string.prompt),"${getString(R.string.B72)} $showCurrencySign ${cashOutResult.cashoutAmount}") {}
+                if (!cashOutResult.uniqNo.isNullOrEmpty()) {
+                    mAdapter.updateItemCashOutByUniqNo(
+                        cashOutResult.uniqNo!!,
+                        cashOutResult.status,
+                        cashOutResult.cashoutAmount
+                    )
+                }
             }else{
+                //status=0 或者其他都认为结算失败
                 showErrorPromptDialog(getString(R.string.prompt),getString(R.string.B75)){}
                 mAdapter.data.clear()
                 mAdapter.notifyDataSetChanged()
