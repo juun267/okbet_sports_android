@@ -84,7 +84,7 @@ class SettingQuestionActivity : BaseActivity<SettingQuestionViewModel, ActivityS
             hideLoading()
             if (it.succeeded()){
                 viewModel.getUserInfo()
-                showPromptDialog(null,getString(R.string.J533)){
+                showPromptDialog(getString(R.string.J533)){
                     finish()
                 }
             }else{
