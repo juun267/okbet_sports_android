@@ -20,6 +20,7 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.copyToClipboard
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setColors
+import timber.log.Timber
 import java.util.Locale
 
 /**
@@ -111,14 +112,14 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             //投注金额
             tvBetTotal.text = " $showCurrencySign ${TextUtil.formatMoney(item.totalAmount,2)}"
             if (item.status in 0..1){
-                item.betConfirmTime
                 cashoutBtn.visible()
                 val leftTime = item.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
+//                LogUtil.d("cashoutStatus="+item.cashoutStatus+",status="+item.status+",leftTime="+leftTime)
                 //赛事确认中的时候，需要将提前结算按钮锁盘，等收到ws后，再更新赛事状态和解锁
-                if (item.status==1 && (leftTime?:0)<=0){
-                    cashoutBtn.setCashOutStatus(item.cashoutStatus, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
-                }else{
+                if (item.cashoutStatus==1 && (item.status==0 || (item.status==1&&(leftTime?:0)>0))){
                     cashoutBtn.setCashOutStatus(2, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
+                }else{
+                    cashoutBtn.setCashOutStatus(item.cashoutStatus, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
                 }
             }else{
                 cashoutBtn.gone()

@@ -48,6 +48,7 @@ class CashOutButton @JvmOverloads constructor(
                     binding.tvAmount.setColors(R.color.color_025BE8)
                     binding.tvAmount.text = amountText
                     binding.ivLoading.gone()
+                    isEnabled =true
                 }
                 2->{
                     binding.linRoot.setBackgroundResource(R.drawable.bg_white_radius_8_stroke_e0e3ee)
@@ -55,6 +56,7 @@ class CashOutButton @JvmOverloads constructor(
                     binding.tvName.gone()
                     binding.tvAmount.gone()
                     binding.ivLoading.gone()
+                    isEnabled =false
                 }
             }
         }else{
@@ -70,6 +72,7 @@ class CashOutButton @JvmOverloads constructor(
                     binding.tvAmount.setColors(R.color.color_FFFFFF)
                     binding.tvAmount.text = amountText
                     binding.ivLoading.gone()
+                    isEnabled =true
                 }
                 STATUS_BETTING->{
                     binding.linRoot.setBackgroundResource(R.drawable.bg_blue_radius_8_stroke_1)
@@ -80,6 +83,7 @@ class CashOutButton @JvmOverloads constructor(
                     binding.tvAmount.gone()
                     binding.ivLoading.visible()
                     binding.ivLoading.startInfiniteRotation(1000)
+                    isEnabled =false
                 }
             }
         }
