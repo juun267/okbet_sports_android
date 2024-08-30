@@ -36,7 +36,7 @@ import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 import java.util.*
 
 class VipBenefitsActivity: BaseActivity<VipViewModel, ActivityVipBenefitsBinding>() {
-
+    override fun pageName() = "VIP特权页面"
     val loadingHolder by lazy { Gloading.cover(binding.vLoading) }
     private val vipCardAdapter = VipCardAdapter()
     private val activatedAdapter = ActivatedBenefitsAdapter(::onItemClick)

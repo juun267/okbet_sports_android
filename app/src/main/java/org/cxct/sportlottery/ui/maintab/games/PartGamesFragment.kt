@@ -77,7 +77,7 @@ class PartGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentPartOkgame
         gameChildAdapter.setOnItemClickListener { _, _, position ->
             val okGameBean = gameChildAdapter.getItemOrNull(position)?:return@setOnItemClickListener
             if (LoginRepository.isLogined()) {
-                okGamesFragment().enterGame(okGameBean)
+                okGamesFragment().enterGame(okGameBean, "Games游戏分类列表")
             } else {
                 //请求试玩路线
                 loading()

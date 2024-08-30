@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.hideLoading
@@ -34,6 +35,7 @@ import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
 class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListBinding>() {
+    override fun pageName() = "新游戏列表页面"
 
     private val adapter = GameListAdapter(::enterThirdGame, ::onFavorite)
     private val refreshHelper by lazy { RefreshHelper.of(binding.recyclerView, this@ThirdGameListActivity, false) }
@@ -189,6 +191,7 @@ class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListB
     }
 
     private fun enterThirdGame(gameData: OKGameBean) {
+        SensorsEventUtil.gameClickEvent("新游戏列表页", "${gameData.firmName}", "${gameData.gameType}", "${gameData.gameName}", gameData.id.toString())
         if(LoginRepository.isLogined()) {
             viewModel.requestEnterThirdGame(gameData, this)
             //有些是手动构造的OKGameBean，需要排除

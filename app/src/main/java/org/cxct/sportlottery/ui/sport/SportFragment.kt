@@ -120,7 +120,7 @@ class SportFragment: BaseSocketFragment<SportTabViewModel, FragmentSport2Binding
                 0-> {}
                 1-> {
                     OKGamesRepository.okPlayEvent.value?.let { it1 ->
-                        getMainTabActivity().enterThirdGame(it1)
+                        getMainTabActivity().enterThirdGame(it1, "体育赛事列表顶部OKPlay")
                     }
                 }
             }

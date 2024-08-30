@@ -39,7 +39,7 @@ class EndCardToolbarView @JvmOverloads constructor(context: Context, attrs: Attr
 
     private fun initView()=binding.run {
         ivRefresh.setOnClickListener { onRefreshMoney() }
-        ivDeposit.setOnClickListener { activity.jumpToDeposit() }
+        ivDeposit.setOnClickListener { activity.jumpToDeposit("顶部充值按钮") }
         btnLogin.setOnClickListener { context.startLogin() }
         btnRegister.setOnClickListener { LoginOKActivity.startRegist(context) }
         setupLogin()

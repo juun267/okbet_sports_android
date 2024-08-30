@@ -33,6 +33,8 @@ import kotlin.math.abs
 class TakeIDPhotoActivity: BaseActivity<ProfileCenterViewModel, ActivityTakeidPhotoBinding>()
     , SensorEventListener {
 
+    override fun pageName() = "KYC认证前ID上传页面"
+
     companion object {
 
         fun start(context: Context, id: Int, type: Int, idTypeName: String) {

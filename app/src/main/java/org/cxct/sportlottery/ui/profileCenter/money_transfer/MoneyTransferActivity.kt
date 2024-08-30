@@ -13,6 +13,8 @@ import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTrans
 
 class MoneyTransferActivity : BaseActivity<MoneyTransferViewModel,ActivityMoneyTransferBinding>() {
 
+    override fun pageName() = "额度转换页面"
+
     private val navController by lazy { findNavController(R.id.my_nav_host_fragment) }
 
     override fun onInitView() {

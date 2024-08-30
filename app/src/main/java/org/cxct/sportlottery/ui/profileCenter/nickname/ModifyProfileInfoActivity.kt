@@ -22,7 +22,7 @@ import org.cxct.sportlottery.view.checkRegisterListener
  * @app_destination 修改暱稱
  */
 class ModifyProfileInfoActivity : BaseActivity<ModifyProfileInfoViewModel,ActivityModifyProfileInfoBinding>() {
-
+    override fun pageName() = "修改昵称页面"
     private val modifyType by lazy { intent.getIntExtra(MODIFY_INFO, ModifyType.NickName) }
 
     companion object {

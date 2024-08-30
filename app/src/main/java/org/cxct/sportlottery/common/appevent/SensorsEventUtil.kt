@@ -7,6 +7,8 @@ import com.sensorsdata.analytics.android.sdk.SensorsDataDynamicSuperProperties
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.LanguageManager
 import org.json.JSONObject
 
@@ -44,16 +46,25 @@ object SensorsEventUtil {
         SensorsDataAPI.sharedInstance().track(eventName, properties)
     }
 
+    fun getPageName(): String {
+        val activity = AppManager.currentActivity()
+        return if (activity is BaseActivity<*, *>) {
+            activity.pageName()
+        } else {
+            "未知页面"
+        }
+    }
+
     /**
      * 进入登录注册页面
      * "登录页面加载完成后上报（可在此步骤添加调用用户关联的logout步骤，防止出现相同设备登录不同账号发生的自关联情况）"
      * source_channel	来源渠道	STRING	本次进入登录注册页面是来源什么渠道()
      * page_name	    页面名称	STRING	唤出登录注册界面的页面名称
      */
-    fun loginPageEvent(fromPage: String) {
+    fun loginPageEvent() {
         val event = JSONObject()
         event.put("source_channel", BuildConfig.CHANNEL_NAME)
-        event.put("page_name", fromPage)
+        event.put("page_name", getPageName())
         pushEvent("visitLoginPage", event)
     }
 
@@ -103,14 +114,14 @@ object SensorsEventUtil {
      * is_success	是否成功	BOOL	1是0否（本次KYC结果是否成功）
      * fail_reason	失败原因	STRING	证件失效、网络异常...等
      */
-    fun depositPageEvent(sourceType: String, sourceName: String) {
+    fun depositPageEvent(sourceType: String) {
         val params = JSONObject()
         params.put("title_type", "存款页面")
         params.put("title", "存款")
         params.put("url", "")                         // 所在的页面地址
         params.put("url_path", "")                    // 所在的页面地址路径
         params.put("visit_source_type", sourceType)         // 来源类型
-        params.put("visit_source_name", sourceName)         // 例如：机台名称、来源的页面名称等
+        params.put("visit_source_name", getPageName())         // 例如：机台名称、来源的页面名称等
         pushEvent("depositPageView", params)
     }
 
@@ -133,8 +144,8 @@ object SensorsEventUtil {
         params.put("title", "存款")
 //        params.put("url", "")
 //        params.put("url_path", "")
-        params.put("visit_source_type", "")          // 来源类型
-        params.put("visit_source_name", "")          // 例如：机台名称、来源的页面名称等
+        params.put("visit_source_type", sourceType)          // 来源类型
+        params.put("visit_source_name", sourceName)          // 例如：机台名称、来源的页面名称等
         pushEvent("selectPaymentAccount", params)
 
     }
@@ -149,15 +160,15 @@ object SensorsEventUtil {
      * click_place	    点击位置	            STRING	通过什么页面或位置点击的，若不需知道点击来源，可删除此属性
      * is_trial_machine	是否试玩游戏	        BOOL	1是0否
      */
-    fun gameClickEvent() {
+    fun gameClickEvent(clickPlace: String, frimName: String, gameType: String, gameName: String, gameId: String) {
         val params = JSONObject()
-        params.put("cp_name", "")
-        params.put("machine_type", "")
-        params.put("machine_name", "")
-        params.put("machine_id", "")
-        params.put("click_place", "")
-        params.put("is_trial_machine", "")
-        pushEvent("selectPaymentAccount", params)
+        params.put("cp_name", frimName)
+        params.put("machine_type", gameType)
+        params.put("machine_name", gameName)
+        params.put("machine_id", gameId)
+        params.put("click_place", clickPlace)
+//        params.put("is_trial_machine", "")
+        pushEvent("clickMachine", params)
     }
 
     /**
@@ -179,7 +190,7 @@ object SensorsEventUtil {
         params.put("machine_type", gameType)
         params.put("machine_name", gameName)
         params.put("machine_id", gameId)
-        params.put("is_trial_machine", isTrialPlay)
+//        params.put("is_trial_machine", isTrialPlay)
         pushEvent("startLoadingMachine", params)
     }
 
@@ -261,8 +272,7 @@ object SensorsEventUtil {
                        eventType: String,
                        eventName: String,
                        eventStageName: String,
-                       eventStageId: String,
-                       pageName: String) {
+                       eventStageId: String) {
         val params = JSONObject()
         params.put("visit_source_type", visitSourceType)
         params.put("visit_source_name", visitSourceName)
@@ -270,7 +280,7 @@ object SensorsEventUtil {
         params.put("event_name", eventName)
         params.put("event_stage_name", eventStageName)
         params.put("event_stage_id", eventStageId)
-        params.put("page_name", pageName)
+        params.put("page_name", getPageName())
         pushEvent("eventPageView", params)
     }
 
@@ -327,13 +337,13 @@ object SensorsEventUtil {
      */
     fun newsPageViewEvent(newsId: String,
                           newsName: String,
-                          titleType: String,
-                          title: String) {
+//                          titleType: String,
+                          /*title: String*/) {
         val params = JSONObject()
         params.put("news_id", newsId)
         params.put("news_name", newsName)
-        params.put("title_type", titleType)
-        params.put("title", title)
+        params.put("title_type", "新闻页面")
+        params.put("title", newsName)
 //        params.put("url", url)
 //        params.put("url_path", url_path)
         pushEvent("newsPageView", params)

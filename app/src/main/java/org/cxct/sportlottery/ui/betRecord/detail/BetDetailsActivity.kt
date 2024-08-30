@@ -14,6 +14,8 @@ import org.cxct.sportlottery.util.setupSportStatusChange
  */
 class BetDetailsActivity : BaseSocketActivity<BetListViewModel,ActivityBetDetailsBinding>(BetListViewModel::class){
 
+    override fun pageName() = "注单详情页"
+
     private val betDetailsFragment by lazy { BetDetailsFragment() }
 
     private val betDetailsFragment2 by lazy { BetDetailsFragment2() }

@@ -19,7 +19,7 @@ import timber.log.Timber
 /**
  * Create by Simon Chang
  */
-open class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<MainViewModel, ActivityWebBinding>() {
+abstract class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<MainViewModel, ActivityWebBinding>() {
     companion object {
         const val KEY_URL = "key-url"
         const val KEY_TITLE = "key-title"

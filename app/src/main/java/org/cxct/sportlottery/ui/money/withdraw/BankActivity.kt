@@ -12,6 +12,8 @@ import org.cxct.sportlottery.ui.base.BaseActivity
  */
 class BankActivity : BaseActivity<WithdrawViewModel, ActivityBankBinding>() {
 
+    override fun pageName() = "提款设置页面"
+
     companion object {
         const val ModifyBankTypeKey = "modify_bank_type_key"
         const val TransferTypeAddSwitch = "TransferTypeAddSwitch"

@@ -36,7 +36,7 @@ class MainRightFragment : BaseFragment<MoneyTransferViewModel, FragmentMainRight
 
     private fun initView() = binding.run {
         tvDeposit.setOnClickListener {
-            getMainTabActivity().jumpToDeposit()
+            getMainTabActivity().jumpToDeposit("右侧存款按钮")
         }
         val dp8 = 8.dp.toFloat()
         tvDeposit.background = ShapeDrawable()

@@ -189,7 +189,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     private fun setupRechargeButton() {
         binding.btnRecharge.clickDelay{
-            (requireActivity() as BaseActivity<*,*>).jumpToDeposit()
+            (requireActivity() as BaseActivity<*,*>).jumpToDeposit("存款按钮(我的)")
         }
     }
 

@@ -28,7 +28,8 @@ import org.cxct.sportlottery.view.webView.OkWebViewClient
 /**
  * Create by Simon Chang
  */
-open class LotteryActivity : BaseActivity<MainViewModel,ActivityWebBinding>(MainViewModel::class) {
+class LotteryActivity : BaseActivity<MainViewModel,ActivityWebBinding>(MainViewModel::class) {
+    override fun pageName() = "彩票页面"
     companion object {
         const val KEY_URL = "key-url"
     }

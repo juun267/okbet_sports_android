@@ -12,6 +12,8 @@ import org.cxct.sportlottery.util.LogUtil
 
 class InviteActivity : BaseActivity<ProfileModel, ActivityInviteBinding>(){
 
+    override fun pageName() = "邀请好友页面"
+
     override fun onInitView() {
         setStatusbar(R.color.color_025BE8,false)
        binding.toolBar.apply {

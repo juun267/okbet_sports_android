@@ -20,7 +20,7 @@ import java.util.*
 
 class PromotionDetailActivity :
     BaseActivity<MainHomeViewModel, ActivityPromotionDetailBinding>() {
-
+    override fun pageName() = "优惠活动详情页面"
     companion object {
         fun start(context: Context, data: ActivityImageList) {
             context.startActivity(Intent(context, PromotionDetailActivity::class.java).apply {
@@ -70,7 +70,7 @@ class PromotionDetailActivity :
             binding.linApply.setOnClickListener {
                 MainTabActivity.reStart(this)
                 binding.linApply.postDelayed(1000){
-                    (AppManager.currentActivity() as? MainTabActivity)?.jumpToDeposit()
+                    (AppManager.currentActivity() as? MainTabActivity)?.jumpToDeposit("申请按钮")
                 }
             }
             binding.tvDepositName.text = getString(R.string.P277)

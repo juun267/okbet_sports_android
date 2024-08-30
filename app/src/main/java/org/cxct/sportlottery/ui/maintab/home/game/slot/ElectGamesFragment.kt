@@ -118,7 +118,7 @@ open class ElectGamesFragment<VM, VB>: GameVenueFragment<OKGamesViewModel, Fragm
                 return@setOnItemClickListener
             }
 
-            getMainTabActivity()?.enterThirdGame(okGameBean)
+            getMainTabActivity()?.enterThirdGame(okGameBean, "首页-游戏分类页面")
         }
 
         //实现左侧联动

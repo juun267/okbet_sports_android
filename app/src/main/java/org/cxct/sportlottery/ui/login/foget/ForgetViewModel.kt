@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.forgetPassword.*
@@ -39,6 +40,8 @@ class ForgetViewModel(
             }
         }
         doRequest({ OneBoSportApi.indexService.sendEmailForget(params) }) {
+            val status = it?.success == true
+            SensorsEventUtil.getCodeEvent(status, true, if (status) null else it?.msg)
             _smsResult.value = it
         }
     }
@@ -69,6 +72,8 @@ class ForgetViewModel(
                     SendSmsRequest(phone).apply { buildParams(identity, validCode) }
                 )
             }
+            val status = result?.success == true
+            SensorsEventUtil.getCodeEvent(status, errorMsg = if (status) null else result?.msg)
             _smsResult.postValue(result)
         }
     }

@@ -9,6 +9,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.Spanny
 
 class BettingStationActivity: BaseActivity<MainHomeViewModel,ActivityBettingstationBinding>() {
+    override fun pageName() = "投注站页面"
     override fun onInitView() {
         setStatusbar(R.color.color_FFFFFF,true)
         binding.tvTitle.text = Spanny(getString(R.string.N910)).findAndSpan("OKBET"){

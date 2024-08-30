@@ -147,7 +147,7 @@ open class SportVenueFragment<VM : BaseViewModel, VB> :
                 if (okPlayBean != null) {
                     if (!sportTypeAdapter.hasHeaderLayout()) {
                         okPlayBinding.root.setOnClickListener {
-                            getMainTabActivity()?.enterThirdGame(okPlayBean)
+                            getMainTabActivity()?.enterThirdGame(okPlayBean, "首页-体育分类顶部OKPlay")
                         }
                         sportTypeAdapter.addHeaderView(okPlayBinding.root)
                     }

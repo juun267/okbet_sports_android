@@ -34,7 +34,7 @@ import java.util.*
  */
 class ResultsSettlementActivity :
     BaseSocketActivity<SettlementViewModel,ActivityResultsSettlementNewBinding>(SettlementViewModel::class) {
-
+    override fun pageName() = "赛果结算页面"
     companion object {
         const val EXTRA_GAME_TYPE = "EXTRA_GAME_TYPE"
         const val EXTRA_START_TIME = "EXTRA_START_TIME"

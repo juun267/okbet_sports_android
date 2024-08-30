@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.net.message.AnnouncementRepository
@@ -1153,6 +1154,8 @@ class WithdrawViewModel(
     fun senEmsCode(phoneNo: String, validCodeIdentity: String, validCode: String) {
         val params = LoginCodeRequest(phoneNo).apply { buildParams(validCodeIdentity, validCode) }
         doRequest({ OneBoSportApi.indexService.loginOrRegSendValidCode(params)}) {
+            val status = it?.success == true
+            SensorsEventUtil.getCodeEvent(status, errorMsg = if (status) null else it?.msg)
             onEmsCodeSended.value = it
         }
 

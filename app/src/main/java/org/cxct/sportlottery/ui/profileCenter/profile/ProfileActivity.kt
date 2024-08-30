@@ -49,7 +49,7 @@ import java.util.Calendar
  * @app_destination 个人设置
  */
 class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
-
+    override fun pageName() = "个人设置页面"
     //生日选择
     private var dateTimePicker: TimePickerView? = null
     private var dialogBtmAdapter = DialogBottomDataAdapter()

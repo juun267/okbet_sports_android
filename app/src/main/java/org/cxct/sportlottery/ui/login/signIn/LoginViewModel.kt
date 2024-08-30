@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.login.signIn
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.event.SingleEvent
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -134,7 +136,7 @@ class LoginViewModel(
 
         val needOptAcount = loginResult.rows.find { it.needOTPLogin }
         if (needOptAcount == null) {
-            dealWithLoginResult(loginResult)
+            dealWithLoginResult(loginResult, "账号")
             return@launch
         }
 
@@ -160,7 +162,11 @@ class LoginViewModel(
         )
 
         doRequest({ LoginRepository.loginOrReg(loginRequest) }) {
-            it?.let { launch { dealWithLoginResult(it) } }
+            it?.let {
+                launch {
+                    dealWithLoginResult(it, if (account.contains("@")) "邮箱" else "手机号")
+                }
+            }
             hideLoading()
         }
     }
@@ -170,7 +176,7 @@ class LoginViewModel(
         loading()
         doRequest({ LoginRepository.googleLogin(token, inviteCode = Constants.getInviteCode()) }) {
             hideLoading()
-            it?.let { launch { dealWithLoginResult(it) } }
+            it?.let { launch { dealWithLoginResult(it, "Google") } }
         }
     }
     fun loginFacebook(token: String) {
@@ -180,25 +186,25 @@ class LoginViewModel(
                 inviteCode = Constants.getInviteCode())
         }) {
             hideLoading()
-            it?.let { launch { dealWithLoginResult(it) } }
+            it?.let { launch { dealWithLoginResult(it, "Facebook") } }
         }
     }
 
-    fun regPlatformUser(token: String,loginRequest: LoginRequest) {
+    fun regPlatformUserFromGlife(token: String, loginRequest: LoginRequest) {
         AFInAppEventUtil.logEvent("regPlatformUser","account",loginRequest.account)
         loading()
         doRequest({ LoginRepository.regPlatformUser(token,loginRequest) }) {
             hideLoading()
-            it?.let { launch { dealWithLoginResult(it) } }
+            it?.let { launch { dealWithLoginResult(it, "GLife") } }
         }
     }
 
-    private suspend fun dealWithLoginResult(loginResult: LoginResult) {
+    private suspend fun dealWithLoginResult(loginResult: LoginResult, ways: String) {
         if (loginResult.success) {
             //t不为空则t是登录账号，rows里面1个账号就直接登录，2个账号就选择账号
             when  {
                 loginResult.t != null -> {
-                    dealWithLoginData(loginResult, loginResult.t)
+                    dealWithLoginData(loginResult, loginResult.t, ways)
                 }
                 loginResult.rows?.size==1 -> {
                     val loginData = loginResult.rows[0]
@@ -206,7 +212,7 @@ class LoginViewModel(
                     if (loginData.isCreateAccount==1){
                        _loginGlifeOrRegist.postValue(loginResult)
                     }else{
-                        dealWithLoginData(loginResult, loginData)
+                        dealWithLoginData(loginResult, loginData, ways)
                     }
                 }
                 loginResult.rows?.size==2 -> {
@@ -217,12 +223,16 @@ class LoginViewModel(
            toast(loginResult.msg)
         }
     }
-    suspend fun dealWithLoginData(loginResult: LoginResult,loginData: LoginData){
+    suspend fun dealWithLoginData(loginResult: LoginResult,loginData: LoginData, ways: String){
         if (!loginData.msg.isNullOrBlank()){
             toast(loginData.msg!!)
             return
         }
-        if (loginData.ifnew != false) {
+
+        if (loginData.ifnew == true) {
+            SensorsEventUtil.registerEvent(ways)
+        }
+        if (loginData.ifnew == false) {
             AFInAppEventUtil.register("username",HashMap<String, Any>().apply {
                 put("uid",loginData.uid.toString())
                 put("userId",loginData.userId.toString())
@@ -239,6 +249,7 @@ class LoginViewModel(
                 put("email",loginData.email.toString())
             })
         }
+
         LoginRepository.setUpLoginData(loginData)
         RegisterSuccessDialog.ifNew = loginData.ifnew==true
         RegisterSuccessDialog.loginFirstPhoneGiveMoney = loginData.firstPhoneGiveMoney==true
@@ -335,12 +346,17 @@ class LoginViewModel(
     fun getValidCode(identity: String?) {
         doRequest({ OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity)) }) { result ->
             _validCodeResult.postValue(result)
+            val status = result?.success == true
+            val errorMsg = if (status) null else result?.msg
+            SensorsEventUtil.getCodeEvent(status, errorMsg = errorMsg)
         }
     }
 
     fun loginOrRegSendValidCode(loginCodeRequest: LoginCodeRequest) {
         doRequest({ OneBoSportApi.indexService.loginOrRegSendValidCode(loginCodeRequest) }) { result ->
             _msgCodeResult.postValue(result)
+            val status = result?.success == true
+            SensorsEventUtil.getCodeEvent(status, errorMsg = if (status) null else result?.msg)
         }
     }
 

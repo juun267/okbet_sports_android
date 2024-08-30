@@ -1030,7 +1030,7 @@ fun View.setMargins(left: Int, top: Int, right: Int, bottom: Int) {
 private var checkRecharge = false
 // 首冲活动跳转充值页面
 var chargeFromActivity = false
-fun BaseActivity<*, *>.jumpToDeposit(activityCharge: Boolean = false){
+fun BaseActivity<*, *>.jumpToDeposit(action: String, activityCharge: Boolean = false){
     chargeFromActivity = activityCharge
     ToGcashDialog.showByClick{
         val isNeedVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value && isKYCVerifyRechargeOpen()
@@ -1056,6 +1056,7 @@ fun BaseActivity<*, *>.jumpToDeposit(activityCharge: Boolean = false){
                 withContext(Dispatchers.Main){
                     hideLoading()
                     if (operation) {
+                        MoneyRechargeActivity.startFrom(this@jumpToDeposit, action)
                         startActivity(MoneyRechargeActivity::class.java)
                     } else {
                         showPromptDialog(

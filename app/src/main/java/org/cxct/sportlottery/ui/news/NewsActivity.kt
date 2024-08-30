@@ -10,6 +10,8 @@ import org.cxct.sportlottery.ui.base.BaseActivity
  */
 class NewsActivity : BaseActivity<NewsViewModel, ActivityNewsBinding>() {
 
+    override fun pageName() = "最新消息"
+
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         initViews()

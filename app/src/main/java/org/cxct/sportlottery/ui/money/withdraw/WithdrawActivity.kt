@@ -16,6 +16,7 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
  * @app_destination 提款
  */
 class WithdrawActivity : BaseActivity<WithdrawViewModel, ActivityWithdrawBinding>() {
+    override fun pageName() = "提款页面"
     private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
             supportFragmentManager, binding.flContent.id, arrayOf(

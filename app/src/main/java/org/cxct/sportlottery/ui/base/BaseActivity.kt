@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
@@ -29,6 +28,9 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>(clazz: KClass<
 
     val viewModel: VM by viewModel(clazz = clazz ?: getKClass(0) as KClass<VM>)
     protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
+
+    // 用于埋点统计的页面名称
+    abstract fun pageName(): String
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LanguageManager.setLocal(newBase))

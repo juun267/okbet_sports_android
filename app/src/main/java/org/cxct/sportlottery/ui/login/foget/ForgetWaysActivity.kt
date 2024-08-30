@@ -13,6 +13,8 @@ import org.cxct.sportlottery.util.setupSummary
 
 class ForgetWaysActivity:  BaseActivity<ForgetViewModel, ActivityForgetWaysBinding>() {
 
+    override fun pageName() = "密码找回钱验证方式选择页面"
+
     override fun onInitView() {
         setStatusBarDarkFont()
         bindFinish(binding.btnBack)

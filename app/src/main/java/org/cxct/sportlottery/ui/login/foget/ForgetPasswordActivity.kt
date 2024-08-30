@@ -30,6 +30,8 @@ import splitties.activities.start
 class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPassword2Binding>(ForgetViewModel::class)
  ,VerifyCallback {
 
+    override fun pageName() = "密码找回验证手机号或者邮箱页面"
+
     companion object {
 
         fun startByPhoneWays(context: Activity) = start(context, 1) // 1: 通过手机号方式修改密码

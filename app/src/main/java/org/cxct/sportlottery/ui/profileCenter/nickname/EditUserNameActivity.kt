@@ -15,6 +15,8 @@ import org.cxct.sportlottery.view.checkRegisterListener
 
 class EditUserNameActivity: BaseActivity<ModifyProfileInfoViewModel, ActivityEditUsernameBinding>() {
 
+    override fun pageName() = "修改真实姓名页面"
+
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         binding.toolBar.setOnBackPressListener { finish() }

@@ -21,6 +21,7 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 
 class ScannerActivity : BaseActivity<MainViewModel,ActivityScannerBinding>(MainViewModel::class) {
+    override fun pageName() = "二维码扫描页面"
 
     private lateinit var codeScanner: CodeScanner
     private var animator: ValueAnimator? = null

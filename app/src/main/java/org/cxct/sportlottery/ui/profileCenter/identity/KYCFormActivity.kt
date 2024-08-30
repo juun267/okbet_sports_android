@@ -25,6 +25,8 @@ import java.util.*
 
 class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBinding>() {
 
+    override fun pageName() = "KYC提交页面"
+
     companion object {
 
         fun start(context: Context, idType: Int, idTypeName: String, imageUrl: String, ocrInfo: OCRInfo?) {

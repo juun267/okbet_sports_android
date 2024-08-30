@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -19,6 +20,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.coroutines.GlobalScope
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -73,6 +75,8 @@ import kotlin.system.exitProcess
 
 
 class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBinding>(MainTabViewModel::class) {
+
+    override fun pageName() = "主页"
 
     private val gamesViewModel by viewModel<OKGamesViewModel>()
     private val fragmentHelper: FragmentHelper by lazy {
@@ -705,10 +709,13 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         }
         if (result.resultType != EnterThirdGameResult.ResultType.NONE) gamesViewModel.clearThirdGame()
     }
-    fun enterThirdGame(gameData: OKGameBean, addRecent: Boolean = true) {
+    fun enterThirdGame(gameData: OKGameBean,from: String?) {
+        from?.let {
+            SensorsEventUtil.gameClickEvent(it, "${gameData.firmName}", "${gameData.gameType}", "${gameData.gameName}", gameData.id.toString())
+        }
+
         if(LoginRepository.isLogined()) {
             gamesViewModel.requestEnterThirdGame(gameData, this)
-            LogUtil.toJson(gameData)
             //有些是手动构造的OKGameBean，需要排除
             //&& (gameData.gameEntryType == GameEntryType.OKGAMES || gameData.gameEntryType==GameEntryType.OKLIVE)
             if (gameData.id > 0){
@@ -727,7 +734,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     }
     private fun jumpGameAfterLogin(){
         if (LoginRepository.isLogined()&&OKGamesRepository.enterGameAfterLogin !=null){
-            enterThirdGame(OKGamesRepository.enterGameAfterLogin!!)
+            enterThirdGame(OKGamesRepository.enterGameAfterLogin!!, null)
         }
         OKGamesRepository.enterGameAfterLogin=null
     }

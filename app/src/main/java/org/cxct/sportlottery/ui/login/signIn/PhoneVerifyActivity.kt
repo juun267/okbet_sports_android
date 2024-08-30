@@ -26,7 +26,7 @@ import java.util.*
 
 class PhoneVerifyActivity : BaseActivity<LoginViewModel,ActivityPhoneVerifyBinding>(LoginViewModel::class),
     View.OnClickListener {
-
+    override fun pageName() = "长时间未登录需要验证手机号页面"
     private var mSmsTimer: Timer? = null
 
     companion object {

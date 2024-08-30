@@ -11,6 +11,7 @@ import org.cxct.sportlottery.view.loadMore
  * 体育侧边栏新闻列表
  */
 class SportNewsActivity : BaseActivity<NewsViewModel, ActivitySportNewsBinding>() {
+    override fun pageName() = "体育新闻页面"
     private val newsAdapter=RecyclerSportNewsAdapter()
     //时间区间控件
     private var timeRangeView: DateRangeSearchView2?=null

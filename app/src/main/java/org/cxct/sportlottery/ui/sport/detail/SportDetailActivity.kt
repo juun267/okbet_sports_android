@@ -62,7 +62,7 @@ import java.util.*
 class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSportBinding>(SportViewModel::class),
     TimerManager {
 
-
+    override fun pageName() = "赛事详情页面"
 
     companion object {
         fun startActivity(

@@ -19,6 +19,8 @@ import org.cxct.sportlottery.util.setStartDrawable
  */
 class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
 
+    override fun pageName() = "三方账号管理页面"
+
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         initButton()

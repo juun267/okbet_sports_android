@@ -10,7 +10,7 @@ import org.cxct.sportlottery.ui.maintab.MainViewModel
  * 七天签到页面
  */
 class SevenDaysSignInActivity: BaseActivity<MainViewModel, ActivitySevenDaysSigninBinding>() {
-
+    override fun pageName() = "七天签到页面"
     override fun onInitView() {
         setStatusbar(R.color.color_FFFFFF,true)
         binding.ivClose.setOnClickListener { finish() }

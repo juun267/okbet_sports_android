@@ -95,7 +95,7 @@ class WinsDialog : BaseDialog<BaseViewModel, DialogWinsBetdetailsBinding>() {
                 gameEntryType = betRecode.gameEntryType,
             )
             (activity as? MainTabActivity)?.let {
-                it.enterThirdGame(okGameBean)
+                it.enterThirdGame(okGameBean, "大奖播报详情弹窗")
             }
             return
         }

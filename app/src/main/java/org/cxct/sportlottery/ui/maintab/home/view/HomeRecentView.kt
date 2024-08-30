@@ -29,7 +29,7 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
                 if (item.gameBean?.firmType==Constants.FIRM_TYPE_SBTY&&!StaticData.sbSportOpened()){
                     fragment.getMainTabActivity().showPromptDialog(message = context.getString(R.string.shaba_no_open)){}
                 }else{
-                    item.gameBean?.let { fragment.getMainTabActivity().enterThirdGame(it) }
+                    item.gameBean?.let { fragment.getMainTabActivity().enterThirdGame(it, "首页-最近游戏列表") }
                 }
                 return@setOnItemClickListener
             }

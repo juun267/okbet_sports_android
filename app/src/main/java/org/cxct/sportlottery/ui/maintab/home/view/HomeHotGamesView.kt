@@ -64,7 +64,7 @@ class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
     }
 
     private fun onGameClick(okGameBean: OKGameBean) {
-        (fragment.activity as MainTabActivity?)?.enterThirdGame(okGameBean)
+        (fragment.activity as MainTabActivity?)?.enterThirdGame(okGameBean, "首页热门游戏列表")
     }
 
     private fun onFavorite(view: View, okGameBean: OKGameBean) {

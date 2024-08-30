@@ -86,7 +86,7 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
         }
         ivClose.setOnClickListener { dismiss() }
         tvDeposit.clickDelay {
-            (requireActivity() as BaseActivity<*,*>).jumpToDeposit(true)
+            (requireActivity() as BaseActivity<*,*>).jumpToDeposit("首冲活动弹窗",true)
             dismiss()
         }
         tvDetail.setOnClickListener {

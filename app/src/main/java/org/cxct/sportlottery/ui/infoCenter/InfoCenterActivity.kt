@@ -20,6 +20,8 @@ import timber.log.Timber
  */
 class InfoCenterActivity : BaseActivity<InfoCenterViewModel, ActivityInfoCenterBinding>() {
 
+    override fun pageName() = "消息中心页面"
+
     companion object {
         const val KEY_READ_PAGE = "key-read-page"
         const val BEEN_READ = 0

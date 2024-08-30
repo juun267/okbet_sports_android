@@ -10,6 +10,7 @@ import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityThirdGameBinding
 import org.cxct.sportlottery.net.games.OKGamesRepository
@@ -32,7 +33,8 @@ import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
-open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBinding>() {
+class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBinding>() {
+    override fun pageName() = "三方游戏页面"
 
     private val Int.dp: Int
         get() = (this * density).toInt()
@@ -47,6 +49,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
 
     private val webActivityImp by lazy { WebActivityImp(this,this::overrideUrlLoading) }
     private val depositURL = sConfigData?.gameUserDepositURL
+    private var startLoadTime: Long = 0
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -107,7 +110,9 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         tvRegist.isVisible = guestLogin
         webActivityImp.setCookie(mUrl)
         webActivityImp.setupWebView(webView)
+        webActivityImp.onLoadEnd = ::onLoadEndEvent
         webView.loadUrl(mUrl)
+        startLoadEvent()
         setupMenu()
         initObserve()
         postRefreshToken() // 避免用户长期在三方游戏中导致token过期
@@ -121,6 +126,22 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         }
     }
 
+    private fun startLoadEvent() {
+        startLoadTime = System.currentTimeMillis()
+        SensorsEventUtil.startLoadingGame("${okGameBean?.firmName}", "${okGameBean?.gameType}", "${okGameBean?.gameName}", okGameBean?.id.toString())
+    }
+
+    private fun onLoadEndEvent(result: Boolean) {
+        SensorsEventUtil.onGameLoadingResult(
+            "${okGameBean?.firmName}",
+            "${okGameBean?.gameType}",
+            "${okGameBean?.gameName}",
+            okGameBean?.id.toString(),
+            loadingDuration = ((System.currentTimeMillis() - startLoadTime) / 1000).toInt(),
+            loadingResult = result
+        )
+    }
+
      private fun overrideUrlLoading(view: WebView, url: String): Boolean {
         if (url.isEmptyStr()) {
             view.loadUrl(url)
@@ -128,7 +149,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         }
 
          if (!depositURL.isNullOrEmpty() && url.endsWith(depositURL, true)) {
-             ToGcashDialog.showByClick { jumpToDeposit() }
+             ToGcashDialog.showByClick { jumpToDeposit("游戏内充值跳转") }
              return true
          }
 
@@ -164,7 +185,7 @@ open class ThirdGameActivity : BaseActivity<MainViewModel, ActivityThirdGameBind
         ivDeposit.setOnClickListener {
             //需要判断用户未登录的情况
             if (LoginRepository.isLogined()){
-                jumpToDeposit()
+                jumpToDeposit("顶部充值按钮")
             }else{
                 startLogin()
             }

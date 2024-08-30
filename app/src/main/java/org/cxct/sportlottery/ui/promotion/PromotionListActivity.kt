@@ -28,7 +28,7 @@ import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 
 class PromotionListActivity : BaseActivity<MainHomeViewModel, ActivityPromotionListBinding>(),
     OnItemClickListener {
-
+    override fun pageName() = "优惠活动列表页面"
     private val adapter by lazy { PromotionAdapter().apply { setOnItemClickListener(this@PromotionListActivity) } }
     private val loadingHolder by lazy { Gloading.wrapView(binding.rvPromotion) }
 
