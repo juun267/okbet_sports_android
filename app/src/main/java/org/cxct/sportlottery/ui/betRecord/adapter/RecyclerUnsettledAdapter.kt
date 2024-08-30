@@ -114,7 +114,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             if (item.status in 0..1){
                 cashoutBtn.visible()
                 val leftTime = item.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
-//                LogUtil.d("cashoutStatus="+item.cashoutStatus+",status="+item.status+",leftTime="+leftTime)
+                LogUtil.d("cashoutStatus="+item.cashoutStatus+",status="+item.status+",leftTime="+leftTime)
                 //赛事确认中的时候，需要将提前结算按钮锁盘，等收到ws后，再更新赛事状态和解锁
                 if (item.cashoutStatus==1 && (item.status==0 || (item.status==1&&(leftTime?:0)>0))){
                     cashoutBtn.setCashOutStatus(2, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")

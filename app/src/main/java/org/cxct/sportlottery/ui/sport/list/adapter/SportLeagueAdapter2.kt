@@ -247,7 +247,16 @@ class SportLeagueAdapter2(
     override fun toString(): String {
         return " ==SportLeagueAdapter2 ${lifecycleOwner::class.java.simpleName} $matchType==  "
     }
-   fun setESportTheme(){
-
-   }
+    fun updateCashOut(cashoutMatchStatusMap: Map<String,Int>) {
+        rootNodes?.forEach {
+            if (it is LeagueOdd){
+                it.matchOdds.forEach {
+                    if (cashoutMatchStatusMap.containsKey(it.matchInfo?.id)){
+                        it.matchInfo?.cashoutStatus = cashoutMatchStatusMap[it.matchInfo?.id]!!
+                        notifyMatchOddChanged(it)
+                    }
+                }
+            }
+        }
+    }
 }

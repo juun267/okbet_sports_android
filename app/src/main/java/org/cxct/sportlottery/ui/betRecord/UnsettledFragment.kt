@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.repository.showCurrencySign
+import org.cxct.sportlottery.service.dispatcher.BetCashOutDispatcher
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
@@ -223,9 +224,9 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
             if (it.succeeded() && cashOutResult?.status==1) {
                 //结算成功
                 showPromptDialog(getString(R.string.prompt), getString(R.string.B74)) {}
-                val removePos =
-                    mAdapter.data?.indexOfFirst { it.uniqNo == cashOutResult.uniqNo }
-                mAdapter.removeAt(removePos)
+                mAdapter.data?.firstOrNull { it.uniqNo == cashOutResult.uniqNo }?.let {
+                    mAdapter.remove(it)
+                }
             }else if(it.succeeded() && cashOutResult?.status==2){
                 //金额不对，结算失败，更新显示金额
                 showErrorPromptDialog(getString(R.string.prompt),"${getString(R.string.B72)} $showCurrencySign ${cashOutResult.cashoutAmount}") {}
@@ -239,12 +240,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
             }else{
                 //status=0 或者其他都认为结算失败
                 showErrorPromptDialog(getString(R.string.prompt),getString(R.string.B75)){}
-                mAdapter.data.clear()
-                mAdapter.notifyDataSetChanged()
-                binding.recyclerUnsettled.postDelayed({
-                    pageIndex = 1
-                    getUnsettledData()
-                },500)
+                clearAndReloadData()
             }
         }
         viewModel.checkCashOutStatusEvent.observe(this){
@@ -253,6 +249,35 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                 mAdapter.updateCashOut(it)
             }
         }
+        viewModel.settlementNotificationMsg.observe(this) { event ->
+            val it = event.getContentIfNotHandled() ?: return@observe
+            if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
+                binding.recyclerUnsettled.postDelayed({
+                    pageIndex = 1
+                    getUnsettledData()
+                },500)
+            }
+        }
+        BetCashOutDispatcher.observe(this){ event->
+            LogUtil.toJson(event)
+            if (event.cashOutStatus==1){
+                showPromptDialog(getString(R.string.prompt), getString(R.string.B74)) {}
+                mAdapter.data?.firstOrNull { it.uniqNo == event.sportBet.uniqNo }?.let {
+                    mAdapter.remove(it)
+                }
+            }else{
+                showErrorPromptDialog(getString(R.string.prompt),getString(R.string.B75)){}
+                clearAndReloadData()
+            }
+        }
+    }
+    private fun clearAndReloadData(){
+        mAdapter.data.clear()
+        mAdapter.notifyDataSetChanged()
+        binding.recyclerUnsettled.postDelayed({
+            pageIndex = 1
+            getUnsettledData()
+        },500)
     }
     private fun getUnsettledData() {
         //获取结算数据

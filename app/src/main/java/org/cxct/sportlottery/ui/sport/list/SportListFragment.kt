@@ -4,6 +4,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.chad.library.adapter.base.entity.node.BaseNode
+import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.gone
@@ -15,6 +16,8 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.dispatcher.CashoutMatchStatusDispatcher
+import org.cxct.sportlottery.service.dispatcher.CashoutSwitchDispatcher
 import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
 import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -218,6 +221,11 @@ open class SportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, F
             if (gameTypeAdapter.currentItem?.code == closeEvent.gameType) {
                 sportLeagueAdapter2.closePlayCate(closeEvent)
             }
+        }
+        //只有雷达数据源足球还有提前兑现
+        CashoutSwitchDispatcher.observe(viewLifecycleOwner) { onReload() }
+        CashoutMatchStatusDispatcher.observe(viewLifecycleOwner) {
+            sportLeagueAdapter2.updateCashOut(it.cashoutMatchStatusListList.map { it.matchId to it.status }.toMap())
         }
     }
 
