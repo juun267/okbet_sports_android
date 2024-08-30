@@ -309,6 +309,8 @@ object Constants {
     const val MATCH_BET_ADD_LGPCOFL = "/api/front/match/bet/addLGPCOFL"
     const val MATCH_LGPCOFL_DETAIL = "/api/front/match/odds/LGPCOFLDetail" // 新篮球末位比分详情
     const val WINNINGNEWS_LIST = "/api/front/match/odds/winningNews/list"
+    const val BET_CASHOUT = "/api/front/match/bet/cashout" //兑现接口
+    const val BET_CHECK_CASHOUT_STATUS = "/api/front/match/bet/checkCashoutStatus" //確認cashout状态的轮询接口
 
     //index
     const val INDEX_SEND_LOGIN_DEVICE_SMS = "/api/front/index/sendLoginDeviceSms"

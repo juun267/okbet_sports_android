@@ -2,9 +2,7 @@ package org.cxct.sportlottery.net.sport.api
 
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
-import org.cxct.sportlottery.net.sport.data.EndCardBet
-import org.cxct.sportlottery.net.sport.data.RecommendLeague
-import org.cxct.sportlottery.net.sport.data.SportCouponItem
+import org.cxct.sportlottery.net.sport.data.*
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -42,4 +40,10 @@ interface SportService {
 
     @POST(Constants.WINNINGNEWS_LIST)
     suspend fun getWinningList(): ApiResult<List<String>?>
+
+    @POST(Constants.BET_CASHOUT)
+    suspend fun betCashOut(@Body params: JsonObject): ApiResult<CashOutResult>
+
+    @POST(Constants.BET_CHECK_CASHOUT_STATUS)
+    suspend fun betCheckCashOutStatus(@Body params: JsonObject): ApiResult<List<CheckCashOutResult>>
 }

@@ -512,7 +512,17 @@
                 android:src="@drawable/ic_chart_data"
                 android:visibility="gone"
                 tools:ignore="ContentDescription" />
-
+            <ImageView
+                android:id="@+id/ivCashOut"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="6dp"
+                android:adjustViewBounds="true"
+                android:gravity="center"
+                android:src="@drawable/ic_cashout_yellow"
+                android:visibility="gone"
+                tools:ignore="ContentDescription"
+                tools:visibility="visible" />
             <include
                 android:id="@+id/content_baseball_status"
                 layout="@layout/content_baseball_status"

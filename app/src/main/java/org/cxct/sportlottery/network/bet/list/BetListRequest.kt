@@ -9,12 +9,13 @@ import org.cxct.sportlottery.network.common.TimeRangeParams
 @KeepMembers
 data class BetListRequest(
     val championOnly: Int,
-    val statusList: List<Int>? = listOf(),
+    val statusList: List<Int>? = listOf(),//
     val gameType: String? = null,
     val uniqNo:String? = null,
     val remark:String? = null,
     val queryTimeType:String? = "addTime",
     var playCateCode: String? = null,
+    var cashoutStatusList: List<Int>? = listOf(0,1,2),//cashout狀態 0:不可 ,1:可 ,2按鈕不可按
     override val userId: Int? = null,
     override val platformId: Int? = null,
     override val startTime: String? = null,

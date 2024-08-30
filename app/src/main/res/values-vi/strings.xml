@@ -1791,4 +1791,11 @@
     <string name="A019">Nạp tiền</string>
     <string name="A020">Chi tiết</string>
     <string name="A119">Xem thêm ưu đãi</string>
+    <string name="B71">Đổi ngay</string>
+    <string name="B72">Vui lòng xác nhận đổi ngay</string>
+    <string name="B73">Bán vé cược ngay</string>
+    <string name="B74">Bán vé cược thành công!</string>
+    <string name="B75">Bán vé cược thất bại!</string>
+    <string name="B104">Đang bán vé cược</string>
+    <string name="B105">Đã bán vé cược</string>
 </resources>

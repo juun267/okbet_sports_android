@@ -39,6 +39,6 @@ data class BetResult(
     ):Parcelable {
     var matchType: MatchType? = null
     var oddsType: OddsType? = null
-
+    var cashoutStatus: Int? =null
     fun isFailed() = 7 == status
 }

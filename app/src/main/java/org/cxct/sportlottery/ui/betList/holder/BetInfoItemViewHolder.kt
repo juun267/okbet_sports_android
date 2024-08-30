@@ -169,10 +169,7 @@ class BetInfoItemViewHolder(
                 tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
             }else {
                 //更新可贏額
-                var win = itemData.betAmount * getOddsAndSaveRealAmount(
-                    itemData, currentOddsType
-                )
-
+                var win = ArithUtil.mul(itemData.betAmount, getOddsAndSaveRealAmount(itemData, currentOddsType))
                 val strTvCanWin =
                     "${root.context.getString(R.string.bet_win)}：${sConfigData?.systemCurrencySign} ${
                         TextUtil.formatInputMoney(win)
@@ -484,6 +481,7 @@ class BetInfoItemViewHolder(
             tvPlaceHolderLine.visible()
 //            Timber.d("===> 线显示")
         }
+        ivCashOut.isVisible = adapterBetType==BetListRefactorAdapter.BetRvType.SINGLE && itemData.betInfo?.cashoutStatus==1
 
         //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
         val nameOneLine = { inputStr: String ->

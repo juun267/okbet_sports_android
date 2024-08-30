@@ -349,7 +349,6 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
         setBg(binding.tvVideo, binding.ivVideo, showVideo)
          val showAnim = !(matchInfo.trackerId.isNullOrEmpty())
         setBg(binding.tvAnim, binding.ivAnim, showAnim)
-
         if (showLive) {
             setOnClickListeners(binding.ivLiveStream, binding.tvLiveStream) {
                 if (binding.ivLiveStream.isSelected) {

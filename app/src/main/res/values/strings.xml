@@ -1921,4 +1921,11 @@
     <string name="A019">Deposit</string>
     <string name="A020">Details</string>
     <string name="A119">View More Offers</string>
+    <string name="B71">Cash Out</string>
+    <string name="B72">Please Confirm Cash Out</string>
+    <string name="B73">Cash Out</string>
+    <string name="B74">Cash Out Successful！</string>
+    <string name="B75">Cash Out Fails！</string>
+    <string name="B104">Cashing out</string>
+    <string name="B105">Cashed out</string>
 </resources>

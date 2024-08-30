@@ -97,7 +97,7 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
             //可赢金额
             when(row.status){
                 //未结单  可赢：xxx
-                0,1->{
+                0,1,8->{
                     val tempRebate:Double=row.rebateAmount?:0.0
                     tvBetWin2.text = " ${showCurrencySign} ${TextUtil.formatMoney(row.winnable+tempRebate,2)}"
                     tvBetWin2.setColors(R.color.color_ff0000)
@@ -125,6 +125,16 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
                     tvBetWin2.text = " ${showCurrencySign} ${TextUtil.formatMoney(totalMoney,2)}"
                     tvBetWin2.setColors(R.color.color_6D7693)
                     tvWinLabel2.text="${context.getString(R.string.lose)}："
+                }
+                //提前结算
+                9->{
+                    tvBetWin2.text = " $showCurrencySign ${TextUtil.formatMoney(row?:0,2)}"
+                    if ((row.win?:0.0)>0.0){
+                        tvBetWin2.setColors(R.color.color_ff0000)
+                    }else{
+                        tvBetWin2.setColors(R.color.color_6D7693)
+                    }
+                    tvWinLabel2.text=""
                 }
                 //其他  ₱ --
                 else->{

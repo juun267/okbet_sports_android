@@ -1847,4 +1847,11 @@
     <string name="A019">存款</string>
     <string name="A020">详细</string>
     <string name="A119">更多活动</string>
+    <string name="B71">即时兑现</string>
+    <string name="B72">请确认即时兑现</string>
+    <string name="B73">即时兑现</string>
+    <string name="B74">即时兑现成功！</string>
+    <string name="B75">即时兑现失败！</string>
+    <string name="B104">兑现中</string>
+    <string name="B105">已兑现</string>
 </resources>

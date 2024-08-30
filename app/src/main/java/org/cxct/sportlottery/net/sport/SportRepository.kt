@@ -8,6 +8,8 @@ import org.cxct.sportlottery.common.extentions.callApiWithNoCancel
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.sport.api.SportService
+import org.cxct.sportlottery.net.sport.data.CashOutResult
+import org.cxct.sportlottery.net.sport.data.CheckCashOutResult
 import org.cxct.sportlottery.net.sport.data.RecommendLeague
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.sport.CategoryItem
@@ -107,4 +109,16 @@ object SportRepository {
 
     suspend fun getWinningList() = sportApi.getWinningList()
 
+    suspend fun betCashOut(uniqNo: String, cashoutAmount: String):ApiResult<CashOutResult>{
+        val params = JsonObject()
+        params.addProperty("uniqNo",  uniqNo)
+        params.addProperty("cashoutAmount", cashoutAmount)
+        return sportApi.betCashOut(params)
+    }
+
+    suspend fun betCheckCashOutStatus(uniqNos: List<String>):ApiResult<List<CheckCashOutResult>>{
+        val params = JsonObject()
+        params.add("uniqNos",  Gson().toJsonTree(uniqNos))
+        return sportApi.betCheckCashOutStatus(params)
+    }
 }

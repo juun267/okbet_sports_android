@@ -4,23 +4,35 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentUnsettledBinding
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.service.order_settlement.Status
+import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
+import org.cxct.sportlottery.ui.maintab.home.HomeFragment
+import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.BetEmptyView
+import org.cxct.sportlottery.view.CashOutButton
 import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.rumWithSlowRequest
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -51,6 +63,13 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
             }
         })
         mAdapter.setEmptyView(BetEmptyView(requireContext()))
+        mAdapter.setOnItemClickListener{_, view, position ->
+            val data = mAdapter.data[position]
+            if(data.cashoutOperationStatus == CashOutButton.STATUS_COMFIRMING ){
+                data.cashoutOperationStatus =  0
+                mAdapter.notifyItemChanged(position)
+            }
+        }
         mAdapter.setOnItemChildClickListener { _, view, position ->
             val data = mAdapter.data[position]
             when (view.id) {
@@ -79,6 +98,18 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                         }
                     }
                     dialog.show()
+                }
+                R.id.cashoutBtn->{
+                    if (data.cashoutStatus==1 && data.cashoutOperationStatus==0){
+                        mAdapter.selectedCashOut(data)
+                    }else if(data.cashoutOperationStatus == CashOutButton.STATUS_COMFIRMING ){
+                        data.cashoutOperationStatus =  CashOutButton.STATUS_BETTING
+                        mAdapter.notifyItemChanged(position)
+                        data.cashoutAmount?.let {
+                            loading()
+                            viewModel.cashOut(data.uniqNo, it)
+                        }
+                    }
                 }
             }
         }
@@ -150,6 +181,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
     override fun onInitData() {
         initObservable()
         getUnsettledData()
+        checkCashOutStatus()
     }
     private fun initObservable() {
         viewModel.unSettledResult.observe(this) {
@@ -172,18 +204,53 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                         mAdapter.addData(it)
                     }
                 }
-
             } else {
                 ToastUtil.showToast(requireContext(), it.msg)
             }
         }
-        viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
+        viewModel.settlementNotificationMsg.observe(this) { event ->
             val it = event.getContentIfNotHandled() ?: return@observe
             if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
                 binding.recyclerUnsettled.postDelayed({
                     pageIndex = 1
                     getUnsettledData()
                 },500)
+            }
+        }
+        viewModel.cashOutEvent.observe(this){
+            hideLoading()
+            val cashOutResult = it.getData()
+            if (it.succeeded() && cashOutResult?.status==1) {
+                //结算成功
+                showPromptDialog(getString(R.string.prompt), getString(R.string.B74)) {}
+                val removePos =
+                    mAdapter.data?.indexOfFirst { it.uniqNo == cashOutResult.uniqNo }
+                mAdapter.removeAt(removePos)
+            }else if(it.succeeded() && cashOutResult?.status==2){
+                //金额不对，结算失败，更新显示金额
+                showErrorPromptDialog(getString(R.string.prompt),"${getString(R.string.B72)} $showCurrencySign ${cashOutResult.cashoutAmount}") {}
+                if (!cashOutResult.uniqNo.isNullOrEmpty()) {
+                    mAdapter.updateItemCashOutByUniqNo(
+                        cashOutResult.uniqNo!!,
+                        cashOutResult.status,
+                        cashOutResult.cashoutAmount
+                    )
+                }
+            }else{
+                //status=0 或者其他都认为结算失败
+                showErrorPromptDialog(getString(R.string.prompt),getString(R.string.B75)){}
+                mAdapter.data.clear()
+                mAdapter.notifyDataSetChanged()
+                binding.recyclerUnsettled.postDelayed({
+                    pageIndex = 1
+                    getUnsettledData()
+                },500)
+            }
+        }
+        viewModel.checkCashOutStatusEvent.observe(this){
+            delayCheckCashOutStatus()
+            if (!it.isNullOrEmpty()){
+                mAdapter.updateCashOut(it)
             }
         }
     }
@@ -193,4 +260,27 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
             viewModel.getUnsettledList(pageIndex,startTime,endTime)
         }
     }
+
+    /**
+     * 延时请求，带上生命周期
+     */
+    private fun delayCheckCashOutStatus(){
+        lifecycle.coroutineScope.launch {
+            delay(3000)
+            checkCashOutStatus()
+        }
+    }
+
+    /**
+     * 检查列表数据请求cashout 状态
+     */
+    private fun checkCashOutStatus(){
+        val uniqNos = mAdapter.data.filter { it.cashoutStatus in 1..2 }.mapNotNull { it.uniqNo }
+        if (uniqNos.isNullOrEmpty()) {
+            delayCheckCashOutStatus()
+        }else{
+            viewModel.checkCashOutStatus(uniqNos)
+        }
+    }
+
 }

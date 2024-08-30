@@ -7,6 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.toast
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.sport.SportRepository
+import org.cxct.sportlottery.net.sport.data.CashOutResult
+import org.cxct.sportlottery.net.sport.data.CheckCashOutResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
@@ -33,6 +40,8 @@ class AccountHistoryViewModel(
 
     private val _loading = MutableLiveData<Boolean>()
     private val remarkBetLiveData: MutableLiveData<RemarkBetResult> = SingleLiveEvent()
+    val cashOutEvent = SingleLiveEvent<ApiResult<CashOutResult>>()
+    val checkCashOutStatusEvent = SingleLiveEvent<List<CheckCashOutResult>>()
 
     fun observerRemarkBetLiveData(lifecycleOwner: LifecycleOwner? = null, block: (RemarkBetResult) -> Unit) {
         if (lifecycleOwner == null) {
@@ -108,7 +117,7 @@ class AccountHistoryViewModel(
         betListRequesting = true
         val betListRequest = BetListRequest(
             championOnly = 0,
-            statusList = listOf(2,3,4,5,6,7), //234567 结算注单
+            statusList = listOf(2,3,4,5,6,7,8,9), //234567 结算注单,8 兑现中，9 已兑现
             page = page,
             gameType = "",
             pageSize = pageSize,
@@ -123,6 +132,17 @@ class AccountHistoryViewModel(
                 betListRequesting = false
                 settledResult.postValue(it)
             }
+        }
+    }
+    fun cashOut(uniqNo: String, cashoutAmount: String){
+        callApi({SportRepository.betCashOut(uniqNo,cashoutAmount)}){
+            it.getData()?.uniqNo = uniqNo
+            cashOutEvent.postValue(it)
+        }
+    }
+    fun checkCashOutStatus(uniqNos: List<String>){
+        callApi({SportRepository.betCheckCashOutStatus(uniqNos)}){
+            checkCashOutStatusEvent.postValue(it.getData())
         }
     }
 

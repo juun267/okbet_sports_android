@@ -17,7 +17,7 @@ object CountDownUtil {
         countDown(coroutineScope, REQUEST_CODE_INTERVAL, start, next, end, SMS_CODE_TIMESTAMP)
     }
 
-    private fun runOnDelay(time: Long = 200, block: ()-> Unit)  = GlobalScope.launch(Dispatchers.Main) {
+    fun runOnDelay(time: Long = 200, block: ()-> Unit)  = GlobalScope.launch(Dispatchers.Main) {
         delay(time)
         block.invoke()
     }

@@ -1763,5 +1763,12 @@
     <string name="A019">Deposito</string>
     <string name="A020">Mga Detalye</string>
     <string name="A119">I-view ang mas maraming alok</string>
+    <string name="B71">Instant cash out</string>
+    <string name="B72">Pakikumpirma ang instant cash out na</string>
+    <string name="B73">Cash Out</string>
+    <string name="B74">Matagumpay ang cash out!</string>
+    <string name="B75">Nag-failed ang cash out!</string>
+    <string name="B104">Nag- cash out palang</string>
+    <string name="B105">Nag- cash out na</string>
 </resources>
 

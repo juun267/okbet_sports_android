@@ -108,6 +108,7 @@ class SingleViewHolder private constructor(val binding: ItemMatchReceiptBinding)
                     tvSpread.text = if (matchType != MatchType.OUTRIGHT) spread else ""
                     dividerTitle.isVisible = tvSpread.text.isNotEmpty()
                     tvOdds.text = "@ $formatForOdd"
+                    ivCashOut.isVisible = itemData.cashoutStatus ==1
 
                     tvLeague.text = leagueName
                     tvTeamNames.setTeamNames(15, homeName, awayName)

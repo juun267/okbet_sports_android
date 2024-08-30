@@ -9,15 +9,18 @@ import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemBetListBinding
+import org.cxct.sportlottery.net.sport.data.CheckCashOutResult
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.betRecord.ParlayType
 import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.copyToClipboard
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setColors
+import timber.log.Timber
 import java.util.Locale
 
 /**
@@ -33,6 +36,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
     init {
         //打印点击
         addChildClickViewIds(R.id.tvOrderPrint)
+        addChildClickViewIds(R.id.cashoutBtn)
     }
 
     @SuppressLint("SetTextI18n")
@@ -107,12 +111,23 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
 
             //投注金额
             tvBetTotal.text = " $showCurrencySign ${TextUtil.formatMoney(item.totalAmount,2)}"
-
-
+            if (item.status in 0..1){
+                cashoutBtn.visible()
+                val leftTime = item.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
+//                LogUtil.d("cashoutStatus="+item.cashoutStatus+",status="+item.status+",leftTime="+leftTime)
+                //赛事确认中的时候，需要将提前结算按钮锁盘，等收到ws后，再更新赛事状态和解锁
+                if (item.cashoutStatus==1 && (item.status==0 || (item.status==1&&(leftTime?:0)>0))){
+                    cashoutBtn.setCashOutStatus(2, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
+                }else{
+                    cashoutBtn.setCashOutStatus(item.cashoutStatus, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
+                }
+            }else{
+                cashoutBtn.gone()
+            }
             //可赢金额
             when(item.status){
                 //未结单  可赢：xxx
-                0,1->{
+                0,1,8->{
                     tvBetWin.text = " $showCurrencySign ${TextUtil.formatMoney(item.winnable,2)}"
                     tvBetWin.setColors(R.color.color_ff0000)
                     when(item.parlayType){
@@ -139,6 +154,16 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                     tvBetWin.text = " $showCurrencySign ${TextUtil.formatMoney(totalMoney,2)}"
                     tvBetWin.setColors(R.color.color_6D7693)
                     tvWinLabel.text="${context.getString(R.string.lose)}："
+                }
+                //已经兑现
+                9->{
+                    tvBetWin.text = " $showCurrencySign ${TextUtil.formatMoney(item.win?:0,2)}"
+                    if ((item.win?:0.0)>0.0){
+                        tvBetWin.setColors(R.color.color_ff0000)
+                    }else{
+                        tvBetWin.setColors(R.color.color_6D7693)
+                    }
+                    tvWinLabel.text=""
                 }
                 //其他  ₱ --
                 else->{
@@ -175,6 +200,9 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             //注单列表  非详情页
             recyclerBetCard.layoutManager = LinearLayoutManager(context)
             val cardAdapter = RecyclerBetCardAdapter(item,block)
+            cardAdapter.setOnItemClickListener{_, view, position ->
+                setOnItemClick(view, position)
+            }
             recyclerBetCard.adapter = cardAdapter
             if(item.matchOdds.size>2){
                 cardAdapter.setList(item.matchOdds.subList(0,2))
@@ -183,5 +211,52 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             }
 
         }
+    }
+    /**
+     * 更新选中状态
+     */
+    fun updateCashOut(list: List<CheckCashOutResult>){
+        list.forEach {
+            updateItemCashOutByUniqNo(it.uniqNo,it.cashoutStatus,it.cashoutAmount)
+        }
+    }
+
+    /**
+     * 更新item的cashout状态和金额
+     */
+    fun updateItemCashOutByUniqNo(uniqNo: String,cashoutStatus: Int, cashoutAmount: String?){
+        data.forEachIndexed { index, row ->
+            if (row.uniqNo == uniqNo){
+                var needUpdate = false
+                if (row.cashoutStatus != cashoutStatus){
+                    row.cashoutStatus = cashoutStatus
+                    needUpdate = true
+                }
+                if (row.cashoutAmount != cashoutAmount){
+                    row.cashoutAmount =  cashoutAmount
+                    needUpdate = true
+                }
+                if (needUpdate){
+                    notifyItemChanged(index)
+                }
+                return
+            }
+        }
+    }
+
+    /**
+     * 列表全部数据只能选中一个
+     */
+    fun selectedCashOut(selectedItem: Row){
+        data.forEachIndexed { index, row ->
+            if (selectedItem == row ){
+                row.cashoutOperationStatus = 1
+                notifyItemChanged(index)
+            }else if(row.cashoutStatus in 1..2 && row.cashoutOperationStatus == 1){
+                row.cashoutOperationStatus = 0
+                notifyItemChanged(index)
+            }
+        }
+
     }
 }

@@ -215,6 +215,17 @@ fun View.rotationAnimation(rotation: Float, duration: Long = 200, onEnd: (() -> 
 
     animator.start()
 }
+fun View.startInfiniteRotation(durationOneRepeat: Long) {
+    animate()
+        .rotationBy(360f) // 每次旋转360度
+        .setDuration(1000) // 动画时长1秒
+        .setInterpolator(null) // 默认线性插值器
+        .withEndAction {
+            // 动画结束时再次启动，形成无限循环
+            startInfiniteRotation(durationOneRepeat)
+        }
+        .start()
+}
 
 fun View.animDuang(scale: Float, duration: Long = 500) {
     isEnabled = false
