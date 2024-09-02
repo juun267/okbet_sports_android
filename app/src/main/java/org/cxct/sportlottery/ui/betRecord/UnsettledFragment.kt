@@ -264,11 +264,10 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
         }
         BetCashOutDispatcher.observe(this){ event->
             LogUtil.toJson(event)
+            val item = mAdapter.data?.firstOrNull { it.uniqNo == event.sportBet.uniqNo }?: return@observe
             if (event.cashOutStatus==1){
+                mAdapter.remove(item)
                 showPromptDialog(getString(R.string.prompt), getString(R.string.B74)) {}
-                mAdapter.data?.firstOrNull { it.uniqNo == event.sportBet.uniqNo }?.let {
-                    mAdapter.remove(it)
-                }
             }else{
                 showErrorPromptDialog(getString(R.string.prompt),getString(R.string.B75)){}
                 clearAndReloadData()
