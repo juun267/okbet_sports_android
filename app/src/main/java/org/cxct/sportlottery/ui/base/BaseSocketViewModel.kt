@@ -513,7 +513,7 @@ abstract class BaseSocketViewModel(
 //                    s.oddsType = oddsType
                 }
                 if(betType==0){
-                    s.cashoutStatus =  normalBetList.firstOrNull()?.betInfo?.cashoutStatus
+                    s.cashoutStatus =  normalBetList.firstOrNull()?.betInfo?.cashoutStatusShow
                 }
             }
 

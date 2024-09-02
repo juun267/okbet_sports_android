@@ -252,7 +252,7 @@ class SportLeagueAdapter2(
             if (it is LeagueOdd){
                 it.matchOdds.forEach {
                     if (cashoutMatchStatusMap.containsKey(it.matchInfo?.id)){
-                        it.matchInfo?.cashoutStatus = cashoutMatchStatusMap[it.matchInfo?.id]!!
+                        it.matchInfo?.cashoutStatusShow = cashoutMatchStatusMap[it.matchInfo?.id]!!
                         notifyMatchOddChanged(it)
                     }
                 }

@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.doOnLayout
-import androidx.core.view.isGone
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,10 +24,8 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.sport.common.OddButtonPagerAdapter2
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
-import org.cxct.sportlottery.view.expand
 import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.layoutmanager.CustomLinearLayoutManager
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
@@ -149,7 +145,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueNeutral.isVisible = matchInfo?.neutral == 1
 
 //        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
-        ivCashOut.isVisible = matchInfo?.cashoutStatus==1
+        ivCashOut.isVisible = matchInfo?.cashoutStatusShow==1
         matchInfo?.let { matchInfo->
             bindLiveStatus(matchInfo)
             setLinCollse(matchInfo)
@@ -507,7 +503,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
         leagueNeutral.isVisible = matchInfo?.neutral == 1
-        ivCashOut.isVisible = matchInfo?.cashoutStatus==1
+        ivCashOut.isVisible = matchInfo?.cashoutStatusShow==1
         matchInfo?.let {
             bindLiveStatus(it)
         }

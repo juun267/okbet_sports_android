@@ -22,6 +22,8 @@ import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.service.dispatcher.BetCashOutDispatcher
+import org.cxct.sportlottery.service.dispatcher.CashoutMatchStatusDispatcher
+import org.cxct.sportlottery.service.dispatcher.CashoutSwitchDispatcher
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
@@ -101,7 +103,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                     dialog.show()
                 }
                 R.id.cashoutBtn->{
-                    if (data.cashoutStatus==1 && data.cashoutOperationStatus==0){
+                    if (data.cashoutStatusShow==1 && data.cashoutOperationStatus==0){
                         mAdapter.selectedCashOut(data)
                     }else if(data.cashoutOperationStatus == CashOutButton.STATUS_COMFIRMING ){
                         data.cashoutOperationStatus =  CashOutButton.STATUS_BETTING
@@ -222,11 +224,13 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
             hideLoading()
             val cashOutResult = it.getData()
             if (it.succeeded() && cashOutResult?.status==1) {
+//                pageIndex = 1
+//                getUnsettledData()
                 //结算成功
-                showPromptDialog(getString(R.string.prompt), getString(R.string.B74)) {}
-                mAdapter.data?.firstOrNull { it.uniqNo == cashOutResult.uniqNo }?.let {
-                    mAdapter.remove(it)
-                }
+//                showPromptDialog(getString(R.string.prompt), getString(R.string.B74)) {}
+//                mAdapter.data?.firstOrNull { it.uniqNo == cashOutResult.uniqNo }?.let {
+//                    mAdapter.remove(it)
+//                }
             }else if(it.succeeded() && cashOutResult?.status==2){
                 //金额不对，结算失败，更新显示金额
                 showErrorPromptDialog(getString(R.string.prompt),"${getString(R.string.B72)} $showCurrencySign ${cashOutResult.cashoutAmount}") {}
@@ -270,6 +274,21 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                 clearAndReloadData()
             }
         }
+        CashoutSwitchDispatcher.observe(this) { event->
+            mAdapter.data?.forEach { it.cashoutStatusShow == event.status }?.let {
+                mAdapter.notifyDataSetChanged()
+            }
+        }
+        CashoutMatchStatusDispatcher.observe(this) { event->
+            val map = event.cashoutMatchStatusListList.map { it.matchId to it.status }.toMap()
+            mAdapter.data?.forEachIndexed { index, row ->
+                val matchId = row.matchOdds.first().matchId
+                if (row.parlayType == ParlayType.SINGLE.key && map.containsKey(matchId)){
+                    row.cashoutStatusShow = map[matchId]!!
+                    mAdapter.notifyItemChanged(index)
+                }
+            }
+        }
     }
     private fun clearAndReloadData(){
         mAdapter.data.clear()
@@ -300,7 +319,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
      * 检查列表数据请求cashout 状态
      */
     private fun checkCashOutStatus(){
-        val uniqNos = mAdapter.data.filter { it.cashoutStatus in 1..2 }.mapNotNull { it.uniqNo }
+        val uniqNos = mAdapter.data.filter { it.cashoutStatusShow in 1..2 }.mapNotNull { it.uniqNo }
         if (uniqNos.isNullOrEmpty()) {
             delayCheckCashOutStatus()
         }else{

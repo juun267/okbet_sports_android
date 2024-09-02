@@ -28,6 +28,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.common.enums.ChannelType
+import org.cxct.sportlottery.service.dispatcher.CashoutMatchStatusDispatcher
+import org.cxct.sportlottery.service.dispatcher.CashoutSwitchDispatcher
 import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
 import org.cxct.sportlottery.service.dispatcher.ProducerUpDispatcher
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
@@ -872,6 +874,25 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
                 list?.let { listNotNull ->
                     unsubscribeChannel(listNotNull)
                     subscribeChannel(listNotNull)
+                }
+            }
+        }
+        CashoutSwitchDispatcher.observe(viewLifecycleOwner) { event->
+            betListRefactorAdapter?.betList?.let { list ->
+                list.forEach { it.betInfo?.cashoutStatusShow = event.status }
+                betListRefactorAdapter?.notifyDataSetChanged()
+            }
+        }
+        CashoutMatchStatusDispatcher.observe(viewLifecycleOwner) { event->
+            betListRefactorAdapter?.betList?.let { list ->
+                val map = event.cashoutMatchStatusListList.map { it.matchId to it.status }.toMap()
+                list.forEachIndexed { index, betInfoListData ->
+                    if (map.containsKey(betInfoListData.matchOdd.matchId)){
+                        map[betInfoListData.matchOdd.matchId!!]?.let {
+                            betInfoListData.betInfo?.cashoutStatusShow =it
+                            betListRefactorAdapter?.notifyItemChanged(index)
+                        }
+                    }
                 }
             }
         }
