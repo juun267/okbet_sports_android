@@ -69,7 +69,7 @@ class LeftGameFragment: BaseFragment<MainViewModel, FragmentLeftSportGameBinding
             R.string.B005
         ){
             close()
-            startActivity(PromotionListActivity::class.java)
+            PromotionListActivity.startFrom(context(), "主页体育侧边栏菜单")
         }.apply {
             setVisibilityByMarketSwitch()
         }

@@ -58,7 +58,7 @@ class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(End
         llMain.clickDelay { showHome() }
         llCasino.clickDelay { finish() }
         llPromtion.clickDelay {
-            startActivity(PromotionListActivity::class.java)
+            PromotionListActivity.startFrom(this@EndCardActivity, "底部tab")
             finish()
         }
     }

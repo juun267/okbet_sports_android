@@ -77,7 +77,7 @@ object JumpUtil {
             }
             path == "mobile/personal/activity_v2"
                     || path == "promo"->{
-                (context as AppCompatActivity).startActivity(PromotionListActivity::class.java)
+                PromotionListActivity.startFrom(context, "内嵌H5跳转")
             }
             path == "mobile/games/okgame"
                     || path == "okgames"->{

@@ -175,7 +175,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             R.string.B005
         ){
             close()
-            startActivity(PromotionListActivity::class.java)
+            PromotionListActivity.startFrom(context(), "主页侧边栏菜单")
         }.apply {
             setVisibilityByMarketSwitch()
         }

@@ -257,6 +257,29 @@ object SensorsEventUtil {
     }
 
     /**
+     * Banner点击
+     * 点击Banner时上报
+     * banner_page	            banner所在页面	    STRING	首页/优惠列表
+     * banner_position_number	banner所在位置序号	NUMBER	由左至右、由上至下从1开始赋予序号
+     * hyper_page_type	        跳转页面类型	        STRING	跳转的页面类型（通过LINK来判断）
+     * hyper_page_title	        跳转页面标题	        STRING	跳转页面的页面标题
+     * hyper_page_url	        跳转页面url	        STRING	跳转页面的地址
+     */
+    fun bannerClickEvent(bannerPage: String,
+                         bannerPositionNumber: Int,
+//                         hyperPageType: String,
+                         hyperPageTitle: String,
+                         hyperPageUrl: String) {
+        val params = JSONObject()
+        params.put("banner_page", bannerPage)
+        params.put("banner_position_number", bannerPositionNumber)
+//        params.put("hyper_page_type", hyperPageType)
+        params.put("hyper_page_title", hyperPageTitle)
+        params.put("hyper_page_url", hyperPageUrl)
+        pushEvent("bannerClick", params)
+    }
+
+    /**
      * 活动页面浏览
      * 进入活动页面时上报
      * visit_source_type	来源类型	    STRING	从什么地方进入该页面，例如：游戏大厅、弹窗引导...
@@ -271,28 +294,28 @@ object SensorsEventUtil {
                        visitSourceName: String,
                        eventType: String,
                        eventName: String,
-                       eventStageName: String,
-                       eventStageId: String) {
+                       /*eventStageName: String,
+                       eventStageId: String*/) {
         val params = JSONObject()
         params.put("visit_source_type", visitSourceType)
         params.put("visit_source_name", visitSourceName)
         params.put("event_type", eventType)
         params.put("event_name", eventName)
-        params.put("event_stage_name", eventStageName)
-        params.put("event_stage_id", eventStageId)
+//        params.put("event_stage_name", eventStageName)
+//        params.put("event_stage_id", eventStageId)
         params.put("page_name", getPageName())
         pushEvent("eventPageView", params)
     }
 
     private fun activityEventProperties(eventType: String,
                                         eventName: String,
-                                        eventStageName: String,
-                                        eventStageId: String): JSONObject {
+                                        /*eventStageName: String,
+                                        eventStageId: String*/): JSONObject {
         return JSONObject()
             .put("event_type", eventType)
             .put("event_name", eventName)
-            .put("event_stage_name", eventStageName)
-            .put("event_stage_id", eventStageId)
+//            .put("event_stage_name", eventStageName)
+//            .put("event_stage_id", eventStageId)
     }
 
     /**
@@ -305,9 +328,9 @@ object SensorsEventUtil {
      */
     fun activityRegisterEvent(eventType: String,
                               eventName: String,
-                              eventStageName: String,
-                              eventStageId: String) {
-        pushEvent("registerEvent", activityEventProperties(eventType, eventName, eventStageName, eventStageId))
+                              /*eventStageName: String,
+                              eventStageId: String*/) {
+        pushEvent("registerEvent", activityEventProperties(eventType, eventName/*, eventStageName, eventStageId*/))
     }
 
     /**
@@ -322,7 +345,7 @@ object SensorsEventUtil {
                             eventName: String,
                             eventStageName: String,
                             eventStageId: String) {
-        pushEvent("eventSignIn", activityEventProperties(eventType, eventName, eventStageName, eventStageId))
+        pushEvent("eventSignIn", activityEventProperties(eventType, eventName/*, eventStageName, eventStageId*/))
     }
 
     /**

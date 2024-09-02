@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.promotion
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.Gravity
 import android.view.View
@@ -10,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.extentions.toast
@@ -28,6 +31,19 @@ import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 
 class PromotionListActivity : BaseActivity<MainHomeViewModel, ActivityPromotionListBinding>(),
     OnItemClickListener {
+
+    companion object {
+
+        var fromPage: String? = null
+        var fromWhere: String = ""
+        fun startFrom(context: Context, from: String) {
+            fromPage = SensorsEventUtil.getPageName()
+            fromWhere = from
+            context.startActivity(Intent(context, PromotionListActivity::class.java))
+        }
+
+    }
+
     override fun pageName() = "优惠活动列表页面"
     private val adapter by lazy { PromotionAdapter().apply { setOnItemClickListener(this@PromotionListActivity) } }
     private val loadingHolder by lazy { Gloading.wrapView(binding.rvPromotion) }
@@ -133,15 +149,18 @@ class PromotionListActivity : BaseActivity<MainHomeViewModel, ActivityPromotionL
 
     override fun onItemClick(baseQuickAdapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         val itemData = adapter.getItem(position)
+        itemData.typeName = activityType
         if (itemData.imageLink.isNullOrEmpty()) {
-            PromotionDetailActivity.start(this@PromotionListActivity, itemData)
+            PromotionDetailActivity.start(this@PromotionListActivity, itemData, fromWhere, fromPage)
         } else {
             JumpUtil.toInternalWeb(this@PromotionListActivity, itemData.imageLink,getString(R.string.P169))
         }
     }
 
+    private var activityType = ""
     private fun onTabChanged(item: ActivityCategory) {
         adapter.setList(null)
+        activityType = item.name
         loadingHolder.withRetry{
             loadingHolder.showLoading()
             viewModel.getActivityList(if (item.id > 0) item.id else null)

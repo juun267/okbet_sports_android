@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.RadioButton
 import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
@@ -147,6 +148,14 @@ class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeB
             if (jumpUrl.isNullOrEmpty()) {
                 return@setOnItemClickListener
             }
+
+            SensorsEventUtil.bannerClickEvent(
+                "首页-新闻",
+                1,
+                "${model.title}",
+                "$jumpUrl"
+            )
+
             if (jumpUrl!!.contains("sweepstakes")) {
                 JumpUtil.toLottery(requireContext(), Constants.getLotteryH5Url(requireContext(), LoginRepository.token))
             } else {

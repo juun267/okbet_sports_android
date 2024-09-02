@@ -14,6 +14,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
@@ -57,7 +58,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         val fragmentClass = item.content
         if (fragmentClass == null) {
             if (item.name == R.string.promo) {
-                startActivity(PromotionListActivity::class.java)
+                PromotionListActivity.startFrom(context(), "首页顶部可滚动菜单")
             } else if (item.name == R.string.LT050_1) {
                 serviceEvent(context(), childFragmentManager)
             } else if (item.name == R.string.P333) {
@@ -184,6 +185,12 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
             if (jumpUrl.isNullOrEmpty()) {
                 return@setOnItemClickListener
             }
+            SensorsEventUtil.bannerClickEvent(
+                "首页",
+                1,
+                "${model.title}",
+                "$jumpUrl"
+            )
             if (jumpUrl!!.contains("sweepstakes")) {
                 JumpUtil.toLottery(requireContext(), Constants.getLotteryH5Url(requireContext(), LoginRepository.token))
             } else {

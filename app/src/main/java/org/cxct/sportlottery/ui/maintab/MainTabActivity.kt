@@ -195,7 +195,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             }
 
             R.string.J748 -> { // 优惠活动
-                start<PromotionListActivity>()
+                PromotionListActivity.startFrom(this, "主页底部tab")
                 false
             }
 

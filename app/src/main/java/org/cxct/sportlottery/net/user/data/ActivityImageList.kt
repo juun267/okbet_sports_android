@@ -29,6 +29,10 @@ data class ActivityImageList(
     val frontPageShow: Int,
     val imageLink: String?=null,
 ):Parcelable, BaseBannerInfo {
+    var typeName: String = ""
+    init {
+        typeName = activityType.toString()
+    }
     override fun getXBannerUrl(): String {
         return indexImage?:""
     }
