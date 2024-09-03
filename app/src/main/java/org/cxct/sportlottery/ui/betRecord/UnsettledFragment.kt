@@ -253,17 +253,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                 mAdapter.updateCashOut(it)
             }
         }
-        viewModel.settlementNotificationMsg.observe(this) { event ->
-            val it = event.getContentIfNotHandled() ?: return@observe
-            if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
-                binding.recyclerUnsettled.postDelayed({
-                    pageIndex = 1
-                    getUnsettledData()
-                },500)
-            }
-        }
         BetCashOutDispatcher.observe(this){ event->
-            LogUtil.toJson(event)
             val item = mAdapter.data?.firstOrNull { it.uniqNo == event.sportBet.uniqNo }?: return@observe
             if (event.cashOutStatus==1){
                 mAdapter.remove(item)
