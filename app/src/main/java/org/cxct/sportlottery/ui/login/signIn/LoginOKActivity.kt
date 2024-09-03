@@ -530,6 +530,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         hideSoftKeyboard()
         if (loginType in LOGIN_TYPE_CODE..LOGIN_TYPE_PWD){
             (loginType == LOGIN_TYPE_CODE).let {
+                binding.linLoginQuestion.isVisible = false
                 binding.linLoginPwd.isVisible = !it
                 binding.linLoginCode.isVisible = it
                 binding.tvPwdLogin.isVisible = it
