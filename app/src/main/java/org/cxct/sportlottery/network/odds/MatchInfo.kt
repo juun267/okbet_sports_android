@@ -74,7 +74,7 @@ data class MatchInfo(
     @Json(name = "extInfo")
     val extInfo: String? = null,
     @Json(name = "cashoutStatus")
-    val orginCashoutStatus: Int = 0,//cashout 狀態 0:不可 ,1:可
+    var cashoutStatus: Int = 0,//cashout 狀態 0:不可 ,1:可
 ) : Parcelable, MatchInfo {
     //Live
     var isInPlay: Boolean? = false
@@ -134,6 +134,4 @@ data class MatchInfo(
 
     var pullRtmpUrl: String? = null
     var betCount: Int=0 //endcard模块会有下注数量
-    var cashoutStatusShow: Int = orginCashoutStatus //cashout 狀態 0:不可 ,1:可
-      set(value) { if (orginCashoutStatus==1) field = value}
 }

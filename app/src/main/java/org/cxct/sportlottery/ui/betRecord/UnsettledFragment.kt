@@ -103,7 +103,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                     dialog.show()
                 }
                 R.id.cashoutBtn->{
-                    if (data.cashoutStatusShow==1 && data.cashoutOperationStatus==0){
+                    if (data.cashoutStatus==1 && data.cashoutOperationStatus==0){
                         mAdapter.selectedCashOut(data)
                     }else if(data.cashoutOperationStatus == CashOutButton.STATUS_COMFIRMING ){
                         data.cashoutOperationStatus =  CashOutButton.STATUS_BETTING
@@ -264,7 +264,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
             }
         }
         CashoutSwitchDispatcher.observe(this) { event->
-            mAdapter.data?.forEach { it.cashoutStatusShow == event.status }?.let {
+            mAdapter.data?.forEach { it.cashoutStatus == event.status }?.let {
                 mAdapter.notifyDataSetChanged()
             }
         }
@@ -273,7 +273,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
             mAdapter.data?.forEachIndexed { index, row ->
                 val matchId = row.matchOdds.first().matchId
                 if (row.parlayType == ParlayType.SINGLE.key && map.containsKey(matchId)){
-                    row.cashoutStatusShow = map[matchId]!!
+                    row.cashoutStatus = map[matchId]!!
                     mAdapter.notifyItemChanged(index)
                 }
             }
@@ -308,7 +308,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
      * 检查列表数据请求cashout 状态
      */
     private fun checkCashOutStatus(){
-        val uniqNos = mAdapter.data.filter { it.cashoutStatusShow in 1..2 }.mapNotNull { it.uniqNo }
+        val uniqNos = mAdapter.data.filter { it.cashoutStatus in 1..2 }.mapNotNull { it.uniqNo }
         if (uniqNos.isNullOrEmpty()) {
             delayCheckCashOutStatus()
         }else{

@@ -879,7 +879,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
         }
         CashoutSwitchDispatcher.observe(viewLifecycleOwner) { event->
             betListRefactorAdapter?.betList?.let { list ->
-                list.forEach { it.betInfo?.cashoutStatusShow = event.status }
+                list.forEach { it.betInfo?.cashoutStatus = event.status }
                 betListRefactorAdapter?.notifyDataSetChanged()
             }
         }
@@ -889,7 +889,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
                 list.forEachIndexed { index, betInfoListData ->
                     if (map.containsKey(betInfoListData.matchOdd.matchId)){
                         map[betInfoListData.matchOdd.matchId!!]?.let {
-                            betInfoListData.betInfo?.cashoutStatusShow =it
+                            betInfoListData.betInfo?.cashoutStatus =it
                             betListRefactorAdapter?.notifyItemChanged(index)
                         }
                     }

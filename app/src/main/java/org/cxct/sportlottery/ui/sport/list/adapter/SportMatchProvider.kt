@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport.list.adapter
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
@@ -10,6 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.util.LogUtil
 
 const val ODDS_ITEM_TYPE = 99
 class SportMatchProvider(private val adapter: SportLeagueAdapter2,
@@ -49,13 +51,14 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
+        LogUtil.d("convert=")
         if (payloads.isNullOrEmpty()) {
             return
         }
 
         val binding = (helper as SportMatchVH)
         val matchOdd = (item as MatchOdd)
-
+        LogUtil.d("convert="+payloads.firstOrNull()?.javaClass?.simpleName)
         payloads.forEach {
             when(it) {
                 is SportMatchEvent.OddsChanged -> {
@@ -75,6 +78,10 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
 
                 is SportMatchEvent.GlobalStop -> {
                     resetOddsButton(binding, matchOdd)
+                }
+
+                is SportMatchEvent.CashoutStauts -> {
+                    updateCashoutStatus(binding, matchOdd)
                 }
 
                 else -> {
@@ -104,6 +111,9 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
 
     private fun resetOddsButton(binding: SportMatchVH , matchOdd: MatchOdd) {
         binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
+    }
+    private fun updateCashoutStatus(binding: SportMatchVH , matchOdd: MatchOdd) {
+        binding.updateCashoutStatus(matchOdd)
     }
 
 

@@ -116,10 +116,10 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 val leftTime = item.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
 //                LogUtil.d("cashoutStatus="+item.cashoutStatusShow+",status="+item.status+",leftTime="+leftTime)
                 //赛事确认中的时候，需要将提前结算按钮锁盘，等收到ws后，再更新赛事状态和解锁
-                if (item.cashoutStatusShow==1 && (item.status==0 || (item.status==1&&(leftTime?:0)>0))){
+                if (item.cashoutStatus==1 && (item.status==0 || (item.status==1&&(leftTime?:0)>0))){
                     cashoutBtn.setCashOutStatus(2, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
                 }else{
-                    cashoutBtn.setCashOutStatus(item.cashoutStatusShow, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
+                    cashoutBtn.setCashOutStatus(item.cashoutStatus, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
                 }
             }else{
                 cashoutBtn.gone()
@@ -228,8 +228,8 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
         data.forEachIndexed { index, row ->
             if (row.uniqNo == uniqNo){
                 var needUpdate = false
-                if (row.cashoutStatusShow != cashoutStatus){
-                    row.cashoutStatusShow = cashoutStatus
+                if (row.cashoutStatus != cashoutStatus){
+                    row.cashoutStatus = cashoutStatus
                     needUpdate = true
                 }
                 if (row.cashoutAmount != cashoutAmount){
@@ -252,7 +252,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             if (selectedItem == row ){
                 row.cashoutOperationStatus = 1
                 notifyItemChanged(index)
-            }else if(row.cashoutStatusShow in 1..2 && row.cashoutOperationStatus == 1){
+            }else if(row.cashoutStatus in 1..2 && row.cashoutOperationStatus == 1){
                 row.cashoutOperationStatus = 0
                 notifyItemChanged(index)
             }

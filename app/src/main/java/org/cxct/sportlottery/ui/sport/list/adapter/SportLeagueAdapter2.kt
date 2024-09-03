@@ -83,8 +83,14 @@ class SportLeagueAdapter2(
         if (position >= dataCount() || position < 0) {
             return
         }
-
         notifyMatchItemChanged(position, matchOdd)
+    }
+    fun notifyCashoutStatusChanged(matchOdd: MatchOdd) {
+        val position = getItemPosition(matchOdd)
+        if (position >= dataCount() || position < 0) {
+            return
+        }
+        notifyMatchItemChanged(position, SportMatchEvent.CashoutStauts)
     }
 
     // 对外保留的方法刷新item（添加headerview后刷新item时position计算需要加上headerview）
@@ -252,8 +258,8 @@ class SportLeagueAdapter2(
             if (it is LeagueOdd){
                 it.matchOdds.forEach {
                     if (cashoutMatchStatusMap.containsKey(it.matchInfo?.id)){
-                        it.matchInfo?.cashoutStatusShow = cashoutMatchStatusMap[it.matchInfo?.id]!!
-                        notifyMatchOddChanged(it)
+                        it.matchInfo?.cashoutStatus = cashoutMatchStatusMap[it.matchInfo?.id]!!
+                        notifyCashoutStatusChanged(it)
                     }
                 }
             }

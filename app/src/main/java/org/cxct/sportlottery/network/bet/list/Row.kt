@@ -63,7 +63,7 @@ data class Row (
     @Json(name = "cancelledBy")
     val cancelledBy: String?, //备注栏位："mts" (风控) => "因系统审核不成立","own"、"source" (后台) => "因机制审核不成立"
     @Json(name = "cashoutStatus")
-    val orginCashoutStatus: Int = 0,//cashout 狀態 0:不可 ,1:可 ,
+    var cashoutStatus: Int = 0,//cashout 狀態 0:不可 ,1:可 ,
     @Json(name = "cashoutMsg")
     var cashoutMsg: String?=null,//不能cashout 原因
     @Json(name = "cashoutAmount")
@@ -71,8 +71,6 @@ data class Row (
     @Json(name = "uniqNo")
     val uniqNo: String, //新字段，订单号
 ): Parcelable{
-    var cashoutStatusShow: Int = orginCashoutStatus
-    set(value) {if (orginCashoutStatus==1) field=value}
     //cashout 操作按钮的状态 1确认中,2下注中,
    var cashoutOperationStatus: Int=0
 }

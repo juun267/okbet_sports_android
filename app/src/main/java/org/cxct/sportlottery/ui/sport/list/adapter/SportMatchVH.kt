@@ -145,7 +145,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueNeutral.isVisible = matchInfo?.neutral == 1
 
 //        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
-        ivCashOut.isVisible = matchInfo?.cashoutStatusShow==1
+        ivCashOut.isVisible = matchInfo?.cashoutStatus==1
         matchInfo?.let { matchInfo->
             bindLiveStatus(matchInfo)
             setLinCollse(matchInfo)
@@ -503,7 +503,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
         leagueNeutral.isVisible = matchInfo?.neutral == 1
-        ivCashOut.isVisible = matchInfo?.cashoutStatusShow==1
+        ivCashOut.isVisible = matchInfo?.cashoutStatus==1
         matchInfo?.let {
             bindLiveStatus(it)
         }
@@ -552,5 +552,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                 text = tvTime.text
             }
         }
+    }
+    fun updateCashoutStatus(item: MatchOdd,){
+        binding.ivCashOut.isVisible = item.matchInfo?.cashoutStatus == 1
     }
 }
