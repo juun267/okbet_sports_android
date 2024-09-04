@@ -256,19 +256,6 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                 clearAndReloadData()
             }
         }
-        CashoutSwitchDispatcher.observe(this) { event->
-            reloadData()
-        }
-        CashoutMatchStatusDispatcher.observe(this) { event->
-            val map = event.cashoutMatchStatusListList.map { it.matchId to it.status }.toMap()
-            mAdapter.data?.forEachIndexed { index, row ->
-                val matchId = row.matchOdds.first().matchId
-                if (row.parlayType == ParlayType.SINGLE.key && map.containsKey(matchId)){
-                    row.cashoutStatus = map[matchId]!!
-                    mAdapter.notifyItemChanged(index)
-                }
-            }
-        }
     }
     private fun clearAndReloadData(){
         mAdapter.data.clear()
