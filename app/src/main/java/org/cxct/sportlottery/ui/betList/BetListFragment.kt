@@ -878,9 +878,12 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
             }
         }
         CashoutSwitchDispatcher.observe(viewLifecycleOwner) { event->
-            betListRefactorAdapter?.betList?.let { list ->
-                list.forEach { it.betInfo?.cashoutStatus = event.status }
-                betListRefactorAdapter?.notifyDataSetChanged()
+            if (event.status==1) return@observe
+            betListRefactorAdapter?.betList?.forEachIndexed { index, betInfoListData ->
+                if (betInfoListData.betInfo?.cashoutStatus == 1){
+                    betInfoListData.betInfo?.cashoutStatus = event.status
+                    betListRefactorAdapter?.notifyItemChanged(index)
+                }
             }
         }
         CashoutMatchStatusDispatcher.observe(viewLifecycleOwner) { event->

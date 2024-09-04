@@ -223,7 +223,23 @@ open class SportListFragment<M, VB>: BaseSportListFragment<SportListViewModel, F
             }
         }
         //只有雷达数据源足球还有提前兑现
-        CashoutSwitchDispatcher.observe(viewLifecycleOwner) { onReload() }
+        CashoutSwitchDispatcher.observe(viewLifecycleOwner) { event->
+            if (event.status==1) return@observe
+            if (sportLeagueAdapter2.getCount() < 1) {
+                return@observe
+            }
+            sportLeagueAdapter2.data.forEachIndexed { index, baseNode ->
+                if (baseNode.isMatchOdd()) {
+                    //暫時不處理 防止過多更新
+                    (baseNode as org.cxct.sportlottery.network.odds.list.MatchOdd).matchInfo?.let {
+                        if (it.cashoutStatus==1){
+                            it.cashoutStatus = event.status
+                            sportLeagueAdapter2.notifyItemChanged(index, SportMatchEvent.CashoutStauts)
+                        }
+                    }
+                }
+            }
+        }
         CashoutMatchStatusDispatcher.observe(viewLifecycleOwner) {
             sportLeagueAdapter2.updateCashOut(it.cashoutMatchStatusListList.map { it.matchId to it.status }.toMap())
         }

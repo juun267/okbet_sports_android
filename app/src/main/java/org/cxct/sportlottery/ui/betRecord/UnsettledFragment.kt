@@ -118,17 +118,13 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
         }
         //待成立倒计时结束刷新数据
         mAdapter.setOnCountTime {
-            pageIndex = 1
-            recyclerUnsettled.postDelayed({
-                getUnsettledData()
-            },600)
+            reloadData()
         }
         //tab切换
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onTabSelected(tab: TabLayout.Tab) {
                 loading()
-                pageIndex = 1
                 hasMore = true
                 mAdapter.setNewInstance(null)
                 when (tab.position) {
@@ -158,7 +154,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                 dateSearchBar.isVisible = tab.position==3
                 //刷新数据
                 recyclerUnsettled.gone()
-                getUnsettledData()
+                reloadData()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -214,10 +210,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
         viewModel.settlementNotificationMsg.observe(this) { event ->
             val it = event.getContentIfNotHandled() ?: return@observe
             if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
-                binding.recyclerUnsettled.postDelayed({
-                    pageIndex = 1
-                    getUnsettledData()
-                },500)
+                reloadData()
             }
         }
         viewModel.cashOutEvent.observe(this){
@@ -264,9 +257,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
             }
         }
         CashoutSwitchDispatcher.observe(this) { event->
-            mAdapter.data?.forEach { it.cashoutStatus == event.status }?.let {
-                mAdapter.notifyDataSetChanged()
-            }
+            reloadData()
         }
         CashoutMatchStatusDispatcher.observe(this) { event->
             val map = event.cashoutMatchStatusListList.map { it.matchId to it.status }.toMap()
@@ -282,6 +273,9 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
     private fun clearAndReloadData(){
         mAdapter.data.clear()
         mAdapter.notifyDataSetChanged()
+        reloadData()
+    }
+    private fun reloadData(){
         binding.recyclerUnsettled.postDelayed({
             pageIndex = 1
             getUnsettledData()
