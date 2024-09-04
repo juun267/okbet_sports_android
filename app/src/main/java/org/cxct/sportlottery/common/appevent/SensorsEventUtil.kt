@@ -22,7 +22,13 @@ object SensorsEventUtil {
 
     // 需要在主线程初始化神策 SDK
     fun initSdk(context: Context) {
-        SensorsDataAPI.startWithConfigOptions(context, SAConfigOptions(SA_SERVER_URL))
+        val options = SAConfigOptions(SA_SERVER_URL)
+        /**
+         * 集成神策 Web JS SDK 的 H5 页面，在嵌入到 App 后，H5 内的事件可以通过 App 进行发送，
+         * 事件发送前会添加上 App 采集到的预置属性。该功能默认是关闭状态，如果需要开启，需要在 App 和 H5 端同时进行配置。
+         */
+        options.enableJavaScriptBridge(true)
+        SensorsDataAPI.startWithConfigOptions(context, options)
 
         val properties = JSONObject()
             .put("platform_type", "Android")
