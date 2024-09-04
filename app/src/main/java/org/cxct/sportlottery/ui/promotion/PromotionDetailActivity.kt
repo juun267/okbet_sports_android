@@ -55,7 +55,6 @@ class PromotionDetailActivity :
             it?.let { it1 -> setActivity(it1) }
         }
         viewModel.activityApply.observe(this) {
-            SensorsEventUtil.activityRegisterEvent(activityData.activityType.toString(), "${activityData.titleText}")
             when(viewModel.activityDetail.value?.activityType){
                 ActivityType.LOSE,ActivityType.PROFIT->{}
                 else->{

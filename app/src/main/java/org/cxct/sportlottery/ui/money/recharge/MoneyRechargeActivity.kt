@@ -31,11 +31,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
         const val RechargeViewLog = "rechargeViewLog"
         const val CRYPTO_PAY_INDEX = 11 //11-虚拟币支付
 
-        var fromPage: String = "未知页面"
-        var fromAction: String = "未知"
         fun startFrom(context: Context, from: String) {
-            fromPage = SensorsEventUtil.getPageName()
-            fromAction = from
             SensorsEventUtil.depositPageEvent(from)
             context.startActivity(Intent(context, MoneyRechargeActivity::class.java))
         }
@@ -277,7 +273,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
         bankTypeAdapter.setOnItemClickListener { _, _, position ->
             bankTypeAdapter.setSelectedPosition(position)
             val itemData = bankTypeAdapter.getItem(position)
-            SensorsEventUtil.selectPaymentEvent("${itemData.titleNameMap[LanguageManager.getLanguageString()]}", fromPage, fromPage)
+            //SensorsEventUtil.selectPaymentEvent("${itemData.titleNameMap[LanguageManager.getLanguageString()]}", fromPage, fromPage)
             switchFragment(getPayFragment(itemData), itemData.rechType)
             this@MoneyRechargeActivity.currentFocus?.clearFocus()
             viewModel.clearnRechargeStatus()

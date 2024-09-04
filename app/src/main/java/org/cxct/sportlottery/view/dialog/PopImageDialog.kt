@@ -8,7 +8,9 @@ import androidx.viewpager.widget.ViewPager
 import com.stx.xhb.androidx.transformers.Transformer
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.DialogPopImageBinding
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -146,6 +148,7 @@ class PopImageDialog : BaseDialog<BaseViewModel,DialogPopImageBinding>() {
                 LogUtil.d("bannerCurrentItem=" + xbanner.bannerCurrentItem + ",jumpUrl=" + realImageData?.appUrl)
                 realImageData?.let {
                     if (!it.appUrl.isNullOrEmpty()) {
+                        SensorsEventUtil.popupWindowClickEventWithImageData(it)
                         JumpUtil.toInternalWeb(requireActivity(), it.appUrl, it.imageText1)
                         dismissAllowingStateLoss()
                     }

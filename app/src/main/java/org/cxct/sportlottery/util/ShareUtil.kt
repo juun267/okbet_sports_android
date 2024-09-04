@@ -11,6 +11,7 @@ import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.widget.MessageDialog
 import com.facebook.share.widget.ShareDialog
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import java.net.URLEncoder
 import com.facebook.FacebookCallback as FacebookCallback1
@@ -22,6 +23,7 @@ object ShareUtil {
             shareError(activity)
             return
         }
+        SensorsEventUtil.shareClickEvent("Facebook")
         val content = ShareLinkContent.Builder()
             .setContentUrl(Uri.parse(url))
             .setQuote(content)
@@ -75,6 +77,7 @@ object ShareUtil {
 //                })
 //
 //        }.show(content)
+        SensorsEventUtil.shareClickEvent("Messenger")
         runWithCatch({
         val sharingIntent = Intent(Intent.ACTION_SEND)
         sharingIntent.setType("text/plain")
@@ -86,6 +89,7 @@ object ShareUtil {
         })
     }
     fun shareInstagram(activity: Activity, content: String){
+        SensorsEventUtil.shareClickEvent("Instagram")
         runWithCatch({
             val sharingIntent = Intent(Intent.ACTION_SEND)
             sharingIntent.setPackage("com.instagram.android")
@@ -107,6 +111,7 @@ object ShareUtil {
         })
     }
     fun shareViber(context: Context, content: String){
+        SensorsEventUtil.shareClickEvent("Viber")
         runWithCatch({
             val sharingIntent = Intent(Intent.ACTION_VIEW, Uri.parse("viber://forward?text=${URLEncoder.encode(content,"utf-8")}"))
             sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -115,6 +120,7 @@ object ShareUtil {
         })
     }
     fun sendSMS(context: Context,content: String){
+        SensorsEventUtil.shareClickEvent("SMS")
         runWithCatch({
                val sharingIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"))
                 sharingIntent.putExtra( "sms_body", content)

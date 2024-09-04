@@ -5,7 +5,10 @@ import com.sensorsdata.analytics.android.sdk.SAConfigOptions
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI
 import com.sensorsdata.analytics.android.sdk.SensorsDataDynamicSuperProperties
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.network.uploadImg.ImgData
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.AppManager
@@ -63,7 +66,7 @@ object SensorsEventUtil {
      */
     fun loginPageEvent() {
         val event = JSONObject()
-        event.put("source_channel", BuildConfig.CHANNEL_NAME)
+        event.put("source_channel", "Android")
         event.put("page_name", getPageName())
         pushEvent("visitLoginPage", event)
     }
@@ -75,15 +78,15 @@ object SensorsEventUtil {
      * fail_reason	    失败原因	    STRING	返回什么原因就上报什么原因
      */
     fun getCodeEvent(status: Boolean, isEmailCode: Boolean = false, errorMsg: String? = null) {
-        val event = JSONObject()
-        if (isEmailCode) {
-            event.put("veri_code_type", "邮箱验证码")
-        } else {
-            event.put("veri_code_type", "手机验证码")
-        }
-        event.put("is_success", status)
-        errorMsg?.let { event.put("fail_reason", errorMsg) }
-        pushEvent("loginGetCodeResult", event)
+//        val event = JSONObject()
+//        if (isEmailCode) {
+//            event.put("veri_code_type", "邮箱验证码")
+//        } else {
+//            event.put("veri_code_type", "手机验证码")
+//        }
+//        event.put("is_success", status)
+//        errorMsg?.let { event.put("fail_reason", errorMsg) }
+//        pushEvent("loginGetCodeResult", event)
     }
 
     /**
@@ -96,7 +99,8 @@ object SensorsEventUtil {
      */
     fun registerEvent(registerWays: String) {
         val event = JSONObject()
-        event.put("source_channel", BuildConfig.CHANNEL_NAME)
+        event.put("reg_channel", registerWays)
+        event.put("source_channel", "Android")
         pushEvent("submitRegister", event)
     }
 
@@ -111,8 +115,12 @@ object SensorsEventUtil {
     /**
      * 存款页面访问
      * "进入存款页面时上报（页面标题、地址、路径如果SDK可以默认获取可以不用单独采集）"
-     * is_success	是否成功	BOOL	1是0否（本次KYC结果是否成功）
-     * fail_reason	失败原因	STRING	证件失效、网络异常...等
+     * title_type	页面类型	STRING	存款页面
+     * title	页面标题	STRING	存款
+     * url	页面地址	STRING	所在的页面地址
+     * url_path	页面地址路径	STRING	所在的页面地址路径
+     * visit_source_type	来源类型	STRING	从什么地方进入该页面，例如：游戏大厅、弹窗引导...
+     * visit_source_name	来源名称	STRING	例如：机台名称、来源的页面名称等
      */
     fun depositPageEvent(sourceType: String) {
         val params = JSONObject()
@@ -125,30 +133,30 @@ object SensorsEventUtil {
         pushEvent("depositPageView", params)
     }
 
-    /**
-     * 选择支付账户
-     * "不同支付账户被选中时上报
-     * （页面标题、地址、路径如果SDK可以默认获取可以不用单独采集）"
-     * payment_account	    支付账户	        STRING	所选的支付账户方式(GCash/GrabPay/Maya……)
-     * title_type	        页面类型	        STRING	存款页面
-     * title	            页面标题	        STRING	存款
-     * url	                页面地址	        STRING	所在的页面地址
-     * url_path	            页面地址路径	    STRING	所在的页面地址路径
-     * visit_source_type	来源类型	        STRING	从什么地方进入该页面，例如：游戏大厅、弹窗引导...
-     * visit_source_name	来源名称	        STRING	例如：机台名称、来源的页面名称等
-     */
-    fun selectPaymentEvent(paymentAccount: String, sourceType: String, sourceName: String) {
-        val params = JSONObject()
-        params.put("payment_account", paymentAccount)
-        params.put("title_type", "存款页面")
-        params.put("title", "存款")
-//        params.put("url", "")
-//        params.put("url_path", "")
-        params.put("visit_source_type", sourceType)          // 来源类型
-        params.put("visit_source_name", sourceName)          // 例如：机台名称、来源的页面名称等
-        pushEvent("selectPaymentAccount", params)
-
-    }
+//    /**
+//     * 选择支付账户
+//     * "不同支付账户被选中时上报
+//     * （页面标题、地址、路径如果SDK可以默认获取可以不用单独采集）"
+//     * payment_account	    支付账户	        STRING	所选的支付账户方式(GCash/GrabPay/Maya……)
+//     * title_type	        页面类型	        STRING	存款页面
+//     * title	            页面标题	        STRING	存款
+//     * url	                页面地址	        STRING	所在的页面地址
+//     * url_path	            页面地址路径	    STRING	所在的页面地址路径
+//     * visit_source_type	来源类型	        STRING	从什么地方进入该页面，例如：游戏大厅、弹窗引导...
+//     * visit_source_name	来源名称	        STRING	例如：机台名称、来源的页面名称等
+//     */
+//    fun selectPaymentEvent(paymentAccount: String, sourceType: String, sourceName: String) {
+//        val params = JSONObject()
+//        params.put("payment_account", paymentAccount)
+//        params.put("title_type", "存款页面")
+//        params.put("title", "存款")
+////        params.put("url", "")
+////        params.put("url_path", "")
+//        params.put("visit_source_type", sourceType)          // 来源类型
+//        params.put("visit_source_name", sourceName)          // 例如：机台名称、来源的页面名称等
+//        pushEvent("selectPaymentAccount", params)
+//
+//    }
 
     /**
      * 点击游戏
@@ -227,6 +235,15 @@ object SensorsEventUtil {
         pushEvent("machineLoadingResult", params)
     }
 
+    fun popupWindowClickEventWithImageData(imgData: ImageData) {
+        popupWindowClickEvent(
+            imgData.id.toStringS("0"),
+            imgData.imageText1 ?: "",
+            imgData.imageText1 ?: "",
+            imgData.appUrl ?:""
+        )
+    }
+
     /**
      * 弹窗点击
      * 点击页面内弹时上报
@@ -238,19 +255,19 @@ object SensorsEventUtil {
      * hyper_page_title	跳转页面标题	STRING	跳转页面的页面标题
      * hyper_page_url	跳转页面url	STRING	跳转页面的地址
      */
-    fun popupWindowClickEvent(popupId: String,
-                              popupType: String,
+    private fun popupWindowClickEvent(popupId: String,
+//                              popupType: String,
                               popupName: String,
-                              popupPage: String,
-                              hyperPageType: String,
+//                              popupPage: String,
+//                              hyperPageType: String,
                               hyperPageTitle: String,
                               hyperPageUrl: String,) {
         val params = JSONObject()
         params.put("popup_id", popupId)
-        params.put("popup_type", popupType)
+        params.put("popup_type", "活动弹窗")
         params.put("popup_name", popupName)
-        params.put("pop_up_page", popupPage)
-        params.put("hyper_page_type", hyperPageType)
+        params.put("pop_up_page", getPageName())
+//        params.put("hyper_page_type", hyperPageType)
         params.put("hyper_page_title", hyperPageTitle)
         params.put("hyper_page_url", hyperPageUrl)
         pushEvent("popupClick", params)
@@ -318,20 +335,20 @@ object SensorsEventUtil {
 //            .put("event_stage_id", eventStageId)
     }
 
-    /**
-     * 报名活动任务
-     * 主动报名活动成功时上报
-     * event_type	    活动类型	    STRING	活动的类型
-     * event_name	    活动名称	    STRING	活动的名称
-     * event_stage_name	活动档位名称	STRING	各个活动档位对应的名称
-     * event_stage_id	活动档位ID	STRING	各个活动档位对应的独立ID
-     */
-    fun activityRegisterEvent(eventType: String,
-                              eventName: String,
-                              /*eventStageName: String,
-                              eventStageId: String*/) {
-        pushEvent("registerEvent", activityEventProperties(eventType, eventName/*, eventStageName, eventStageId*/))
-    }
+//    /**
+//     * 报名活动任务
+//     * 主动报名活动成功时上报
+//     * event_type	    活动类型	    STRING	活动的类型
+//     * event_name	    活动名称	    STRING	活动的名称
+//     * event_stage_name	活动档位名称	STRING	各个活动档位对应的名称
+//     * event_stage_id	活动档位ID	STRING	各个活动档位对应的独立ID
+//     */
+//    private fun activityRegisterEvent(eventType: String,
+//                              eventName: String,
+//                              /*eventStageName: String,
+//                              eventStageId: String*/) {
+//        pushEvent("registerEvent", activityEventProperties(eventType, eventName/*, eventStageName, eventStageId*/))
+//    }
 
     /**
      * 活动签到完成
@@ -370,6 +387,22 @@ object SensorsEventUtil {
 //        params.put("url", url)
 //        params.put("url_path", url_path)
         pushEvent("newsPageView", params)
+    }
+
+    /**
+     * 分享点击 点击分享按钮时上报
+     * title_type	    页面类型	    STRING	分享所在的页面
+     * title	        页面标题	    STRING	页面的标题
+     * url	            页面地址	    STRING	所在的页面地址
+     * url_path	        页面地址路径	STRING	所在的页面地址路径
+     */
+    fun shareClickEvent(shareTo: String) {
+        val params = JSONObject()
+        params.put("title_type", "邀请好友")
+        params.put("title", shareTo)
+//        params.put("url", url)
+//        params.put("url_path", url_path)
+        pushEvent("shareClick", params)
     }
 
 
