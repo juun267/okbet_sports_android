@@ -869,8 +869,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
         }
 
         ProducerUpDispatcher.observe(viewLifecycleOwner) {
+            clearHoldChannels()
             betListRefactorAdapter?.betList.let { list ->
-                betListPageUnSubScribeEvent()
                 list?.let { listNotNull ->
                     unsubscribeChannel(listNotNull)
                     subscribeChannel(listNotNull)
@@ -1089,18 +1089,18 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
     }
 
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
-        betListPageSubscribeEvent()
+
         val subscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
             if (listData.subscribeChannelType == ChannelType.HALL) {
-                subscribeChannelHall(
-                    listData.matchOdd.gameType, listData.matchOdd.matchId
-                )
+                subscribeChannelHall(listData.matchOdd.gameType, listData.matchOdd.matchId)
+                holdMatchChannel(listData.matchOdd.gameType, listData.matchOdd.matchId)
             } else {
                 val subscribeMatchId = listData.matchOdd.matchId
                 if (!subscribedList.contains(subscribeMatchId)) {
                     subscribedList.add(subscribeMatchId)
                     subscribeChannelEvent(subscribeMatchId)
+                    holdEventChannel(subscribeMatchId)
                 }
             }
         }
@@ -1124,7 +1124,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
                 }
             }
         }
-        betListPageUnSubScribeEvent()
+        clearHoldChannels()
     }
 
 

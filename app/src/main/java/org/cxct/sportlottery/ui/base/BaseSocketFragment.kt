@@ -60,12 +60,16 @@ abstract class BaseSocketFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFrag
         BackService.unsubscribeAllEventChannel()
     }
 
-    protected fun betListPageSubscribeEvent() {
-        BackService.betListPageSubscribeEvent()
+    protected fun holdMatchChannel(gameType: String?, eventId: String?) {
+        BackService.holdMatchChannel(gameType, eventId)
     }
 
-    protected fun betListPageUnSubScribeEvent() {
-        BackService.betListPageUnSubScribeEvent()
+    protected fun holdEventChannel(eventId: String) {
+        BackService.holdEventChannel(eventId)
+    }
+
+    protected fun clearHoldChannels() {
+        BackService.clearHoldChannels()
     }
 
 

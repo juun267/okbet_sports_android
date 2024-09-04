@@ -116,16 +116,6 @@ abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(cl
         }
     }
 
-    fun subscribeSportChannelHall() {
-        BackService.subscribeSportChannelHall()
-    }
-
-    fun subscribeChannelHall(
-        gameType: String?,
-        eventId: String?
-    ) {
-        BackService.subscribeHallChannel(gameType, eventId)
-    }
 
     fun subscribeChannelEvent(
         eventId: String?,
@@ -134,45 +124,17 @@ abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(cl
         BackService.subscribeEventChannel(eventId,gameType)
     }
 
-    fun unSubscribeChannelHall(
-        gameType: String?,
-        eventId: String?,
-    ) {
-        BackService.unsubscribeHallChannel(gameType, eventId)
-    }
-
-    fun unSubscribeChannelHall(
-        eventId: String?,
-    ) {
-        BackService.unsubscribeHallChannel(eventId)
-    }
 
     fun unSubscribeChannelEvent(eventId: String?) {
         BackService.unsubscribeEventChannel(eventId)
-    }
-
-    fun unsubscribeHallChannel(eventId: String?) {
-        BackService.unsubscribeHallChannel(eventId)
     }
 
     fun unSubscribeChannelHallAll() {
         BackService.unsubscribeAllHallChannel()
     }
 
-    fun unSubscribeChannelHallSport() {
-        BackService.unsubscribeSportHallChannel()
-    }
-
     fun unSubscribeChannelEventAll() {
         BackService.unsubscribeAllEventChannel()
-    }
-
-    fun betListPageSubscribeEvent() {
-        BackService.betListPageSubscribeEvent()
-    }
-
-    fun betListPageUnSubScribeEvent() {
-        BackService.betListPageUnSubScribeEvent()
     }
 
     override fun onStart() {
