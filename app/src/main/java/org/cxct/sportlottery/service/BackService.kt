@@ -5,9 +5,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.common.MatchOdd
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.util.EncryptUtil
 import org.cxct.sportlottery.util.HTTPsUtil
@@ -55,7 +54,7 @@ import java.util.concurrent.TimeUnit
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
     private var lifecycleDisposable: Disposable? = null
     private val mSubscribedMap = mutableMapOf<String, Disposable>() //Map<url, channel>
-    private val mOriginalSubscribedMap = mutableMapOf<String, Disposable?>() //投注單頁面邏輯, 紀錄進入投注單前以訂閱的頻道, 離開投注單頁面時, 解除訂閱不解除此map中的頻道
+    private val holdedChannels = mutableSetOf<String>()
     private val mSubscribeChannelPending = mutableListOf<String>()
     private var errorFlag = false // Stomp connect錯誤
     private var reconnectionNum = 0//重新連接次數
@@ -279,29 +278,29 @@ import java.util.concurrent.TimeUnit
     }
 
     private fun unsubscribeChannel(url: String) {
-        mSubscribedMap[url]?.let {
-            it.dispose()
-            if (!mOriginalSubscribedMap.containsValue(it)) {
+        // 购物车中的赔率玩法需要保持链接的订阅不清理; 但是赛事列表有新的订阅时刚好已存在该赛事的订阅，就会导致赛事列表的玩法赔率不能立刻显示出来
+        if (!holdedChannels.contains(url)) {
+            mSubscribedMap.remove(url)?.let {
                 Timber.i("<<< unsubscribe channel: $url")
-                mSubscribedMap.remove(url)
+                it.dispose()
             }
         }
     }
 
 
-    /**
-     * 為了避免投注單關閉時解除訂閱到當前頁面的頻道, 所以先將當前的訂閱記錄起來
-     */
-    fun betListPageSubscribeEvent() {
-        mOriginalSubscribedMap.putAll(mSubscribedMap)
-    }
+     // 保持订阅，不被清掉
+     fun holdMatchChannel(gameType: String?, matchId: String?) {
+         holdedChannels.add(hallChannelUrl(gameType, matchId))
+     }
 
-    /**
-     * 投注單頁面解除訂閱完畢, 清除暫存的訂閱頻道
-     */
-    fun betListPageUnSubScribeEvent() {
-        mOriginalSubscribedMap.clear()
-    }
+     // 保持订阅，不被清掉
+     fun holdEventChannel(eventId: String) {
+         holdedChannels.add(eventChannelUrl(eventId))
+     }
+
+     fun clearHoldChannels() {
+         holdedChannels.clear()
+     }
 
     fun subscribeEventChannel(eventId: String?,gameType: String? = null) {
         if (eventId == null) return
@@ -341,9 +340,20 @@ import java.util.concurrent.TimeUnit
         subscribeChannel(url)
     }
 
+     private fun eventChannelUrl(eventId: String): String {
+         return "$URL_EVENT/$mPlatformId/$eventId/$WS_END_TYPE"
+     }
+
+     private fun hallChannelUrl(gameType: String?, eventId: String?): String {
+         if (gameType.isEmptyStr()) {
+             return "$URL_HALL/$mPlatformId/$eventId/$WS_END_TYPE"
+         }
+         return "$URL_HALL/$mPlatformId/$gameType/$eventId/$WS_END_TYPE"
+     }
+
     fun subscribeHallChannel(gameType: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
-        val url = "$URL_HALL/$mPlatformId/$gameType/$eventId/$WS_END_TYPE"
+        val url = hallChannelUrl(gameType, eventId)
         //val url = "$URL_HALL/$mPlatformId/$gameType/$eventId"
 
         subscribeChannel(url)
@@ -352,7 +362,7 @@ import java.util.concurrent.TimeUnit
     fun unsubscribeHallChannel(gameType: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL/$mPlatformId/$gameType/$eventId/$WS_END_TYPE"
+        val url = hallChannelUrl(gameType, eventId)
         //val url = "$URL_HALL/$mPlatformId/$gameType/$eventId"
         unsubscribeChannel(url)
     }
