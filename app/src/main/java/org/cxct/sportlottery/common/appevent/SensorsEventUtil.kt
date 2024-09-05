@@ -424,7 +424,7 @@ object SensorsEventUtil {
         params.put("event_name", eventName)
 //        params.put("url", url)
 //        params.put("url_path", url_path)
-        pushEvent("shareClick", params)
+        pushEvent("eventSignIn", params)
     }
 
 
