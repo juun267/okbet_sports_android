@@ -104,7 +104,8 @@
                 android:layout_height="@dimen/margin_20"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_cashout_yellow"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <TextView
