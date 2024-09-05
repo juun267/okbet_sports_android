@@ -34,7 +34,7 @@
                    android:textSize="28sp"
                    android:textColor="@color/color_FFFFFF"
                    android:textFontWeight="900"
-                   android:text="@string/P160" />
+                   android:text="@string/B24" />
                <include
                    android:id="@+id/maintenOkLive"
                    android:visibility="gone"
@@ -63,7 +63,7 @@
                    android:textSize="28sp"
                    android:textColor="@color/color_FFFFFF"
                    android:textFontWeight="900"
-                   android:text="@string/home_on_game" />
+                   android:text="@string/B23" />
                <include
                    android:id="@+id/maintenOkGame"
                    android:visibility="gone"

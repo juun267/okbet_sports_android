@@ -177,7 +177,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
                 }
             }
 
-            R.string.news_tab_game -> { // OKGames
+            R.string.B23 -> { // OKGames
                 if(!StaticData.okGameOpened()) {
                     ToastUtil.showToast(this@MainTabActivity,getString(R.string.N700))
                     false
