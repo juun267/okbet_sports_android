@@ -1928,4 +1928,6 @@
     <string name="B75">Cash Out Fails！</string>
     <string name="B104">Cashing out</string>
     <string name="B105">Cashed out</string>
+    <string name="B23">Slot</string>
+    <string name="B24">Casino</string>
 </resources>
