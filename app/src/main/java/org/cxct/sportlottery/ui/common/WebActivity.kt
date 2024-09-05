@@ -19,7 +19,10 @@ import timber.log.Timber
 /**
  * Create by Simon Chang
  */
-abstract class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<MainViewModel, ActivityWebBinding>() {
+open class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<MainViewModel, ActivityWebBinding>() {
+
+    override fun pageName() = mTitle
+
     companion object {
         const val KEY_URL = "key-url"
         const val KEY_TITLE = "key-title"
