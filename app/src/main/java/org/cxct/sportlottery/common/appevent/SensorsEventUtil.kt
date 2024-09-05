@@ -199,13 +199,13 @@ object SensorsEventUtil {
                          gameName: String,
                          gameId: String,
                          isTrialPlay: Boolean = false) {
-        val params = JSONObject()
-        params.put("cp_name", firmName)
-        params.put("machine_type", gameType)
-        params.put("machine_name", gameName)
-        params.put("machine_id", gameId)
-//        params.put("is_trial_machine", isTrialPlay)
-        pushEvent("startLoadingMachine", params)
+//        val params = JSONObject()
+//        params.put("cp_name", firmName)
+//        params.put("machine_type", gameType)
+//        params.put("machine_name", gameName)
+//        params.put("machine_id", gameId)
+////        params.put("is_trial_machine", isTrialPlay)
+//        pushEvent("startLoadingMachine", params)
     }
 
     /**
@@ -411,6 +411,21 @@ object SensorsEventUtil {
         pushEvent("shareClick", params)
     }
 
+
+    /**
+     * event_type	    活动类型	    STRING	活动的类型
+     * event_name	    活动名称	    STRING	活动的名称
+     * event_stage_name	活动档位名称	STRING	各个活动档位对应的名称
+     * event_stage_id	活动档位ID	STRING	各个活动档位对应的独立ID
+     */
+    fun activitySignInEvent(eventType: String, eventName: String) {
+        val params = JSONObject()
+        params.put("event_type", eventType)
+        params.put("event_name", eventName)
+//        params.put("url", url)
+//        params.put("url_path", url_path)
+        pushEvent("shareClick", params)
+    }
 
 
 }
