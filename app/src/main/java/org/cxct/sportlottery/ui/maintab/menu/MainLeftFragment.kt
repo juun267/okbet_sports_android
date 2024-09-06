@@ -140,7 +140,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
         }
         menuOKLive.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_oklive_sel, R.drawable.ic_left_menu_oklive_nor),
-            R.string.P160
+            R.string.B24
         ){
             reSelected(menuOKLive)
             close()
@@ -150,7 +150,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
         }
         menuOKGames.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_okgame_sel, R.drawable.ic_left_menu_okgame_nor),
-            R.string.J203
+            R.string.B23
         ){
             reSelected(menuOKGames)
             close()

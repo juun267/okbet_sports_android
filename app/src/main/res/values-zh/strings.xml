@@ -1314,7 +1314,7 @@
     <string name="J134">登录</string>
     <string name="J151">注册</string>
     <string name="N700">敬请期待</string>
-    <string name="N704">推荐棋牌游戏</string>
+    <string name="N704">推荐老虎机游戏</string>
     <string name="N986">方位</string>
 
     <string name="N902">关注我们</string>
@@ -1876,4 +1876,6 @@
     <string name="B200">请选择…</string>
     <string name="B203">请输入您的登录密码</string>
 
+    <string name="B23">老虎机</string>
+    <string name="B24">真人</string>
 </resources>
