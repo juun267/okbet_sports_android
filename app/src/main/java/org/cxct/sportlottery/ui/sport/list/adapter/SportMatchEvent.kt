@@ -12,4 +12,6 @@ sealed class SportMatchEvent {
 
     object GlobalStop: SportMatchEvent()
 
+    object CashoutStauts: SportMatchEvent()
+
 }

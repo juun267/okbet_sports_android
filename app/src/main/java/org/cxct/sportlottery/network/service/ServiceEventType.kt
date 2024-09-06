@@ -35,6 +35,9 @@ object EventType {
     const val PLAY_QUOTA_CHANGE = ("PLAY_QUOTA_CHANGE")  //所有体育玩法限额变更
     const val SPORT_MAINTAIN_STATUS=("SPORT_MAINTAIN_STATUS") //体育维护状态   1开启  0关闭
     const val RECORD_RESULT_JACKPOT_OK_GAMES=("RECORD_RESULT_JACKPOT_OK_GAMES") //jackpot监听
+    const val CASH_OUT = ("CASH_OUT")  //提前兑换注单确认 与 ORDER_SETTLEMENT事件类似，只是增加cashout相关参数
+    const val CASHOUT_SWITCH = ("CASHOUT_SWITCH") //提前结算开关，针对全部体育赛事
+    const val CASHOUT_MATCH_STATUS = ("CASHOUT_MATCH_STATUS") //提前结算开关，针对具体体育赛事
 
     /* /ws/notify/all/encrypted*/
     const val CLOSE_PLAY_CATE = ("CLOSE_PLAY_CATE")  //關閉玩法

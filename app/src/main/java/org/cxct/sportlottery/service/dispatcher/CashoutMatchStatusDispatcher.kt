@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.service.dispatcher
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -9,17 +8,18 @@ import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.service.EventDispatcher
 
-object OrderSettlementDispatcher: EventDispatcher<FrontWsEvent.BetSettlementEvent> {
+object CashoutMatchStatusDispatcher: EventDispatcher<FrontWsEvent.CashoutMatchStatusEvent> {
 
-    private val _orderSettlement = MutableSharedFlow<FrontWsEvent.BetSettlementEvent>()
-    override fun eventType() = EventType.ORDER_SETTLEMENT
+    private val _cashoutMatchStatus = MutableSharedFlow<FrontWsEvent.CashoutMatchStatusEvent>()
+    override fun eventType() = EventType.CASHOUT_MATCH_STATUS
 
     override suspend fun handleEvent(eventType: String, event: FrontWsEvent.Event, obj: Any?): Boolean {
-        event.betSettlementEvent?.let { _orderSettlement.emit(it) }
+        event.cashoutMatchStatusEvent?.let { _cashoutMatchStatus.emit(it) }
         return true
     }
 
-    override fun observe(lifecycleOwner: LifecycleOwner, observer: (FrontWsEvent.BetSettlementEvent) -> Unit) {
-        _orderSettlement.collectWith(lifecycleOwner.lifecycleScope, observer)
+    override fun observe(lifecycleOwner: LifecycleOwner, observer: (FrontWsEvent.CashoutMatchStatusEvent) -> Unit) {
+        _cashoutMatchStatus.collectWith(lifecycleOwner.lifecycleScope, observer)
     }
+
 }

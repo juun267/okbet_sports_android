@@ -192,9 +192,6 @@ message MatchClockEvent {
     int32 remainingTimeInPeriod = 8;
     int32 stopped = 9;
     string gameType = 10;
-    int32 matchTimeMinute = 11;
-    int32 remainingTimeInPeriodMinute = 12;
-    int32 showTimeStyle = 13;
 }
 
 message PlayCateTypeVO {
@@ -293,6 +290,7 @@ message MatchStatusCO {
     int32 latestStatus = 31;
     repeated Period periods = 33;
     repeated Player players = 34;
+    int32 cashOutStatus = 35;
     //    map<string, string> statusNameI18n = 35;
 }
 
@@ -440,6 +438,21 @@ message SysMaintainEvent {
 message SportMaintainEvent {
     int32 status = 1;
 }
+/**
+* CASHOUT_STATUS
+*/
+message CashoutSwitchEvent {
+    int32 status = 1;
+}
+message CashoutMatchStatusEvent {
+    repeated CashoutMatchStatusVO cashoutMatchStatusList = 1;
+}
+message CashoutMatchStatusVO {
+    string matchId = 1;
+    int32 status = 2;
+}
+
+
 /**
 *   USER_DISCOUNT_CHANGE
 */
@@ -614,15 +627,16 @@ message JackpotEvent {
     string amount = 1;
 }
 
-message JackpotMiniEvent {
-    string amount = 1;
-}
-
 message WheelSpinResultEvent {
     string nickname  = 1;
     string time = 2;
     string prizeName = 3;
     string price = 4;
+}
+message BetCashOutEvent {
+    BaseSportBet sportBet = 1;
+    int32 isChampionship = 2;
+    int32 cashOutStatus = 3;
 }
 
 message Event {
@@ -669,7 +683,10 @@ message Event {
         JackpotEvent recordResultJackpotOkGamesEvent = 37;
         SportMaintainEvent sportMaintainEvent = 38;
         WheelSpinResultEvent wheelSpinResultEvent = 39;
-        JackpotMiniEvent recordResultJackPoolOkMiniGamesEvent = 40;
+        BetCashOutEvent betCashOutEvent = 40;
+        CashoutSwitchEvent cashoutSwitchEvent = 41;
+        CashoutMatchStatusEvent cashoutMatchStatusEvent = 42;
+
     }
 }
 

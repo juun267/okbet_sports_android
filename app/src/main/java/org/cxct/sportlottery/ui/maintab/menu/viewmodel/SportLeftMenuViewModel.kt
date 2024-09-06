@@ -52,7 +52,7 @@ class SportLeftMenuViewModel(
     fun getBetRecordCount() {
         val betListRequest = BetListRequest(
             championOnly = 0,
-            statusList = listOf(0,1), //全部注單，(0:待成立, 1:未結算)
+            statusList = listOf(0,1,8), //全部注單，(0:待成立, 1:未結算, 8兑现中)
             page = 1,
             gameType = "",
             pageSize = AccountHistoryViewModel.PAGE_SIZE

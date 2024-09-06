@@ -7,7 +7,6 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 
@@ -55,7 +54,6 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
 
         val binding = (helper as SportMatchVH)
         val matchOdd = (item as MatchOdd)
-
         payloads.forEach {
             when(it) {
                 is SportMatchEvent.OddsChanged -> {
@@ -75,6 +73,10 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
 
                 is SportMatchEvent.GlobalStop -> {
                     resetOddsButton(binding, matchOdd)
+                }
+
+                is SportMatchEvent.CashoutStauts -> {
+                    updateCashoutStatus(binding, matchOdd)
                 }
 
                 else -> {
@@ -104,6 +106,9 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
 
     private fun resetOddsButton(binding: SportMatchVH , matchOdd: MatchOdd) {
         binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
+    }
+    private fun updateCashoutStatus(binding: SportMatchVH , matchOdd: MatchOdd) {
+        binding.updateCashoutStatus(matchOdd)
     }
 
 

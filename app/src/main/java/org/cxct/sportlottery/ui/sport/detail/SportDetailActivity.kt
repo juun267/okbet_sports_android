@@ -37,10 +37,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.common.enums.ChannelType
-import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
-import org.cxct.sportlottery.service.dispatcher.DataResourceChange
-import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
-import org.cxct.sportlottery.service.dispatcher.ProducerUpDispatcher
+import org.cxct.sportlottery.service.dispatcher.*
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.adapter.DetailTopFragmentStateAdapter
@@ -906,7 +903,14 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
             binding.ivRefresh.performClick()
             showDataSourceChangedDialog(it)
         }
-
+        CashoutSwitchDispatcher.observe(this) {
+            binding.ivRefresh.performClick()
+        }
+        CashoutMatchStatusDispatcher.observe(this) {
+             it.cashoutMatchStatusListList.firstOrNull { it.matchId == matchInfo?.id }?.let {
+                binding.ivRefresh.performClick()
+            }
+        }
     }
 
     /**

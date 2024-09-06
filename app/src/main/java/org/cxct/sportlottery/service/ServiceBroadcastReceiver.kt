@@ -21,14 +21,7 @@ import org.cxct.sportlottery.network.service.match_odds_change.transferMatchOdds
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.transferOddsChangeEvent
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.service.dispatcher.ClosePlayCateDispatcher
-import org.cxct.sportlottery.service.dispatcher.DataResourceChange
-import org.cxct.sportlottery.service.dispatcher.GlobalStopDispatcher
-import org.cxct.sportlottery.service.dispatcher.NoticeDispatcher
-import org.cxct.sportlottery.service.dispatcher.OrderSettlementDispatcher
-import org.cxct.sportlottery.service.dispatcher.ProducerUpDispatcher
-import org.cxct.sportlottery.service.dispatcher.SportMaintainDispatcher
-import org.cxct.sportlottery.service.dispatcher.SysMaintenanceDispatcher
+import org.cxct.sportlottery.service.dispatcher.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
@@ -108,6 +101,9 @@ object ServiceBroadcastReceiver {
         register.invoke(SysMaintenanceDispatcher)
         register.invoke(ClosePlayCateDispatcher)
         register.invoke(ProducerUpDispatcher)
+        register.invoke(BetCashOutDispatcher)
+        register.invoke(CashoutMatchStatusDispatcher)
+        register.invoke(CashoutSwitchDispatcher)
     }
 
     fun onConnectStatus(connectStatus: ServiceConnectStatus) {

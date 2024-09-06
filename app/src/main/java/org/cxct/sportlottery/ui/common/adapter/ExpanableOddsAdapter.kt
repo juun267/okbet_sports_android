@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 
 // 可展开收起的体育赛事赔率列表

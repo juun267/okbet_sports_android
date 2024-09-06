@@ -83,8 +83,14 @@ class SportLeagueAdapter2(
         if (position >= dataCount() || position < 0) {
             return
         }
-
         notifyMatchItemChanged(position, matchOdd)
+    }
+    fun notifyCashoutStatusChanged(matchOdd: MatchOdd) {
+        val position = getItemPosition(matchOdd)
+        if (position >= dataCount() || position < 0) {
+            return
+        }
+        notifyMatchItemChanged(position, SportMatchEvent.CashoutStauts)
     }
 
     // 对外保留的方法刷新item（添加headerview后刷新item时position计算需要加上headerview）
@@ -247,7 +253,16 @@ class SportLeagueAdapter2(
     override fun toString(): String {
         return " ==SportLeagueAdapter2 ${lifecycleOwner::class.java.simpleName} $matchType==  "
     }
-   fun setESportTheme(){
-
-   }
+    fun updateCashOut(cashoutMatchStatusMap: Map<String,Int>) {
+        rootNodes?.forEach {
+            if (it is LeagueOdd){
+                it.matchOdds.forEach {
+                    if (cashoutMatchStatusMap.containsKey(it.matchInfo?.id)){
+                        it.matchInfo?.cashoutStatus = cashoutMatchStatusMap[it.matchInfo?.id]!!
+                        notifyCashoutStatusChanged(it)
+                    }
+                }
+            }
+        }
+    }
 }

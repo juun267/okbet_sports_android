@@ -114,8 +114,8 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             if (item.status in 0..1){
                 cashoutBtn.visible()
                 val leftTime = item.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
-//                LogUtil.d("cashoutStatus="+item.cashoutStatus+",status="+item.status+",leftTime="+leftTime)
-                //赛事确认中的时候，需要将提前结算按钮锁盘，等收到ws后，再更新赛事状态和解锁
+//                LogUtil.d("cashoutStatus="+item.cashoutStatusShow+",status="+item.status+",leftTime="+leftTime)
+                //赛事注单确认中的时候，需要将提前结算按钮锁盘，等收到ws后，再更新赛事状态和解锁
                 if (item.cashoutStatus==1 && (item.status==0 || (item.status==1&&(leftTime?:0)>0))){
                     cashoutBtn.setCashOutStatus(2, item.cashoutOperationStatus, "$showCurrencySign ${TextUtil.formatMoney(item.cashoutAmount?:0,2)}")
                 }else{
@@ -230,6 +230,11 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 var needUpdate = false
                 if (row.cashoutStatus != cashoutStatus){
                     row.cashoutStatus = cashoutStatus
+                    //特殊情况更新cashoutOperationStatus从确认中变成默认的0
+                    //当前提前兑现按钮为确认中，且最新cashoutStatus为2时，恢复按钮为锁盘状态
+                    if (cashoutStatus==2 && row.cashoutOperationStatus==1){
+                        row.cashoutOperationStatus = 0
+                    }
                     needUpdate = true
                 }
                 if (row.cashoutAmount != cashoutAmount){
