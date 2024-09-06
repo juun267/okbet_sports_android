@@ -209,7 +209,7 @@ class LoginViewModel(
         callApi({UserRepository.loginBySafeQuestion(loginRequest)}){
             hideLoading()
             val loginResult = LoginResult(it.code,it.msg,it.succeeded(), null, rows = it.getData())
-            launch { dealWithLoginResult(loginResult) }
+            launch { dealWithLoginResult(loginResult, "安全问题") }
         }
     }
 

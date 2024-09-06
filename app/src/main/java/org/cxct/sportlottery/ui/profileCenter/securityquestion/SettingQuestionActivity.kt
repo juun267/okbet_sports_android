@@ -16,6 +16,8 @@ import org.cxct.sportlottery.view.checkRegisterListener
  */
 class SettingQuestionActivity : BaseActivity<SettingQuestionViewModel, ActivitySecurityQuestionBinding>() {
 
+    override fun pageName() = "安全问题设置页面"
+
     private var safeQuestionType = 1
     private val bottomDialog by lazy { CommonBottomSheetDialog(this){
         safeQuestionType = it.id

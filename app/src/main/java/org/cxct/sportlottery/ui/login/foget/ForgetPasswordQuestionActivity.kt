@@ -22,6 +22,8 @@ import splitties.activities.start
 class ForgetPasswordQuestionActivity: BaseActivity<ForgetViewModel, ActivityForgetPasswordQuestionBinding>(ForgetViewModel::class)
  ,VerifyCallback {
 
+    override fun pageName() = "通过安全问题找回密码页面"
+
     companion object{
         fun start(context: Context, userName: String, question: String){
             context.start<ForgetPasswordQuestionActivity> {
