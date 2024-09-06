@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
-<FrameLayout
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -14,8 +14,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="77dp"
-        android:layout_marginBottom="54dp"
         android:layout_marginHorizontal="@dimen/margin_30">
         <ImageView
             android:id="@+id/ivBackground"
@@ -23,256 +21,140 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:src="@drawable/bg_dialog_home_first_deposit_1"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginHorizontal="@dimen/margin_12">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/margin_20"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_wallet_black"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8"
-                    android:textSize="@dimen/textSize16sp"
-                    android:textColor="@color/color_0D2245"
-                    android:text="@string/A016"/>
-            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/linCountingTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:gravity="center_vertical"
                 android:layout_marginHorizontal="@dimen/margin_12"
-                android:layout_marginTop="@dimen/margin_15">
+                android:layout_marginTop="290dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin_6"
+                    android:gravity="center"
+                    android:textColor="@color/color_0D2245"
+                    android:textSize="@dimen/textSize10sp"
+                    android:textStyle="bold"
+                    android:text="Last Minute Offer" />
                 <TextView
                     android:id="@+id/tvNum1"
-                    android:layout_width="24dp"
-                    android:layout_height="30dp"
+                    android:layout_width="12dp"
+                    android:layout_height="18dp"
                     android:gravity="center"
                     android:background="@drawable/bg_time_number"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize18sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     android:text="0" />
                 <TextView
                     android:id="@+id/tvNum2"
-                    android:layout_width="24dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="@dimen/margin_4"
+                    android:layout_width="12dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="@dimen/margin_1"
                     android:gravity="center"
                     android:background="@drawable/bg_time_number"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize18sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     android:text="0" />
                 <TextView
-                    android:layout_width="@dimen/margin_16"
+                    android:layout_width="@dimen/margin_10"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textColor="@color/color_6D7693"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize8sp"
                     android:textStyle="bold"
                     android:text=":" />
                 <TextView
                     android:id="@+id/tvNum3"
-                    android:layout_width="24dp"
-                    android:layout_height="30dp"
+                    android:layout_width="12dp"
+                    android:layout_height="18dp"
                     android:gravity="center"
                     android:background="@drawable/bg_time_number"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize18sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     android:text="0" />
                 <TextView
                     android:id="@+id/tvNum4"
-                    android:layout_width="24dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="@dimen/margin_4"
+                    android:layout_width="12dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="@dimen/margin_1"
                     android:gravity="center"
                     android:background="@drawable/bg_time_number"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize18sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     android:text="0" />
                 <TextView
-                    android:layout_width="@dimen/margin_16"
+                    android:layout_width="@dimen/margin_10"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textColor="@color/color_6D7693"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize8sp"
                     android:textStyle="bold"
                     android:text=":" />
                 <TextView
                     android:id="@+id/tvNum5"
-                    android:layout_width="24dp"
-                    android:layout_height="30dp"
+                    android:layout_width="12dp"
+                    android:layout_height="18dp"
                     android:gravity="center"
                     android:background="@drawable/bg_time_number"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize18sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     android:text="0" />
                 <TextView
                     android:id="@+id/tvNum6"
-                    android:layout_width="24dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="@dimen/margin_4"
+                    android:layout_width="12dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="@dimen/margin_1"
                     android:gravity="center"
                     android:background="@drawable/bg_time_number"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize18sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     android:text="0" />
             </LinearLayout>
-            <TextView
-                android:id="@+id/tvExtraBonus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="@dimen/margin_20"
-                android:layout_marginRight="@dimen/margin_30"
-                android:textColor="@color/color_6D7693"
-                android:textSize="@dimen/textSize12sp"
-                android:text="@string/A017_1"/>
-
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/margin_15"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/tvDeposit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="22dp"
-                android:gravity="center"
-                android:layout_marginTop="@dimen/margin_10"
-                android:layout_marginHorizontal="@dimen/margin_25"
-                android:background="@drawable/bg_gray_stroke_blue_radius_12">
-              <LinearLayout
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="1"
-                  android:gravity="center"
-                  android:orientation="vertical">
-                  <TextView
-                      android:id="@+id/tvFirstDepositLimit"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:textSize="@dimen/margin_30"
-                      android:textStyle="bold"
-                      android:textColor="@color/color_FF8A00"
-                      android:text="P450"/>
-                  <FrameLayout
-                      android:id="@+id/flFirstDeposit"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_marginTop="-10dp">
-                      <TextView
-                          android:id="@+id/tvFirstDeposit"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textSize="@dimen/margin_20"
-                          android:textColor="@color/color_6D7693"
-                          android:text="P450"/>
-                      <ImageView
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_gravity="center"
-                          android:src="@drawable/bg_orange_line_cross"/>
-                  </FrameLayout>
-
-              </LinearLayout>
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_orange_plus"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/tvDepositLimitTomorrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/margin_30"
-                        android:textStyle="bold"
-                        android:textColor="@color/color_FF8A00"
-                        android:text="P450"/>
-                    <FrameLayout
-                        android:id="@+id/flDepositTomorrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="-10dp">
-                        <TextView
-                            android:id="@+id/tvDepositTomorrow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/margin_20"
-                            android:textColor="@color/color_6D7693"
-                            android:text="P450"/>
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/bg_orange_line_cross"/>
-                    </FrameLayout>
-
-                </LinearLayout>
-            </LinearLayout>
-            <TextView
-                android:id="@+id/tvTomorrowBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/margin_12"
-                android:textColor="@color/color_6D7693"
-                android:textSize="@dimen/textSize12sp"
-                android:text="@string/A018"/>
-            <TextView
-                android:id="@+id/tvDeposit"
-                android:layout_width="270dp"
-                android:layout_height="@dimen/margin_40"
+                android:layout_marginHorizontal="@dimen/margin_30"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/margin_16"
-                android:gravity="center"
-                android:background="@drawable/bg_btn_blue_round"
-                android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/textSize14sp"
-                android:text="@string/A019"/>
+                android:background="@drawable/bg_btn_yellow_round_deposit" />
             <TextView
                 android:id="@+id/tvDetail"
-                android:layout_width="270dp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_40"
+                android:layout_marginHorizontal="@dimen/margin_30"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/margin_14"
+                android:layout_marginTop="@dimen/margin_5"
                 android:gravity="center"
-                android:background="@drawable/bg_white_radius_20_stoke_gray"
-                android:textColor="@color/color_6D7693"
+                android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize14sp"
                 android:text="@string/A020"/>
         </LinearLayout>
     </FrameLayout>
 
     <ImageView
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
-        android:layout_gravity="right"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_gift_box"/>
-
-    <ImageView
         android:id="@+id/ivClose"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginTop="@dimen/margin_30"
         android:layout_gravity="bottom|center_horizontal"
         android:adjustViewBounds="true"
         android:src="@drawable/ic_circle_white_close"/>
-</FrameLayout>
+</LinearLayout>
 </LinearLayout>
