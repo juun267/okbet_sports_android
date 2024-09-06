@@ -52,13 +52,12 @@ const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
 const val APP_NAME = "okbet" //okgame的包需要加一些特定的参数
 
+private const val OkSport = "pageOKSports"
+private const val OkGame = "pageOKSports"
+private const val OkBingo = "pageOKSports"  // 实际对应的是ESport 2023.10.06
+private const val OkLive = "pageOKSports"
+private const val MiniGame = "pageMINI"
 
-enum class HomeGames(val value: String){
-    OkSport("pageOKSports"),
-    OkGame("pageOKGames"),
-    OkBingo("pageOKBingo"),// 实际对应的是ESport 2023.10.06
-    OkLive("pageOKLive"),
-}
 
 var sConfigData: ConfigData? = null
     set(value) {
@@ -105,7 +104,7 @@ class StaticData {
 
         fun okLiveOpened(): Boolean {
             sConfigData?.homeGamesList?.forEach {
-                if(it.uniqueName== HomeGames.OkLive.value){
+                if(it.uniqueName== OkLive){
                     //status==1  为开启
                     return it.status==1
                 }
@@ -117,9 +116,8 @@ class StaticData {
         //获取okGame是否开启
         fun okGameOpened(): Boolean{
             sConfigData?.homeGamesList?.forEach {
-                if(it.uniqueName== HomeGames.OkGame.value){
-                    //status==1  为开启
-                    return it.status==1
+                if(it.uniqueName== OkGame){
+                    return it.isOpen()
                 }
             }
             return true
@@ -129,9 +127,17 @@ class StaticData {
         //获取okSport菜单是否开启
         fun okSportOpened():Boolean {
             sConfigData?.homeGamesList?.forEach {
-                if(it.uniqueName== HomeGames.OkSport.value){
-                    //status==1  为开启
-                    return it.status==1
+                if(it.uniqueName== OkSport){
+                    return it.isOpen()
+                }
+            }
+            return true
+        }
+
+        fun miniGameOpened(): Boolean {
+            sConfigData?.homeGamesList?.forEach {
+                if(it.uniqueName == MiniGame){
+                    return it.isOpen()
                 }
             }
             return true
@@ -140,9 +146,8 @@ class StaticData {
         //获取okBingo是否开启
         fun okBingoOpened():Boolean {
             sConfigData?.homeGamesList?.forEach {
-                if(it.uniqueName== HomeGames.OkBingo.value){
-                    //status==1  为开启
-                    return it.status==1
+                if(it.uniqueName== OkBingo){
+                    return it.isOpen()
                 }
             }
             return true

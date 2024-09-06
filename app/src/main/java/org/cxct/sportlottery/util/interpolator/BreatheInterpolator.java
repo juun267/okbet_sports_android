@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.util;
+package org.cxct.sportlottery.util.interpolator;
 
 import android.animation.TimeInterpolator;
 

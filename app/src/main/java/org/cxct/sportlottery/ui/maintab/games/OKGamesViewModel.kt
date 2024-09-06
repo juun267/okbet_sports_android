@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -32,6 +33,7 @@ class OKGamesViewModel(
     companion object {
         var okGamesHall: Pair<OKGamesHall, Long>? = null
         var okLiveGamesHall: Pair<OKGamesHall, Long>? = null
+        val miniGameList by lazy { MutableLiveData<Pair<List<OKGameBean>?, Long>>() }
 
         fun preLoadOKLiveHall() {
             callApiWithNoCancel({ OKLiveRepository.okLiveHall() }) {
@@ -44,6 +46,20 @@ class OKGamesViewModel(
                 it.getData()?.let { okGamesHall = Pair(it, System.currentTimeMillis()) }
             }
         }
+
+        fun loadMiniGameList(lifeScope: CoroutineScope) = lifeScope.callApi({ OKGamesRepository.getMiniGameList(1, 100) }) {
+            miniGameList.value = Pair(it.getData(), System.currentTimeMillis())
+        }
+
+        fun getActiveMiniGameData(time: Long = 15_000): List<OKGameBean>? {
+            val cacheData = miniGameList.value
+            if (cacheData == null || System.currentTimeMillis() - cacheData.second > time) {
+                return null
+            } else {
+                return cacheData.first
+            }
+        }
+
     }
 
     val providerResult: LiveData<OKGamesHall>
@@ -271,10 +287,6 @@ class OKGamesViewModel(
                 _providerresult.postValue(data)
             }
         }
-    }
-
-    fun loadNewGames() {
-
     }
 
 }

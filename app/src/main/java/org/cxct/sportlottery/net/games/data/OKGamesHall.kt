@@ -95,6 +95,8 @@ data class OKGameBean(
     var maintain: Int? = 0, // 0:游戏正常开启, 1: 维护状态
     val jackpotAmount:Double = 0.0, //0不显示1显示
     val jackpotOpen:Int = 0,
+    val extraParam: String? = null,
+    var imgBigGame: String? = null
 ): Parcelable,BaseNode() {
     // 列表的父节点
     @Transient

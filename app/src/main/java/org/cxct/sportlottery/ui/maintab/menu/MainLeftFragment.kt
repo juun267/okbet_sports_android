@@ -26,7 +26,9 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
+import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.ui.maintab.home.game.perya.MiniGameListFragment
 import org.cxct.sportlottery.ui.maintab.home.ambassador.AmbassadorActivity
 import org.cxct.sportlottery.ui.maintab.home.ambassador.AmbassadorInfo
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
@@ -119,6 +121,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             bindVerifyStatus(userInfo = it)
         }
         ConfigRepository.config.observe(this){
+            binding.menuPerya.isVisible = StaticData.miniGameOpened()
             binding.menuVip.isVisible = StaticData.vipOpened()
             binding.menuInvite.isVisible = StaticData?.inviteUserOpened()
         }
@@ -126,6 +129,16 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
     // 新增菜单在这里修改
     private fun initMenuItem() = binding.run {
         val cxt = binding.root.context
+        menuPerya.setItem(
+            cxt.getIconSelector(R.drawable.ic_left_menu_perya_sel, R.drawable.ic_left_menu_perya_nor),
+            R.string.P452
+        ){
+            close()
+            getMainTabActivity().jumpToPerya()
+        }.apply {
+            isVisible = StaticData.miniGameOpened()
+        }
+
         menuSport.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_sport_sel, R.drawable.ic_left_menu_sport_nor),
             R.string.B001
@@ -318,6 +331,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             OKLiveFragment::class.java -> binding.menuOKLive
             ESportFragment::class.java -> binding.menuESport
             NewsHomeFragment::class.java -> binding.menuNews
+            MiniGameListFragment::class.java-> binding.menuPerya
             else -> null
         }
         lastItem?.isSelected=true

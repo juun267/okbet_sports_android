@@ -82,7 +82,7 @@ object ServiceBroadcastReceiver {
 
     val jackpotChange: LiveData<String?> = MutableLiveData()
 
-    val thirdGamesMaintain = MutableSharedFlow<FrontWsEvent.GameFirmMaintainEvent>(extraBufferCapacity= 3)
+    val thirdGamesMaintain = MutableSharedFlow<FrontWsEvent.GameFirmMaintainEvent>(replay = 2, extraBufferCapacity= 3)
 
     private val eventDispatchers: Map<String, EventDispatcher<*>>
 

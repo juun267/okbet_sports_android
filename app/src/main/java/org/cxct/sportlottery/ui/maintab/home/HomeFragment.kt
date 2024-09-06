@@ -18,6 +18,7 @@ import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
@@ -35,6 +36,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.firstdeposit.SevenDaysSignInActivity
 import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragment
+import org.cxct.sportlottery.ui.maintab.home.game.perya.MiniGameListFragment
 import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
@@ -84,23 +86,26 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         return@HomeMenuAdapter true
     }
 
+    fun jumpToPerya() {
+        post{  binding.rvMenu.scrollToPosition(homeMenuAdapter.selectedPerya()) }
+        fragmentHelper2.show(MiniGameListFragment::class.java)
+    }
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden) {
             binding.appBarLayout.expand(false)
-        }else{
             homeMenuAdapter.selectedRecommend()
+        }else{
+
         }
         fragmentHelper2.currentFragment()?.let {
-            if (it.isAdded) {
-                it.onHiddenChanged(hidden)
-            }
+            it.onHiddenChanged(hidden)
         }
     }
 
     override fun onInitView(view: View) {
         initToolBar()
-        binding.rvMarquee.bindLifecycler(this)
         initMenu()
         initIndicate()
         binding.ivService.setOnTouchListener(SuckEdgeTouch())
@@ -122,6 +127,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
 
     override fun onBindViewStatus(view: View) {
         initObservable()
+        binding.rvMarquee.bindLifecycler(this)
         viewModel.getConfigData()
         viewModel.getAnnouncement()
     }

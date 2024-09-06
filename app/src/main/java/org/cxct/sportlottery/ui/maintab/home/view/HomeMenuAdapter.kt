@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.home.game.esport.ESportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.game.live.LiveGamesFragment
+import org.cxct.sportlottery.ui.maintab.home.game.perya.MiniGameListFragment
 import org.cxct.sportlottery.ui.maintab.home.game.slot.ElectGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.game.sport.SportVenueFragment
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
@@ -28,6 +30,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private val pageSize = 6
     private var selectedBg = R.drawable.bg_home_menu_sel
     private var normalBg = R.drawable.bg_home_menu_nor
+
 
     data class MenuTab(@DrawableRes val selectedIcon: Int,
                        @DrawableRes val norIcon: Int,
@@ -44,6 +47,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private val promotionMenuItem = MenuTab(R.drawable.ic_home_menu_promotion_sel, R.drawable.ic_home_menu_promotion_nor, R.string.promo, null)
     private val sericeMenuItem = MenuTab(R.drawable.ic_home_menu_service_sel, R.drawable.ic_home_menu_service_nor, R.string.LT050_1, null)
     private val endcardMenuItem = MenuTab(R.drawable.ic_home_menu_endcard_sel, R.drawable.ic_home_menu_endcard_nor, R.string.P333, null)
+    private val peryaMenuItem = MenuTab(R.drawable.ic_home_menu_perya_sel, R.drawable.ic_home_menu_perya_nor, R.string.P452, MiniGameListFragment::class.java)
 
     private var selectItem: MenuTab? = null
 
@@ -103,9 +107,13 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     override fun onBinding(position: Int, binding: ItemHomeMenuPageBinding, item: Array<MenuTab?>) { }
 
     private fun setMaintanence(linMaintenance: View, @StringRes name: Int){
-        if ((name == R.string.main_tab_sport || name == R.string.esports || name == R.string.P333)
-            && getSportEnterIsClose()) {
-            linMaintenance.visible()
+        if ((name == R.string.main_tab_sport || name == R.string.esports || name == R.string.P333)) {
+            linMaintenance.isVisible = getSportEnterIsClose()
+            return
+        }
+
+        if (name == R.string.P452) {
+            linMaintenance.isVisible = !StaticData.miniGameOpened()
             return
         }
 
@@ -122,6 +130,11 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         if (StaticData.okGameOpened()){
             itemDatas.add(okGameMenuItem)
         }
+
+        if (StaticData.miniGameOpened()) {
+            itemDatas.add(peryaMenuItem)
+        }
+
         if (StaticData.okLiveOpened()){
             itemDatas.add(okLiveGameItem)
         }
@@ -132,6 +145,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
             itemDatas.add(esportMenuItem)
         }
         itemDatas.add(promotionMenuItem)
+
         itemDatas.add(sericeMenuItem)
 
         val less = itemDatas.size % pageSize
@@ -177,8 +191,8 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
         itemClick.invoke(selectItem!!)
     }
 
-    private fun changeSelected(item: MenuTab, position: Int, position2: Int) {
-        if (selectItem == item || !itemClick.invoke(item)) {
+    private fun changeSelected(item: MenuTab, position: Int, position2: Int, check: Boolean = true) {
+        if (selectItem == item || (!itemClick.invoke(item) && check)) {
             return
         }
 
@@ -200,7 +214,12 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
 //        }
     }
 
-    fun selectedRecommend() = changeSelected(hotMenuItem, initiallyPosition, 0)
+    fun selectedRecommend() = changeSelected(hotMenuItem, initiallyPosition, 0, false)
+    fun selectedPerya(): Int {
+        val index = datas.indexOf(peryaMenuItem)
+        changeSelected(peryaMenuItem, initiallyPosition, index, false)
+        return initiallyPosition
+    }
 
     fun checkMaintain() {
         if (selectItem == sportMenuItem || selectItem == esportMenuItem) {
@@ -220,6 +239,13 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
 
         if (selectItem == okLiveGameItem) {
             if (!StaticData.okLiveOpened()) {
+                selectedRecommend()
+            }
+            return
+        }
+
+        if (selectItem == peryaMenuItem) {
+            if (!StaticData.miniGameOpened()) {
                 selectedRecommend()
             }
             return

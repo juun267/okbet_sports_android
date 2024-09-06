@@ -34,6 +34,8 @@ import org.cxct.sportlottery.view.dialog.*
 import org.cxct.sportlottery.view.dialog.queue.DialogQueueManager
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
 
@@ -43,10 +45,22 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     private val PRIORITY_REGISTER_SUCCESS = 300
     private val PRIORITY_AGE_VERIFY = 400
     private val PRIORITY_FIRST_DEPOSIT = 350
+    private val okgameViewModel by lazy {
+        getViewModel(clazz = OKGamesViewModel::class.java.kotlin, owner = { ViewModelOwner.from(requireActivity(), requireActivity()) })
+    }
 
-     fun getMainTabActivity() = activity as MainTabActivity
-     private fun getHomeFragment() = parentFragment as HomeFragment
-     private val mOddsChangeListener by lazy {
+    private val recommendMiniGameHelper by lazy {
+        RecommendMiniGameHelper(context(), ::enterGame) {
+            (binding.scrollView.getChildAt(0) as ViewGroup).addView(it, 0)
+        }
+    }
+
+    private fun enterGame(okGameBean: OKGameBean) {
+        getMainTabActivity().enterThirdGame(okGameBean)
+    }
+    fun getMainTabActivity() = activity as MainTabActivity
+    private fun getHomeFragment() = parentFragment as HomeFragment
+    private val mOddsChangeListener by lazy {
         ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
             binding.hotMatchView.updateOddChange(oddsChangeEvent)
         }
@@ -78,6 +92,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         if (binding.scrollView.scrollY != 0) {
             binding.scrollView.postDelayed({ backTop() }, 50)
         }
+        recommendMiniGameHelper.bindLifeEvent(this@HomeHotFragment)
         bottomView.bindServiceClick(childFragmentManager)
         recentView.setup(this@HomeHotFragment)
         hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@HomeHotFragment)
@@ -106,6 +121,9 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
                         }
                     }
                 }
+                GameEntryType.MINIGAMES->{
+                    getHomeFragment().jumpToPerya()
+                }
             }
         }
         promotionView.setup(this@HomeHotFragment)
@@ -113,6 +131,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         winsRankView.setUp(this@HomeHotFragment, { viewModel.getBetRecord() }, { viewModel.getWinRecord() })
         initObservable()
         viewModel.getSystemNotice()
+        OKGamesViewModel.loadMiniGameList(lifecycleScope)
     }
 
 
@@ -134,12 +153,14 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         if (hidden) {
             //隐藏时取消赛事监听
             unSubscribeChannelHallAll()
+            recommendMiniGameHelper.pausePlay()
         } else {
             receiver.addOddsChangeListener(this, mOddsChangeListener)
             refreshHotMatch()
             //返回页面时，刷新体育相关view状态
             checkToCloseView()
             binding.providerView.loadData()
+            recommendMiniGameHelper.resumePlay()
         }
 
     }
