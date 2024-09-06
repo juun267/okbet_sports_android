@@ -1066,7 +1066,6 @@ fun BaseActivity<*, *>.jumpToDeposit(action: String, activityCharge: Boolean = f
                     hideLoading()
                     if (operation) {
                         MoneyRechargeActivity.startFrom(this@jumpToDeposit, action)
-                        startActivity(MoneyRechargeActivity::class.java)
                     } else {
                         showPromptDialog(
                             getString(R.string.prompt),
