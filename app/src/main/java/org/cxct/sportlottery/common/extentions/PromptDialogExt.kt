@@ -35,7 +35,12 @@ fun FragmentActivity.showTokenPromptDialog(errorMessage: String?, positiveClickL
             mTokenPromptDialog?.show(supportFragmentManager, null)
         }
 }
-
+fun FragmentActivity.showPromptDialog(
+    message: String,
+    positiveClickListener: () -> Unit?
+) {
+    showPromptDialog(null, message, null, positiveClickListener, false)
+}
 fun FragmentActivity.showPromptDialog(
     title: String? = getString(R.string.prompt),
     message: String,
@@ -87,14 +92,14 @@ fun FragmentActivity.showPromptDialog(
 }
 
 fun FragmentActivity.showErrorPromptDialog(message: String, positiveClickListener: () -> Unit?) {
-    showErrorPromptDialog(getString(R.string.prompt), message, positiveClickListener)
+    showErrorPromptDialog(null, message, positiveClickListener)
 }
 
-fun FragmentActivity.showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
+fun FragmentActivity.showErrorPromptDialog(title: String?, message: String, positiveClickListener: () -> Unit?) {
     showPromptDialog(title, message, null, positiveClickListener, true)
 }
 
-fun FragmentActivity.showErrorPromptDialog(title: String, message: Spanned, hasCancel: Boolean, positiveClickListener: () -> Unit?) {
+fun FragmentActivity.showErrorPromptDialog(title: String?, message: Spanned, hasCancel: Boolean, positiveClickListener: () -> Unit?) {
     showPromptDialog(title, message, null, positiveClickListener, true,hasCancel)
 }
 

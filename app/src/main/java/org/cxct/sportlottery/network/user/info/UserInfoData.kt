@@ -71,4 +71,5 @@ data class UserInfoData(
     val rejectRemark: String?="",
     val levelCode: String?=null,
     val mayaId: String?=null,
+    val safeQuestionType: Int?=null,
 )

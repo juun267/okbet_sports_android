@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F0F5FA"
+    android:orientation="vertical"
+    tools:context=".ui.profileCenter.changePassword.SettingPasswordActivity">
+
+    <org.cxct.sportlottery.view.CustomTopToolbar
+        android:id="@+id/custom_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:topTitleText="@string/B180"/>
+
+    <org.cxct.sportlottery.view.scrollview.MyScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@color/color_FFFFFF"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                android:id="@+id/et_current_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:endIcon="@drawable/ic_eye_close"
+                app:hintText="@string/B203"
+                app:isResponsiveIconColor="false"
+                app:labelText="@string/current_login_password"
+                app:labelTextStyle="normal"
+                app:primaryColor="@color/color_AFAFB1">
+
+                <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                    android:id="@+id/eet_current_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/color_FFFFFF_DE000000"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+            <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                android:id="@+id/et_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:endIcon="@drawable/ic_arrow_down_triangle"
+                app:hintText="@string/B200"
+                app:isResponsiveIconColor="false"
+                app:labelText="@string/B182"
+                app:labelTextStyle="normal"
+                app:primaryColor="@color/color_AFAFB1">
+
+                <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                    android:id="@+id/eet_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:editable="false"
+                    android:maxLines="1"
+                    android:textColor="@color/color_FFFFFF_DE000000"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+            <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                android:id="@+id/et_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:hintText="@string/B184"
+                app:isResponsiveIconColor="false"
+                app:labelText="@string/B183"
+                app:labelTextStyle="normal"
+                app:primaryColor="@color/color_AFAFB1">
+
+                <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                    android:id="@+id/eet_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:maxLength="50"
+                    android:maxLines="1"
+                    android:textColor="@color/color_FFFFFF_DE000000"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+
+        </LinearLayout>
+    </org.cxct.sportlottery.view.scrollview.MyScrollView>
+
+    <Button
+        android:id="@+id/btn_confirm"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/ic_submit"
+        android:minWidth="135dp"
+        android:minHeight="36dp"
+        android:text="@string/btn_confirm"
+        android:textColor="@color/color_FCFCFC"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
+
+
+</LinearLayout>

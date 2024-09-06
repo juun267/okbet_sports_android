@@ -17,6 +17,8 @@ import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.MD5Util
+import org.cxct.sportlottery.util.appendCaptchaParams
+import org.cxct.sportlottery.util.toJson
 import retrofit2.http.Body
 import java.io.File
 
@@ -214,6 +216,46 @@ object UserRepository {
     }
     suspend fun inviteUserDetail(): ApiResult<InviteUserDetail> {
         return userApi.inviteUserDetail()
+    }
+    suspend fun getUserSafeQuestion(userName: String, identity: String, validCode: String): ApiResult<CheckSafeQuestionResp> {
+        val params = JsonObject()
+        params.addProperty("userName", userName)
+        params.appendCaptchaParams(identity, validCode)
+        return userApi.getUserSafeQuestion(params)
+    }
+
+    suspend fun querySafeQuestionType(): ApiResult<List<SafeQuestion>> {
+        return userApi.querySafeQuestionType()
+    }
+
+    suspend fun setSafeQuestion(safeQuestionType: Int,safeQuestion: String, password: String): ApiResult<String> {
+        val params = JsonObject()
+        params.addProperty("safeQuestionType", safeQuestionType)
+        params.addProperty("safeQuestion", safeQuestion)
+        params.addProperty("password", password)
+        return userApi.setSafeQuestion(params)
+    }
+
+    suspend fun checkSafeQuest(userName: String, safeQuestion: String, identity: String, validCode: String): ApiResult<CheckSafeQuestionResp> {
+        val params = JsonObject()
+        params.addProperty("userName", userName)
+        params.addProperty("safeQuestion", safeQuestion)
+        params.appendCaptchaParams(identity, validCode)
+        return userApi.checkSafeQuest(params)
+    }
+    suspend fun updatePasswordBySafeQuestion(userName: String, securityCode: String, newPassword: String): ApiResult<ForgetPasswordResp> {
+        val params = JsonObject()
+        params.addProperty("userName", userName)
+        params.addProperty("securityCode", securityCode)
+        params.addProperty("newPassword", newPassword)
+        return userApi.updatePasswordBySafeQuestion(params)
+    }
+
+    /**
+     * account 用户名 loginSrc登录环境 safeQuestion密保问题答案
+     */
+    suspend fun loginBySafeQuestion(loginRequest: LoginRequest): ApiResult<List<LoginData>> {
+        return userApi.loginBySafeQuestion(loginRequest)
     }
 
 }

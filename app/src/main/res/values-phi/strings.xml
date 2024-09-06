@@ -1105,6 +1105,7 @@
     <string name="send">Ipadala</string>
     <string name="pls_enter_correct_mobile_email">Pakilagay ang tamang mobile phone/email</string>
     <string name="pls_enter_correct_mobile_email_username">Pakilagay ang tamang username/mobile phone/email</string>
+    <string name="pls_enter_correct_username">Pakilagay ang tamang username</string>
     <string name="live_service">Customer Service</string>
     <string name="pls_enter_correct_mobile">Pakilagay ang tamang numero ng telepono</string>
     <string name="pls_enter_correct_email">Pakilagay ang tamang email</string>
@@ -1770,5 +1771,26 @@
     <string name="B75">Nag-failed ang cash out!</string>
     <string name="B104">Nag- cash out palang</string>
     <string name="B105">Nag- cash out na</string>
+    <string name="B178">Kunin ang password sa pamamagitan ng security question</string>
+    <string name="B179">Mag-login sa pamamagitan ng security question</string>
+    <string name="B180">Security question</string>
+    <string name="B181">Mangyaring sagutin ang security question</string>
+    <string name="B182">Mangyaring piliin ang iyong security question</string>
+    <string name="B183">Please set up the answer for the security question</string>
+    <string name="B184">Sagot</string>
+    <string name="B185">Ano ang pangalan ng iyong unang alagang hayop?</string>
+    <string name="B186">Ano ang pangalan ng iyong unang paaralan?</string>
+    <string name="B187">Saang lungsod ka isinilang?</string>
+    <string name="B188">Ano ang pangalan ng dalaga ng iyong ina?</string>
+    <string name="B189">Ano ang iyong palayaw noong bata ka?</string>
+    <string name="B190">Ano ang paborito mong pelikula?</string>
+    <string name="B191">Ano ang brand at modelo ng iyong unang kotse?</string>
+    <string name="B192">Ano ang pangalan ng iyong paboritong guro?</string>
+    <string name="B193">Ano ang pangalan ng matalik mong kaibigan noong high school?</string>
+    <string name="B194">Ano ang paborito mong pagkain?</string>
+    <string name="B199">Nakakonpigurado</string>
+    <string name="B200">Paki-pili…</string>
+    <string name="B203">Pakilagay ang iyong password sa pag-login</string>
+
 </resources>
 

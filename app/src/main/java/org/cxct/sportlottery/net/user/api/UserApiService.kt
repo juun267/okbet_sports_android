@@ -15,18 +15,24 @@ import org.cxct.sportlottery.network.Constants.ACTIVITY_CATEGORY_LIST
 import org.cxct.sportlottery.network.Constants.ACTIVITY_DETAIL_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_RECORD
+import org.cxct.sportlottery.network.Constants.CHECKSAFEQUEST
+import org.cxct.sportlottery.network.Constants.GET_USER_SAFEQUESTION
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
 import org.cxct.sportlottery.network.Constants.INVITE_USER_DETAIL
 import org.cxct.sportlottery.network.Constants.LOGIN
+import org.cxct.sportlottery.network.Constants.LOGIN_BY_SAFEQUESTION
 import org.cxct.sportlottery.network.Constants.LOGIN_CHECK_NEED_CODE
+import org.cxct.sportlottery.network.Constants.QUERY_SAFEQUESTION_TYPE
 import org.cxct.sportlottery.network.Constants.REVERIFY
 import org.cxct.sportlottery.network.Constants.RRESET_WITHDRAW
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.SETBIRTHDAY
+import org.cxct.sportlottery.network.Constants.SET_SAFEQUESTION
 import org.cxct.sportlottery.network.Constants.UPLOAD_REVIEW_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_VERIFY_CONFIG
 import org.cxct.sportlottery.network.Constants.SET_USERNAME
+import org.cxct.sportlottery.network.Constants.UPDATE_PASSWORD_BY_SAFEQUESTION
 import org.cxct.sportlottery.network.Constants.UPLOAD_VERIFY_PHOTO
 import org.cxct.sportlottery.network.Constants.VIP_DETAIL
 import org.cxct.sportlottery.network.Constants.VIP_REWARD
@@ -35,6 +41,7 @@ import org.cxct.sportlottery.network.Constants.VIP_USER
 import org.cxct.sportlottery.network.Constants.WHEEL_ACTIVITY_INFO
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
+import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.interceptor.HEADER_UPLOAD_IMG
 import org.cxct.sportlottery.network.interceptor.KEY_BASE_URL
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
@@ -115,5 +122,25 @@ interface UserApiService {
 
     @GET(INVITE_USER_DETAIL)
     suspend fun inviteUserDetail(): ApiResult<InviteUserDetail>
+
+    @POST(GET_USER_SAFEQUESTION)
+    suspend fun getUserSafeQuestion(@Body params : JsonObject): ApiResult<CheckSafeQuestionResp>
+
+    @GET(QUERY_SAFEQUESTION_TYPE)
+    suspend fun querySafeQuestionType(): ApiResult<List<SafeQuestion>>
+
+    @POST(SET_SAFEQUESTION)
+    suspend fun setSafeQuestion(@Body params : JsonObject): ApiResult<String>
+
+    @POST(CHECKSAFEQUEST)
+    suspend fun checkSafeQuest(@Body params : JsonObject): ApiResult<CheckSafeQuestionResp>
+
+    @POST(UPDATE_PASSWORD_BY_SAFEQUESTION)
+    suspend fun updatePasswordBySafeQuestion(@Body params : JsonObject): ApiResult<ForgetPasswordResp>
+
+    @POST(LOGIN_BY_SAFEQUESTION)
+    suspend fun loginBySafeQuestion(@Body params : LoginRequest): ApiResult<List<LoginData>>
+
+
 
 }

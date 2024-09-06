@@ -62,10 +62,13 @@
 
 
     <LinearLayout
+        android:id="@+id/linBlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="60dp"
+        android:paddingHorizontal="@dimen/margin_16"
+        android:paddingVertical="@dimen/margin_20"
         android:background="@drawable/bg_white_radius_8"
         android:elevation="1dp"
         android:orientation="vertical"
@@ -76,11 +79,9 @@
             android:id="@+id/btnPhoneWays"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginHorizontal="@dimen/margin_16"
-            android:layout_marginTop="@dimen/margin_20"
             android:layout_marginBottom="@dimen/margin_12"
             android:background="@drawable/bg_blue_radius_8"
-            android:drawableLeft="@drawable/ic_mobile_white"
+            android:drawableLeft="@drawable/ic_step_phone"
             android:paddingHorizontal="16dp"
             android:drawablePadding="8dp"
             android:textAllCaps="false"
@@ -93,7 +94,6 @@
             android:id="@+id/btnEmailWays"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginHorizontal="@dimen/margin_16"
             android:visibility="gone"
             android:background="@drawable/bg_blue_radius_8"
             android:drawableLeft="@drawable/ic_email_white"
@@ -105,39 +105,83 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize14sp" />
 
-        <LinearLayout
-            android:id="@+id/cl_live_chat"
+        <Button
+            android:id="@+id/btnQuestionWays"
             android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:visibility="visible"
+            android:background="@drawable/bg_blue_radius_8"
+            android:drawableLeft="@drawable/ic_step_phone"
+            android:paddingHorizontal="16dp"
+            android:drawablePadding="8dp"
+            android:textAllCaps="false"
+            android:gravity="start|center_vertical"
+            android:text="@string/B178"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textSize14sp" />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_code_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:button="@drawable/effect_login_select_checkbox"
+        android:paddingStart="6dp"
+        android:text="@string/P181"
+        android:textColor="@color/color_025BE8_025BE8"
+        android:textSize="@dimen/textSize12sp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linBlock" />
+    <TextView
+        android:id="@+id/tvloginWithSafeQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_code_login"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_24"
+        android:textColor="@color/color_025BE8"
+        android:text="@string/B179"
+        android:textSize="@dimen/textSize12sp"/>
+
+    <LinearLayout
+        android:id="@+id/cl_live_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvloginWithSafeQuestion"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginVertical="20dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="24dp"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_marginRight="3dp"
+            android:textColor="@color/color_535D76"
+            android:text="@string/need_help"
+            android:textSize="@dimen/textSize12sp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="3dp"
-                android:textColor="@color/color_535D76"
-                android:text="@string/need_help"
-                android:textSize="@dimen/textSize12sp"/>
+        <ImageView
+            android:layout_marginEnd="@dimen/dp_4"
+            android:layout_width="@dimen/margin_16"
+            android:adjustViewBounds="true"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_customer_service"/>
 
-            <ImageView
-                android:layout_marginEnd="@dimen/dp_4"
-                android:layout_width="@dimen/margin_16"
-                android:adjustViewBounds="true"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_customer_service"/>
-
-            <TextView
-                android:id="@+id/tv_live_chat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_20"
-                android:textColor="@color/color_025BE8"
-                android:text="@string/live_service"
-                android:textSize="@dimen/textSize12sp"/>
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/tv_live_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_20"
+            android:textColor="@color/color_025BE8"
+            android:text="@string/live_service"
+            android:textSize="@dimen/textSize12sp"/>
     </LinearLayout>
 
     <include

@@ -229,6 +229,83 @@
 
                     </org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_login_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
+                        android:id="@+id/et_username1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintText="@string/username"
+                        app:iconSignifier="@drawable/ic_login"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/title_payer"
+                        app:labelTextStyle="normal"
+                        app:primaryColor="@color/color_AFAFB1">
+
+                        <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_username1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView>
+
+                    <org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
+                        android:id="@+id/et_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintText="@string/B180"
+                        app:iconSignifier="@drawable/ic_icon_okbet_login_password"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/title_payer"
+                        app:labelTextStyle="normal"
+                        app:primaryColor="@color/color_AFAFB1">
+
+                        <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_question"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:lineSpacingExtra="@dimen/margin_5"
+                            android:imeOptions="actionNext"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView>
+
+                    <org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
+                        android:id="@+id/et_answer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintText="@string/B181"
+                        app:iconSignifier="@drawable/ic_icon_okbet_login_password"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/login_password"
+                        app:labelTextStyle="normal"
+                        app:primaryColor="@color/color_AFAFB1">
+
+                        <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:maxLength="50"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView>
+                </LinearLayout>
             </FrameLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

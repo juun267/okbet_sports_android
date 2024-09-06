@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.listener.CustomListener
@@ -36,6 +37,7 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.EditUserNameActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
+import org.cxct.sportlottery.ui.profileCenter.securityquestion.SettingQuestionActivity
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.isStatusOpen
@@ -214,6 +216,13 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
         //密碼設置
         btnPwdSetting.setOnClickListener {
             startActivity(SettingPasswordActivity::class.java)
+        }
+        linQuestion.setOnClickListener {
+            if (viewModel.userInfo.value?.passwordSet == true) {
+                showErrorPromptDialog(getString(R.string.N645)){}
+            }else {
+                startActivity(SettingQuestionActivity::class.java)
+            }
         }
         //登录授权
         linAuth.setOnClickListener { startActivity(AuthActivity::class.java) }
@@ -503,6 +512,15 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
                 sConfigData?.realNameWithdrawVerified.isStatusOpen() || sConfigData?.realNameRechargeVerified.isStatusOpen()
             binding.tvPassWord.text =
                 if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
+            if (it?.safeQuestionType==null){
+                binding.tvQuestion.text = getString(R.string.set)
+                binding.iconQuestion.isVisible = true
+                binding.linQuestion.isEnabled = true
+            }else{
+                binding.tvQuestion.text = getString(R.string.B199)
+                binding.iconQuestion.isVisible = false
+                binding.linQuestion.isEnabled = false
+            }
             setIdentifyStatus(binding.llVerified.isVisible&&it?.verified==VerifiedType.PASSED.value)
             viewModel.userDetail.value?.let { setIdentityDetail(it) }
             VerifiedType.getVerifiedType(it?.verified).let {

@@ -546,6 +546,13 @@ object Constants {
     const val USER_COMPLETEUSERDETAILS = "/api/front/user/CompleteUserDetails"//完善用户信息详情
     //注销账户
     const val CANCEL_ACCOUNT = "/api/front/user/remove"
+    const val GET_USER_SAFEQUESTION = "/api/front/user/getUserSafeQuestion" //获取用户的密保问题
+    const val QUERY_SAFEQUESTION_TYPE = "/api/front/user/querySafeQuestionType" //获取配置密保问题列表
+    const val SET_SAFEQUESTION = "/api/front/user/setSafeQuestion" //设置密保问题
+    const val CHECKSAFEQUEST = "/api/front/user/checkSafeQuest" //校验密保问题
+    const val UPDATE_PASSWORD_BY_SAFEQUESTION = "/api/front/user/updatePasswordBySafeQuestion" //使用密保问题修改密码
+    const val LOGIN_BY_SAFEQUESTION = "/api/front/index/loginBySafeQuestion" //会员密保问题登录
+
 
     //忘记密码 发送短信
     const val FORGET_PASSWORD_SMS = "/api/front/index/validateForgotPasswordSMS"

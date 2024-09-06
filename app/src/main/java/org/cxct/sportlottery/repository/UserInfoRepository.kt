@@ -269,6 +269,7 @@ object UserInfoRepository {
             rejectRemark = userInfoData.rejectRemark,
             levelCode = userInfoData.levelCode,
             mayaId = userInfoData.mayaId,
+            safeQuestionType = userInfoData.safeQuestionType,
         )
 
     suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {

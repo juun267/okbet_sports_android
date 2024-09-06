@@ -185,7 +185,59 @@
                         android:src="@drawable/icon_arrow07" />
 
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_0.5"
+                    android:layout_marginStart="14dp"
+                    android:background="@color/color_F0F5FA"
+                    android:visibility="gone" />
 
+                <LinearLayout
+                    android:id="@+id/lin_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_1D1F2D_FFFFFF"
+                    android:foreground="@drawable/fg_ripple"
+                    android:gravity="center"
+                    android:minHeight="46dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/B180"
+                        android:textColor="@color/color_9FADC6_535D76"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <TextView
+                        android:id="@+id/tvQuestion"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:text="@string/set"
+                        android:textColor="@color/color_6C7BA8_A7B2C4"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <ImageView
+                        android:id="@+id/iconQuestion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_arrow07" />
+                    <androidx.legacy.widget.Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_0.5"

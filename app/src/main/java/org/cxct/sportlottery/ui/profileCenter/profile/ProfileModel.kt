@@ -10,6 +10,7 @@ import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.SafeQuestion
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.AreaAllResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
@@ -227,4 +228,5 @@ class ProfileModel(
            }
        }
     }
+
 }

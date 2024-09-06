@@ -26,18 +26,18 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBi
         fun start(activity: Activity, userName: String,
                   phoneNumber: String?,
                   code: String?,
-                  byPhoneNumber: Boolean = true) {
+                  ways: Int = 1) {
             val intent = Intent(activity, ResetPasswordActivity::class.java)
             intent.putExtra("userName", userName)
-            intent.putExtra("byPhoneNumber", byPhoneNumber)
             intent.putExtra("phoneNumber", phoneNumber)
             intent.putExtra("code", code)
+            intent.putExtra("ways", ways)
             activity.startActivityForResult(intent, 100)
         }
     }
 
     private val userName by lazy { "${intent.getSerializableExtra("userName")}" }
-    private val byPhoneNumber by lazy { intent.getBooleanExtra("byPhoneNumber", true) }
+    private val ways by lazy { intent.getIntExtra("ways", 1) }
     private val phone by lazy { intent.getStringExtra("phoneNumber") }
     private val code by lazy { intent.getStringExtra("code") }
 
@@ -113,7 +113,7 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBi
 
     private fun onNext() {
         if (binding.clSuccess.isVisible) {
-            finishWithOK()
+             startLogin()
             return
         }
 
@@ -128,11 +128,10 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBi
         loading()
         binding.btnNext.setBtnEnable(false)
         val encodedPassword = MD5Util.MD5Encode(confirmPassword)
-
-        if (byPhoneNumber) {
-            viewModel.resetPassword(userName, encodedPassword, encodedPassword, phone, code)
-        } else {
-            viewModel.resetPassWorkByEmail(userName, encodedPassword)
+        when(ways){
+            1-> viewModel.resetPassword(userName, encodedPassword, encodedPassword, phone, code)
+            2-> viewModel.resetPassWorkByEmail(userName, encodedPassword)
+            3-> code?.let { viewModel.updatePasswordBySafeQuestion(userName, it,encodedPassword) }
         }
     }
 
@@ -150,6 +149,18 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBi
             }
 
             onResetSuccess(userName)
+        }
+        updatePasswordResultEvent.observe(this@ResetPasswordActivity) {
+            hideLoading()
+            binding.btnNext.setBtnEnable(true)
+            if (it.succeeded()){
+                onResetSuccess(userName)
+            }else{
+                val msg = it?.getData()?.msg ?: it?.msg
+                if (!msg.isNullOrEmpty()){
+                    ToastUtil.showToast(this@ResetPasswordActivity, msg)
+                }
+            }
         }
     }
 

@@ -1111,6 +1111,7 @@
     <string name="send">Gửi</string>
     <string name="pls_enter_correct_mobile_email">Mời nhập chính xác SĐT/Email</string>
     <string name="pls_enter_correct_mobile_email_username">Mời nhập chính xác tên người dùng/SĐT/Email</string>
+    <string name="pls_enter_correct_username">Mời nhập chính xác tên người dùng</string>
     <string name="live_service">Liên hệ CSKH</string>
     <string name="pls_enter_correct_mobile">Mời nhập chính xác SĐT</string>
     <string name="pls_enter_correct_email">Mời nhập chính xác Email</string>
@@ -1798,4 +1799,25 @@
     <string name="B75">Bán vé cược thất bại!</string>
     <string name="B104">Đang bán vé cược</string>
     <string name="B105">Đã bán vé cược</string>
+    <string name="B178">Lấy lại mật khẩu qua câu hỏi bảo mật</string>
+    <string name="B179">Đăng nhập bằng câu hỏi bảo mật</string>
+    <string name="B180">Câu hỏi bảo mật</string>
+    <string name="B181">Vui lòng trả lời câu hỏi bảo mật</string>
+    <string name="B182">Vui lòng chọn câu hỏi bảo mật của bạn</string>
+    <string name="B183">Vui lòng đặt câu trả lời cho câu hỏi bảo mật</string>
+    <string name="B184">Trả lời</string>
+    <string name="B185">Tên thú cưng đầu tiên của bạn là gì?</string>
+    <string name="B186">Tên trường học đầu tiên của bạn là gì?</string>
+    <string name="B187">Bạn sinh ra ở thành phố nào?</string>
+    <string name="B188">Tên thời con gái của mẹ bạn là gì?</string>
+    <string name="B189">Biệt danh thời thơ ấu của bạn là gì?</string>
+    <string name="B190">Bộ phim yêu thích của bạn là gì?</string>
+    <string name="B191">Kiểu dáng và thương hiệu chiếc ô tô đầu tiên của bạn là gì?</string>
+    <string name="B192">Tên giáo viên yêu thích của bạn là gì?</string>
+    <string name="B193">Tên người bạn thân nhất của bạn ở trường trung học là gì?</string>
+    <string name="B194">Món ăn yêu thích của bạn là gì?</string>
+    <string name="B199">Đã cấu hình</string>
+    <string name="B200">Vui lòng chọn…</string>
+    <string name="B203">Mời nhập mật khẩu đăng nập của bạn</string>
+
 </resources>

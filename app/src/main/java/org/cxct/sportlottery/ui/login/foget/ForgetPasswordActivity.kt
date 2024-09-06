@@ -17,9 +17,7 @@ import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.ui.login.foget.reset.ResetPasswordActivity
 import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.view.checkEmail
-import org.cxct.sportlottery.view.checkPhoneNum
-import org.cxct.sportlottery.view.checkSMSCode
+import org.cxct.sportlottery.view.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import splitties.activities.start
@@ -31,9 +29,12 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPasswor
  ,VerifyCallback {
 
     companion object {
-
-        fun startByPhoneWays(context: Activity) = start(context, 1) // 1: 通过手机号方式修改密码
-        fun startByEmailWays(context: Activity)  = start(context, 2) // 2:通过邮箱方式修改密码
+        const val WAY_PHONE = 1
+        const val WAY_EMAIL = 2
+        const val WAY_QUESTION = 3
+        fun startByPhoneWays(context: Activity) = start(context, WAY_PHONE) // 1: 通过手机号方式修改密码
+        fun startByEmailWays(context: Activity)  = start(context, WAY_EMAIL) // 2:通过邮箱方式修改密码
+        fun startByQuestionWays(context: Activity)  = start(context, WAY_QUESTION) // 2:通过密保问题方式修改密码
 
         private fun start(context: Activity, ways: Int) {
             val intent = Intent(context, ForgetPasswordActivity::class.java)
@@ -45,11 +46,10 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPasswor
     private val ways by lazy { intent.getIntExtra("retrieveWays", 1) }
     private var inputPhoneNo: String? = null // 输入的手机号，不为空即为输入的号码格式正确
     private var inputEmail: String? = null // 输入的邮箱，不为空即为输入的号码格式正确
+    private var inputUserName: String? = null // 输入的用户名/手机号/邮箱，不为空即为输入格式正确
     private var smsCode: String? = null // 短信或者邮箱验证码
     private var userName: String? = null
     private var phoneWithUserName: String? = null // userName对应的手机号
-
-    private inline fun isPhoneWays() = 1 == ways
 
     override fun onInitView() {
         setStatusBarDarkFont()
@@ -61,6 +61,7 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPasswor
     private fun initView() = binding.run {
         bindFinish(btnBack)
         clLiveChat.setServiceClick(supportFragmentManager)
+        bottomLiences.tvLicense.text = Constants.copyRightString
         btnPut.setOnClickListener { next() }
 //        btnSendSms.setOnClickListener { YidunCaptcha.validateAction(this@ForgetPasswordActivity2,this@ForgetPasswordActivity2, { sendCode() }) }
 
@@ -74,21 +75,34 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPasswor
             setNextBtnStatus()
         }
 
-        if (isPhoneWays()) {
-            etEMail.gone()
-            eetPhoneNum.checkPhoneNum(etPhone) {
-                inputPhoneNo = it
-                onNewSMSStatus()
+        when(ways){
+            WAY_PHONE->{
+                etEMail.gone()
+                etUsername.gone()
+                eetPhoneNum.checkPhoneNum(etPhone) {
+                    inputPhoneNo = it
+                    onNewSMSStatus()
+                }
             }
-            return@run
+            WAY_EMAIL->{
+                etPhone.gone()
+                etUsername.gone()
+                eetEMail.checkEmail(etEMail) {
+                    inputEmail = it
+                    onNewSMSStatus()
+                }
+            }
+            WAY_QUESTION->{
+                etPhone.gone()
+                etEMail.gone()
+                blockSmsValidCode.gone()
+                eetUsername.excludeInputChar("#")
+                eetUsername.checkUserName(etUsername) {
+                    inputUserName = it
+                    onNewSMSStatus()
+                }
+            }
         }
-
-        etPhone.gone()
-        eetEMail.checkEmail(etEMail) {
-            inputEmail = it
-            onNewSMSStatus()
-        }
-        bottomLiences.tvLicense.text = Constants.copyRightString
     }
 
     private fun setNextBtnStatus() {
@@ -98,27 +112,29 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPasswor
     }
 
     private fun onNewSMSStatus()  {
+        if (ways== WAY_QUESTION){
+            binding.btnPut.setBtnEnable(!inputUserName.isNullOrEmpty())
+        }else{
+            val inputEffective = inputPhoneNo != null || inputEmail != null
 
-        val inputEffective = inputPhoneNo != null || inputEmail != null
+            if (!inputEffective) {
+                binding.btnSendSms.setBtnEnable(inputEffective)
+                setNextBtnStatus()
+                return
+            }
 
-        if (!inputEffective) {
-            binding.btnSendSms.setBtnEnable(inputEffective)
-            setNextBtnStatus()
-            return
-        }
-
-        if (binding.btnSendSms.tag == null) {
-            binding.btnSendSms.setBtnEnable(true)
+            if (binding.btnSendSms.tag == null) {
+                binding.btnSendSms.setBtnEnable(true)
+            }
         }
     }
 
     private fun sendCode(identity: String?, validCode: String) = binding.btnSendSms.run {
         loading()
         setBtnEnable(false)
-        if (isPhoneWays()) {
-            viewModel.getSendSms("$inputPhoneNo", "$identity", validCode)
-        } else {
-            viewModel.sendEmail("$inputEmail", "$identity", validCode)
+        when(ways){
+            WAY_PHONE-> viewModel.getSendSms("$inputPhoneNo", "$identity", validCode)
+            WAY_EMAIL-> viewModel.sendEmail("$inputEmail", "$identity", validCode)
         }
     }
 
@@ -141,19 +157,36 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPasswor
     }
 
     private fun next() {
-
         hideSoftKeyboard()
-        if (isPhoneWays()) {
-            ResetPasswordActivity.start(this@ForgetPasswordActivity, "$userName", inputPhoneNo, smsCode, isPhoneWays())
-//            viewModel.getCheckPhone("$inputPhoneNo", "$smsCode")
-        } else {
-            loading()
-            viewModel.checkEmailCode("$inputEmail", "$smsCode")
+        when (ways) {
+            WAY_PHONE -> {
+                ResetPasswordActivity.start(
+                    this@ForgetPasswordActivity,
+                    "$userName",
+                    inputPhoneNo,
+                    smsCode,
+                    1
+                )
+            }
+            WAY_EMAIL -> {
+                loading()
+                viewModel.checkEmailCode("$inputEmail", "$smsCode")
+            }
+            WAY_QUESTION -> {
+                showCaptchaDialog()
+            }
         }
     }
 
     private fun initObserve() = viewModel.run {
         smsResult.observe(this@ForgetPasswordActivity) { updateUiWithResult(it) }
+        userQuestionEvent.observe(this@ForgetPasswordActivity){
+            if (it.succeeded()){
+                ForgetPasswordQuestionActivity.start(this@ForgetPasswordActivity, inputUserName!!, it.getData()?.safeQuestion!!)
+            }else{
+                showErrorPromptDialog(it.msg){}
+            }
+        }
     }
 
     //发送验证码的回调
@@ -215,10 +248,13 @@ class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPasswor
 
     override fun onVerifySucceed(identity: String, validCode: String, tag: String?) {
         with(binding) {
-            sendCode(identity, validCode)
-            eetSmsCode.setText("")
-            binding.etSmsValidCode.setError(null, true)
-//            eetSmsCode.requestFocus()
+            if (ways== WAY_QUESTION){
+                viewModel.getUserQuestion(inputUserName!!, identity, validCode)
+            }else{
+                sendCode(identity, validCode)
+                eetSmsCode.setText("")
+                binding.etSmsValidCode.setError(null, true)
+            }
         }
     }
 
