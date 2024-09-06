@@ -322,8 +322,11 @@ class RecommendMiniGameHelper(private val context: Context,
                 .setSolidColor(context.getColor(R.color.color_0063FF), context.getColor(R.color.color_00C2FF))
                 .setRadius(30.dp.toFloat())
                 .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
-            holder.vb.videoPlayer.setPlayStatusListener {
-                holder.vb.vCover.alpha = if (it != CURRENT_STATE_PLAYING) 1f else 0f
+            holder.vb.videoPlayer.playStatusListener = object: OKVideoPlayer.PlayStatusListener{
+                override fun onStatuChanged(state: Int) {
+                    holder.vb.vCover.alpha = if (state != CURRENT_STATE_PLAYING) 1f else 0f
+                }
+
             }
             return holder
         }

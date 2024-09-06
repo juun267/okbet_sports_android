@@ -170,7 +170,7 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
         val item = adapter.getItemOrNull(position) ?: return
         val okGameBean = item as OKGameBean
         if (!okGameBean.isMaintain() && StaticData.miniGameOpened()) {
-            (requireActivity() as MainTabActivity).enterThirdGame(item)
+            (requireActivity() as MainTabActivity).enterThirdGame(item, null)
         }
     }
 

@@ -16,6 +16,11 @@ class OKVideoPlayer : GSYVideoPlayer {
         fun onError()
     }
 
+    interface PlayStatusListener {
+        fun onStatuChanged(state: Int)
+    }
+
+    var playStatusListener: PlayStatusListener? = null
     var onOkListener: OnOkListener? = null
 
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag) {}
@@ -33,19 +38,16 @@ class OKVideoPlayer : GSYVideoPlayer {
 
     override fun startPlayLogic() {
         prepareVideo()
+        GSYVideoManager.instance().isNeedMute = true
         setVideoAllCallBack(object : VideoAllCallBack {
             override fun onStartPrepared(url: String, vararg objects: Any) {
                 GSYVideoManager.instance().isNeedMute = true
-                if (onOkListener != null) {
-                    onOkListener!!.onStartPrepared()
-                }
+                onOkListener?.onStartPrepared()
             }
 
             override fun onPrepared(url: String, vararg objects: Any) {
                 GSYVideoManager.instance().isNeedMute = true
-                if (onOkListener != null) {
-                    onOkListener!!.onPrepared()
-                }
+                onOkListener?.onPrepared()
             }
 
             override fun onClickStartIcon(url: String, vararg objects: Any) {}
@@ -66,9 +68,7 @@ class OKVideoPlayer : GSYVideoPlayer {
             override fun onTouchScreenSeekPosition(url: String, vararg objects: Any) {}
             override fun onTouchScreenSeekLight(url: String, vararg objects: Any) {}
             override fun onPlayError(url: String, vararg objects: Any) {
-                if (onOkListener != null) {
-                    onOkListener!!.onError()
-                }
+                onOkListener?.onError()
             }
 
             override fun onClickStartThumb(url: String, vararg objects: Any) {}
@@ -107,5 +107,10 @@ class OKVideoPlayer : GSYVideoPlayer {
     override fun changeUiToPlayingBufferingShow() {}
     fun showTranBar(show: Boolean) {
         findViewById<View>(R.id.rl_tran_cover).visibility = if (show) VISIBLE else GONE
+    }
+
+    override fun setStateAndUi(state: Int) {
+        super.setStateAndUi(state)
+        playStatusListener?.onStatuChanged(state)
     }
 }

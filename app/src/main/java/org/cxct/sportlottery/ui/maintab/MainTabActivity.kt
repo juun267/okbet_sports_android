@@ -6,8 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.text.SpannableStringBuilder
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -18,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.gyf.immersionbar.ImmersionBar
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.coroutines.GlobalScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.enums.GameEntryType
@@ -52,7 +49,6 @@ import org.cxct.sportlottery.ui.maintab.home.PreLoader
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainRightFragment
-import org.cxct.sportlottery.ui.maintab.menu.ScannerActivity
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity

@@ -2,23 +2,19 @@ package org.cxct.sportlottery.ui.maintab.home.hot
 
 
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentHomeHotBinding
-import org.cxct.sportlottery.net.money.MoneyRepository
-import org.cxct.sportlottery.net.money.data.FirstDepositDetail
-import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ImageType
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -26,6 +22,7 @@ import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
@@ -34,8 +31,6 @@ import org.cxct.sportlottery.view.dialog.*
 import org.cxct.sportlottery.view.dialog.queue.DialogQueueManager
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.koin.androidx.viewmodel.ViewModelOwner
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBinding>() {
 
@@ -45,9 +40,6 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     private val PRIORITY_REGISTER_SUCCESS = 300
     private val PRIORITY_AGE_VERIFY = 400
     private val PRIORITY_FIRST_DEPOSIT = 350
-    private val okgameViewModel by lazy {
-        getViewModel(clazz = OKGamesViewModel::class.java.kotlin, owner = { ViewModelOwner.from(requireActivity(), requireActivity()) })
-    }
 
     private val recommendMiniGameHelper by lazy {
         RecommendMiniGameHelper(context(), ::enterGame) {
@@ -56,7 +48,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     }
 
     private fun enterGame(okGameBean: OKGameBean) {
-        getMainTabActivity().enterThirdGame(okGameBean)
+        getMainTabActivity().enterThirdGame(okGameBean, null)
     }
     fun getMainTabActivity() = activity as MainTabActivity
     private fun getHomeFragment() = parentFragment as HomeFragment
