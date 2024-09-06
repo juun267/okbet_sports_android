@@ -24,6 +24,7 @@ import java.util.*
  * 注册补充用户信息
  */
 class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel,ActivityRegisterInfoBinding>(RegisterInfoViewModel::class) {
+    override fun pageName() = "注册补充用户信息页面"
 
     //生日选择
     private var dateTimePicker: TimePickerView? = null

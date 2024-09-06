@@ -23,7 +23,7 @@ import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
  * @app_destination 密码设置
  */
 class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel, ActivitySettingPasswordBinding>() {
-
+    override fun pageName() = "密码设置页面"
     companion object {
         const val PWD_PAGE = "PWD_PAGE"
     }

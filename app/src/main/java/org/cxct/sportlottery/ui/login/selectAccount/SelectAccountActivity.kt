@@ -14,6 +14,8 @@ import org.cxct.sportlottery.util.setServiceClick
 
 class SelectAccountActivity : BaseActivity<LoginViewModel, ActivitySelectAccountBinding>() {
 
+    override fun pageName() = "账号选择页面"
+
     companion object{
         const val TYPE_LOGIN = 1
         const val TYPE_FORGET = 2
@@ -37,7 +39,7 @@ class SelectAccountActivity : BaseActivity<LoginViewModel, ActivitySelectAccount
         linOkbet.setOnClickListener {
             finish()
             when(type){
-                TYPE_LOGIN->EventBusUtil.post(LoginSelectAccountEvent(false))
+                TYPE_LOGIN->EventBusUtil.post(LoginSelectAccountEvent(false, true))
                 TYPE_FORGET->EventBusUtil.post(ForgetPwdSelectAccountEvent(false))
                 TYPE_LOGINGLIFE_OR_REGIST->EventBusUtil.post(LoginGlifeOrRegistEvent(true))
             }
@@ -45,7 +47,7 @@ class SelectAccountActivity : BaseActivity<LoginViewModel, ActivitySelectAccount
         linGlife.setOnClickListener {
             finish()
             when(type){
-                TYPE_LOGIN->EventBusUtil.post(LoginSelectAccountEvent(true))
+                TYPE_LOGIN->EventBusUtil.post(LoginSelectAccountEvent(true, false))
                 TYPE_FORGET->EventBusUtil.post(ForgetPwdSelectAccountEvent(true))
                 TYPE_LOGINGLIFE_OR_REGIST->EventBusUtil.post(LoginGlifeOrRegistEvent(false))
             }

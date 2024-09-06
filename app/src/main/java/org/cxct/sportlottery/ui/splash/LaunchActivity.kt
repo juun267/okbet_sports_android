@@ -33,7 +33,7 @@ import org.cxct.sportlottery.util.getMarketSwitch
  * @app_destination 啟動頁
  */
 class LaunchActivity : BaseActivity<SplashViewModel, ActivityLaunchBinding>() {
-
+    override fun pageName() = "啟動頁页面"
     private val isFirstOpen by lazy { KvUtils.decodeBooleanTure("isFirstOpen", true) }
     private val delayTime by lazy { (sConfigData?.carouselInterval?.toIntS(3) ?: 3) * 1000L }
     private var isClickSkip = false

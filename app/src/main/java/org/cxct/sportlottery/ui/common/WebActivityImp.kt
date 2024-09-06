@@ -28,6 +28,8 @@ class WebActivityImp(val activity: BaseActivity<*,*>,val overrideUrlLoading: (vi
 
     private var mUploadCallbackAboveL: ValueCallback<Array<Uri>>? = null
     private var mUploadMessage: ValueCallback<Uri?>? = null
+    var onLoadEnd: ((Boolean) -> Unit)? = null
+    private var ended = false
     @SuppressLint("WebViewApiAvailability")
     fun setupWebView(webView: OkWebView) {
         webView.webChromeClient = object : OkWebChromeClient(
@@ -91,11 +93,25 @@ class WebActivityImp(val activity: BaseActivity<*,*>,val overrideUrlLoading: (vi
 
             override fun pageFinished(view: View?, url: String?) {
                 activity.hideLoading()
+                loadEnded(true)
             }
 
             override fun onError() {
             }
         }) {
+
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+                super.onReceivedError(view, request, error)
+                if (request?.isForMainFrame == true) {
+                    loadEnded(false)
+                }
+
+            }
+
             override fun shouldInterceptRequest(
                 view: WebView?, request: WebResourceRequest?,
             ): WebResourceResponse? {
@@ -131,6 +147,14 @@ class WebActivityImp(val activity: BaseActivity<*,*>,val overrideUrlLoading: (vi
             }
         }
     }
+
+    private fun loadEnded(result: Boolean) {
+        if (!ended) {
+            onLoadEnd?.invoke(result)
+            ended = true
+        }
+    }
+
     open fun setCookie(url: String) {
         try {
             val cookieManager = CookieManager.getInstance()

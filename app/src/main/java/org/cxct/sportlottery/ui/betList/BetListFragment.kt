@@ -422,7 +422,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel,FragmentBetListBindi
 
         override fun onRechargeClick() {
             if (viewModel.getLoginBoolean()) {
-                startActivity(Intent(context, MoneyRechargeActivity::class.java))
+                MoneyRechargeActivity.startFrom(context(), "体育投注菜单")
             } else {
                 requireActivity().startLogin()
             }

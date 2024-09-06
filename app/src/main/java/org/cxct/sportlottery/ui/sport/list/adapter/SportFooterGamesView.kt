@@ -160,7 +160,12 @@ class SportFooterGamesView @JvmOverloads constructor(
     }
 
     private fun onGameClick(gameBean: OKGameBean) {
-        (fragment.activity as MainTabActivity?)?.enterThirdGame(gameBean)
+        val from = if (esportTheme) {
+            "电竞赛事列表页底部游戏列表"
+        } else {
+            "体育赛事列表页底部游戏列表"
+        }
+        (fragment.activity as MainTabActivity?)?.enterThirdGame(gameBean, from)
     }
     fun sportNoMoreEnable(enable: Boolean) {
         noMoreText.isVisible = enable

@@ -156,7 +156,7 @@ class EndCardBetDialog: BaseDialog<EndCardVM, DialogEndcardBetBinding>() {
             //换成弹框提示 去充值
             val dialog= BetBalanceDialog(requireContext())
             dialog.showDialog{
-                (requireActivity() as BaseActivity<*,*>).jumpToDeposit()
+                (requireActivity() as BaseActivity<*,*>).jumpToDeposit("末尾比分投注弹窗")
             }
         } else if (totalBetAmount > maxBetMoney.toDouble()) {
             ToastUtil.showToast(requireContext(), R.string.N989)

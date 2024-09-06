@@ -237,7 +237,7 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
 
 
     private inline fun enterGame(bean: OKGameBean) {
-        okLiveFragment().enterGame(bean)
+        okLiveFragment().enterGame(bean, "OKLive游戏列表")
     }
 
 

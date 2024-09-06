@@ -84,7 +84,6 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         newGamesView.setUp(this@HomeHotFragment)
         hotGameView.setUp(this@HomeHotFragment)
         providerView.setup(this@HomeHotFragment){
-            LogUtil.toJson(it)
             when(it.gameEntryTypeEnum){
                 GameEntryType.OKGAMES->{
                     getMainTabActivity().jumpToOKGames()
@@ -103,7 +102,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
                         if (okPlayBean==null){
                             getMainTabActivity().showPromptDialog(message = getString(R.string.shaba_no_open)){}
                         }else{
-                            getMainTabActivity()?.enterThirdGame(okPlayBean)
+                            getMainTabActivity()?.enterThirdGame(okPlayBean, "首页-点击厂商直跳")
                         }
                     }
                 }
@@ -167,7 +166,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             }
 
             RegisterSuccessDialog.buildRegisterSuccessDialog(PRIORITY_REGISTER_SUCCESS, fmProvider) {
-                getMainTabActivity().jumpToDeposit()
+                getMainTabActivity().jumpToDeposit("首冲弹窗引导")
             }?.let {
                 dialogQueueManager.enqueue(it)
             }

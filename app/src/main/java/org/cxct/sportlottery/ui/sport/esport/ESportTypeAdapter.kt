@@ -36,7 +36,7 @@ class ESportTypeAdapter(private val itemClick: (CategoryItem, Int) -> Unit) : Ba
         val ivPromotion = AppCompatImageView(activity)
         ivPromotion.layoutParams = iconParams
         ivPromotion.setImageResource(R.drawable.ic_sport_promotion)
-        ivPromotion.setOnClickListener { activity.startActivity(PromotionListActivity::class.java) }
+        ivPromotion.setOnClickListener { PromotionListActivity.startFrom(context, "电竞赛事列表赛事类别栏") }
         addFooterView(ivPromotion, -1, LinearLayout.HORIZONTAL)
         val ivService = AppCompatImageView(activity)
         ivService.layoutParams = iconParams

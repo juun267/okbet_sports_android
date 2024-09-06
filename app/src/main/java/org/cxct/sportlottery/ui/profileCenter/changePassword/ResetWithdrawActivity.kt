@@ -18,7 +18,7 @@ import org.cxct.sportlottery.view.checkSMSCode
 import org.cxct.sportlottery.view.checkWithdrawPassword
 
 class ResetWithdrawActivity: BaseActivity<LoginViewModel, ActivityVerifyPhonenoBinding>(), VerifyCallback {
-
+    override fun pageName() = "修改提款密码页面"
     private val phoneNo by lazy { intent.getStringExtra("phone")!! }
 
     private var smsCode: String? = null // 短信或者邮箱验证码

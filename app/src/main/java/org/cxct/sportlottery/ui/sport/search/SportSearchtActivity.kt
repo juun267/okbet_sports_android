@@ -25,7 +25,7 @@ import org.cxct.sportlottery.util.bindSportMaintenance
 import org.cxct.sportlottery.view.EmptyView
 
 class SportSearchtActivity : BaseSocketActivity<SportViewModel,ActivitySportSearchBinding>(SportViewModel::class) {
-
+    override fun pageName() = "赛事搜索页面"
     private var searchHistoryList = mutableListOf<String>()
     private val searchResultAdapter by lazy { SportSearchResultAdapter() }
     private var searchKey = ""

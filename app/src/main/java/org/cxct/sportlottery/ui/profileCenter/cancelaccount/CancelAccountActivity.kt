@@ -15,7 +15,7 @@ import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationM
  */
 
 class CancelAccountActivity : BaseActivity<CancelAccountViewModel, ActivityCancelAccountBinding>() {
-
+    override fun pageName() = "注销账号页面"
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
         init()

@@ -15,8 +15,8 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.TextUtil
 
 class RedeemActivity : BaseSocketActivity<RedeemViewModel,ActivityRedeemBinding>(RedeemViewModel::class) {
-
-    val redeemAdapter by lazy {
+    override fun pageName() = "兑换页面"
+    private val redeemAdapter by lazy {
         RedeemAdapter()
     }
 

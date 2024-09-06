@@ -13,6 +13,7 @@ import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
  */
 class FeedbackMainActivity : BaseActivity<FeedbackViewModel, ActivityFeedbackMainBinding>() {
     private val navController by lazy { findNavController(R.id.myNavHostFragment) }
+    override fun pageName() = "意见反馈页面"
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)

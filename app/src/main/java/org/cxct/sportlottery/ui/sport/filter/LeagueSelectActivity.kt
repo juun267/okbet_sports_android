@@ -31,6 +31,7 @@ import java.util.*
 
 class LeagueSelectActivity :
     BaseSocketActivity<LeagueSelectViewModel,ActivityLeagueSelectBinding>(LeagueSelectViewModel::class) {
+    override fun pageName() = "赛事赛选页面"
     companion object {
         fun start(
             context: Context,

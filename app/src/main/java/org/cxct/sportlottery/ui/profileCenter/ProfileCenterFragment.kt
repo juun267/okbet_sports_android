@@ -189,7 +189,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     private fun setupRechargeButton() {
         binding.btnRecharge.clickDelay{
-            (requireActivity() as BaseActivity<*,*>).jumpToDeposit()
+            (requireActivity() as BaseActivity<*,*>).jumpToDeposit("存款按钮(我的)")
         }
     }
 
@@ -244,7 +244,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         }
         //優惠活動
         btnPromotion.setOnClickListener {
-            startActivity(PromotionListActivity::class.java)
+            PromotionListActivity.startFrom(context(), "我的页面")
         }
         btnInviteFriend.setOnClickListener {
             startActivity(InviteActivity::class.java)

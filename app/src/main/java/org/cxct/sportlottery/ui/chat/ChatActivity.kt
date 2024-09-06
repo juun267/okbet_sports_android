@@ -18,6 +18,8 @@ import org.cxct.sportlottery.view.isVisible
 
 class ChatActivity : BaseActivity<ChatViewModel, ActivityChatBinding>() {
 
+    override fun pageName() = "聊天室页面"
+
     private val marqueeAdapter by lazy { ChatMarqueeAdapter() }
 
     override fun onInitView() {

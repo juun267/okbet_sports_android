@@ -21,6 +21,8 @@ import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
  */
 class ResetPasswordActivity: BaseActivity<ForgetViewModel,ActivityRestPasswordBinding>(ForgetViewModel::class) {
 
+    override fun pageName() = "重置密码页面"
+
     companion object {
 
         fun start(activity: Activity, userName: String,

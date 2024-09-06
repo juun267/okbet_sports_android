@@ -1032,7 +1032,8 @@ fun View.setMargins(left: Int, top: Int, right: Int, bottom: Int) {
 private var checkRecharge = false
 // 首冲活动跳转充值页面
 var chargeFromActivity = false
-fun BaseActivity<*, *>.jumpToDeposit(activityCharge: Boolean = false){
+
+fun BaseActivity<*, *>.jumpToDeposit(action: String, activityCharge: Boolean = false){
     if (LoginRepository.isLogined() && UserInfoRepository.isGlifeAccount() && !glifeUserWithdrawEnable()) {
         ToGcashDialog.newInstance(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToGcashDialog.javaClass.name)
         return
@@ -1064,6 +1065,7 @@ fun BaseActivity<*, *>.jumpToDeposit(activityCharge: Boolean = false){
                 withContext(Dispatchers.Main) {
                     hideLoading()
                     if (operation) {
+                        MoneyRechargeActivity.startFrom(this@jumpToDeposit, action)
                         startActivity(MoneyRechargeActivity::class.java)
                     } else {
                         showPromptDialog(

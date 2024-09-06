@@ -115,7 +115,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
                         okGamesFragment().collectGame(gameBean)
                     }
                     .setOnGameClick {gameBean->
-                        enterGame(gameBean)
+                        enterGame(gameBean, "Games-收藏游戏列表")
                     }
                     .setOnMoreClick {
                         okGamesFragment().changeGameTable(GameTab.TAB_FAVORITES)
@@ -166,7 +166,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
                         okGamesFragment().collectGame(it)
                     }
                     .setOnGameClick {
-                        enterGame(it)
+                        enterGame(it, "Games-最近游戏列表")
                     }
                     .setOnMoreClick {
                         okGamesFragment().changeGameTable(GameTab.TAB_RECENTLY)
@@ -185,7 +185,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
             okGamesFragment().changeGameTable(it)
         }
         gameListAdapter.setOnGameClick {
-            enterGame(it)
+            enterGame(it, "Games-游戏列表")
         }
         gameListAdapter.setOnFavoriteClick {
             okGamesFragment().collectGame(it)
@@ -217,8 +217,8 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
        binding.bottomView.bindServiceClick(childFragmentManager)
     }
 
-    private inline fun enterGame(okGameBean: OKGameBean) {
-        getMainTabActivity().enterThirdGame(okGameBean)
+    private inline fun enterGame(okGameBean: OKGameBean, from: String?) {
+        getMainTabActivity().enterThirdGame(okGameBean, from)
     }
 
     private fun onCollectClick(view: View, gameData: OKGameBean) {

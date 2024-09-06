@@ -14,6 +14,7 @@ import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.bindSportMaintenance
 
 class BetRecordActivity: BaseActivity<MainViewModel, ActivityBetRecordBinding>() {
+    override fun pageName() = "注单记录页面"
     //未结单
     private val unsettledFragment by lazy { UnsettledFragment() }
     //已结单

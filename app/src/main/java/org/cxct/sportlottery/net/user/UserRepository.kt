@@ -5,6 +5,7 @@ import com.google.gson.JsonObject
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.PageData
 import org.cxct.sportlottery.net.RetrofitHolder
@@ -43,10 +44,12 @@ object UserRepository {
                 put("validCode",validCode)
             }
         }
-        return userApi.sendEmailForget(params)
+        val result = userApi.sendEmailForget(params)
+        SensorsEventUtil.getCodeEvent(result.succeeded(), true, if (result.succeeded()) null else result?.msg)
+        return result
     }
 
-    // 通过邮箱验或者手机证码方式重置手机号或者邮箱前的邮箱验证码发送
+    // 通过邮箱验或者手机证码方式重置手机号或者邮箱前的'验证码发送'
     suspend fun sendEmailOrPhoneCode(emailOrPhone: String,
                                      validCodeIdentity :String,
                                      validCode: String): ApiResult<SendCodeRespnose> {
@@ -60,8 +63,11 @@ object UserRepository {
             params.addProperty("code", validCode)
             params.addProperty("codeIdentity", validCodeIdentity)
         }
-        params.addProperty("verificationMethod", if (emailOrPhone.contains("@")) "EMAIL" else "PHONE")
-        return userApi.sendCode(params)
+        val isEmail = emailOrPhone.contains("@")
+        params.addProperty("verificationMethod", if (isEmail) "EMAIL" else "PHONE")
+        val result = userApi.sendCode(params)
+        SensorsEventUtil.getCodeEvent(result.succeeded(), isEmail, if (result.succeeded()) null else result.msg)
+        return result
     }
 
     suspend fun verifyEmailOrPhoneCode(emailOrPhone: String,
@@ -147,6 +153,7 @@ object UserRepository {
 
     suspend fun uploadKYCInfo(idType: Int, idNumber: String?, idImageUrl: String,
                               firstName: String, middleName: String, lastName: String, birthday: String): ApiResult<String> {
+        SensorsEventUtil.submitKYCEvent()
         val params = JsonObject()
         params.addProperty("identityType", idType)
         params.addProperty("identityNumber", "$idNumber")

@@ -319,7 +319,6 @@ object Constants {
     const val INDEX_CONFIG = "/api/front/index/config.json" //获取配置信息
     const val INDEX_VALIDATE_CODE = "/api/front/index/getvalidatecode" //获取验证码
     const val INDEX_REGISTER = "/api/front/index/register" //注册用户
-    const val INDEX_SEND_SMS = "/api/front/index/sendSms" //发送验证码
     const val INDEX_CHECK_TOKEN = "/api/front/index/checktoken" //验证token 是否过期
     const val LOGIN_FOR_GUEST = "/api/front/index/loginforguest" //游客登录
     const val INDEX_PROMOTENOTICE =
@@ -362,12 +361,6 @@ object Constants {
 
     // google登录或注册(新版优化登录注册->使用)
     const val GOOGLE_LOGIN = "/api/front/index/googleLogin"
-
-    // 发送邮箱验证码(新版优化登录注册->使用)
-    const val SEND_EMAIL_CODE = "/api/front/index/sendEmailCodeV2"
-
-    // 校验邮箱验证码
-    const val VALIDATE_EMAIL_CODE = "/api/front/index/validateEmailCode"
 
     //绑定谷歌登录(绑定现有账户)
     const val BIND_GOOGLE = "/api/front/index/bindGoogle"

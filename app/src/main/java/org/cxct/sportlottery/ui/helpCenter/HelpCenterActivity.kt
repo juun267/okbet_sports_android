@@ -10,6 +10,7 @@ import org.cxct.sportlottery.util.JumpUtil
 
 class HelpCenterActivity : BaseActivity<HelpCenterViewModel, ActivityHelpCenterBinding>() {
 
+    override fun pageName() = "帮助中心页面"
 
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)

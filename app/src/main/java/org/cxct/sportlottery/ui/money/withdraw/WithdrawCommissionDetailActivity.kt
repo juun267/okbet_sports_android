@@ -16,7 +16,7 @@ import java.util.*
  */
 class WithdrawCommissionDetailActivity :
     BaseActivity<WithdrawViewModel, ActivityWithdrawCommissionDetailBinding>() {
-
+    override fun pageName() = "提款详情页面"
     private val commissionDetailAdapter = CommissionDetailAdapter()
 
     private val zero = 0.0

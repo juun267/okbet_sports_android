@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.view.postDelayed
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.enums.ActivityType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityPromotionDetailBinding
@@ -20,16 +21,20 @@ import java.util.*
 
 class PromotionDetailActivity :
     BaseActivity<MainHomeViewModel, ActivityPromotionDetailBinding>() {
-
+    override fun pageName() = "优惠活动详情页面"
     companion object {
-        fun start(context: Context, data: ActivityImageList) {
+        fun start(context: Context, data: ActivityImageList, fromWhere: String, fromPage: String? = null) {
+            SensorsEventUtil.activityPageVisitEvent(fromWhere,
+                fromPage ?: SensorsEventUtil.getPageName(),
+                data.typeName,
+                "${data.titleText}")
             context.startActivity(Intent(context, PromotionDetailActivity::class.java).apply {
                 putExtra("ActivityImageList", data)
             })
         }
     }
 
-    private val activityData: ActivityImageList? by lazy { intent?.getParcelableExtra("ActivityImageList") }
+    private val activityData: ActivityImageList by lazy { intent?.getParcelableExtra("ActivityImageList")!! }
 
     override fun onInitView() {
         setStatusbar(R.color.color_FFFFFF, true)
@@ -38,7 +43,6 @@ class PromotionDetailActivity :
         }
         activityData?.let {
             setPromotion(it)
-            LogUtil.toJson(it)
             if (!it.activityId.isNullOrEmpty()){
                 viewModel.activityDetailH5(it.activityId)
             }else if(it.activityType==ActivityType.FIRST_DEPOSIT_BONUS||it.activityType==ActivityType.DAILY_BONUS){
@@ -70,7 +74,7 @@ class PromotionDetailActivity :
             binding.linApply.setOnClickListener {
                 MainTabActivity.reStart(this)
                 binding.linApply.postDelayed(1000){
-                    (AppManager.currentActivity() as? MainTabActivity)?.jumpToDeposit()
+                    (AppManager.currentActivity() as? MainTabActivity)?.jumpToDeposit("申请按钮")
                 }
             }
             binding.tvDepositName.text = getString(R.string.P277)
@@ -88,7 +92,7 @@ class PromotionDetailActivity :
         }
     }
 
-    fun setPromotion(activityData: ActivityImageList)=binding.run {
+    private fun setPromotion(activityData: ActivityImageList)=binding.run {
         if (activityData.contentImage.isNullOrEmpty()){
             ivBanner.gone()
         }else{

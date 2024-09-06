@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.LayoutOkgamesTopBinding
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
@@ -159,6 +160,12 @@ class OKGamesTopView @JvmOverloads constructor(
 
     override fun onItemClick(banner: XBanner, model: Any, view: View, position: Int) {
         val jumpUrl = (model as XBannerImage).jumpUrl
+        SensorsEventUtil.bannerClickEvent(
+            "主页OKGames",
+            1,
+            "${model.title}",
+            "$jumpUrl"
+        )
         if (jumpUrl.isEmptyStr()) {
             return
         }

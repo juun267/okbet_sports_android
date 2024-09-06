@@ -10,8 +10,6 @@ import org.cxct.sportlottery.databinding.ActivityEndcardBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.endcard.bet.EndCardGameFragment
 import org.cxct.sportlottery.ui.sport.endcard.home.EndCardHomeFragment
@@ -25,7 +23,7 @@ import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 import splitties.fragments.addToBackStack
 
 class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(EndCardVM::class) {
-
+    override fun pageName() = "篮球末尾比分专题页面"
     private val fragmentHolder = ObjectHolder()
 
     private val fragmentHelper by lazy {
@@ -60,7 +58,7 @@ class EndCardActivity: BaseSocketActivity<EndCardVM, ActivityEndcardBinding>(End
         llMain.clickDelay { showHome() }
         llCasino.clickDelay { finish() }
         llPromtion.clickDelay {
-            startActivity(PromotionListActivity::class.java)
+            PromotionListActivity.startFrom(this@EndCardActivity, "底部tab")
             finish()
         }
     }

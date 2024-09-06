@@ -17,6 +17,8 @@ import org.cxct.sportlottery.util.setServiceClick
 
 class VerificationWaysActivity: BaseActivity<ForgetViewModel,ActivityForgetWaysBinding>()  {
 
+    override fun pageName() = "手机号验证页面"
+
     companion object {
 
         fun start(context: Context, @ModifyType modifyType: Int, phone: String?, email: String?) {

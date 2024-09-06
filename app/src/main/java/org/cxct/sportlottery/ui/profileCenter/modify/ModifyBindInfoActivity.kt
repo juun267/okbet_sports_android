@@ -30,6 +30,8 @@ import org.cxct.sportlottery.util.drawable.DrawableCreator
 // 验证绑定的手机号或者邮箱
 class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel,ActivityModifyBindInfoBinding>(), VerifyCallback {
 
+    override fun pageName() ="修改绑定手机号页面"
+
     companion object {
         fun start(context: Activity, @ModifyType modifyType:  Int, requestCode: Int, phone: String?, email: String?, oldInfo: String? = null) {
             val intent = Intent(context, ModifyBindInfoActivity::class.java)

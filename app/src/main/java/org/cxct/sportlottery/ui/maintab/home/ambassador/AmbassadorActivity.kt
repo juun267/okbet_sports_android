@@ -13,6 +13,7 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
 class AmbassadorActivity : BaseActivity<MainHomeViewModel, ActivityAmbassadorBinding>() {
+    override fun pageName() = "代言人资料页面"
     companion object{
         const val KEY_AMBASSADOR = "Ambassador"
     }

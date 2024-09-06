@@ -33,6 +33,8 @@ import kotlin.system.exitProcess
 class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>(),
     AppDownloadDialog.OnJumpToNextListener {
 
+    override fun pageName() = "启动页"
+
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
     private var enterTime=0L
 

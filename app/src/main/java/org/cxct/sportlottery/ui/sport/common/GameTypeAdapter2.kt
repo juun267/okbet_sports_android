@@ -39,7 +39,7 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
         val ivPromotion = AppCompatImageView(activity)
         ivPromotion.layoutParams = iconParams
         ivPromotion.setImageResource(R.drawable.ic_sport_promotion)
-        ivPromotion.setOnClickListener { activity.startActivity(PromotionListActivity::class.java) }
+        ivPromotion.setOnClickListener { PromotionListActivity.startFrom(context, "体育赛事列表页赛事类别栏") }
         addFooterView(ivPromotion, -1, LinearLayout.HORIZONTAL)
         val ivService = AppCompatImageView(activity)
         ivService.layoutParams = iconParams

@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -7,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityMoneyRechargeBinding
 import org.cxct.sportlottery.network.money.MoneyAddResult
@@ -15,15 +18,23 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.money.recharge.dialog.GiveUpDepositDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LanguageManager
 
 /**
  * @app_destination 存款
  */
 class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMoneyRechargeBinding>(MoneyRechViewModel::class) {
 
+    override fun pageName() = "存款页面"
+
     companion object {
         const val RechargeViewLog = "rechargeViewLog"
         const val CRYPTO_PAY_INDEX = 11 //11-虚拟币支付
+
+        fun startFrom(context: Context, from: String) {
+            SensorsEventUtil.depositPageEvent(from)
+            context.startActivity(Intent(context, MoneyRechargeActivity::class.java))
+        }
     }
 
     enum class RechargeType(val tabPosition: Int) { TRANSFER_PAY(0), ONLINE_PAY(1) }
@@ -262,6 +273,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
         bankTypeAdapter.setOnItemClickListener { _, _, position ->
             bankTypeAdapter.setSelectedPosition(position)
             val itemData = bankTypeAdapter.getItem(position)
+            //SensorsEventUtil.selectPaymentEvent("${itemData.titleNameMap[LanguageManager.getLanguageString()]}", fromPage, fromPage)
             switchFragment(getPayFragment(itemData), itemData.rechType)
             this@MoneyRechargeActivity.currentFocus?.clearFocus()
             viewModel.clearnRechargeStatus()

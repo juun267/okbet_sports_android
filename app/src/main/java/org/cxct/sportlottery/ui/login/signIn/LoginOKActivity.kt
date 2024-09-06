@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.LoginGlifeOrRegistEvent
 import org.cxct.sportlottery.common.event.LoginSelectAccountEvent
@@ -47,6 +48,11 @@ import splitties.activities.start
  */
 class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), VerifyCallback {
 
+    init {
+        SensorsEventUtil.loginPageEvent()
+    }
+
+    override fun pageName() = "登录注册页"
     private val loginScope = CoroutineScope(Dispatchers.Main)
     private val TAG_SEND_MSG = "TAG_SEND_MSG"
     private val TAG_LOGIN = "TAG_LOGIN"
@@ -229,7 +235,16 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
         loginResult?.rows?.let {
             it.first { it.vipType==(if(event.isVip) 1 else 0)}.let {
                 lifecycleScope.launch {
-                    viewModel.dealWithLoginData(loginResult!!,it)
+                    val ways = if (!event.isPlatformAcount) {
+                        "GLife"
+                    } else if (!it.email.isEmptyStr()) {
+                        "邮箱"
+                    } else if (!it.phone.isEmptyStr()) {
+                        "手机号"
+                    } else {
+                        "账号"
+                    }
+                    viewModel.dealWithLoginData(loginResult!!, it, ways)
                 }
             }
         }
@@ -241,7 +256,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
             it.firstOrNull()?.let {
                 lifecycleScope.launch {
                     if (event.login){
-                        viewModel.dealWithLoginData(loginResult!!,it)
+                        viewModel.dealWithLoginData(loginResult!!, it, "GLife")
                     }else{
                         var inviteCode = binding.eetRecommendCode.text.toString()
                         //新的注册接口
@@ -257,7 +272,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                             loginEnvInfo = deviceId,
                             inviteCode = inviteCode,
                         )
-                        viewModel.regPlatformUser(it.token?:"",loginRequest)
+                        viewModel.regPlatformUserFromGlife(it.token?:"",loginRequest)
                     }
                 }
             }

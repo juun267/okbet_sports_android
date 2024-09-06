@@ -24,6 +24,8 @@ import org.cxct.sportlottery.view.checkRegisterListener
 
 class LoginVerifyActivity: BaseActivity<LoginViewModel, ActivityLoginVerifyBinding>(), VerifyCallback {
 
+    override fun pageName() = "长时间未登录需要验证手机号页面"
+
     companion object {
 
         fun startLoginVerify(activity: Activity, phone: String) {

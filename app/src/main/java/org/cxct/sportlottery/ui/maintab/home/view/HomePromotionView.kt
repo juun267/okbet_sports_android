@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.LinearLayout
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.ViewHomePromotionBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
@@ -42,10 +43,16 @@ class HomePromotionView(context: Context, attrs: AttributeSet) : LinearLayout(co
     }
     private fun setUpBanner(activity: Activity, datas: List<ActivityImageList>)=binding.banner.run {
         setHandLoop(false)
-        setOnItemClickListener { banner, model, view, position ->
+        setOnItemClickListener { _, model, _, _ ->
             val jumpUrl = (model as ActivityImageList).imageLink
+            SensorsEventUtil.bannerClickEvent(
+                "首页",
+                2,
+                "${model.titleText}",
+                "$jumpUrl"
+            )
             if (jumpUrl.isNullOrEmpty()){
-                PromotionDetailActivity.start(activity, model)
+                PromotionDetailActivity.start(activity, model, "首页优惠活动banner")
             }else{
                 JumpUtil.toInternalWeb(activity, jumpUrl,context.getString(R.string.P169))
             }

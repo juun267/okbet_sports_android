@@ -12,6 +12,7 @@ import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.CheckSafeQuestionResp
 import org.cxct.sportlottery.net.user.data.ForgetPasswordResp
 import org.cxct.sportlottery.net.user.data.SafeQuestion
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.CaptchaRequest
@@ -58,6 +59,8 @@ class ForgetViewModel(
             }
         }
         doRequest({ OneBoSportApi.indexService.sendEmailForget(params) }) {
+            val status = it?.success == true
+            SensorsEventUtil.getCodeEvent(status, true, if (status) null else it?.msg)
             _smsResult.value = it
         }
     }
@@ -88,6 +91,8 @@ class ForgetViewModel(
                     SendSmsRequest(phone).apply { buildParams(identity, validCode) }
                 )
             }
+            val status = result?.success == true
+            SensorsEventUtil.getCodeEvent(status, errorMsg = if (status) null else result?.msg)
             _smsResult.postValue(result)
         }
     }

@@ -28,6 +28,8 @@ import splitties.activities.start
 class ForgetPasswordActivity: BaseActivity<ForgetViewModel,ActivityForgetPassword2Binding>(ForgetViewModel::class)
  ,VerifyCallback {
 
+    override fun pageName() = "密码找回验证手机号或者邮箱页面"
+
     companion object {
         const val WAY_PHONE = 1
         const val WAY_EMAIL = 2

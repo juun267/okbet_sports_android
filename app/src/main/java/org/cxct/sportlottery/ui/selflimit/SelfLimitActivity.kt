@@ -13,7 +13,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
  * @app_destination 自我禁制
  */
 class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel,ActivitySelfLimitBinding>(SelfLimitViewModel::class) {
-
+    override fun pageName() = "自我禁制页面"
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF,true)
         initToolbar()

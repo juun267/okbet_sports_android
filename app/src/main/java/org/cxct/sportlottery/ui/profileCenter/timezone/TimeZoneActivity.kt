@@ -23,7 +23,7 @@ import timber.log.Timber
  * @app_destination 外觀(日間/夜間)切換-时区切换
  */
 class TimeZoneActivity : BaseActivity<MainViewModel,ActivityTimezoneBinding>(MainViewModel::class) {
-
+    override fun pageName() = "时区切换页面"
     lateinit var adapter: TimeZoneAdapter
     private var originItems = listOf<TimeZone>()
     private var selectItem: TimeZone? = null

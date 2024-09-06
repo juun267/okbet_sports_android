@@ -13,7 +13,7 @@ import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
  */
 class AboutMeActivity : BaseActivity<HelpCenterViewModel, ActivityAboutMeBinding>() {
 
-
+    override fun pageName() = "关于我们页"
     override fun onInitView() {
         setStatusbar(R.color.color_FFFFFF,true)
         setupEvent()

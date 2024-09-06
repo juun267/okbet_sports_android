@@ -5,6 +5,7 @@ import android.content.Intent
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityNewsDetailBinding
 import org.cxct.sportlottery.net.news.data.NewsItem
@@ -20,9 +21,10 @@ import java.util.*
 
 class NewsDetailActivity :
     org.cxct.sportlottery.ui.base.BaseActivity<MainHomeViewModel, ActivityNewsDetailBinding>() {
-
+    override fun pageName() = "新闻详情页面"
     companion object {
         fun start(context: Context, newsItem: NewsItem) {
+            SensorsEventUtil.newsPageViewEvent(newsItem.id.toString(), "${newsItem.title}")
             val intent = Intent(context, NewsDetailActivity::class.java)
             intent.putExtra("newsItem", newsItem)
             context.startActivity(intent)

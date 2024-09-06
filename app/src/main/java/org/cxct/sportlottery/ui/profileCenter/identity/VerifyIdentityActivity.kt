@@ -14,6 +14,8 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
 class VerifyIdentityActivity :
     BaseActivity<ProfileCenterViewModel, ActivityVerifyIdentityBinding>() {
 
+    override fun pageName() = "KYC状态页面"
+
     private val mNavController by lazy { (supportFragmentManager.findFragmentById(R.id.identity_container) as NavHostFragment).navController }
 
     private val loadingHolder by lazy { Gloading.wrapView(findViewById(R.id.identity_container)) }

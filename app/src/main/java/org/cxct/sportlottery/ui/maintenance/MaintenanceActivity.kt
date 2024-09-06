@@ -15,6 +15,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.JumpUtil
 
 class MaintenanceActivity : BaseActivity<MaintenanceViewModel, ActivityMaintenanceBinding>() {
+    override fun pageName() = "系统维护页面"
 
     override fun onInitView() {
         ImmersionBar.with(this)

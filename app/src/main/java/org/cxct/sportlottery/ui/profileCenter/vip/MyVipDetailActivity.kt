@@ -14,7 +14,7 @@ import org.cxct.sportlottery.util.LogUtil
 import java.math.RoundingMode
 
 class MyVipDetailActivity: BaseActivity<VipViewModel,ActivityMyVipDetailBinding>() {
-
+    override fun pageName() = "VIP详情页面"
     override fun onInitView() {
         setStatusbar()
         binding.customToolBar.setOnBackPressListener {

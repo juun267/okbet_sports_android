@@ -276,7 +276,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             userMoneyView.visible()
             bindMoneyText(LoginRepository.userMoney())
             btnDeposit.setOnClickListener {
-                (fragment.requireActivity() as BaseActivity<*,*>).jumpToDeposit()
+                (fragment.requireActivity() as BaseActivity<*,*>).jumpToDeposit("顶部充值按钮")
             }
         } else {
             searchView.visible()
