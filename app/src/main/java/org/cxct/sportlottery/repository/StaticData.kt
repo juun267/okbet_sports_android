@@ -140,7 +140,7 @@ class StaticData {
                     return it.isOpen()
                 }
             }
-            return true
+            return false
         }
 
         //获取okBingo是否开启
