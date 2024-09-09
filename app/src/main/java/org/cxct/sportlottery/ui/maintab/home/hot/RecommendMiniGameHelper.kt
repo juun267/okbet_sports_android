@@ -58,7 +58,7 @@ class RecommendMiniGameHelper(private val context: Context,
 
     private val binding by lazy {
         val vb = LayoutRecommendMinigameBinding.inflate(context.layoutInflater)
-        val lp = LinearLayout.LayoutParams(-1, 220.dp)
+        val lp = LinearLayout.LayoutParams(-1, 246.dp)
         lp.horizontalMargin = 12.dp
         vb.root.layoutParams = lp
         onLayout.invoke(vb.root)
@@ -93,7 +93,7 @@ class RecommendMiniGameHelper(private val context: Context,
         }
 
         ConfigRepository.onNewConfig(lifecycleOwner) {
-            isClosed = !StaticData.miniGameOpened()
+            isClosed = false
             if (isClosed) {
                 clearPostPlay()
                 if (!dataList.isNullOrEmpty()) {
