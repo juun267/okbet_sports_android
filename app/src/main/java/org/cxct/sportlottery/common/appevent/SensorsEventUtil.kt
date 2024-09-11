@@ -1,37 +1,41 @@
 package org.cxct.sportlottery.common.appevent
 
 import android.content.Context
-import android.util.Log
 import com.appsflyer.AppsFlyerConversionListener
 import com.sensorsdata.analytics.android.sdk.SAConfigOptions
+import com.sensorsdata.analytics.android.sdk.SensorsAnalyticsAutoTrackEventType
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI
 import com.sensorsdata.analytics.android.sdk.SensorsDataDynamicSuperProperties
+import com.sensorsdata.analytics.android.thirdparty.SensorsThirdParty
+import com.sensorsdata.analytics.android.thirdparty.bean.SAThirdPartyName
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
-import org.cxct.sportlottery.network.uploadImg.ImgData
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.LanguageManager
 import org.json.JSONObject
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
 
 
 object SensorsEventUtil {
 
     private const val SA_SERVER_URL = "https://data.catokbet.com/sa?project=default";
 
+    val appsFlyerProperties = mutableMapOf<String, Any>()
     val conversionDataListener  = object : AppsFlyerConversionListener {
         override fun onConversionDataSuccess(map: MutableMap<String, Any>) {
-            map["media_source"]?.let { appsFlyerProperties.put("mmp_first_media_source", it.toString()) }
-            map["campaign"]?.let { appsFlyerProperties.put("mmp_first_campaign", it.toString()) }
-            map["campaign_id"]?.let { appsFlyerProperties.put("mmp_first_campaign_id", it.toString()) }
-            map["adgroup"]?.let { appsFlyerProperties.put("mmp_first_adgroup", it.toString()) }
-            map["adgroup_id"]?.let { appsFlyerProperties.put("mmp_first_adgroup_id", it.toString()) }
-            map["ad_id"]?.let { appsFlyerProperties.put("mmp_first_ad_id", it.toString()) }
+
+            map["media_source"]?.let { appsFlyerProperties.put("mmp_first_media_source", it) }
+            map["campaign"]?.let { appsFlyerProperties.put("mmp_first_campaign", it) }
+            map["campaign_id"]?.let { appsFlyerProperties.put("mmp_first_campaign_id", it) }
+            map["adgroup"]?.let { appsFlyerProperties.put("mmp_first_adgroup", it) }
+            map["adgroup_id"]?.let { appsFlyerProperties.put("mmp_first_adgroup_id", it) }
+            map["ad_id"]?.let { appsFlyerProperties.put("mmp_first_ad_id", it) }
+            if (appsFlyerProperties.isNotEmpty()) {
+                SensorsThirdParty.share(SAThirdPartyName.APPSFLYER, appsFlyerProperties)
+            }
         }
 
         override fun onConversionDataFail(p0: String?) {
@@ -46,19 +50,37 @@ object SensorsEventUtil {
 
     }
 
-    private val appsFlyerProperties = ConcurrentHashMap<String, String>()
-
+    private var userId: Long = -1
     // 需要在主线程初始化神策 SDK
     fun initSdk(context: Context) {
         val options = SAConfigOptions(SA_SERVER_URL)
+        options.setAutoTrackEventType(SensorsAnalyticsAutoTrackEventType.APP_START or
+        SensorsAnalyticsAutoTrackEventType.APP_END or
+        SensorsAnalyticsAutoTrackEventType.APP_VIEW_SCREEN or
+        SensorsAnalyticsAutoTrackEventType.APP_CLICK)
         /**
          * 集成神策 Web JS SDK 的 H5 页面，在嵌入到 App 后，H5 内的事件可以通过 App 进行发送，
          * 事件发送前会添加上 App 采集到的预置属性。该功能默认是关闭状态，如果需要开启，需要在 App 和 H5 端同时进行配置。
          */
         options.enableJavaScriptBridge(true)
         options.enableTrackPageLeave(true) //
+        options.enableLog(BuildConfig.DEBUG)
         SensorsDataAPI.startWithConfigOptions(context, options)
         SensorsDataAPI.sharedInstance().trackAppInstall() //App安装事件
+
+        userId = UserInfoRepository.userId()
+        UserInfoRepository.userInfo.observeForever {
+            val id = UserInfoRepository.userId()
+            if (id == userId) {
+                return@observeForever
+            }
+            userId = id
+            if (userId > 0) {
+                SensorsDataAPI.sharedInstance().login(userId.toString())
+            } else {
+                SensorsDataAPI.sharedInstance().logout()
+            }
+        }
 
         val properties = JSONObject()
             .put("platform_type", "Android")
@@ -70,6 +92,7 @@ object SensorsEventUtil {
                     val params = JSONObject()
                         .put("client_language", LanguageManager.getLanguageString())
                     appsFlyerProperties.entries.forEach { params.put(it.key, it.value) }
+
                     val userInfo = UserInfoRepository.loginedInfo() ?: return params
                     userInfo.levelCode?.let { params.put("vip_level", userInfo.levelCode) }
                     return params

@@ -383,10 +383,11 @@ dependencies {
     //protobuf
     implementation 'com.google.protobuf:protobuf-javalite:3.25.1'
 
+    implementation 'com.sensorsdata.analytics.android:ThirdParty:0.0.3'
     // 神策埋点
     implementation ('com.sensorsdata.analytics.android:SensorsAnalyticsSDK:6.8.2') {
         exclude(group:'com.sensorsdata.analytics.android', module:'advert')     // 	广告模块
-//        exclude(group:'com.sensorsdata.analytics.android', module:'autoTrack')  // 	全埋点模块
+        exclude(group:'com.sensorsdata.analytics.android', module:'autoTrack')  // 	全埋点模块
         exclude(group:'com.sensorsdata.analytics.android', module:'encrypt')    // 	加密模块
         exclude(group:'com.sensorsdata.analytics.android', module:'exposure')   // 	曝光模块
         exclude(group:'com.sensorsdata.analytics.android', module:'push')       // 	推送模块
