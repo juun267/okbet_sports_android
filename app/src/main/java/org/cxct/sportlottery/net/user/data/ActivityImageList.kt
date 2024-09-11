@@ -29,6 +29,7 @@ data class ActivityImageList(
     val titleText: String?=null,
     val frontPageShow: Int,
     val imageLink: String?=null,
+    val isPayDay: Int?= null
 ):Parcelable, BaseBannerInfo {
     var typeName: String = ""
         get() {
