@@ -44,7 +44,7 @@ class AllGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentAllOkgamesB
     }
 
     private fun initHotMatchView() {
-        binding.hotMatchView.onCreate(viewModel.publicityRecommend,viewModel.oddsType,this)
+        binding.hotMatchView.onCreate("OKGame页面", viewModel.publicityRecommend,viewModel.oddsType,this)
         binding.scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
             binding.hotMatchView.resubscribe()
         }

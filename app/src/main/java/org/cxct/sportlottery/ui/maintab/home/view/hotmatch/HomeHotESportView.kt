@@ -266,7 +266,7 @@ class HomeHotESportView(
 
                     fragment.requireActivity().doOnStop(true) { // 延时加入注单，不然当前页面会弹出来注单列表
                         val viewModel = fragment.viewModel as BaseSocketViewModel
-                        viewModel.updateMatchBetListData(fastBetDataBean)
+                        viewModel.updateMatchBetListData(fastBetDataBean, "首页热门电竞赛事")
                     }
                     SportDetailActivity.startActivity(fragment.requireContext(), matchInfo = matchInfo, matchType=matchType)
                 }, onClickPlayTypeListener = { _, _, _, _ ->

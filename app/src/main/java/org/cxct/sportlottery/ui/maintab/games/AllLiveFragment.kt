@@ -51,7 +51,7 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
     }
 
     private fun initHotMatchView() {
-        binding.hotMatchView.onCreate(viewModel.publicityRecommend,viewModel.oddsType,this)
+        binding.hotMatchView.onCreate("OKLive页面", viewModel.publicityRecommend,viewModel.oddsType,this)
         binding.scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
             binding.hotMatchView.resubscribe()
         }

@@ -564,8 +564,8 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
     }
 
 
-    fun setupBetData(fastBetDataBean: FastBetDataBean, view: View? = null) {
-        viewModel.updateMatchBetListData(fastBetDataBean)
+    fun setupBetData(fastBetDataBean: FastBetDataBean, from: String) {
+        viewModel.updateMatchBetListData(fastBetDataBean, from)
     }
 
     private fun setupBottomNavBarVisibility(isVisible: Boolean) {

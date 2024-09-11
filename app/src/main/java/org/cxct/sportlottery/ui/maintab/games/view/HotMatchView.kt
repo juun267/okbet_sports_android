@@ -123,14 +123,17 @@ class HotMatchView(
     }
 
 
+    private var pageName = ""
+
     /**
      * 初始化热门赛事控件
      */
-    fun onCreate(data: LiveData<Event<List<Recommend>>>,oddsTypeLiveData: LiveData<OddsType>, fragment: BaseFragment<*,*>?) {
+    fun onCreate(pageName: String, data: LiveData<Event<List<Recommend>>>,oddsTypeLiveData: LiveData<OddsType>, fragment: BaseFragment<*,*>?) {
         if (fragment == null) {
             return
         }
         this.fragment = fragment
+        this.pageName = pageName
         //初始化api变量监听
         initDataObserve(data, oddsTypeLiveData, fragment)
         //初始化adapter
@@ -311,7 +314,7 @@ class HotMatchView(
                     )
 
                     fragment.requireActivity().doOnStop(true) { // 延时加入注单，不然当前页面会弹出来注单列表
-                        (fragment.viewModel as BaseSocketViewModel).updateMatchBetListData(fastBetDataBean)
+                        (fragment.viewModel as BaseSocketViewModel).updateMatchBetListData(fastBetDataBean, "${pageName}-热门赛事")
                     }
                     SportDetailActivity.startActivity(fragment.requireContext(), matchInfo = matchInfo, matchType=matchType)
                 }, onClickPlayTypeListener = { _, _, _, _ ->

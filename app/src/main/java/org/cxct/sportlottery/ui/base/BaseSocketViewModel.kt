@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.lc.sports.ws.protocol.protobuf.FrontWsEvent
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.enums.*
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.network.Constants
@@ -163,12 +164,13 @@ abstract class BaseSocketViewModel(
         MultiLanguagesApplication.saveOddsType(oddsType)
     }
 
-    var savedOddId = "savedOddId"
-    fun updateMatchBetListData(data: FastBetDataBean) {
+    private var savedOddId = "savedOddId"
+    fun updateMatchBetListData(data: FastBetDataBean, from: String) {
         val oddId = data.odd.id
 //        Timber.e("oddId: $oddId")
         if (getMarketSwitch()) return
         if (savedOddId == oddId) return
+        SensorsEventUtil.sportsOddsClickEvent(from, "${data.playCateName}", "$oddId")
         savedOddId = oddId.orEmpty()
         if (data.matchType == MatchType.OUTRIGHT) {
             //冠军

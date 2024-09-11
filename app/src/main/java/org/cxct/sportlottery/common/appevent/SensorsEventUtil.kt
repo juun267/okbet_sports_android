@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.common.appevent
 
 import android.content.Context
+import android.util.Log
+import com.appsflyer.AppsFlyerConversionListener
 import com.sensorsdata.analytics.android.sdk.SAConfigOptions
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI
 import com.sensorsdata.analytics.android.sdk.SensorsDataDynamicSuperProperties
@@ -14,11 +16,37 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.LanguageManager
 import org.json.JSONObject
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
 
 
 object SensorsEventUtil {
 
     private const val SA_SERVER_URL = "https://data.catokbet.com/sa?project=default";
+
+    val conversionDataListener  = object : AppsFlyerConversionListener {
+        override fun onConversionDataSuccess(map: MutableMap<String, Any>) {
+            map["media_source"]?.let { appsFlyerProperties.put("mmp_first_media_source", it.toString()) }
+            map["campaign"]?.let { appsFlyerProperties.put("mmp_first_campaign", it.toString()) }
+            map["campaign_id"]?.let { appsFlyerProperties.put("mmp_first_campaign_id", it.toString()) }
+            map["adgroup"]?.let { appsFlyerProperties.put("mmp_first_adgroup", it.toString()) }
+            map["adgroup_id"]?.let { appsFlyerProperties.put("mmp_first_adgroup_id", it.toString()) }
+            map["ad_id"]?.let { appsFlyerProperties.put("mmp_first_ad_id", it.toString()) }
+        }
+
+        override fun onConversionDataFail(p0: String?) {
+        }
+
+        override fun onAppOpenAttribution(p0: MutableMap<String, String>?) {
+
+        }
+
+        override fun onAttributionFailure(p0: String?) {
+        }
+
+    }
+
+    private val appsFlyerProperties = ConcurrentHashMap<String, String>()
 
     // 需要在主线程初始化神策 SDK
     fun initSdk(context: Context) {
@@ -28,7 +56,9 @@ object SensorsEventUtil {
          * 事件发送前会添加上 App 采集到的预置属性。该功能默认是关闭状态，如果需要开启，需要在 App 和 H5 端同时进行配置。
          */
         options.enableJavaScriptBridge(true)
+        options.enableTrackPageLeave(true) //
         SensorsDataAPI.startWithConfigOptions(context, options)
+        SensorsDataAPI.sharedInstance().trackAppInstall() //App安装事件
 
         val properties = JSONObject()
             .put("platform_type", "Android")
@@ -39,6 +69,7 @@ object SensorsEventUtil {
                 override fun getDynamicSuperProperties(): JSONObject {
                     val params = JSONObject()
                         .put("client_language", LanguageManager.getLanguageString())
+                    appsFlyerProperties.entries.forEach { params.put(it.key, it.value) }
                     val userInfo = UserInfoRepository.loginedInfo() ?: return params
                     userInfo.levelCode?.let { params.put("vip_level", userInfo.levelCode) }
                     return params
@@ -183,6 +214,10 @@ object SensorsEventUtil {
         params.put("click_place", clickPlace)
 //        params.put("is_trial_machine", "")
         pushEvent("clickMachine", params)
+    }
+
+    fun sportsOddsClickEvent(clickPlace: String, gameName: String, gameId: String) {
+        gameClickEvent(clickPlace, "OKBET", "sports", gameName, gameId)
     }
 
     /**

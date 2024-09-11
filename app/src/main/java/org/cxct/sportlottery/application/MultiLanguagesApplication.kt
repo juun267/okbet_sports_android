@@ -155,7 +155,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     private fun initAppsFlyerSDK() {
-        AppsFlyerLib.getInstance().init(BuildConfig.AF_APPKEY, null, this)
+        AppsFlyerLib.getInstance().init(BuildConfig.AF_APPKEY, SensorsEventUtil.conversionDataListener, this)
         AppsFlyerLib.getInstance().setDebugLog(BuildConfig.DEBUG);
         AppsFlyerLib.getInstance().start(this);
     }

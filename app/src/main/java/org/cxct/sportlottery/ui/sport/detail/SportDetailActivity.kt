@@ -555,7 +555,7 @@ class SportDetailActivity : BaseSocketActivity<SportViewModel,ActivityDetailSpor
                 otherPlayCateName = scoPlayCateNameForBetInfo,
                 categoryCode = matchInfo?.categoryCode
             )
-            viewModel.updateMatchBetListData(fastBetDataBean)
+            viewModel.updateMatchBetListData(fastBetDataBean, "赛事详情页面")
         })
 
         oddsAdapter.oddsDetailListener =  {

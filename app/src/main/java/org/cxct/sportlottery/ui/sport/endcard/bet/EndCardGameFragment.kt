@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
@@ -132,6 +133,7 @@ class EndCardGameFragment: BaseSocketFragment<EndCardVM, FragmentEndcardgameBind
             EndCardBetManager.removeBetOdd(oddId)
         } else {
             EndCardBetManager.addBetOdd(oddId)
+            SensorsEventUtil.sportsOddsClickEvent("玩法列表", "篮球末尾比分", oddId)
         }
         if (EndCardBetManager.getBetOdds().size==1&&!isAdded){
             binding.parlayFloatWindow.gone()

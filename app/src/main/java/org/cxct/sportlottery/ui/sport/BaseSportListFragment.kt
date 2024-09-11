@@ -440,7 +440,8 @@ abstract class BaseSportListFragment<M, VB>: BaseSocketFragment<SportListViewMod
             subscribeChannelType = ChannelType.HALL,
             betPlayCateNameMap = betPlayCateNameMap,
             categoryCode = matchInfo.categoryCode
-            )
+            ),
+            "赛事列表(${matchType.postValue}-$gameType})"
         )
     }
     /**
