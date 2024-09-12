@@ -36,6 +36,8 @@
 -keep class com.qiniu.qmedia.** {*;}
 -keep class com.qiniu.qplayer2ext.** {*;}
 
+-keep class com.sensorsdata.analytics.android.** { *; }
+
 #====== 网易滑块验证 ============ start
 #-keepattributes *Annotation*
 #-keep public class com.netease.nis.captcha.**{*;}

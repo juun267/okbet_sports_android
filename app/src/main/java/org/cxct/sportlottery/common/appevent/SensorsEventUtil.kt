@@ -3,8 +3,8 @@ package org.cxct.sportlottery.common.appevent
 import android.content.Context
 import com.appsflyer.AppsFlyerConversionListener
 import com.sensorsdata.analytics.android.sdk.SAConfigOptions
-import com.sensorsdata.analytics.android.sdk.SensorsAnalyticsAutoTrackEventType
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI
+import com.sensorsdata.analytics.android.sdk.SensorsDataAPI.AutoTrackEventType
 import com.sensorsdata.analytics.android.sdk.SensorsDataDynamicSuperProperties
 import com.sensorsdata.analytics.android.thirdparty.SensorsThirdParty
 import com.sensorsdata.analytics.android.thirdparty.bean.SAThirdPartyName
@@ -54,20 +54,26 @@ object SensorsEventUtil {
     // 需要在主线程初始化神策 SDK
     fun initSdk(context: Context) {
         val options = SAConfigOptions(SA_SERVER_URL)
-        options.setAutoTrackEventType(SensorsAnalyticsAutoTrackEventType.APP_START or
-        SensorsAnalyticsAutoTrackEventType.APP_END or
-        SensorsAnalyticsAutoTrackEventType.APP_VIEW_SCREEN or
-        SensorsAnalyticsAutoTrackEventType.APP_CLICK)
         /**
          * 集成神策 Web JS SDK 的 H5 页面，在嵌入到 App 后，H5 内的事件可以通过 App 进行发送，
          * 事件发送前会添加上 App 采集到的预置属性。该功能默认是关闭状态，如果需要开启，需要在 App 和 H5 端同时进行配置。
          */
         options.enableJavaScriptBridge(true)
         options.enableTrackPageLeave(true) //
+        options.enableTrackPush(true)
+
+        SensorsDataAPI.sharedInstance().enableAutoTrack(
+            listOf(
+                AutoTrackEventType.APP_START,
+                AutoTrackEventType.APP_END,
+                AutoTrackEventType.APP_VIEW_SCREEN,
+                AutoTrackEventType.APP_CLICK
+            )
+        )
+
         options.enableLog(BuildConfig.DEBUG)
         SensorsDataAPI.startWithConfigOptions(context, options)
         SensorsDataAPI.sharedInstance().trackAppInstall() //App安装事件
-
         userId = UserInfoRepository.userId()
         UserInfoRepository.userInfo.observeForever {
             val id = UserInfoRepository.userId()
@@ -319,13 +325,15 @@ object SensorsEventUtil {
      * hyper_page_title	跳转页面标题	STRING	跳转页面的页面标题
      * hyper_page_url	跳转页面url	STRING	跳转页面的地址
      */
-    private fun popupWindowClickEvent(popupId: String,
+    private fun popupWindowClickEvent(
+        popupId: String,
 //                              popupType: String,
-                              popupName: String,
+        popupName: String,
 //                              popupPage: String,
 //                              hyperPageType: String,
-                              hyperPageTitle: String,
-                              hyperPageUrl: String,) {
+        hyperPageTitle: String,
+        hyperPageUrl: String,
+    ) {
         val params = JSONObject()
         params.put("popup_id", popupId)
         params.put("popup_type", "活动弹窗")
@@ -371,12 +379,14 @@ object SensorsEventUtil {
      * event_stage_id	    活动档位ID	STRING	各个活动档位对应的独立ID
      * page_name	        页面名称	    STRING	活动页面的名称
      */
-    fun activityPageVisitEvent(visitSourceType: String,
-                       visitSourceName: String,
-                       eventType: String,
-                       eventName: String,
-                       /*eventStageName: String,
-                       eventStageId: String*/) {
+    fun activityPageVisitEvent(
+        visitSourceType: String,
+        visitSourceName: String,
+        eventType: String,
+        eventName: String,
+        /*eventStageName: String,
+                       eventStageId: String*/
+    ) {
         val params = JSONObject()
         params.put("visit_source_type", visitSourceType)
         params.put("visit_source_name", visitSourceName)
@@ -388,10 +398,12 @@ object SensorsEventUtil {
         pushEvent("eventPageView", params)
     }
 
-    private fun activityEventProperties(eventType: String,
-                                        eventName: String,
-                                        /*eventStageName: String,
-                                        eventStageId: String*/): JSONObject {
+    private fun activityEventProperties(
+        eventType: String,
+        eventName: String,
+        /*eventStageName: String,
+                                        eventStageId: String*/
+    ): JSONObject {
         return JSONObject()
             .put("event_type", eventType)
             .put("event_name", eventName)
@@ -439,10 +451,12 @@ object SensorsEventUtil {
      * url	        页面地址	    STRING	所在的页面地址
      * url_path	    页面地址路径	STRING	所在的页面地址路径
      */
-    fun newsPageViewEvent(newsId: String,
-                          newsName: String,
+    fun newsPageViewEvent(
+        newsId: String,
+        newsName: String,
 //                          titleType: String,
-                          /*title: String*/) {
+        /*title: String*/
+    ) {
         val params = JSONObject()
         params.put("news_id", newsId)
         params.put("news_name", newsName)

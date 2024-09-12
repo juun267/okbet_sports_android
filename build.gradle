@@ -31,6 +31,9 @@ buildscript {
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.9.4'
         // fcm，若不集成 FCM 通道，可直接跳过
         classpath 'com.google.gms:google-services:4.3.15'
+
+        // 添加神策分析 android-gradle-plugin2 依赖
+        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:4.0.3'
     }
 }
 
