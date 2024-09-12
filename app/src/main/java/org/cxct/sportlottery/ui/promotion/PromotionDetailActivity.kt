@@ -128,8 +128,8 @@ class PromotionDetailActivity :
                 ActivityType.FIRST_DEPOSIT_BONUS,ActivityType.DAILY_BONUS -> getString(R.string.P278)
                 else -> getString(R.string.P156)//亏损金额
             }
-            //发薪日活动Payday 隐藏奖励
-            linReward.isVisible = activityDetail.isPayDay !=1
+            //发薪日活动Payday 隐藏充值
+            linDeposit.isVisible = activityDetail.isPayDay !=1
             linHistory.show()
             linHistory.setOnClickListener {
                RewardHistoryDialog.newInstance(activityDetail.activityId).show(supportFragmentManager,null)
