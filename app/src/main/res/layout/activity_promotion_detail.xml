@@ -78,7 +78,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:paddingVertical="@dimen/margin_10">
+                        android:paddingVertical="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/margin_20">
 
                         <ImageView
                             android:layout_width="@dimen/margin_36"
@@ -111,12 +112,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="@dimen/margin_0.5"
-                        android:layout_height="@dimen/margin_36"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginHorizontal="@dimen/margin_20"
-                        android:background="@color/color_E0E3EE" />
 
                     <LinearLayout
                         android:id="@+id/linReward"
