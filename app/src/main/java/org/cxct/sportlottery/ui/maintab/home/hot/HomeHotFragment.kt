@@ -200,7 +200,12 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         viewModel.systemNotice.value?.let { notice->
             AnnouncementsDialog.buildAnnouncementsDialog(notice, PRIORITY_SYSTEM_NOTICE, ::getParentFragmentManager)?.let { dialog ->
                 announcementsShowed = true
-                dialogQueueManager.enqueue(dialog)
+                if (isShowed&&!dialogQueueManager.isShowing()) {
+                    //config已经组建好弹窗顺序，并且当前没有最新弹窗就直接显示弹窗
+                    dialogQueueManager.showNext()
+                }else{
+                    dialogQueueManager.enqueue(dialog)
+                }
             }
         }
     }

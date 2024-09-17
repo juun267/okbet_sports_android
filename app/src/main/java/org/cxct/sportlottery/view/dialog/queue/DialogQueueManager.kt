@@ -43,4 +43,7 @@ class DialogQueueManager(lifecycleOwner: LifecycleOwner) {
         }
         showNext()
     }
+     fun isShowing(): Boolean{
+       return currentDialog!=null
+    }
 }
