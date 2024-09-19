@@ -34,9 +34,9 @@
     <string name="error_member_account">Số tài khoản từ 4 ~ 16 bao gồm chữ số và chữ cái</string>
     <string name="error_member_nickname">Tên %1$d - %2$d kết hợp tiếng Trung và tiếng Anh</string>
     <string name="error_register_id_exist">Tên tài khoản đã tồn tại</string>
-    <string name="hint_register_password">Độ dài từ 6-20 ký tự bao gồm chữ cái và số</string>
-    <string name="error_register_password">Mật khẩu từ 6-20 ký tự bao gồm chữ cái và số</string>
-    <string name="error_password_format">từ 6~20 ký tự bao gồm chữ và sô</string>
+    <string name="hint_register_password">Độ dài từ 8-20 ký tự bao gồm chữ cái và số</string>
+    <string name="error_register_password">Mật khẩu từ 8-20 ký tự bao gồm chữ cái và số</string>
+    <string name="error_password_format">từ 8~20 ký tự bao gồm chữ và sô</string>
     <string name="register_please_read">Hãy đọc kỹ</string>
     <string name="register_responsibilities">&#160;Chơi có trách nhiệm</string>
     <string name="bet_basketball_notify_max_limit">Có thể thêm tối đa 100 lựa chọn vào phiếu đặt cược</string>

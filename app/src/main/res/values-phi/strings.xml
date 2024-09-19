@@ -34,9 +34,9 @@
     <string name="error_member_account">Account number ay kumbinasyon ng 4~16 numero at letra</string>
     <string name="error_member_nickname">Ang palayaw ay %1$d-%2$d mga kumbinasyong Tsino at Ingles</string>
     <string name="error_register_id_exist">Account na ito ay may ibang kapareho</string>
-    <string name="hint_register_password">6-20 Karakter kombinasyon ng letra at numero</string>
-    <string name="error_register_password">Password ay kumbinasyon ng 6~20 numero at letra</string>
-    <string name="error_password_format">Kailangang kumbinasyon ng 6-20 Letra at Numero</string>
+    <string name="hint_register_password">8-20 Karakter kombinasyon ng letra at numero</string>
+    <string name="error_register_password">Password ay kumbinasyon ng 8~20 numero at letra</string>
+    <string name="error_password_format">Kailangang kumbinasyon ng 8-20 Letra at Numero</string>
     <string name="register_please_read">Mangyaring basahin mabuti ang aming</string>
     <string name="register_responsibilities"><u>Responsableng Paglalaro</u></string>
     <string name="register_privacy_policy">Patakaran sa privacy</string>

@@ -67,9 +67,11 @@ object VerifyConstUtil {
         return !(Pattern.matches("[$NUMBER]*", pwd) || Pattern.matches("[$ENGLISH_WORD]*", pwd))
     }
 
+//    fun verifyPwd(pwd: CharSequence): Boolean {
+//        return verifyLengthRange(pwd, 6, 20)
+//    }
     fun verifyPwd(pwd: CharSequence): Boolean {
-//        return Pattern.matches("(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,20}", pwd)
-        return verifyLengthRange(pwd, 6, 20)
+        return Pattern.matches("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,20}\$", pwd)
     }
 
     //真實姓名 只允许英文和空格，不允许前后空格和连续空格

@@ -34,9 +34,9 @@
     <string name="error_member_account">账号为4~16位数字字母组合</string>
     <string name="error_member_nickname">昵称为%1$d-%2$d个中英文组合</string>
     <string name="error_register_id_exist">已有此账户名</string>
-    <string name="hint_register_password">长度需6–20个字符含英数</string>
-    <string name="error_register_password">密码为6~20位数字字母组合</string>
-    <string name="error_password_format">需为6~20个英数组合</string>
+    <string name="hint_register_password">长度需8–20个字符含英数</string>
+    <string name="error_register_password">密码为8~20位数字字母组合</string>
+    <string name="error_password_format">需为8~20个英数组合</string>
     <string name="register_please_read">请仔细阅读我们的</string>
     <string name="register_responsibilities"><u>博彩责任</u></string>
     <string name="register_privacy_policy">隐私权政策</string>

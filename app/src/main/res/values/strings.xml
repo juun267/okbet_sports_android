@@ -34,9 +34,9 @@
     <string name="error_member_account">Username must be 4–16 characters and contain letter and numbers</string>
     <string name="error_member_nickname">Nickname must be %1$d-%2$d characters long and contain English &amp; Chinese letter</string>
     <string name="error_register_id_exist">Username already exists</string>
-    <string name="hint_register_password">6-20 characters and contain numbers and letters.</string>
-    <string name="error_register_password">6-20 Alphanumeric characters is required.</string>
-    <string name="error_password_format">A combination of 6 to 20 English letters and digits is required</string>
+    <string name="hint_register_password">8-20 characters and contain numbers and letters.</string>
+    <string name="error_register_password">8-20 Alphanumeric characters is required.</string>
+    <string name="error_password_format">A combination of 8 to 20 English letters and digits is required</string>
     <string name="register_please_read">Please read our</string>
     <string name="register_responsibilities">&#160;Responsible Gaming</string>
     <string name="register_privacy">Send me updates and promotions in accordance with the</string>
