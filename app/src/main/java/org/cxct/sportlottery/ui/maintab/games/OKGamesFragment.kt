@@ -109,12 +109,6 @@ class OKGamesFragment : BaseSocketFragment<OKGamesViewModel,FragmentOkgamesBindi
                 binding.topView.binding.jackpotView.visible()
                 binding.topView.binding.jackpotView.setJackPotNumber(it.toDouble())
             }
-            ServiceBroadcastReceiver.jackpotChange.observe(viewLifecycleOwner) {
-                if (it.isNullOrEmpty()) {
-                    return@observe
-                }
-                binding.topView.binding.jackpotView.setJackPotNumber(it.toDouble())
-            }
         }else{
             binding.topView.binding.jackpotView.gone()
         }

@@ -32,6 +32,7 @@ import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.show
+import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.databinding.ItemMinigameBinding
 import org.cxct.sportlottery.databinding.LayoutRecommendMinigameBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -39,10 +40,12 @@ import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.dispatcher.GamesJackpotDispatcher
 import org.cxct.sportlottery.ui.base.VisibilityFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 import org.cxct.sportlottery.view.OKVideoPlayer
@@ -124,6 +127,34 @@ class RecommendMiniGameHelper(private val context: Context,
                 currentPlayer?.release()
             }
         })
+
+        GamesJackpotDispatcher.observe(lifecycleOwner) {
+
+            val miniGameList = miniGameAdapter.data
+            if (miniGameList.isEmpty()) {
+                return@observe
+            }
+
+            val jackPotMap = HashMap<Long, String>();
+            it.jackPotGameListList.forEach {
+                jackPotMap[it.id] = it.amount
+            }
+
+            miniGameList.forEachIndexed { index, okGameBean ->
+                val jackPot = jackPotMap.remove(okGameBean.id.toLong())
+                if (jackPot != null) {
+                    val jackpotAmount = jackPot.toDoubleS(0.0)
+                    if (jackpotAmount > okGameBean.jackpotAmount) {
+                        okGameBean.jackpotAmount = jackpotAmount
+                        miniGameAdapter.notifyItemChanged(index, jackpotAmount)
+                    }
+                }
+                if (jackPotMap.isEmpty()) {
+                    return@observe
+                }
+            }
+
+        }
     }
 
     fun resumePlay() {
@@ -332,6 +363,19 @@ class RecommendMiniGameHelper(private val context: Context,
         }
 
         override fun onBinding(position: Int, binding: ItemMinigameBinding, item: OKGameBean) { }
+
+        override fun onBindViewHolder(
+            holder: BindingVH<ItemMinigameBinding>,
+            position: Int,
+            payloads: MutableList<Any>
+        ) {
+            super.onBindViewHolder(holder, position, payloads)
+            val binding = holder.vb
+            if (binding.tvJackPotAmount.isVisible) {
+                val item = getItem(position)
+                binding.tvJackPotAmount.setNumberString(item.jackpotAmount.toString())
+            }
+        }
 
         override fun onBindViewHolder(holder: BindingVH<ItemMinigameBinding>, position: Int) {
             val binding = holder.vb
