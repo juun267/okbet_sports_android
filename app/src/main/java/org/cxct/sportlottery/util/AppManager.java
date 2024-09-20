@@ -12,6 +12,7 @@ import androidx.activity.ComponentActivity;
 
 import org.cxct.sportlottery.application.MultiLanguagesApplication;
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver;
+import org.cxct.sportlottery.ui.base.BaseActivity;
 import org.cxct.sportlottery.view.floatingbtn.RedEnvelopeManager;
 
 import java.lang.ref.WeakReference;
@@ -116,6 +117,19 @@ public class AppManager {
 
     public static Activity currentActivity() {
         return currentActivity.get();
+    }
+
+    public static String getPageName() {
+        if (currentActivity == null) {
+            return "未知页面";
+        }
+
+        Activity activity = currentActivity.get();
+        if (activity instanceof BaseActivity) {
+            return ((BaseActivity<?, ?>) activity).pageName();
+        } else {
+            return "未知页面";
+        }
     }
 
     public static void finishActivity() {
