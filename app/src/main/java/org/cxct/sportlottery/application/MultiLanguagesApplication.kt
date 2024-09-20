@@ -114,6 +114,7 @@ class MultiLanguagesApplication : Application() {
         LanguageManager.init(this)
         RequestManager.init(mInstance)
         SensorsEventUtil.initSdk(this)
+        UpdateConfig.init()
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
             CrashHandler.setup(mInstance) //错误日志收集
@@ -150,7 +151,6 @@ class MultiLanguagesApplication : Application() {
         setupDeviceCode()
         initAppsFlyerSDK()
         initJpush()
-        UpdateConfig.init()
         initNetWorkListener()
     }
 

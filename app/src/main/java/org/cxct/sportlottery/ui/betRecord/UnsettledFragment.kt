@@ -67,7 +67,8 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
         })
         mAdapter.setEmptyView(BetEmptyView(requireContext()))
         mAdapter.setOnItemClickListener{_, view, position ->
-            val data = mAdapter.data[position]
+            // 此处不知为啥会越界java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+            val data = mAdapter.data.getOrNull(position) ?: return@setOnItemClickListener
             if(data.cashoutOperationStatus == CashOutButton.STATUS_COMFIRMING ){
                 data.cashoutOperationStatus =  0
                 mAdapter.notifyItemChanged(position)
