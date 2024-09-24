@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
+import kotlinx.android.synthetic.main.view_endcard_toolbar.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
@@ -108,7 +109,9 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             binding.userVipView.visible()
             binding.userVipView.setup(this,vipViewModel)
             binding.userVipView.setOnClickListener {
-                startActivity(VipBenefitsActivity::class.java)
+                runAfterLogined{
+                    startActivity(VipBenefitsActivity::class.java)
+                }
             }
         }else{
             binding.userVipView.gone()
@@ -131,9 +134,9 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
     }
 
     private fun setupHeadButton() {
-//        iv_head.setOnClickListener {
-//            AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
-//        }
+        binding.tvUserNickname.setOnClickListener {
+            runAfterLogined{}
+        }
 
     }
 
@@ -173,10 +176,10 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     private fun setupEditNickname() {
         binding.rlHead.setOnClickListener {
-            fragmentManager?.let { it1 ->
+            runAfterLogined {
                 val dialog = AvatarSelectorDialog()
                 dialog.mSelectListener = mSelectMediaListener
-                dialog.show(it1, null)
+                dialog.show(childFragmentManager, null)
             }
         }
     }
@@ -189,14 +192,18 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     private fun setupRechargeButton() {
         binding.btnRecharge.clickDelay{
-            (requireActivity() as BaseActivity<*,*>).jumpToDeposit("存款按钮(我的)")
+            runAfterLogined {
+                (requireActivity() as BaseActivity<*,*>).jumpToDeposit("存款按钮(我的)")
+            }
         }
     }
 
     private fun setupWithdrawButton() {
         binding.btnWithdraw.isVisible = !Constants.channelSwitch
         binding.btnWithdraw.clickDelay {
-            requireActivity().jumpToWithdraw()
+            runAfterLogined{
+                requireActivity().jumpToWithdraw()
+            }
         }
     }
 
@@ -224,30 +231,30 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         btnAffiliate.setVisibilityByMarketSwitch()
         btnAboutUs.setVisibilityByMarketSwitch()
         ivProfile.setOnClickListener {
-            startActivity(Intent(requireActivity(), ProfileActivity::class.java))
+            runAfterLogined{startActivity(Intent(requireActivity(), ProfileActivity::class.java)) }
         }
         btnRedeem.setOnClickListener {
-            startActivity(Intent(requireActivity(),RedeemActivity::class.java))
+            runAfterLogined{ startActivity(Intent(requireActivity(),RedeemActivity::class.java))}
         }
         //額度轉換
         btnAccountTransfer.setOnClickListener {
-            startActivity(Intent(requireActivity(), MoneyTransferActivity::class.java))
+            runAfterLogined{ startActivity(Intent(requireActivity(), MoneyTransferActivity::class.java)) }
         }
         //其他投注記錄
         btnOtherBetRecord.setOnClickListener {
-            startActivity(Intent(requireActivity(), OtherBetRecordActivity::class.java))
+            runAfterLogined{ startActivity(Intent(requireActivity(), OtherBetRecordActivity::class.java))}
         }
 
         //資金明細
         btnFundDetail.setOnClickListener {
-            startActivity(Intent(requireActivity(), FinanceActivity::class.java))
+            runAfterLogined{ startActivity(Intent(requireActivity(), FinanceActivity::class.java)) }
         }
         //優惠活動
         btnPromotion.setOnClickListener {
             PromotionListActivity.startFrom(context(), "我的页面")
         }
         btnInviteFriend.setOnClickListener {
-            startActivity(InviteActivity::class.java)
+            runAfterLogined { startActivity(InviteActivity::class.java) }
         }
         //代理加盟
         btnAffiliate.setOnClickListener {
@@ -263,7 +270,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         } else {
             btnSelfLimit.visibility = View.VISIBLE
             btnSelfLimit.setOnClickListener {
-                startActivity(Intent(requireActivity(), SelfLimitActivity::class.java))
+                runAfterLogined{ startActivity(Intent(requireActivity(), SelfLimitActivity::class.java)) }
             }
         }
         //赛果结算
@@ -324,8 +331,12 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     private fun initObserve() {
         viewModel.userMoney.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.tvAccountBalance.text = TextUtil.format(it)
+            if(LoginRepository.isLogined()){
+                binding.tvAccountBalance.text = TextUtil.format(it?:0)
+                binding.btnRefreshMoney.isVisible = true
+            }else{
+                binding.tvAccountBalance.text = "--"
+                binding.btnRefreshMoney.isVisible = false
             }
         }
 
@@ -360,16 +371,18 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
             .into(ivHead1) //載入頭像
         ivVipLevel.setLevelTagIcon(userInfo?.levelCode)
-        tvUserNickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
+        tvUserNickname.text = if(userInfo==null){
+            getString(R.string.C047)
+        }else if (userInfo?.nickName.isNullOrEmpty()) {
             userInfo?.userName
         } else {
             userInfo?.nickName
         }
         bindVerifyStatus(userInfo)
-        btnEditNickname.visibility =
-            if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
-        labelUserName.text = "${getString(R.string.username)}："
+        btnEditNickname.visibility = if (userInfo==null||userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
+        labelUserName.text = if(userInfo==null) getString(R.string.C049) else "${getString(R.string.username)}："
         tvUserUsername.text = userInfo?.userName
+        ivProfile.isVisible = userInfo!=null
 //        if (getRemainDay(userInfo?.uwEnableTime) > 0) {
 //            ivNotice.visibility = View.VISIBLE
 //            ivNotice.setOnClickListener {
@@ -401,7 +414,11 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
 
     //有 child activity 給定 notice button 顯示
     private fun setupNoticeButton() {
-        binding.ivUserNotice.setOnClickListener {InfoCenterActivity.startWith(it.context, noticeCount > 0) }
+        binding.ivUserNotice.setOnClickListener {
+            runAfterLogined{
+                InfoCenterActivity.startWith(it.context, noticeCount > 0)
+            }
+        }
     }
 
     private fun updateNoticeCount(noticeCount: Int) {
@@ -424,7 +441,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
     }
 
     private fun bindVerifyStatus(userInfo: UserInfo?) {
-        binding.tvKycStatus.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
+        binding.tvKycStatus.isVisible = if(userInfo==null) false else sConfigData?.realNameWithdrawVerified.isStatusOpen()
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
         VerifiedType.getVerifiedType(userInfo?.verified).let{
             setVerify(text = it.nameResId, color = ContextCompat.getColor(requireContext(),it.colorResId))
@@ -439,5 +456,10 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
             .setCornersRadius(9.dp.toFloat())
             .build()
         binding.tvKycStatus.setBackgroundDrawable(bgDrawable)
+    }
+    private fun runAfterLogined(block: () -> Unit){
+        loginedRun(requireContext(),true){
+            block.invoke()
+        }
     }
 }

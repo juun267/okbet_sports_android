@@ -24,6 +24,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewUserVipBinding
 import org.cxct.sportlottery.net.user.data.RewardInfo
 import org.cxct.sportlottery.net.user.data.UserVip
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.profileCenter.vip.UserVipRewardAdapter
 import org.cxct.sportlottery.ui.profileCenter.vip.VipViewModel
@@ -42,11 +43,15 @@ class UserVipView(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
     }
 
     fun setup(fragment: ProfileCenterFragment,viewModel: VipViewModel) {
+        binding.linProgress.isVisible = LoginRepository.isLogined()
+        binding.tvEmpty.isVisible = !LoginRepository.isLogined()
         viewModel.userVipEvent.observe(fragment){
             it?.let { it1 -> updateUI(it1) }
         }
     }
     private fun updateUI(userVip: UserVip)=binding.run{
+        linProgress.isVisible = LoginRepository.isLogined()
+        tvEmpty.isVisible = !LoginRepository.isLogined()
         ivCurrentLevel.setLevelIcon(userVip.levelCode)
         tvCurrentLevel.text = userVip.levelName
         val nextLevelIndex = userVip.rewardInfo.indexOfFirst { it.levelCode == userVip.levelCode}+1
