@@ -86,9 +86,21 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         return@HomeMenuAdapter true
     }
 
+    private var delayAction: (() -> Unit)? = null
     fun jumpToPerya() {
         post{  binding.rvMenu.scrollToPosition(homeMenuAdapter.selectedPerya()) }
-        fragmentHelper2.show(MiniGameListFragment::class.java)
+        if (host == null) {
+            delayAction = { fragmentHelper2.show(MiniGameListFragment::class.java) }
+        } else {
+            fragmentHelper2.show(MiniGameListFragment::class.java)
+        }
+    }
+
+    private fun performDelayAction() {
+        if (delayAction != null) {
+            delayAction!!.invoke()
+            delayAction = null
+        }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -112,6 +124,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         binding.ivService.setServiceClick(childFragmentManager)
         viewModel.getHallOkSport()
         initRewardItems()
+        post{ performDelayAction() }
     }
 
     private fun initRewardItems() {

@@ -115,14 +115,7 @@ object SensorsEventUtil {
         SensorsDataAPI.sharedInstance().track(eventName, properties)
     }
 
-    fun getPageName(): String {
-        val activity = AppManager.currentActivity()
-        return if (activity is BaseActivity<*, *>) {
-            activity.pageName()
-        } else {
-            "未知页面"
-        }
-    }
+    fun getPageName(): String = AppManager.getPageName();
 
     /**
      * 进入登录注册页面

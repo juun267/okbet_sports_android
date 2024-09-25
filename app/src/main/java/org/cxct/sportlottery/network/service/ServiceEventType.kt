@@ -38,6 +38,7 @@ object EventType {
     const val CASH_OUT = ("CASH_OUT")  //提前兑换注单确认 与 ORDER_SETTLEMENT事件类似，只是增加cashout相关参数
     const val CASHOUT_SWITCH = ("CASHOUT_SWITCH") //提前结算开关，针对全部体育赛事
     const val CASHOUT_MATCH_STATUS = ("CASHOUT_MATCH_STATUS") //提前结算开关，针对具体体育赛事
+    const val RECORD_RESULT_JACKPOT_GAMES = "RECORD_RESULT_JACKPOT_GAMES" //提前结算开关，针对具体体育赛事
 
     /* /ws/notify/all/encrypted*/
     const val CLOSE_PLAY_CATE = ("CLOSE_PLAY_CATE")  //關閉玩法

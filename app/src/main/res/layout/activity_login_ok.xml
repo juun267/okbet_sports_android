@@ -222,6 +222,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:imeOptions="actionNext"
+                            android:maxLength="20"
                             android:inputType="textPassword"
                             android:maxLines="1"
                             android:textColor="@color/color_FFFFFF_DE000000"

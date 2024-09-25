@@ -104,6 +104,7 @@ object ServiceBroadcastReceiver {
         register.invoke(BetCashOutDispatcher)
         register.invoke(CashoutMatchStatusDispatcher)
         register.invoke(CashoutSwitchDispatcher)
+        register.invoke(GamesJackpotDispatcher)
     }
 
     fun onConnectStatus(connectStatus: ServiceConnectStatus) {
@@ -131,10 +132,6 @@ object ServiceBroadcastReceiver {
 
     private suspend fun handleEvent(event: FrontWsEvent.Event, channelStr: String,gameType: String? = null) {
         when (val eventType = event.eventType) {
-            EventType.RECORD_RESULT_JACKPOT_OK_GAMES->{
-                val data = event.recordResultJackpotOkGamesEvent
-                (jackpotChange as MutableLiveData<String?>).postValue(data?.amount)
-            }
             //用户私人频道
             EventType.USER_MONEY -> {
                 _userMoney.postValue(event.userMoneyEvent.money.toDoubleOrNull())

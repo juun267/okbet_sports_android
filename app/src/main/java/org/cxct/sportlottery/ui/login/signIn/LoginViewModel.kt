@@ -461,8 +461,8 @@ class LoginViewModel(
     fun checkPassword(password: String): String? {
         val msg = when {
             password.isEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwd(password) ->
-                androidContext.getString(R.string.error_register_password)
+//            !VerifyConstUtil.verifyPwd(password) ->
+//                androidContext.getString(R.string.error_register_password)
             else -> null
         }
         _passwordMsg.value = Pair(msg, msg == null)
