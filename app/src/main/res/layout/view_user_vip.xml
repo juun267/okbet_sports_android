@@ -166,6 +166,6 @@
             android:gravity="center"
             android:textSize="@dimen/textSize12sp"
             android:textColor="@color/color_C9CFD7"
-            android:text="@string/C049"/>
+            android:text="@string/C048"/>
     </LinearLayout>
 </merge>
