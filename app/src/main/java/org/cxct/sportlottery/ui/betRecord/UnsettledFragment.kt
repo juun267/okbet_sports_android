@@ -180,6 +180,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
 
     override fun onInitData() {
         initObservable()
+        pageIndex = 1
         getUnsettledData()
         checkCashOutStatus()
     }
@@ -192,8 +193,8 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
             }
             if (it.success) {
                 pageIndex++
-                it.rows?.let {
-                    if(it.isEmpty()){
+                it.rows.let {
+                    if(it.isNullOrEmpty()){
                         hasMore=false
                     }
                     refreshHelper.finishWithSuccess()
@@ -201,7 +202,7 @@ class UnsettledFragment : BaseFragment<AccountHistoryViewModel, FragmentUnsettle
                     if (pageIndex == 2) {
                         mAdapter.setList(it)
                     } else {
-                        mAdapter.addData(it)
+                        it?.let { it1 -> mAdapter.addData(it1) }
                     }
                 }
             } else {
