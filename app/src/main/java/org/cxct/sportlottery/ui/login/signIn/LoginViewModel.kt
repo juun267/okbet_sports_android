@@ -251,11 +251,9 @@ class LoginViewModel(
             toast(loginData.msg!!)
             return
         }
-
+        //ifNew 标识当前用户是新注册用户
         if (loginData.ifnew == true) {
             SensorsEventUtil.registerEvent(ways)
-        }
-        if (loginData.ifnew == false) {
             AFInAppEventUtil.register("username",HashMap<String, Any>().apply {
                 put("uid",loginData.uid.toString())
                 put("userId",loginData.userId.toString())
