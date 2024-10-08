@@ -7,6 +7,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.loginedRun
 
 class HelpCenterActivity : BaseActivity<HelpCenterViewModel, ActivityHelpCenterBinding>() {
 
@@ -32,7 +33,9 @@ class HelpCenterActivity : BaseActivity<HelpCenterViewModel, ActivityHelpCenterB
                 Constants.getFAQsUrl(context),getString(R.string.faqs))
         }
         linearFeedback.setOnClickListener {
-            startActivity(Intent(context, FeedbackMainActivity::class.java))
+            loginedRun(this@HelpCenterActivity,true){
+                startActivity(Intent(context, FeedbackMainActivity::class.java))
+            }
         }
     }
 

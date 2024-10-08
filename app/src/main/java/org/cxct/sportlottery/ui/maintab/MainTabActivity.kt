@@ -198,13 +198,8 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
             }
 
             R.string.main_tab_mine -> { // 我的
-                if(LoginRepository.isLogined()) {
-                    navToPosition(INDEX_PROFILE)
-                    true
-                } else {
-                    startActivity(LoginOKActivity::class.java)
-                    false
-                }
+                navToPosition(INDEX_PROFILE)
+                true
             }
 
             else -> false

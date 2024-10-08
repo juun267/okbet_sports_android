@@ -145,6 +145,7 @@
                 android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvReward"
             android:layout_width="match_parent"
@@ -158,5 +159,13 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
         </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/tvEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:gravity="center"
+            android:textSize="@dimen/textSize12sp"
+            android:textColor="@color/color_C9CFD7"
+            android:text="@string/C048"/>
     </LinearLayout>
 </merge>
