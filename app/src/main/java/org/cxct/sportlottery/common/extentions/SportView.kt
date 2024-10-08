@@ -85,14 +85,19 @@ fun TextView.setMatchCurrentPeroid(matchInfo: MatchInfo) {
     }
 }
 
-fun setMatchScore(matchInfo: MatchInfo, tvHomeScore: TextView, tvAwayScore: TextView) {
+/**
+ * 设置比赛比分
+ * includeTennis 是否包含网球，兼容赛事详情头部比分显示
+ */
+fun setMatchScore(matchInfo: MatchInfo, tvHomeScore: TextView, tvAwayScore: TextView,includeTennis: Boolean = false) {
+    val showTotalScoreType = mutableListOf(GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.BB.key).apply { if(includeTennis)  add(GameType.TN.key) }
     tvHomeScore.apply {
         visibility = when (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
             true -> View.VISIBLE
             else -> View.GONE
         }
-        text = when (matchInfo.gameType) {
-            GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.BB.key -> (matchInfo.homeTotalScore
+        text = when {
+            showTotalScoreType.contains(matchInfo.gameType) -> (matchInfo.homeTotalScore
                 ?: 0).toString()
             else -> (matchInfo.homeScore ?: 0).toString()
         }
@@ -102,8 +107,8 @@ fun setMatchScore(matchInfo: MatchInfo, tvHomeScore: TextView, tvAwayScore: Text
             true -> View.VISIBLE
             else -> View.GONE
         }
-        text = when (matchInfo.gameType) {
-            GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.BB.key -> (matchInfo.awayTotalScore
+        text = when {
+            showTotalScoreType.contains(matchInfo.gameType) -> (matchInfo.awayTotalScore
                 ?: 0).toString()
             else -> (matchInfo.awayScore ?: 0).toString()
         }

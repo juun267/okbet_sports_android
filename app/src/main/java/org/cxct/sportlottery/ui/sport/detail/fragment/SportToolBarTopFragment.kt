@@ -286,6 +286,7 @@ class SportToolBarTopFragment :
             matchInfo,
             (activity as SportDetailActivity).tvToolbarHomeScore,
             (activity as SportDetailActivity).tvToolbarAwayScore,
+            includeTennis = true
         )
     }
 
