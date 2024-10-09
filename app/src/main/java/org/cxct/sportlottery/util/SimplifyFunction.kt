@@ -1038,7 +1038,7 @@ fun BaseActivity<*, *>.jumpToDeposit(action: String, activityCharge: Boolean = f
         ToGcashDialog.newInstance(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToGcashDialog.javaClass.name)
         return
     }
-    if (LoginRepository.isLogined() && UserInfoRepository.isMayaAccount()) {
+    if (LoginRepository.isLogined() && UserInfoRepository.isMayaAccount() && !mayaUserWithdrawEnable()) {
         ToMayaDialog.newInstance(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToMayaDialog.javaClass.name)
         return
     }
@@ -1083,7 +1083,7 @@ fun FragmentActivity.jumpToWithdraw(){
         ToGcashDialog.newInstance(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToGcashDialog.javaClass.name)
         return
     }
-    if (LoginRepository.isLogined() && UserInfoRepository.isMayaAccount()) {
+    if (LoginRepository.isLogined() && UserInfoRepository.isMayaAccount() && !mayaUserWithdrawEnable()) {
         ToMayaDialog.newInstance(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToMayaDialog.javaClass.name)
         return
     }

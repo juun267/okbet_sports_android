@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogToMayaBinding
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.mayaUserWithdrawEnable
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -54,7 +55,7 @@ class ToMayaDialog : BaseDialog<BaseViewModel, DialogToMayaBinding>() {
          * 根据条件判断是否需要显示
          */
         fun showByLogin(){
-            if (LoginRepository.isLogined() && UserInfoRepository.isMayaAccount()) {
+            if (LoginRepository.isLogined() && UserInfoRepository.isMayaAccount() && !mayaUserWithdrawEnable()) {
                 if (!isChecked() && needShow) {
                     needShow = false
                     newInstance().show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToMayaDialog.javaClass.name)
