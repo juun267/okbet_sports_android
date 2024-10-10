@@ -69,7 +69,7 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
 //            R.drawable.icon_rbank_logo,
 //            R.drawable.icon_epon,
             R.drawable.icon_unionbank,
-            R.drawable.icon_aub,
+//            R.drawable.icon_aub,
             R.drawable.icon_payloro,
         ), rcvPayment)
 
