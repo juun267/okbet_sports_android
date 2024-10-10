@@ -303,12 +303,14 @@ class SportViewModel(
                         val screenWidth = MetricsUtil.getScreenWidth()
                         val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth)).px
                         val languageParams = LanguageManager.getLanguageString()
+                        //不支持菲律宾语，改成英文
+                        val animeLangParams = LanguageManager.getLanguageStringWithOutPH()
                         val gameType = it.gameType
 
                         val videoUrl =
                             "${sConfigData?.sportStream}/animation/?matchId=${matchId}&lang=${languageParams}&mode=video"
                         val animeUrl =
-                            "${sConfigData?.sportAnimation}/animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget&gameType=${gameType}"
+                            "${sConfigData?.sportAnimation}/animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${animeLangParams}&mode=widget&gameType=${gameType}"
                         _videoUrl.postValue(Event(videoUrl))
                         _animeUrl.postValue(Event(animeUrl))
                         notifyFavorite(FavoriteType.PLAY_CATE)

@@ -127,6 +127,14 @@ object LanguageManager {
             else -> "en"
         }
     }
+    fun getLanguageStringWithOutPH(): String {
+        return when (getSelectLanguage()) {
+            Language.ZH -> "zh"
+            Language.VI -> "vi"
+            Language.TH -> "th"
+            else -> "en"
+        }
+    }
 
     private lateinit var selectedLocale: Locale
 
