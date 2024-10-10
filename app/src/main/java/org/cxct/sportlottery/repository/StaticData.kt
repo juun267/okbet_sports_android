@@ -83,6 +83,8 @@ val showCurrencySign: String?
 
 fun glifeUserWithdrawEnable() = sConfigData?.glifeMemberRechargeAndWithdrawal == 1
 
+fun mayaUserWithdrawEnable() = sConfigData?.mayaMemberRechargeAndWithdrawal == 1
+
 private fun getLoginCurrency(): String? =
     MultiLanguagesApplication.mInstance.userInfo.value?.currencySign
 
