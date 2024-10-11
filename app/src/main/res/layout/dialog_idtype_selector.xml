@@ -24,40 +24,13 @@
             android:id="@+id/ivClose"
             android:layout_width="52dp"
             android:layout_height="52dp"
+
             android:padding="18dp"
             android:layout_gravity="right"
             android:src="@drawable/ic_close_gray2"
             app:tint="@color/color_b4bed6"/>
 
     </FrameLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabNews"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-        app:tabIndicatorColor="@color/color_025BE8"
-        app:tabIndicator="@drawable/custom_tab_indicator_40"
-        app:tabIndicatorFullWidth="false"
-        app:tabMode="scrollable"
-        app:tabPaddingEnd="10dp"
-        app:tabPaddingStart="10dp"
-        app:tabRippleColor="@null"
-        app:tabSelectedTextColor="@color/color_025BE8"
-        app:tabTextColor="@color/color_303C55">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/P260" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/P261" />
-
-    </com.google.android.material.tabs.TabLayout>
 
     <View
         android:layout_width="match_parent"

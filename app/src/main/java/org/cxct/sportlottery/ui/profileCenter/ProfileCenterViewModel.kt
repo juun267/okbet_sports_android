@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.profileCenter.profile.Uide
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.SingleLiveEvent
@@ -314,8 +315,9 @@ class ProfileCenterViewModel(
 
 
     fun putKYCInfo(idType: Int, idNumber: String?, idImageUrl: String,
-                   firstName: String, middleName: String, lastName: String, birthday: String) {
-        callApi({ UserRepository.uploadKYCInfo(idType, idNumber, idImageUrl, firstName, middleName, lastName, birthday) }) {
+                   firstName: String, middleName: String, lastName: String, birthday: String, uide: Uide
+    ) {
+        callApi({ UserRepository.uploadKYCInfo(idType, idNumber, idImageUrl, firstName, middleName, lastName, birthday, uide) }) {
             kycResult.value = it
         }
     }

@@ -1659,7 +1659,7 @@
     <string name="P249">Confirm Information</string>
     <string name="P250">Choose Recommend IDs for Quick Verification within 3 minutes;</string>
     <string name="P251">Other IDs may take up to 24 hours</string>
-    <string name="P252">Take a picture of your ID or select from your album. Make sure it clearly shows your:</string>
+    <string name="P252">Make sure information below is clear on your ID</string>
     <string name="P253">ID Photo</string>
     <string name="P254">Double-check all scanned details from your ID.</string>
     <string name="P255">Take a photo or choose one form your albums of your ID and put well in the frame</string>
@@ -1957,4 +1957,15 @@
     <string name="C047">Login Now</string>
     <string name="C048">View your VIP information after you log in</string>
     <string name="C049">Welcome to OKBET!</string>
+    <string name="B463">Information Confirm</string>
+    <string name="P283">Upload handheld ID selfie</string>
+    <string name="P322_1">Upload a selfie holding your ID for verification</string>
+    <string name="P337_1">Use this as my permanent address</string>
+    <string name="P309_1">Your Account is not fully verified</string>
+    <string name="P310_1">For the security of your account and funds, you are required to upload handheld ID selfie</string>
+    <string name="P319_1">Please upload a selfie holding a valid identification document</string>
+    <string name="P320_1">Please ensure that the environment is well-lit and your face is clear</string>
+    <string name="P321_1">Please do not wear hats or masks that may obscure your face</string>
+    <string name="P335">Ok. I\'m ready</string>
+    <string name="P336">Handheld ID selfie</string>
 </resources>

@@ -615,11 +615,11 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
         tvBirthday.text = checkStr(it.t.birthday)
         tvPlaceOfBirth.text = checkStr(it.t.placeOfBirth)
         tvSourceOfIncome.text = if (it.t.salarySource?.id == 6) {
-            checkStr(it.t.salarySource.name)
+            checkStr(it.t.salarySource?.name)
         } else if (it.t.salarySource?.id == null) {
             resources.getString(R.string.set)
         } else {
-            it.t.salarySource.id.let { it1 ->
+            it.t.salarySource?.id?.let { it1 ->
                 viewModel.getSalaryName(
                     it1,
                     resources.getString(R.string.set)

@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
-import androidx.navigation.fragment.NavHostFragment
+import androidx.fragment.app.Fragment
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.post
@@ -8,17 +8,17 @@ import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ActivityVerifyIdentityBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.setTitleLetterSpacing
+import org.cxct.sportlottery.ui.profileCenter.identity.handheld.VerifyNotFullyFragment
+import org.cxct.sportlottery.util.*
 
 class VerifyIdentityActivity :
     BaseActivity<ProfileCenterViewModel, ActivityVerifyIdentityBinding>() {
 
     override fun pageName() = "KYC状态页面"
 
-    private val mNavController by lazy { (supportFragmentManager.findFragmentById(R.id.identity_container) as NavHostFragment).navController }
+    private val loadingHolder by lazy { Gloading.wrapView(binding.root) }
+    private val fragmentHelper2 by lazy { FragmentHelper2(supportFragmentManager, binding.fragmentContainer.id) }
 
-    private val loadingHolder by lazy { Gloading.wrapView(findViewById(R.id.identity_container)) }
 
     override fun onInitView() {
         initToolbar()
@@ -63,28 +63,27 @@ class VerifyIdentityActivity :
     }
 
     private fun checkKYCStatus() {
-        val opt1 = when (viewModel.userInfo.value?.verified) {
+        when (viewModel.userInfo.value?.verified) {
             VerifiedType.VERIFYING.value,
-//            VerifiedType.VERIFIED_FAILED.value,
             VerifiedType.PASSED.value,
             VerifiedType.VERIFIED_WAIT.value,
             VerifiedType.REVERIFYING.value -> {
-                R.id.verifyStatusFragment
+                fragmentHelper2.show(VerifyStatusFragment::class.java)
             }
             VerifiedType.REVERIFIED_NEED.value -> {
-                R.id.reverifyKYCFragment
+                fragmentHelper2.show(ReverifyKYCFragment::class.java)
             }
             VerifiedType.REJECT.value -> {
-                R.id.verifyRejectFragment
+                fragmentHelper2.show(VerifyRejectFragment::class.java)
             }
             else -> {
-                R.id.verifyKYCFragment
+//                fragmentHelper2.show(VerifyKYCFragment2::class.java)
+                fragmentHelper2.show(VerifyNotFullyFragment::class.java)
             }
         }
-
-        if (mNavController.currentDestination?.id != opt1) {
-            mNavController.navigate(opt1)
-        }
+    }
+    fun showFragment(clazz: Class<out Fragment>){
+        fragmentHelper2.show(clazz)
     }
 
     private fun initToolbar()=binding.toolbar.run {
@@ -100,24 +99,13 @@ class VerifyIdentityActivity :
         binding.toolbar.tvToolbarTitle.text = title
     }
 
-    fun setToolBarTitleForDetail() {
-        binding.toolbar.tvToolbarTitle.text = getString(R.string.scan_tool_bar)
-    }
-
     fun setToolBarTitleForReverify() {
         binding.toolbar.tvToolbarTitle.text = getString(R.string.P211_1)
     }
 
-    override fun onBackPressed() {
-        when (mNavController.currentDestination?.id) {
-            R.id.credentialsFragment -> {
-                finish()
-            }
-        }
-        super.onBackPressed()
-    }
     fun rejectResubmit(){
         loadingHolder.showLoading()
         viewModel.reVerify()
     }
+
 }

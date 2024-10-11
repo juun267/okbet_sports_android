@@ -28,6 +28,7 @@
             android:layout_height="1dp"
             android:background="@color/color_edf3f9"/>
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,80 +46,14 @@
             android:textSize="@dimen/textSize16sp"
             android:textColor="@color/color_0D2245"
             android:textStyle="bold"
-            android:text="@string/P247"/>
-        
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout1"
-            android:layout_width="match_parent"
-            android:layout_height="102dp"
-            android:layout_marginHorizontal="12dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/ivImg1"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="8dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textColor="@color/color_667085"
-                    android:text="@string/P250"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textColor="@color/color_667085"
-                    android:text="@string/P251"/>
-
-
-            </LinearLayout>
-            
-
-            <ImageView
-                android:id="@+id/ivImg1"
-                android:layout_width="112dp"
-                android:layout_height="70dp"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/img_indentity_id"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize14sp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="12dp"
-            android:textColor="@color/color_025BE8"
-            android:text="@string/P245"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="20dp"
-            android:textSize="@dimen/textSize16sp"
-            android:textColor="@color/color_0D2245"
-            android:textStyle="bold"
             android:text="@string/P248"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout2"
+            android:id="@+id/layout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_gray_radius_8_f9fafd"
+            android:layout_marginTop="@dimen/margin_8"
             android:layout_marginHorizontal="12dp"
             android:paddingVertical="16dp"
             android:orientation="horizontal">
@@ -147,7 +82,7 @@
                     android:layout_marginTop="6dp"
                     android:lineSpacingExtra="6dp"
                     android:textSize="@dimen/textSize12sp"
-                    android:textColor="@color/color_667085"/>
+                    android:textColor="@color/color_0D2245"/>
 
             </LinearLayout>
 
@@ -164,13 +99,7 @@
                     android:id="@+id/ivImg2"
                     android:layout_width="112dp"
                     android:layout_height="70dp"
-                    android:src="@drawable/img_indentity_id"/>
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="bottom"
-                    android:src="@drawable/ic_identity_camera"/>
+                    android:src="@drawable/img_identity_upload"/>
 
             </FrameLayout>
 
@@ -183,7 +112,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="12dp"
             android:textColor="@color/color_025BE8"
-            android:text="@string/P246"/>
+            android:text="@string/P245"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -193,14 +122,15 @@
             android:textSize="@dimen/textSize16sp"
             android:textColor="@color/color_0D2245"
             android:textStyle="bold"
-            android:text="@string/P249"/>
+            android:text="@string/B463"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout3"
+            android:id="@+id/layout2"
             android:layout_width="match_parent"
             android:layout_height="102dp"
+            android:background="@drawable/bg_gray_radius_8_f9fafd"
+            android:layout_marginTop="@dimen/margin_8"
             android:layout_marginHorizontal="12dp"
-            android:layout_marginBottom="24dp"
             android:orientation="horizontal">
 
             <TextView
@@ -230,19 +160,74 @@
                     android:id="@+id/ivImg3"
                     android:layout_width="112dp"
                     android:layout_height="70dp"
-                    android:src="@drawable/img_indentity_id"/>
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="bottom"
-                    android:src="@drawable/ic_identity_ok"/>
+                    android:src="@drawable/img_identity_scan"/>
 
             </FrameLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize14sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/color_025BE8"
+            android:text="@string/P246"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
+            android:textSize="@dimen/textSize16sp"
+            android:textColor="@color/color_0D2245"
+            android:textStyle="bold"
+            android:text="@string/P283"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout3"
+            android:layout_width="match_parent"
+            android:layout_height="102dp"
+            android:background="@drawable/bg_gray_radius_8_f9fafd"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="24dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ivImg1"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textSize12sp"
+                    android:textColor="@color/color_667085"
+                    android:text="@string/P322_1"/>
+
+
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/ivImg1"
+                android:layout_width="112dp"
+                android:layout_height="70dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/img_identity_handle_id"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
@@ -251,7 +236,7 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="113dp"
         android:background="@drawable/bg_blue_radius_8"
         android:textSize="@dimen/textSize16sp"

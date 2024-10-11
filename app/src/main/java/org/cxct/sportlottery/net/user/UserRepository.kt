@@ -17,6 +17,8 @@ import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.profileCenter.profile.Uide
+import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.appendCaptchaParams
 import org.cxct.sportlottery.util.toJson
@@ -152,7 +154,8 @@ object UserRepository {
     }
 
     suspend fun uploadKYCInfo(idType: Int, idNumber: String?, idImageUrl: String,
-                              firstName: String, middleName: String, lastName: String, birthday: String): ApiResult<String> {
+                              firstName: String, middleName: String, lastName: String, birthday: String, uide: Uide
+    ): ApiResult<String> {
         SensorsEventUtil.submitKYCEvent()
         val params = JsonObject()
         params.addProperty("identityType", idType)
@@ -162,6 +165,24 @@ object UserRepository {
         params.addProperty("middleName", middleName)
         params.addProperty("lastName", lastName)
         params.addProperty("birthday", birthday)
+        params.addProperty("nationality", uide.nationality)
+        params.addProperty("gender", uide.gender)
+        params.addProperty("birthplace", uide.placeOfBirth)
+        uide.salarySource?.let {
+            params.add("income", JsonObject().apply {
+                addProperty("id",it.id)
+                addProperty("name",it.name)
+            })
+        }
+        params.addProperty("work", uide.natureOfWork)
+        params.addProperty("currProvince", uide.province)
+        params.addProperty("currCity", uide.city)
+        params.addProperty("currAddress", uide.address)
+        params.addProperty("currZipCode", uide.zipCode)
+        params.addProperty("permanentProvince", uide.permanentProvince)
+        params.addProperty("permanentCity", uide.permanentCity)
+        params.addProperty("permanentAddress", uide.permanentAddress)
+        params.addProperty("permanentZipCode", uide.permanentZipCode)
         return userApi.uploadKYCInfo(params)
     }
 

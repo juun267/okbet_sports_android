@@ -26,6 +26,7 @@ import org.cxct.sportlottery.network.index.config.IdentityType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JsonUtil
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.RCVDecoration
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
@@ -37,25 +38,15 @@ class IDTypeSelectorDialog(private val context: FragmentActivity, private val li
     private val binding: DialogIdtypeSelectorBinding = DialogIdtypeSelectorBinding.inflate(context.layoutInflater)
     private val idAdapter = IDTypeAdapter().apply { setOnItemClickListener(this@IDTypeSelectorDialog) }
 
-    private val recomdeIDType = mutableListOf<IdentityType>()
-    private val othersIDType = mutableListOf<IdentityType>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         lifecycle.addObserver(this)
         setOnDismissListener { lifecycle.removeObserver(this) }
         binding.ivClose.setOnClickListener { dismiss() }
-        sConfigData?.identityTabTypeList?.forEach {
-            if (it.type == 1) {
-                recomdeIDType.add(it)
-            } else {
-                othersIDType.add(it)
-            }
-        }
         window?.let { w ->
             w.attributes.width = -1
-            w.attributes.height = -2
+            w.attributes.height = 650.dp
             w.setGravity(Gravity.BOTTOM)
             w.setWindowAnimations(R.style.AnimBottom)
 
@@ -71,15 +62,8 @@ class IDTypeSelectorDialog(private val context: FragmentActivity, private val li
         binding.rcv.addItemDecoration(RCVDecoration()
             .setColor(context.getColor(R.color.color_dbdeeb))
             .setRightMargin(12.dp.toFloat()))
+        idAdapter.setList(sConfigData?.identityTabTypeList?.sortedBy { it.type })
         binding.rcv.adapter = idAdapter
-        idAdapter.setNewInstance(recomdeIDType)
-        binding.tabNews.addOnTabSelectedListener(TabSelectedAdapter { tab, _ ->
-            if (tab.position == 0) {
-                idAdapter.setNewInstance(recomdeIDType)
-            } else {
-                idAdapter.setNewInstance(othersIDType)
-            }
-        })
     }
 
 

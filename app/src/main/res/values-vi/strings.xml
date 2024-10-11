@@ -1827,4 +1827,15 @@
     <string name="C047">Đăng nhập ngay</string>
     <string name="C048">Đăng nhập để xem thông tin VIP của bạn</string>
     <string name="C049">Chào mừng bạn đến với OKBET!</string>
+    <string name="B463">Xác nhận thông tin</string>
+    <string name="P283">Tải lên ảnh cầm selfie ID</string>
+    <string name="P322_1">Tải lên ảnh selfie cầm ID của bạn để xác minh</string>
+    <string name="P337_1">Dùng làm địa chỉ thường trú của tôi</string>
+    <string name="P309_1">Tài khoản của bạn chưa hoàn thành xác minh</string>
+    <string name="P310_1">Kính gửi người dùng, vì sự an toàn của tiền tài khoản của bạn, vui lòng tải lên ảnh selfie kèm theo giấy tờ tùy thân của bạn càng sớm càng tốt</string>
+    <string name="P319_1">Vui lòng tải lên ảnh selfie cầm giấy tờ tùy thân hợp lệ</string>
+    <string name="P320_1">Hãy đảm bảo môi trường đủ ánh sáng và khuôn mặt của bạn rõ ràng</string>
+    <string name="P321_1">Không đội mũ, đeo khẩu trang che khuất khuôn mặt</string>
+    <string name="P335">Ok. Đã sẵn sàng</string>
+    <string name="P336">Ảnh selfie tay cầm ID</string>
 </resources>
