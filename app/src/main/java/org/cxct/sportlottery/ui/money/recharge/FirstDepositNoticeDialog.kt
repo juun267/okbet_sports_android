@@ -37,7 +37,7 @@ class FirstDepositNoticeDialog: BaseDialog<BindInfoViewModel,DialogFirstDepositN
                 return true
             }
         }
-        wvContent.loadData(content.formatHTML(), "text/html", null)
+        wvContent.loadDataWithBaseURL(null, content.formatHTML(), "text/html", "UTF-8", null);
     }
 
 }
