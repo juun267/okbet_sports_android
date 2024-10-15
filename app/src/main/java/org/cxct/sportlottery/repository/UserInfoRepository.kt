@@ -268,7 +268,7 @@ object UserInfoRepository {
             discountByGameTypeList = userInfoData.discountByGameTypeList,
             rejectRemark = userInfoData.rejectRemark,
             levelCode = userInfoData.levelCode,
-            mayaId = userInfoData.mayaId,
+            regSource = userInfoData.regSource,
             safeQuestionType = userInfoData.safeQuestionType,
         )
 
