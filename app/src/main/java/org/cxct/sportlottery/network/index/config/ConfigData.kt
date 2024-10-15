@@ -167,6 +167,7 @@ data class ConfigData(
     val gameUserDepositURL: String? = null,//三方游戏内充值跳转链接
     val inviteUserStatus: Int=0,//是否开邀请好友活动 1-开启 0-关闭
     val glifeMemberRechargeAndWithdrawal: Int = 0, // glife用户可以在平台直接充值
+    val halfVverifiedCharge:Int = 0      //是否允许半认证用户冲提款  0-否 1-是
 ) {
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
 }

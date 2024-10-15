@@ -15,6 +15,7 @@ import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.safeApi
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.KYCVerifyConfig
 import org.cxct.sportlottery.net.user.data.OCRInfo
 import org.cxct.sportlottery.net.user.data.VerifyConfig
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -59,6 +60,7 @@ class ProfileCenterViewModel(
     val ocrResult = SingleLiveEvent<Triple<Boolean, String, OCRInfo?>>()
     val kycResult = SingleLiveEvent<ApiResult<String>>()
     val reVerifyResult = SingleLiveEvent<ApiResult<String?>>()
+    val kycVerifyConfigResult = SingleLiveEvent<ApiResult<KYCVerifyConfig>>()
 
     fun getUserInfo() {
         viewModelScope.launch {
@@ -325,6 +327,12 @@ class ProfileCenterViewModel(
     fun reVerify() {
         callApi({ UserRepository.reVerify() }) {
             reVerifyResult.postValue(it)
+        }
+    }
+
+    fun getKycNeedInformation() {
+        callApi({ UserRepository.getKycNeedInformation() }) {
+            kycVerifyConfigResult.value = it
         }
     }
 }

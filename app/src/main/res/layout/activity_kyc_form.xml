@@ -37,6 +37,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_red_star_required"
+                android:drawablePadding="@dimen/margin_2"
                 android:textColor="@color/color_667085"
                 android:textSize="@dimen/textSize14sp"
                 android:text="ID type"/>
@@ -65,6 +67,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_red_star_required"
+                android:drawablePadding="@dimen/margin_2"
                 android:textColor="@color/color_667085"
                 android:textSize="@dimen/textSize14sp"
                 android:text="@string/P185"/>
@@ -167,6 +171,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_red_star_required"
+                android:drawablePadding="@dimen/margin_2"
                 android:textColor="@color/color_667085"
                 android:textSize="@dimen/textSize14sp"
                 android:text="@string/P187"/>
@@ -206,6 +212,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_red_star_required"
+                android:drawablePadding="@dimen/margin_2"
                 android:textColor="@color/color_667085"
                 android:textSize="@dimen/textSize14sp"
                 android:text="@string/J902"/>
@@ -248,6 +256,7 @@
 
 
             <TextView
+                android:id="@+id/tvNationalityLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/P103"
@@ -283,6 +292,7 @@
 
 
             <TextView
+                android:id="@+id/tvGenderLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/J905"
@@ -314,6 +324,7 @@
             android:background="@drawable/bg_gray_radius_8_f9fafd">
 
             <TextView
+                android:id="@+id/tvPlaceOfBirthLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_667085"
@@ -349,6 +360,7 @@
 
 
             <TextView
+                android:id="@+id/tvSourceOfIncomeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/P105"
@@ -383,6 +395,7 @@
 
 
             <TextView
+                android:id="@+id/tvNatureOfWorkLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/P106"
@@ -402,16 +415,22 @@
                 android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginTop="@dimen/margin_16"
             android:gravity="center"
-            android:background="@drawable/bg_gray_radius_4_1a025be8"
-            android:textColor="@color/color_000000"
-            android:textSize="@dimen/textSize14sp"
-            android:textStyle="bold"
-            android:text="@string/P108"/>
+            android:layout_marginTop="@dimen/margin_16"
+            android:background="@drawable/bg_gray_radius_4_1a025be8">
+            <TextView
+                android:id="@+id/tvHomeCurrent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_000000"
+                android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
+                android:text="@string/P108"/>
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/llProvinceCurrent"
             android:layout_width="match_parent"
@@ -513,7 +532,6 @@
                     android:paddingVertical="@dimen/margin_8"
                     android:layout_marginRight="@dimen/margin_12"
                     android:ellipsize="end"
-                    android:gravity="end"
                     android:maxLines="1"
                     android:textColor="@color/color_050B18"
                     android:textSize="@dimen/textSize14sp" />
@@ -561,7 +579,6 @@
                     android:layout_marginRight="@dimen/margin_12"
                     android:background="@color/transparent"
                     android:ellipsize="end"
-                    android:gravity="end"
                     android:maxLines="1"
                     android:textColor="@color/color_050B18"
                     android:textSize="@dimen/textSize14sp" />
@@ -591,16 +608,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="@dimen/margin_16"
                 android:gravity="center"
-                android:background="@drawable/bg_gray_radius_4_1a025be8"
-                android:textColor="@color/color_000000"
-                android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold"
-                android:text="@string/P109"/>
+                android:layout_marginTop="@dimen/margin_16"
+                android:background="@drawable/bg_gray_radius_4_1a025be8">
+                <TextView
+                    android:id="@+id/tvHomePermanent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_000000"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
+                    android:text="@string/P109"/>
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/llProvincePermanent"
                 android:layout_width="match_parent"
@@ -702,7 +724,6 @@
                         android:paddingVertical="@dimen/margin_8"
                         android:layout_marginRight="@dimen/margin_12"
                         android:ellipsize="end"
-                        android:gravity="end"
                         android:maxLines="1"
                         android:textColor="@color/color_050B18"
                         android:textSize="@dimen/textSize14sp" />
@@ -750,7 +771,6 @@
                         android:paddingVertical="@dimen/margin_8"
                         android:layout_marginRight="@dimen/margin_12"
                         android:ellipsize="end"
-                        android:gravity="end"
                         android:maxLines="1"
                         android:textColor="@color/color_050B18"
                         android:textSize="@dimen/textSize14sp" />

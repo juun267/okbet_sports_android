@@ -77,8 +77,8 @@ class VerifyIdentityActivity :
                 fragmentHelper2.show(VerifyRejectFragment::class.java)
             }
             else -> {
-//                fragmentHelper2.show(VerifyKYCFragment2::class.java)
-                fragmentHelper2.show(VerifyNotFullyFragment::class.java)
+                fragmentHelper2.show(VerifyKYCFragment2::class.java)
+//                fragmentHelper2.show(VerifyNotFullyFragment::class.java)
             }
         }
     }

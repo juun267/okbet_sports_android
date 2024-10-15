@@ -286,4 +286,7 @@ object UserRepository {
         return userApi.loginBySafeQuestion(loginRequest)
     }
 
+    suspend fun getKycNeedInformation(): ApiResult<KYCVerifyConfig> {
+        return userApi.getKycNeedInformation()
+    }
 }

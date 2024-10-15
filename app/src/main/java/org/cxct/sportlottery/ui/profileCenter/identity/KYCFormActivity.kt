@@ -4,34 +4,30 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.view.TimePickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_kyc_form.*
+import kotlinx.android.synthetic.main.activity_profile.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.KYCEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityKycFormBinding
 import org.cxct.sportlottery.databinding.DialogBottomSelectBinding
+import org.cxct.sportlottery.net.user.data.KYCVerifyConfig
 import org.cxct.sportlottery.net.user.data.OCRInfo
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.signUp.info.DateTimePickerOptions
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.handheld.VerifyHandheldActivity
-import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.profile.*
-import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.KeyboadrdHideUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.VerifyConstUtil
+import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
+import org.cxct.sportlottery.view.afterTextChanged
 import org.cxct.sportlottery.view.dialog.SourceOfIncomeDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -71,6 +67,7 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
     }
     private var dialogBtmAdapter = DialogBottomDataAdapter()
     private var uide = Uide()
+    private var kycVerifyConfig: KYCVerifyConfig? = null
 
     override fun onInitView() {
         setStatusbar()
@@ -81,6 +78,7 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
         profileModel.getUserInfo()
         profileModel.getUserSalaryList()
         ocrInfo?.let { bindOCRInfo(it) }
+        viewModel.getKycNeedInformation()
      }
 
     private fun initObserver() {
@@ -100,6 +98,16 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
         profileModel.userDetail.observe(this) {
             uide = it.t
             setIdentityDetail(it)
+        }
+        viewModel.kycVerifyConfigResult.observe(this) {
+            if (it.success){
+                it.getData()?.let {
+                    kycVerifyConfig = it
+                    setKYCVerifyConfig(it)
+                }
+            }else{
+                showErrorPromptDialog(it.msg){}
+            }
         }
     }
 
@@ -156,18 +164,27 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
                 tvHaveMiddelName.setTextColor(getColor(R.color.color_667085))
             }
         }
-
-//        val onTextChanged: (String) -> Unit = { checkInput() }
-//        edtFirstName.afterTextChanged(onTextChanged)
-//        edtMiddleName.afterTextChanged(onTextChanged)
-//        edtLastName.afterTextChanged(onTextChanged)
+        etPlaceOfBirth.afterTextChanged {
+            uide.placeOfBirth = it
+        }
+        etAddressCurrent.afterTextChanged{
+            uide.address = it
+        }
+        etZipCodeCurrent.afterTextChanged{
+            uide.zipCode = it
+        }
+        etAddressPermanent.afterTextChanged{
+            uide.permanentAddress = it
+        }
+        etZipCodePermanent.afterTextChanged{
+            uide.permanentZipCode = it
+        }
         btnConfirm.setOnClickListener {
             val error = checkInput()
             if (error != null) {
                 toastError(error)
                 return@setOnClickListener
             }
-
             loading()
             viewModel.putKYCInfo(idType,
                 ocrInfo?.identityNumber,
@@ -189,6 +206,7 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
             ) {
                 tvNationality.text = it.name
                 uide.nationality = it.name
+                checkInput()
             }
         }
         llGender.setOnClickListener {
@@ -371,44 +389,44 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
         if (tvBirthday.text.toString().isEmptyStr()) {
             return@run getString(R.string.J902)
         }
-        if (tvNationality.text.toString().isEmptyStr()) {
+        if (tvNationality.text.toString().isEmptyStr() && kycVerifyConfig?.kycVerifyNationalityRequired==1) {
             return@run getString(R.string.P103)
         }
-        if (tvGender.text.toString().isEmptyStr()) {
+        if (tvGender.text.toString().isEmptyStr() && kycVerifyConfig?.kycVerifyNationalityRequired==1) {
             return@run getString(R.string.J905)
         }
-        if (etPlaceOfBirth.text.toString().trim().isEmptyStr()) {
+        if (etPlaceOfBirth.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyBirthplaceRequired==1) {
             return@run getString(R.string.P104)
         }
-        if (tvSourceOfIncome.text.toString().trim().isEmptyStr()) {
+        if (tvSourceOfIncome.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyIncomeRequired==1) {
             return@run getString(R.string.P105)
         }
-        if (tvNatureOfWork.text.toString().trim().isEmptyStr()) {
+        if (tvNatureOfWork.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyWorkRequired==1) {
             return@run getString(R.string.P106)
         }
-        if (tvProvinceCurrent.text.toString().trim().isEmptyStr()) {
+        if (tvProvinceCurrent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyCurrAddressRequired==1) {
             return@run getString(R.string.J036)
         }
-        if (tvCityCurrent.text.toString().trim().isEmptyStr()) {
+        if (tvCityCurrent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyCurrAddressRequired==1) {
             return@run getString(R.string.J901)
         }
-        if (etAddressCurrent.text.toString().trim().isEmptyStr()) {
+        if (etAddressCurrent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyCurrAddressRequired==1) {
             return@run getString(R.string.M259)
         }
-        if (etZipCodeCurrent.text.toString().trim().isEmptyStr()) {
+        if (etZipCodeCurrent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyCurrAddressRequired==1) {
             return@run getString(R.string.N827)
         }
         if (cbPermanent.isChecked){
-            if (tvProvincePermanent.text.toString().trim().isEmptyStr()) {
+            if (tvProvincePermanent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1) {
                 return@run getString(R.string.J036)
             }
-            if (tvCityPermanent.text.toString().trim().isEmptyStr()) {
+            if (tvCityPermanent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1) {
                 return@run getString(R.string.J901)
             }
-            if (etAddressPermanent.text.toString().trim().isEmptyStr()) {
+            if (etAddressPermanent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1) {
                 return@run getString(R.string.M259)
             }
-            if (etZipCodePermanent.text.toString().trim().isEmptyStr()) {
+            if (etZipCodePermanent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1) {
                 return@run getString(R.string.N827)
             }
         }
@@ -510,5 +528,32 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
                 )
             )
         }
+    }
+    fun setKYCVerifyConfig(config: KYCVerifyConfig)=binding.run{
+        llNationality.isVisible = config.kycVerifyNationalityShow == 1
+        llGender.isVisible = config.kycVerifyGenderShow == 1
+        llPlaceOfBirth.isVisible = config.kycVerifyBirthplaceShow == 1
+        llSourceOfIncome.isVisible = config.kycVerifyIncomeShow == 1
+        llNatureOfWork.isVisible = config.kycVerifyWorkShow == 1
+        llProvinceCurrent.isVisible = config.kycVerifyCurrAddressShow == 1
+        llCityCurrent.isVisible = config.kycVerifyCurrAddressShow == 1
+        llAddressCurrent.isVisible = config.kycVerifyCurrAddressShow == 1
+        llZipCodeCurrent.isVisible = config.kycVerifyCurrAddressShow == 1
+        llProvincePermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
+        llCityPermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
+        llAddressPermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
+        llZipCodePermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
+
+        if(config.kycVerifyNationalityRequired==1) tvNationalityLabel.setRequiredStyle()
+        if(config.kycVerifyGenderRequired==1) tvGenderLabel.setRequiredStyle()
+        if(config.kycVerifyBirthplaceRequired==1) tvPlaceOfBirthLabel.setRequiredStyle()
+        if(config.kycVerifyNationalityRequired==1) tvSourceOfIncomeLabel.setRequiredStyle()
+        if(config.kycVerifyWorkRequired==1) tvNatureOfWorkLabel.setRequiredStyle()
+        if(config.kycVerifyCurrAddressRequired==1) tvHomeCurrent.setRequiredStyle()
+        if(config.kycVerifyPermanentAddressRequired==1) tvHomePermanent.setRequiredStyle()
+    }
+    fun TextView.setRequiredStyle(){
+        setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_red_star_required,0,0,0)
+        compoundDrawablePadding = 2.dp
     }
 }

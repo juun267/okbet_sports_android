@@ -77,7 +77,7 @@ class HandheldPhotoActivity: BaseActivity<ProfileCenterViewModel, ActivityHandhe
 
     private fun submit() {
         loading()
-//        viewModel.updateReverifyInfo(updatedSelfPictureURL, updatedProofPictureURL, updatedIDBackPictureURL)
+        viewModel.updateReverifyInfo(updatedIDPictureURL, null, null)
     }
 
     private fun uploadImage(file: File) {

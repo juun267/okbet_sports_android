@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.Constants.ACTIVITY_DETAIL_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_RECORD
 import org.cxct.sportlottery.network.Constants.CHECKSAFEQUEST
+import org.cxct.sportlottery.network.Constants.GET_KYC_NEED_INFORMATION
 import org.cxct.sportlottery.network.Constants.GET_USER_SAFEQUESTION
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
@@ -140,6 +141,9 @@ interface UserApiService {
 
     @POST(LOGIN_BY_SAFEQUESTION)
     suspend fun loginBySafeQuestion(@Body params : LoginRequest): ApiResult<List<LoginData>>
+
+    @POST(GET_KYC_NEED_INFORMATION)
+    suspend fun getKycNeedInformation(): ApiResult<KYCVerifyConfig>
 
 
 

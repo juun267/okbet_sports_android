@@ -10,6 +10,7 @@ import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentWithdrawStepBinding
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
@@ -36,7 +37,7 @@ class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdra
         val needPhoneNumber = UserInfoRepository.userInfo.value?.phone.isNullOrBlank()
         val needPassword = UserInfoRepository.userInfo.value?.passwordSet != false
         val needPayPW = UserInfoRepository.userInfo.value?.updatePayPw == 1
-        val needVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value
+        val needVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value && sConfigData?.halfVverifiedCharge == 1
         setStepItem(needPhoneNumber,ivStep1,line1,tvStepState1,ivStepArrow1){
             ModifyBindInfoActivity.start(requireActivity(), ModifyType.PhoneNumber, 100, null, null, null)
         }
