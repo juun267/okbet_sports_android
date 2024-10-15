@@ -49,5 +49,5 @@ data class LoginData(
     val firstPhoneGiveMoney: Boolean?,// 注册绑定手机送金额
     val discountByGameTypeList: List<UserGameTypeDiscount>?,
     val levelCode: String?=null,
-    val mayaId: String? = null,
+    val regSource: Int? = null,//2 就是maya用户
 ) : Parcelable

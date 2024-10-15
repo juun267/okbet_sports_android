@@ -55,11 +55,11 @@ data class UserInfo(
     var discountByGameTypeList: List<UserGameTypeDiscount>? = null,
     var rejectRemark: String? = null,
     val levelCode: String?=null,
-    val mayaId: String? = null,
+    val regSource: Int? = null,
     val safeQuestionType: Int? = null //是否设置密保问题
 ){
     fun isGlifeAccount():Boolean = vipType==1
-    fun isMayaAccount():Boolean = !mayaId.isNullOrEmpty()
+    fun isMayaAccount():Boolean = regSource==2
     fun hasFullName() = !firstName.isEmptyStr() || !lastName.isEmptyStr()
     fun noneMiddleName() = middleName.isEmptyStr() || "N/A".equals(middleName, true)
 
