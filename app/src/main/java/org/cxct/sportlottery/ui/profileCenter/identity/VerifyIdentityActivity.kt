@@ -63,22 +63,28 @@ class VerifyIdentityActivity :
     }
 
     private fun checkKYCStatus() {
-        when (viewModel.userInfo.value?.verified) {
-            VerifiedType.VERIFYING.value,
-            VerifiedType.PASSED.value,
-            VerifiedType.VERIFIED_WAIT.value,
-            VerifiedType.REVERIFYING.value -> {
-                fragmentHelper2.show(VerifyStatusFragment::class.java)
-            }
-            VerifiedType.REVERIFIED_NEED.value -> {
-                fragmentHelper2.show(ReverifyKYCFragment::class.java)
-            }
-            VerifiedType.REJECT.value -> {
-                fragmentHelper2.show(VerifyRejectFragment::class.java)
-            }
-            else -> {
-                fragmentHelper2.show(VerifyKYCFragment2::class.java)
-//                fragmentHelper2.show(VerifyNotFullyFragment::class.java)
+        val userInfo = viewModel.userInfo.value!!
+        if (userInfo.fullVerified==1){
+            fragmentHelper2.show(VerifyStatusFragment::class.java)
+        }else{
+            when (userInfo.verified) {
+                VerifiedType.VERIFYING.value,
+                VerifiedType.VERIFIED_WAIT.value,
+                VerifiedType.REVERIFYING.value -> {
+                    fragmentHelper2.show(VerifyStatusFragment::class.java)
+                }
+                VerifiedType.REVERIFIED_NEED.value -> {
+                    fragmentHelper2.show(ReverifyKYCFragment::class.java)
+                }
+                VerifiedType.REJECT.value -> {
+                    fragmentHelper2.show(VerifyRejectFragment::class.java)
+                }
+                VerifiedType.PASSED.value->{
+                   fragmentHelper2.show(VerifyNotFullyFragment::class.java)
+                }
+                else -> {
+                    fragmentHelper2.show(VerifyKYCFragment2::class.java)
+                }
             }
         }
     }

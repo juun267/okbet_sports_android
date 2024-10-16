@@ -6,6 +6,7 @@ import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.ActivityWithdrawBinding
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.LogUtil
@@ -67,10 +68,11 @@ class WithdrawActivity : BaseActivity<WithdrawViewModel, ActivityWithdrawBinding
         }
     }
     private fun checkNeedStep():Boolean{
-        val needPhoneNumber = UserInfoRepository.userInfo.value?.phone.isNullOrBlank()
-        val needPassword = UserInfoRepository.userInfo.value?.passwordSet != false
-        val needPayPW = UserInfoRepository.userInfo.value?.updatePayPw == 1
-        val needVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value
+        val userInfo = UserInfoRepository.userInfo.value!!
+        val needPhoneNumber = userInfo.phone.isNullOrBlank()
+        val needPassword = userInfo.passwordSet
+        val needPayPW = userInfo.updatePayPw == 1
+        val needVerify = userInfo.fullVerified!=1 && sConfigData?.halfVverifiedCharge==0
         return needPhoneNumber||needPassword||needPayPW||needVerify
     }
 

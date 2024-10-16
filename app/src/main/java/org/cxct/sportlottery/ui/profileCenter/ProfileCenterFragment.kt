@@ -443,7 +443,7 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
     private fun bindVerifyStatus(userInfo: UserInfo?) {
         binding.tvKycStatus.isVisible = if(userInfo==null) false else sConfigData?.realNameWithdrawVerified.isStatusOpen()
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
-        VerifiedType.getVerifiedType(userInfo?.verified).let{
+        VerifiedType.getVerifiedType(userInfo).let{
             setVerify(text = it.nameResId, color = ContextCompat.getColor(requireContext(),it.colorResId))
         }
     }

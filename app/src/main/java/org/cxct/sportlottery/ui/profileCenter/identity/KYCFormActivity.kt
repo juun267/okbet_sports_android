@@ -262,7 +262,18 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
             }
         }
         cbPermanent.setOnCheckedChangeListener { buttonView, isChecked ->
-            linPermanent.isVisible = isChecked
+            linPermanent.isVisible = !isChecked
+            if (isChecked){
+                uide.permanentProvince = uide.province
+                uide.permanentCity = uide.city
+                uide.permanentAddress = uide.address
+                uide.permanentZipCode = uide.zipCode
+            }else{
+                uide.permanentProvince = tvProvincePermanent.text.toString().trim()
+                uide.permanentCity = tvCityPermanent.text.toString().trim()
+                uide.permanentAddress = etAddressPermanent.text.toString().trim()
+                uide.permanentZipCode = etZipCodePermanent.text.toString().trim()
+            }
         }
         llProvinceCurrent.setOnClickListener {
             showProvinceDialog()
@@ -404,30 +415,35 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
         if (tvNatureOfWork.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyWorkRequired==1) {
             return@run getString(R.string.P106)
         }
-        if (tvProvinceCurrent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyCurrAddressRequired==1) {
-            return@run getString(R.string.J036)
-        }
-        if (tvCityCurrent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyCurrAddressRequired==1) {
-            return@run getString(R.string.J901)
-        }
-        if (etAddressCurrent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyCurrAddressRequired==1) {
-            return@run getString(R.string.M259)
-        }
-        if (etZipCodeCurrent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyCurrAddressRequired==1) {
-            return@run getString(R.string.N827)
-        }
-        if (cbPermanent.isChecked){
-            if (tvProvincePermanent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1) {
+        if (linAddress.isVisible){
+            if (tvProvinceCurrent.text.toString().trim().isEmptyStr()) {
                 return@run getString(R.string.J036)
             }
-            if (tvCityPermanent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1) {
+            if (tvCityCurrent.text.toString().trim().isEmptyStr()) {
                 return@run getString(R.string.J901)
             }
-            if (etAddressPermanent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1) {
+            if (etAddressCurrent.text.toString().trim().isEmptyStr()) {
                 return@run getString(R.string.M259)
             }
-            if (etZipCodePermanent.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1) {
+            if (etZipCodeCurrent.text.toString().trim().isEmptyStr()) {
                 return@run getString(R.string.N827)
+            }
+        }
+
+        if (cbPermanent.isVisible){
+            if (!cbPermanent.isChecked){
+                if (tvProvincePermanent.text.toString().trim().isEmptyStr()) {
+                    return@run getString(R.string.J036)
+                }
+                if (tvCityPermanent.text.toString().trim().isEmptyStr()) {
+                    return@run getString(R.string.J901)
+                }
+                if (etAddressPermanent.text.toString().trim().isEmptyStr()) {
+                    return@run getString(R.string.M259)
+                }
+                if (etZipCodePermanent.text.toString().trim().isEmptyStr()) {
+                    return@run getString(R.string.N827)
+                }
             }
         }
 
@@ -488,18 +504,10 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
             profileModel.updateCityData(it.id)
             if (it.name != binding.tvProvinceCurrent.text.toString()) {
                 binding.tvCityCurrent.text = profileModel.cityList.first().name
-                profileModel.userCompleteUserDetails(
-                    Uide(
-                        city = profileModel.cityList.first().name
-                    )
-                )
+                uide.city = profileModel.cityList.first().name
             }
             binding.tvProvinceCurrent.text = it.name
-            profileModel.userCompleteUserDetails(
-                Uide(
-                    province = it.name
-                )
-            )
+            uide.province = it.name
         }
     }
 
@@ -515,18 +523,10 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
             profileModel.updateCityPData(it.id)
             if (it.name != binding.tvCityPermanent.text.toString()) {
                 binding.tvCityPermanent.text = profileModel.cityPList.first().name
-                profileModel.userCompleteUserDetails(
-                    Uide(
-                        permanentCity = profileModel.cityPList.first().name,
-                    )
-                )
+                uide.permanentCity = profileModel.cityPList.first().name
             }
             binding.tvProvincePermanent.text = it.name
-            profileModel.userCompleteUserDetails(
-                Uide(
-                    permanentProvince = it.name
-                )
-            )
+            uide.permanentProvince = it.name
         }
     }
     fun setKYCVerifyConfig(config: KYCVerifyConfig)=binding.run{
@@ -535,14 +535,9 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
         llPlaceOfBirth.isVisible = config.kycVerifyBirthplaceShow == 1
         llSourceOfIncome.isVisible = config.kycVerifyIncomeShow == 1
         llNatureOfWork.isVisible = config.kycVerifyWorkShow == 1
-        llProvinceCurrent.isVisible = config.kycVerifyCurrAddressShow == 1
-        llCityCurrent.isVisible = config.kycVerifyCurrAddressShow == 1
-        llAddressCurrent.isVisible = config.kycVerifyCurrAddressShow == 1
-        llZipCodeCurrent.isVisible = config.kycVerifyCurrAddressShow == 1
-        llProvincePermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
-        llCityPermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
-        llAddressPermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
-        llZipCodePermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
+        linAddress.isVisible = config.kycVerifyCurrAddressShow == 1
+        linPermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
+        cbPermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
 
         if(config.kycVerifyNationalityRequired==1) tvNationalityLabel.setRequiredStyle()
         if(config.kycVerifyGenderRequired==1) tvGenderLabel.setRequiredStyle()
