@@ -11,6 +11,7 @@ import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import kotlin.math.max
 
 object GameCollectManager {
     //三方游戏的收藏数量记录
@@ -37,11 +38,7 @@ object GameCollectManager {
          gameCollectNum.value?.let {
              val key = gameEntryId.toString()
              var originNum = it[key].toIntS(0)
-             it[key] = (if(markCollect){
-                  1
-             }else {
-                  0
-             }+originNum).toString()
+             it[key] = max(0, (if(markCollect) 1 else -1) + originNum).toString()
         }
     }
 
