@@ -78,6 +78,7 @@ import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.money.withdraw.WithdrawActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
@@ -1086,6 +1087,12 @@ fun FragmentActivity.jumpToWithdraw(){
     if (LoginRepository.isLogined() && UserInfoRepository.isMayaAccount()) {
         ToMayaDialog.newInstance(false).show((AppManager.currentActivity() as BaseActivity<*,*>).supportFragmentManager,ToMayaDialog.javaClass.name)
         return
+    }
+    val userInfo = UserInfoRepository.userInfo.value!!
+    //不允许半认证用户冲提款
+    if (userInfo.fullVerified ==0 && userInfo.verified == VerifiedType.PASSED.value && sConfigData?.halfVerifiedCharge==0){
+        startActivity(VerifyIdentityActivity::class.java)
+       return
     }
     startActivity(WithdrawActivity::class.java)
 }

@@ -1968,4 +1968,5 @@
     <string name="P321_1">Please do not wear hats or masks that may obscure your face</string>
     <string name="P335">Ok. I\'m ready</string>
     <string name="P336">Handheld ID selfie</string>
+    <string name="P338_1">The size should be under 500KB</string>
 </resources>

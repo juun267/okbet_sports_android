@@ -5,6 +5,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.ActivityWithdrawBinding
+import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -72,7 +73,7 @@ class WithdrawActivity : BaseActivity<WithdrawViewModel, ActivityWithdrawBinding
         val needPhoneNumber = userInfo.phone.isNullOrBlank()
         val needPassword = userInfo.passwordSet
         val needPayPW = userInfo.updatePayPw == 1
-        val needVerify = userInfo.fullVerified!=1 && sConfigData?.halfVerifiedCharge==0
+        val needVerify = userInfo.verified != VerifiedType.PASSED.value
         return needPhoneNumber||needPassword||needPayPW||needVerify
     }
 

@@ -1838,4 +1838,5 @@
     <string name="P321_1">Không đội mũ, đeo khẩu trang che khuất khuôn mặt</string>
     <string name="P335">Ok. Đã sẵn sàng</string>
     <string name="P336">Ảnh selfie tay cầm ID</string>
+    <string name="P338_1">Kích thước không vượt quá 500KB</string>
 </resources>

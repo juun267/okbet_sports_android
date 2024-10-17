@@ -39,7 +39,7 @@ class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdra
         val needPhoneNumber = userInfo.phone.isNullOrBlank()
         val needPassword = userInfo.passwordSet
         val needPayPW = userInfo.updatePayPw == 1
-        val needVerify = userInfo.fullVerified!=1 && sConfigData?.halfVerifiedCharge==0
+        val needVerify = userInfo.verified != VerifiedType.PASSED.value
         setStepItem(needPhoneNumber,ivStep1,line1,tvStepState1,ivStepArrow1){
             ModifyBindInfoActivity.start(requireActivity(), ModifyType.PhoneNumber, 100, null, null, null)
         }

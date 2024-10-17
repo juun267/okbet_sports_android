@@ -11,6 +11,7 @@ import org.cxct.sportlottery.databinding.ActivityHandheldPhotoBinding
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
@@ -61,6 +62,7 @@ class HandheldPhotoActivity: BaseActivity<ProfileCenterViewModel, ActivityHandhe
                 EventBusUtil.post(KYCEvent())
                 UserInfoRepository.loadUserInfo()
                 showPromptDialog(message = getString(R.string.submit_success)) {
+                    startActivity(VerifyIdentityActivity::class.java)
                     finishWithOK()
                 }
             } else {

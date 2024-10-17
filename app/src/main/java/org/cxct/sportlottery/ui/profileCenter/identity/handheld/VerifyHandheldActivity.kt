@@ -18,7 +18,6 @@ class VerifyHandheldActivity: BaseActivity<ProfileCenterViewModel, ActivityVerif
         }
         binding.btnStart.setOnClickListener {
             startActivity<HandheldPhotoActivity>()
-            finish()
         }
     }
 

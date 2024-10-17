@@ -82,6 +82,7 @@
         <activity
             android:name=".ui.profileCenter.identity.VerifyIdentityActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.profileCenter.identity.TakeIDPhotoActivity"
