@@ -72,7 +72,7 @@ class WithdrawActivity : BaseActivity<WithdrawViewModel, ActivityWithdrawBinding
         val needPhoneNumber = userInfo.phone.isNullOrBlank()
         val needPassword = userInfo.passwordSet
         val needPayPW = userInfo.updatePayPw == 1
-        val needVerify = userInfo.fullVerified!=1 && sConfigData?.halfVverifiedCharge==0
+        val needVerify = userInfo.fullVerified!=1 && sConfigData?.halfVerifiedCharge==0
         return needPhoneNumber||needPassword||needPayPW||needVerify
     }
 
