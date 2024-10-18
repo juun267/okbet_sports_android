@@ -19,6 +19,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.IntDef
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -324,7 +325,7 @@ class LoginEditText @JvmOverloads constructor(
 /**
  * Extension function to simplify setting an afterTextChanged action to EditText components.
  */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
+fun TextView.afterTextChanged(afterTextChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(editable: Editable?) {
             afterTextChanged.invoke(editable.toString())
@@ -339,13 +340,13 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 /**
  *Extension function to simplify setting an onFocusChange action to EditText components.
  */
-fun EditText.onFocusChange(onFocusChange: (String) -> Unit) {
+fun TextView.onFocusChange(onFocusChange: (String) -> Unit) {
     this.onFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
         onFocusChange.invoke(this.text.toString())
     }
 }
 
-fun EditText.checkRegisterListener(onCheck: (String) -> Unit) {
+fun TextView.checkRegisterListener(onCheck: (String) -> Unit) {
     this.afterTextChanged { onCheck(it) }
     this.onFocusChange { onCheck(it) }
 }

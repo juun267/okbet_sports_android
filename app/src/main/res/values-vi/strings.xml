@@ -186,8 +186,8 @@
     <string name="upload_photo_title">Tải lên ảnh hồ sơ của bạn</string>
     <string name="upload_photo_tips">Kích thước tệp tải lên tối đa: 500KB.</string>
     <string name="upload_photo_content">Vui lòng tải lên ảnh hồ sơ của bạn</string>
-    <string name="upload_media_reset">重拍</string>
-    <string name="upload_fail">上传失败</string>
+    <string name="upload_media_reset">Remake</string>
+    <string name="upload_fail">Tải lên thất bại</string>
     <string name="upload_success">Tải lên thành công</string>
     <string name="upload_dialog_content">Vui lòng tải lên ID hợp lệ có thể được chứng minh danh tính của bạn.</string>
     <string name="upload_dialog_gallery">Album</string>

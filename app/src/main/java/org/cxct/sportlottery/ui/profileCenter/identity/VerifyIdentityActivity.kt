@@ -1,12 +1,15 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
+import android.content.Intent
 import androidx.fragment.app.Fragment
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ActivityVerifyIdentityBinding
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.handheld.VerifyNotFullyFragment
 import org.cxct.sportlottery.util.*
@@ -18,11 +21,26 @@ class VerifyIdentityActivity :
 
     private val loadingHolder by lazy { Gloading.wrapView(binding.root) }
     private val fragmentHelper2 by lazy { FragmentHelper2(supportFragmentManager, binding.fragmentContainer.id) }
-
+    private var backToMainPage = false //点击返回按钮时，是否需要回到主页
+    private var title: String? = null //外部页面带标题进来
 
     override fun onInitView() {
+        getIntentParams(intent)
         initToolbar()
         initObserver()
+
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let {
+            getIntentParams(it)
+        }
+    }
+
+    private fun getIntentParams(intent: Intent){
+        backToMainPage = intent.getBooleanExtra("backToMainPage", false)
+        title = intent.getStringExtra("title")
     }
 
     private var isFirst = true
@@ -87,6 +105,9 @@ class VerifyIdentityActivity :
                 }
             }
         }
+        if (!title.isNullOrEmpty()){
+            setToolBar(title!!)
+        }
     }
     fun showFragment(clazz: Class<out Fragment>){
         fragmentHelper2.show(clazz)
@@ -96,7 +117,11 @@ class VerifyIdentityActivity :
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         tvToolbarTitle.setTitleLetterSpacing()
         btnToolbarBack.setOnClickListener {
-            onBackPressed()
+            if (backToMainPage){
+                MainTabActivity.reStart(this@VerifyIdentityActivity)
+            }else{
+                finish()
+            }
         }
     }
 

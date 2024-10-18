@@ -655,8 +655,8 @@
     <string name="upload_photo_title">Upload your profile picture</string>
     <string name="upload_photo_tips">Maximum upload file size: 500KB.</string>
     <string name="upload_photo_content">Please upload your profile picture</string>
-    <string name="upload_media_reset">重拍</string>
-    <string name="upload_fail">上传失败</string>
+    <string name="upload_media_reset">Remake</string>
+    <string name="upload_fail">Upload failed</string>
     <string name="upload_success">Upload successful</string>
     <string name="upload_dialog_content">Please take a photo or select a photo from the album.</string>
     <string name="upload_dialog_gallery">Album</string>

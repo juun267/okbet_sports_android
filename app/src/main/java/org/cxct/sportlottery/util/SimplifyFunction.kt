@@ -1091,7 +1091,9 @@ fun FragmentActivity.jumpToWithdraw(){
     val userInfo = UserInfoRepository.userInfo.value!!
     //不允许半认证用户冲提款
     if (userInfo.fullVerified ==0 && userInfo.verified == VerifiedType.PASSED.value && sConfigData?.halfVerifiedCharge==0){
-        startActivity(VerifyIdentityActivity::class.java)
+        startActivity(VerifyIdentityActivity::class.java){
+            it.putExtra("title",getString(R.string.withdraw))
+        }
        return
     }
     startActivity(WithdrawActivity::class.java)

@@ -108,12 +108,12 @@ fun Activity.finishWithOK() {
     finish()
 }
 
-fun Fragment.startActivity(activity: Class<out Activity>) {
-    startActivity(Intent(requireActivity(), activity))
+fun Fragment.startActivity(activity: Class<out Activity>, intentParams: ((Intent)->Unit)?=null) {
+    startActivity(Intent(requireActivity(), activity).apply { intentParams?.invoke(this)})
 }
 
-fun Activity.startActivity(activity: Class<out Activity>) {
-    startActivity(Intent(this, activity))
+fun Activity.startActivity(activity: Class<out Activity>, intentParams: ((Intent)->Unit)?=null) {
+    startActivity(Intent(this, activity).apply { intentParams?.invoke(this)})
 }
 
 fun Activity.bindFinish(vararg views: View) {

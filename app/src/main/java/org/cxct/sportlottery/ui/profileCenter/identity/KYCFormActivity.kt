@@ -3,19 +3,24 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.bigkoo.pickerview.view.TimePickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_kyc_form.*
+import kotlinx.android.synthetic.main.include_kyc_form_select.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.KYCEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityKycFormBinding
 import org.cxct.sportlottery.databinding.DialogBottomSelectBinding
+import org.cxct.sportlottery.databinding.IncludeKycFormInputBinding
+import org.cxct.sportlottery.databinding.IncludeKycFormSelectBinding
 import org.cxct.sportlottery.net.user.data.KYCVerifyConfig
 import org.cxct.sportlottery.net.user.data.OCRInfo
 import org.cxct.sportlottery.repository.UserInfoRepository
@@ -27,8 +32,9 @@ import org.cxct.sportlottery.ui.profileCenter.profile.*
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
-import org.cxct.sportlottery.view.afterTextChanged
+import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.view.dialog.SourceOfIncomeDialog
+import org.cxct.sportlottery.view.onFocusChange
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -49,9 +55,6 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
     }
     private val profileModel: ProfileModel by viewModel()
 
-    private val defaultBg = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_F9FAFD)
-    private val foucedBg = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.white, R.color.color_025BE8)
-
     private val idType by lazy { intent.getIntExtra("idType", 0) }
     private val idTypeName by lazy { intent.getStringExtra("idTypeName")!! }
     private val imageUrl by lazy { intent.getStringExtra("imageUrl")!! }
@@ -71,7 +74,7 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
 
     override fun onInitView() {
         setStatusbar()
-        initStyle()
+        binding.toolBar.tvToolbarTitle.setText(R.string.B463)
         initEvent()
         initExtra()
         initObserver()
@@ -98,12 +101,15 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
         profileModel.userDetail.observe(this) {
             uide = it.t
             setIdentityDetail(it)
+            setEnableButton()
         }
         viewModel.kycVerifyConfigResult.observe(this) {
             if (it.success){
                 it.getData()?.let {
+                    LogUtil.toJson(it)
                     kycVerifyConfig = it
                     setKYCVerifyConfig(it)
+                    setEnableButton()
                 }
             }else{
                 showErrorPromptDialog(it.msg){}
@@ -112,17 +118,17 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
     }
 
     private fun bindOCRInfo(ocr: OCRInfo) = binding.run {
-//        eetFirstName.setText(ocr.firstName)
-        edtFirstName.setText(ocr.firstName)
-        edtLastName.setText(ocr.lastName)
-        tvBirthday.setText(ocr.birthday?.replace("/", "-"))
-        edtMiddleName.setText(ocr.middleName)
+        itemFirstName.etInput.setText(ocr.firstName)
+        itemMiddleName.etInput.setText(ocr.middleName)
+        itemLastName.etInput.setText(ocr.lastName)
+        itemBirthday.etInput.setText(ocr.birthday?.replace("/", "-"))
+        setEnableButton()
     }
     private fun setIdentityDetail(it: UserInfoDetailsEntity)=binding.run{
-        tvNationality.text = it.t.nationality
-//        tvBirthday.text = checkStr(it.t.birthday)
-        etPlaceOfBirth.setText(it.t.placeOfBirth)
-        tvSourceOfIncome.text = if (it.t.salarySource?.id == 6) {
+        itemNationality.tvInput.text = it.t.nationality
+        itemGender.tvInput.text = profileModel.getGenderName(it.t.gender)
+        itemPlaceOfBirth.etInput.setText(it.t.placeOfBirth)
+        itemSourceOfIncome.tvInput.text = if (it.t.salarySource?.id == 6) {
             it.t.salarySource?.name
         } else if (it.t.salarySource?.id == null) {
             null
@@ -131,136 +137,82 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
                 profileModel.getSalaryName(it1, resources.getString(R.string.set))
             }
         }
-        tvNatureOfWork.text = it.t.natureOfWork
-        tvProvinceCurrent.text = it.t.province
-        tvCityCurrent.text = it.t.city
-        etAddressCurrent.setText(it.t.address)
-        etZipCodeCurrent.setText(it.t.zipCode)
-        tvProvincePermanent.text = it.t.permanentProvince
-        tvCityPermanent.text = it.t.permanentCity
-        etAddressPermanent.setText(it.t.permanentAddress)
-        etZipCodePermanent.setText(it.t.permanentZipCode)
-        tvGender.text = profileModel.getGenderName(it.t.gender)
+        itemNatureOfWork.tvInput.text = it.t.natureOfWork
+        itemProvinceCurrent.tvInput.text = it.t.province
+        itemCityCurrent.tvInput.text = it.t.city
+        itemAddressCurrent.etInput.setText(it.t.address)
+        itemZipCodeCurrent.etInput.setText(it.t.zipCode)
+        itemProvincePermanent.tvInput.text = it.t.permanentProvince
+        itemCityPermanent.tvInput.text = it.t.permanentCity
+        itemAddressPermanent.etInput.setText(it.t.permanentAddress)
+        itemZipCodePermanent.etInput.setText(it.t.permanentZipCode)
     }
 
     private fun initEvent() = binding.run {
-        tvIdType.text = idTypeName
-        frBirthday.setOnClickListener { showDateTimePicker() }
-        tvBirthday.setOnClickListener { showDateTimePicker() }
         toolBar.btnToolbarBack.setOnClickListener { finish() }
-        llMiddleName.setOnClickListener {
+        tvIdType.text = idTypeName
+        setItemInputStyle(itemFirstName,getString(R.string.P185),1,1){
+            setEnableButton()
+        }
+        setItemInputStyle(itemMiddleName,getString(R.string.P186),1,1){
+            setEnableButton()
+        }
+        setItemInputStyle(itemLastName,getString(R.string.P187),1,1){
+            setEnableButton()
+        }
+        setItemInputStyle(itemBirthday,getString(R.string.J902),1,1){
+            setEnableButton()
+        }
+        itemBirthday.etInput.apply {
+            isFocusable = false
+            isFocusableInTouchMode = false
+            isClickable = true
+            hint = "YYYY-MM-DD"
+            setTypeface(null, Typeface.BOLD)
+        }
+        itemBirthday.llRoot.setOnClickListener {
+            showDateTimePicker()
+        }
+        itemBirthday.ivClear.setImageResource(R.drawable.ic_date)
+        itemBirthday.ivClear.setOnClickListener {
+            showDateTimePicker()
+        }
+        llMiddleNameSwitch.setOnClickListener {
             val isSelected = !it.isSelected
             it.isSelected = isSelected
-            frMiddleName.isEnabled = !isSelected
-            edtMiddleName.isEnabled = frMiddleName.isEnabled
+            setItemInputStyle(itemMiddleName,getString(R.string.P186),1,if(isSelected) 0 else 1){
+                setEnableButton()
+            }
+            itemMiddleName.root.isEnabled = !isSelected
+            itemMiddleName.etInput.isEnabled = !isSelected
             ivCheckBox.isSelected = isSelected
             if (isSelected) {
-                edtMiddleName.setText("N/A")
-                edtMiddleName.clearFocus()
+                itemMiddleName.etInput.setText("N/A")
+                itemMiddleName.etInput.clearFocus()
                 tvHaveMiddelName.setTextColor(getColor(R.color.color_025BE8))
+                itemMiddleName.ivClear.gone()
             } else {
-                edtMiddleName.setText("")
-                edtMiddleName.requestFocus()
+                itemMiddleName.etInput.setText("")
+                itemMiddleName.etInput.requestFocus()
                 tvHaveMiddelName.setTextColor(getColor(R.color.color_667085))
             }
+            setEnableButton()
         }
-        etPlaceOfBirth.afterTextChanged {
-            uide.placeOfBirth = it
-        }
-        etAddressCurrent.afterTextChanged{
-            uide.address = it
-        }
-        etZipCodeCurrent.afterTextChanged{
-            uide.zipCode = it
-        }
-        etAddressPermanent.afterTextChanged{
-            uide.permanentAddress = it
-        }
-        etZipCodePermanent.afterTextChanged{
-            uide.permanentZipCode = it
-        }
+
         btnConfirm.setOnClickListener {
-            val error = checkInput()
-            if (error != null) {
-                toastError(error)
-                return@setOnClickListener
-            }
             loading()
             viewModel.putKYCInfo(idType,
                 ocrInfo?.identityNumber,
                 imageUrl,
-                edtFirstName.text.toString(),
-                edtMiddleName.text.toString(),
-                edtLastName.text.toString(),
-                tvBirthday.text.toString(),
+                itemFirstName.etInput.text.toString(),
+                itemMiddleName.etInput.text.toString(),
+                itemLastName.etInput.text.toString(),
+                itemBirthday.etInput.text.toString(),
                 uide = uide
             )
         }
     }
     private fun initExtra()=binding.run{
-        llNationality.setOnClickListener {
-            showBottomDialog(
-                profileModel.nationalityList,
-                resources.getString(R.string.P103),
-                tvNationality.text.toString()
-            ) {
-                tvNationality.text = it.name
-                uide.nationality = it.name
-                checkInput()
-            }
-        }
-        llGender.setOnClickListener {
-            showBottomDialog(
-                profileModel.genderList,
-                resources.getString(R.string.J905),
-                tvGender.text.toString()
-            ) {
-                tvGender.text = it.name
-                uide.gender = it.id
-            }
-        }
-        llSourceOfIncome.setOnClickListener {
-            showBottomDialog(
-                profileModel.salaryStringList,
-                resources.getString(R.string.P105),
-                tvSourceOfIncome.text.toString(),
-                true
-            ) {
-                if (it.id == 6) {
-                    val dialog = SourceOfIncomeDialog(this@KYCFormActivity)
-                    dialog.setPositiveClickListener(object :
-                        SourceOfIncomeDialog.OnPositiveListener {
-                        override fun positiveClick(str: String) {
-                            val workstr = str.ifEmpty {
-                                resources.getString(R.string.other)
-                            }
-                            tvSourceOfIncome.text = workstr
-                            uide.salarySource = SalarySource(
-                                it.id,
-                                workstr
-                            )
-                        }
-                    })
-                    dialog.show()
-                } else {
-                    tvSourceOfIncome.text = it.name
-                    uide.salarySource = SalarySource(
-                        it.id,
-                        it.name
-                    )
-                }
-            }
-        }
-        llNatureOfWork.setOnClickListener {
-            showBottomDialog(
-                profileModel.workList,
-                resources.getString(R.string.P106),
-                tvNatureOfWork.text.toString()
-            ) {
-                tvNatureOfWork.text = it.name
-                uide.natureOfWork = it.name
-            }
-        }
         cbPermanent.setOnCheckedChangeListener { buttonView, isChecked ->
             linPermanent.isVisible = !isChecked
             if (isChecked){
@@ -269,93 +221,13 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
                 uide.permanentAddress = uide.address
                 uide.permanentZipCode = uide.zipCode
             }else{
-                uide.permanentProvince = tvProvincePermanent.text.toString().trim()
-                uide.permanentCity = tvCityPermanent.text.toString().trim()
-                uide.permanentAddress = etAddressPermanent.text.toString().trim()
-                uide.permanentZipCode = etZipCodePermanent.text.toString().trim()
+                uide.permanentProvince = itemProvincePermanent.tvInput.text.toString()
+                uide.permanentCity = itemCityPermanent.tvInput.text.toString()
+                uide.permanentAddress = itemAddressPermanent.etInput.text.toString()
+                uide.permanentZipCode = itemZipCodePermanent.etInput.text.toString()
             }
         }
-        llProvinceCurrent.setOnClickListener {
-            showProvinceDialog()
-        }
-        llProvincePermanent.setOnClickListener {
-            showProvincePDialog()
-        }
-        llCityCurrent.setOnClickListener {
-            if (profileModel.cityList.isEmpty()) {
-                showProvinceDialog()
-            } else {
-                showBottomDialog(
-                    profileModel.cityList,
-                    resources.getString(R.string.J901),
-                    tvCityCurrent.text.toString()
-                ) {
-                    tvCityCurrent.text = it.name
-                    uide.city = it.name
-                }
-            }
 
-        }
-        llCityPermanent.setOnClickListener {
-            if (profileModel.cityPList.isEmpty()) {
-                showProvincePDialog()
-            } else {
-                showBottomDialog(
-                    profileModel.cityPList,
-                    resources.getString(R.string.J901),
-                    tvCityPermanent.text.toString()
-                ) {
-                    tvCityPermanent.text = it.name
-                    uide.permanentCity = it.name
-                }
-            }
-
-        }
-        ivClearAddressCurrent.setOnClickListener {
-            etAddressCurrent.text = null
-            uide.address = null
-        }
-        ivClearAddressPermanent.setOnClickListener {
-            etAddressPermanent.text = null
-            uide.permanentAddress = null
-        }
-        ivClearZipCodeCurrent.setOnClickListener {
-            etZipCodeCurrent.text = null
-            uide.zipCode = null
-        }
-        ivClearZipCodePermanent.setOnClickListener {
-            etZipCodePermanent.text = null
-            uide.permanentZipCode = null
-        }
-
-    }
-
-    private fun initStyle() = binding.run {
-        toolBar.tvToolbarTitle.setText(R.string.identity)
-        frIdType.background = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_F9FAFD)
-        frFirstName.background = defaultBg
-        frMiddleName.background = defaultBg
-        frLastName.background = defaultBg
-        frBirthday.background = defaultBg
-        setInputStyle(edtFirstName, ivClearFirstName, frFirstName)
-        setInputStyle(edtMiddleName, ivClearMiddleName, frMiddleName)
-        setInputStyle(edtLastName, ivClearLastName, frLastName)
-    }
-
-    private fun setInputStyle(editText: EditText, ivClear: ImageView, parent: View) {
-        ivClear.setOnClickListener { editText.setText("") }
-        parent.setOnClickListener { editText.requestFocus() }
-        editText.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                editText.setTextColor(getColor(R.color.color_025BE8))
-                ivClear.visible()
-                parent.background = foucedBg
-            } else {
-                editText.setTextColor(Color.BLACK)
-                ivClear.gone()
-                parent.background = defaultBg
-            }
-        }
     }
 
     private var dateTimePicker: TimePickerView? = null
@@ -371,7 +243,8 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
         tomorrow.add(Calendar.YEAR, -21)
         dateTimePicker = DateTimePickerOptions(this).getBuilder { date, _ ->
             TimeUtil.dateToStringFormatYMD(date)?.let {
-                binding.tvBirthday.setText(it)
+                binding.itemBirthday.etInput.setText(it)
+                setEnableButton()
             }
         }
             .setRangDate(yesterday, tomorrow)
@@ -379,80 +252,75 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
             .build()
         dateTimePicker!!.show()
     }
-
-    private fun checkInput(): String? = binding.run {
-        if (!VerifyConstUtil.verifyFullName2(edtFirstName.text.toString())) {
-            edtFirstName.requestFocus()
-            return@run getString(R.string.P185)
+    private fun setEnableButton(){
+        binding.btnConfirm.isEnabled = checkComplete()
+    }
+    private fun checkComplete(): Boolean = binding.run {
+        if (!VerifyConstUtil.verifyFullName2(itemFirstName.etInput.text.toString())) {
+            return false
         }
 
-        val middleName = edtMiddleName.text.toString()
+        val middleName = itemMiddleName.etInput.text.toString()
         if ("N/A" != middleName && !VerifyConstUtil.verifyFullName2(middleName)) {
-            edtMiddleName.requestFocus()
-            return@run getString(R.string.P186)
+            return false
         }
 
-        if (!VerifyConstUtil.verifyFullName2(edtLastName.text.toString())) {
-            edtLastName.requestFocus()
-            return@run getString(R.string.P187)
+        if (!VerifyConstUtil.verifyFullName2(itemLastName.etInput.text.toString())) {
+            return false
         }
 
-        if (tvBirthday.text.toString().isEmptyStr()) {
-            return@run getString(R.string.J902)
+        if (itemBirthday.etInput.text.toString().isEmptyStr()) {
+            return false
         }
-        if (tvNationality.text.toString().isEmptyStr() && kycVerifyConfig?.kycVerifyNationalityRequired==1) {
-            return@run getString(R.string.P103)
+        if (uide.nationality.isEmptyStr() && kycVerifyConfig?.kycVerifyNationalityRequired==1) {
+            return false
         }
-        if (tvGender.text.toString().isEmptyStr() && kycVerifyConfig?.kycVerifyNationalityRequired==1) {
-            return@run getString(R.string.J905)
+        if (uide.gender==null && kycVerifyConfig?.kycVerifyGenderRequired==1) {
+            return false
         }
-        if (etPlaceOfBirth.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyBirthplaceRequired==1) {
-            return@run getString(R.string.P104)
+        if (uide.placeOfBirth.isEmptyStr() && kycVerifyConfig?.kycVerifyBirthplaceRequired==1) {
+            return false
         }
-        if (tvSourceOfIncome.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyIncomeRequired==1) {
-            return@run getString(R.string.P105)
+        if (uide.salarySource==null && kycVerifyConfig?.kycVerifyIncomeRequired==1) {
+            return false
         }
-        if (tvNatureOfWork.text.toString().trim().isEmptyStr() && kycVerifyConfig?.kycVerifyWorkRequired==1) {
-            return@run getString(R.string.P106)
+        if (uide.natureOfWork.isEmptyStr() && kycVerifyConfig?.kycVerifyWorkRequired==1) {
+            return false
         }
-        if (linAddress.isVisible){
-            if (tvProvinceCurrent.text.toString().trim().isEmptyStr()) {
-                return@run getString(R.string.J036)
+        if (linAddress.isVisible && kycVerifyConfig?.kycVerifyCurrAddressRequired==1){
+            if (uide.province.isEmptyStr()) {
+                return false
             }
-            if (tvCityCurrent.text.toString().trim().isEmptyStr()) {
-                return@run getString(R.string.J901)
+            if (uide.city.isEmptyStr()) {
+                return false
             }
-            if (etAddressCurrent.text.toString().trim().isEmptyStr()) {
-                return@run getString(R.string.M259)
+            if (uide.address.isEmptyStr()) {
+                return false
             }
-            if (etZipCodeCurrent.text.toString().trim().isEmptyStr()) {
-                return@run getString(R.string.N827)
+            if (uide.zipCode.isEmptyStr()) {
+                return false
             }
         }
 
         if (cbPermanent.isVisible){
-            if (!cbPermanent.isChecked){
-                if (tvProvincePermanent.text.toString().trim().isEmptyStr()) {
-                    return@run getString(R.string.J036)
+            if (!cbPermanent.isChecked && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1){
+                if (uide.permanentProvince.isEmptyStr()) {
+                    return false
                 }
-                if (tvCityPermanent.text.toString().trim().isEmptyStr()) {
-                    return@run getString(R.string.J901)
+                if (uide.permanentCity.isEmptyStr()) {
+                    return false
                 }
-                if (etAddressPermanent.text.toString().trim().isEmptyStr()) {
-                    return@run getString(R.string.M259)
+                if (uide.permanentAddress.isEmptyStr()) {
+                    return false
                 }
-                if (etZipCodePermanent.text.toString().trim().isEmptyStr()) {
-                    return@run getString(R.string.N827)
+                if (uide.permanentZipCode.isEmptyStr()) {
+                    return false
                 }
             }
         }
-
-        return@run null
+        return true
     }
 
-    private fun toastError(filed: String) {
-        toast("$filed: ${getString(R.string.N280)}")
-    }
     private fun showBottomDialog(
         list: MutableList<DialogBottomDataEntity>,
         title: String,
@@ -499,15 +367,16 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
         showBottomDialog(
             profileModel.provincesList,
             resources.getString(R.string.J036),
-            binding.tvProvinceCurrent.text.toString()
+            binding.itemProvinceCurrent.tvInput.text.toString()
         ) {
             profileModel.updateCityData(it.id)
-            if (it.name != binding.tvProvinceCurrent.text.toString()) {
-                binding.tvCityCurrent.text = profileModel.cityList.first().name
+            if (it.name != binding.itemProvinceCurrent.tvInput.text.toString()) {
+                binding.itemCityCurrent.tvInput.text = profileModel.cityList.first().name
                 uide.city = profileModel.cityList.first().name
             }
-            binding.tvProvinceCurrent.text = it.name
+            binding.itemProvinceCurrent.tvInput.text = it.name
             uide.province = it.name
+            setEnableButton()
         }
     }
 
@@ -518,37 +387,176 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
         showBottomDialog(
             profileModel.provincesPList,
             resources.getString(R.string.J036),
-            binding.tvProvincePermanent.text.toString()
+            binding.itemProvincePermanent.tvInput.text.toString()
         ) {
             profileModel.updateCityPData(it.id)
-            if (it.name != binding.tvCityPermanent.text.toString()) {
-                binding.tvCityPermanent.text = profileModel.cityPList.first().name
+            if (it.name != binding.itemProvincePermanent.tvInput.text.toString()) {
+                binding.itemCityPermanent.tvInput.text = profileModel.cityPList.first().name
                 uide.permanentCity = profileModel.cityPList.first().name
             }
-            binding.tvProvincePermanent.text = it.name
+            binding.itemProvincePermanent.tvInput.text = it.name
             uide.permanentProvince = it.name
+            setEnableButton()
         }
     }
-    fun setKYCVerifyConfig(config: KYCVerifyConfig)=binding.run{
-        llNationality.isVisible = config.kycVerifyNationalityShow == 1
-        llGender.isVisible = config.kycVerifyGenderShow == 1
-        llPlaceOfBirth.isVisible = config.kycVerifyBirthplaceShow == 1
-        llSourceOfIncome.isVisible = config.kycVerifyIncomeShow == 1
-        llNatureOfWork.isVisible = config.kycVerifyWorkShow == 1
-        linAddress.isVisible = config.kycVerifyCurrAddressShow == 1
-        linPermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
-        cbPermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
+    private fun setKYCVerifyConfig(config: KYCVerifyConfig)=binding.run{
+        setItemSelectStyle(itemNationality,getString(R.string.P103), config.kycVerifyNationalityShow,config.kycVerifyNationalityRequired){
+            showBottomDialog(
+                profileModel.nationalityList,
+                resources.getString(R.string.P103),
+                itemNationality.tvInput.text.toString()
+            ) {
+                itemNationality.tvInput.text = it.name
+                uide.nationality = it.name
+                setEnableButton()
+            }
+        }
+        setItemSelectStyle(itemGender,getString(R.string.J905), config.kycVerifyGenderShow,config.kycVerifyGenderRequired){
+            showBottomDialog(
+                profileModel.genderList,
+                resources.getString(R.string.J905),
+                itemGender.tvInput.text.toString()
+            ) {
+                itemGender.tvInput.text = it.name
+                uide.gender = it.id
+                setEnableButton()
+            }
+        }
+        setItemInputStyle(itemPlaceOfBirth,getString(R.string.P104), config.kycVerifyBirthplaceShow,config.kycVerifyBirthplaceRequired){
+              uide.placeOfBirth = it
+              setEnableButton()
+        }
+        setItemSelectStyle(itemSourceOfIncome,getString(R.string.P105), config.kycVerifyIncomeShow,config.kycVerifyIncomeRequired){
+            showBottomDialog(
+                profileModel.salaryStringList,
+                resources.getString(R.string.P105),
+                itemSourceOfIncome.tvInput.text.toString(),
+                true
+            ) {
+                if (it.id == 6) {
+                    val dialog = SourceOfIncomeDialog(this@KYCFormActivity)
+                    dialog.setPositiveClickListener(object :
+                        SourceOfIncomeDialog.OnPositiveListener {
+                        override fun positiveClick(str: String) {
+                            val workstr = str.ifEmpty {
+                                resources.getString(R.string.other)
+                            }
+                            itemSourceOfIncome.tvInput.text = workstr
+                            uide.salarySource = SalarySource(
+                                it.id,
+                                workstr
+                            )
+                            setEnableButton()
+                        }
+                    })
+                    dialog.show()
+                } else {
+                    itemSourceOfIncome.tvInput.text = it.name
+                    uide.salarySource = SalarySource(
+                        it.id,
+                        it.name
+                    )
+                    setEnableButton()
+                }
+            }
+        }
+        setItemSelectStyle(itemNatureOfWork,getString(R.string.P106), config.kycVerifyWorkShow,config.kycVerifyWorkRequired){
+            showBottomDialog(
+                profileModel.workList,
+                resources.getString(R.string.P106),
+                itemNatureOfWork.tvInput.text.toString()
+            ) {
+                itemNatureOfWork.tvInput.text = it.name
+                uide.natureOfWork = it.name
+                setEnableButton()
+            }
+        }
 
-        if(config.kycVerifyNationalityRequired==1) tvNationalityLabel.setRequiredStyle()
-        if(config.kycVerifyGenderRequired==1) tvGenderLabel.setRequiredStyle()
-        if(config.kycVerifyBirthplaceRequired==1) tvPlaceOfBirthLabel.setRequiredStyle()
-        if(config.kycVerifyNationalityRequired==1) tvSourceOfIncomeLabel.setRequiredStyle()
-        if(config.kycVerifyWorkRequired==1) tvNatureOfWorkLabel.setRequiredStyle()
+        linAddress.isVisible = config.kycVerifyCurrAddressShow == 1
         if(config.kycVerifyCurrAddressRequired==1) tvHomeCurrent.setRequiredStyle()
+        setItemSelectStyle(itemProvinceCurrent,getString(R.string.J036), config.kycVerifyCurrAddressShow,config.kycVerifyCurrAddressRequired){
+            showProvinceDialog()
+        }
+        setItemSelectStyle(itemCityCurrent,getString(R.string.J901), config.kycVerifyCurrAddressShow,config.kycVerifyCurrAddressRequired){
+            if (profileModel.cityList.isEmpty()) {
+                showProvinceDialog()
+            } else {
+                showBottomDialog(
+                    profileModel.cityList,
+                    resources.getString(R.string.J901),
+                    itemCityCurrent.tvInput.text.toString()
+                ) {
+                    itemCityCurrent.tvInput.text = it.name
+                    uide.city = it.name
+                    setEnableButton()
+                }
+            }
+
+        }
+        setItemInputStyle(itemAddressCurrent,getString(R.string.M259), config.kycVerifyCurrAddressShow,config.kycVerifyCurrAddressRequired){
+            uide.address = it
+            setEnableButton()
+        }
+        setItemInputStyle(itemZipCodeCurrent,getString(R.string.N827), config.kycVerifyCurrAddressShow,config.kycVerifyCurrAddressRequired){
+            uide.zipCode = it
+            setEnableButton()
+        }
+
+        linPermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
         if(config.kycVerifyPermanentAddressRequired==1) tvHomePermanent.setRequiredStyle()
+        setItemSelectStyle(itemProvincePermanent,getString(R.string.J036), config.kycVerifyPermanentAddressShow,config.kycVerifyPermanentAddressRequired){
+            showProvincePDialog()
+        }
+        setItemSelectStyle(itemCityPermanent,getString(R.string.J901), config.kycVerifyPermanentAddressShow,config.kycVerifyPermanentAddressRequired){
+            if (profileModel.cityPList.isEmpty()) {
+                showProvincePDialog()
+            } else {
+                showBottomDialog(
+                    profileModel.cityPList,
+                    resources.getString(R.string.J901),
+                    itemCityPermanent.tvInput.text.toString()
+                ) {
+                    itemCityPermanent.tvInput.text = it.name
+                    uide.permanentCity = it.name
+                    setEnableButton()
+                }
+            }
+        }
+        setItemInputStyle(itemAddressPermanent,getString(R.string.M259), config.kycVerifyPermanentAddressShow,config.kycVerifyPermanentAddressRequired){
+            uide.permanentAddress = it
+            setEnableButton()
+        }
+        setItemInputStyle(itemZipCodePermanent,getString(R.string.N827), config.kycVerifyPermanentAddressShow,config.kycVerifyPermanentAddressRequired){
+            uide.permanentZipCode = it
+            setEnableButton()
+        }
+
     }
     fun TextView.setRequiredStyle(){
         setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_red_star_required,0,0,0)
         compoundDrawablePadding = 2.dp
+    }
+    private fun setItemSelectStyle(binding: IncludeKycFormSelectBinding,label: String, needShow: Int, required: Int, onItemClick: ()->Unit) {
+        binding.tvLabel.text = label
+        binding.root.isVisible = needShow == 1
+        if(required==1) binding.tvLabel.setRequiredStyle()
+        binding.tvInput.checkRegisterListener{
+            binding.tvError.isVisible = required==1 && it.trim().isEmptyStr()
+        }
+        binding.llRoot.setOnClickListener { onItemClick.invoke() }
+    }
+    private fun setItemInputStyle(binding: IncludeKycFormInputBinding,label: String, needShow:Int, required: Int, onTextChanged: (String)->Unit) {
+        binding.tvLabel.text = label
+        binding.etInput.hint = label
+        binding.root.isVisible = needShow == 1
+        if(required==1) binding.tvLabel.setRequiredStyle()
+        binding.etInput.checkRegisterListener{
+            binding.tvError.isVisible = required==1 && it.trim().isEmptyStr()
+            binding.ivClear.isVisible = it.trim().isNotEmpty()
+            onTextChanged.invoke(it)
+        }
+        binding.ivClear.setOnClickListener {
+            binding.etInput.setText(null)
+        }
     }
 }

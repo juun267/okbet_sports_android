@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.identity.handheld
 
+import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import androidx.core.view.isGone
 import com.luck.picture.lib.entity.LocalMedia
@@ -62,7 +64,9 @@ class HandheldPhotoActivity: BaseActivity<ProfileCenterViewModel, ActivityHandhe
                 EventBusUtil.post(KYCEvent())
                 UserInfoRepository.loadUserInfo()
                 showPromptDialog(message = getString(R.string.submit_success)) {
-                    startActivity(VerifyIdentityActivity::class.java)
+                    startActivity(Intent(this,VerifyIdentityActivity::class.java).apply {
+                        putExtra("backToMainPage",true)
+                    })
                     finishWithOK()
                 }
             } else {
