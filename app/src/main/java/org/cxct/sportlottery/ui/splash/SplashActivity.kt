@@ -169,7 +169,10 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>(),
                 }
 
             if (imageUrls?.isEmpty() == false && sConfigData?.androidCarouselStatus?.toIntS(0) == 1) {
-                onJump(LaunchActivity::class.java)
+                postDelayed(getSplashTime()) {
+                    startActivity(LaunchActivity::class.java)
+                    finish()
+                }
             } else {
                 KvUtils.put("isFirstOpen", false)
                 onJump(MainTabActivity::class.java)
