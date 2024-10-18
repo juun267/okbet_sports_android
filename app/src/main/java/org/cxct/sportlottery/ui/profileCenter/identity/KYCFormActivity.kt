@@ -226,6 +226,7 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
                 uide.permanentAddress = itemAddressPermanent.etInput.text.toString()
                 uide.permanentZipCode = itemZipCodePermanent.etInput.text.toString()
             }
+            setEnableButton()
         }
 
     }
@@ -302,20 +303,18 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
             }
         }
 
-        if (cbPermanent.isVisible){
-            if (!cbPermanent.isChecked && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1){
-                if (uide.permanentProvince.isEmptyStr()) {
-                    return false
-                }
-                if (uide.permanentCity.isEmptyStr()) {
-                    return false
-                }
-                if (uide.permanentAddress.isEmptyStr()) {
-                    return false
-                }
-                if (uide.permanentZipCode.isEmptyStr()) {
-                    return false
-                }
+        if (linPermanent.isVisible && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1){
+            if (uide.permanentProvince.isEmptyStr()) {
+                return false
+            }
+            if (uide.permanentCity.isEmptyStr()) {
+                return false
+            }
+            if (uide.permanentAddress.isEmptyStr()) {
+                return false
+            }
+            if (uide.permanentZipCode.isEmptyStr()) {
+                return false
             }
         }
         return true
