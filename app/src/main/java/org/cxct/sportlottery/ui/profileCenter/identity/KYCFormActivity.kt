@@ -214,17 +214,6 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
     private fun initExtra()=binding.run{
         cbPermanent.setOnCheckedChangeListener { buttonView, isChecked ->
             linPermanent.isVisible = !isChecked
-            if (isChecked){
-                uide.permanentProvince = uide.province
-                uide.permanentCity = uide.city
-                uide.permanentAddress = uide.address
-                uide.permanentZipCode = uide.zipCode
-            }else{
-                uide.permanentProvince = itemProvincePermanent.tvInput.text.toString()
-                uide.permanentCity = itemCityPermanent.tvInput.text.toString()
-                uide.permanentAddress = itemAddressPermanent.etInput.text.toString()
-                uide.permanentZipCode = itemZipCodePermanent.etInput.text.toString()
-            }
             setEnableButton()
         }
 
@@ -316,7 +305,19 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
                 return false
             }
         }
-
+        if (cbPermanent.isVisible){
+            if (cbPermanent.isChecked){
+                uide.permanentProvince = uide.province
+                uide.permanentCity = uide.city
+                uide.permanentAddress = uide.address
+                uide.permanentZipCode = uide.zipCode
+            }else{
+                uide.permanentProvince = itemProvincePermanent.tvInput.text.toString()
+                uide.permanentCity = itemCityPermanent.tvInput.text.toString()
+                uide.permanentAddress = itemAddressPermanent.etInput.text.toString()
+                uide.permanentZipCode = itemZipCodePermanent.etInput.text.toString()
+            }
+        }
         if (linPermanent.isVisible && kycVerifyConfig?.kycVerifyPermanentAddressRequired==1){
             if (uide.permanentProvince.isEmptyStr()) {
                 return false
@@ -514,7 +515,7 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
             uide.zipCode = it
             setEnableButton()
         }
-        cbPermanent.isVisible = config.kycVerifyCurrAddressShow == 1
+        cbPermanent.isVisible = config.kycVerifyCurrAddressShow == 1 && config.kycVerifyPermanentAddressShow == 1
         linPermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
         if(config.kycVerifyPermanentAddressRequired==1) tvHomePermanent.setRequiredStyle()
         setItemSelectStyle(itemProvincePermanent,getString(R.string.J036), config.kycVerifyPermanentAddressShow,config.kycVerifyPermanentAddressRequired){
