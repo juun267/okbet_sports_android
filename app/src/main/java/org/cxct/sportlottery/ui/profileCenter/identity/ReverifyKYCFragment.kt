@@ -97,7 +97,7 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
             hideLoading()
             if (it.succeeded()) {
                 viewModel.userInfo?.value?.verified = VerifiedType.REVERIFYING.value
-                findNavController().navigate(R.id.action_reverifyKYCFragment_to_verifyStatusFragment)
+                (requireActivity() as VerifyIdentityActivity).showFragment(VerifyStatusFragment::class.java)
             } else {
                 ToastUtil.showToast(context, it.msg)
             }
@@ -143,7 +143,7 @@ class ReverifyKYCFragment: BaseFragment<ProfileCenterViewModel, FragmentReverify
     private fun selectPictrue(view: View) {
         val dialog = PicSelectorDialog()
         dialog.mSelectListener = getSelcetPictrueCallback(view)
-        dialog.show(childFragmentManager, VerifyKYCFragment::class.java.simpleName)
+        dialog.show(childFragmentManager, ReverifyKYCFragment::class.java.simpleName)
     }
 
     private fun getSelcetPictrueCallback(view: View): OnResultCallbackListener<LocalMedia> {

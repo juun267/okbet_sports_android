@@ -270,6 +270,7 @@ object UserInfoRepository {
             levelCode = userInfoData.levelCode,
             regSource = userInfoData.regSource,
             safeQuestionType = userInfoData.safeQuestionType,
+            fullVerified = userInfoData.fullVerified,
         )
 
     suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {

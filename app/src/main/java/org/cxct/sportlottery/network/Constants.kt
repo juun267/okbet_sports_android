@@ -462,6 +462,7 @@ object Constants {
     //upload image
     const val UPLOAD_IMG = "/api/upload/image#url_ignore" //上传图片,url_ignore避免域名被动态替换
     const val UPLOAD_VERIFY_PHOTO = "/api/front/user/uploadVerifyPhoto" //上傳實名制文件
+    const val GET_KYC_NEED_INFORMATION = "/api/front/user/getKycNeedInformation" //获取kyc所需资料配置
 
     //簡訊碼驗證
     const val GET_TWO_FACTOR_STATUS =

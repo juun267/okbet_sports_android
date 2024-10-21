@@ -184,7 +184,7 @@ class LeftSportBetFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLef
         menuVerify.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
                 || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
 
-        VerifiedType.getVerifiedType(userInfo?.verified).let{
+        VerifiedType.getVerifiedType(userInfo).let{
             setVerify(enable = true, clickAble = true,
                 text = it.nameResId,
                 statusColor = ContextCompat.getColor(requireContext(),it.colorResId))

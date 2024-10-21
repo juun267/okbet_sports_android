@@ -1588,12 +1588,12 @@
     <string name="P251">其他证件24小时内完成认证</string>
     <string name="P252">请确认图片中的以下信息清晰</string>
     <string name="P253">证件上的照片</string>
-    <string name="P254">"二次确认证件扫描信息 "</string>
+    <string name="P254">二次确认证件扫描信息</string>
     <string name="P255">拍照或从相册冲选择您的证件照片并正确放入到框内</string>
     <string name="P256">拍证件照片</string>
     <string name="P257">无法识别证件</string>
-    <string name="P258">"现在开始 "</string>
-    <string name="P259">"选择证件 "</string>
+    <string name="P258">现在开始</string>
+    <string name="P259">选择证件</string>
     <string name="P260">推荐证件</string>
     <string name="P261">其他证件</string>
     <string name="P262">上传</string>
@@ -1883,4 +1883,16 @@
     <string name="C047">立即登录</string>
     <string name="C048">登录后查看您的VIP信息</string>
     <string name="C049">欢迎来到OKBET！</string>
+    <string name="B463">信息确认</string>
+    <string name="P283">上传手持ID自拍照</string>
+    <string name="P322_1">上传一张手持身份证的自拍照以供验证</string>
+    <string name="P337_1">复制作为我的永久家庭地址</string>
+    <string name="P309_1">你的账号未完全认证</string>
+    <string name="P310_1">尊敬的用户，为了您的账户资金安全，请尽快上传手持ID自拍照</string>
+    <string name="P319_1">请上传一张手持有效身份证件的自拍照</string>
+    <string name="P320_1">请确保环境光线充足，面部清晰</string>
+    <string name="P321_1">请勿戴帽子或口罩，以免遮挡面部</string>
+    <string name="P335">准备好了</string>
+    <string name="P336">手持ID自拍照</string>
+    <string name="P338_1">文件大小不超过500KB</string>
 </resources>

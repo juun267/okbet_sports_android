@@ -11,6 +11,10 @@
         android:id="@+id/toolBar"
         layout="@layout/view_base_tool_bar_no_drawer"/>
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,6 +28,7 @@
             android:id="@+id/frIdType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_gray_radius_8_f9fafd"
             android:minHeight="76dp"
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
@@ -32,6 +37,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_red_star_required"
+                android:drawablePadding="@dimen/margin_2"
                 android:textColor="@color/color_667085"
                 android:textSize="@dimen/textSize14sp"
                 android:text="ID type"/>
@@ -48,87 +55,18 @@
 
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/frFirstName"
-            android:layout_width="match_parent"
-            android:layout_height="76dp"
-            android:layout_marginTop="16dp"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="12dp">
+        <include
+            android:id="@+id/itemFirstName"
+            layout="@layout/include_kyc_form_input"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_667085"
-                android:textSize="@dimen/textSize14sp"
-                android:text="@string/P185"/>
-
-            <EditText
-                android:id="@+id/edtFirstName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:layout_gravity="bottom"
-                android:maxLines="1"
-                android:background="@null"
-                android:textSize="@dimen/textSize16sp"
-                android:textStyle="bold"
-                android:hint="@string/P185"/>
-
-            <ImageView
-                android:id="@+id/ivClearFirstName"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginBottom="6dp"
-                android:layout_gravity="bottom|right"
-                android:src="@drawable/iv_clear_blue"
-                android:visibility="gone"/>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/frMiddleName"
-            android:layout_width="match_parent"
-            android:layout_height="76dp"
-            android:layout_marginTop="16dp"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="12dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/P186"
-                android:textColor="@color/color_667085"
-                android:textSize="@dimen/textSize14sp" />
-
-            <EditText
-                android:id="@+id/edtMiddleName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:layout_gravity="bottom"
-                android:maxLines="1"
-                android:background="@null"
-                android:textSize="@dimen/textSize16sp"
-                android:textStyle="bold"
-                android:hint="@string/P186"/>
-
-            <ImageView
-                android:id="@+id/ivClearMiddleName"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginBottom="6dp"
-                android:layout_gravity="bottom|right"
-                android:src="@drawable/iv_clear_blue"
-                android:visibility="gone"/>
-
-        </FrameLayout>
+        <include
+            android:id="@+id/itemMiddleName"
+            layout="@layout/include_kyc_form_input"/>
 
         <LinearLayout
-            android:id="@+id/llMiddleName"
+            android:id="@+id/llMiddleNameSwitch"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginBottom="8dp"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
@@ -150,95 +88,127 @@
 
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/frLastName"
+        <include
+            android:id="@+id/itemLastName"
+            layout="@layout/include_kyc_form_input"/>
+
+        <include
+            android:id="@+id/itemBirthday"
+            layout="@layout/include_kyc_form_input"/>
+
+        <include
+            android:id="@+id/itemNationality"
+            layout="@layout/include_kyc_form_select"/>
+
+        <include
+            android:id="@+id/itemGender"
+            layout="@layout/include_kyc_form_select"/>
+
+        <include
+            android:id="@+id/itemPlaceOfBirth"
+            layout="@layout/include_kyc_form_input"/>
+
+        <include
+            android:id="@+id/itemSourceOfIncome"
+            layout="@layout/include_kyc_form_select"/>
+
+        <include
+            android:id="@+id/itemNatureOfWork"
+            layout="@layout/include_kyc_form_select"/>
+
+        <LinearLayout
+            android:id="@+id/linAddress"
             android:layout_width="match_parent"
-            android:layout_height="76dp"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="12dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_667085"
-                android:textSize="@dimen/textSize14sp"
-                android:text="@string/P187"/>
-
-            <EditText
-                android:id="@+id/edtLastName"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:layout_gravity="bottom"
-                android:maxLines="1"
-                android:hint="@string/P187"
-                android:background="@null"
-                android:textSize="@dimen/textSize16sp"
-                android:textStyle="bold"/>
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_16"
+                android:background="@drawable/bg_gray_radius_4_1a025be8">
+                <TextView
+                    android:id="@+id/tvHomeCurrent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_000000"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
+                    android:text="@string/P108"/>
+            </LinearLayout>
 
-            <ImageView
-                android:id="@+id/ivClearLastName"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginBottom="6dp"
-                android:layout_gravity="bottom|right"
-                android:src="@drawable/iv_clear_blue"
-                android:visibility="gone"/>
+            <include
+                android:id="@+id/itemProvinceCurrent"
+                layout="@layout/include_kyc_form_select"/>
+            <include
+                android:id="@+id/itemCityCurrent"
+                layout="@layout/include_kyc_form_select"/>
+            <include
+                android:id="@+id/itemAddressCurrent"
+                layout="@layout/include_kyc_form_input"/>
+            <include
+                android:id="@+id/itemZipCodeCurrent"
+                layout="@layout/include_kyc_form_input"/>
+        </LinearLayout>
 
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/frBirthday"
+        <CheckBox
+            android:id="@+id/cbPermanent"
             android:layout_width="match_parent"
-            android:layout_height="76dp"
-            android:layout_marginTop="16dp"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="12dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_667085"
-                android:textSize="@dimen/textSize14sp"
-                android:text="@string/J902"/>
-
-            <EditText
-                android:id="@+id/tvBirthday"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/checkbox_stroke_blue_style"
+            android:drawablePadding="@dimen/margin_4"
+            android:button="@null"
+            android:textSize="@dimen/textSize14sp"
+            android:textColor="@color/color_667085"
+            android:text="@string/P337_1"/>
+        <LinearLayout
+            android:id="@+id/linPermanent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:layout_gravity="bottom"
-                android:background="@null"
-                android:editable="false"
-                android:textSize="@dimen/textSize16sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:textColorHint="@color/color_667085"
-                android:hint="YYYY-MM-DD"/>
-
-            <ImageView
-                android:id="@+id/ivDate"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginBottom="6dp"
-                android:layout_gravity="bottom|right"
-                android:src="@drawable/ic_date"/>
-
-        </FrameLayout>
-
-
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_16"
+                android:background="@drawable/bg_gray_radius_4_1a025be8">
+                <TextView
+                    android:id="@+id/tvHomePermanent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_000000"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
+                    android:text="@string/P109"/>
+            </LinearLayout>
+            <include
+                android:id="@+id/itemProvincePermanent"
+                layout="@layout/include_kyc_form_select"/>
+            <include
+                android:id="@+id/itemCityPermanent"
+                layout="@layout/include_kyc_form_select"/>
+            <include
+                android:id="@+id/itemAddressPermanent"
+                layout="@layout/include_kyc_form_input"/>
+            <include
+                android:id="@+id/itemZipCodePermanent"
+                layout="@layout/include_kyc_form_input"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/selector_button_default"
+            android:textSize="@dimen/textSize16sp"
+            android:textColor="@color/white"
+            android:text="@string/btn_confirm"/>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnConfirm"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginBottom="113dp"
-        android:background="@drawable/bg_blue_radius_8"
-        android:textSize="@dimen/textSize16sp"
-        android:textColor="@color/white"
-        android:text="@string/btn_confirm"/>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

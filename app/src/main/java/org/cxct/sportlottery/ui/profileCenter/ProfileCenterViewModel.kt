@@ -15,6 +15,7 @@ import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.safeApi
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.KYCVerifyConfig
 import org.cxct.sportlottery.net.user.data.OCRInfo
 import org.cxct.sportlottery.net.user.data.VerifyConfig
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -22,6 +23,7 @@ import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.profileCenter.profile.Uide
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.SingleLiveEvent
@@ -58,6 +60,7 @@ class ProfileCenterViewModel(
     val ocrResult = SingleLiveEvent<Triple<Boolean, String, OCRInfo?>>()
     val kycResult = SingleLiveEvent<ApiResult<String>>()
     val reVerifyResult = SingleLiveEvent<ApiResult<String?>>()
+    val kycVerifyConfigResult = SingleLiveEvent<ApiResult<KYCVerifyConfig>>()
 
     fun getUserInfo() {
         viewModelScope.launch {
@@ -314,8 +317,9 @@ class ProfileCenterViewModel(
 
 
     fun putKYCInfo(idType: Int, idNumber: String?, idImageUrl: String,
-                   firstName: String, middleName: String, lastName: String, birthday: String) {
-        callApi({ UserRepository.uploadKYCInfo(idType, idNumber, idImageUrl, firstName, middleName, lastName, birthday) }) {
+                   firstName: String, middleName: String, lastName: String, birthday: String, uide: Uide
+    ) {
+        callApi({ UserRepository.uploadKYCInfo(idType, idNumber, idImageUrl, firstName, middleName, lastName, birthday, uide) }) {
             kycResult.value = it
         }
     }
@@ -323,6 +327,12 @@ class ProfileCenterViewModel(
     fun reVerify() {
         callApi({ UserRepository.reVerify() }) {
             reVerifyResult.postValue(it)
+        }
+    }
+
+    fun getKycNeedInformation() {
+        callApi({ UserRepository.getKycNeedInformation() }) {
+            kycVerifyConfigResult.value = it
         }
     }
 }

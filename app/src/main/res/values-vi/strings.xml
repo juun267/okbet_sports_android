@@ -186,8 +186,8 @@
     <string name="upload_photo_title">Tải lên ảnh hồ sơ của bạn</string>
     <string name="upload_photo_tips">Kích thước tệp tải lên tối đa: 500KB.</string>
     <string name="upload_photo_content">Vui lòng tải lên ảnh hồ sơ của bạn</string>
-    <string name="upload_media_reset">重拍</string>
-    <string name="upload_fail">上传失败</string>
+    <string name="upload_media_reset">Remake</string>
+    <string name="upload_fail">Tải lên thất bại</string>
     <string name="upload_success">Tải lên thành công</string>
     <string name="upload_dialog_content">Vui lòng tải lên ID hợp lệ có thể được chứng minh danh tính của bạn.</string>
     <string name="upload_dialog_gallery">Album</string>
@@ -1827,4 +1827,16 @@
     <string name="C047">Đăng nhập ngay</string>
     <string name="C048">Đăng nhập để xem thông tin VIP của bạn</string>
     <string name="C049">Chào mừng bạn đến với OKBET!</string>
+    <string name="B463">Xác nhận thông tin</string>
+    <string name="P283">Tải lên ảnh cầm selfie ID</string>
+    <string name="P322_1">Tải lên ảnh selfie cầm ID của bạn để xác minh</string>
+    <string name="P337_1">Dùng làm địa chỉ thường trú của tôi</string>
+    <string name="P309_1">Tài khoản của bạn chưa hoàn thành xác minh</string>
+    <string name="P310_1">Kính gửi người dùng, vì sự an toàn của tiền tài khoản của bạn, vui lòng tải lên ảnh selfie kèm theo giấy tờ tùy thân của bạn càng sớm càng tốt</string>
+    <string name="P319_1">Vui lòng tải lên ảnh selfie cầm giấy tờ tùy thân hợp lệ</string>
+    <string name="P320_1">Hãy đảm bảo môi trường đủ ánh sáng và khuôn mặt của bạn rõ ràng</string>
+    <string name="P321_1">Không đội mũ, đeo khẩu trang che khuất khuôn mặt</string>
+    <string name="P335">Ok. Đã sẵn sàng</string>
+    <string name="P336">Ảnh selfie tay cầm ID</string>
+    <string name="P338_1">Kích thước không vượt quá 500KB</string>
 </resources>

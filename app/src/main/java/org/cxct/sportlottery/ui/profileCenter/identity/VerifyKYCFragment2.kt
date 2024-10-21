@@ -17,14 +17,6 @@ import org.greenrobot.eventbus.ThreadMode
 class VerifyKYCFragment2: BaseFragment<ProfileCenterViewModel, FragmentVerifyIdentityKyc2Binding>() {
 
     override fun onInitView(view: View) {
-        val bg = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_F8F9FD)
-        val bg1 = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_dbdeeb)
-        binding.layout1.background = bg
-        binding.layout2.background = DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_F8F9FD)
-        binding.layout3.background = bg
-        binding.ivImg1.background = bg1
-        binding.ivImg2.background = bg1
-        binding.ivImg3.background = bg1
 
         val dp4 = 4.dp.toFloat()
         binding.text2.text = "* ${getString(R.string.real_name)}  \n* ${getString(R.string.P253)}  \n* ${getString(R.string.birthofdate)}".replaceSpan("*") {

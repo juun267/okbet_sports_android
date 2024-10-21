@@ -82,6 +82,7 @@
         <activity
             android:name=".ui.profileCenter.identity.VerifyIdentityActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.profileCenter.identity.TakeIDPhotoActivity"
@@ -300,7 +301,12 @@
         <activity
             android:name=".ui.login.foget.ForgetPasswordQuestionActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".ui.profileCenter.identity.handheld.VerifyHandheldActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profileCenter.identity.handheld.HandheldPhotoActivity"
+            android:screenOrientation="portrait" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

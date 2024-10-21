@@ -1334,6 +1334,8 @@
     <string name="C016_small">Ngayon</string>
     <string name="N064">Remarks</string>
     <string name="P198">I-click para mag-upload ng larawan</string>
+    <string name="B463">Pagkumpirma ng impormasyon</string>
+    <string name="P319_1">Mangyaring mag-upload ng selfie na hawak ang valid identification document</string>
     <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string>
     <string name="P066">Halimbawa</string>
     <string name="P068">Mag-upload ng selfie photo na may hawak na valid ID</string>
@@ -1799,5 +1801,15 @@
     <string name="C047">Mag-login na</string>
     <string name="C048">I-view ang iyong VIP information pagkatapos mag-log in</string>
     <string name="C049">Maligayang pagdating sa OKBET!</string>
+    <string name="P283">I-upload ang ID selfie</string>
+    <string name="P322_1">Mag-upload ng selfie na hawak ang iyong ID para sa pag-verify</string>
+    <string name="P337_1">Gamitin ito bilang aking permanenteng address</string>
+    <string name="P309_1">Hindi ganap na verifield ang iyong Account</string>
+    <string name="P310_1">Para sa seguridad ng iyong account at mga pondo, kailangan mong mag-upload ng handheld ID selfie</string>
+    <string name="P320_1">Pakitiyak na ang kapaligiran ay maliwanag at ang iyong mukha ay malinaw</string>
+    <string name="P321_1">Mangyaring huwag magsuot ng sumbrero o maskara na maaaring matakpan ang iyong mukha</string>
+    <string name="P335">Ok. handa na ako</string>
+    <string name="P336">Handheld ID na selfie</string>
+    <string name="P338_1">Dapat ay mas mababa sa 500KB ang laki</string>
 </resources>
 

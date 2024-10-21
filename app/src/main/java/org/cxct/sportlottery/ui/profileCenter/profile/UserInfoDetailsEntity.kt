@@ -11,18 +11,18 @@ data class UserInfoDetailsEntity(
 @KeepMembers
 data class Uide(
     var address: String? = "",
-    val birthday: String? = "",
-    val gender: Int?=null,
-    val city: String? = "",
-    val nationality: String? = "",
-    val natureOfWork: String? = "",
+    var birthday: String? = "",
+    var gender: Int?=null,
+    var city: String? = "",
+    var nationality: String? = "",
+    var natureOfWork: String? = "",
     var permanentAddress: String? = "",
-    val permanentCity: String? = "",
-    val permanentProvince: String? = "",
+    var permanentCity: String? = "",
+    var permanentProvince: String? = "",
     var permanentZipCode: String? = "",
     var placeOfBirth: String? = "",
-    val province: String? = "",
-    val salarySource: SalarySource? = null,
+    var province: String? = "",
+    var salarySource: SalarySource? = null,
     var zipCode: String? = ""
 )
 

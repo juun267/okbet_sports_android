@@ -10,12 +10,14 @@ import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentWithdrawStepBinding
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.modify.ModifyBindInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
+import org.cxct.sportlottery.util.LogUtil
 
 class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdrawStepBinding>() {
 
@@ -33,10 +35,11 @@ class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdra
         viewModel.getUserInfo()
     }
     fun setup()=binding.run{
-        val needPhoneNumber = UserInfoRepository.userInfo.value?.phone.isNullOrBlank()
-        val needPassword = UserInfoRepository.userInfo.value?.passwordSet != false
-        val needPayPW = UserInfoRepository.userInfo.value?.updatePayPw == 1
-        val needVerify = UserInfoRepository.userInfo.value?.verified != VerifiedType.PASSED.value
+        val userInfo = UserInfoRepository.userInfo.value!!
+        val needPhoneNumber = userInfo.phone.isNullOrBlank()
+        val needPassword = userInfo.passwordSet
+        val needPayPW = userInfo.updatePayPw == 1
+        val needVerify = userInfo.verified != VerifiedType.PASSED.value
         setStepItem(needPhoneNumber,ivStep1,line1,tvStepState1,ivStepArrow1){
             ModifyBindInfoActivity.start(requireActivity(), ModifyType.PhoneNumber, 100, null, null, null)
         }
@@ -75,7 +78,7 @@ class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdra
                 setTextColor(requireContext().getColor(R.color.color_1CD219))
             }
             if (tvState==binding.tvStepState4){
-                VerifiedType.getVerifiedType(UserInfoRepository.userInfo.value?.verified).let {
+                VerifiedType.getVerifiedType(UserInfoRepository.userInfo.value).let {
                     if (it == VerifiedType.NOT_YET || it == VerifiedType.VERIFIED_FAILED || it == VerifiedType.PASSED){
                         return@let
                     }
