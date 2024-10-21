@@ -1588,12 +1588,12 @@
     <string name="P251">其他证件24小时内完成认证</string>
     <string name="P252">请确认图片中的以下信息清晰</string>
     <string name="P253">证件上的照片</string>
-    <string name="P254">"二次确认证件扫描信息 "</string>
+    <string name="P254">二次确认证件扫描信息</string>
     <string name="P255">拍照或从相册冲选择您的证件照片并正确放入到框内</string>
     <string name="P256">拍证件照片</string>
     <string name="P257">无法识别证件</string>
-    <string name="P258">"现在开始 "</string>
-    <string name="P259">"选择证件 "</string>
+    <string name="P258">现在开始</string>
+    <string name="P259">选择证件</string>
     <string name="P260">推荐证件</string>
     <string name="P261">其他证件</string>
     <string name="P262">上传</string>
