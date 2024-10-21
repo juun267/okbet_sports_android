@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import com.bigkoo.pickerview.listener.CustomListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_kyc_form.*
@@ -92,10 +93,8 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
             } else {
                 EventBusUtil.post(KYCEvent())
                 UserInfoRepository.loadUserInfo()
-                showPromptDialog(message = getString(R.string.submit_success)) {
-                    startActivity(Intent(this,VerifyHandheldActivity::class.java))
-                    finishWithOK()
-                }
+                startActivity(Intent(this,VerifyHandheldActivity::class.java))
+                finishWithOK()
             }
         }
         profileModel.userDetail.observe(this) {
@@ -170,7 +169,7 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
             hint = "YYYY-MM-DD"
             setTypeface(null, Typeface.BOLD)
         }
-        itemBirthday.llRoot.setOnClickListener {
+        setOnClickListeners(itemBirthday.llRoot,itemBirthday.etInput,itemBirthday.ivClear){
             showDateTimePicker()
         }
         itemBirthday.ivClear.setImageResource(R.drawable.ic_date)
@@ -248,6 +247,21 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
                 setEnableButton()
             }
         }
+            .setLayoutRes(R.layout.dialog_date_select, object : CustomListener {
+                override fun customLayout(v: View) {
+                    //自定义布局中的控件初始化及事件处理
+                    v.findViewById<View>(R.id.btnBtmCancel).setOnClickListener {
+                        dateTimePicker?.dismiss()
+                    }
+                    v.findViewById<View>(R.id.btnBtmDone).setOnClickListener {
+                        dateTimePicker?.returnData()
+                        dateTimePicker?.dismiss()
+                    }
+
+                }
+            })
+            .setItemVisibleCount(6)
+            .setLineSpacingMultiplier(2.0f)
             .setRangDate(yesterday, tomorrow)
             .setDate(tomorrow)
             .build()
@@ -500,7 +514,7 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
             uide.zipCode = it
             setEnableButton()
         }
-
+        cbPermanent.isVisible = config.kycVerifyCurrAddressShow == 1
         linPermanent.isVisible = config.kycVerifyPermanentAddressShow == 1
         if(config.kycVerifyPermanentAddressRequired==1) tvHomePermanent.setRequiredStyle()
         setItemSelectStyle(itemProvincePermanent,getString(R.string.J036), config.kycVerifyPermanentAddressShow,config.kycVerifyPermanentAddressRequired){
@@ -529,9 +543,12 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
             uide.permanentZipCode = it
             setEnableButton()
         }
-
+        //勾选框可见的情况下，默认选中
+        if (cbPermanent.isVisible){
+            cbPermanent.isChecked = true
+        }
     }
-    fun TextView.setRequiredStyle(){
+    private fun TextView.setRequiredStyle(){
         setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_red_star_required,0,0,0)
         compoundDrawablePadding = 2.dp
     }
