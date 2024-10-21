@@ -88,13 +88,12 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
     private fun initObserver() {
         viewModel.kycResult.observe(this) {
             hideLoading()
-            if (!it.succeeded()) {
-                showErrorPromptDialog(it.msg) {  }
-            } else {
+            if (it.succeeded()) {
                 EventBusUtil.post(KYCEvent())
                 UserInfoRepository.loadUserInfo()
                 startActivity(Intent(this,VerifyHandheldActivity::class.java))
-                finishWithOK()
+            } else {
+                showErrorPromptDialog(it.msg) {  }
             }
         }
         profileModel.userDetail.observe(this) {
