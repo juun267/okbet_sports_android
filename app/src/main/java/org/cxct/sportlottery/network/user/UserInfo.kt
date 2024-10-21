@@ -56,7 +56,7 @@ data class UserInfo(
     var rejectRemark: String? = null,
     val levelCode: String?=null,
     val regSource: Int? = null,
-    val safeQuestionType: Int? = null //是否设置密保问题
+    val safeQuestionType: Int? = null, //是否设置密保问题
     val fullVerified: Int? = null ////是否完全KYC认证，0为未完全认证，1为完全认证
 ){
     fun isGlifeAccount():Boolean = vipType==1
