@@ -63,12 +63,10 @@ class HandheldPhotoActivity: BaseActivity<ProfileCenterViewModel, ActivityHandhe
             if (it.succeeded()) {
                 EventBusUtil.post(KYCEvent())
                 UserInfoRepository.loadUserInfo()
-                showPromptDialog(message = getString(R.string.submit_success)) {
-                    startActivity(Intent(this,VerifyIdentityActivity::class.java).apply {
-                        putExtra("backToMainPage",true)
-                    })
-                    finishWithOK()
-                }
+                startActivity(Intent(this,VerifyIdentityActivity::class.java).apply {
+                    putExtra("backToMainPage",true)
+                })
+                finishWithOK()
             } else {
                 ToastUtil.showToast(this, it.msg)
             }

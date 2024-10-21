@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
-                    android:text="@string/P207"
+                    android:text="@string/P336"
                     android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize14sp" />
 
