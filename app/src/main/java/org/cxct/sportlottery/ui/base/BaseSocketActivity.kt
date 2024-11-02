@@ -27,7 +27,7 @@ import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.ToastUtil
 import kotlin.reflect.KClass
 
-abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(clazz: KClass<VM>) :
+abstract class BaseSocketActivity<VM : BaseSocketViewModel, VB : ViewBinding>(clazz: KClass<VM>? = null) :
     BaseActivity<VM,VB>(clazz) {
 
     val receiver = ServiceBroadcastReceiver

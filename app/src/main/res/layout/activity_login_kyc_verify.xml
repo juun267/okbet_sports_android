@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/okbet_bg_login"
+    tools:ignore="SpUsage">
+
+    <include
+        android:id="@+id/v_top"
+        layout="@layout/view_status_bar" />
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_margin="16dp"
+        android:layout_marginTop="41dp"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_login_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_top" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/logo_okbet_color"
+        android:layout_marginTop="@dimen/margin_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+
+    <TextView
+        android:id="@+id/tvNotice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="60dp"
+        tools:viewBindingIgnore="true"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/textSize14sp"
+        android:lineHeight="@dimen/margin_16"
+        android:textColor="@color/color_6D7693"
+        android:text="@string/P435_1"/>
+
+
+    <Button
+        android:id="@+id/btnLogin"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvNotice"
+        android:background="@drawable/bg_blue_radius_8"
+        android:text="@string/kyc_go_verify"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textSize17sp" />
+
+    <include
+        android:id="@+id/bottom_liences"
+        layout="@layout/bottom_register_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_48"
+        android:layout_marginBottom="@dimen/margin_20"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

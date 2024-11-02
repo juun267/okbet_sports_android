@@ -2,8 +2,11 @@ package org.cxct.sportlottery.ui.maintab.home.view.hotmatch
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
+import android.view.Gravity
 import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -12,6 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.drake.spannable.addSpan
+import com.drake.spannable.span.CenterImageSpan
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.ChannelType
@@ -35,6 +40,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.onClick
 import splitties.systemservices.layoutInflater
@@ -382,5 +388,23 @@ class HomeHotMatchView(
             needSubscribe = true
         }
         return needSubscribe
+    }
+
+    fun applyHalloweenStyle() {
+        (layoutParams as MarginLayoutParams).topMargin = 10.dp
+        val imageView = AppCompatImageView(context)
+        imageView.setImageResource(R.drawable.ic_halloween_logo_3)
+        val dp28 = 28.dp
+        val lp = LayoutParams(dp28, dp28)
+        lp.gravity = Gravity.CENTER_VERTICAL
+        binding.llayoutTitle.addView(imageView, 0, lp)
+
+        binding.tvHotMore.setPadding(8.dp, 0, 5.dp, 0)
+        binding.tvHotMore.text = context.getString(R.string.N702)
+            .addSpan("AAA", CenterImageSpan(context, R.drawable.ic_to_right_withe).setDrawableSize(13.dp).setMarginHorizontal(2.dp))
+        binding.tvHotMore.setTextColor(Color.WHITE)
+        binding.tvHotMore.setBackgroundResource(R.drawable.ic_more_but_bg)
+        binding.tvHotMore.compoundDrawablePadding = 0
+        binding.tvHotMore.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
     }
 }

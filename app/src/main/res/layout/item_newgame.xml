@@ -46,7 +46,10 @@
                 android:layout_width="34dp"
                 android:layout_height="34dp"
                 android:layout_gravity="right"
-                android:padding="7dp"
+                android:paddingTop="4dp"
+                android:paddingRight="4dp"
+                android:paddingStart="10dp"
+                android:paddingBottom="10dp"
                 android:src="@drawable/selector_game_fav" />
 
             <TextView

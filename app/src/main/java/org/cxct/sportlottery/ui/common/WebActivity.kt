@@ -9,7 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityWebBinding
 import org.cxct.sportlottery.network.bettingStation.BettingStation
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
@@ -19,7 +19,7 @@ import timber.log.Timber
 /**
  * Create by Simon Chang
  */
-open class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<MainViewModel, ActivityWebBinding>() {
+open class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseSocketActivity<MainViewModel, ActivityWebBinding>() {
 
     override fun pageName() = mTitle
 
@@ -36,6 +36,7 @@ open class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<Main
 
         var currentTag = ""
         const val TAG_403 = "tag403"
+        const val TAG_HALLOWEEN = "halloween" // 2024万圣节
     }
 
     private val mTitle: String by lazy { intent?.getStringExtra(KEY_TITLE) ?: "" }
@@ -51,6 +52,13 @@ open class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<Main
         if (!mToolbarVisibility) customToolBar.gone() else initToolBar()
         webActivityImp.setCookie(mUrl)
         webActivityImp.setupWebView(okWebView)
+        if (tag == TAG_HALLOWEEN) {
+            webActivityImp.onLoadEnd = {
+                if (it) {
+                    playMusic()
+                }
+            }
+        }
         Timber.d("loadUrl=$mUrl")
         okWebView.loadUrl(mUrl)
     }
@@ -124,6 +132,12 @@ open class WebActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<Main
     override fun onDestroy() {
         super.onDestroy()
         runWithCatch { binding.okWebView.destroy() }
+    }
+
+    private fun playMusic() {
+        binding.okWebView.loadUrl("javascript:(function() { " +
+                "var videos = document.getElementsByTagName('video');" +
+                " for(var i=0;i<videos.length;i++){videos[i].play();}})()");
     }
 
 }

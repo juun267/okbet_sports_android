@@ -57,7 +57,8 @@ data class UserInfo(
     val levelCode: String?=null,
     val regSource: Int? = null,
     val safeQuestionType: Int? = null, //是否设置密保问题
-    val fullVerified: Int? = null ////是否完全KYC认证，0为未完全认证，1为完全认证
+    val fullVerified: Int? = null, ////是否完全KYC认证，0为未完全认证，1为完全认证
+    val state: Int? = null,//用户的状态, 1：正常；2：冻结状态；6：禁止投注状态；7：临时冻结状态
 ){
     fun isGlifeAccount():Boolean = vipType==1
     fun isMayaAccount():Boolean = regSource==2

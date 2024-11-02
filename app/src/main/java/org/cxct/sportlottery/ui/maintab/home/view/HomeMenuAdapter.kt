@@ -39,15 +39,15 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
 
     private val datas = mutableListOf<MenuTab?>()
 
-    private val hotMenuItem = MenuTab(R.drawable.ic_home_menu_hot_sel, R.drawable.ic_home_menu_hot_nor, R.string.home_recommend, HomeHotFragment::class.java)
-    private val sportMenuItem = MenuTab(R.drawable.ic_home_menu_sport_sel, R.drawable.ic_home_menu_sport_nor, R.string.main_tab_sport, SportVenueFragment::class.java)
-    private val esportMenuItem = MenuTab(R.drawable.ic_home_menu_esport_sel, R.drawable.ic_home_menu_esport_nor, R.string.esports, ESportVenueFragment::class.java)
-    private val okGameMenuItem = MenuTab(R.drawable.ic_home_menu_casino_sel, R.drawable.ic_home_menu_casino_nor, R.string.B23, ElectGamesFragment::class.java)
-    private val okLiveGameItem = MenuTab(R.drawable.ic_home_menu_live_sel, R.drawable.ic_home_menu_live_nor, R.string.B24, LiveGamesFragment::class.java)
-    private val promotionMenuItem = MenuTab(R.drawable.ic_home_menu_promotion_sel, R.drawable.ic_home_menu_promotion_nor, R.string.promo, null)
-    private val sericeMenuItem = MenuTab(R.drawable.ic_home_menu_service_sel, R.drawable.ic_home_menu_service_nor, R.string.LT050_1, null)
-    private val endcardMenuItem = MenuTab(R.drawable.ic_home_menu_endcard_sel, R.drawable.ic_home_menu_endcard_nor, R.string.P333, null)
-    private val peryaMenuItem = MenuTab(R.drawable.ic_home_menu_perya_sel, R.drawable.ic_home_menu_perya_nor, R.string.P452, MiniGameListFragment::class.java)
+    private var hotMenuItem = MenuTab(R.drawable.ic_home_menu_hot_sel, R.drawable.ic_home_menu_hot_nor, R.string.home_recommend, HomeHotFragment::class.java)
+    private var sportMenuItem = MenuTab(R.drawable.ic_home_menu_sport_sel, R.drawable.ic_home_menu_sport_nor, R.string.main_tab_sport, SportVenueFragment::class.java)
+    private var esportMenuItem = MenuTab(R.drawable.ic_home_menu_esport_sel, R.drawable.ic_home_menu_esport_nor, R.string.esports, ESportVenueFragment::class.java)
+    private var okGameMenuItem = MenuTab(R.drawable.ic_home_menu_casino_sel, R.drawable.ic_home_menu_casino_nor, R.string.B23, ElectGamesFragment::class.java)
+    private var okLiveGameItem = MenuTab(R.drawable.ic_home_menu_live_sel, R.drawable.ic_home_menu_live_nor, R.string.B24, LiveGamesFragment::class.java)
+    private var promotionMenuItem = MenuTab(R.drawable.ic_home_menu_promotion_sel, R.drawable.ic_home_menu_promotion_nor, R.string.promo, null)
+    private var sericeMenuItem = MenuTab(R.drawable.ic_home_menu_service_sel, R.drawable.ic_home_menu_service_nor, R.string.LT050_1, null)
+    private var endcardMenuItem = MenuTab(R.drawable.ic_home_menu_endcard_sel, R.drawable.ic_home_menu_endcard_nor, R.string.P333, null)
+    private var peryaMenuItem = MenuTab(R.drawable.ic_home_menu_perya_sel, R.drawable.ic_home_menu_perya_nor, R.string.P452, MiniGameListFragment::class.java)
 
     private var selectItem: MenuTab? = null
 
@@ -250,5 +250,23 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
             }
             return
         }
+    }
+
+    fun applyHalloweenStyle() {
+
+        hotMenuItem = MenuTab(R.drawable.ic_home_menu_hot_sel_h, R.drawable.ic_home_menu_hot_nor_h, R.string.home_recommend, HomeHotFragment::class.java)
+        sportMenuItem = MenuTab(R.drawable.ic_home_menu_sport_sel_h, R.drawable.ic_home_menu_sport_nor_h, R.string.main_tab_sport, SportVenueFragment::class.java)
+        esportMenuItem = MenuTab(R.drawable.ic_home_menu_esport_sel_h, R.drawable.ic_home_menu_esport_nor_h, R.string.esports, ESportVenueFragment::class.java)
+        okGameMenuItem = MenuTab(R.drawable.ic_home_menu_casino_sel_h, R.drawable.ic_home_menu_casino_nor_h, R.string.B23, ElectGamesFragment::class.java)
+        okLiveGameItem = MenuTab(R.drawable.ic_home_menu_live_sel_h, R.drawable.ic_home_menu_live_nor_h, R.string.B24, LiveGamesFragment::class.java)
+        promotionMenuItem = MenuTab(R.drawable.ic_home_menu_promotion_sel_h, R.drawable.ic_home_menu_promotion_nor_h, R.string.promo, null)
+        sericeMenuItem = MenuTab(R.drawable.ic_home_menu_service_sel_h, R.drawable.ic_home_menu_service_nor_h, R.string.LT050_1, null)
+        endcardMenuItem = MenuTab(R.drawable.ic_home_menu_endcard_sel_h, R.drawable.ic_home_menu_endcard_nor_h, R.string.P333, null)
+        peryaMenuItem = MenuTab(R.drawable.ic_home_menu_perya_sel_h, R.drawable.ic_home_menu_perya_nor_h, R.string.P452, MiniGameListFragment::class.java)
+
+        selectedBg = R.drawable.bg_home_menu_sel_h
+        normalBg = R.drawable.bg_home_menu_nor_h
+
+        notifyDataSetChanged()
     }
 }

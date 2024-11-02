@@ -1,8 +1,11 @@
 package org.cxct.sportlottery.ui.maintab.home.hot
 
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.fragment.app.FragmentManager
@@ -58,6 +61,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         }
     }
     override fun onInitView(view: View) = binding.run {
+        applyHalloweenStyle()
         scrollView.setupBackTop(ivBackTop, 180.dp) {
             if (hotMatchView.isVisible) {
                 hotMatchView.resubscribe()
@@ -313,6 +317,37 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     }
     fun getFirstDepositDetail(){
         viewModel.getFirstDepositDetail()
+    }
+
+    private fun applyHalloweenStyle() = binding.run {
+        if (!isHalloweenStyle()) {
+            return@run
+        }
+
+        val parent = scrollView.getChildAt(0) as ViewGroup
+        val index = parent.indexOfChild(recentView)
+        val frameLayout = FrameLayout(context())
+        val vBg = View(context())
+        vBg.setBackgroundResource(R.drawable.img_home_newgame_bg_h)
+        frameLayout.addView(vBg, FrameLayout.LayoutParams(-1, 180.dp))
+        val linearLayout = LinearLayout(context())
+        linearLayout.setPadding(0, 10.dp, 0, 0)
+        linearLayout.orientation = LinearLayout.VERTICAL
+        parent.removeView(recentView)
+        linearLayout.addView(recentView)
+        parent.removeView(newGamesView)
+        linearLayout.addView(newGamesView)
+        frameLayout.addView(linearLayout)
+        parent.addView(frameLayout, index, ViewGroup.LayoutParams(-1, -2))
+
+        recentView.applyHalloweenStyle()
+        bottomView.applyHalloweenStyle()
+        newGamesView.applyHalloweenStyle()
+        hotGameView.applyHalloweenStyle()
+        hotMatchView.applyHalloweenStyle()
+        providerView.applyHalloweenStyle()
+        newsView.applyHalloweenStyle()
+        winsRankView.applyHalloweenStyle()
     }
 
 }

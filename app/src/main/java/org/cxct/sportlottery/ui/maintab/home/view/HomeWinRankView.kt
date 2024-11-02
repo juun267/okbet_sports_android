@@ -1,37 +1,41 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.text.style.ImageSpan
 import android.util.AttributeSet
 import android.view.View
-import android.widget.LinearLayout
+import android.view.ViewGroup
+import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.drake.spannable.addSpan
+import com.drake.spannable.replaceSpan
+import com.drake.spannable.span.CenterImageSpan
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.doOnDestory
-import org.cxct.sportlottery.common.extentions.doOnPause
-import org.cxct.sportlottery.common.extentions.doWhenLife
 import org.cxct.sportlottery.databinding.ViewHomeWinRankBinding
-import org.cxct.sportlottery.net.games.data.OKGameBean
-import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.RecentDataManager
-import org.cxct.sportlottery.util.RecentRecord
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.DrawableCreator
+import org.cxct.sportlottery.util.isHalloweenStyle
 import org.cxct.sportlottery.util.setTextTypeFace
 import splitties.systemservices.layoutInflater
+import splitties.views.dsl.constraintlayout.startOfParent
+import splitties.views.dsl.core.horizontalMargin
+import splitties.views.dsl.core.startMargin
 import kotlin.random.Random
 
 class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : LinearLayout(context, attrs, defStyle), OnItemClickListener {
+    : ConstraintLayout(context, attrs, defStyle), OnItemClickListener {
 
     val binding = ViewHomeWinRankBinding.inflate(layoutInflater,this)
     val pageSize = 5
@@ -45,7 +49,6 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
     private lateinit var fragment: BaseFragment<out MainHomeViewModel,*>
 
     init {
-        orientation = VERTICAL
         initViews()
     }
 
@@ -151,6 +154,7 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
                 rbtnLb.setTextTypeFace(Typeface.NORMAL)
                 rbtnLbw.setTextTypeFace(Typeface.BOLD)
             }
+            changeTabHalloweenStyle()
             if (winsRequest == null || betRequest == null) {
                 return@setOnCheckedChangeListener
             }
@@ -189,18 +193,96 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
         gameRecordAdapter.addData(0, it)
     }
 
-    fun onNewHttpWinsData(dataList: List<RecordNewEvent>) {
+    private fun onNewHttpWinsData(dataList: List<RecordNewEvent>) {
         httpWinsDataList.clear()
         httpWinsDataList.addAll(dataList)
     }
 
-    fun onNewHttpBetData(dataList: List<RecordNewEvent>) {
+    private fun onNewHttpBetData(dataList: List<RecordNewEvent>) {
         httpBetDataList.clear()
         httpBetDataList.addAll(dataList)
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         WinsDialog.newInstance(adapter.getItem(position) as RecordNewEvent) .show((context as AppCompatActivity).supportFragmentManager)
+    }
+
+    fun applyHalloweenStyle() = binding.run {
+        (layoutParams as MarginLayoutParams).let {
+            it.horizontalMargin = 0
+            it.bottomMargin = 0
+        }
+        rvOkgameRecord.layoutParams.height = 280.dp
+        (tvTitle.layoutParams as MarginLayoutParams).let {
+            it.topMargin = 20.dp
+            it.startMargin = 38.dp
+        }
+
+        (rGroupRecord.layoutParams as MarginLayoutParams).horizontalMargin = 12.dp
+
+        ivChampion.setImageResource(R.drawable.img_monster_3_h)
+        val championLP = ivChampion.layoutParams as MarginLayoutParams
+        championLP.topMargin = (-30).dp
+        136.dp.let {
+            championLP.height = it
+            championLP.width = it
+        }
+
+        val bgView = View(context)
+        bgView.setBackgroundResource(R.drawable.img_home_wins_top_h)
+        val lp = LayoutParams(-1, 173.dp)
+        addView(bgView, 0, lp)
+
+        val bgView2 = View(context)
+        bgView2.setBackgroundResource(R.drawable.img_home_wins_bg_h)
+        val dp240 = 240.dp
+        val lp2 = LayoutParams(dp240, dp240)
+        lp2.topToTop = rvOkgameRecord.id
+        lp2.bottomToBottom = rvOkgameRecord.id
+        lp2.startToStart = rvOkgameRecord.id
+        lp2.endToEnd = rvOkgameRecord.id
+        addView(bgView2, (rvOkgameRecord.parent as ViewGroup).indexOfChild(rvOkgameRecord), lp2)
+
+        val imageView = AppCompatImageView(context)
+        imageView.id = View.generateViewId()
+        imageView.setImageResource(R.drawable.ic_halloween_logo_6)
+        val dp24 = 24.dp
+        val lp3 = LayoutParams(dp24, dp24)
+        lp3.marginEnd = 2.dp
+        lp3.topToTop = tvTitle.id
+        lp3.bottomToBottom = tvTitle.id
+        lp3.endToStart = tvTitle.id
+        addView(imageView, 0, lp3)
+
+        (tvTitle.layoutParams as LayoutParams).startToEnd = imageView.id
+        tvTitle.layoutParams = tvTitle.layoutParams
+
+        val dp8 = 8.dp.toFloat()
+        changeTabHalloweenStyle()
+        rbtnLb.background = DrawableCreator.Builder()
+            .setCornersRadius(0f, 0f, dp8, dp8)
+            .setGradientAngle(270)
+            .setGradientColor(Color.parseColor("#b3dff7"), Color.WHITE)
+            .build()
+        rbtnLbw.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, R.drawable.selector_indicate_trans_orange)
+        rbtnLbw.background = DrawableCreator.Builder()
+            .setCornersRadius(0f, 0f, dp8, dp8)
+            .setGradientAngle(270)
+            .setGradientColor(Color.parseColor("#ffd3be"), Color.WHITE)
+            .build()
+
+    }
+
+    private fun changeTabHalloweenStyle() = binding.run {
+        if (rbtnLb.isChecked) {
+            rbtnLb.text = "".addSpan("AAA", CenterImageSpan(context, R.drawable.ic_halloween_logo_7).setDrawableSize(26.dp))
+                .addSpan(context.resources.getString(R.string.N708))
+            rbtnLbw.setText(R.string.N709)
+        } else {
+            rbtnLbw.text = "".addSpan("AAA", CenterImageSpan(context, R.drawable.ic_halloween_logo_8).setDrawableSize(26.dp))
+                .addSpan(context.resources.getString(R.string.N709))
+            rbtnLb.setText(R.string.N708)
+        }
     }
 
 }

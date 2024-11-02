@@ -1,14 +1,12 @@
 package org.cxct.sportlottery.net.user.api
 
 import com.google.gson.JsonObject
-import okhttp3.MultipartBody
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.PageData
 import org.cxct.sportlottery.net.user.data.*
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
 import org.cxct.sportlottery.net.user.data.VerifyConfig
-import org.cxct.sportlottery.net.user.data.WheelActivityInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.ACTIVITY_APPLY
 import org.cxct.sportlottery.network.Constants.ACTIVITY_CATEGORY_LIST
@@ -39,14 +37,8 @@ import org.cxct.sportlottery.network.Constants.VIP_DETAIL
 import org.cxct.sportlottery.network.Constants.VIP_REWARD
 import org.cxct.sportlottery.network.Constants.VIP_UNIREDENP_APPLY
 import org.cxct.sportlottery.network.Constants.VIP_USER
-import org.cxct.sportlottery.network.Constants.WHEEL_ACTIVITY_INFO
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
-import org.cxct.sportlottery.network.index.login.LoginResult
-import org.cxct.sportlottery.network.interceptor.HEADER_UPLOAD_IMG
-import org.cxct.sportlottery.network.interceptor.KEY_BASE_URL
-import org.cxct.sportlottery.network.uploadImg.UploadImgResult
-import retrofit2.Response
 import retrofit2.http.*
 
 //用户账户相关Api
@@ -99,9 +91,6 @@ interface UserApiService {
 
     @POST(UPLOAD_VERIFY_PHOTO)
     suspend fun uploadKYCInfo(@Body params : JsonObject): ApiResult<String>
-
-    @GET(WHEEL_ACTIVITY_INFO)
-    suspend fun getWheelActivityInfo(): ApiResult<WheelActivityInfo>
 
     @GET(REVERIFY)
     suspend fun reVerify(): ApiResult<String?>

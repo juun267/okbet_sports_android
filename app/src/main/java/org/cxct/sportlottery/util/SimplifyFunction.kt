@@ -1120,3 +1120,7 @@ fun JsonObject.appendCaptchaParams(identity: String, validCode: String){
         addProperty("checkValidCodeType", false)
     }
 }
+
+fun isHalloweenStyle(): Boolean {
+    return true
+}

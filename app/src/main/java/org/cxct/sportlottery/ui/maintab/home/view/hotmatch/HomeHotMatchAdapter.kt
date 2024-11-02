@@ -15,6 +15,7 @@ import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeType
+import org.cxct.sportlottery.util.isHalloweenStyle
 
 class HomeHotMatchAdapter(
     val lifecycleOwner: LifecycleOwner,
@@ -47,6 +48,10 @@ class HomeHotMatchAdapter(
         )
         vh.binding.ivHomeIcon.background = logoBg
         vh.binding.ivAwayIcon.background = logoBg
+        if (isHalloweenStyle()) {
+            vh.itemView.setBackgroundResource(R.drawable.bg_trans_home_hot_match_h)
+        }
+
         return vh
     }
 

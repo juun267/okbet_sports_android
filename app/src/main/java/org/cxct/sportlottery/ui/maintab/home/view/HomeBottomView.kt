@@ -2,12 +2,13 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.annotation.StringRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,14 +23,14 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.maintab.home.bettingstation.BettingStationActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.DrawableCreator
 import splitties.systemservices.layoutInflater
 
 class HomeBottomView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : LinearLayout(context, attrs, defStyle) {
+    : ConstraintLayout(context, attrs, defStyle) {
 
     val binding = ViewHomeBottomBinding.inflate(layoutInflater,this)
     init {
-        orientation = VERTICAL
         initView()
     }
 
@@ -116,6 +117,24 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
     fun bindServiceClick(fragmentManager: FragmentManager) = binding.run{
         tvLiveChat.setServiceClick(fragmentManager)
         tvContactUs.setServiceClick(fragmentManager)
+    }
+
+    fun applyHalloweenStyle() {
+        val vTopBg = View(context)
+        vTopBg.setBackgroundResource(R.drawable.img_home_footer_top)
+        addView(vTopBg, 0, LayoutParams(-1, 173.dp))
+
+        val vBottomBg = View(context)
+        vBottomBg.setBackgroundResource(R.drawable.img_home_footer_bottom)
+        val lp = LayoutParams(-1, 417.dp)
+        lp.bottomToBottom = 0
+        lp.bottomMargin = 50.dp
+        addView(vBottomBg, 0, lp)
+
+        binding.linAward.background = DrawableCreator.Builder()
+            .setCornersRadius(8.dp.toFloat())
+            .setSolidColor(Color.WHITE)
+            .build()
     }
 
 }

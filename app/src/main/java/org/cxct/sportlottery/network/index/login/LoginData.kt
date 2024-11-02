@@ -50,4 +50,5 @@ data class LoginData(
     val discountByGameTypeList: List<UserGameTypeDiscount>?,
     val levelCode: String?=null,
     val regSource: Int? = null,//2 就是maya用户
+    val state: Int? = null,//用户的状态, 1：正常；2：冻结状态；6：禁止投注状态；7：临时冻结状态
 ) : Parcelable

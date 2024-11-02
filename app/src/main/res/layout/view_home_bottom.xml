@@ -5,74 +5,82 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:orientation="vertical"
-    tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
+    <LinearLayout
+        android:id="@+id/lyaout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="vertical"
-       android:layout_marginTop="16dp"
-       android:layout_marginHorizontal="12dp">
-       <TextView
-           android:id="@+id/tvAwardTitle"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_gravity="center"
-           android:text="@string/P199"
-           android:textColor="@color/color_313F56"
-           android:textSize="16sp"
-           android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvAwardTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/P199"
+            android:textColor="@color/color_313F56"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-       <LinearLayout
-           android:id="@+id/linAward"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:padding="@dimen/margin_12"
-           android:layout_marginTop="8dp"
-           android:background="@drawable/bg_gray_radius_8_f7fafe">
-           <ImageView
-               android:layout_width="@dimen/margin_48"
-               android:layout_height="@dimen/margin_48"
-               android:adjustViewBounds="true"
-               android:src="@drawable/ic_sigma"/>
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="@dimen/margin_16"
-               android:layout_gravity="center_vertical"
-               android:orientation="vertical">
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:lines="1"
-                   android:ellipsize="end"
-                   android:textSize="@dimen/textSize14sp"
-                   android:textColor="@color/color_6D7693"
-                   android:textFontWeight="100"
-                   android:text="The Sigma Asia Awards"/>
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="@dimen/margin_4"
-                   android:lines="1"
-                   android:ellipsize="end"
-                   android:textSize="@dimen/textSize16sp"
-                   android:textColor="@color/color_313F56"
-                   android:textStyle="bold"
-                   android:text="Sportsbook Operator Of The Year"/>
-           </LinearLayout>
-       </LinearLayout>
-   </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linAward"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_gray_radius_8_f7fafe"
+            android:padding="@dimen/margin_12">
+
+            <ImageView
+                android:layout_width="@dimen/margin_48"
+                android:layout_height="@dimen/margin_48"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_sigma" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="The Sigma Asia Awards"
+                    android:textColor="@color/color_6D7693"
+                    android:textFontWeight="100"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="Sportsbook Operator Of The Year"
+                    android:textColor="@color/color_313F56"
+                    android:textSize="@dimen/textSize16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linDataPrivacy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
+        android:layout_marginHorizontal="12dp"
         android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="12dp">
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/lyaout1">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,20 +89,23 @@
             android:textColor="@color/color_313F56"
             android:textSize="16sp"
             android:textStyle="bold" />
+
         <ImageView
             android:layout_width="94dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_12"
             android:adjustViewBounds="true"
-            android:src="@drawable/img_data_privacy_act"/>
+            android:src="@drawable/img_data_privacy_act" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/linPayment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_16"
         android:layout_marginHorizontal="@dimen/margin_12"
-        android:orientation="vertical">
+        android:layout_marginTop="@dimen/margin_16"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/linDataPrivacy">
 
         <TextView
             android:layout_width="wrap_content"
@@ -110,9 +121,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingHorizontal="@dimen/margin_5"
             android:layout_marginTop="@dimen/margin_8"
             android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/margin_5"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="4"
             tools:listitem="@layout/item_view_payment_method" />
@@ -122,9 +133,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingHorizontal="@dimen/margin_5"
             android:layout_marginTop="@dimen/margin_8"
             android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/margin_5"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="4"
             tools:listitem="@layout/item_view_payment_method" />
@@ -133,14 +144,16 @@
 
     <org.cxct.sportlottery.ui.maintab.games.view.HomeFollowView
         android:id="@+id/homeFollowView"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/linPayment"
+        android:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/endView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/homeFollowView"
         android:paddingBottom="65dp">
 
         <View
@@ -152,7 +165,7 @@
             android:background="@color/color_e0e3ee"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="12dp"
-            tools:viewBindingIgnore="true"/>
+            tools:viewBindingIgnore="true" />
 
         <TextView
             android:id="@+id/textView5"
@@ -163,20 +176,20 @@
             android:textColor="@color/color_313F56"
             android:textSize="16sp"
             android:textStyle="bold"
-            tools:viewBindingIgnore="true"
-            app:layout_constraintTop_toBottomOf="@+id/view5"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/view5"
+            tools:viewBindingIgnore="true" />
 
         <com.zhy.view.flowlayout.FlowLayout
             android:id="@+id/aboutLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tag_gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/textView5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            app:tag_gravity="center"
             tools:viewBindingIgnore="true">
 
             <TextView
@@ -187,20 +200,20 @@
             <TextView
                 android:id="@+id/tvTermConditions"
                 style="@style/text_style_responsible"
-                android:text="@string/J095"
-                android:layout_marginStart="12dp"/>
+                android:layout_marginStart="12dp"
+                android:text="@string/J095" />
 
             <TextView
                 android:id="@+id/tvResponsibleGaming"
                 style="@style/text_style_responsible"
-                android:text="@string/J093"
-                android:layout_marginStart="12dp"/>
+                android:layout_marginStart="12dp"
+                android:text="@string/J093" />
 
             <TextView
                 android:id="@+id/tvBettingStation"
                 style="@style/text_style_responsible"
-                android:text="@string/P457"
-                android:layout_marginStart="12dp"/>
+                android:layout_marginStart="12dp"
+                android:text="@string/P457" />
 
         </com.zhy.view.flowlayout.FlowLayout>
 
@@ -213,45 +226,45 @@
             android:textColor="@color/color_313F56"
             android:textSize="16sp"
             android:textStyle="bold"
-            tools:viewBindingIgnore="true"
-            app:layout_constraintTop_toBottomOf="@+id/aboutLayout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/aboutLayout"
+            tools:viewBindingIgnore="true" />
 
         <com.zhy.view.flowlayout.FlowLayout
             android:id="@+id/aboutFaqs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            app:tag_gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/textView8"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            app:tag_gravity="center"
             tools:viewBindingIgnore="true">
 
             <TextView
                 android:id="@+id/tvLiveChat"
                 style="@style/text_style_responsible"
-                android:text="@string/J299"/>
+                android:text="@string/J299" />
 
             <TextView
                 android:id="@+id/tvContactUs"
                 style="@style/text_style_responsible"
-                android:text="@string/N019"
-                android:layout_marginStart="12dp"/>
+                android:layout_marginStart="12dp"
+                android:text="@string/N019" />
 
             <TextView
                 android:id="@+id/tvFaqs"
                 style="@style/text_style_responsible"
-                android:text="@string/faqs"
-                android:layout_marginStart="12dp"/>
+                android:layout_marginStart="12dp"
+                android:text="@string/faqs" />
 
             <TextView
                 android:id="@+id/tvEmail"
                 style="@style/text_style_responsible"
-                android:text="@string/P234"
                 android:layout_marginStart="12dp"
-                android:visibility="gone"/>
+                android:text="@string/P234"
+                android:visibility="gone" />
 
         </com.zhy.view.flowlayout.FlowLayout>
 
@@ -261,8 +274,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:paddingHorizontal="10dp"
             android:lineHeight="@dimen/margin_16"
+            android:paddingHorizontal="10dp"
             android:text="OKBET Is A Registered Trade Mark, Brand And Business Name Owned By GAVIN VENTURES, INC. Regulated &amp; Licensed By The Philippine Amusement And Gaming Corporation (PAGCOR)."
             android:textColor="@color/color_667085"
             android:textSize="@dimen/textSize12sp"
@@ -276,8 +289,8 @@
             android:layout_height="0.5dp"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="20dp"
-            android:visibility="visible"
             android:background="@color/color_e0e3ee"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
@@ -294,11 +307,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:visibility="visible"
             android:text="@string/J093"
             android:textColor="@color/color_313F56"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view6" />
@@ -318,16 +331,18 @@
             android:id="@+id/linBrand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
             android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView16">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center">
+
                 <ImageView
                     android:layout_width="140dp"
                     android:layout_height="46dp"
@@ -340,6 +355,7 @@
                     android:layout_marginStart="30dp"
                     android:src="@drawable/ic_bmm_main" />
             </LinearLayout>
+
             <ImageView
                 android:layout_width="140dp"
                 android:layout_height="46dp"

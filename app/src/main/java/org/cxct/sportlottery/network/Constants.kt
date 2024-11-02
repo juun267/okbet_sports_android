@@ -248,6 +248,9 @@ object Constants {
     val copyRightString = "Copyright © ${Calendar.getInstance().get(Calendar.YEAR)} OKBET ALL RIGHTS RESERVED"
 
     fun getInviteUrl() = "${getH5BaseUrl()}mobile/inviteFriends"
+
+    fun getHalloweenActivityUrl() = appendParams("mobile/halloween")!!
+
     /**
      * 七日签到页面
      */
@@ -445,7 +448,6 @@ object Constants {
     const val SET_USERNAME = "/api/front/user/fullname" // 修改用户名称
     const val LOGIN_CHECK_NEED_CODE = "/api/front/index/checkUserNeedCode"   // loginV3登陆前检查是否需要校验短信验证码
     const val LOGIN = "/api/front/index/loginV4"   // 用户登陆  2023.10.24
-    const val WHEEL_ACTIVITY_INFO = "/api/front/wheelActivity/info"
     //VIP特權
     const val VIP_USER = "/api/front/activity/vip/user"
     //VIP特權详情

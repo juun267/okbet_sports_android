@@ -39,6 +39,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginKycVerifyActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
@@ -700,7 +701,9 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> {
                 JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType, result.okGameBean, result.guestLogin)
-                if (LoginRepository.isLogined()&&!OKGamesRepository.isSingleWalletType(firmType) && isThirdTransferOpen()) gamesViewModel.transfer(firmType)
+                if (result.okGameBean.firmCode!="FKG"){
+                    if (LoginRepository.isLogined()&&!OKGamesRepository.isSingleWalletType(firmType) && isThirdTransferOpen()) gamesViewModel.transfer(firmType)
+                }
             }
 
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(

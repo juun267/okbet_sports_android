@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.login.signIn
 
 import android.graphics.Color
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
@@ -9,17 +8,16 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.CheckLoginDataEvent
 import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.databinding.ActivityPhoneVerifyBinding
 import org.cxct.sportlottery.network.index.login.LoginData
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import java.util.*
 
@@ -28,10 +26,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel,ActivityPhoneVerifyBindi
     View.OnClickListener {
     override fun pageName() = "长时间未登录需要验证手机号页面"
     private var mSmsTimer: Timer? = null
-
-    companion object {
-        var loginData: LoginData? = null
-    }
+    private val loginData by lazy { intent.getParcelableExtra<LoginData>("loginData")!! }
 
     override fun onClick(v: View?) {
         when (v) {
@@ -41,7 +36,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel,ActivityPhoneVerifyBindi
                         this.contentResolver, Settings.Secure.ANDROID_ID
                     )
                     viewModel.validateLoginDeviceSms(
-                        loginData?.token ?: "",
+                        loginData.token ?: "",
                         binding.eetVerificationCode.text.toString(),
                         deviceId
                     )
@@ -51,7 +46,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel,ActivityPhoneVerifyBindi
                 this@PhoneVerifyActivity.onBackPressed()
             }
             binding.btnSendSms -> {
-                viewModel.sendLoginDeviceSms(loginData?.token ?: "")
+                viewModel.sendLoginDeviceSms(loginData.token ?: "")
             }
 
             binding.constraintLayout -> {
@@ -102,15 +97,9 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel,ActivityPhoneVerifyBindi
         })
         viewModel.validResult.observe(this, Observer {
             if (it.success) {
-//                if (sConfigData?.thirdOpen == FLAG_OPEN)
-//                    MainActivity.reStart(this)
-//                else
-                GlobalScope.launch {
-                    LoginRepository.setUpLoginData(loginData)
-                }.let {
-                    MainTabActivity.reStart(this)
-                }
-
+                loginData?.deviceValidateStatus = 1
+                EventBusUtil.post(CheckLoginDataEvent(loginData!!))
+                finish()
             } else {
                 binding.etVerificationCode.setError(
                     getString(R.string.dialog_security_error),
@@ -124,9 +113,6 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel,ActivityPhoneVerifyBindi
 
     override fun onBackPressed() {
         viewModel.doLogoutCleanUser {
-//            if (sConfigData?.thirdOpen == FLAG_OPEN)
-//                MainActivity.reStart(this)
-//            else
             MainTabActivity.reStart(this)
         }
     }

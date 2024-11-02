@@ -2,11 +2,16 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.drake.spannable.addSpan
+import com.drake.spannable.span.CenterImageSpan
 import com.youth.banner.itemdecoration.MarginDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.animDuang
@@ -87,6 +92,22 @@ class HomeNewGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
         if ((fragment.activity as MainTabActivity?)?.collectGame(okGameBean) == true) {
             view.animDuang(1.3f)
         }
+    }
+
+    fun applyHalloweenStyle() {
+        val imageView = AppCompatImageView(context)
+        imageView.setImageResource(R.drawable.ic_halloween_logo_1)
+        val dp24 = 24.dp
+        val lp = LayoutParams(dp24, dp24)
+        lp.gravity = Gravity.CENTER_VERTICAL
+        binding.linearTitle.addView(imageView, 0, lp)
+        binding.tvMore.setPadding(8.dp, 0, 5.dp, 0)
+        binding.tvMore.text = context.getString(R.string.N702)
+            .addSpan("AAA", CenterImageSpan(context, R.drawable.ic_to_right_withe).setDrawableSize(13.dp).setMarginHorizontal(2.dp))
+        binding.tvMore.setTextColor(Color.WHITE)
+        binding.tvMore.setBackgroundResource(R.drawable.ic_more_but_bg)
+        binding.tvMore.compoundDrawablePadding = 0
+        binding.tvMore.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
     }
 
 }

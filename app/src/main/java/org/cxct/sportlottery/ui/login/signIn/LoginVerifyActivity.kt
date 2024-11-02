@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.RegisterInfoEvent
+import org.cxct.sportlottery.common.event.CheckLoginResultEvent
 import org.cxct.sportlottery.common.extentions.hideLoading
 import org.cxct.sportlottery.common.extentions.loading
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
@@ -79,7 +79,7 @@ class LoginVerifyActivity: BaseActivity<LoginViewModel, ActivityLoginVerifyBindi
         }
 
         loginResult.observe(this@LoginVerifyActivity) {
-            EventBusUtil.post(RegisterInfoEvent(it))
+            EventBusUtil.post(CheckLoginResultEvent(it))
             finish()
         }
 

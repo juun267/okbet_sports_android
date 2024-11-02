@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -48,10 +49,12 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
+import org.cxct.sportlottery.util.isHalloweenStyle
 import org.cxct.sportlottery.view.OKVideoPlayer
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import splitties.systemservices.layoutInflater
 import splitties.views.dsl.core.horizontalMargin
+import splitties.views.dsl.core.startMargin
 import java.util.Objects
 
 private const val PLAY_TAG = "RecommendMiniGameHelper"
@@ -347,18 +350,36 @@ class RecommendMiniGameHelper(private val context: Context,
             val holder = super.onCreateDefViewHolder(parent, viewType)
             holder.vb.tvJackPotAmount.setPrefixString("$showCurrencySign ")
             holder.vb.videoPlayer.tag = GSYVideoOptionBuilder()
-            val context = parent.context
-            holder.vb.tvBetToWin.text = "${showCurrencySign}5 To Win"
-            holder.vb.tvBetToWin.background = ShapeDrawable()
-                .setSolidColor(context.getColor(R.color.color_0063FF), context.getColor(R.color.color_00C2FF))
-                .setRadius(30.dp.toFloat())
-                .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
             holder.vb.videoPlayer.playStatusListener = object: OKVideoPlayer.PlayStatusListener{
                 override fun onStatuChanged(state: Int) {
                     holder.vb.vCover.alpha = if (state != CURRENT_STATE_PLAYING) 1f else 0f
                 }
 
             }
+
+            val binding = holder.vb
+            if (isHalloweenStyle()) {
+                binding.vAmountBg.setBackgroundResource(R.drawable.bg_minigame_jackpot_h)
+                (binding.tvJackPotAmount.layoutParams as MarginLayoutParams).let {
+                    it.startMargin = 82.dp
+                    it.bottomMargin = 6.dp
+                }
+                binding.tvBetToWin.setBackgroundResource(R.drawable.img_bet_to_win)
+                (binding.tvBetToWin.layoutParams as MarginLayoutParams).let {
+                    it.bottomMargin = 2.dp
+                    it.marginEnd = 7.dp
+                    it.height = 52.dp
+                    it.width = 110.dp
+                }
+            } else {
+                val context = parent.context
+                holder.vb.tvBetToWin.text = "${showCurrencySign}5 To Win"
+                holder.vb.tvBetToWin.background = ShapeDrawable()
+                    .setSolidColor(context.getColor(R.color.color_0063FF), context.getColor(R.color.color_00C2FF))
+                    .setRadius(30.dp.toFloat())
+                    .setSolidGradientOrientation(ShapeGradientOrientation.TOP_TO_BOTTOM)
+            }
+
             return holder
         }
 

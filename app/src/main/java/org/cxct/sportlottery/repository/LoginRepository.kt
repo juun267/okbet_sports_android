@@ -321,6 +321,7 @@ object LoginRepository {
             verified = loginData.verified,
             vipType = loginData.vipType,
             discountByGameTypeList = loginData.discountByGameTypeList,
-            regSource = loginData.regSource
+            regSource = loginData.regSource,
+            state = loginData.state
         )
 }

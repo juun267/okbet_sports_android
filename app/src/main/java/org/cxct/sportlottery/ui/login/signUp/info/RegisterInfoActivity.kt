@@ -1,17 +1,16 @@
 package org.cxct.sportlottery.ui.login.signUp.info
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.bigkoo.pickerview.view.TimePickerView
 import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.RegisterInfoEvent
+import org.cxct.sportlottery.common.event.CheckLoginDataEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityRegisterInfoBinding
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
@@ -25,6 +24,8 @@ import java.util.*
  */
 class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel,ActivityRegisterInfoBinding>(RegisterInfoViewModel::class) {
     override fun pageName() = "注册补充用户信息页面"
+
+    val loginData by lazy { intent.getParcelableExtra<LoginData>("data")!!  }
 
     //生日选择
     private var dateTimePicker: TimePickerView? = null
@@ -49,7 +50,6 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel,ActivityRegister
     @SuppressLint("SetTextI18n")
     private fun initData() {
         loading()
-        viewModel.loginResult = intent.getParcelableExtra("data") as LoginResult?
         //请求地址列表
         viewModel.getAddressData()
         //请求薪资来源列表
@@ -121,9 +121,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel,ActivityRegister
         viewModel.commitEvent.observe(this) {
             hideLoading()
             if (it) {
-                viewModel.loginResult?.let {
-                    finishPage()
-                }
+                finishPage()
             } else {
                 ToastUtil.showToast(this, viewModel.commitMsg)
             }
@@ -138,10 +136,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel,ActivityRegister
     private fun finishPage() {
         SPUtil.saveLoginInfoSwitch()
         //返回继续完成登录
-        viewModel.loginResult?.let { result ->
-            //返回继续完成登录
-            EventBusUtil.post(RegisterInfoEvent(result))
-        }
+        EventBusUtil.post(CheckLoginDataEvent(loginData))
         finish()
     }
 

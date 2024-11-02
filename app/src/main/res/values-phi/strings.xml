@@ -913,7 +913,7 @@
     <string name="kyc_contact_service">Kung may katanungan, makipag ugnayan sa CS</string>
     <string name="kyc_contact_service_hilight">CS</string>
     <string name="kyc_verify_first">Mangyaring gawin muna ang tunay na pangalan na pag-verify.</string>
-    <string name="kyc_go_verify">Pumunta sa certification ngayon</string>
+    <string name="kyc_go_verify">I-verify ngayon</string>
     <string name="kyc_you_wait">Mangyaring pindutin ang \"Online na serbisyo\" button upang gumawa ng isang video call para makumpleto ang proseso</string>
     <string name="kyc_verify_successful">Nakumpleto mo na ang tunay na pag-verify ng pangalan！</string>
     <string name="kyc_unverified">Hindi na-verify</string>
@@ -1811,5 +1811,6 @@
     <string name="P335">Ok. handa na ako</string>
     <string name="P336">Handheld ID na selfie</string>
     <string name="P338_1">Dapat ay mas mababa sa 500KB ang laki</string>
+    <string name="P435_1">Para sa seguridad ng iyong mga pondo, mangyaring kumpletuhin ang buong proseso ng KYC bago magpatuloy sa laro</string>
 </resources>
 

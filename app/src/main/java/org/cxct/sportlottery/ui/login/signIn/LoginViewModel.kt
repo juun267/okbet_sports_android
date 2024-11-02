@@ -10,6 +10,8 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
 import org.cxct.sportlottery.common.appevent.SensorsEventUtil
+import org.cxct.sportlottery.common.crash.FirebaseLog
+import org.cxct.sportlottery.common.event.CheckLoginDataEvent
 import org.cxct.sportlottery.common.event.SingleEvent
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -70,6 +72,7 @@ class LoginViewModel(
     private val _msgCodeResult = MutableLiveData<NetResult?>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
     private val _checkUserExist = MutableLiveData<Boolean>()
+    val deviceValidate = SingleLiveEvent<LoginData>()
 
     val accountMsg: LiveData<Pair<String?, Boolean>>
         get() = _accountMsg
@@ -104,9 +107,11 @@ class LoginViewModel(
     private val _loginEnable = MutableLiveData<Boolean>()
 
     //跳转至完善信息监听
-    val registerInfoEvent by lazy { SingleEvent<LoginResult>() }
+    val registerInfoEvent = SingleLiveEvent<LoginData>()
 
     val userQuestionEvent = SingleLiveEvent<ApiResult<CheckSafeQuestionResp>>()
+
+    val loginjump = SingleLiveEvent<LoginData>()
 
     var loginType = LOGIN_TYPE_PWD
         set(value) {
@@ -222,12 +227,12 @@ class LoginViewModel(
         }
     }
 
-    private suspend fun dealWithLoginResult(loginResult: LoginResult, ways: String) {
+    public suspend fun dealWithLoginResult(loginResult: LoginResult, ways: String) {
         if (loginResult.success) {
             //t不为空则t是登录账号，rows里面1个账号就直接登录，2个账号就选择账号
             when  {
                 loginResult.t != null -> {
-                    dealWithLoginData(loginResult, loginResult.t, ways)
+                    dealWithLoginData(loginResult.t, ways)
                 }
                 loginResult.rows?.size==1 -> {
                     val loginData = loginResult.rows[0]
@@ -235,55 +240,70 @@ class LoginViewModel(
                     if (loginData.isCreateAccount==1){
                        _loginGlifeOrRegist.postValue(loginResult)
                     }else{
-                        dealWithLoginData(loginResult, loginData, ways)
+                        dealWithLoginData(loginData, ways)
                     }
                 }
                 loginResult.rows?.size==2 -> {
                     _selectAccount.postValue(loginResult)
                 }
             }
-        } else {
-           toast(loginResult.msg)
         }
+        _loginResult.postValue(loginResult!!)
     }
-    suspend fun dealWithLoginData(loginResult: LoginResult,loginData: LoginData, ways: String){
+    suspend fun dealWithLoginData(loginData: LoginData, ways: String){
         if (!loginData.msg.isNullOrBlank()){
             toast(loginData.msg!!)
             return
         }
-        //ifNew 标识当前用户是新注册用户
-        if (loginData.ifnew == true) {
-            SensorsEventUtil.registerEvent(ways)
-            AFInAppEventUtil.register("username",HashMap<String, Any>().apply {
-                put("uid",loginData.uid.toString())
-                put("userId",loginData.userId.toString())
-                put("userName",loginData.userName.toString())
-                put("phone",loginData.phone.toString())
-                put("email",loginData.email.toString())
-            })
-        } else {
-            AFInAppEventUtil.login(loginData.uid.toString(),HashMap<String, Any>().apply {
-                put("uid",loginData.uid.toString())
-                put("userId",loginData.userId.toString())
-                put("userName",loginData.userName.toString())
-                put("phone",loginData.phone.toString())
-                put("email",loginData.email.toString())
-            })
+        //是否需要验证手机
+        if (loginData.deviceValidateStatus==0){
+            deviceValidate.postValue(loginData)
+            return
         }
-
         LoginRepository.setUpLoginData(loginData)
-        RegisterSuccessDialog.ifNew = loginData.ifnew==true
-        RegisterSuccessDialog.loginFirstPhoneGiveMoney = loginData.firstPhoneGiveMoney==true
-        AFInAppEventUtil.regAndLogin(HashMap<String, Any>().apply {
-            put("data",loginData.toJson())
-        })
-        LogUtil.toJson(loginData)
-        BindPhoneDialog.afterLoginOrRegist = (sConfigData?.firstPhoneGiveMoney?:0)>0 && loginData.phone.isNullOrEmpty()
-        checkBasicInfo(loginResult) {
-            //继续登录
-            if (loginData.deviceValidateStatus == 1)
+        //检查是否完善用户信息
+        checkBasicInfo(loginData) {
+            //ifNew 标识当前用户是新注册用户
+            if (loginData.ifnew == true) {
+                if (ways.isNotEmpty()) {
+                    SensorsEventUtil.registerEvent(ways)
+                }
+                AFInAppEventUtil.register("username", HashMap<String, Any>().apply {
+                    put("uid", loginData.uid.toString())
+                    put("userId", loginData.userId.toString())
+                    put("userName", loginData.userName.toString())
+                    put("phone", loginData.phone.toString())
+                    put("email", loginData.email.toString())
+                })
+            } else {
+                AFInAppEventUtil.login(loginData.uid.toString(), HashMap<String, Any>().apply {
+                    put("uid", loginData.uid.toString())
+                    put("userId", loginData.userId.toString())
+                    put("userName", loginData.userName.toString())
+                    put("phone", loginData.phone.toString())
+                    put("email", loginData.email.toString())
+                })
+            }
+
+            RegisterSuccessDialog.ifNew = loginData.ifnew == true
+            RegisterSuccessDialog.loginFirstPhoneGiveMoney = loginData.firstPhoneGiveMoney == true
+            AFInAppEventUtil.regAndLogin(HashMap<String, Any>().apply {
+                put("data", loginData.toJson())
+            })
+            //将userName信息添加到firebase崩溃日志中
+            loginData?.let {
+                FirebaseLog.addLogInfo(
+                    "userName",
+                    "${loginData}"
+                )
+            }
+            LogUtil.toJson(loginData)
+            BindPhoneDialog.afterLoginOrRegist =
+                (sConfigData?.firstPhoneGiveMoney ?: 0) > 0 && loginData.phone.isNullOrEmpty()
+            launch {
                 runWithCatch { UserInfoRepository.getUserInfo() }
-            _loginResult.postValue(loginResult!!)
+                loginjump.postValue(loginData)
+            }
         }
     }
 
@@ -291,8 +311,9 @@ class LoginViewModel(
     /**
      * 检查用户完善基本信息
      */
-    private suspend fun checkBasicInfo(loginResult: LoginResult, block: suspend () -> Unit) {
-        if (!loginResult.success) {
+    private suspend fun checkBasicInfo(loginData: LoginData, block: suspend () -> Unit) {
+        //临时冻结状态不需要检查完善信息
+        if (loginData.state==7) {
             block()
             return
         }
@@ -317,7 +338,7 @@ class LoginViewModel(
                 //是否需要完善
                 if (checkNeedCompleteInfo(isSwitch, isFinished)) {
                     //跳转到完善页面
-                    registerInfoEvent.post(loginResult)
+                    registerInfoEvent.postValue(loginData)
                 } else {
                     //执行原有登录逻辑
                     block()
@@ -351,9 +372,6 @@ class LoginViewModel(
                 return@doRequest
             }
             //手機驗證成功後, 獲取最新的用戶資料
-            if (result.success) {
-                launch { runWithCatch { UserInfoRepository.getUserInfo() } }
-            }
             _validResult.postValue(result)
         }
     }
@@ -589,8 +607,8 @@ class LoginViewModel(
     /**
      * 获取用户的密保问题
      */
-    fun getUserQuestion(userName: String, identity: String, validCode: String){
-        callApi({ UserRepository.getUserSafeQuestion(userName, identity, validCode) }){
+    fun getUserQuestion(userName: String, identity: String, validCode: String) {
+        callApi({ UserRepository.getUserSafeQuestion(userName, identity, validCode) }) {
             userQuestionEvent.postValue(it)
         }
     }

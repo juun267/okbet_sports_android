@@ -203,9 +203,6 @@ object UserRepository {
         params.addProperty("activityId", activityId)
         return userApi.activityRecord(params)
     }
-    suspend fun getWheelActivityInfo(): ApiResult<WheelActivityInfo> {
-        return userApi.getWheelActivityInfo()
-    }
     suspend fun getGenderL(activityId: String,page: Int,pageSize: Int): ApiResult<PageData<RewardRecord>> {
         val params = JsonObject()
         params.addProperty("page", page)

@@ -24,8 +24,6 @@ class RegisterInfoViewModel(
     androidContext: Application
 ) : BaseSocketViewModel(androidContext) {
 
-    //登录数据
-    var loginResult: LoginResult? = null
 
     //生日
     var birthdayTimeInput = ""

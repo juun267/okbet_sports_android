@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +20,7 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GameCollectManager.showCollectAmount
+import org.cxct.sportlottery.util.isHalloweenStyle
 import org.cxct.sportlottery.view.onClick
 
 class GameListAdapter(private val onGameClick: (OKGameBean)-> Unit,
@@ -47,6 +49,20 @@ class GameListAdapter(private val onGameClick: (OKGameBean)-> Unit,
                 tvName.gravity = Gravity.CENTER
                 tvCollect.hide()
                 tvFirmName.hide()
+            } else if (isHalloweenStyle()) { // 万圣节样式，与下面相同的if条件不能合并
+                root.setBackgroundResource(R.drawable.img_game_item_bg_h)
+                root.layoutParams.height = 167.dp
+                ivCover.layoutParams.height = 105.dp
+                5.dp.let { root.getChildAt(0).setPadding(it, it, it, 0) }
+                tvCollect.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_collect_heart_h, 0,0 ,0)
+                (tvCollect.layoutParams as MarginLayoutParams).let {
+                    it.topMargin = 0
+                    it.leftMargin = 5.dp
+                }
+            }
+
+            if (isHalloweenStyle()) {
+                ivFav.setImageResource(R.drawable.selector_game_fav_h)
             }
         }
         return vh

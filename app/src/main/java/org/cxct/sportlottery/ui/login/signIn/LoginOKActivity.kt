@@ -12,27 +12,35 @@ import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.appevent.AFInAppEventUtil
 import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.LoginGlifeOrRegistEvent
 import org.cxct.sportlottery.common.event.LoginSelectAccountEvent
-import org.cxct.sportlottery.common.event.RegisterInfoEvent
+import org.cxct.sportlottery.common.event.CheckLoginDataEvent
+import org.cxct.sportlottery.common.event.CheckLoginResultEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
+import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.repository.LOGIN_SRC
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
 import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterSuccessDialog
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
@@ -224,10 +232,19 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
 
     /**
      * 登录完善用户信息event
+     * 目前主要用于长时间未登录的场景
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onRegisterInfoCompleted(event: RegisterInfoEvent) {
-        updateUiWithResult(event.loginResult)
+    fun onCheckLoginResultEvent(event: CheckLoginResultEvent) {
+        GlobalScope.launch {
+            viewModel.dealWithLoginResult(event.loginResult,"验证码登录")
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCheckLoginData(event: CheckLoginDataEvent) {
+        GlobalScope.launch {
+            viewModel.dealWithLoginData(event.loginData,"")
+        }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSelectAccount(event: LoginSelectAccountEvent) {
@@ -244,7 +261,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                     } else {
                         "账号"
                     }
-                    viewModel.dealWithLoginData(loginResult!!, it, ways)
+                    viewModel.dealWithLoginData(it, ways)
                 }
             }
         }
@@ -256,7 +273,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
             it.firstOrNull()?.let {
                 lifecycleScope.launch {
                     if (event.login){
-                        viewModel.dealWithLoginData(loginResult!!, it, "GLife")
+                        viewModel.dealWithLoginData(it, "GLife")
                     }else{
                         var inviteCode = binding.eetRecommendCode.text.toString()
                         //新的注册接口
@@ -480,32 +497,22 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                 showErrorPromptDialog(it.msg){}
             }
         }
+        viewModel.deviceValidate.observe(this){
+            startActivity(Intent(this@LoginOKActivity, PhoneVerifyActivity::class.java).apply {
+                putExtra("loginData",it)
+            })
+        }
+        viewModel.loginjump.observe(this) {
+            MainTabActivity.reStart(this@LoginOKActivity,true)
+            if (it.state==7){
+                startActivity<LoginKycVerifyActivity>()
+            }
+        }
     }
 
     private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
-        val loginData = loginResult.rows?.get(0)
-        //将userName信息添加到firebase崩溃日志中
-        loginData?.let {
-            FirebaseLog.addLogInfo(
-                "userName",
-                "${loginData}"
-            )
-        }
-        if (loginResult.success) {
-            if (loginData?.deviceValidateStatus == 0) {
-                PhoneVerifyActivity.loginData = loginData
-                startActivity(Intent(this@LoginOKActivity, PhoneVerifyActivity::class.java))
-            } else {
-                this.run {
-//                    if (sConfigData?.thirdOpen == FLAG_OPEN)
-//                        MainActivity.reStart(this)
-//                    else
-                    MainTabActivity.reStart(this,fromLoginOrReg = true)
-//                        finish()
-                }
-            }
-        } else {
+        if (!loginResult.success) {
             showErrorPromptDialog(
                 getString(R.string.prompt),
                 loginResult.msg

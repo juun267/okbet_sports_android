@@ -2,6 +2,8 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +17,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import splitties.systemservices.layoutInflater
 
 class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
@@ -66,5 +69,20 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
     }
     private fun visibleRecent():Boolean{
         return homeRecentAdapter.dataCount()!=0&&LoginRepository.isLogined()
+    }
+
+    fun applyHalloweenStyle() = binding.run {
+        val lin = LinearLayout(context)
+        lin.gravity = Gravity.CENTER_VERTICAL
+        lin.setPadding(12.dp, 0, 0 , 0)
+        val imageView = ImageView(context)
+        imageView.setImageResource(R.drawable.ic_halloween_logo_0)
+        val dp24 = 24.dp
+        lin.addView(imageView, LayoutParams(dp24, dp24))
+        removeView(tvCateName)
+        val lp = LayoutParams(-2, -2)
+        lp.leftMargin = 4.dp
+        lin.addView(tvCateName, lp)
+        addView(lin, 0, LayoutParams(-1, -2).apply { bottomMargin = 4.dp })
     }
 }

@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.common.WebActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
 import org.cxct.sportlottery.ui.profileCenter.invite.InviteActivity
@@ -51,17 +52,19 @@ object JumpUtil {
               path.contains("sweepstakes") ->{
                   toLottery(context, Constants.getLotteryH5Url(context, LoginRepository.token))
               }
-              path == "mobile/personal/activity_v2/christmas-promo"
-                      || path == "promo/christmas"->{
-                context.startActivity(
-                    Intent(context, LuckyWheelActivity::class.java).apply {
-                        putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
-                        putExtra(WebActivity.KEY_TITLE, title)
-                        putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
-                        putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
-                        putExtra(WebActivity.TAG, tag)
-                    }
-                )
+            path.contains("mobile/halloween") ->{
+                loginedRun(context, true) {
+                    context.startActivity(
+                        Intent(context, WebActivity::class.java).apply {
+                            putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
+                            putExtra(WebActivity.KEY_TITLE, title)
+                            putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
+                            putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
+                            putExtra(WebActivity.TAG, WebActivity.TAG_HALLOWEEN)
+                        }
+                    )
+                }
+                return
             }
             path == "mobile/user/vipCenter"
                     || path == "vipCenter"->{

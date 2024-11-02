@@ -21,30 +21,23 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.TextViewCompat
-import androidx.lifecycle.LifecycleOwner
+import eightbitlab.com.blurview.BlurView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
-import org.cxct.sportlottery.net.games.OKGamesRepository
-import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.list.OKPlaySelectPop
-import org.cxct.sportlottery.ui.sport.list.TodayMenuPop
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.StreamerTextView
-import org.cxct.sportlottery.view.dialog.ToGcashDialog
-import splitties.views.padding
-import splitties.dimensions.dp
 
 class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : FrameLayout(context, attrs, defStyle) {
@@ -377,5 +370,36 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     fun setMenuClick(click: OnClickListener) = ivMenu.setOnClickListener(click)
+
+    fun applyHalloweenStyle() {
+        ivLogo.setImageResource(R.drawable.logo_okbet_color_h)
+        tvLogin.setBackgroundResource(R.drawable.img_home_login_h)
+        tvRegist.setBackgroundResource(R.drawable.img_home_regist_h)
+        tvLogin.layoutParams.height = 48.dp
+        tvLogin.setTextColor(Color.WHITE)
+        (tvRegist.layoutParams as MarginLayoutParams).let {
+            it.height = 48.dp
+            it.bottomMargin = 3.dp
+        }
+        tvLogin.setPadding(0, 0, 0, 7.dp)
+        tvRegist.setPadding(0, 0, 0, 3.dp)
+
+        if (::btnDeposit.isInitialized) {
+            btnDeposit.setBackgroundResource(R.drawable.img_home_deposit_h)
+        }
+        if (::userMoneyView.isInitialized) {
+            val blurView = BlurView(context)
+            banlanceView.setBackgroundResource(R.drawable.img_home_user_balance_bg_h)
+            val parent = banlanceView.parent as ViewGroup
+            val lp = banlanceView.layoutParams
+            val index = parent.indexOfChild(banlanceView)
+            parent.removeView(banlanceView)
+            blurView.addView(banlanceView, LayoutParams(-2, 32.dp))
+            blurView.setupWith(this@HomeToolbarView).setFrameClearDrawable(background).setBlurRadius(4.dp.toFloat())
+            parent.addView(blurView, index, lp)
+        }
+
+
+    }
 
 }

@@ -1,8 +1,11 @@
 package org.cxct.sportlottery.ui.maintab.home
 
 import android.content.Intent
+import android.graphics.Color
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home_hot.recentView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -25,6 +29,7 @@ import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.money.data.FirstDepositDetail
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.repository.*
@@ -46,6 +51,7 @@ import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.endcard.EndCardActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.floatingbtn.SuckEdgeTouch
 import timber.log.Timber
 
@@ -55,6 +61,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
     private fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper2: FragmentHelper2 by lazy { FragmentHelper2(childFragmentManager, R.id.flContent) }
     private lateinit var hotFragment: HomeHotFragment
+    private val halloweenActivityHelper by lazy { HalloweenActivityHelper(binding.floatingContainer) }
 
     private val homeMenuAdapter = HomeMenuAdapter { item->
         val fragmentClass = item.content
@@ -120,6 +127,8 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         initToolBar()
         initMenu()
         initIndicate()
+        applyHalloweenStyle()
+        enableBasketballFloating()
         binding.ivService.setOnTouchListener(SuckEdgeTouch())
         binding.ivService.setServiceClick(childFragmentManager)
         viewModel.getHallOkSport()
@@ -140,6 +149,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
 
     override fun onBindViewStatus(view: View) {
         initObservable()
+        halloweenActivityHelper.bindLifeCycle(this)
         binding.rvMarquee.bindLifecycler(this)
         viewModel.getConfigData()
         viewModel.getAnnouncement()
@@ -347,4 +357,55 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
             )
         }
     }
+
+    private fun applyHalloweenStyle() = binding.run {
+        if (!isHalloweenStyle()) {
+            return@run
+        }
+
+        val vTopBg = View(context())
+        vTopBg.setBackgroundResource(R.drawable.img_home_top_background_h)
+        root.addView(vTopBg, 0, ViewGroup.LayoutParams(-1, 300.dp))
+
+        val backgroundColor = Color.parseColor("#f0f1f6")
+        root.setBackgroundColor(backgroundColor)
+        flContent.setBackgroundColor(backgroundColor)
+        homeMenuAdapter.applyHalloweenStyle()
+        homeToolbar.applyHalloweenStyle()
+        (cvBanner.parent as View).setBackgroundResource(R.drawable.img_home_top_banner_h)
+        ivBroadcast.setImageResource(R.drawable.ic_notice_h)
+
+    }
+
+    private fun enableBasketballFloating() {
+        val context = context()
+        val container = binding.floatingContainer
+        val frameLayout = FrameLayout(context)
+        val dp90 = 90.dp
+        val lp0 = FrameLayout.LayoutParams(dp90, dp90)
+        lp0.gravity = Gravity.BOTTOM
+        lp0.bottomMargin = 210.dp
+        container.addView(frameLayout, lp0)
+
+        val img = ImageView(context)
+        img.load(R.drawable.img_floating_basketball)
+        val dp80 = 80.dp
+        val lp1 = FrameLayout.LayoutParams(dp80, dp80)
+        lp1.gravity = Gravity.BOTTOM
+        frameLayout.addView(img, lp1)
+
+        val dp24 = 24.dp
+        val dp6 = 4.dp
+        val ivClose = ImageView(context)
+        ivClose.setImageResource(R.drawable.ic_close_float)
+        ivClose.setPadding(dp6, dp6, dp6, dp6)
+        val lp2 = FrameLayout.LayoutParams(dp24, dp24)
+        lp2.gravity = Gravity.END
+        lp2.topMargin = 14.dp
+        frameLayout.addView(ivClose, lp2)
+        frameLayout.setOnTouchListener(SuckEdgeTouch())
+        ivClose.setOnClickListener { container.removeView(frameLayout) }
+        frameLayout.setOnClickListener { getMainTabActivity().jumpToSport(GameType.BK) }
+    }
+
 }

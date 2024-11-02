@@ -16,7 +16,6 @@ import org.cxct.sportlottery.common.extentions.createVBinding
 import org.cxct.sportlottery.common.extentions.getKClass
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.view.floatingbtn.LotteryManager
-import org.cxct.sportlottery.view.floatingbtn.LuckyWheelManager
 import org.cxct.sportlottery.view.floatingbtn.RedEnvelopeManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
@@ -46,7 +45,6 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>(clazz: KClass<
         super.onStart()
         RedEnvelopeManager.instance.bind(this)
         LotteryManager.instance.bind(this)
-        LuckyWheelManager.instance.bind(this)
     }
 
     private var firstCrate = false

@@ -5,40 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:orientation="vertical"
-    tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ivChampion"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/margin_50"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_home_win_rank" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/helvetica_bold"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:text="@string/N707"
+        android:textColor="@color/color_0D2245"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/N707"
-            android:fontFamily="@font/helvetica_bold"
-            android:textColor="@color/color_0D2245"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_50"
-            android:src="@drawable/ic_home_win_rank"
-            android:adjustViewBounds="true"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@+id/rGroupRecord"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_okgame_record"
+        app:layout_constraintStart_toStartOf="@+id/rGroupRecord"
+        app:layout_constraintEnd_toEndOf="@+id/rGroupRecord"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_gradient_home_news"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/bg_gradient_home_news">
     <RadioGroup
         android:id="@+id/rGroupRecord"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
         android:orientation="horizontal">
 
         <RadioButton
@@ -46,13 +51,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingVertical="@dimen/margin_7"
             android:background="@drawable/bg_gradient_pink"
-            android:drawableBottom="@drawable/selector_indicate_trans_blue"
             android:button="@null"
+            android:drawableBottom="@drawable/selector_indicate_trans_blue"
             android:gravity="center"
+            android:paddingVertical="@dimen/margin_7"
             android:text="@string/N708"
             android:textColor="@color/color_black_6d7693"
+            android:drawablePadding="0dp"
             android:textSize="@dimen/textSize14sp" />
 
         <RadioButton
@@ -60,27 +66,28 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingVertical="@dimen/margin_7"
             android:background="@drawable/bg_gradient_green"
-            android:drawableBottom="@drawable/selector_indicate_trans_blue"
             android:button="@null"
+            android:checked="true"
+            android:drawableBottom="@drawable/selector_indicate_trans_blue"
             android:gravity="center"
             android:maxLines="1"
-            android:textStyle="bold"
+            android:paddingVertical="@dimen/margin_7"
             android:text="@string/N709"
             android:textColor="@color/color_black_6d7693"
             android:textSize="@dimen/textSize14sp"
-            android:checked="true"/>
+            android:textStyle="bold" />
     </RadioGroup>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_okgame_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
         android:nestedScrollingEnabled="false"
         android:orientation="vertical"
-        tools:itemCount="5"
+        app:layout_constraintTop_toBottomOf="@+id/rGroupRecord"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="5"
         tools:listitem="@layout/item_home_win_rank" />
-    </LinearLayout>
 </merge>

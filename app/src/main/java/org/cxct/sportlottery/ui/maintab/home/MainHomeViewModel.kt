@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.hideLoading
@@ -431,6 +433,14 @@ open class MainHomeViewModel(
         jumpingGame = true
         baseActivity.loading()
         viewModelScope.launch {
+            //FKG厂商的游戏，先转金额到游戏，然后在登录
+            if (okGameBean.firmCode=="FKG"){
+                if (LoginRepository.isLogined()&&!OKGamesRepository.isSingleWalletType(firmType) && isThirdTransferOpen()) {
+                    async {
+                        autoTransfer(firmType)
+                    }.await()
+                }
+            }
             val thirdLoginResult = thirdGameLogin(firmType!!, okGameBean.gameCode!!)
             jumpingGame = false
             //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過

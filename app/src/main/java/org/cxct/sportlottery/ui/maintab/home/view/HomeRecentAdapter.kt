@@ -1,16 +1,34 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
+import androidx.core.view.setMargins
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.adapter.BindingVH
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.ItemHomeRecentBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.ESportType
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.RecentRecord
+import org.cxct.sportlottery.util.isHalloweenStyle
 
 class HomeRecentAdapter : BindingAdapter<RecentRecord, ItemHomeRecentBinding>() {
+
+    override fun onCreateDefViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BindingVH<ItemHomeRecentBinding> {
+        val holder = super.onCreateDefViewHolder(parent, viewType)
+        if (isHalloweenStyle()) {
+            ((holder.vb.blurView.parent as View).layoutParams as MarginLayoutParams).setMargins(4.dp)
+        }
+        return holder
+    }
 
     override fun onBinding(
         position: Int,

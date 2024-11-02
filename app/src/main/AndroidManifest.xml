@@ -294,7 +294,6 @@
             android:name=".ui.maintab.home.firstdeposit.SevenDaysSignInActivity"
             android:screenOrientation="portrait" />
 
-
         <activity
             android:name=".ui.profileCenter.securityquestion.SettingQuestionActivity"
             android:screenOrientation="portrait" />
@@ -307,6 +306,11 @@
         <activity
             android:name=".ui.profileCenter.identity.handheld.HandheldPhotoActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.login.signIn.LoginKycVerifyActivity"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

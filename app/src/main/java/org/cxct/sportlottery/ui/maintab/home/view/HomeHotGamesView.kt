@@ -1,9 +1,12 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.youth.banner.itemdecoration.MarginDecoration
@@ -71,6 +74,16 @@ class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
         if ((fragment.activity as MainTabActivity?)?.collectGame(okGameBean) == true) {
             view.animDuang(1.3f)
         }
+    }
+
+    fun applyHalloweenStyle() {
+        (layoutParams as MarginLayoutParams).topMargin = 10.dp
+        val imageView = AppCompatImageView(context)
+        imageView.setImageResource(R.drawable.ic_halloween_logo_2)
+        val dp24 = 24.dp
+        val lp = LayoutParams(dp24, dp24)
+        lp.gravity = Gravity.CENTER_VERTICAL
+        binding.linearTitle.addView(imageView, 0, lp)
     }
 
 }

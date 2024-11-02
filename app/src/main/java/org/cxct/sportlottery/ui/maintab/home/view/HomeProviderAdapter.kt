@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.adapter.BindingVH
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.roundOf
@@ -77,4 +78,19 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
 //        view.setBackgroundResource(if(isMaintenance) R.drawable.bg_gray_radius_8_f9fafd else R.color.color_FFFFFF)
         view.setBackgroundResource(if(isMaintenance) R.drawable.bg_gray_radius_8_eef3fc else R.color.transparent)
     }
+
+    override fun onCreateDefViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BindingVH<ItemHomeProviderPageBinding> {
+        val holder = super.onCreateDefViewHolder(parent, viewType)
+        (holder.itemView as ViewGroup).children.forEach { child->
+            val tvPlay = child.findViewById<TextView>(R.id.tvPlay)
+            tvPlay.text = ""
+            tvPlay.layoutParams.width = 52.dp
+            tvPlay.setBackgroundResource(R.drawable.ic_btn_play_h)
+        }
+        return holder
+    }
+
 }

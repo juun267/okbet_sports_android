@@ -115,6 +115,7 @@ class VerifyIdentityActivity :
 
     private fun initToolbar()=binding.toolbar.run {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
+        tvToolbarTitle.text = getString(R.string.identity)
         tvToolbarTitle.setTitleLetterSpacing()
         btnToolbarBack.setOnClickListener {
             if (backToMainPage){
