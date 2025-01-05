@@ -5,13 +5,14 @@ import androidx.fragment.app.Fragment
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.extentions.post
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ActivityVerifyIdentityBinding
-import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
-import org.cxct.sportlottery.ui.profileCenter.identity.handheld.VerifyNotFullyFragment
+import org.cxct.sportlottery.ui.profileCenter.identity.handheld.VerifyNotFullyActivity
 import org.cxct.sportlottery.util.*
 
 class VerifyIdentityActivity :
@@ -22,7 +23,6 @@ class VerifyIdentityActivity :
     private val loadingHolder by lazy { Gloading.wrapView(binding.root) }
     private val fragmentHelper2 by lazy { FragmentHelper2(supportFragmentManager, binding.fragmentContainer.id) }
     private var backToMainPage = false //点击返回按钮时，是否需要回到主页
-    private var title: String? = null //外部页面带标题进来
 
     override fun onInitView() {
         getIntentParams(intent)
@@ -81,7 +81,12 @@ class VerifyIdentityActivity :
     }
 
     private fun checkKYCStatus() {
-        val userInfo = viewModel.userInfo.value!!
+        val userInfo = viewModel.userInfo.value
+        if (userInfo == null) {
+            finish()
+            return
+        }
+
         if (userInfo.fullVerified==1){
             fragmentHelper2.show(VerifyStatusFragment::class.java)
         }else{
@@ -98,15 +103,13 @@ class VerifyIdentityActivity :
                     fragmentHelper2.show(VerifyRejectFragment::class.java)
                 }
                 VerifiedType.PASSED.value->{
-                   fragmentHelper2.show(VerifyNotFullyFragment::class.java)
+                    //新需求不应该在页面显示这个
+                    fragmentHelper2.show(VerifyStatusFragment::class.java)
                 }
                 else -> {
                     fragmentHelper2.show(VerifyKYCFragment2::class.java)
                 }
             }
-        }
-        if (!title.isNullOrEmpty()){
-            setToolBar(title!!)
         }
     }
     fun showFragment(clazz: Class<out Fragment>){
@@ -123,6 +126,14 @@ class VerifyIdentityActivity :
             }else{
                 finish()
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (backToMainPage){
+            MainTabActivity.reStart(this@VerifyIdentityActivity)
+        }else{
+            super.onBackPressed()
         }
     }
 

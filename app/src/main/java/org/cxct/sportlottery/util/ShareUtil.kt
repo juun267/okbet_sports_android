@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -110,6 +111,29 @@ object ShareUtil {
             shareError(context)
         })
     }
+    fun shareTelegram(context: Context, content: String) {
+        SensorsEventUtil.shareClickEvent("Telegram")
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain" // 分享的内容类型
+            putExtra(Intent.EXTRA_TEXT, content) // 分享的文本内容
+            `package` = "org.telegram.messenger" // 指定 Telegram 包名
+        }
+        runWithCatch({ context.startActivity(shareIntent)},{
+            shareError(context)
+        })
+    }
+    fun shareWhatsapp(context: Context, content: String) {
+        SensorsEventUtil.shareClickEvent("Telegram")
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain" // 分享的内容类型
+            putExtra(Intent.EXTRA_TEXT, content) // 分享的文本内容
+            `package` = "com.whatsapp" // 指定 Telegram 包名
+        }
+        runWithCatch({ context.startActivity(shareIntent)},{
+            shareError(context)
+        })
+    }
+
     fun shareViber(context: Context, content: String){
         SensorsEventUtil.shareClickEvent("Viber")
         runWithCatch({

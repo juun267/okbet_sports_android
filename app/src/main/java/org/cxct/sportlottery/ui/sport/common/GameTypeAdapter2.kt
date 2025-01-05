@@ -1,9 +1,8 @@
 package org.cxct.sportlottery.ui.sport.common
 
+import android.graphics.Color
+import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
@@ -12,87 +11,52 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.opensource.svgaplayer.SVGAImageView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.databinding.ItemGameTypeBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.SvgUtil.setAssetSvgIcon
-import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.util.setServiceClick
 
 
-class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAdapter<Item, BaseViewHolder>(0), OnItemClickListener {
+class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BindingAdapter<Item, ItemGameTypeBinding>(),OnItemClickListener{
 
     init {
         setOnItemClickListener(this)
     }
 
-
     fun applyEventView(activity: FragmentActivity) {
         if (hasFooterLayout()) {
             return
         }
-        val ivPromotion = AppCompatImageView(activity)
-        ivPromotion.layoutParams = iconParams
-        ivPromotion.setImageResource(R.drawable.ic_sport_promotion)
-        ivPromotion.setOnClickListener { PromotionListActivity.startFrom(context, "体育赛事列表页赛事类别栏") }
-        addFooterView(ivPromotion, -1, LinearLayout.HORIZONTAL)
-        val ivService = AppCompatImageView(activity)
-        ivService.layoutParams = iconParams
-        ivService.setImageResource(R.drawable.ic_sport_service)
-        ivService.setServiceClick(activity.supportFragmentManager)
-        addFooterView(ivService, -1, LinearLayout.HORIZONTAL)
+        val promotionBinding = ItemGameTypeBinding.inflate(LayoutInflater.from(activity),recyclerView,false)
+        promotionBinding.ivSport.setImageResource(R.drawable.ic_sport_promotion)
+        promotionBinding.root.setOnClickListener { PromotionListActivity.startFrom(context, "体育赛事列表页赛事类别栏") }
+        addFooterView(promotionBinding.root, -1, LinearLayout.HORIZONTAL)
+        val serviceBinding = ItemGameTypeBinding.inflate(LayoutInflater.from(activity),recyclerView,false)
+        serviceBinding.ivSport.setImageResource(R.drawable.ic_sport_service)
+        serviceBinding.root.setServiceClick(activity.supportFragmentManager)
+        addFooterView(serviceBinding.root, -1, LinearLayout.HORIZONTAL)
     }
 
-    private val iconParams by lazy {
-        val wh = 40.dp
-        val param = FrameLayout.LayoutParams(wh, wh)
-        8.dp.let {
-//            param.topMargin = it
-            param.bottomMargin = it
-        }
-        10.dp.let {
-            param.leftMargin = it
-            param.rightMargin = it
-        }
-        param
-    }
-
-    private val bgDrawable by lazy {
-        DrawableCreator.Builder()
-            .setShapeAlpha(0.3f)
-            .setSolidColor(ContextCompat.getColor(context, R.color.color_025BE8))
-            .setSizeWidth(iconParams.width.toFloat())
-            .setSizeHeight(iconParams.height.toFloat())
-            .setCornersRadius(iconParams.height.toFloat())
-            .build()
-    }
 
     var currentItem: Item? = null
 
-    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val itemView = SVGAImageView(parent.context)
-        itemView.layoutParams = iconParams
-        itemView.scaleType = ImageView.ScaleType.CENTER_CROP
-        return BaseViewHolder(itemView)
+    override fun onBinding(position: Int, binding: ItemGameTypeBinding, item: Item) {
+        binding.ivSport.setImageResource(GameType.getHallGameTypeMenuIcon(item.code))
+        binding.tvCount.text = "${item.num}"
+        binding.root.setCardBackgroundColor(if(item.isSelected) ContextCompat.getColor(context,R.color.color_33025be8) else Color.TRANSPARENT)
     }
 
-    override fun convert(holder: BaseViewHolder, item: Item) = (holder.itemView as SVGAImageView).run {
-        loops = 1
-        clearsAfterStop = false
-        setAssetSvgIcon(GameType.getGameTypeMenuSVGA(item.code))
-        if (item.isSelected){
-            stepToFrame(0, true)
-        }
-        background = if (item.isSelected) bgDrawable else null
-    }
-
-    override fun convert(holder: BaseViewHolder, item: Item, payloads: List<Any>) {
-        holder.itemView.background = if (item.isSelected) bgDrawable else null
+    override fun onBinding(
+        position: Int,
+        binding: ItemGameTypeBinding,
+        item: Item,
+        payloads: List<Any>
+    ) {
+        super.onBinding(position, binding, item, payloads)
+        binding.root.setCardBackgroundColor(if(item.isSelected) ContextCompat.getColor(context,R.color.color_33025be8) else Color.TRANSPARENT)
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
@@ -112,7 +76,6 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
         item.isSelected = true
         currentItem = item
         notifyItemChanged(position,Any())
-        (view as SVGAImageView).stepToFrame(0, true)
         itemClick.invoke(currentItem!!, position)
     }
 

@@ -28,6 +28,8 @@ import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.util.isHalloweenStyle
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 import splitties.systemservices.layoutInflater
+import splitties.views.dsl.core.endMargin
+import splitties.views.dsl.core.horizontalMargin
 
 class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
@@ -75,6 +77,7 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
             getSelectCategoryId()?.let {
                 viewModel.getHomeNews(1, pageSize, listOf(it))
             }
+
         }
         viewModel.homeNewsList.observe(fragment) {
             val dataList = if (it.size > pageSize) it.subList(0, pageSize) else it
@@ -89,6 +92,8 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
 
     fun applyHalloweenStyle() = binding.run {
 
+        (layoutParams as MarginLayoutParams).endMargin = 0
+
         val imageView = AppCompatImageView(context)
         imageView.setImageResource(R.drawable.ic_halloween_logo_5)
         val dp24 = 24.dp
@@ -99,13 +104,16 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
         val frameLayout = FrameLayout(context)
         val ivMonster = AppCompatImageView(context)
         ivMonster.setBackgroundResource(R.drawable.img_monster_2_h)
-        val monsterLP = FrameLayout.LayoutParams(134.dp, 60.dp)
+        val dp72 = 72.dp
+        val monsterLP = FrameLayout.LayoutParams(dp72, dp72)
         monsterLP.gravity = Gravity.RIGHT
+        monsterLP.topMargin = (-4).dp
         frameLayout.addView(ivMonster, monsterLP)
 
         val tabLayout = tvCateName.parent as View
         val lp1 = FrameLayout.LayoutParams(-1, -2)
         lp1.topMargin = 15.dp
+        lp1.horizontalMargin = 12.dp
         removeView(tabLayout)
         frameLayout.addView(tabLayout, lp1)
 
@@ -119,14 +127,16 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
 
         (layoutParams as MarginLayoutParams).bottomMargin = 0
         linTab.setBackgroundResource(R.drawable.bg_home_new_title_h)
-        tvMore.setPadding(8.dp, 0, 5.dp, 0)
-        tvMore.text = context.getString(R.string.N702)
+        binding.tvMore.setPadding(6.dp, 4.dp, 0, 0)
+        binding.tvMore.text = context.getString(R.string.N702)
             .addSpan("AAA", CenterImageSpan(context, R.drawable.ic_to_right_withe).setDrawableSize(13.dp).setMarginHorizontal(2.dp))
-        tvMore.setTextColor(Color.WHITE)
-        tvMore.setBackgroundResource(R.drawable.ic_more_but_bg)
-        tvMore.compoundDrawablePadding = 0
-        tvMore.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
-
+        binding.tvMore.setTextColor(Color.WHITE)
+        binding.tvMore.layoutParams.height = 28.dp
+        binding.tvMore.layoutParams.width = 75.dp
+        binding.tvMore.setBackgroundResource(R.drawable.ic_more_but_bg)
+        binding.tvMore.compoundDrawablePadding = 0
+        binding.tvMore.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
+        ((linTab.parent as View).layoutParams as MarginLayoutParams).horizontalMargin = 12.dp
     }
 
     private fun createTabBackground(): Drawable {
@@ -134,7 +144,7 @@ class HomeNewsView(context: Context, attrs: AttributeSet) : LinearLayout(context
         return DrawableCreator.Builder()
             .setSelectedDrawable(DrawableCreator.Builder()
                 .setCornersRadius(radius)
-                .setGradientColor(Color.parseColor("#5DCAF9"), context.getColor(R.color.color_025BE8))
+                .setGradientColor(Color.parseColor("#5DCAF9"), Color.parseColor("#042DBD"))
                 .setGradientCenterXY(0.5f, 0f)
                 .setGradientAngle(270)
                 .build())

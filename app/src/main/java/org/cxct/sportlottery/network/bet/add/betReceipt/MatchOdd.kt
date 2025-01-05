@@ -7,6 +7,7 @@ import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.bet.list.EndScoreInfo
+import org.cxct.sportlottery.util.replaceSpecialChar
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -15,7 +16,7 @@ data class MatchOdd(
     @Json(name = "awayId")
     val awayId: String,
     @Json(name = "awayName")
-    val awayName: String?,
+    var awayName: String?,
     @Json(name = "endTime")
     val endTime: Long?,
     @Json(name = "extInfo")
@@ -29,9 +30,9 @@ data class MatchOdd(
     @Json(name = "homeId")
     val homeId: String,
     @Json(name = "homeName")
-    val homeName: String?,
+    var homeName: String?,
     @Json(name = "leagueName")
-    val leagueName: String?,
+    var leagueName: String?,
     @Json(name = "matchId")
     val matchId: String,
     @Json(name = "odds")
@@ -47,13 +48,13 @@ data class MatchOdd(
     @Json(name = "playCateMatchResultList")
     val playCateMatchResultList: String?,
     @Json(name = "playCateName")
-    val playCateName: String?,
+    var playCateName: String?,
     @Json(name = "playCode")
     val playCode: String?,
     @Json(name = "playId")
     val playId: Int?,
     @Json(name = "playName")
-    val playName: String?,
+    var playName: String?,
     @Json(name = "rtScore")
     val rtScore: String?,
     @Json(name = "spread")
@@ -64,4 +65,12 @@ data class MatchOdd(
     val status: Int?,
     @Json(name = "multiCode")
     val multiCode: List<EndScoreInfo>?,
-):Parcelable
+):Parcelable{
+    init {
+        leagueName = leagueName?.replaceSpecialChar("\n")
+        homeName = homeName?.replaceSpecialChar("\n")
+        awayName = awayName?.replaceSpecialChar("\n")
+        playCateName = playCateName?.replaceSpecialChar("\n")
+        playName = playName?.replaceSpecialChar("\n")
+    }
+}

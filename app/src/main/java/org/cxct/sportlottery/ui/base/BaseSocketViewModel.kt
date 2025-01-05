@@ -529,15 +529,7 @@ abstract class BaseSocketViewModel(
             val haveSingleItemFailed = singleBets?.any { singleIt -> singleIt.status == 7 } ?: false
             val parlayBets = result.receipt?.parlayBets
             val haveParlayItemFailed = parlayBets?.any { parlayIt -> parlayIt.status == 7 } ?: false
-            val gameType = normalBetList.firstOrNull()?.matchOdd?.gameType
-            if (gameType==GameType.ES.key){
-                val categoryCodeList = normalBetList.groupBy { it.matchOdd.categoryCode }.keys.toList()
-                categoryCodeList.forEach {
-                    RecentDataManager.addRecent(RecentRecord(0,gameType = gameType,categoryCode = it))
-                }
-            }else{
-                RecentDataManager.addRecent(RecentRecord(0,gameType = gameType))
-            }
+
             if (!haveSingleItemFailed && !haveParlayItemFailed) {
                 BetInfoRepository.clear()
                 _betFailed.postValue(Pair(false, ""))
@@ -670,16 +662,14 @@ abstract class BaseSocketViewModel(
     }
 
     protected fun MatchOdd.updateOddStatus() {
-        this.oddsMap?.forEach {
-            it.value?.filterNotNull()?.forEach { odd ->
+        this.oddsMap?.forEach { itt->
+            val oddsList = itt.value?.filterNotNull()
+            oddsList?.forEach { odd ->
 
                 odd.status = when {
-                    (it.value?.filterNotNull()
-                        ?.all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }
-                        ?: true) -> BetStatus.DEACTIVATED.code
+                    (oddsList.all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
 
-                    (it.value?.filterNotNull()
-                        ?.any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } ?: true && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+                    (oddsList.any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
 
                     else -> odd.status
                 }

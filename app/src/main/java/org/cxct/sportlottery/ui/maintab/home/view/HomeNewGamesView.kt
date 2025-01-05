@@ -101,10 +101,12 @@ class HomeNewGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
         val lp = LayoutParams(dp24, dp24)
         lp.gravity = Gravity.CENTER_VERTICAL
         binding.linearTitle.addView(imageView, 0, lp)
-        binding.tvMore.setPadding(8.dp, 0, 5.dp, 0)
+        binding.tvMore.setPadding(6.dp, 4.dp, 0, 0)
         binding.tvMore.text = context.getString(R.string.N702)
             .addSpan("AAA", CenterImageSpan(context, R.drawable.ic_to_right_withe).setDrawableSize(13.dp).setMarginHorizontal(2.dp))
         binding.tvMore.setTextColor(Color.WHITE)
+        binding.tvMore.layoutParams.height = 28.dp
+        binding.tvMore.layoutParams.width = 75.dp
         binding.tvMore.setBackgroundResource(R.drawable.ic_more_but_bg)
         binding.tvMore.compoundDrawablePadding = 0
         binding.tvMore.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)

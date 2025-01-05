@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/okbet_bg_login"
+    tools:ignore="MissingDefaultResource,SpUsage">
+
+    <include
+        android:id="@+id/v_top"
+        layout="@layout/view_status_bar" />
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="24dp"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:src="@drawable/ic_arrow_login"
+        android:foregroundTint="@color/color_6D7693"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_top" />
+
+    <com.flyjingfish.gradienttextviewlib.GradientTextView
+        android:id="@+id/tv_title_forget_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/margin_20"
+        android:text="@string/forget_password_title"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:gradient_angle="270"
+        app:gradient_endColor="@color/color_0D2245"
+        app:gradient_startColor="@color/color_0D2245"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_top" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="151dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="143dp"
+        android:src="@drawable/logo_okbet_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="60dp"
+        android:paddingHorizontal="@dimen/margin_16"
+        android:paddingVertical="@dimen/margin_40"
+        android:background="@drawable/bg_white_radius_8"
+        android:elevation="1dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo">
+
+        <Button
+            android:id="@+id/btnPhoneWays"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/margin_12"
+            android:background="@drawable/bg_blue_radius_8"
+            android:drawableLeft="@drawable/ic_step_phone"
+            android:paddingHorizontal="16dp"
+            android:drawablePadding="8dp"
+            android:textAllCaps="false"
+            android:gravity="start|center_vertical"
+            android:text="@string/reset_pwd_by_mobile"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textSize14sp" />
+
+        <Button
+            android:id="@+id/btnEmailWays"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:visibility="gone"
+            android:background="@drawable/bg_blue_radius_8"
+            android:drawableLeft="@drawable/ic_email_white"
+            android:paddingHorizontal="16dp"
+            android:drawablePadding="8dp"
+            android:textAllCaps="false"
+            android:gravity="start|center_vertical"
+            android:text="@string/reset_pwd_by_email"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textSize14sp" />
+        <LinearLayout
+            android:id="@+id/cl_live_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:textColor="@color/color_535D76"
+                android:text="@string/need_help"
+                android:textSize="@dimen/textSize12sp"/>
+
+            <ImageView
+                android:layout_marginEnd="@dimen/dp_4"
+                android:layout_width="@dimen/margin_16"
+                android:adjustViewBounds="true"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_customer_service"/>
+
+            <TextView
+                android:id="@+id/tv_live_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_025BE8"
+                android:text="@string/live_service"
+                android:textSize="@dimen/textSize12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <include
+        android:id="@+id/bottom_liences"
+        layout="@layout/bottom_register_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_48"
+        android:layout_marginBottom="@dimen/margin_20"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

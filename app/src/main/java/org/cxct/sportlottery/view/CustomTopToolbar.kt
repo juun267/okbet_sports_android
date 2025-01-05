@@ -5,6 +5,8 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ViewBaseToolBarNoDrawerBinding
 import org.cxct.sportlottery.util.setTitleLetterSpacing
@@ -32,6 +34,10 @@ class CustomTopToolbar @JvmOverloads constructor(
             binding.tvToolbarTitle.text = value
         }
 
+    fun setToolbarBackgroundColor(@ColorRes color: Int) {
+        binding.appBarLayout.setBackgroundColor(ContextCompat.getColor(context, color))
+    }
+
     fun setOnBackPressListener(listener: () -> Unit) {
         binding.btnToolbarBack.setOnClickListener { listener.invoke() }
     }
@@ -40,6 +46,15 @@ class CustomTopToolbar @JvmOverloads constructor(
         view.apply {
             binding.tvToolbarTitle.setTitleLetterSpacing()
             binding.tvToolbarTitle.text = typedArray.getString(R.styleable.CustomTopToolbar_topTitleText) ?:""
+
+            binding.ivToolbarEnd.visibility =
+                typedArray.getInt(R.styleable.CustomTopToolbar_topTitleEndImgVisibility, 0x00000008)
+            binding.ivToolbarEnd.setImageResource(
+                typedArray.getResourceId(
+                    R.styleable.CustomTopToolbar_topTitleEndImgSrc,
+                    0
+                )
+            )
         }
 
         typedArray.recycle()

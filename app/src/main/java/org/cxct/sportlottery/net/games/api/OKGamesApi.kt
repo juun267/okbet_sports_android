@@ -50,4 +50,9 @@ interface OKGamesApi {
                            @Query("firmType") firmType1: String,
                            @Query("gameCode") gameCode: String,
                            @Query("loginSrc") loginSrc: Long = LOGIN_SRC): ApiResult<String>
+
+    @POST(Constants.GET_RECENT_GAMES)
+    suspend fun getRecentGames(@Body params: JsonObject): ApiResult<List<OKGameBean>>
+
+
 }

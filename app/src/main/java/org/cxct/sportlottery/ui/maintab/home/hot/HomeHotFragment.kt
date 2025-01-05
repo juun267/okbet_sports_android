@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.hot
 
 
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -40,9 +39,10 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
     private val  PRIORITY_SYSTEM_NOTICE = 90
     private val PRIORITY_DIALOG_HOME = 100
     private val PRIORITY_BIND_PHONE = 200
-    private val PRIORITY_REGISTER_SUCCESS = 300
+    private val PRIORITY_REGISTER_SUCCESS = 360
     private val PRIORITY_AGE_VERIFY = 400
     private val PRIORITY_FIRST_DEPOSIT = 350
+    private val PRIORITY_KYC_REMINDER = 320
 
     private val recommendMiniGameHelper by lazy {
         RecommendMiniGameHelper(context(), ::enterGame) {
@@ -117,7 +117,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
                         }
                     }
                 }
-                GameEntryType.MINIGAMES->{
+                GameEntryType.OKMINIS->{
                     getHomeFragment().jumpToPerya()
                 }
             }
@@ -139,6 +139,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             receiver.addOddsChangeListener(this, mOddsChangeListener)
             refreshHotMatch()
             binding.providerView.loadData()
+            binding.recentView.loadData();
         }
         getFirstDepositDetail()
     }
@@ -157,6 +158,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
             checkToCloseView()
             binding.providerView.loadData()
             recommendMiniGameHelper.resumePlay()
+            binding.recentView.setup(this@HomeHotFragment)
         }
 
     }
@@ -190,6 +192,9 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         }
 
         AgeVerifyDialog.buildAgeVerifyDialog(PRIORITY_AGE_VERIFY, fmProvider)?.let {
+            dialogQueueManager.enqueue(it)
+        }
+        RemindKYCDialog.buildDialog(PRIORITY_KYC_REMINDER, fmProvider)?.let {
             dialogQueueManager.enqueue(it)
         }
         showAnnouncementsDialog()
@@ -329,7 +334,7 @@ class HomeHotFragment : BaseSocketFragment<MainHomeViewModel, FragmentHomeHotBin
         val frameLayout = FrameLayout(context())
         val vBg = View(context())
         vBg.setBackgroundResource(R.drawable.img_home_newgame_bg_h)
-        frameLayout.addView(vBg, FrameLayout.LayoutParams(-1, 180.dp))
+        frameLayout.addView(vBg, FrameLayout.LayoutParams(-1, 52.dp))
         val linearLayout = LinearLayout(context())
         linearLayout.setPadding(0, 10.dp, 0, 0)
         linearLayout.orientation = LinearLayout.VERTICAL

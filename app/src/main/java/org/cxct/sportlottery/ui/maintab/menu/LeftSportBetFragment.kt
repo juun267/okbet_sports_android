@@ -4,6 +4,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
@@ -11,6 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.SelectMatchEvent
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentLeftSportBetBinding
@@ -30,6 +32,8 @@ import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerLeftMatchesAdapter
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.invite.InviteActivity
+import org.cxct.sportlottery.ui.profileCenter.pointshop.PointShopActivity
+import org.cxct.sportlottery.ui.profileCenter.taskCenter.TaskCenterActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -87,6 +91,11 @@ class LeftSportBetFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLef
         }
         ConfigRepository.config.observe(this) {
             binding.menuInvite.isVisible = StaticData?.inviteUserOpened()
+            binding.menuTaskCenter.isVisible = StaticData.taskCenterOpened()
+            binding.menuPointShop.isVisible = StaticData.pointShopOpened()
+        }
+        viewModel.taskRedDotEvent.collectWith(lifecycleScope){
+            binding.menuTaskCenter.ivDot().isVisible = it
         }
     }
     private fun initInplayList()=binding.rvInPlay.run{
@@ -125,6 +134,26 @@ class LeftSportBetFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLef
             startActivity(PromotionListActivity::class.java)
         }.apply {
             setVisibilityByMarketSwitch()
+        }
+        menuTaskCenter.setItem(
+            requireContext().getIconSelector(R.drawable.ic_left_menu_taskcenter_sel, R.drawable.ic_left_menu_taskcenter_nor),
+            R.string.A025
+        ){
+            close()
+            startActivity(TaskCenterActivity::class.java)
+        }.apply {
+            setSummaryStatus(true,R.string.A049, ContextCompat.getColor(requireContext(),R.color.color_A7B2C4))
+            isVisible = StaticData.taskCenterOpened()
+            ivDot().isVisible = LoginRepository.isLogined()
+        }
+        menuPointShop.setItem(
+            requireContext().getIconSelector(R.drawable.ic_left_menu_gift, R.drawable.ic_left_menu_gift),
+            R.string.A051
+        ){
+            startActivity(PointShopActivity::class.java)
+        }.apply {
+            setSummaryTag(R.drawable.ic_point_tag_new)
+            isVisible = StaticData.pointShopOpened()
         }
         menuInvite.setItem(
             requireContext().getIconSelector(R.drawable.ic_left_menu_invite_sel, R.drawable.ic_left_menu_invite_nor),
@@ -169,11 +198,7 @@ class LeftSportBetFragment:BaseSocketFragment<SportLeftMenuViewModel,FragmentLef
             R.string.N914
         ){
             close()
-            if (LoginRepository.isLogined()){
-                startActivity(VerifyIdentityActivity::class.java)
-            }else{
-                requireActivity().startLogin()
-            }
+            requireActivity().jumpToKYC()
         }.showBottomLine(false)
     }
     private fun bindVerifyStatus(userInfo: UserInfo?) = binding.run {

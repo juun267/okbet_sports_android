@@ -37,5 +37,17 @@
         android:textSize="@dimen/textSize14sp"
         android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/ivToolbarEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center|end"
+        android:contentDescription="@null"
+        android:paddingHorizontal="20dp"
+        android:scaleType="centerInside"
+        tools:visibility="visible"
+        android:visibility="gone"
+        tools:src="@drawable/ic_task_rule" />
+
 </FrameLayout>
 

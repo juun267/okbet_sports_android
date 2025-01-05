@@ -24,8 +24,6 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GameCollectManager
 import org.cxct.sportlottery.util.GridItemDecoration
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.RecentDataManager
-import org.cxct.sportlottery.util.RecentRecord
 import org.cxct.sportlottery.util.RefreshHelper
 import org.cxct.sportlottery.util.RefreshHelper.LoadMore
 import org.cxct.sportlottery.util.isThirdTransferOpen
@@ -194,12 +192,6 @@ class ThirdGameListActivity: BaseActivity<OKGamesViewModel, ActivityNewgameListB
         SensorsEventUtil.gameClickEvent("新游戏列表页", "${gameData.firmName}", "${gameData.gameType}", "${gameData.gameName}", gameData.id.toString())
         if(LoginRepository.isLogined()) {
             viewModel.requestEnterThirdGame(gameData, this)
-            //有些是手动构造的OKGameBean，需要排除
-            //&& (gameData.gameEntryType == GameEntryType.OKGAMES || gameData.gameEntryType==GameEntryType.OKLIVE)
-            if (gameData.id > 0){
-                OKGamesRepository.addRecentPlayGame(gameData.id.toString())
-            }
-            RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         } else {
             //请求试玩路线
             loading()

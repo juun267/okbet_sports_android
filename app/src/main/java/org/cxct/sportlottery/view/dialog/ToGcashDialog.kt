@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogToGcashBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.glifeUserWithdrawEnable
@@ -82,7 +83,7 @@ class ToGcashDialog : BaseDialog<BaseViewModel,DialogToGcashBinding>() {
             if (visibleNoReminder) {
                 markGLife(binding.cbNoReminder.isChecked)
             }
-            val uri = Uri.parse("https://miniprogram.gcash.com/s01/SBMk5e")
+            val uri = Uri.parse(Constants.GCASH_APP_LINK)
             val intent = Intent(Intent.ACTION_VIEW, uri)
             UpdateUtils.startActivity(intent)
             dismiss()

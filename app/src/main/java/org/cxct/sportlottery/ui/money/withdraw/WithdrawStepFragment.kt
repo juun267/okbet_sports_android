@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.modify.ModifyBindInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.jumpToKYC
 
 class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdrawStepBinding>() {
 
@@ -35,7 +36,11 @@ class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdra
         viewModel.getUserInfo()
     }
     fun setup()=binding.run{
-        val userInfo = UserInfoRepository.userInfo.value!!
+        val userInfo = UserInfoRepository.userInfo.value
+        if (userInfo == null) {
+            requireActivity().finish()
+            return@run
+        }
         val needPhoneNumber = userInfo.phone.isNullOrBlank()
         val needPassword = userInfo.passwordSet
         val needPayPW = userInfo.updatePayPw == 1
@@ -52,7 +57,7 @@ class WithdrawStepFragment: BaseFragment<ProfileCenterViewModel, FragmentWithdra
             )
         }
         setStepItem(needVerify,ivStep4,null,tvStepState4,ivStepArrow4){
-            startActivity(VerifyIdentityActivity::class.java)
+            requireActivity().jumpToKYC()
         }
         //若全部完成，就切换页面到提款页面
         if (!needPhoneNumber&&!needPassword&&!needPayPW&&!needVerify){

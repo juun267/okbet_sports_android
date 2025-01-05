@@ -78,8 +78,9 @@ import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.money.withdraw.WithdrawActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
+import org.cxct.sportlottery.ui.profileCenter.identity.*
+import org.cxct.sportlottery.ui.profileCenter.identity.handheld.VerifyNotFullyActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.liveness.LivenessStartActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.util.drawable.DrawableCreator
@@ -616,8 +617,6 @@ fun isGuest(): Boolean {
     return MultiLanguagesApplication.mInstance.userInfo()?.testFlag == TestFlag.GUEST.index
 }
 
-fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
-
 fun isOpenChatRoom(): Boolean = sConfigData?.chatOpen.isStatusOpen()
 
 fun isGooglePlayVersion() = BuildConfig.FLAVOR == "google"
@@ -1090,13 +1089,47 @@ fun FragmentActivity.jumpToWithdraw(){
     }
     val userInfo = UserInfoRepository.userInfo.value!!
     //不允许半认证用户冲提款
-    if (userInfo.fullVerified !=1 && userInfo.verified == VerifiedType.PASSED.value && sConfigData?.halfVerifiedCharge==0){
-        startActivity(VerifyIdentityActivity::class.java){
-            it.putExtra("title",getString(R.string.withdraw))
+    if (userInfo.fullVerified !=1
+        && userInfo.verified == VerifiedType.PASSED.value
+        && (sConfigData?.halfVerifiedCharge==0 || sConfigData?.needFullVerifyToWithdraw==1)){
+        startActivity(VerifyNotFullyActivity::class.java) {
+             it.putExtra(VerifyNotFullyActivity.TYPE, 1)
         }
        return
     }
     startActivity(WithdrawActivity::class.java)
+}
+fun FragmentActivity.jumpToKYC(){
+    loginedRun(this,true){
+        val userInfo =  UserInfoRepository.userInfo.value!!
+        if (userInfo.fullVerified==1){
+            startActivity<VerifyIdentityActivity>()
+        }else{
+            when (userInfo.verified) {
+                VerifiedType.VERIFYING.value,
+                VerifiedType.VERIFIED_WAIT.value,
+                VerifiedType.REVERIFYING.value -> {
+                    startActivity<VerifyIdentityActivity>()
+                }
+                VerifiedType.REVERIFIED_NEED.value -> {
+                    startActivity<VerifyIdentityActivity>()
+                }
+                VerifiedType.REJECT.value -> {
+                    startActivity<VerifyIdentityActivity>()
+                }
+                VerifiedType.PASSED.value->{
+                    if(sConfigData?.needFullVerifyToWithdraw==1){
+                       startActivity<VerifyNotFullyActivity>()
+                    }else{
+                        startActivity<VerifyIdentityActivity>()
+                    }
+                }
+                else -> {
+                    startActivity<VerifyIdentityActivity>()
+                }
+            }
+        }
+    }
 }
 
 fun FragmentActivity.showDataSourceChangedDialog(event: Event<Boolean>) {
@@ -1123,4 +1156,16 @@ fun JsonObject.appendCaptchaParams(identity: String, validCode: String){
 
 fun isHalloweenStyle(): Boolean {
     return true
+}
+fun String.replaceSpecialChar(char: String):String{
+    return replace(char,"")
+}
+
+fun Long.isTimeOut(): Boolean {
+    return this <= System.currentTimeMillis()
+}
+
+fun String.encodeUserName(): String {
+    if (this.isEmpty()) return ""
+    return this.first() + "***" + this.last()
 }

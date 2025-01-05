@@ -27,6 +27,7 @@ import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentMinigameListBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -77,7 +78,7 @@ class MiniGameListFragment: BaseFragment<OKGamesViewModel, FragmentMinigameListB
             }
         }
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleScope) {
-            if ("OKMINI" == it.firmCode) {
+            if (Constants.FIRM_TYPE_OKMINI == it.firmCode) {
                 adapter.updateMaintainStatus(it.maintain)
             }
         }

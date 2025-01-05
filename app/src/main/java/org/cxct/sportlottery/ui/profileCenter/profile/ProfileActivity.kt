@@ -41,6 +41,7 @@ import org.cxct.sportlottery.ui.profileCenter.securityquestion.SettingQuestionAc
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.isStatusOpen
+import org.cxct.sportlottery.util.jumpToKYC
 import org.cxct.sportlottery.view.dialog.SourceOfIncomeDialog
 import timber.log.Timber
 import java.io.File
@@ -128,7 +129,7 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
         customToolBar.titleText = getString(R.string.profile_info)
         sConfigData?.apply {
             llQqNumber.isVisible = enableWithdrawQQ.isStatusOpen()
-            llEMail.isVisible = enableWithdrawEmail.isStatusOpen()
+//            llEMail.isVisible = enableWithdrawEmail.isStatusOpen()
             llPhoneNumber.isVisible = enableWithdrawPhone.isStatusOpen()
             llWechat.isVisible = enableWithdrawWechat.isStatusOpen()
             llRealName.isVisible = enableWithdrawFullName.isStatusOpen()
@@ -236,8 +237,7 @@ class ProfileActivity : BaseActivity<ProfileModel,ActivityProfileBinding>() {
         llWechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
         //實名制
         llVerified.setOnClickListener {
-            if (llVerified.isEnabled)
-                startActivity(VerifyIdentityActivity::class.java)
+            jumpToKYC()
         }
         llNationality.setOnClickListener {
             showBottomDialog(

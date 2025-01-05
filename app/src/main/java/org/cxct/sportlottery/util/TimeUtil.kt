@@ -37,6 +37,10 @@ object TimeUtil {
 
     const val EN_DATE_FORMAT = "MMM dd, yyyy"
 
+    const val MD_HMS = "MM/dd HH:mm:ss" //月月/日日 时时:分分:秒秒
+
+    const val MD = "MM/dd" //月/日
+
     const val TIMEZONE_DEFAULT = "GMT-4"
 
     fun stampToDateHMS(time: Long): String {
@@ -280,6 +284,13 @@ object TimeUtil {
         calendar.set(Calendar.MILLISECOND, 999)
         return calendar
     }
+    fun getEndTimeCalendar(calendar: Calendar): Calendar {
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        return calendar
+    }
 
     fun getTodayStartTimeStamp(): Long {
         return getTodayStartTimeCalendar().timeInMillis
@@ -290,6 +301,13 @@ object TimeUtil {
     }
 
     fun getTodayTimeRangeParams(): TimeRangeParams {
+        //match type 今日 00:00:00 ~ 23:59:59:59
+        return object : TimeRangeParams {
+            override val startTime = getTodayStartTimeStamp().toString()
+            override val endTime = getTodayEndTimeStamp().toString()
+        }
+    }
+    fun getTimeRangeParams(): TimeRangeParams {
         //match type 今日 00:00:00 ~ 23:59:59:59
         return object : TimeRangeParams {
             override val startTime = getTodayStartTimeStamp().toString()

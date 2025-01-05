@@ -169,9 +169,6 @@ class OKLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentOkgamesBinding
 
     fun enterGame(bean: OKGameBean, from: String) {
         mainTabActivity().enterThirdGame(bean, from)
-        if (LoginRepository.isLogined()) {
-            viewModel.updateRecentPlay()
-        }
     }
 
     fun backGameAll() {

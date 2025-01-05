@@ -8,6 +8,7 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.network.common.MatchInfo
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
+import org.cxct.sportlottery.util.replaceSpecialChar
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -16,11 +17,11 @@ data class MatchInfo(
     @Json(name = "gameType")
     override var gameType: String?,
     @Json(name = "awayName")
-    val awayName: String?,
+    var awayName: String?,
     @Json(name = "endTime")
     val endTime: Long?,
     @Json(name = "homeName")
-    val homeName: String?,
+    var homeName: String?,
     @Json(name = "id")
     override val id: String, //赛事或赛季id
     @Json(name = "odds")
@@ -76,6 +77,11 @@ data class MatchInfo(
     @Json(name = "cashoutStatus")
     var cashoutStatus: Int = 0,//cashout 狀態 0:不可 ,1:可
 ) : Parcelable, MatchInfo {
+    init {
+        leagueName = leagueName?.replaceSpecialChar("\n")
+        homeName = homeName?.replaceSpecialChar("\n")
+        awayName = awayName?.replaceSpecialChar("\n")
+    }
     //Live
     var isInPlay: Boolean? = false
     override var awayScore: String? = null //客队分数

@@ -272,6 +272,7 @@ object UserInfoRepository {
             safeQuestionType = userInfoData.safeQuestionType,
             fullVerified = userInfoData.fullVerified,
             state = userInfoData.state,
+            addTime = userInfoData.addTime,
         )
 
     suspend fun getSign(constraintType:Int,dataStatisticsRange:Int): ApiResult<JsonElement> {

@@ -16,4 +16,5 @@ data class UploadVerifyPhotoKYCRequest(
     val middleName: String?,
     val lastName: String?,
     val birthday: String?,
+    val version: String = "v2",
 )

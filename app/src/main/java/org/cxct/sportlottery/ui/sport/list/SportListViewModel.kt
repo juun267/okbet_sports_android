@@ -92,8 +92,6 @@ open class SportListViewModel(
 
                             matchInfo.startDateDisplay =
                                 TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
-                            matchInfo.startTimeDisplay =
-                                TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
                             matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
 
                         }
@@ -130,7 +128,6 @@ open class SportListViewModel(
     }
 
     fun dealLeagueList(playCateMenuCode: String, matchType: String, leagueList: List<LeagueOdd>,filterMatchIdList: List<String>) {
-        leagueList.updateMatchType()
         leagueList.forEach { leagueOdd ->
             var iterator = leagueOdd.matchOdds.iterator()
             while (iterator.hasNext()) {
@@ -141,7 +138,6 @@ open class SportListViewModel(
                     matchOdd.sortOddsMap()
                     val matchInfo = matchOdd.matchInfo
                     matchInfo.startDateDisplay = TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
-                    matchOdd.matchInfo.startTimeDisplay = TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
                     matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     matchInfo.categoryCode = leagueOdd.league.categoryCode
                     matchInfo.leagueName = leagueOdd.league.name
@@ -461,22 +457,6 @@ open class SportListViewModel(
         }
     }
 
-
-    /**
-     * 检查赛事是否到了开赛时间，并且更新滚球状态
-     */
-    private fun List<LeagueOdd>.updateMatchType() {
-        forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { matchOdd ->
-
-                matchOdd.matchInfo?.isInPlay =
-                    System.currentTimeMillis() > matchOdd.matchInfo?.startTime ?: 0
-
-                matchOdd.matchInfo?.isAtStart =
-                    TimeUtil.isTimeAtStart(matchOdd.matchInfo?.startTime)
-            }
-        }
-    }
     /**
      * 根據賽事的oddsSort將盤口重新排序
      */

@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -55,6 +56,7 @@ class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(con
             }
            val list=buildList.map { it.toList() }.toMutableList()
             homeProviderAdapter.setList(list)
+            this@HomeProviderView.isVisible = list.isNotEmpty()
         }
 
         binding.tvMore.setOnClickListener {
@@ -77,25 +79,6 @@ class HomeProviderView(context: Context, attrs: AttributeSet) : LinearLayout(con
         val lp = LayoutParams(dp24, dp24)
         lp.gravity = Gravity.CENTER_VERTICAL
         linTitle.addView(imageView, 0, lp)
-
-        val frameLayout = FrameLayout(context)
-        val ivMonster = ImageView(context)
-        ivMonster.setBackgroundResource(R.drawable.img_monster_1_h)
-        val monsterLP = FrameLayout.LayoutParams(158.dp, 80.dp)
-        monsterLP.topMargin = (-13).dp
-        monsterLP.gravity = Gravity.RIGHT
-        frameLayout.addView(ivMonster, monsterLP)
-
-        (linTitle.parent as ViewGroup).removeView(linTitle)
-        linTitle.setPadding(0, 5.dp, 0, 0)
-        frameLayout.addView(linTitle)
-
-        val rcvLP = FrameLayout.LayoutParams(-1, -2)
-        rcvLP.topMargin = 35.dp
-        rcvLP.leftMargin = 12.dp
-        (rvProvider.parent as ViewGroup).removeView(rvProvider)
-        frameLayout.addView(rvProvider, rcvLP)
-
-        addView(frameLayout)
+        (linTitle.layoutParams as MarginLayoutParams).bottomMargin = 0
     }
 }

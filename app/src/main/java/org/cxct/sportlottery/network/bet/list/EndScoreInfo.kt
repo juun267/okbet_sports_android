@@ -6,6 +6,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.util.replaceSpecialChar
 
 /**
  * 篮球末位比分赔率名字
@@ -22,5 +23,9 @@ data class EndScoreInfo(
     @Json(name = "playCode")
     val playCode: String,
     @Json(name = "playName")
-    val playName: String,
-) : Parcelable
+    var playName: String,
+) : Parcelable{
+    init {
+        playName = playName.replaceSpecialChar("\n")
+    }
+}

@@ -469,7 +469,54 @@
                         </RelativeLayout>
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/btn_other_bet_record"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:foreground="@drawable/fg_ripple"
+                        android:gravity="center"
+                        android:minHeight="@dimen/margin_50"
+                        android:orientation="horizontal">
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="10dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/icon_other_betting" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="14dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_weight="1"
+                                android:text="@string/P602"
+                                android:textColor="@color/color_6C7BA8"
+                                android:textSize="@dimen/textSize14sp" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:contentDescription="@null"
+                                android:src="@drawable/icon_arrow07" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/margin_0.5"
+                                android:layout_alignParentBottom="true"
+                                android:background="@color/color_E3E8EE" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
                     <LinearLayout
                         android:id="@+id/btn_account_transfer"
                         android:layout_width="match_parent"
@@ -577,6 +624,138 @@
                         </RelativeLayout>
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/btnTaskCenter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:foreground="@drawable/fg_ripple"
+                        android:gravity="center"
+                        android:minHeight="@dimen/margin_50"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="7dp">
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/margin_3"
+                                android:layout_marginRight="@dimen/margin_3"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_profile_task_center" />
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivTaskDot"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:visibility="gone"
+                                tools:visibility="visible"
+                                android:src="@drawable/ic_task_list_type_new_dot"/>
+                        </FrameLayout>
+
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="14dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tvTaskDetail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_weight="1"
+                                android:text="@string/A025"
+                                android:textColor="@color/color_6C7BA8"
+                                android:textSize="@dimen/textSize14sp"
+                                tools:ignore="SpUsage" />
+
+                            <ImageView
+                                android:id="@+id/ivLine2"
+                                android:layout_width="@dimen/margin_12"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:contentDescription="@null"
+                                android:src="@drawable/icon_arrow07" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toStartOf="@+id/ivLine2"
+                                android:layout_toEndOf="@+id/tvTaskDetail"
+                                android:ellipsize="end"
+                                android:gravity="right"
+                                android:singleLine="true"
+                                android:text="@string/A049"
+                                android:textColor="@color/color_A7B2C4"
+                                android:textSize="@dimen/textSize12sp" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/margin_0.5"
+                                android:layout_alignParentBottom="true"
+                                android:background="@color/color_E3E8EE" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/btnPointShop"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:foreground="@drawable/fg_ripple"
+                        android:gravity="center"
+                        android:minHeight="@dimen/margin_50"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="10dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_profile_gift" />
+                        <!--缺翻譯-->
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="14dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_weight="1"
+                                android:text="@string/A051"
+                                android:textColor="@color/color_6C7BA8"
+                                android:textSize="@dimen/textSize14sp" />
+
+                            <ImageView
+                                android:id="@+id/ivArrowPoint"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:contentDescription="@null"
+                                android:src="@drawable/icon_arrow07" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toStartOf="@+id/ivArrowPoint"
+                                android:src="@drawable/ic_point_tag_new"/>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/margin_0.5"
+                                android:layout_alignParentBottom="true"
+                                android:background="@color/color_E3E8EE" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                    <LinearLayout
                         android:id="@+id/btnInviteFriend"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -673,55 +852,6 @@
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/btn_other_bet_record"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:foreground="@drawable/fg_ripple"
-                        android:gravity="center"
-                        android:minHeight="@dimen/margin_50"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginEnd="10dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/icon_other_betting" />
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="14dp"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_weight="1"
-                                android:text="@string/other_bet"
-                                android:textColor="@color/color_6C7BA8"
-                                android:textSize="@dimen/textSize14sp" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:contentDescription="@null"
-                                android:src="@drawable/icon_arrow07" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_0.5"
-                                android:layout_alignParentBottom="true"
-                                android:background="@color/color_E3E8EE" />
-                        </RelativeLayout>
-
                     </LinearLayout>
 
 
@@ -885,7 +1015,6 @@
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
                     </LinearLayout>
-
                     <LinearLayout
                         android:id="@+id/btn_self_limit"
                         android:layout_width="match_parent"

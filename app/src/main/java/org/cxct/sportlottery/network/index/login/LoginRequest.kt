@@ -17,7 +17,7 @@ data class LoginRequest(
     val loginSrc: Long = LOGIN_SRC, //登录来源（0：WEB, 1：MOBILE_BROWSER, 2：ANDROID, 3：IOS）
     val deviceSn: String = Constants.deviceSn, //设备号（手机app登录必传）
     val appVersion: String = org.cxct.sportlottery.BuildConfig.VERSION_NAME,
-    val loginEnvInfo: String = Settings.Secure.getString(MultiLanguagesApplication.getInstance().contentResolver, Settings.Secure.ANDROID_ID), //登入环境信息
+    val loginEnvInfo: String = Constants.deviceId, //登入环境信息
     val securityCode: String? = null, //短信或者邮件验证码
     val inviteCode: String? = null,
     val safeQuestion: String? = null //密保问题登录的答案

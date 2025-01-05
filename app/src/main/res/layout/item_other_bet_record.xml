@@ -82,6 +82,11 @@
                 tools:text="+1,060.00"
                 tools:textColor="@color/color_08dc6e_08dc6e" />
 
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/ic_other_record_arrow_right"/>
+
         </LinearLayout>
 
         <View

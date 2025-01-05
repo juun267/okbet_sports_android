@@ -12,7 +12,7 @@ class OtherBetRecordActivity : BaseActivity<OtherBetRecordViewModel,ActivityOthe
     }
 
     private fun initToolbar()=binding.toolBar.run {
-        titleText = getString(R.string.other_bet_record)
+        titleText = getString(R.string.P602)
         setOnBackPressListener {
             onBackPressed()
         }

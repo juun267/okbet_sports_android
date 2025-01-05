@@ -80,10 +80,16 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
             && getMainTabActivity().checkSportMaintain(true)) {
             return@HomeMenuAdapter false
         }
-        if (fragmentClass == ElectGamesFragment::class.java && !okGameOpened()) {
+        if (fragmentClass == ElectGamesFragment::class.java) {
+            if(okGameOpened()){
+                getMainTabActivity().jumpToOKGames()
+            }
             return@HomeMenuAdapter false
         }
-        if (fragmentClass == LiveGamesFragment::class.java && !okLiveOpened()) {
+        if (fragmentClass == LiveGamesFragment::class.java) {
+            if(okLiveOpened()){
+                getMainTabActivity().jumpToOkLive()
+            }
             return@HomeMenuAdapter false
         }
         fragmentHelper2.show(fragmentClass) { fragment, _ ->
@@ -128,7 +134,6 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         initMenu()
         initIndicate()
         applyHalloweenStyle()
-        enableBasketballFloating()
         binding.ivService.setOnTouchListener(SuckEdgeTouch())
         binding.ivService.setServiceClick(childFragmentManager)
         viewModel.getHallOkSport()
@@ -200,7 +205,7 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
     private fun setUpBanner() {
         val lang = LanguageManager.getSelectLanguage(context).key
         var imageList = sConfigData?.imageList?.filter {
-            it.imageType == ImageType.BANNER_HOME && it.lang == lang && !it.imageName1.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden)
+            it.imageType == ImageType.BANNER_HOME && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(getMarketSwitch() && it.isHidden)
         }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
@@ -375,37 +380,6 @@ class HomeFragment : BaseFragment<MainHomeViewModel,FragmentHomeBinding>() {
         (cvBanner.parent as View).setBackgroundResource(R.drawable.img_home_top_banner_h)
         ivBroadcast.setImageResource(R.drawable.ic_notice_h)
 
-    }
-
-    private fun enableBasketballFloating() {
-        val context = context()
-        val container = binding.floatingContainer
-        val frameLayout = FrameLayout(context)
-        val dp90 = 90.dp
-        val lp0 = FrameLayout.LayoutParams(dp90, dp90)
-        lp0.gravity = Gravity.BOTTOM
-        lp0.bottomMargin = 210.dp
-        container.addView(frameLayout, lp0)
-
-        val img = ImageView(context)
-        img.load(R.drawable.img_floating_basketball)
-        val dp80 = 80.dp
-        val lp1 = FrameLayout.LayoutParams(dp80, dp80)
-        lp1.gravity = Gravity.BOTTOM
-        frameLayout.addView(img, lp1)
-
-        val dp24 = 24.dp
-        val dp6 = 4.dp
-        val ivClose = ImageView(context)
-        ivClose.setImageResource(R.drawable.ic_close_float)
-        ivClose.setPadding(dp6, dp6, dp6, dp6)
-        val lp2 = FrameLayout.LayoutParams(dp24, dp24)
-        lp2.gravity = Gravity.END
-        lp2.topMargin = 14.dp
-        frameLayout.addView(ivClose, lp2)
-        frameLayout.setOnTouchListener(SuckEdgeTouch())
-        ivClose.setOnClickListener { container.removeView(frameLayout) }
-        frameLayout.setOnClickListener { getMainTabActivity().jumpToSport(GameType.BK) }
     }
 
 }

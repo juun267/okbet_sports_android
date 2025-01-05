@@ -188,7 +188,7 @@
             android:textSize="@dimen/textSize16sp"
             android:textColor="@color/color_0D2245"
             android:textStyle="bold"
-            android:text="@string/P283"/>
+            android:text="@string/P312_1"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout3"
@@ -216,7 +216,13 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_667085"
-                    android:text="@string/P322_1"/>
+                    android:text="@string/P313_1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textSize12sp"
+                    android:textColor="@color/color_667085"
+                    android:text="@string/P314_1"/>
 
 
             </LinearLayout>

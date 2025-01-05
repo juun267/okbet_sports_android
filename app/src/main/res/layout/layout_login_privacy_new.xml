@@ -2,13 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="174dp"
-    android:background="@drawable/bg_white_radius_16_stoke_blue"
     android:orientation="vertical">
-
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/cbPrivacy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:button="@drawable/selector_login_checked"
+        android:gravity="center_vertical"
+        android:lineHeight="@dimen/margin_16"
+        android:paddingLeft="@dimen/margin_5"
+        android:text="@string/P533"
+        android:textColor="@color/color_0D2245"
+        android:textSize="@dimen/textSize12sp" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@drawable/bg_white_stroke_e5ebf2_radius_6">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -135,39 +146,25 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:adjustViewBounds="true"
-            android:src="@drawable/bg_privacy_shadow" />
+<!--        <ImageView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            android:src="@drawable/bg_privacy_shadow" />-->
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_1"
         android:background="@drawable/bg_white_radius_16_bottom"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/margin_10"
-        android:paddingVertical="@dimen/margin_8">
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/cbPrivacy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:button="@drawable/selector_login_checked"
-            android:gravity="center_vertical"
-            android:lineHeight="@dimen/margin_16"
-            android:paddingLeft="@dimen/margin_5"
-            android:text="@string/P346"
-            android:textColor="@color/color_0D2245"
-            android:textSize="@dimen/textSize12sp" />
+        android:paddingVertical="@dimen/margin_10">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:gravity="center_horizontal">
 
             <TextView

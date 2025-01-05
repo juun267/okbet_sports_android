@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.net.games
 
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.common.enums.GameEntryType
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.games.api.OKGamesApi
@@ -13,7 +15,6 @@ import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.GameCollectManager
-import org.cxct.sportlottery.util.KvUtils
 
 object OKGamesRepository {
 
@@ -21,11 +22,13 @@ object OKGamesRepository {
     val okPlayEvent = SingleLiveEvent<OKGameBean?>()
     val gameFiremEvent = SingleLiveEvent<List<GameFirmValues>>()
     var enterGameAfterLogin: OKGameBean? = null
-    private const val KEY_GAME_RECENT_PLAY = "recentPlay"
+    val collectLiveList = MutableLiveData<MutableList<OKGameBean>>()
+    val recentGamesEvent = MutableLiveData<List<OKGameBean>>()
+    private const val DEVICE = 2
 
     private fun paramDevice(): JsonObject {
         val params = JsonObject()
-        params.addProperty("device", 2)
+        params.addProperty("device", DEVICE)
         return params
     }
 
@@ -142,7 +145,7 @@ object OKGamesRepository {
         val params = paramDevice()
         params.addProperty("page", page)
         params.addProperty("pageSize", pageSize)
-        params.addProperty("gameEntryType", GameEntryType.MINIGAMES)
+        params.addProperty("gameEntryType", GameEntryType.OKMINIS)
 
         return okGamesApi.getOKGamesList(params)
     }
@@ -175,21 +178,19 @@ object OKGamesRepository {
         return gameFiremEvent.value?.firstOrNull{it.firmType == firmType }?.guestOpen == 2
     }
 
-    fun addRecentPlayGame(gameId: String): LinkedHashSet<String> {
-        val recentGameIds = KvUtils.decodeStringSet(KEY_GAME_RECENT_PLAY)
-        recentGameIds.add(gameId)
-        if (recentGameIds.size > 12) {
-            recentGameIds.remove(recentGameIds.first())
+    suspend fun getRecentGames(): ApiResult<List<OKGameBean>>{
+       return okGamesApi.getRecentGames(paramDevice()).apply {
+            getData()?.let {
+                it.forEach { item->
+                    //三方游戏时，把gameId赋值给gameCode,id
+                    if(item.gameType!=GameEntryType.SPORT&&item.gameType!=GameEntryType.ES){
+                        item.gameCode = item.gameId
+                        item.id = item.gameId.toIntS(item.id)
+                    }
+                }
+                recentGamesEvent.postValue(it)
+            }
         }
-        KvUtils.encodeSet(KEY_GAME_RECENT_PLAY, recentGameIds)
-        return recentGameIds
     }
 
-    fun getRecentPlayGameIds(): LinkedHashSet<String> {
-        return KvUtils.decodeStringSet(KEY_GAME_RECENT_PLAY)
-    }
-
-    private fun clearRecentPlayGame() {
-        KvUtils.removeKey(KEY_GAME_RECENT_PLAY)
-    }
 }

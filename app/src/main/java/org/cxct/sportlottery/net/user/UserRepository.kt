@@ -110,6 +110,8 @@ object UserRepository {
         selfiePicture?.let { params["selfiePicture"] = it}
         wealthProof?.let { params["wealthProof"] = it}
         backOfID?.let { params["backOfID"] = it }
+        //新需求为了兼容，固定传version
+        params["version"] = "v2"
         return userApi.uploadReviewPhoto(params.toMap())
     }
 
@@ -153,6 +155,12 @@ object UserRepository {
         return ocrApi.getOCRInfo(params)
     }
 
+    suspend fun getLicense(pageName: String): ApiResult<String> {
+        val params = JsonObject()
+        params.addProperty("pageName", pageName)
+        return ocrApi.getLicense(params)
+    }
+
     suspend fun uploadKYCInfo(idType: Int, idNumber: String?, idImageUrl: String,
                               firstName: String, middleName: String, lastName: String, birthday: String, uide: Uide
     ): ApiResult<String> {
@@ -183,6 +191,8 @@ object UserRepository {
         params.addProperty("permanentCity", uide.permanentCity)
         params.addProperty("permanentAddress", uide.permanentAddress)
         params.addProperty("permanentZipCode", uide.permanentZipCode)
+        //新需求为了兼容，固定传version，请求后用户状态就还是未认证
+        params.addProperty("version", "v2")
         return userApi.uploadKYCInfo(params)
     }
 
@@ -285,5 +295,12 @@ object UserRepository {
 
     suspend fun getKycNeedInformation(): ApiResult<KYCVerifyConfig> {
         return userApi.getKycNeedInformation()
+    }
+    suspend fun liveKycVerify(verifyId: String): ApiResult<LiveKycVerifyResult> {
+        val params = JsonObject()
+        params.addProperty("verifyId", verifyId)
+        //活体校验设备类型：1-H5，2-APP端
+        params.addProperty("clientType", 2)
+        return userApi.liveKycVerify(params)
     }
 }

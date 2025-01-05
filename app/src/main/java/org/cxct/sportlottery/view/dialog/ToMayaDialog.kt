@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogToMayaBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.mayaUserWithdrawEnable
@@ -84,7 +85,7 @@ class ToMayaDialog : BaseDialog<BaseViewModel, DialogToMayaBinding>() {
             if (visibleNoReminder) {
                 markGLife(binding.cbNoReminder.isChecked)
             }
-            val uri = Uri.parse("https://official.paymaya.com/be7m/PayMayaAppLinks")
+            val uri = Uri.parse(Constants.MAYA_APP_LINK)
             val intent = Intent(Intent.ACTION_VIEW, uri)
             UpdateUtils.startActivity(intent)
             dismiss()

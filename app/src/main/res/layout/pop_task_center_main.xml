@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/margin_12"
+    android:clickable="true"
+    tools:ignore="MissingDefaultResource"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_task_center_main">
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="@dimen/margin_12"
+            android:layout_height="@dimen/margin_12"
+            android:layout_marginLeft="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
+            android:src="@drawable/ic_close_task_center_pop_close"/>
+
+        <ImageView
+            android:layout_width="@dimen/margin_40"
+            android:layout_height="@dimen/margin_40"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:src="@drawable/ic_cash_light"/>
+        <TextView
+            android:id="@+id/tvContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/color_0D2245"
+            android:textSize="@dimen/textSize14sp"
+            android:text="@string/A043"/>
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="70dp"
+            android:layout_marginLeft="@dimen/margin_12"
+            android:layout_marginRight="@dimen/margin_16"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:background="@drawable/img_task_claim_button"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/textSize12sp"
+            android:text="@string/A038"/>
+    </LinearLayout>
+
+
+</LinearLayout>

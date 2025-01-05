@@ -14,6 +14,9 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
+import androidx.core.view.forEach
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -29,20 +32,26 @@ import com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PLAYING
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.show
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.databinding.ItemMinigameBinding
+import org.cxct.sportlottery.databinding.ItemMinigameCoverBinding
 import org.cxct.sportlottery.databinding.LayoutRecommendMinigameBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.StaticData
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.service.dispatcher.GamesJackpotDispatcher
 import org.cxct.sportlottery.ui.base.VisibilityFragment
+import org.cxct.sportlottery.ui.game.dropball.DropBallActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -50,9 +59,11 @@ import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
 import org.cxct.sportlottery.util.drawable.shape.ShapeGradientOrientation
 import org.cxct.sportlottery.util.isHalloweenStyle
+import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.OKVideoPlayer
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import splitties.systemservices.layoutInflater
+import splitties.views.dsl.core.endMargin
 import splitties.views.dsl.core.horizontalMargin
 import splitties.views.dsl.core.startMargin
 import java.util.Objects
@@ -80,12 +91,26 @@ class RecommendMiniGameHelper(private val context: Context,
 
     private var dataList: List<OKGameBean>? = null
     private var isClosed: Boolean = false
+    private val dropBallOKGameBean = OKGameBean(
+        firmType = null,
+        gameCode = null,
+        maintain = 1,
+        gameEntryType = GameEntryType.OKMINIS).apply {
+        isPreDropBall = true
+    }
+
 
     fun bindLifeEvent(lifecycleOwner: LifecycleOwner) {
         isClosed = !StaticData.miniGameOpened()
-        OKGamesViewModel.miniGameList.observe(lifecycleOwner) { setup(it.first) }
+        OKGamesViewModel.miniGameList.observe(lifecycleOwner) {
+            val temp = it.first?.toMutableList()
+            if(sConfigData?.dropBallActivity==true){
+                temp?.add(dropBallOKGameBean)
+            }
+            setup(temp?.toList())
+        }
         ServiceBroadcastReceiver.thirdGamesMaintain.collectWith(lifecycleOwner.lifecycleScope) {
-            if (it.firmCode != "OKMINI" || dataList.isNullOrEmpty() || dataList!!.first().maintain == it.maintain) {
+            if (it.firmCode != Constants.FIRM_TYPE_OKMINI || dataList.isNullOrEmpty() || dataList!!.first().maintain == it.maintain) {
                 return@collectWith
             }
 
@@ -238,12 +263,12 @@ class RecommendMiniGameHelper(private val context: Context,
         val viewHolder = (binding.vp.getChildAt(0) as RecyclerView).findViewHolderForAdapterPosition(binding.vp.currentItem)
         if (viewHolder != null) {
             currentPlayer = (viewHolder as BindingVH<ItemMinigameBinding>).vb.videoPlayer
-            currentPlayer!!.startPlayLogic()
+            if (currentPlayer?.isVisible==true){
+                currentPlayer!!.startPlayLogic()
+            }
         }
     }
-
     fun setup(gameList: List<OKGameBean>?) {
-
         if (gameList.isNullOrEmpty()) {
             if (dataList.isNullOrEmpty()) {
                 binding.root.hide()
@@ -291,8 +316,13 @@ class RecommendMiniGameHelper(private val context: Context,
 
             tab.customView = itemView.first
             tab.text = okGameBean.gameName
-            itemView.third.text = okGameBean.gameName
-            itemView.second.load(okGameBean.imgGame, R.drawable.ic_okbet_round)
+            if (okGameBean.isPreDropBall){
+                itemView.third.text = "Drop Ball"
+                itemView.second.load(R.drawable.ic_drop_ball_tab)
+            }else{
+                itemView.third.text = okGameBean.gameName
+                itemView.second.load(okGameBean.imgGame, R.drawable.ic_okbet_round)
+            }
             binding.tabLayout.addTab(tab)
         }
 
@@ -361,7 +391,8 @@ class RecommendMiniGameHelper(private val context: Context,
             if (isHalloweenStyle()) {
                 binding.vAmountBg.setBackgroundResource(R.drawable.bg_minigame_jackpot_h)
                 (binding.tvJackPotAmount.layoutParams as MarginLayoutParams).let {
-                    it.startMargin = 82.dp
+                    it.startMargin = 88.dp
+                    it.endMargin = 104.dp
                     it.bottomMargin = 6.dp
                 }
                 binding.tvBetToWin.setBackgroundResource(R.drawable.img_bet_to_win)
@@ -401,6 +432,20 @@ class RecommendMiniGameHelper(private val context: Context,
         override fun onBindViewHolder(holder: BindingVH<ItemMinigameBinding>, position: Int) {
             val binding = holder.vb
             val item = getItem(position)
+            if (item.isPreDropBall){
+                //隐藏其他布局，只保留封面
+                binding.root.children.forEach {
+                    it.isVisible = it == binding.vCover
+                }
+                binding.vCover.load(R.drawable.img_drop_ball_cover)
+                binding.videoPlayer.isGone = true
+                binding.vCover.setOnClickListener {
+                    loginedRun(context,true){
+                        context.startActivity<DropBallActivity>()
+                    }
+                }
+                return
+            }
             binding.vCover.setOnClickListener {
                 if (!item.isMaintain() && StaticData.miniGameOpened()) {
                     onClick.invoke(item)

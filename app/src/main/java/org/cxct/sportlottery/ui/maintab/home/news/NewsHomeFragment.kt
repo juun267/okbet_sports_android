@@ -130,7 +130,7 @@ class NewsHomeFragment : BaseSocketFragment<MainHomeViewModel, FragmentNewsHomeB
     private fun setUpBanner() {
         val lang = LanguageManager.getSelectLanguage(context).key
         var imageList = sConfigData?.imageList?.filter {
-            it.imageType == ImageType.BANNER_NEWS && it.lang == lang && !it.imageName1.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden)
+            it.imageType == ImageType.BANNER_NEWS && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(getMarketSwitch() && it.isHidden)
         }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {

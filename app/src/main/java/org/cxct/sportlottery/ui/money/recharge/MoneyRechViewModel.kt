@@ -28,6 +28,7 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.config.RechCfg
+import org.cxct.sportlottery.network.money.config.RechSort
 import org.cxct.sportlottery.network.money.config.RechType
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
@@ -157,12 +158,12 @@ class MoneyRechViewModel(
     fun getRechCfg() {
         MoneyRepository.moneyRechCfgResult.value?.rechCfg?.let {
             _rechargeConfigs.value = it
-            filterBankList(it.rechTypes,it.rechCfgs)
+            filterBankList(it.rechTypes,it.rechCfgs,it.rechSort)
         }
     }
 
     //篩選List要顯示的資料
-    private fun filterBankList(rechTypesList: List<RechType>, rechConfigList: List<RechCfg>) {
+    private fun filterBankList(rechTypesList: List<RechType>, rechConfigList: List<RechCfg>, rechSort: List<RechSort>?) {
         try {
             val onlineData: MutableList<MoneyPayWayData> = mutableListOf()
             val transferData: MutableList<MoneyPayWayData> = mutableListOf()
@@ -176,15 +177,20 @@ class MoneyRechViewModel(
                     }
                 }
             }
+            val sortMap = rechSort?.associate { it.onlineType to it.sort }
             val dataList: MutableList<MoneyPayWayData> = mutableListOf()
             MoneyManager.getMoneyPayWayList()?.forEach { moneyPayWay ->
-                if (filterRechargeDataList.firstOrNull {
-                        it.rechType == org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code && it.onlineType == moneyPayWay.onlineType
-                                || it.rechType != org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code && it.rechType == moneyPayWay.rechType
-                    } != null) {
+                val item = filterRechargeDataList.firstOrNull {
+                    it.rechType == org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code && it.onlineType == moneyPayWay.onlineType
+                            || it.rechType != org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code && it.rechType == moneyPayWay.rechType
+                }
+                if (item!= null) {
+                    moneyPayWay.rebateFeeNew = item.rebateFeeNew?:0.0
+                    moneyPayWay.sort = sortMap?.get(item.onlineType) ?:0
                     dataList.add(moneyPayWay)
                 }
             }
+            dataList.sortByDescending { it.sort }
             dataList.forEach {
                 when (it.rechType) {
                     org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code -> {

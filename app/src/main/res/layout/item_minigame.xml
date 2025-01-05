@@ -31,16 +31,21 @@
 
     <org.cxct.sportlottery.view.ScrollingDigitalAnimation
         android:id="@+id/tvJackPotAmount"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginStart="103dp"
+        android:layout_marginEnd="100dp"
         android:layout_gravity="bottom"
         android:fontFamily="@font/helvetica_bold"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:paddingTop="1dp"
         tools:text="$99"
         android:textColor="@color/color_FAFF00"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:maxLines="1"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMaxTextSize="22sp"
+        android:autoSizeMinTextSize="16sp"/>
 
     <ImageView
         android:id="@+id/ivBetToWin"

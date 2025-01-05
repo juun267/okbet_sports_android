@@ -5,6 +5,7 @@ import android.text.InputFilter
 import android.view.View
 import android.view.animation.BounceInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.LinearInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.annotation.ColorRes
@@ -243,6 +244,29 @@ fun View.animDuang(scale: Float, duration: Long = 500) {
     })
     animatorSet.start()
 }
+fun View.animScale(scale: Float, duration: Long = 1000) {
+    val animatorSet = AnimatorSet()
+    val scaleX = ObjectAnimator.ofFloat(this,"scaleX", 1f, scale, 1f)
+    val scaleY = ObjectAnimator.ofFloat(this,"scaleY", 1f, scale, 1f)
+
+    scaleX.repeatCount = ValueAnimator.INFINITE
+    scaleX.repeatMode = ValueAnimator.REVERSE
+
+    scaleY.repeatCount = ValueAnimator.INFINITE
+    scaleY.repeatMode = ValueAnimator.REVERSE
+
+    animatorSet.playTogether(scaleX, scaleY)
+
+    animatorSet.interpolator = LinearInterpolator()
+    animatorSet.duration = duration
+    animatorSet.addListener(object : AnimatorListenerAdapter() {
+        override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
+        }
+    })
+    animatorSet.start()
+}
+
+
 
 
 fun EditText.filterSpecialCharacters() {

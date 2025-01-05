@@ -31,8 +31,12 @@ import org.cxct.sportlottery.ui.profileCenter.modify.BindInfoViewModel
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewModel
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
+import org.cxct.sportlottery.ui.profileCenter.pointshop.PointRuleViewModel
+import org.cxct.sportlottery.ui.profileCenter.pointshop.PointShopViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
+import org.cxct.sportlottery.ui.profileCenter.taskCenter.TaskCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.securityquestion.SettingQuestionViewModel
+import org.cxct.sportlottery.ui.profileCenter.taskCenter.foundReward.TaskFoundRewardViewModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.profileCenter.vip.VipViewModel
 import org.cxct.sportlottery.ui.redeem.RedeemViewModel
@@ -92,7 +96,11 @@ object AppViewModel {
         viewModel { RedeemViewModel(get()) }
         viewModel { EndCardVM(get()) }
         viewModel { VipViewModel(get()) }
+        viewModel { TaskCenterViewModel(get()) }
         viewModel { SettingQuestionViewModel(get()) }
+        viewModel { TaskFoundRewardViewModel(get()) }
+        viewModel { PointShopViewModel(get()) }
+        viewModel { PointRuleViewModel(get()) }
     }
 
     private val repoModule = module {

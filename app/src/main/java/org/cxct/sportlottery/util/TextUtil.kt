@@ -55,10 +55,10 @@ object TextUtil : DecimalFormatUtil() {
     }
 
 
-    // 金额最多保留2为小数
+    // 金额最多保留2为小数，若是正常则会显示不带小数
     fun formatMoney2(any: Number): String {
         try {
-            return DecimalFormat("###,###,###,###,###,###,###,###.##").format(any)
+            return doNumberFormat(any,"###,###,###,###,###,###,###,###.##")
         } catch (e: Exception) {
             Timber.e("$e")
         }
@@ -69,9 +69,9 @@ object TextUtil : DecimalFormatUtil() {
     /**
      * numberAfterDot 保留小数点后几位
      */
-    fun formatMoney(any: Any, numAfterDot: Int = 0): String? {
+    fun formatMoney(any: Any?, numAfterDot: Int = 0): String? {
         try {
-            var target = any
+            var target = any?:0
 
             if (any !is Double) target = target.toString().toDouble()
             var numAfterDotBuilder = StringBuilder()

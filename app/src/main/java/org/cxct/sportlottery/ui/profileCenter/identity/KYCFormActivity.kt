@@ -2,21 +2,14 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.Typeface
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.bigkoo.pickerview.listener.CustomListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_kyc_form.*
-import kotlinx.android.synthetic.main.include_kyc_form_select.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.KYCEvent
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityKycFormBinding
 import org.cxct.sportlottery.databinding.DialogBottomSelectBinding
@@ -28,14 +21,12 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.signUp.info.DateTimePickerOptions
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
-import org.cxct.sportlottery.ui.profileCenter.identity.handheld.VerifyHandheldActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.liveness.LivenessStartActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.*
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.view.dialog.SourceOfIncomeDialog
-import org.cxct.sportlottery.view.onFocusChange
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -89,9 +80,8 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
         viewModel.kycResult.observe(this) {
             hideLoading()
             if (it.succeeded()) {
-                EventBusUtil.post(KYCEvent())
                 UserInfoRepository.loadUserInfo()
-                startActivity(Intent(this,VerifyHandheldActivity::class.java))
+                startActivity<LivenessStartActivity>()
             } else {
                 showErrorPromptDialog(it.msg) {  }
             }
@@ -116,9 +106,9 @@ class KYCFormActivity: BaseActivity<ProfileCenterViewModel, ActivityKycFormBindi
     }
 
     private fun bindOCRInfo(ocr: OCRInfo) = binding.run {
-        itemFirstName.etInput.setText(ocr.firstName)
-        itemMiddleName.etInput.setText(ocr.middleName)
-        itemLastName.etInput.setText(ocr.lastName)
+        itemFirstName.etInput.setText(ocr.firstName?.trim())
+        itemMiddleName.etInput.setText(ocr.middleName?.trim())
+        itemLastName.etInput.setText(ocr.lastName?.trim())
         itemBirthday.etInput.setText(ocr.birthday?.replace("/", "-"))
         setEnableButton()
     }

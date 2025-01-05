@@ -294,6 +294,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         etBankAccount.setText("")
         etNickname.setText("")
         viewModel.clearnRechargeStatus()
+        updateExtraMoney()
     }
 
     //入款帳號選單
@@ -544,7 +545,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         //存款時間
         txvTransferTime.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
         txvTransferTime2.text = TimeUtil.dateToStringFormatHMS(Date())
-        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
+        mSelectRechCfgs?.let {
+            setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance)
+            (requireActivity() as MoneyRechargeActivity).updateSelectRechCfgs(it)
+            updateExtraMoney()
+        }
     }
 
     private fun hideEditText()=binding.run {
@@ -572,7 +577,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
                     etRechargeAmount.setCursor()
                     return@afterTextChanged
                 }
-                dailyConfigAdapter.getSelectedItem()?.let { it1 -> updateFirstDepositExtraMoney(it1,it.toIntS(0)) }
                 checkRechargeAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     if (includeQuickMoney.root.isVisible) (includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).selectItem(
@@ -583,6 +587,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
                         it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0))
                     )
                 }
+                updateExtraMoney()
             }
             //微信
             etWxId.afterTextChanged { checkWX(it) }
@@ -611,7 +616,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
         viewModel.apply {
             //充值金額
             setupEditTextFocusEvent(etRechargeAmount) {
-                dailyConfigAdapter.getSelectedItem()?.let { it1 -> updateFirstDepositExtraMoney(it1,it.toIntS(0)) }
+                dailyConfigAdapter.getSelectedItem()?.let { it1 -> updateExtraMoney() }
                 checkRechargeAmount(it, mSelectRechCfgs)
             }
             //微信
@@ -884,28 +889,35 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel, TransferPayFragment
 
     private fun updateDailyConfigSelect(){
         val dailyConfig = dailyConfigAdapter.getSelectedItem()
-        if (dailyConfig==null){
+        if (dailyConfig == null) {
             binding.linFirstDeposit.linNoChoose.isSelected = true
-            binding.linReceiveExtra.isVisible = false
             (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0F)
-        }else{
+        } else {
             binding.linFirstDeposit.linNoChoose.isSelected = false
-            binding.linReceiveExtra.isVisible = true
             (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(dailyConfig.additional)
-            updateFirstDepositExtraMoney(dailyConfig,binding.etRechargeAmount.getText().toIntS(0))
         }
-
+        updateExtraMoney()
     }
-
-    private fun updateFirstDepositExtraMoney(dailyConfig: DailyConfig, rechargeMoney: Int){
-        if (dailyConfig!=null && dailyConfig.first==1){
+    private fun updateExtraMoney(){
+        val dailyConfig = dailyConfigAdapter.getSelectedItem()
+        val rechargeMoney = binding.etRechargeAmount.getText().toIntS(0)
+        var extraMoney = 0.0
+        if ((mMoneyPayWay?.rebateFeeNew ?: 0.0) > 0){
+            extraMoney = ArithUtil.mul(rechargeMoney.toDouble(),mMoneyPayWay!!.rebateFeeNew)
+        }
+        if (dailyConfig?.first == 1) {
             val additional = dailyConfig.additional
             val capped = dailyConfig.capped
-            if (additional>0){
-                val additionalMoney = rechargeMoney.toDouble() * additional/100
-                val extraMoney = if(additionalMoney > capped) capped else  additionalMoney
-                binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney2(extraMoney)}"
+            if (additional > 0) {
+                val additionalMoney = rechargeMoney.toDouble() * additional / 100
+                extraMoney += (if (additionalMoney > capped) capped.toDouble() else additionalMoney)
             }
+        }
+        if(extraMoney>0){
+            binding.linReceiveExtra.isVisible = true
+            binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney2(extraMoney)}"
+        }else{
+            binding.linReceiveExtra.isVisible = false
         }
     }
 

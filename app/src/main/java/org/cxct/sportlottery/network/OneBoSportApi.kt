@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.myfavorite.FavoriteService
 import org.cxct.sportlottery.network.news.NewsService
 import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.outright.OutrightService
+import org.cxct.sportlottery.network.quest.QuestService
 import org.cxct.sportlottery.network.sport.SportService
 import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.uploadImg.UploadImgService
@@ -71,5 +72,7 @@ object OneBoSportApi {
     val bettingStationService: BettingStationService by lazy { retrofit.create(BettingStationService::class.java) }
 
     val lotteryService: LotteryService by lazy { retrofit.create(LotteryService::class.java) }
+
+    val questService: QuestService by lazy { retrofit.create(QuestService::class.java) }
 
 }

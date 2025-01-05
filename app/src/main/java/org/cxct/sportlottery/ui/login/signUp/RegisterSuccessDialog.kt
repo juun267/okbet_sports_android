@@ -50,6 +50,7 @@ class RegisterSuccessDialog: BaseDialog<BaseViewModel,DialogRegisterSuccessBindi
                 binding.tvGiveMoney.visible()
             }
         }
+        ifNew =false
         loginFirstPhoneGiveMoney =false
         setupSummary(binding.tvSummary)
         binding.btnRecharge.setOnClickListener {
@@ -59,15 +60,5 @@ class RegisterSuccessDialog: BaseDialog<BaseViewModel,DialogRegisterSuccessBindi
         setOnClickListeners(binding.ivClose,binding.btnConfirm){
             dismissAllowingStateLoss()
         }
-    }
-
-     override fun show(manager: FragmentManager) {
-        super.show(manager)
-        ifNew =false
-    }
-
-    override fun show(manager: FragmentManager, tag: String?) {
-        super.show(manager, tag)
-        ifNew =false
     }
 }

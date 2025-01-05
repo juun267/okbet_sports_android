@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F6F7F8"
+    android:orientation="vertical">
+
+  <org.cxct.sportlottery.view.CustomTopToolbar
+      android:id="@+id/toolBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/color_F6F7F8"
+      app:topTitleText="@string/A055" />
+
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@drawable/bg_white_radius_16_top"
+      android:orientation="vertical"
+      android:paddingTop="@dimen/margin_20"
+      android:paddingHorizontal="20dp"
+      android:layout_marginBottom="50dp">
+
+    <LinearLayout
+        android:id="@+id/linTab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <TextView
+          android:id="@+id/tvTabAll"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:drawableBottom="@drawable/ic_underline_smile"
+          android:text="@string/label_all"
+          android:textColor="@color/color_025BE8"
+          android:textSize="@dimen/textSize14sp" />
+
+      <TextView
+          android:id="@+id/tvTabIncome"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="@dimen/margin_24"
+          android:text="@string/A102"
+          android:textColor="@color/color_0D2245"
+          android:textSize="@dimen/textSize14sp" />
+
+      <TextView
+          android:id="@+id/tvTabExpenses"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="@dimen/margin_24"
+          android:text="@string/A103"
+          android:textColor="@color/color_0D2245"
+          android:textSize="@dimen/textSize14sp" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHistory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_point_history">
+    </androidx.recyclerview.widget.RecyclerView>
+
+  </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:src="@drawable/bg_shadow_8_6bd7d4d4"/>
+      <TextView
+          android:id="@+id/tips"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:background="@color/white"
+          android:gravity="center"
+          android:text="@string/A104"
+          android:textColor="@color/color_6D7693"
+          android:textSize="@dimen/textSize14sp" />
+    </LinearLayout>
+  </FrameLayout>
+</LinearLayout>

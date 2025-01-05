@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.common.WebActivity
+import org.cxct.sportlottery.ui.game.dropball.DropBallActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
@@ -52,7 +53,7 @@ object JumpUtil {
               path.contains("sweepstakes") ->{
                   toLottery(context, Constants.getLotteryH5Url(context, LoginRepository.token))
               }
-            path.contains("mobile/halloween") ->{
+            path.contains("mobile/christmas") ->{
                 loginedRun(context, true) {
                     context.startActivity(
                         Intent(context, WebActivity::class.java).apply {
@@ -72,12 +73,17 @@ object JumpUtil {
                     (context as AppCompatActivity).startActivity(VipBenefitsActivity::class.java)
                 }
             }
-            path == "mobile/inviteFriends"
-                    || path == "vipCenter"->{
+            path == "mobile/inviteFriends"->{
                 loginedRun(context,true){
                     (context as AppCompatActivity).startActivity(InviteActivity::class.java)
                 }
             }
+            path == "mobile/promo-dropball"->{
+                loginedRun(context,true){
+                    (context as AppCompatActivity).startActivity(DropBallActivity::class.java)
+                }
+            }
+
             path == "mobile/personal/activity_v2"
                     || path == "promo"->{
                 PromotionListActivity.startFrom(context, "内嵌H5跳转")

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import org.cxct.sportlottery.databinding.DialogVerifyIdentityBinding
+import org.cxct.sportlottery.util.jumpToKYC
 import org.cxct.sportlottery.util.setServiceClick
 
 class VerifyIdentityDialog: DialogFragment() {
@@ -32,7 +33,7 @@ class VerifyIdentityDialog: DialogFragment() {
         btnClose.setOnClickListener { dismiss() }
         btnService.root.setServiceClick(childFragmentManager)
         btnCheck.setOnClickListener {
-            startActivity(Intent(context, VerifyIdentityActivity::class.java))
+            requireActivity().jumpToKYC()
             dismiss()
         }
     }

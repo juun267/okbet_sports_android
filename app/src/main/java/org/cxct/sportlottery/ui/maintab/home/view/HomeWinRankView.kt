@@ -222,21 +222,14 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
 
         ivChampion.setImageResource(R.drawable.img_monster_3_h)
         val championLP = ivChampion.layoutParams as MarginLayoutParams
-        championLP.topMargin = (-30).dp
-        136.dp.let {
-            championLP.height = it
-            championLP.width = it
-        }
-
-        val bgView = View(context)
-        bgView.setBackgroundResource(R.drawable.img_home_wins_top_h)
-        val lp = LayoutParams(-1, 173.dp)
-        addView(bgView, 0, lp)
+        championLP.topMargin = 13.dp
+        championLP.height = 72.dp
+        championLP.width = 74.dp
 
         val bgView2 = View(context)
         bgView2.setBackgroundResource(R.drawable.img_home_wins_bg_h)
-        val dp240 = 240.dp
-        val lp2 = LayoutParams(dp240, dp240)
+        val dp280 = 280.dp
+        val lp2 = LayoutParams(dp280, dp280)
         lp2.topToTop = rvOkgameRecord.id
         lp2.bottomToBottom = rvOkgameRecord.id
         lp2.startToStart = rvOkgameRecord.id
@@ -274,6 +267,9 @@ class HomeWinRankView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private fun changeTabHalloweenStyle() = binding.run {
+        if (!isHalloweenStyle()) {
+            return@run
+        }
         if (rbtnLb.isChecked) {
             rbtnLb.text = "".addSpan("AAA", CenterImageSpan(context, R.drawable.ic_halloween_logo_7).setDrawableSize(26.dp))
                 .addSpan(context.resources.getString(R.string.N708))

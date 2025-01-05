@@ -5,7 +5,9 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
@@ -51,13 +53,18 @@ class GameListAdapter(private val onGameClick: (OKGameBean)-> Unit,
                 tvFirmName.hide()
             } else if (isHalloweenStyle()) { // 万圣节样式，与下面相同的if条件不能合并
                 root.setBackgroundResource(R.drawable.img_game_item_bg_h)
-                root.layoutParams.height = 167.dp
+                root.layoutParams.width = 120.dp
+                root.layoutParams.height = 177.dp
+                (root.getChildAt(0).layoutParams as MarginLayoutParams).topMargin = 12.dp
+                (ivCover.parent as CardView).cardElevation = 0f
+                root.getChildAt(0).layoutParams.width = 105.dp
                 ivCover.layoutParams.height = 105.dp
-                5.dp.let { root.getChildAt(0).setPadding(it, it, it, 0) }
+                ivCover.layoutParams.width = 105.dp
+                (tvName.layoutParams as MarginLayoutParams).leftMargin = 8.dp
                 tvCollect.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_collect_heart_h, 0,0 ,0)
                 (tvCollect.layoutParams as MarginLayoutParams).let {
                     it.topMargin = 0
-                    it.leftMargin = 5.dp
+                    it.leftMargin = 8.dp
                 }
             }
 

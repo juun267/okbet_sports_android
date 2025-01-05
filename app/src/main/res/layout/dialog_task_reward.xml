@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    tools:ignore="SpUsage, ContentDescription">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="64dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linBg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_task_reward_success"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTipsContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="57dp"
+                android:gravity="center"
+                android:minHeight="36dp"
+                android:text="@string/A047"
+                android:textColor="@color/color_0D2245"
+                android:textFontWeight="600"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="UnusedAttribute" />
+
+            <include
+                android:id="@+id/viewRewardValue"
+                layout="@layout/view_task_reward_value" />
+
+            <TextView
+                android:id="@+id/tvConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/img_task_confirm"
+                android:gravity="center"
+                android:minWidth="120dp"
+                android:minHeight="34dp"
+                android:text="@string/btn_sure"
+                android:textColor="@color/color_FFFFFF"
+                android:textFontWeight="500"
+                android:textSize="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="UnusedAttribute" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/ivTypeShadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/ic_task_reward_cash_shadow"
+        app:layout_constraintEnd_toEndOf="@id/cvContent"
+        app:layout_constraintStart_toStartOf="@id/cvContent"
+        app:layout_constraintTop_toTopOf="@id/cvContent" />
+
+    <ImageView
+        android:id="@+id/ivType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-78dp"
+        android:src="@drawable/ic_task_reward_type_cash"
+        app:layout_constraintEnd_toEndOf="@id/cvContent"
+        app:layout_constraintStart_toStartOf="@id/cvContent"
+        app:layout_constraintTop_toTopOf="@id/cvContent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

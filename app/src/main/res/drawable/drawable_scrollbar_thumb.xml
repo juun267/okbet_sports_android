@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <!-- 定义滚动条的形状和颜色 -->
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <size android:width="4dp" android:height="60dp"/>
+            <solid android:color="#66A0ACC9"/>
+            <corners android:radius="2dp"/>
+        </shape>
+    </item>
+    <!-- 设置滚动条的内边距，调整它与内容的距离 -->
+    <padding
+        android:left="6dp"
+        android:right="6dp"/>
+</layer-list>

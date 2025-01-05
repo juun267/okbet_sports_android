@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F6F7F8"
+    tools:context=".ui.promotion.PromotionDetailActivity"
+    tools:ignore="SpUsage, ContentDescription">
+
+    <org.cxct.sportlottery.view.CustomTopToolbar
+        android:id="@+id/customToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/margin_2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:topTitleText="@string/B171" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_task_list_block"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/blockTotal"
+        app:layout_constraintTop_toBottomOf="@id/customToolBar">
+
+        <TextView
+            android:id="@+id/tvDailyTips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="16dp"
+            android:text="@string/B172"
+            android:textColor="@color/color_F23C3B"
+            android:textSize="12dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFoundReward"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingHorizontal="16dp"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_task_found_reward_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/blockTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_FFFFFF"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include
+            android:id="@+id/viewRewardValue"
+            layout="@layout/view_task_reward_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:id="@+id/tvConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/img_task_reward_all"
+            android:gravity="center"
+            android:minWidth="120dp"
+            android:text="@string/B173"
+            android:textColor="@color/color_FFFFFF"
+            android:textFontWeight="500"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="UnusedAttribute" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/shadow_found_reward"
+        app:layout_constraintBottom_toTopOf="@id/blockTotal" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_F5F5F5"
+        app:layout_constraintBottom_toTopOf="@id/blockTotal" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

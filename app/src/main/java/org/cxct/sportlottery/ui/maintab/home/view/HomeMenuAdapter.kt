@@ -30,6 +30,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private val pageSize = 6
     private var selectedBg = R.drawable.bg_home_menu_sel
     private var normalBg = R.drawable.bg_home_menu_nor
+    private val selectedBgMap = mutableMapOf<Int, Int>()
 
 
     data class MenuTab(@DrawableRes val selectedIcon: Int,
@@ -64,7 +65,7 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
     private fun setSelectedStyle(isSelected: Boolean, item: MenuTab, group: View, icon: ImageView) {
         group.isSelected = isSelected
         if (isSelected) {
-            group.setBackgroundResource(selectedBg)
+            group.setBackgroundResource(selectedBgMap.getOrDefault(item.name, selectedBg))
             icon.setImageResource(item.selectedIcon)
         } else {
             group.setBackgroundResource(normalBg)
@@ -266,6 +267,16 @@ class HomeMenuAdapter(private val itemClick: (MenuTab) -> Boolean)
 
         selectedBg = R.drawable.bg_home_menu_sel_h
         normalBg = R.drawable.bg_home_menu_nor_h
+
+        selectedBgMap[R.string.home_recommend] = R.drawable.bg_home_menu_sel_h
+        selectedBgMap[R.string.main_tab_sport] = R.drawable.bg_home_menu_sel_h_1
+        selectedBgMap[R.string.B23] = R.drawable.bg_home_menu_sel_h_2
+        selectedBgMap[R.string.B24] = R.drawable.bg_home_menu_sel_h_4
+        selectedBgMap[R.string.P452] = R.drawable.bg_home_menu_sel_h_3
+        selectedBgMap[R.string.P333] = R.drawable.bg_home_menu_sel_h_5
+        selectedBgMap[R.string.esports] = R.drawable.bg_home_menu_sel_h_6
+        selectedBgMap[R.string.promo] = R.drawable.bg_home_menu_sel_h_7
+        selectedBgMap[R.string.LT050_1] = R.drawable.bg_home_menu_sel_h_8
 
         notifyDataSetChanged()
     }

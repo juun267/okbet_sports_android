@@ -50,6 +50,7 @@ class HomeHotMatchAdapter(
         vh.binding.ivAwayIcon.background = logoBg
         if (isHalloweenStyle()) {
             vh.itemView.setBackgroundResource(R.drawable.bg_trans_home_hot_match_h)
+            vh.itemView.setPadding(0, 4.dp, 0, 0)
         }
 
         return vh

@@ -262,7 +262,7 @@ class LoginViewModel(
         }
         LoginRepository.setUpLoginData(loginData)
         //检查是否完善用户信息
-        checkBasicInfo(loginData) {
+        checkBasicInfo(loginData) { isCompleteInfo ->
             //ifNew 标识当前用户是新注册用户
             if (loginData.ifnew == true) {
                 if (ways.isNotEmpty()) {
@@ -284,25 +284,24 @@ class LoginViewModel(
                     put("email", loginData.email.toString())
                 })
             }
-
+            LogUtil.d("ifnew=${loginData.ifnew}, firstPhoneGiveMoney=${loginData.firstPhoneGiveMoney}")
             RegisterSuccessDialog.ifNew = loginData.ifnew == true
             RegisterSuccessDialog.loginFirstPhoneGiveMoney = loginData.firstPhoneGiveMoney == true
             AFInAppEventUtil.regAndLogin(HashMap<String, Any>().apply {
                 put("data", loginData.toJson())
             })
             //将userName信息添加到firebase崩溃日志中
-            loginData?.let {
-                FirebaseLog.addLogInfo(
-                    "userName",
-                    "${loginData}"
-                )
-            }
+            FirebaseLog.addLogInfo("userName", "${loginData}")
             LogUtil.toJson(loginData)
             BindPhoneDialog.afterLoginOrRegist =
                 (sConfigData?.firstPhoneGiveMoney ?: 0) > 0 && loginData.phone.isNullOrEmpty()
             launch {
                 runWithCatch { UserInfoRepository.getUserInfo() }
-                loginjump.postValue(loginData)
+                if(isCompleteInfo){
+                    loginjump.postValue(loginData)
+                }else{
+                    registerInfoEvent.postValue(loginData)
+                }
             }
         }
     }
@@ -311,16 +310,16 @@ class LoginViewModel(
     /**
      * 检查用户完善基本信息
      */
-    private suspend fun checkBasicInfo(loginData: LoginData, block: suspend () -> Unit) {
+    private suspend fun checkBasicInfo(loginData: LoginData, block: suspend (Boolean) -> Unit) {
         //临时冻结状态不需要检查完善信息
         if (loginData.state==7) {
-            block()
+            block(true)
             return
         }
         //本地缓存的是否完善过开关
         val loginSwitch = SPUtil.getLoginInfoSwitch()
         if (loginSwitch) {
-            block()
+            block(true)
             return
         }
         viewModelScope.launch {
@@ -338,14 +337,14 @@ class LoginViewModel(
                 //是否需要完善
                 if (checkNeedCompleteInfo(isSwitch, isFinished)) {
                     //跳转到完善页面
-                    registerInfoEvent.postValue(loginData)
+                    block.invoke(false)
                 } else {
                     //执行原有登录逻辑
-                    block()
+                    block(true)
                 }
             } else {
 //            LoginRepository.clear()
-                block()
+                block(true)
             }
         }
     }
@@ -562,7 +561,7 @@ class LoginViewModel(
                 return false
             }
         }
-        return agreeChecked
+        return true
     }
 
     private fun checkInputPair(data: LiveData<Pair<String?, Boolean>>): Boolean {

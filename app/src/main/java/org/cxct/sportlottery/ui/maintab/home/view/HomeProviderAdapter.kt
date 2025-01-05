@@ -19,6 +19,7 @@ import org.cxct.sportlottery.databinding.ItemHomeProviderPageBinding
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.isHalloweenStyle
 
 class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : BindingAdapter<List<OKGamesFirm>, ItemHomeProviderPageBinding>() {
 
@@ -84,11 +85,13 @@ class HomeProviderAdapter(private val itemClick: (OKGamesFirm) -> Unit) : Bindin
         viewType: Int
     ): BindingVH<ItemHomeProviderPageBinding> {
         val holder = super.onCreateDefViewHolder(parent, viewType)
-        (holder.itemView as ViewGroup).children.forEach { child->
-            val tvPlay = child.findViewById<TextView>(R.id.tvPlay)
-            tvPlay.text = ""
-            tvPlay.layoutParams.width = 52.dp
-            tvPlay.setBackgroundResource(R.drawable.ic_btn_play_h)
+        if (isHalloweenStyle()) {
+            (holder.itemView as ViewGroup).children.forEach { child->
+                val tvPlay = child.findViewById<TextView>(R.id.tvPlay)
+                tvPlay.text = ""
+                tvPlay.layoutParams.width = 52.dp
+                tvPlay.setBackgroundResource(R.drawable.ic_btn_play_h)
+            }
         }
         return holder
     }

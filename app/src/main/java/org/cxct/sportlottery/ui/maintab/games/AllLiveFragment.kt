@@ -77,6 +77,7 @@ class AllLiveFragment : BaseSocketFragment<OKLiveViewModel,FragmentAllOkliveBind
                 }
             }
             binding.winsRankView.loadData()
+            viewModel.getRecentPlay()
         }
         //请求热门赛事数据  在hotMatchView初始化之后
 //        viewModel.getRecommend()

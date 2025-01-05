@@ -70,7 +70,11 @@ class RechargePromotionsDialog private constructor(): BaseDialog<MoneyRechViewMo
     override fun onBindViewStatus(view: View) {
         val list = dataList.toMutableList()
         adapter.setNewInstance(list)
-        selectItem?.let { adapter.changeSelect(it) }
+        if (selectItem==null){
+            binding.linNoChoose.performClick()
+        }else{
+            selectItem?.let { adapter.changeSelect(it) }
+        }
     }
 
     private fun onItemClick(item: DailyConfig) {

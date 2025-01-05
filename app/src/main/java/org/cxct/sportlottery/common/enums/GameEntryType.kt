@@ -5,5 +5,8 @@ object GameEntryType{
     const val OKGAMES = "OK_GAMES"
     const val OKLIVE = "OK_LIVE"
     const val OKSPORT = "OK_SPORT"
-    const val MINIGAMES = "OK_MINIS"
+    const val OKMINIS = "OK_MINIS"
+    const val ES = "ES"
+    const val SPORT = "SPORT"
+
 }

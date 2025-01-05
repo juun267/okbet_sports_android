@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
@@ -18,10 +19,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
 import org.cxct.sportlottery.common.enums.UserVipType.setLevelTagIcon
-import org.cxct.sportlottery.common.extentions.clickDelay
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.startActivity
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentProfileCenterBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
@@ -37,6 +35,8 @@ import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActiv
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.invite.InviteActivity
+import org.cxct.sportlottery.ui.profileCenter.taskCenter.TaskCenterActivity
+import org.cxct.sportlottery.ui.profileCenter.pointshop.PointShopActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
@@ -230,6 +230,8 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         btnOtherBetRecord.setVisibilityByMarketSwitch()
         btnAffiliate.setVisibilityByMarketSwitch()
         btnAboutUs.setVisibilityByMarketSwitch()
+        btnTaskCenter.isVisible = StaticData.taskCenterOpened()
+        btnPointShop.isVisible = StaticData.pointShopOpened()
         ivProfile.setOnClickListener {
             runAfterLogined{startActivity(Intent(requireActivity(), ProfileActivity::class.java)) }
         }
@@ -263,6 +265,9 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
                 Constants.getAffiliateUrl(requireContext()),
                 resources.getString(R.string.btm_navigation_affiliate)
             )
+        }
+        btnPointShop.setOnClickListener {
+            startActivity(PointShopActivity::class.java)
         }
         //自我約束
         if (sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null) {
@@ -317,6 +322,13 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
                 )
             )
         }
+
+        //任务中心
+        btnTaskCenter.setOnClickListener {
+            context?.let {
+                startActivity(Intent(it, TaskCenterActivity::class.java))
+            }
+        }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -361,6 +373,9 @@ class ProfileCenterFragment : BaseFragment<ProfileCenterViewModel,FragmentProfil
         }
         ConfigRepository.config.observe(this){
             binding.btnInviteFriend.isVisible = StaticData.inviteUserOpened()
+        }
+        viewModel.taskRedDotEvent.collectWith(lifecycleScope){
+            binding.ivTaskDot.isVisible = it
         }
     }
 

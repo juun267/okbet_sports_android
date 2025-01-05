@@ -88,28 +88,27 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             return context.getString(getGameTypeStringRes(gameType))
         }
 
-
-        fun getGameTypeMenuSVGA(gameType: String): String {
-            return "svga/"+when (gameType) {
-                FT.key -> "icon_football.svga"
-                BK.key -> "icon_basketball.svga"
-                TN.key -> "icon_tennis.svga"
-                VB.key -> "icon_volleyball.svga"
-                BM.key -> "icon_badminton.svga"
-                TT.key -> "icon_table.svga"
-                IH.key -> "icon_hockey.svga"
-                BX.key -> "icon_boxing.svga"
-                CB.key -> "icon_snooker.svga"
-                CK.key -> "icon_cricket.svga"
-                BB.key -> "icon_baseball.svga"
-                RB.key -> "icon_rugby.svga"
-                AFT.key-> "icon_americafootball.svga"
-                GF.key -> "icon_golf.svga"
-                MR.key -> "icon_helmet.svga"
-                ES.key -> "icon_game.svga"
-                FB.key -> "icon_finance.svga"
-                ES_COMING_SOON.key -> "icon_game.svga"
-                else -> "icon_football.svga"
+        fun getHallGameTypeMenuIcon(gameType: String): Int {
+            return when (gameType) {
+                FT.key -> R.drawable.ic_sport_football
+                BK.key -> R.drawable.ic_sport_basketball
+                TN.key -> R.drawable.ic_sport_tennis
+                VB.key -> R.drawable.ic_sport_volleyball
+                BM.key -> R.drawable.ic_sport_badminton
+                TT.key -> R.drawable.ic_sport_table_tennis
+                IH.key -> R.drawable.ic_sport_hockey
+                BX.key -> R.drawable.ic_sport_boxing
+                CB.key -> R.drawable.ic_sport_snooker
+                CK.key -> R.drawable.ic_sport_cricket
+                BB.key -> R.drawable.ic_sport_baseball
+                RB.key -> R.drawable.ic_sport_rugby
+                AFT.key-> R.drawable.ic_sport_americafootball
+                GF.key -> R.drawable.ic_sport_golf
+                MR.key -> R.drawable.ic_sport_racing
+                ES.key -> R.drawable.ic_sport_gaming
+                FB.key -> R.drawable.ic_sport_finance
+                ES_COMING_SOON.key -> R.drawable.ic_sport_finance
+                else -> R.drawable.ic_sport_football
             }
         }
 
@@ -252,6 +251,28 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 ES.key -> R.drawable.bg_recent_esports
                 FB.key -> R.drawable.bg_recent_finance
                 else -> R.drawable.bg_recent_rocket
+            }
+        }
+        fun getTaskImg(code: String?): Int {
+            return when (code) {
+                FT.key -> R.drawable.ic_sport_task_football
+                BK.key -> R.drawable.ic_sport_task_basketball
+                TN.key -> R.drawable.ic_sport_task_tennis
+                VB.key -> R.drawable.ic_sport_task_volleyball
+                BM.key -> R.drawable.ic_sport_task_badminton
+                TT.key -> R.drawable.ic_sport_task_bingpong
+                IH.key -> R.drawable.ic_sport_task_icehockey
+                BX.key -> R.drawable.ic_sport_task_boxing
+                CB.key -> R.drawable.ic_sport_task_billiards
+                CK.key -> R.drawable.ic_sport_task_cricket
+                BB.key -> R.drawable.ic_sport_task_baseball
+                RB.key -> R.drawable.ic_sport_task_robby
+                AFT.key -> R.drawable.ic_sport_task_usfootbal
+                MR.key-> R.drawable.ic_sport_task_racing
+                GF.key -> R.drawable.ic_sport_task_golf
+                ES.key -> R.drawable.ic_sport_task_esports
+                FB.key -> R.drawable.ic_sport_task_finance
+                else -> R.drawable.ic_sport_task_football
             }
         }
     }

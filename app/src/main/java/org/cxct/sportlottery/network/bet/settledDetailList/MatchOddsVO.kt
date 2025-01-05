@@ -5,6 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.util.replaceSpecialChar
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -13,7 +14,7 @@ data class MatchOddsVO(
     @Json(name = "awayId")
     val awayId: String?,
     @Json(name = "awayName")
-    val awayName: String?,
+    var awayName: String?,
     @Json(name = "endTime")
     val endTime: String?,
     @Json(name = "extInfo")
@@ -23,11 +24,11 @@ data class MatchOddsVO(
     @Json(name = "homeId")
     val homeId: String?,
     @Json(name = "homeName")
-    val homeName: String?,
+    var homeName: String?,
     @Json(name = "indoOdds")
     val indoOdds: Double?,
     @Json(name = "leagueName")
-    val leagueName: String?,
+    var leagueName: String?,
     @Json(name = "malayOdds")
     val malayOdds: Double?,
     @Json(name = "matchId")
@@ -45,13 +46,13 @@ data class MatchOddsVO(
     @Json(name = "playCateMatchResult")
     val playCateMatchResult: String?,
     @Json(name = "playCateName")
-    val playCateName: String?,
+    var playCateName: String?,
     @Json(name = "playCode")
     val playCode: String?,
     @Json(name = "playId")
     val playId: Int?,
     @Json(name = "playName")
-    val playName: String?,
+    var playName: String?,
     @Json(name = "rtScore")
     val rtScore: String?,
     @Json(name = "spread")
@@ -63,5 +64,13 @@ data class MatchOddsVO(
     @Json(name = "status")
     val status: Int?,
     var categoryIcon:String
-): Parcelable
+): Parcelable{
+    init {
+        leagueName = leagueName?.replaceSpecialChar("\n")
+        homeName = homeName?.replaceSpecialChar("\n")
+        awayName = awayName?.replaceSpecialChar("\n")
+        playCateName = playCateName?.replaceSpecialChar("\n")
+        playName = playName?.replaceSpecialChar("\n")
+    }
+}
 

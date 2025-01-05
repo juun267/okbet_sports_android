@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.login.foget
 
 import android.app.Activity
 import android.content.Intent
+import androidx.core.view.isVisible
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.extentions.finishWithOK
 import org.cxct.sportlottery.common.extentions.gone
@@ -17,6 +18,8 @@ class ForgetWaysActivity:  BaseActivity<ForgetViewModel, ActivityForgetWaysBindi
 
     override fun pageName() = "密码找回钱验证方式选择页面"
 
+    private val showQuestion by lazy { intent.getBooleanExtra("showQuestion", true) }
+
     override fun onInitView() {
         setStatusBarDarkFont()
         bindFinish(binding.btnBack)
@@ -30,6 +33,8 @@ class ForgetWaysActivity:  BaseActivity<ForgetViewModel, ActivityForgetWaysBindi
         binding.btnQuestionWays.setOnClickListener { ForgetPasswordActivity.startByQuestionWays(this) }
         binding.tvCodeLogin.setOnClickListener { startRegist(this) }
         binding.tvloginWithSafeQuestion.setOnClickListener { LoginOKActivity.startWithSafeQuestion(this) }
+        binding.btnQuestionWays.isVisible = showQuestion
+        binding.tvloginWithSafeQuestion.isVisible = showQuestion
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

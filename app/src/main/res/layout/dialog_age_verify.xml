@@ -152,7 +152,7 @@
             android:layout_marginTop="@dimen/margin_12"
             android:gravity="left"
             android:lineSpacingExtra="3dp"
-            android:text="Fund or credits in the account of player who is found ineligble to play shall mean forfeiture of said fund/credits in favor of the Goverment."
+            android:text="Fund or credits in the account of player who is found ineligible to play shall mean forfeiture of said fund/credits in favor of the Goverment."
             android:textColor="@color/color_0D2245"
             android:textColorLink="@color/color_025BE8"
             android:textSize="@dimen/textSize12sp" />

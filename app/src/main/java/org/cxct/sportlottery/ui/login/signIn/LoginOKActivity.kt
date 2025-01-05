@@ -35,6 +35,7 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.login.AgreeTCDialog
 import org.cxct.sportlottery.ui.login.BindPhoneDialog
 import org.cxct.sportlottery.ui.login.VerifyCallback
 import org.cxct.sportlottery.view.checkRegisterListener
@@ -145,7 +146,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                 }
             }
         }
-        if (sConfigData?.enableEmailReg == "0") {
+        if (sConfigData?.enableEmailReg != "1") {
             binding.etAccount.setHintText(getString(R.string.phone_number))
             binding.eetAccount.inputType = InputType.TYPE_CLASS_PHONE
             binding.eetAccount.maxEms = 11
@@ -209,23 +210,24 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
     }
 
     private fun login() {
-
         hideSoftKeyboard()
-        when(viewModel.loginType){
-            LOGIN_TYPE_CODE->{
-                val account = binding.eetAccount.text.toString()
-                val smsCode = binding.eetVerificationCode.text.toString()
-                var inviteCode = binding.eetRecommendCode.text.toString()
-                viewModel.loginOrReg(account, smsCode, inviteCode)
-            }
-            LOGIN_TYPE_PWD->{
-                showCaptchaDialog(TAG_LOGIN)
-            }
-            LOGIN_TYPE_QUESTION->{
-                showCaptchaDialog(TAG_QUESTION)
-            }
-            LOGIN_TYPE_ANSWER->{
-                showCaptchaDialog(TAG_ANSWER)
+        showAgreeTCDialog{
+            when(viewModel.loginType){
+                LOGIN_TYPE_CODE->{
+                    val account = binding.eetAccount.text.toString()
+                    val smsCode = binding.eetVerificationCode.text.toString()
+                    var inviteCode = binding.eetRecommendCode.text.toString()
+                    viewModel.loginOrReg(account, smsCode, inviteCode)
+                }
+                LOGIN_TYPE_PWD->{
+                    showCaptchaDialog(TAG_LOGIN)
+                }
+                LOGIN_TYPE_QUESTION->{
+                    showCaptchaDialog(TAG_QUESTION)
+                }
+                LOGIN_TYPE_ANSWER->{
+                    showCaptchaDialog(TAG_ANSWER)
+                }
             }
         }
     }
@@ -276,17 +278,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                         viewModel.dealWithLoginData(it, "GLife")
                     }else{
                         var inviteCode = binding.eetRecommendCode.text.toString()
-                        //新的注册接口
-                        val deviceId = Settings.Secure.getString(
-                            applicationContext.contentResolver,
-                            Settings.Secure.ANDROID_ID
-                        )
                         var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
                         val loginRequest = LoginRequest(
                             account = it.userName?:"",
                             loginSrc = LOGIN_SRC,
                             appVersion = appVersion,
-                            loginEnvInfo = deviceId,
+                            loginEnvInfo = Constants.deviceId,
                             inviteCode = inviteCode,
                         )
                         viewModel.regPlatformUserFromGlife(it.token?:"",loginRequest)
@@ -298,14 +295,18 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
 
     private fun setupAuthLogin() {
         binding.btnGoogle.clickDelay {
-            AuthManager.authGoogle(this@LoginOKActivity)
+            showAgreeTCDialog{
+                AuthManager.authGoogle(this@LoginOKActivity)
+            }
         }
         binding.btnFacebook.clickDelay {
-            AuthManager.authFacebook(this@LoginOKActivity, { token ->
-                viewModel.loginFacebook(token)
-            }, { errorMsg ->
-                if (!errorMsg.isNullOrEmpty()) showErrorDialog(getString(R.string.P472))
-            })
+            showAgreeTCDialog{
+                AuthManager.authFacebook(this@LoginOKActivity, { token ->
+                    viewModel.loginFacebook(token)
+                }, { errorMsg ->
+                    if (!errorMsg.isNullOrEmpty()) showErrorDialog(getString(R.string.P472))
+                })
+            }
         }
     }
 
@@ -322,8 +323,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
                } else {
                    layoutPrivacy.ivPrivacy.setImageResource(R.drawable.ic_radiobtn_1_nor)
                }
-               btnGoogle.setBtnEnable(layoutPrivacy.ivPrivacy.isSelected)
-               btnFacebook.setBtnEnable(layoutPrivacy.ivPrivacy.isSelected)
                viewModel.agreeChecked = layoutPrivacy.ivPrivacy.isSelected
            }
 
@@ -355,11 +354,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
            layoutPrivacyNew.root.isVisible = true
            layoutPrivacyNew.cbPrivacy.isChecked = false
            viewModel.agreeChecked = false
-           btnGoogle.setBtnEnable(false)
-           btnFacebook.setBtnEnable(false)
            layoutPrivacyNew.cbPrivacy.setOnCheckedChangeListener { compoundButton, b ->
-               btnGoogle.setBtnEnable(b)
-               btnFacebook.setBtnEnable(b)
                viewModel.agreeChecked = b
            }
            layoutPrivacyNew.tvPrivacyLine1.makeLinks(
@@ -596,8 +591,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
             binding.tvPwdLogin.isVisible = false
             binding.tvCodeLogin.isVisible = true
             binding.tvForgetPassword.isVisible = true
-            binding.includeSubtitle.tvSubTitle1.isVisible = true
-            binding.includeSubtitle.tvSubTitle2.isVisible = true
+            binding.includeSubtitle.tvSubTitle1.isVisible = false
+            binding.includeSubtitle.tvSubTitle2.isVisible = false
             binding.btnLogin.text = getString(R.string.btn_login)
             (binding.btnLogin.layoutParams as ConstraintLayout.LayoutParams).apply {
                 this.topMargin = 20.dp
@@ -643,6 +638,25 @@ class LoginOKActivity : BaseActivity<LoginViewModel,ActivityLoginOkBinding>(), V
             viewModel.getUserQuestion(binding.eetUsername1.text.toString(),identity,validCode)
         }else if (tag == TAG_ANSWER) {
             viewModel.loginWithSafeQuestion(binding.eetUsername1.text.toString(),binding.eetAnswer.text.toString(),identity,validCode)
+        }
+    }
+    fun agreeTC(){
+        viewModel.agreeChecked=true
+        if (binding.layoutPrivacy.root.isVisible){
+            binding.layoutPrivacy.ivPrivacy.performClick()
+        }else if(binding.layoutPrivacyNew.root.isVisible){
+            binding.layoutPrivacyNew.cbPrivacy.isChecked = true
+        }
+        agreeTCDialogFunc?.invoke()
+    }
+    var agreeTCDialogFunc: (()->Unit)? = null
+    fun showAgreeTCDialog(next: ()->Unit){
+        if (viewModel.agreeChecked){
+            agreeTCDialogFunc = null
+            next.invoke()
+        }else{
+            agreeTCDialogFunc = next
+            AgreeTCDialog.newInstance().show(supportFragmentManager)
         }
     }
 

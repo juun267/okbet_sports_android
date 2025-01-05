@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.provider.Settings
 import cn.jpush.android.api.JPushInterface
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -69,8 +70,12 @@ object Constants {
     fun getInviteCode(): String {
         return getMetaDataDefValue(MultiLanguagesApplication.appContext, "INVITE_CODE", "")
     }
-    val deviceSn by lazy { JPushInterface.getRegistrationID(MultiLanguagesApplication.getInstance()) }
+    val deviceSn get() = JPushInterface.getRegistrationID(MultiLanguagesApplication.getInstance())
 
+    val deviceId by lazy { Settings.Secure.getString(MultiLanguagesApplication.getInstance().contentResolver, Settings.Secure.ANDROID_ID) }
+
+    const val isUAT = BuildConfig.FLAVOR == "phuat"
+    const val isProducation = BuildConfig.CHANNEL_NAME == "spkx"
     /**
      * 获取MetaData信息
      *
@@ -134,50 +139,36 @@ object Constants {
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/?platform=" + context.getString(
-            R.string.app_name
-        )
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/"
     }
 
     //關於我們
     fun getAboutUsUrl(context: Context): String {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/about-us?platform=" + context.getString(
-            R.string.app_name
-        )
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/about-us"
     }
 
     //博彩责任
     fun getDutyRuleUrl(context: Context): String {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/responsibility?platform=" + context.getString(
-            R.string.app_name
-        )
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/responsibility"
     }
 
     //代理加盟
     fun getAffiliateUrl(context: Context): String {
-        return "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}v2/agent-h5?platform=${
-            context.getString(
-                R.string.app_name
-            )
-        }"
+        return "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}v2/agent-h5"
     }
 
     //隐私权政策
     fun getPrivacyRuleUrl(context: Context): String {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/privacy-policy?platform=" + context.getString(
-            R.string.app_name
-        )
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/privacy-policy"
     }
 
     //规则与条款
     fun getAgreementRuleUrl(context: Context): String {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/terms-conditions?platform=" + context.getString(
-            R.string.app_name
-        )
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/terms-conditions"
     }
 
     //KYC人工客服審核
@@ -193,16 +184,12 @@ object Constants {
     //常见问题
     fun getFAQsUrl(context: Context): String {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/faq?platform=" + context.getString(
-            R.string.app_name
-        )
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/faq"
     }
 
     //联系我们
     fun getContactUrl(context: Context): String {
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/contact-us?platform=" + context.getString(
-            R.string.app_name
-        ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/contact-us?service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
     }
 
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
@@ -235,7 +222,7 @@ object Constants {
     fun getLotteryH5Url(context: Context, token: String? = ""): String {
         val language = getLanguageTag(context)
         val base = getH5BaseUrl()
-        return base + "sports-rule/#/${language}sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
+        return base + "sports-rule/#/${language}sweepstakes?d=android&token=${token}"
     }
     //篮球末位比分规则页面
     fun getEndCardRuleUrl() = "${getH5BaseUrl()}mobile/newBkEnd/rules"
@@ -249,7 +236,11 @@ object Constants {
 
     fun getInviteUrl() = "${getH5BaseUrl()}mobile/inviteFriends"
 
-    fun getHalloweenActivityUrl() = appendParams("mobile/halloween")!!
+    fun getPromoDropBall() = "${getH5BaseUrl()}mobile/promo-dropball"
+
+//    fun getHalloweenActivityUrl() = appendParams("mobile/halloween")!!
+
+    fun getChristmasActivityUrl() = appendParams("mobile/christmas")!!
 
     /**
      * 七日签到页面
@@ -260,6 +251,8 @@ object Constants {
      */
     fun getFirstDepositRules(context: Context) = "${getH5BaseUrl()}sports-rule/#/us/v2/first-deposit-rules"
 
+    const val GCASH_APP_LINK = "https://miniprogram.gcash.com/s01/LD3ljB"
+    const val MAYA_APP_LINK = "https://official.paymaya.com/be7m/PayMayaAppLinks"
       /**
      * 给h5地址加上统一参数
      */
@@ -342,6 +335,8 @@ object Constants {
     const val ACTIVITY_RECORD = "/api/front/index/getUserActivityRecord"
 
     const val OCR_INFO = "/idscan/api/front/ocr/getOCRInfo"
+
+    const val GET_LICENSE = "idscan/api/front/ocr/mobile/getLicense"
 
     const val OCR_INFO_BY_HUAWEI = "/idscan/api/front/ocr/getOCRHuaweiInfo"
 
@@ -465,6 +460,7 @@ object Constants {
     const val UPLOAD_IMG = "/api/upload/image#url_ignore" //上传图片,url_ignore避免域名被动态替换
     const val UPLOAD_VERIFY_PHOTO = "/api/front/user/uploadVerifyPhoto" //上傳實名制文件
     const val GET_KYC_NEED_INFORMATION = "/api/front/user/getKycNeedInformation" //获取kyc所需资料配置
+    const val LIVE_KYC_VERIFY = "/api/front/kyc/liveKycVerify"
 
     //簡訊碼驗證
     const val GET_TWO_FACTOR_STATUS =
@@ -612,6 +608,10 @@ object Constants {
     //三方游戏收藏数量
     const val GUEST_LOGIN = "/api/front/thirdapi/guestLogin/{firmType}"
 
+    const val GET_RECENT_GAMES = "/api/front/recentGamesHistory/getRecentGames"
+
+
+
     //chat
     const val ROOM_QUERY_LIST =
         "/api/chat/front/room/queryList" //------------------------------- 查询所有开放的房间
@@ -638,4 +638,33 @@ object Constants {
     const val GET_HALL_OKSPORT="/api/front/gameEntryGames/getHallOkSport"
 
     const val FIRM_TYPE_SBTY="SBTY"
+    const val FIRM_TYPE_OKMINI="OKMINI"
+
+    //region 任務中心
+    const val QUEST_GUEST_INFO="/api/front/quest/guest/info" //前台訪客獲取任務列表
+
+    const val QUEST_INFO="/api/front/quest/info" //前台會員獲取任務列表
+
+    const val QUEST_JOIN = "/api/front/quest/join/{questId}" //加入任务
+
+    const val CLAIM_REWARD = "/api/front/quest/claimReward/{rewardId}" //手动领取奖励
+
+    const val CLAIM_ALL_REWARD = "/api/front/quest/claimAllReward" //手动领取奖励
+    //endregion 任務中心
+    const val TIME_LINE="/api/front/timeline" //排程檢查任務完成通知
+
+    const val QUEST_CHECK="/api/front/quest/check"//排程檢查任務領取，請前端在玩家登入後呼叫一次，後續每一分鐘呼叫一次
+
+    const val POINT_BILL="/api/front/point/pointBill"//取得积分历史纪录
+
+    const val PRODUCT_DETAIL="/api/front/product/detail"//取得商品明細
+
+    const val PRODUCT_INDEX="/api/front/product/index"//取得积分商城资讯
+
+    const val PRODUCT_GUEST_INDEX="/api/front/product/guest/index"//游客取得积分商城资讯
+
+    const val PRODUCT_REDEEM="/api/front/product/redeem"//兑换商品
+
+    const val PRODUCT_REDEEM_LIST="/api/front/product/redeemList"//取得商品兑换纪录
+
 }

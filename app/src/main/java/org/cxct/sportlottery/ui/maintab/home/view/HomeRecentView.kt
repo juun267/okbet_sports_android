@@ -9,10 +9,14 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.showPromptDialog
 import org.cxct.sportlottery.databinding.ViewHomeRecentBinding
+import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.maintab.home.hot.HomeHotFragment
@@ -24,25 +28,14 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
 
     private val binding = ViewHomeRecentBinding.inflate(layoutInflater,this)
     private lateinit var fragment: HomeHotFragment
-    private val maxItemCount = 20
     private val homeRecentAdapter = HomeRecentAdapter().apply {
         setOnItemClickListener{ _, _, position ->
             val item = data[position]
-            if (item.recordType != 0) {
-                if (item.gameBean?.firmType==Constants.FIRM_TYPE_SBTY&&!StaticData.sbSportOpened()){
-                    fragment.getMainTabActivity().showPromptDialog(message = context.getString(R.string.shaba_no_open)){}
-                }else{
-                    item.gameBean?.let { fragment.getMainTabActivity().enterThirdGame(it, "首页-最近游戏列表") }
-                }
-                return@setOnItemClickListener
-            }
-
-            if (item.gameType == GameType.ES.key){
-                item.categoryCode?.let { fragment.getMainTabActivity().jumpToESport(it) }
-            } else {
-                GameType.getGameType(item.gameType)?.let {
-                    fragment.getMainTabActivity().jumpToSport(gameType = it)
-                }
+            LogUtil.toJson(item)
+            when(item.gameType){
+                GameEntryType.SPORT->  GameType.getGameType(item.gameId)?.let { fragment.getMainTabActivity().jumpToSport(gameType = it) }
+                GameEntryType.ES-> item.gameId?.let { fragment.getMainTabActivity().jumpToESport(it) }
+                else-> fragment.getMainTabActivity().enterThirdGame(item, "首页-最近游戏列表")
             }
         }
     }
@@ -57,15 +50,16 @@ class HomeRecentView(context: Context, attrs: AttributeSet) : LinearLayout(conte
     }
     fun setup(fragment: HomeHotFragment) {
         this.fragment = fragment
-        RecentDataManager.recentEvent.observe(fragment){
-            homeRecentAdapter.setList(subMaxCount(it))
+        OKGamesRepository.recentGamesEvent.observe(fragment){
+            homeRecentAdapter.setList(it.toMutableList())
             this@HomeRecentView.isVisible = visibleRecent()
         }
-        homeRecentAdapter.setList(subMaxCount(RecentDataManager.getRecentList()))
+        homeRecentAdapter.setList(OKGamesRepository.recentGamesEvent.value?: listOf())
         isVisible = visibleRecent()
+        loadData()
     }
-    private fun subMaxCount(list: MutableList<RecentRecord>):MutableList<RecentRecord>{
-        return if (list.size>maxItemCount) list.subList(0,maxItemCount-1) else list
+    fun loadData(){
+        fragment.viewModel.getHomeRecentPlay()
     }
     private fun visibleRecent():Boolean{
         return homeRecentAdapter.dataCount()!=0&&LoginRepository.isLogined()

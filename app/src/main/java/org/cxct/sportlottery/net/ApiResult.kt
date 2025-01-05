@@ -26,6 +26,8 @@ open class ApiResult<T>(): java.io.Serializable {
     private val t: T? = null
 
     val total: Int = 0
+    //当前页数，返回数据传值，方便做分页功能
+    var page: Int? = null
     private val rows: T? = null
 
     // 可以重新改方法，解析不同字段的data

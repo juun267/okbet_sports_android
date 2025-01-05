@@ -69,7 +69,7 @@ class HomeFirstDepositDialog : BaseDialog<BaseViewModel,DialogHomeFirstDepositBi
             }
         }else{
             ivBackground.setImageResource(R.drawable.bg_dialog_home_first_deposit)
-//            linCountingTime.gone()
+            linCountingTime.gone()
         }
         ivClose.setOnClickListener { dismiss() }
         tvDeposit.clickDelay {

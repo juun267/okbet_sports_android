@@ -14,17 +14,18 @@ import org.cxct.sportlottery.util.DiscountUtils.applyDiscount
 import org.cxct.sportlottery.util.DiscountUtils.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
 import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
+import org.cxct.sportlottery.util.replaceSpecialChar
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 @Parcelize
 @KeepMembers
 data class MatchOdd(
-    val awayName: String?,
-    val homeName: String?,
+    var awayName: String?,
+    var homeName: String?,
     val inplay: Int,
     val leagueId: String,
-    val leagueName: String?,
+    var leagueName: String?,
     val matchId: String,
     val originalOdds: String?,
     var odds: Double,
@@ -33,10 +34,10 @@ data class MatchOdd(
     var indoOdds: Double,
     var oddsId: String,
     val playCateId: Int,
-    val playCateName: String,
+    var playCateName: String,
     val playCode: String,
     val playId: Int,
-    val playName: String,
+    var playName: String,
     val producerId: Int,
     var spread: String,
     val startTime: Long?,
@@ -53,6 +54,13 @@ data class MatchOdd(
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null,
     override val oddsEps: EpsOdd? = null,
 ) : Parcelable, org.cxct.sportlottery.network.common.MatchOdd {
+    init {
+        leagueName = leagueName?.replaceSpecialChar("\n")
+        homeName = homeName?.replaceSpecialChar("\n")
+        awayName = awayName?.replaceSpecialChar("\n")
+        playCateName = playCateName.replaceSpecialChar("\n")
+        playName = playName.replaceSpecialChar("\n")
+    }
     var oddState: Int = OddState.SAME.state
 
     @Transient

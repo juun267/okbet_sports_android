@@ -18,6 +18,7 @@ import org.cxct.sportlottery.databinding.DialogBottomSheetCustomBinding
 import org.cxct.sportlottery.databinding.ViewStatusSelectorBinding
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.MetricsUtil.convertDpToPixel
 import splitties.systemservices.layoutInflater
 
@@ -91,6 +92,8 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             if (value == true) binding.checkboxSelectAll.visibility = View.VISIBLE
             else binding.checkboxSelectAll.visibility = View.GONE
         }
+    //限制list显示的数量
+    var limitItemCount = 3
 
     init {
         addView(viewBinding.root)
@@ -195,9 +198,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             dismiss()
         }
     }
-
     private fun setBottomSheet(typedArray: TypedArray)=binding.run {
-
             sheetTvTitle.text = bottomSheetTitleText?:typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultBottomSheetTitleText)
             val isShowCloseButton = typedArray.getBoolean(R.styleable.StatusBottomSheetStyle_bottomSheetShowCloseButton, true)
             sheetTvClose.visibility = if (isShowCloseButton) View.VISIBLE else View.GONE
@@ -206,16 +207,25 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             }
             sheetRvMore.adapter = sheetAdapter
 
-            sheetAdapter?.registerAdapterDataObserver(object : AdapterDataObserver() {
-                override fun onChanged() {
-                    super.onChanged()
-                    val count = if (dataList?.size ?: 1 < 3) dataList?.size else 3
+        sheetAdapter?.registerAdapterDataObserver(object : AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                if (limitItemCount>0){
+                    val count = if (dataList?.size ?: 1 < limitItemCount) dataList?.size else limitItemCount
                     val params: ViewGroup.LayoutParams = sheetRvMore.layoutParams
                     params.height = convertDpToPixel(48f * (count ?: 1), context).toInt()
                     sheetRvMore.layoutParams = params
                 }
-            })
+            }
+        })
 
-        bottomSheet.setContentView(binding.root)
+            bottomSheet.setContentView(binding.root)
+    }
+    fun resetListHeight()=binding.run{
+        limitItemCount = 0
+        val params: ViewGroup.LayoutParams = sheetRvMore.layoutParams
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+        sheetRvMore.layoutParams = params
+        binding.clRoot.maxHeight = Int.MAX_VALUE
     }
 }

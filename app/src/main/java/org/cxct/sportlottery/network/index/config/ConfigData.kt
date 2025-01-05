@@ -169,7 +169,13 @@ data class ConfigData(
     val glifeMemberRechargeAndWithdrawal: Int = 0, // glife用户可以在平台直接充值
     val mayaMemberRechargeAndWithdrawal:Int = 0,// maya用户可以在平台直接充值
     val halfVerifiedCharge:Int = 0,      //是否允许半认证用户冲提款  0-否 1-是
-    val wheelActivity: Boolean = false, // 万圣节砸南瓜活动，2024.10.22
+//    val wheelActivity: Boolean = false, // 万圣节砸南瓜活动，2024.10.22
+    val questSystemOpen: Int?, //任務中心開關
+    val pointSystemOpen: Int?, //积分商城開關
+    val kycPrompt: Int?,//首页是否提示KYC认证
+    val christmasActivity: Boolean = false, // 圣诞节活动，2024.11.15
+    val needFullVerifyToWithdraw: Int?,//KYC部分认证用户是否需要进行完全认证 1需要，0不需要
+    val dropBallActivity: Boolean = false, //dropball预热活动开关
 ) {
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
 }

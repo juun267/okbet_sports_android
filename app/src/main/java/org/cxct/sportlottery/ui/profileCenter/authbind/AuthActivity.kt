@@ -45,6 +45,8 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
                 }
             })
         }
+        clLiveChat.setServiceClick(supportFragmentManager)
+
     }
 
 

@@ -120,10 +120,6 @@ class HomeBottomView@JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     fun applyHalloweenStyle() {
-        val vTopBg = View(context)
-        vTopBg.setBackgroundResource(R.drawable.img_home_footer_top)
-        addView(vTopBg, 0, LayoutParams(-1, 173.dp))
-
         val vBottomBg = View(context)
         vBottomBg.setBackgroundResource(R.drawable.img_home_footer_bottom)
         val lp = LayoutParams(-1, 417.dp)

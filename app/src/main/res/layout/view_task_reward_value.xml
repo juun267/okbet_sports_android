@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    tools:ignore="SpUsage, ContentDescription">
+
+    <TextView
+        android:id="@+id/tvPointValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="4dp"
+        android:textColor="@color/color_764FF5"
+        android:textFontWeight="600"
+        android:textSize="14dp"
+        app:drawableStartCompat="@drawable/ic_task_value_point"
+        tools:ignore="UnusedAttribute"
+        tools:text="+5,000" />
+
+    <ImageView
+        android:id="@+id/ivPlus"
+        android:layout_width="14dp"
+        android:layout_height="20dp"
+        android:layout_marginHorizontal="4dp"
+        android:src="@drawable/ic_task_reward_plus_sign" />
+
+    <TextView
+        android:id="@+id/tvCashValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="4dp"
+        android:textColor="@color/color_FF6533"
+        android:textFontWeight="600"
+        android:textSize="14dp"
+        app:drawableStartCompat="@drawable/ic_task_value_cash"
+        tools:ignore="UnusedAttribute"
+        tools:text="₫6,000" />
+
+</LinearLayout>

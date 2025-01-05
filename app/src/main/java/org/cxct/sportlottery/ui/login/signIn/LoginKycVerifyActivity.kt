@@ -12,6 +12,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.jumpToKYC
 
 class LoginKycVerifyActivity : BaseActivity<LoginViewModel, ActivityLoginKycVerifyBinding>() {
 
@@ -32,8 +33,8 @@ class LoginKycVerifyActivity : BaseActivity<LoginViewModel, ActivityLoginKycVeri
     private fun initEvent() = binding.run {
         btnBack.setOnClickListener { finish() }
         btnLogin.setOnClickListener {
+            jumpToKYC()
             finish()
-            startActivity(VerifyIdentityActivity::class.java)
         }
     }
 

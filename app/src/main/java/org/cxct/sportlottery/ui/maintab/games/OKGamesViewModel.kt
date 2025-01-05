@@ -177,30 +177,11 @@ class OKGamesViewModel(
         if (!LoginRepository.isLogined()) {  // 没登录不显示最近玩的游戏
             return
         }
-        val ids = OKGamesRepository.getRecentPlayGameIds()
-        val recentList = mutableListOf<OKGameBean>()
-        ids.forEach {
-            allGamesMap[it.toIntS(-1)]?.let {
-                recentList.add(it.copy())
+        callApi({OKGamesRepository.getRecentGames()}){
+            if (it.succeeded()){
+                _recentPlay.postValue(it.getData()?.filter { it.gameType==GameEntryType.OKGAMES})
             }
         }
-        recentList.reverse()
-        _recentPlay.postValue(recentList)
-    }
-
-    /**
-     * 记录最近游戏
-     */
-    fun updateRecentPlay() {
-        val ids = OKGamesRepository.getRecentPlayGameIds()
-        val recentList = mutableListOf<OKGameBean>()
-        ids.forEach {
-            allGamesMap[it.toIntS(-1)]?.let {
-                recentList.add(it.copy())
-            }
-        }
-        recentList.reverse()
-        _recentPlay.postValue(recentList)
     }
 
     fun searchGames(
@@ -277,7 +258,7 @@ class OKGamesViewModel(
             GameCollectManager.setUpLiveCollect(data.collectList?.toMutableList()?: mutableListOf())
 
             data.categoryList?.forEach {
-                it.gameList?.forEach {
+                it.gameList.forEach {
                     allGamesMap[it.id] = it
                 }
             }

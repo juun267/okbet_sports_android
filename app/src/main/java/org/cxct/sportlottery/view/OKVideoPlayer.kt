@@ -84,12 +84,13 @@ class OKVideoPlayer : GSYVideoPlayer {
     override fun showWifiDialog() {}
     override fun showProgressDialog(
         deltaX: Float,
-        seekTime: String,
-        seekTimePosition: Long,
-        totalTime: String,
-        totalTimeDuration: Long
+        seekTime: String?,
+        seekTimePosition: Int,
+        totalTime: String?,
+        totalTimeDuration: Int,
     ) {
     }
+
 
     override fun dismissProgressDialog() {}
     override fun showVolumeDialog(deltaY: Float, volumePercent: Int) {}

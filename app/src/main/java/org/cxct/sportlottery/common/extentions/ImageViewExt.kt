@@ -1,11 +1,17 @@
 package org.cxct.sportlottery.common.extentions
 
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import org.cxct.sportlottery.util.GlideRoundTransform
+import org.cxct.sportlottery.util.LogUtil
 import java.io.File
 
 fun ImageView.load(@DrawableRes res: Int = 0) {
@@ -27,6 +33,34 @@ fun ImageView.load(url: String?, @DrawableRes placeHolder: Int = 0,  @DrawableRe
                     error(error)
                 }
             }.into(this)
+    }
+}
+fun ImageView.load(url: String?,errorUrl: String) {
+    runWithCatch {
+        Glide.with(context)
+            .load("$url")
+            .listener(object :RequestListener<Drawable>{
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean,
+                ): Boolean {
+                    post { load(errorUrl) }
+                    return true
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean,
+                ): Boolean {
+                    return false
+                }
+            })
+            .into(this)
     }
 }
 

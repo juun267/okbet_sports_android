@@ -47,17 +47,16 @@ enum class HandicapType() {
 }
 
 const val LOGIN_SRC: Long = 2 //登录来源，WEB(0), MOBILE_BROWSER(1), ANDROID(2), IOS(3);
-
+const val DEVICE_TYPE: Int = 3 //1PC,2H5,3APP
 const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
 const val APP_NAME = "okbet" //okgame的包需要加一些特定的参数
 
 private const val OkSport = "pageOKSports"
-private const val OkGame = "pageOKSports"
-private const val OkBingo = "pageOKSports"  // 实际对应的是ESport 2023.10.06
-private const val OkLive = "pageOKSports"
+private const val OkGame = "pageOKGames"
+private const val OkBingo = "pageOKBingo"  // 实际对应的是ESport 2023.10.06
+private const val OkLive = "pageOKLive"
 private const val MiniGame = "pageMINI"
-
 
 var sConfigData: ConfigData? = null
     set(value) {
@@ -170,6 +169,12 @@ class StaticData {
 
         //是否显示邀请好友入口
         fun inviteUserOpened():Boolean= sConfigData?.inviteUserStatus == 1
+
+        //是否显示任务中心入口
+        fun taskCenterOpened(): Boolean = sConfigData?.questSystemOpen == 1 && TaskCenterRepository.currentTaskCount != 0
+
+        //是否显示积分商城
+        fun pointShopOpened(): Boolean = sConfigData?.pointSystemOpen == 1
     }
 
 }

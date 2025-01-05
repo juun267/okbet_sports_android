@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F6F7F8"
+    android:orientation="vertical"
+    tools:context=".ui.promotion.PromotionDetailActivity"
+    tools:ignore="SpUsage, ContentDescription">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/tool_bar_height"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:elevation="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <ImageView
+                    android:id="@+id/bgBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-108dp"
+                    android:src="@drawable/banner_task_center"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvSlogan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="128dp"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:maxWidth="200dp"
+                    android:maxLines="2"
+                    android:text="@string/A049"
+                    android:textColor="@color/color_0D2245"
+                    android:textFontWeight="600"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/bgBanner"
+                    tools:ignore="UnusedAttribute" />
+
+                <ImageView
+                    android:id="@+id/ivTipsHead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_task_tips_head"
+                    app:layout_constraintBottom_toBottomOf="@id/tvTipsContent"
+                    app:layout_constraintStart_toStartOf="@id/tvSlogan"
+                    app:layout_constraintTop_toBottomOf="@id/tvSlogan" />
+
+                <ImageView
+                    android:id="@+id/ivTipsContent"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_task_tips_content"
+                    app:layout_constraintBottom_toBottomOf="@id/tvTipsContent"
+                    app:layout_constraintEnd_toEndOf="@id/tvTipsContent"
+                    app:layout_constraintStart_toStartOf="@id/tvTipsContent"
+                    app:layout_constraintTop_toTopOf="@id/tvTipsContent" />
+
+                <ImageView
+                    android:id="@+id/ivTipsTail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_task_tips_tail"
+                    app:layout_constraintBottom_toBottomOf="@id/tvTipsContent"
+                    app:layout_constraintStart_toEndOf="@id/tvTipsContent"
+                    app:layout_constraintTop_toTopOf="@id/tvTipsContent" />
+
+                <TextView
+                    android:id="@+id/tvTipsContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_FFFFFF"
+                    android:minWidth="70dp"
+                    android:textFontWeight="700"
+                    android:textSize="10dp"
+                    android:paddingLeft="2dp"
+                    app:layout_constraintStart_toEndOf="@id/ivTipsHead"
+                    app:layout_constraintTop_toTopOf="@id/ivTipsHead"
+                    tools:ignore="UnusedAttribute"
+                    tools:text="@string/A026"
+                    tools:textSize="10dp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/blockLimitedTimeTask"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_limited_time_task_root"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/bgBanner">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/bg_limitedtime_task"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+                    <ImageView
+                        android:id="@+id/ivLimitedTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/img_limited_task_title_bar"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="41dp"
+                        android:text="@string/A050"
+                        android:textColor="@color/color_FF4444"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="@id/ivLimitedTitle"
+                        app:layout_constraintStart_toStartOf="@id/ivLimitedTitle"
+                        app:layout_constraintTop_toTopOf="@id/ivLimitedTitle" />
+
+                    <ImageView
+                        android:id="@+id/ivClock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="2dp"
+                        android:src="@drawable/ic_task_content_clock"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@id/cmTopEndDate"
+                        app:layout_constraintEnd_toStartOf="@id/cmTopEndDate"
+                        app:layout_constraintTop_toTopOf="@id/cmTopEndDate"
+                        tools:visibility="visible" />
+
+                    <Chronometer
+                        android:id="@+id/cmTopEndDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="4dp"
+                        android:textColor="@color/color_FF4343"
+                        android:textSize="10dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@id/ivLimitedTitle"
+                        app:layout_constraintEnd_toEndOf="@id/viewLimitedInfo"
+                        app:layout_constraintTop_toTopOf="@id/ivLimitedTitle"
+                        tools:visibility="gone" />
+
+                    <include
+                        android:id="@+id/viewLimitedInfo"
+                        layout="@layout/view_task_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginBottom="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ivLimitedTitle" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_task_list_block"
+            android:orientation="vertical"
+            app:layout_behavior="org.cxct.sportlottery.util.FixScrollingFooterBehavior">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTaskType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="8dp"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_task_list_type" />
+
+            <TextView
+                android:id="@+id/tvDailyTips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="16dp"
+                android:text="@string/A036"
+                android:textColor="@color/color_F23C3B"
+                android:textSize="12dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTaskInfo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:paddingHorizontal="16dp"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_task_content" />
+
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <org.cxct.sportlottery.view.CustomTopToolbar
+        android:id="@+id/customToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/margin_2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:topTitleEndImgSrc="@drawable/ic_task_rule"
+        app:topTitleEndImgVisibility="visible"
+        app:topTitleText="@string/A025" />
+
+    <ImageView
+        android:id="@+id/ivFloatingReward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="37dp"
+        android:src="@drawable/ic_floating_reward"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvFloatingRewardCount"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:background="@drawable/bg_floating_reward_count"
+        android:fontFamily="@font/inter_bold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:minWidth="14dp"
+        android:minHeight="14dp"
+        android:textColor="@color/color_FFFFFF"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="@id/ivFloatingReward"
+        app:layout_constraintTop_toTopOf="@id/ivFloatingReward"
+        tools:text="9" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

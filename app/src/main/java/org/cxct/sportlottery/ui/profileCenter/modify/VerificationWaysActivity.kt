@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.view.View
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.bindFinish
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.ActivityForgetWaysBinding
+import org.cxct.sportlottery.databinding.ActivityVerificationWaysBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
@@ -15,7 +17,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.util.setServiceClick
 
-class VerificationWaysActivity: BaseActivity<ForgetViewModel,ActivityForgetWaysBinding>()  {
+class VerificationWaysActivity: BaseActivity<ForgetViewModel,ActivityVerificationWaysBinding>()  {
 
     override fun pageName() = "手机号验证页面"
 
@@ -43,7 +45,6 @@ class VerificationWaysActivity: BaseActivity<ForgetViewModel,ActivityForgetWaysB
 
     private fun initView() =binding.run{
         bindFinish(btnBack)
-        clLiveChat.setServiceClick(supportFragmentManager)
         setTitle()
         btnPhoneWays.setText(R.string.verify_phone_no)
         btnEmailWays.setText(R.string.verify_email)
@@ -51,10 +52,10 @@ class VerificationWaysActivity: BaseActivity<ForgetViewModel,ActivityForgetWaysB
         btnEmailWays.setBtnEnable(!userEemail.isEmptyStr())
         btnPhoneWays.setOnClickListener { toVerify(userPhone, null) }
         btnEmailWays.setOnClickListener {toVerify(null, userEemail) }
-
         val padding = 38.dp
         setBtnPadding(btnEmailWays, padding)
         setBtnPadding(btnPhoneWays, padding)
+        clLiveChat.setServiceClick(supportFragmentManager)
     }
 
     private fun setBtnPadding(btn: View, padding: Int) {

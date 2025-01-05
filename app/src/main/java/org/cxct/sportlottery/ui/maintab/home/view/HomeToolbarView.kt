@@ -375,16 +375,14 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         ivLogo.setImageResource(R.drawable.logo_okbet_color_h)
         tvLogin.setBackgroundResource(R.drawable.img_home_login_h)
         tvRegist.setBackgroundResource(R.drawable.img_home_regist_h)
-        tvLogin.layoutParams.height = 48.dp
+        val dp32 = 32.dp
+        tvLogin.layoutParams.height = dp32
+        tvRegist.layoutParams.height = dp32
         tvLogin.setTextColor(Color.WHITE)
-        (tvRegist.layoutParams as MarginLayoutParams).let {
-            it.height = 48.dp
-            it.bottomMargin = 3.dp
-        }
-        tvLogin.setPadding(0, 0, 0, 7.dp)
-        tvRegist.setPadding(0, 0, 0, 3.dp)
+
 
         if (::btnDeposit.isInitialized) {
+            btnDeposit.layoutParams.height = dp32
             btnDeposit.setBackgroundResource(R.drawable.img_home_deposit_h)
         }
         if (::userMoneyView.isInitialized) {
@@ -399,6 +397,8 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
             parent.addView(blurView, index, lp)
         }
 
+        tvLogin.setShadowLayer(1.dp.toFloat(), 1.dp.toFloat(), 1.dp.toFloat(), Color.parseColor("#80000000"))
+        tvRegist.setShadowLayer(1.dp.toFloat(), 1.dp.toFloat(), 1.dp.toFloat(), Color.parseColor("#80000000"))
 
     }
 

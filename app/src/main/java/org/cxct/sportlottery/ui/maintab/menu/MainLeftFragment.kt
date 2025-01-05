@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.budiyev.android.codescanner.BarcodeUtils
 import com.gyf.immersionbar.ImmersionBar
@@ -16,6 +17,7 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.VerifiedType
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentMainLeftBinding
 import org.cxct.sportlottery.network.Constants
@@ -35,6 +37,8 @@ import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.adapter.AmbassadorAdapter
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.invite.InviteActivity
+import org.cxct.sportlottery.ui.profileCenter.taskCenter.TaskCenterActivity
+import org.cxct.sportlottery.ui.profileCenter.pointshop.PointShopActivity
 import org.cxct.sportlottery.ui.profileCenter.vip.VipBenefitsActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
@@ -124,6 +128,11 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             binding.menuPerya.isVisible = StaticData.miniGameOpened()
             binding.menuVip.isVisible = StaticData.vipOpened()
             binding.menuInvite.isVisible = StaticData?.inviteUserOpened()
+            binding.menuTaskCenter.isVisible = StaticData?.taskCenterOpened()
+            binding.menuPointShop.isVisible = StaticData?.pointShopOpened()
+        }
+        viewModel.taskRedDotEvent.collectWith(lifecycleScope){
+            binding.menuTaskCenter.ivDot().isVisible = it
         }
     }
     // 新增菜单在这里修改
@@ -191,6 +200,26 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             PromotionListActivity.startFrom(context(), "主页侧边栏菜单")
         }.apply {
             setVisibilityByMarketSwitch()
+        }
+        menuTaskCenter.setItem(
+            cxt.getIconSelector(R.drawable.ic_left_menu_taskcenter_sel, R.drawable.ic_left_menu_taskcenter_nor),
+            R.string.A025
+        ){
+            close()
+            startActivity(TaskCenterActivity::class.java)
+        }.apply {
+            setSummaryStatus(true,R.string.A049, ContextCompat.getColor(requireContext(),R.color.color_A7B2C4))
+            isVisible = StaticData.taskCenterOpened()
+            ivDot().isVisible = LoginRepository.isLogined()
+        }
+        menuPointShop.setItem(
+            cxt.getIconSelector(R.drawable.ic_left_menu_gift, R.drawable.ic_left_menu_gift),
+            R.string.A051
+        ){
+            startActivity(PointShopActivity::class.java)
+        }.apply {
+            setSummaryTag(R.drawable.ic_point_tag_new)
+            isVisible = StaticData.pointShopOpened()
         }
         menuInvite.setItem(
             cxt.getIconSelector(R.drawable.ic_left_menu_invite_sel, R.drawable.ic_left_menu_invite_nor),
@@ -262,11 +291,7 @@ class MainLeftFragment : BaseFragment<MainHomeViewModel, FragmentMainLeftBinding
             R.string.N914
         ){
             close()
-            if (LoginRepository.isLogined()){
-                startActivity(VerifyIdentityActivity::class.java)
-            }else{
-                requireActivity().startLogin()
-            }
+            requireActivity().jumpToKYC()
         }
 
         menuAboutUs.setItem(

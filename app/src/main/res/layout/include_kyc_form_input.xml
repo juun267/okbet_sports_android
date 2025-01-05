@@ -42,7 +42,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_gravity="bottom|right"
-            android:src="@drawable/iv_clear_blue"
+            android:src="@drawable/ic_clear_blue"
             android:visibility="gone"
             tools:visibility="visible"/>
     </LinearLayout>

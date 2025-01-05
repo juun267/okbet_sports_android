@@ -13,6 +13,7 @@ import org.cxct.sportlottery.common.event.CheckLoginDataEvent
 import org.cxct.sportlottery.common.extentions.hideSoftKeyboard
 import org.cxct.sportlottery.common.extentions.showErrorPromptDialog
 import org.cxct.sportlottery.databinding.ActivityPhoneVerifyBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.view.checkRegisterListener
@@ -32,13 +33,10 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel,ActivityPhoneVerifyBindi
         when (v) {
             binding.btnSubmit -> {
                 if (!checkInputData()) {
-                    val deviceId = Settings.Secure.getString(
-                        this.contentResolver, Settings.Secure.ANDROID_ID
-                    )
                     viewModel.validateLoginDeviceSms(
                         loginData.token ?: "",
                         binding.eetVerificationCode.text.toString(),
-                        deviceId
+                        Constants.deviceId
                     )
                 }
             }

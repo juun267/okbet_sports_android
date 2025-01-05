@@ -21,7 +21,8 @@ class HalloweenActivityHelper(private val container: FrameLayout) {
 
     fun bindLifeCycle(lifecycleOwner: LifecycleOwner) {
         ConfigRepository.onNewConfig(lifecycleOwner) {
-            if (it?.configData?.wheelActivity == true) {
+            enableHalloweenActivity()
+            if (it?.configData?.christmasActivity == true) {
                 enableHalloweenActivity()
             } else {
                 disableHalloweenActivity()
@@ -37,7 +38,8 @@ class HalloweenActivityHelper(private val container: FrameLayout) {
         val context = container.context
         val frameLayout = FrameLayout(context)
         halloweenView = frameLayout
-        val lp0 = FrameLayout.LayoutParams(98.dp, 86.dp)
+        val dp168 = 90.dp
+        val lp0 = FrameLayout.LayoutParams(dp168, dp168)
         lp0.gravity = Gravity.END or Gravity.BOTTOM
         lp0.bottomMargin = 260.dp
         container.addView(frameLayout, lp0)
@@ -50,10 +52,10 @@ class HalloweenActivityHelper(private val container: FrameLayout) {
         frameLayout.addView(img, lp1)
 
         val dp24 = 24.dp
-        val dp6 = 6.dp
+        val dp4 = 4.dp
         val ivClose = ImageView(context)
         ivClose.setImageResource(R.drawable.ic_halloween_close)
-        ivClose.setPadding(dp6, dp6, dp6, dp6)
+        ivClose.setPadding(dp4, dp4, dp4, dp4)
         val lp2 = FrameLayout.LayoutParams(dp24, dp24)
         lp2.gravity = Gravity.END
         frameLayout.addView(ivClose, lp2)
@@ -72,7 +74,7 @@ class HalloweenActivityHelper(private val container: FrameLayout) {
 
     private fun jumpToHalloweenActivity() {
         val context = container.context
-        JumpUtil.toInternalWeb(context, Constants.getHalloweenActivityUrl(), context.getString(R.string.P169))
+        JumpUtil.toInternalWeb(context, Constants.getChristmasActivityUrl(), context.getString(R.string.P169))
     }
 
 }

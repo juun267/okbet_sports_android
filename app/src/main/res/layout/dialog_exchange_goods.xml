@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="bottom"
+    android:orientation="vertical"
+    android:background="@drawable/bg_white_radius_12_top">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_48"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/color_0D2245"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            android:text="@string/P274_1"/>
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="@dimen/margin_20"
+            android:layout_height="@dimen/margin_20"
+            android:padding="@dimen/margin_4"
+            android:layout_margin="@dimen/margin_8"
+            android:layout_gravity="right|top"
+            android:src="@drawable/ic_close_dark"/>
+    </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginHorizontal="@dimen/margin_24"
+        android:background="@color/color_E0E3EE"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/margin_24">
+
+        <TextView
+            android:id="@+id/tvGoodsName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="Apple 2024 iPad Pro 256GB Silver"
+            android:textColor="@color/color_0D2245"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSize14sp" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/ivCenterPicture"
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:padding="@dimen/margin_20"
+                android:background="@drawable/bg_gray_radius_12_f8f9fa"
+                android:layout_marginHorizontal="16dp"/>
+            <ImageView
+                android:id="@+id/ivLeftArrow"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_arrow_left_round_gray"/>
+            <ImageView
+                android:id="@+id/ivRightArrow"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical|right"
+                android:src="@drawable/ic_arrow_right_round_gray"/>
+        </FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvThumb"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginTop="@dimen/margin_12"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_goods_thumb"
+            tools:itemCount="4"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12">
+
+        <TextView
+            android:id="@+id/tvDesp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineHeight="@dimen/margin_16"
+            android:scrollbars="vertical"
+            android:maxLines="7"
+            android:textColor="@color/color_6D7693"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="13 吋 Ultra Retina XDR 顯示器採用創新突破的串聯式 OLED 技術，帶來非凡出色的亮度與精確無比的對比度。ProMotion 自動適應更新頻率技術、P3 廣色域與原彩顯示等先進技術，帶來歎為觀止的視覺體驗。顯示器專為極低的反射率而打造。全新 Nano-texture 玻璃選項能減少眩光，適用於高階的色彩管理工作流程以及複雜的照明環境。隨時隨地瀏覽網頁、傳送電子郵件與文字訊息、進行FaceTime 通話、存取檔案，以及更多更多 .." />
+        </ScrollView>
+        <LinearLayout
+            android:id="@+id/linBuy"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_24"
+            android:background="@drawable/img_task_reward_all">
+            <TextView
+                android:id="@+id/tvBuyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/color_FFFFFF"
+                android:text="@string/A078"/>
+            <TextView
+                android:id="@+id/tvBuyPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_8"
+                android:drawablePadding="@dimen/margin_4"
+                android:drawableLeft="@drawable/ic_coin_star"
+                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/color_FFFFFF"
+                android:text="59,000"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

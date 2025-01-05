@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:background="@drawable/bg_skin_select_money_type_effect_main_light_color"
     tools:ignore="RtlSymmetry,SpUsage,ContentDescription">
 
@@ -37,5 +40,19 @@
         android:src="@drawable/ic_tri"
         android:visibility="gone"
         tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPromot"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="-15dp"
+        android:layout_marginEnd="-15dp"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:padding="5dp"
+        android:background="@drawable/ic_deposit_yellow_star"
+        android:textColor="@color/color_FF3C57"
+        android:textSize="@dimen/textSize8sp"
+        android:text="0.5%\nBonus"/>
 
 </RelativeLayout>

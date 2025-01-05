@@ -20,8 +20,8 @@ android {
         applicationId "com.okbet.ph"
         minSdk 24
         targetSdk 34
-        versionName "1.6.6"
-        versionCode 164
+        versionName "1.6.15"
+        versionCode 173
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -111,7 +111,9 @@ android {
                                     JPUSH_APPKEY : "2efc0f50829574b4db4b1dc8",
                                     JPUSH_CHANNEL: "developer-default",]
         }
-        OkbetPH {}
+        OkbetPH {
+            manifestPlaceholders = [INVITE_CODE: "organicapp"]
+        }
         google {
             buildConfigField "String", "AF_APPKEY", "\"wkkMAFUojRhwAMtDpeJtvN\""
             resValue "string", "server_client_id", "1037678190731-u7ps284ota58f6brq1be4feo5vgs1fbi.apps.googleusercontent.com"
@@ -325,9 +327,9 @@ dependencies {
 //    implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack'   // 全量包引入
 
     // 基本功能需求引入
-    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.6.0-release-jitpack'
-    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.4-release-jitpack'
-    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.3.4-release-jitpack'
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.1.1'
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.1.1'
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.1.1'
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
@@ -403,6 +405,9 @@ dependencies {
 //        exclude(group:'com.sensorsdata.analytics.android', module:'push')       // 	推送模块
         exclude(group:'com.sensorsdata.analytics.android', module:'visual')     // 	可视化模块
     }
+    //https://doc.advance.ai/sdk/android/liveness/cn/standard.html 人脸活体识别
+    implementation 'ai.advance.mobile-sdk.android:liveness-detection-ui:3.4.1'
+    implementation 'ai.advance.mobile-sdk.android:liveness-detection:3.4.1'
 }
 
 protobuf {
@@ -424,4 +429,15 @@ protobuf {
             }
         }
     }
+}
+task buildAllFlavors {
+    group = "Custom"
+    description = "Build all flavors"
+
+    dependsOn "assembleHuaweiRelease",
+            "assembleXiaomiRelease",
+            "assembleApkpureRelease",
+            "assembleOppoRelease",
+            "assembleVivoRelease",
+            "assembleSamgsungRelease"
 }

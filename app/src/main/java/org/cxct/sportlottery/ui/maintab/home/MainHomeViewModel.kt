@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.hideLoading
@@ -18,6 +17,7 @@ import org.cxct.sportlottery.net.PageData
 import org.cxct.sportlottery.net.PageInfo
 import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
 import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.net.games.OKGamesRepository.recentGamesEvent
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.net.money.data.DailyConfig
@@ -170,6 +170,8 @@ open class MainHomeViewModel(
 
     private var loadingGameTypes = mutableMapOf<GameType?, Long>()
 
+    val taskRedDotEvent get() = TaskCenterRepository.taskRedDotEvent
+
     //region 宣傳頁用
     fun getRecommend(gameType: GameType? = null) = launch {
         val timeStep = loadingGameTypes[gameType] ?: 0
@@ -312,13 +314,11 @@ open class MainHomeViewModel(
     private fun Recommend.setupMatchType() {
         matchType = when (status) {
             1 -> {
-                matchInfo?.isInPlay = true
                 MatchType.IN_PLAY
             }
             else -> {
                 when {
                     TimeUtil.isTimeAtStart(startTime) -> {
-                        matchInfo?.isAtStart = true
                         MatchType.AT_START
                     }
                     TimeUtil.isTimeToday(startTime) -> {
@@ -369,7 +369,6 @@ open class MainHomeViewModel(
      * 未登录试玩
      */
     fun requestEnterThirdGameNoLogin(okGameBean: OKGameBean){
-        RecentDataManager.addRecent(RecentRecord(1, gameBean = okGameBean))
         if(okGameBean.firmType==null){
             //不支持试玩
             _enterTrialPlayGameResult.postValue(null)
@@ -419,7 +418,7 @@ open class MainHomeViewModel(
         okGameBean: OKGameBean,
         baseActivity: BaseActivity<*,*>,
     ) {
-        val firmType = okGameBean.firmType!!
+        val firmType = okGameBean.firmType ?: return
 //        Timber.e("gameData: $gameData")
         if (LoginRepository.isLogin.value != true) {
             _enterThirdGameResult.postValue(Pair(firmType,
@@ -521,8 +520,6 @@ open class MainHomeViewModel(
      */
     private fun Recommend.setupMatchTime() {
         matchInfo?.startDateDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "MM/dd")
-
-        matchInfo?.startTimeDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "HH:mm")
 
         matchInfo?.remainTime = TimeUtil.getRemainTime(matchInfo?.startTime)
     }
@@ -719,6 +716,16 @@ open class MainHomeViewModel(
     fun getFirstDepositAfterDay() {
         callApi({ org.cxct.sportlottery.net.money.MoneyRepository.getFirstDepositAfterDay() }) {
             getFirstDepositAfterDay.postValue(it)
+        }
+    }
+    /**
+     * 获取最近游戏
+     */
+    fun getHomeRecentPlay() {
+        if (LoginRepository.isLogined()) {  // 没登录不显示最近玩的游戏
+            callApi({OKGamesRepository.getRecentGames()}){}
+        }else{
+            recentGamesEvent.postValue(listOf())
         }
     }
 }

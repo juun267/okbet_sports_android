@@ -268,4 +268,14 @@ class OKGamesTopView @JvmOverloads constructor(
         binding.edtSearchGames.setText(key)
     }
 
+    fun selectProviderItems(firmId: Int){
+        val pos =providersAdapter.data.indexOfFirst { it.id == firmId }
+        if (pos>=0){
+            (binding.rvOkgameProviders.layoutManager as LinearLayoutManager).apply {
+                scrollToPosition(pos)
+                getChildAt(pos)?.performClick()
+            }
+        }
+    }
+
 }

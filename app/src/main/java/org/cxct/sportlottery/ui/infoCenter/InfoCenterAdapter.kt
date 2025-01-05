@@ -10,6 +10,6 @@ class InfoCenterAdapter : BindingAdapter<InfoCenterData, ContentInfocenterListBi
     override fun onBinding(position: Int, viewBinding: ContentInfocenterListBinding, item: InfoCenterData) = viewBinding.run {
         txvIndex.text = (position + 1).toString()
         txvTitle.text = item.title
-        txvTime.setDateTime(item.addDate?.toLong())
+        txvTime.setDateTime(item.addDate?.toLongOrNull())
     }
 }

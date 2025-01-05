@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
@@ -28,6 +29,7 @@ class MainMenuItemView (context: Context, attrs: AttributeSet) : LinearLayout(co
         onClick?.let { setOnClickListener { onClick.invoke() } }
         return this
     }
+    fun ivDot() = binding.ivDot
 
     fun ivArrow() = binding.ivArrow
 
@@ -44,6 +46,11 @@ class MainMenuItemView (context: Context, attrs: AttributeSet) : LinearLayout(co
         binding.tvSummary.setText(text)
         binding.tvSummary.setTextColor(statusColor)
         binding.ivArrow.isVisible = enable
+    }
+    fun setSummaryTag(@DrawableRes tagBgRes: Int) {
+        binding.tvSummary.show()
+        binding.tvSummary.text = null
+        binding.tvSummary.setCompoundDrawablesRelativeWithIntrinsicBounds(tagBgRes,0,0,0)
     }
 
     fun setBoldSelected(bold: Boolean){

@@ -74,4 +74,5 @@ data class UserInfoData(
     val safeQuestionType: Int?=null,
     val fullVerified: Int?=null,//是否完全KYC认证，0为未完全认证，1为完全认证
     val state: Int?=null,
+    val addTime: Long?=null,
 )

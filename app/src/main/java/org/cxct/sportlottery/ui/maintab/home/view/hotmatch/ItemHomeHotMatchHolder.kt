@@ -2,6 +2,7 @@
 package org.cxct.sportlottery.ui.maintab.home.view.hotmatch
 
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
@@ -268,6 +269,7 @@ class ItemHomeHotMatchHolder(
         setupMatchTime(item, isTimerEnable, isTimerPause)
         setStatusText(item)
         setTextViewStatus(item)
+        binding.tvGameStatus.isVisible = binding.tvGameStatus.isVisible && binding.tvGameStatus.text.isNotEmpty()
     }
 
     /**

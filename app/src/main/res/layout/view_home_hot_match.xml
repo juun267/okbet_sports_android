@@ -11,7 +11,7 @@
         android:id="@+id/llayout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:gravity="bottom"
         android:orientation="horizontal"
         android:paddingLeft="12dp"
         android:paddingTop="8dp"
@@ -37,11 +37,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:drawableRight="@drawable/ic_home_more"
-            android:drawablePadding="@dimen/margin_4"
             android:gravity="center"
             android:text="@string/N702"
             android:textColor="@color/color_6D7693"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 

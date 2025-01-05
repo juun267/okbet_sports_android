@@ -199,7 +199,12 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
 
         //反利、手續費
         setupRebateFee()
-        mSelectRechCfgs?.let { setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance) }
+        mSelectRechCfgs?.let {
+            setupMoneyCfgMaintanince(it,btnSubmit,linMaintenance)
+            (requireActivity() as MoneyRechargeActivity).updateSelectRechCfgs(it)
+            updateExtraMoney()
+        }
+
     }
 
     private fun refreshPayBank(rechCfgsList: RechCfg?) {
@@ -235,9 +240,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
                 return@afterTextChanged
             }
 
-            dailyConfigAdapter.getSelectedItem()?.let { dailyConfig->
-                updateFirstDepositExtraMoney(dailyConfig,it.toIntS(0))
-            }
             viewModel.checkRcgOnlineAmount(it, mSelectRechCfgs)
             if (it.isEmpty() || it.isBlank()) {
                 if (includeQuickMoney.root.isVisible) {
@@ -280,7 +282,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
                 tvFeeRate.show()
                 tvFeeAmount.show()
             }
-
+            updateExtraMoney()
         }
 
         etRechargeOnlinePayer.afterTextChanged {
@@ -312,7 +314,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
             if (!hasFocus) {
                 val amountStr = etRechargeOnlineAmount.getText()
                 dailyConfigAdapter.getSelectedItem()?.let {
-                    updateFirstDepositExtraMoney(it,amountStr.toIntS(0))
+                    updateExtraMoney()
                 }
                 viewModel.checkRcgOnlineAmount(amountStr, mSelectRechCfgs)
             } else if (includeQuickMoney.root.isVisible) {
@@ -372,6 +374,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
             BtsRvAdapter.BankAdapterListener { _, position ->
                 getPayGap(position)
                 resetEvent()
+
                 payGapBottomSheet.dismiss()
             }
         )
@@ -417,7 +420,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         rechCfgsList = viewModel.rechargeConfigs.value?.rechCfgs?.filter {
             it.rechType == mMoneyPayWay?.rechType && it.onlineType == mMoneyPayWay?.onlineType && it.pcMobile != 1
         } ?: mutableListOf()
-
         payRoadSpannerList = mutableListOf()
         rechCfgsList.forEachIndexed { index, rechCfg ->
             val selectBank = BtsRvAdapter.SelectBank(
@@ -453,6 +455,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         clearFocus()
         binding.etRechargeOnlineAmount.setText("")
         viewModel.clearnRechargeStatus()
+        updateExtraMoney()
     }
 
     //联系客服
@@ -511,26 +514,33 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel, OnlinePayFragmentBind
         val dailyConfig = dailyConfigAdapter.getSelectedItem()
         if (dailyConfig == null) {
             binding.linFirstDeposit.linNoChoose.isSelected = true
-            binding.linReceiveExtra.isVisible = false
             (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(0F)
         } else {
             binding.linFirstDeposit.linNoChoose.isSelected = false
-            binding.linReceiveExtra.isVisible = true
             (binding.includeQuickMoney.rvQuickMoney.adapter as QuickMoneyAdapter).setPercent(dailyConfig.additional)
-            updateFirstDepositExtraMoney(dailyConfig,binding.etRechargeOnlineAmount.getText().toIntS(0))
         }
-
+        updateExtraMoney()
     }
-    private fun updateFirstDepositExtraMoney(dailyConfig: DailyConfig, rechargeMoney: Int){
-        if (dailyConfig.first != 1) {
-            return
+    private fun updateExtraMoney(){
+        val dailyConfig = dailyConfigAdapter.getSelectedItem()
+        val rechargeMoney = binding.etRechargeOnlineAmount.getText().toIntS(0)
+        var extraMoney = 0.0
+        if ((mMoneyPayWay?.rebateFeeNew ?: 0.0) > 0){
+            extraMoney = ArithUtil.mul(rechargeMoney.toDouble(),mSelectRechCfgs!!.rebateFeeNew?:0.0)
         }
-        val additional = dailyConfig.additional
-        val capped = dailyConfig.capped
-        if (additional > 0) {
-            val additionalMoney = rechargeMoney.toDouble() * additional / 100
-            val extraMoney = if(additionalMoney>capped) capped else  additionalMoney
+        if (dailyConfig?.first == 1) {
+            val additional = dailyConfig.additional
+            val capped = dailyConfig.capped
+            if (additional > 0) {
+                val additionalMoney = rechargeMoney.toDouble() * additional / 100
+                extraMoney += (if (additionalMoney > capped) capped.toDouble() else additionalMoney)
+            }
+        }
+        if(extraMoney>0){
+            binding.linReceiveExtra.isVisible = true
             binding.tvExtraAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney2(extraMoney)}"
+        }else{
+            binding.linReceiveExtra.isVisible = false
         }
     }
 

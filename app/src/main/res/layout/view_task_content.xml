@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clContent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="SpUsage, ContentDescription">
+
+    <ImageView
+        android:id="@+id/ivTaskType"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_task_type_cash" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/titleBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:barrierMargin="12dp"
+        app:constraint_referenced_ids="ivTaskType" />
+
+    <!--最大寬度=區塊寬度(設計稿)-圖示寬度 => 231-20 = 211-->
+    <TextView
+        android:id="@+id/tvTaskName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/color_0D2245"
+        android:textFontWeight="600"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toStartOf="@id/ivTaskInfoDetail"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/titleBarrier"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="211dp"
+        tools:ignore="UnusedAttribute"
+        tools:text="储值VND6,000,00000000000000000000000" />
+
+    <ImageView
+        android:id="@+id/ivTaskInfoDetail"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:paddingHorizontal="4dp"
+        android:src="@drawable/ic_task_info_detail"
+        app:layout_constraintBottom_toBottomOf="@id/tvTaskName"
+        app:layout_constraintEnd_toEndOf="@id/infoContentEndBarrier"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/tvTaskName"
+        app:layout_constraintTop_toTopOf="@id/tvTaskName" />
+
+    <TextView
+        android:id="@+id/tvTitleProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/A032"
+        android:textColor="@color/color_6D7693"
+        android:textFontWeight="400"
+        android:textSize="12dp"
+        app:layout_constraintStart_toEndOf="@id/titleBarrier"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskName"
+        tools:ignore="UnusedAttribute" />
+
+    <TextView
+        android:id="@+id/tvProgress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/color_6D7693"
+        android:textFontWeight="400"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toStartOf="@id/infoContentEndBarrier"
+        app:layout_constraintStart_toEndOf="@id/tvTitleProgress"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskName"
+        tools:ignore="UnusedAttribute"
+        tools:text="₫349,000,000/₫349,000,000 (100%)000 (100%)" />
+
+    <ImageView
+        android:id="@+id/ivTaskValueType"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/tvTaskValue"
+        app:layout_constraintStart_toEndOf="@id/titleBarrier"
+        app:layout_constraintTop_toTopOf="@id/tvTaskValue"
+        tools:src="@drawable/ic_task_value_cash" />
+
+    <TextView
+        android:id="@+id/tvTaskValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textSize="14dp"
+        app:layout_constraintStart_toEndOf="@id/ivTaskValueType"
+        app:layout_constraintTop_toBottomOf="@id/tvProgress"
+        tools:text="₫6,000"
+        tools:textColor="@color/color_FF6533" />
+
+    <ImageView
+        android:id="@+id/ivClock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:src="@drawable/ic_task_content_clock"
+        app:layout_constraintBottom_toBottomOf="@id/cmEndDate"
+        app:layout_constraintEnd_toStartOf="@id/cmEndDate"
+        app:layout_constraintTop_toTopOf="@id/cmEndDate" />
+
+    <Chronometer
+        android:id="@+id/cmEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
+        android:textColor="@color/color_FF4343"
+        android:textSize="10dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/btnFeature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minWidth="70dp"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:background="@drawable/img_task_go_finish_button"
+        tools:ignore="UseCompoundDrawables">
+
+        <TextView
+            android:id="@+id/tvBtnContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/A037"
+            android:textSize="12dp"
+            tools:textColor="@color/color_FFFFFF" />
+
+        <ImageView
+            android:id="@+id/ivBtnArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/ic_task_navigate"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/infoContentEndBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:barrierMargin="-13dp"
+        app:constraint_referenced_ids="btnFeature" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

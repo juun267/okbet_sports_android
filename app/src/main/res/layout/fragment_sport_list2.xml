@@ -18,12 +18,16 @@
             android:id="@+id/sport_type_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/margin_8"
+            android:paddingLeft="8dp"
             android:background="@drawable/bg_white_radius_8_bottom"
             android:nestedScrollingEnabled="false"
-            android:paddingLeft="5.5dp"
             android:clipToPadding="false"
+            android:orientation="horizontal"
             android:scrollbars="vertical"
-            tools:itemCount="1" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_game_type"
+            tools:itemCount="5" />
 
     </LinearLayout>
 

@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
@@ -21,6 +23,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GameCollectManager
+import org.cxct.sportlottery.util.isHalloweenStyle
 import splitties.systemservices.layoutInflater
 
 class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
@@ -52,6 +55,9 @@ class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
             fragment.hideLoading()
             gameAdapter.setList(it)
             this@HomeHotGamesView.isVisible = gameAdapter.dataCount() > 0
+            if (isHalloweenStyle()) {
+                (this@HomeHotGamesView.parent as View).isVisible = gameAdapter.dataCount() > 0
+            }
         }
 
         GameCollectManager.observerGameCollect(fragment.viewLifecycleOwner) {
@@ -84,6 +90,20 @@ class HomeHotGamesView(context: Context, attrs: AttributeSet) : LinearLayout(con
         val lp = LayoutParams(dp24, dp24)
         lp.gravity = Gravity.CENTER_VERTICAL
         binding.linearTitle.addView(imageView, 0, lp)
+
+
+        val frameLayout = FrameLayout(context)
+        val vBg = View(context)
+        vBg.setBackgroundResource(R.drawable.img_home_hotgame_bg_h)
+        frameLayout.addView(vBg, FrameLayout.LayoutParams(-1, 50.dp))
+
+        val parentLayout = (parent as ViewGroup)
+        val index = parentLayout.indexOfChild(this)
+        (layoutParams as MarginLayoutParams).topMargin = 4.dp
+        parentLayout.addView(frameLayout, index, layoutParams)
+        parentLayout.removeView(this)
+        frameLayout.addView(this)
+
     }
 
 }

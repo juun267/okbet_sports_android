@@ -14,6 +14,7 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityMoneyRechargeBinding
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.money.recharge.dialog.GiveUpDepositDialog
@@ -304,5 +305,12 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel,ActivityMone
             (parent as ViewGroup).removeView(llPayWays)
         }
         viewGroup.addView(llPayWays, index)
+    }
+
+    /**
+     * 用户更新通道返利比例
+     */
+    fun updateSelectRechCfgs(rechCfg: RechCfg){
+       bankTypeAdapter.updaterebateFeeNew(rechCfg)
     }
 }

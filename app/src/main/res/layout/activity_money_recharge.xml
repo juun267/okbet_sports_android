@@ -42,6 +42,7 @@
         android:id="@+id/llPayWays"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipChildren="false"
         android:background="@color/white"
         android:orientation="vertical">
 
@@ -67,7 +68,7 @@
             android:id="@+id/rv_pay_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_14"
+            android:clipChildren="false"
             android:clipToPadding="false"
             android:overScrollMode="never"
             android:paddingHorizontal="14dp"

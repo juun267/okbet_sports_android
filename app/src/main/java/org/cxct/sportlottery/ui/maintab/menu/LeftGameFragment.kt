@@ -1,22 +1,30 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentLeftSportGameBinding
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.repository.ConfigRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
+import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.pointshop.PointShopActivity
+import org.cxct.sportlottery.ui.profileCenter.taskCenter.TaskCenterActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.*
 
-class LeftGameFragment: BaseFragment<MainViewModel, FragmentLeftSportGameBinding>() {
+class LeftGameFragment: BaseFragment<SportLeftMenuViewModel, FragmentLeftSportGameBinding>() {
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
 
@@ -27,6 +35,7 @@ class LeftGameFragment: BaseFragment<MainViewModel, FragmentLeftSportGameBinding
 
     override fun onBindViewStatus(view: View) {
         super.onBindViewStatus(view)
+        initObservable()
         setBannerStatus()
         binding.menuSupport.setServiceClick(getMainTabActivity().supportFragmentManager){ close() }
     }
@@ -42,6 +51,15 @@ class LeftGameFragment: BaseFragment<MainViewModel, FragmentLeftSportGameBinding
         cvESport.setOnClickListener {
             close()
             getMainTabActivity().jumpToESport()
+        }
+    }
+    private fun initObservable() {
+        ConfigRepository.config.observe(this) {
+            binding.menuTaskCenter.isVisible = StaticData.taskCenterOpened()
+            binding.menuPointShop.isVisible = StaticData.pointShopOpened()
+        }
+        viewModel.taskRedDotEvent.collectWith(lifecycleScope){
+            binding.menuTaskCenter.ivDot().isVisible = it
         }
     }
     fun setBannerStatus() = binding.run{
@@ -72,6 +90,26 @@ class LeftGameFragment: BaseFragment<MainViewModel, FragmentLeftSportGameBinding
             PromotionListActivity.startFrom(context(), "主页体育侧边栏菜单")
         }.apply {
             setVisibilityByMarketSwitch()
+        }
+        menuTaskCenter.setItem(
+            requireContext().getIconSelector(R.drawable.ic_left_menu_taskcenter_sel, R.drawable.ic_left_menu_taskcenter_nor),
+            R.string.A025
+        ){
+            close()
+            startActivity(TaskCenterActivity::class.java)
+        }.apply {
+            setSummaryStatus(true,R.string.A049, ContextCompat.getColor(requireContext(),R.color.color_A7B2C4))
+            isVisible = StaticData.taskCenterOpened()
+            ivDot().isVisible = LoginRepository.isLogined()
+        }
+        menuPointShop.setItem(
+            requireContext().getIconSelector(R.drawable.ic_left_menu_gift, R.drawable.ic_left_menu_gift),
+            R.string.A051
+        ){
+            startActivity(PointShopActivity::class.java)
+        }.apply {
+            setSummaryTag(R.drawable.ic_point_tag_new)
+            isVisible = StaticData.pointShopOpened()
         }
         menuAffiliate.setItem(
             requireContext().getIconSelector(R.drawable.ic_left_menu_affiliate_sel, R.drawable.ic_left_menu_affiliate_nor),
@@ -105,7 +143,7 @@ class LeftGameFragment: BaseFragment<MainViewModel, FragmentLeftSportGameBinding
             R.string.N914
         ){
             close()
-            loginedRun(requireContext()) { startActivity(VerifyIdentityActivity::class.java) }
+            requireActivity().jumpToKYC()
         }.showBottomLine(false)
     }
     fun close() {

@@ -21,7 +21,11 @@ import org.json.JSONObject
 
 object SensorsEventUtil {
 
-    private const val SA_SERVER_URL = "https://data.catokbet.com/sa?project=default";
+    private val SA_SERVER_URL = if(Constants.isProducation) {
+        "https://data.catokbet.com/sa?project=production"
+    } else {
+        "https://data.catokbet.com/sa?project=default"
+    }
 
     val appsFlyerProperties = mutableMapOf<String, Any>()
     val conversionDataListener  = object : AppsFlyerConversionListener {
@@ -90,7 +94,7 @@ object SensorsEventUtil {
 
         val properties = JSONObject()
             .put("platform_type", "Android")
-            .put("device_id", Constants.deviceSn)
+            .put("device_id", Constants.deviceId)
         SensorsDataAPI.sharedInstance().registerSuperProperties(properties)
         SensorsDataAPI.sharedInstance().registerDynamicSuperProperties(
             object : SensorsDataDynamicSuperProperties {

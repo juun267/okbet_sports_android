@@ -3,13 +3,14 @@ package org.cxct.sportlottery.network.bet.settledList
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.util.replaceSpecialChar
 
 @JsonClass(generateAdapter = true) @KeepMembers
 data class MatchOdd(
     @Json(name = "awayId")
     val awayId: String?,
     @Json(name = "awayName")
-    val awayName: String?,
+    var awayName: String?,
     @Json(name = "endTime")
     val endTime: String?,
     @Json(name = "extInfo")
@@ -19,9 +20,9 @@ data class MatchOdd(
     @Json(name = "homeId")
     val homeId: String?,
     @Json(name = "homeName")
-    val homeName: String?,
+    var homeName: String?,
     @Json(name = "leagueName")
-    val leagueName: String?,
+    var leagueName: String?,
     @Json(name = "matchId")
     val matchId: String?,
     @Json(name = "odds")
@@ -37,11 +38,11 @@ data class MatchOdd(
     @Json(name = "playCateMatchResultList")
     val playCateMatchResultList: List<PlayCateMatchResult>?,
     @Json(name = "playCateName")
-    val playCateName: String?,
+    var playCateName: String?,
     @Json(name = "playId")
     val playId: Int?,
     @Json(name = "playName")
-    val playName: String?,
+    var playName: String?,
     @Json(name = "spread")
     val spread: String?,
     @Json(name = "startTime")
@@ -50,4 +51,12 @@ data class MatchOdd(
     val status: Int?,
     @Json(name = "statusNameI18n")
     val statusNameI18n: Map<String, String>?
-)
+){
+    init {
+        leagueName = leagueName?.replaceSpecialChar("\n")
+        homeName = homeName?.replaceSpecialChar("\n")
+        awayName = awayName?.replaceSpecialChar("\n")
+        playCateName = playCateName?.replaceSpecialChar("\n")
+        playName = playName?.replaceSpecialChar("\n")
+    }
+}

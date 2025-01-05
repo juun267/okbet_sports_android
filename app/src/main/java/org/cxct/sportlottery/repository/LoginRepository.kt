@@ -322,6 +322,7 @@ object LoginRepository {
             vipType = loginData.vipType,
             discountByGameTypeList = loginData.discountByGameTypeList,
             regSource = loginData.regSource,
-            state = loginData.state
+            state = loginData.state,
+            addTime = loginData.addTime,
         )
 }

@@ -14,8 +14,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.ImmersionBar
 import com.tbruyelle.rxpermissions2.RxPermissions
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.appevent.SensorsEventUtil
 import org.cxct.sportlottery.common.enums.GameEntryType
@@ -27,12 +29,17 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.ConfigRepository
+import org.cxct.sportlottery.repository.GamePlayNameRepository
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.service.dispatcher.DataResourceChange
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -56,9 +63,28 @@ import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.esport.ESportFragment
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.FragmentHelper
+import org.cxct.sportlottery.util.FragmentHelper2
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.KvUtils
+import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.Param
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.checkSportStatus
 import org.cxct.sportlottery.util.drawable.shape.ShapeDrawable
+import org.cxct.sportlottery.util.getMarketSwitch
+import org.cxct.sportlottery.util.getSportEnterIsClose
+import org.cxct.sportlottery.util.isThirdTransferOpen
+import org.cxct.sportlottery.util.loginedRun
+import org.cxct.sportlottery.util.setupSportStatusChange
+import org.cxct.sportlottery.util.showBetReceiptDialog
+import org.cxct.sportlottery.util.showDataSourceChangedDialog
+import org.cxct.sportlottery.util.showFavoriteNotify
+import org.cxct.sportlottery.util.showLoginSnackbar
+import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.cxct.sportlottery.view.dialog.ToMayaDialog
@@ -141,6 +167,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         viewModel.getSportMenuFilter()
         viewModel.getGameCollectNum()
         viewModel.getThirdGames()
+        viewModel.getTaskDetail()
         PreLoader.startPreload()
         jumpGameAfterLogin()
         checkNotificationOpen()
@@ -616,6 +643,7 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         }
 
         if(StaticData.miniGameOpened()){
+            tabHelper.selectedHome()
             navToPosition(INDEX_HOME)
             val fragment = fragmentHelper.getFragment(INDEX_HOME)
             if (fragment is HomeFragment) {
@@ -680,6 +708,25 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
         loginedRun(this) { startActivity(BetRecordActivity::class.java) }
     }
 
+    /**
+     * 跳转到三方游戏指定厂商
+     */
+    fun jumpOKGameWithProvider(okGamesFirm: OKGamesFirm){
+        jumpToOKGames()
+        postDelayed(1000){
+            (getCurrentFragment() as? OKGamesFragment)?.showByProvider(okGamesFirm)
+        }
+    }
+    /**
+     * 跳转到三方真人指定厂商
+     */
+    fun jumpOKLiveWithProvider(okGamesFirm: OKGamesFirm){
+        jumpToOkLive()
+        postDelayed(1000){
+            (getCurrentFragment() as? OKLiveFragment)?.showByProvider(okGamesFirm)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         OddsButton2.clearOddsViewCaches()
@@ -728,12 +775,6 @@ class MainTabActivity : BaseSocketActivity<MainTabViewModel,ActivityMainTabBindi
 
         if(LoginRepository.isLogined()) {
             gamesViewModel.requestEnterThirdGame(gameData, this)
-            //有些是手动构造的OKGameBean，需要排除
-            //&& (gameData.gameEntryType == GameEntryType.OKGAMES || gameData.gameEntryType==GameEntryType.OKLIVE)
-            if (gameData.id > 0){
-                OKGamesRepository.addRecentPlayGame(gameData.id.toString())
-            }
-            RecentDataManager.addRecent(RecentRecord(1, gameBean = gameData))
         } else {
             //请求试玩路线
             loading()

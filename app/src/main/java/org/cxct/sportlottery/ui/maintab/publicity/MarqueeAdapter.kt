@@ -1,10 +1,13 @@
 package org.cxct.sportlottery.ui.maintab.publicity
 
 import android.annotation.SuppressLint
+import android.text.Spannable
+import android.text.SpannableStringBuilder
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -16,7 +19,21 @@ open class MarqueeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         const val TYPE_BLANK = 200
     }
 
-    private var mDataList: MutableList<String> = mutableListOf()
+    enum class DataType {
+        STRING, SPANNABLE
+    }
+
+    private var mDataType: DataType = DataType.STRING
+    private var mStringDataList: MutableList<String> = mutableListOf()
+    private var mSpannableDataList: MutableList<Spannable> = mutableListOf()
+
+    private var mTextColor: Int = R.color.color_6D7693
+
+    private val mDataList
+        get() = when (mDataType) {
+            DataType.SPANNABLE -> mSpannableDataList
+            else -> mStringDataList
+        }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -25,7 +42,7 @@ open class MarqueeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         textView.gravity = Gravity.CENTER_VERTICAL
         textView.textSize = 14.0f
         textView.maxLines = 1
-        textView.setTextColor(viewGroup.context.getColor(R.color.color_6D7693))
+        textView.setTextColor(viewGroup.context.getColor(mTextColor))
         //開頭結尾的空白過場，寬度設置跟 父層 Layout 一樣
         if (viewType == TYPE_BLANK) textView.minimumWidth = viewGroup.measuredWidth
 
@@ -48,15 +65,27 @@ open class MarqueeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         try {
             if (getItemViewType(position) == TYPE_ITEM && mDataList.size != 0) {
                 val dataPosition = (position - 1) % mDataList.size
-                (viewHolder.itemView as TextView).text = mDataList[dataPosition] + "　"
+                val placeHolder = "　"
+                (viewHolder.itemView as TextView).text =
+                    when (val itemData = mDataList[dataPosition]) {
+                        is Spannable -> {
+                            SpannableStringBuilder(itemData).append(placeHolder)
+                        }
+
+                        else -> {
+                            itemData.toString().plus(placeHolder)
+                        }
+                    }
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(dataList: MutableList<String>?) {
-        mDataList = dataList ?: mutableListOf()
+        mDataType = DataType.STRING
+        mStringDataList = dataList ?: mutableListOf()
 
 //        if (mDataList.isEmpty())
 //            mDataList.add("(${MultiLanguagesApplication.appContext.getString(R.string.no_announcement)})")
@@ -64,7 +93,17 @@ open class MarqueeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()//更新資料
     }
 
-    class MarqueeVH(val textView: TextView, itemView: View): RecyclerView.ViewHolder(itemView)
+    @SuppressLint("NotifyDataSetChanged")
+    fun setSpannableData(dataList: MutableList<Spannable>, @ColorRes textColorRes: Int? = null) {
+        textColorRes?.let {
+            mTextColor = it
+        }
+        mDataType = DataType.SPANNABLE
+        mSpannableDataList = dataList
+        notifyDataSetChanged()
+    }
+
+    class MarqueeVH(val textView: TextView, itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
 }

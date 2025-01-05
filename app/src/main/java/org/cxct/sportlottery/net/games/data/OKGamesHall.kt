@@ -79,14 +79,14 @@ data class OKGamesFirm(
 @KeepMembers
 @Parcelize
 data class OKGameBean(
-    val id: Int = 0,
+    var id: Int = 0,
     val firmId: Int = 0,
     val firmType: String?,
     val firmCode: String? = null,
     val firmName: String? = null,
-    val gameCode: String?,
+    var gameCode: String?,
     val gameName: String? = null,
-    val gameType: String? = null,
+    val gameType: String? = null,// 用于最近记录时 OK_GAMES,OK_LIVE,OK_SPORT OK_MINIS ,SPORT, ES
     val imgGame: String? = null,
     val gameEntryTagName: String? = null,
     val thirdGameCategory: String? = null,
@@ -105,4 +105,10 @@ data class OKGameBean(
     var categoryId = -1
     fun isMaintain() = maintain == 1
     var isShowMore = false
+    var isPreDropBall = false
+
+    //最近游戏时 gameType，或者category
+    var gameId: String? = null
+    //最近游戏，玩法时间
+    var updateTime: String? = null
 }

@@ -27,7 +27,7 @@ class HandheldPhotoActivity: BaseActivity<ProfileCenterViewModel, ActivityHandhe
     }
     private var updatedIDPictureURL: String? = null
     override fun onInitView() = binding.run {
-        setStatusbar(R.color.color_232C4F_FFFFFF, true)
+        setStatusbar(darkFont = true)
         customToolBar.setOnBackPressListener {
             finish()
         }

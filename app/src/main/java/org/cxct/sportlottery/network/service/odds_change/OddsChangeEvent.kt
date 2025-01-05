@@ -121,7 +121,8 @@ fun FrontWsEvent.OddsChangeEvent.transferOddsChangeEvent(): OddsChangeEvent {
             oddsList = protoEvent.oddsListList,
             gameType = protoEvent.gameType,
             quickPlayCateList = protoEvent.quickPlayCateListList.transferQuickPlayCateList(),
-            playCateNum = protoEvent.playCateNum
+            playCateNum = protoEvent.playCateNum,
+            updateMode = protoEvent.updateMode,
         )
     }
 }

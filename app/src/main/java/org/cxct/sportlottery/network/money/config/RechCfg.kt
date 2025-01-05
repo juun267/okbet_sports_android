@@ -53,4 +53,6 @@ data class RechCfg(
     val isAccount: Int,//是否需要账号
     @Json(name = "isEmail")
     val isEmail: Int,//是否需要邮箱
+    @Json(name = "rebateFeeNew")
+    val rebateFeeNew: Double?,//新返利
 )

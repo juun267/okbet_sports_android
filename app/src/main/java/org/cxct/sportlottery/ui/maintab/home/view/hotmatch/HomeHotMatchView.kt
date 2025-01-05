@@ -13,7 +13,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.drake.spannable.addSpan
 import com.drake.spannable.span.CenterImageSpan
@@ -44,6 +43,8 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.onClick
 import splitties.systemservices.layoutInflater
+import splitties.views.bottomPadding
+import splitties.views.leftPadding
 
 class HomeHotMatchView(
     context: Context, attrs: AttributeSet
@@ -391,20 +392,26 @@ class HomeHotMatchView(
     }
 
     fun applyHalloweenStyle() {
-        (layoutParams as MarginLayoutParams).topMargin = 10.dp
+        (layoutParams as MarginLayoutParams).topMargin = 5.dp
         val imageView = AppCompatImageView(context)
         imageView.setImageResource(R.drawable.ic_halloween_logo_3)
         val dp28 = 28.dp
         val lp = LayoutParams(dp28, dp28)
         lp.gravity = Gravity.CENTER_VERTICAL
         binding.llayoutTitle.addView(imageView, 0, lp)
+        (binding.llayoutTitle.layoutParams as MarginLayoutParams).bottomMargin = 0
+        (binding.recyclerHotGame.layoutParams as MarginLayoutParams).topMargin = (-5).dp
 
-        binding.tvHotMore.setPadding(8.dp, 0, 5.dp, 0)
+        binding.tvHotMore.setPadding(6.dp, 4.dp, 0, 0)
         binding.tvHotMore.text = context.getString(R.string.N702)
             .addSpan("AAA", CenterImageSpan(context, R.drawable.ic_to_right_withe).setDrawableSize(13.dp).setMarginHorizontal(2.dp))
         binding.tvHotMore.setTextColor(Color.WHITE)
+        binding.tvHotMore.layoutParams.height = 28.dp
+        binding.tvHotMore.layoutParams.width = 75.dp
         binding.tvHotMore.setBackgroundResource(R.drawable.ic_more_but_bg)
         binding.tvHotMore.compoundDrawablePadding = 0
         binding.tvHotMore.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
+
+        binding.llayoutTitle.setBackgroundResource(R.drawable.img_home_hotmatch_bg_h)
     }
 }
